@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Lint, Type Check & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Detect package
+        id: pkg
+        run: |
+          if [ -f package.json ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Install dependencies
+        if: steps.pkg.outputs.exists == 'true'
+        run: npm ci
+      - name: Lint
+        if: steps.pkg.outputs.exists == 'true'
+        run: npm run lint
+      - name: Typecheck
+        if: steps.pkg.outputs.exists == 'true'
+        run: npm run typecheck
+      - name: Test
+        if: steps.pkg.outputs.exists == 'true'
+        run: npm test
+      - name: Await package skeleton
+        if: steps.pkg.outputs.exists != 'true'
+        run: echo "No package.json yet - CI is a no-op until the S1 skeleton lands."
