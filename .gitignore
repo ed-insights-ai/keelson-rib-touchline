@@ -5,8 +5,9 @@ dist/
 coverage/
 .DS_Store
 
-# Beads / Dolt files (added by bd init)
+# Beads / Dolt files (added by bd init). The whole tracker is external state:
+# issues live on the shared Dolt server, nothing bead-related is committed.
 .dolt/
 *.db
 .beads-credential-key
-.beads/proxieddb/
+.beads/
