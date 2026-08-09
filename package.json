@@ -1,0 +1,69 @@
+{
+  "name": "@keelson/rib-touchline",
+  "version": "0.1.0",
+  "description": "Keelson rib for college soccer season intelligence: on-demand collection, verification, and reporting over a consumer-owned data repo.",
+  "license": "Apache-2.0",
+  "author": "Daniel Scholl",
+  "homepage": "https://github.com/ed-insights-ai/keelson-rib-touchline#readme",
+  "bugs": {
+    "url": "https://github.com/ed-insights-ai/keelson-rib-touchline/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ed-insights-ai/keelson-rib-touchline.git"
+  },
+  "keywords": [
+    "keelson",
+    "rib",
+    "touchline",
+    "soccer",
+    "analytics"
+  ],
+  "type": "module",
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "bun": "./src/index.ts",
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "files": [
+    "src",
+    "bin",
+    "workflows",
+    "pipeline",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "check": "biome check .",
+    "check:fix": "biome check --write .",
+    "link:keelson": "bun dev/link.ts"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.3",
+    "@keelson/shared": "https://github.com/danielscholl/keelson/releases/download/v0.99.1/keelson-shared.tgz",
+    "@types/bun": "^1.1.14",
+    "typescript": "^7.0.2"
+  },
+  "peerDependencies": {
+    "@keelson/shared": ">=0.75.0"
+  },
+  "peerDependenciesMeta": {
+    "@keelson/shared": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
