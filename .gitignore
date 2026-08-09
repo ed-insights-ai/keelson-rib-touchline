@@ -11,3 +11,6 @@ coverage/
 *.db
 .beads-credential-key
 .beads/
+__pycache__/
+*.pyc
+.venv/
