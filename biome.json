@@ -13,7 +13,10 @@
       "!**/dist",
       "!docs",
       "!pipeline",
-      "!bun.lock"
+      "!bun.lock",
+      "!.claude",
+      "!.codex",
+      "!.agents"
     ]
   },
   "formatter": {
