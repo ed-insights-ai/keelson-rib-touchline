@@ -23,6 +23,7 @@ audit = "scripts.audit:main"
 conference-audit = "scripts.conference_audit:main"
 pipeline-run = "scripts.run:main"
 build-canon = "scripts.build_canon:main"
+check-membership = "scripts.check_membership:main"
 
 [build-system]
 requires = ["hatchling"]
