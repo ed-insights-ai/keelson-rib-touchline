@@ -1,0 +1,585 @@
+name: data-integrity
+description: |
+  Use when: you need to know which numbers in the touchline database are currently trustworthy — before believing a report, and before and after any data repair.
+  Triggers: "data integrity", "check the data", "is the data right", "integrity report", "did the repair work".
+  Does: rebuilds the parquet archive offline from the data repo's raw_html, runs eleven deterministic read-only checks against it and live Postgres, then prints one report with a per-check verdict and the file:line that causes each failure.
+  NOT for: repairing anything (this never writes to the database), scraping, or judging code quality.
+
+requiresProject: true
+mutates_checkout: true
+tags: [data, integrity, soccer]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# FAIL CLOSED. Every check in this file must alarm when it cannot run.
+#
+# Q() sends psql stderr to /dev/null, so a dead database, a dropped table, a
+# permissions change or one timed-out query all arrive in the shell as an EMPTY
+# STRING. `[ "" -gt 0 ]` is then a test ERROR (exit 2) — not false — so an
+# unguarded `&& V=alarm` never fires and V keeps its initialised `ok`. That is
+# how a nonexistent database used to render as `[ OK   ]` with blank numbers.
+#
+# The convention, inherited from ground-truth.yml's cache-provenance check:
+# after the queries run, assert every captured variable is non-empty; if any is
+# empty, print an explicit `CHECK DID NOT RUN` alarm naming the empty captures
+# and exit 0. The failure headline is deliberately NOT the measurement headline
+# with blanks in it — a reader must be able to tell "the query failed" from
+# "the data is bad" at a glance.
+#
+# `${!v}` is bash indirect expansion; Keelson runs bash nodes under bash (3.2 on
+# this machine), where it is supported. Do not port these loops to sh.
+#
+# This workflow runs with cwd = the consumer data repo (e.g. soccer-data), so
+# data paths are cwd-relative (data/raw_html, data/errors, data/structured).
+# The database defaults to postgresql://lume@localhost:5432/touchline and is
+# overridable with DATABASE_URL. Pipeline commands resolve the installed rib's
+# pipeline/ directory: TOUCHLINE_PIPELINE_DIR env override, else packageDir
+# from ~/.keelson/rib-touchline/config.json, else the installed package path —
+# and alarm (never silently skip) when none resolves.
+# ─────────────────────────────────────────────────────────────────────────────
+
+nodes:
+  # ── 1. Freshness ────────────────────────────────────────────────────────
+  - id: freshness
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      DSN="${DATABASE_URL:-postgresql://lume@localhost:5432/touchline}"
+      Q() { psql "$DSN" -At -c "$1" 2>/dev/null; }
+      TOTAL=$(Q "SELECT count(*) FROM games")
+      NEWEST=$(Q "SELECT coalesce(max(date)::text,'none') FROM games")
+      DAYS=$(Q "SELECT coalesce((CURRENT_DATE - max(date))::text,'-1') FROM games")
+      SEASONS=$(Q "SELECT count(DISTINCT season_year) FROM games")
+      MISSING=
+      for v in TOTAL NEWEST DAYS SEASONS; do [ -n "${!v:-}" ] || MISSING="$MISSING $v"; done
+      if [ -n "$MISSING" ]; then
+        printf '{"check":"freshness","verdict":"alarm","headline":"CHECK DID NOT RUN — psql returned nothing for:%s. Those are failed queries, not measurements of zero.","cause":"Q() discards psql stderr, so the reason is not captured here — database down, table dropped, permissions changed, or the query timed out. Re-run it by hand against the touchline database (DATABASE_URL or postgresql://lume@localhost:5432/touchline) to see the error."}\n' "$MISSING"
+        exit 0
+      fi
+      V=ok; [ "$DAYS" -gt 14 ] 2>/dev/null && V=warn
+      printf '{"check":"freshness","verdict":"%s","headline":"%s games, newest %s (%s days ago), %s seasons","cause":""}\n' \
+        "$V" "$TOTAL" "$NEWEST" "$DAYS" "$SEASONS"
+
+  # ── 2. Conference flagging ──────────────────────────────────────────────
+  - id: conference-flag
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      DSN="${DATABASE_URL:-postgresql://lume@localhost:5432/touchline}"
+      Q() { psql "$DSN" -At -c "$1" 2>/dev/null; }
+      NULLS=$(Q "SELECT count(*) FROM games WHERE is_conference_game IS NULL")
+      TOTAL=$(Q "SELECT count(*) FROM games")
+      AWAYC=$(Q "SELECT count(*) FROM games WHERE away_conference IS NULL")
+      MISSING=
+      for v in NULLS TOTAL AWAYC; do [ -n "${!v:-}" ] || MISSING="$MISSING $v"; done
+      if [ -n "$MISSING" ]; then
+        printf '{"check":"conference-flag","verdict":"alarm","headline":"CHECK DID NOT RUN — psql returned nothing for:%s. Those are failed queries, not measurements of zero.","cause":"Q() discards psql stderr, so the reason is not captured here — database down, table dropped, permissions changed, or the query timed out. Re-run it by hand against the touchline database (DATABASE_URL or postgresql://lume@localhost:5432/touchline) to see the error."}\n' "$MISSING"
+        exit 0
+      fi
+      V=ok; [ "$NULLS" -gt 0 ] && V=alarm
+      printf '{"check":"conference-flag","verdict":"%s","headline":"is_conference_game NULL for %s of %s rows; away_conference NULL for %s","cause":"nothing populates it — conferences.py:55-59 therefore returns an OVERALL record labelled standings"}\n' \
+        "$V" "$NULLS" "$TOTAL" "$AWAYC"
+
+  # ── 2b. Independent conference derivation ────────────────────────────────
+  - id: conference-derivation
+    timeout: 120000
+    bash: |
+      set -uo pipefail
+      CFG="$HOME/.keelson/rib-touchline/config.json"
+      PIPELINE_DIR="${TOUCHLINE_PIPELINE_DIR:-}"
+      if [ -z "$PIPELINE_DIR" ] && [ -f "$CFG" ]; then
+        PD=$(jq -r '.packageDir // empty' "$CFG" 2>/dev/null); [ -n "$PD" ] && PIPELINE_DIR="$PD/pipeline"
+      fi
+      [ -d "${PIPELINE_DIR:-/nonexistent}" ] || PIPELINE_DIR="$HOME/.keelson/node_modules/@keelson/rib-touchline/pipeline"
+      if [ ! -d "$PIPELINE_DIR" ]; then
+        printf '{"check":"conference-derivation","verdict":"alarm","headline":"CHECK DID NOT RUN — no pipeline directory resolvable (TOUCHLINE_PIPELINE_DIR unset, no packageDir in %s, no installed rib), so conference-audit could not be invoked at all.","cause":"install or link the touchline rib, or export TOUCHLINE_PIPELINE_DIR pointing at its pipeline/ directory."}\n' "$CFG"
+        exit 0
+      fi
+      OUT=$(uv run --project "$PIPELINE_DIR" conference-audit 2>/dev/null); RC=$?
+      if [ "$RC" -ne 0 ] || [ -z "${OUT:-}" ]; then
+        printf '{"check":"conference-derivation","verdict":"alarm","headline":"CHECK DID NOT RUN — conference-audit exited %s or returned no output, so no rows were measured.","cause":"Run uv run --project <rib>/pipeline conference-audit from the data repo to expose the database, query, or Python error hidden from this read-only workflow node."}\n' "$RC"
+        exit 0
+      fi
+      JSON=$(printf '%s\n' "$OUT" | awk '/^\{/{line=$0} END{print line}')
+      if [ -z "${JSON:-}" ] || [[ "$JSON" != \{* ]] || ! printf '%s' "$JSON" | jq -e 'type == "object" and .check == "conference-derivation" and (.verdict == "ok" or .verdict == "warn" or .verdict == "alarm") and (.headline | type == "string" and length > 0)' >/dev/null 2>&1; then
+        printf '{"check":"conference-derivation","verdict":"alarm","headline":"CHECK DID NOT RUN — conference-audit returned no valid one-line verdict JSON, so no counts can be trusted.","cause":"The CLI must end with one JSON object containing check, verdict, and a non-empty denominator-bearing headline."}\n'
+        exit 0
+      fi
+      printf '%s\n' "$JSON"
+
+  # ── 3. Match duplication ────────────────────────────────────────────────
+  - id: duplication
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      DSN="${DATABASE_URL:-postgresql://lume@localhost:5432/touchline}"
+      Q() { psql "$DSN" -At -c "$1" 2>/dev/null; }
+      # NOT `GROUPS` — that is a readonly bash builtin array (the caller's gids).
+      # Assigning to it is silently ignored and $GROUPS expands to a gid (20 on
+      # macOS/staff), which reads as a plausible count. Cost us a wrong number once.
+      # GENDER IS PART OF THE KEY. A men's and a women's fixture on the same date
+      # between the same two schools are two DIFFERENT matches (CROSSGENDER below
+      # counts the live pairs). The old key was (date,home_team,away_team) with no
+      # gender axis, so it merged every one of them and then read their naturally
+      # differing scores as corruption — 100% false positives that inverted the
+      # actual good news (no real score disagreement anywhere) into the file's
+      # loudest verdict. s.gender is safe to key on: it is non-NULL for every row
+      # and every row corroborates it against its own source_url (the
+      # mens-soccer/womens-soccer segment or the msoc/wsoc convention), with zero
+      # disagreements under either convention.
+      DUPGROUPS=$(Q "SELECT count(*) FROM (SELECT g.date, g.home_team, g.away_team, s.gender FROM games g JOIN schools s ON s.id=g.school_id WHERE g.date IS NOT NULL GROUP BY 1,2,3,4 HAVING count(*) > 1) d")
+      EXTRA=$(Q "SELECT coalesce(sum(n-1),0) FROM (SELECT count(*) AS n FROM games g JOIN schools s ON s.id=g.school_id WHERE g.date IS NOT NULL GROUP BY g.date, g.home_team, g.away_team, s.gender HAVING count(*) > 1) d")
+      DISAGREE=$(Q "SELECT count(*) FROM (SELECT g.date, g.home_team, g.away_team, s.gender FROM games g JOIN schools s ON s.id=g.school_id WHERE g.date IS NOT NULL GROUP BY 1,2,3,4 HAVING count(*) > 1 AND (count(DISTINCT g.home_score) > 1 OR count(DISTINCT g.away_score) > 1)) d")
+      NODATE=$(Q "SELECT count(*) FROM games WHERE date IS NULL")
+      TOTAL=$(Q "SELECT count(*) FROM games")
+      # The staged expectation, measured live rather than recorded flat so it cannot
+      # go stale. DUPCLEAN re-counts the same gender-aware groups over only the rows
+      # tl-o23 will leave behind. The phantom predicate is NOT `!= season_year` —
+      # that condemns legitimate games, because programmes that played their COVID
+      # season in spring 2021 correctly filed it under season_year=2020. IN
+      # (season_year, season_year+1) is its audited complement. Do not "simplify" it.
+      DUPCLEAN=$(Q "SELECT count(*) FROM (SELECT g.date, g.home_team, g.away_team, s.gender FROM games g JOIN schools s ON s.id=g.school_id WHERE g.date IS NOT NULL AND EXTRACT(YEAR FROM g.date)::int IN (g.season_year, g.season_year+1) GROUP BY 1,2,3,4 HAVING count(*) > 1) d")
+      PHANTOMS=$(Q "SELECT count(*) FROM games WHERE date IS NOT NULL AND EXTRACT(YEAR FROM date)::int NOT IN (season_year, season_year+1)")
+      # Both measured live so the cause states what the gender axis is actually
+      # buying today, instead of asserting a number that was true once.
+      CROSSGENDER=$(Q "SELECT count(*) FROM (SELECT g.date, g.home_team, g.away_team FROM games g JOIN schools s ON s.id=g.school_id WHERE g.date IS NOT NULL GROUP BY 1,2,3 HAVING count(DISTINCT s.gender) > 1) d")
+      BLINDDIS=$(Q "SELECT count(*) FROM (SELECT date, home_team, away_team FROM games WHERE date IS NOT NULL GROUP BY 1,2,3 HAVING count(*) > 1 AND (count(DISTINCT home_score) > 1 OR count(DISTINCT away_score) > 1)) d")
+      MISSING=
+      for v in DUPGROUPS EXTRA DISAGREE NODATE TOTAL DUPCLEAN PHANTOMS CROSSGENDER BLINDDIS; do [ -n "${!v:-}" ] || MISSING="$MISSING $v"; done
+      if [ -n "$MISSING" ]; then
+        printf '{"check":"duplication","verdict":"alarm","headline":"CHECK DID NOT RUN — psql returned nothing for:%s. Those are failed queries, not measurements of zero.","cause":"Q() discards psql stderr, so the reason is not captured here — database down, table dropped, permissions changed, or the query timed out. Re-run it by hand against the touchline database (DATABASE_URL or postgresql://lume@localhost:5432/touchline) to see the error."}\n' "$MISSING"
+        exit 0
+      fi
+      V=ok; [ "$DUPGROUPS" -gt 0 ] && V=warn; [ "$DISAGREE" -gt 0 ] && V=alarm
+      printf '{"check":"duplication","verdict":"%s","headline":"%s duplicate (date,home,away,gender) groups, %s extra rows, %s disagree on score; %s of %s rows have no date and are outside this check. Expect %s now and %s once tl-o23 deletes the %s phantom rows — a later drop to %s is that repair landing, not a regression.","cause":"a fixture scraped from both schools becomes two rows; no canonical match key exists. Gender is in the key deliberately: %s same-day fixtures between the same two schools are a genuine mens and womens pair, so the gender-blind key this check used to apply merged them and read their differing scores as corruption — %s false score disagreements, alarmed on, versus %s real ones now."}\n' \
+        "$V" "$DUPGROUPS" "$EXTRA" "$DISAGREE" "$NODATE" "$TOTAL" "$DUPGROUPS" "$DUPCLEAN" "$PHANTOMS" "$DUPCLEAN" "$CROSSGENDER" "$BLINDDIS" "$DISAGREE"
+
+  # ── 4. Season labelling ─────────────────────────────────────────────────
+  - id: season-label
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      DSN="${DATABASE_URL:-postgresql://lume@localhost:5432/touchline}"
+      Q() { psql "$DSN" -At -c "$1" 2>/dev/null; }
+      BYDATE=$(Q "SELECT count(*) FROM (SELECT s.abbreviation a, g.season_year sy, EXTRACT(YEAR FROM g.date)::int dy FROM games g JOIN schools s ON s.id=g.school_id WHERE g.date IS NOT NULL GROUP BY 1,2,3) t WHERE dy NOT IN (sy, sy+1)")
+      ROWS=$(Q "SELECT coalesce(sum(n),0) FROM (SELECT g.season_year sy, EXTRACT(YEAR FROM g.date)::int dy, count(*) n FROM games g WHERE g.date IS NOT NULL GROUP BY 1,2) t WHERE dy NOT IN (sy, sy+1)")
+      BYURL=$(Q "SELECT count(*) FROM games WHERE source_url ~ '/stats/[0-9]{4}/' AND substring(source_url from '/stats/([0-9]{4})/')::int <> season_year")
+      WORST=$(Q "SELECT coalesce(string_agg(x,'; '),'none') FROM (SELECT s.abbreviation||' '||g.season_year||' holds '||count(*)||' games dated '||EXTRACT(YEAR FROM g.date)::int AS x FROM games g JOIN schools s ON s.id=g.school_id WHERE g.date IS NOT NULL GROUP BY s.abbreviation, g.season_year, EXTRACT(YEAR FROM g.date) HAVING EXTRACT(YEAR FROM g.date)::int NOT IN (g.season_year, g.season_year+1) ORDER BY count(*) DESC LIMIT 5) t")
+      # WORST coalesces to the literal 'none' on success-with-no-findings, so an
+      # empty WORST means the query failed, never that there is nothing to report.
+      MISSING=
+      for v in BYDATE ROWS BYURL WORST; do [ -n "${!v:-}" ] || MISSING="$MISSING $v"; done
+      if [ -n "$MISSING" ]; then
+        printf '{"check":"season-label","verdict":"alarm","headline":"CHECK DID NOT RUN — psql returned nothing for:%s. Those are failed queries, not measurements of zero.","cause":"Q() discards psql stderr, so the reason is not captured here — database down, table dropped, permissions changed, or the query timed out. Re-run it by hand against the touchline database (DATABASE_URL or postgresql://lume@localhost:5432/touchline) to see the error."}\n' "$MISSING"
+        exit 0
+      fi
+      V=ok; { [ "$BYDATE" -gt 0 ] || [ "$BYURL" -gt 0 ]; } && V=alarm
+      printf '{"check":"season-label","verdict":"%s","headline":"%s program-seasons mislabelled (%s rows); %s rows whose source_url year disagrees. %s","cause":"sidearm_discovery.py — the schedule page year segment was never asserted against the requested year"}\n' \
+        "$V" "$BYDATE" "$ROWS" "$BYURL" "$WORST"
+
+  # ── 5. Team identity resolution ─────────────────────────────────────────
+  - id: identity
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      DSN="${DATABASE_URL:-postgresql://lume@localhost:5432/touchline}"
+      Q() { psql "$DSN" -At -c "$1" 2>/dev/null; }
+      STRINGS=$(Q "SELECT count(*) FROM (SELECT home_team t FROM games UNION SELECT away_team FROM games UNION SELECT team FROM team_game_stats UNION SELECT team FROM player_game_stats) u WHERE t IS NOT NULL")
+      DUPNAME=$(Q "SELECT coalesce(string_agg(name||' x'||n,', '),'none') FROM (SELECT name, count(*) n FROM schools GROUP BY 1 HAVING count(*) > 1) d")
+      # Reproduce _ilike_pattern (conferences.py:14-21) EXACTLY: the first token
+      # whose paren-stripped lowercase form is >= 4 chars and is not a stop word.
+      # What matters is not "does the pattern match something" but "does it match
+      # NEITHER team" — because conferences.py:69 and teams.py:79 both do
+      #   is_home = _matches_pattern(g.home_team, pattern)
+      # so a match FAILURE is silently indistinguishable from "we are the away
+      # team", and the away score is then read as the school's own. Fail-open.
+      SELF=$(Q "WITH pat AS (
+                  SELECT s.id, s.abbreviation ab,
+                    COALESCE((SELECT btrim(w,'()') FROM unnest(string_to_array(s.name,' ')) WITH ORDINALITY AS t(w,ord)
+                              WHERE length(btrim(lower(w),'()')) >= 4
+                                AND btrim(lower(w),'()') NOT IN ('university','college','state','of','the','and','at','women','lady')
+                              ORDER BY ord LIMIT 1),
+                             split_part(s.name,' ',1)) tok
+                  FROM schools s),
+                agg AS (
+                  SELECT p.ab, count(*) total,
+                         count(*) FILTER (WHERE g.home_team NOT ILIKE '%'||p.tok||'%'
+                                            AND g.away_team NOT ILIKE '%'||p.tok||'%') blind
+                  FROM games g JOIN pat p ON p.id=g.school_id
+                  WHERE g.home_score IS NOT NULL GROUP BY 1)
+                SELECT coalesce(string_agg(ab||' '||blind||'/'||total,', ' ORDER BY blind DESC),'none')
+                FROM agg WHERE blind > 0")
+      WORSTN=$(Q "WITH pat AS (
+                  SELECT s.id,
+                    COALESCE((SELECT btrim(w,'()') FROM unnest(string_to_array(s.name,' ')) WITH ORDINALITY AS t(w,ord)
+                              WHERE length(btrim(lower(w),'()')) >= 4
+                                AND btrim(lower(w),'()') NOT IN ('university','college','state','of','the','and','at','women','lady')
+                              ORDER BY ord LIMIT 1),
+                             split_part(s.name,' ',1)) tok
+                  FROM schools s)
+                SELECT count(*) FROM games g JOIN pat p ON p.id=g.school_id
+                WHERE g.home_score IS NOT NULL
+                  AND g.home_team NOT ILIKE '%'||p.tok||'%' AND g.away_team NOT ILIKE '%'||p.tok||'%'")
+      # DUPNAME and SELF coalesce to 'none' on success, so empty means query failure.
+      MISSING=
+      for v in STRINGS DUPNAME SELF WORSTN; do [ -n "${!v:-}" ] || MISSING="$MISSING $v"; done
+      if [ -n "$MISSING" ]; then
+        printf '{"check":"identity","verdict":"alarm","headline":"CHECK DID NOT RUN — psql returned nothing for:%s. Those are failed queries, not measurements of zero.","cause":"Q() discards psql stderr, so the reason is not captured here — database down, table dropped, permissions changed, or the query timed out. Re-run it by hand against the touchline database (DATABASE_URL or postgresql://lume@localhost:5432/touchline) to see the error."}\n' "$MISSING"
+        exit 0
+      fi
+      V=ok; [ "$WORSTN" -gt 0 ] && V=alarm
+      printf '{"check":"identity","verdict":"%s","headline":"%s distinct team strings; non-unique school names: %s; %s scored games where the school cannot identify itself in either team slot (blind/total: %s)","cause":"_ilike_pattern (conferences.py:14-21, teams.py:14) fails open — conferences.py:69 treats a non-match as away and reads the OPPONENT score as the school own"}\n' \
+        "$V" "$STRINGS" "$DUPNAME" "$WORSTN" "$SELF"
+
+  # ── 6. Discipline coverage ──────────────────────────────────────────────
+  - id: discipline
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      DSN="${DATABASE_URL:-postgresql://lume@localhost:5432/touchline}"
+      Q() { psql "$DSN" -At -c "$1" 2>/dev/null; }
+      REDS=$(Q "SELECT count(*) FROM game_events WHERE event_type='red_card'")
+      SCHOOLS=$(Q "SELECT count(DISTINCT school_id) FROM game_events WHERE event_type='red_card'")
+      TOTAL=$(Q "SELECT count(*) FROM schools WHERE enabled")
+      WHO=$(Q "SELECT coalesce(string_agg(s.abbreviation||'='||c,', '),'none') FROM (SELECT school_id, count(*) c FROM game_events WHERE event_type='red_card' GROUP BY 1) e JOIN schools s ON s.id=e.school_id")
+      # Two-sided test: if EITHER operand is empty the comparison errors and the
+      # verdict silently stays ok, so a readable schools table plus a dropped
+      # game_events table used to pass. Both operands are asserted here.
+      MISSING=
+      for v in REDS SCHOOLS TOTAL WHO; do [ -n "${!v:-}" ] || MISSING="$MISSING $v"; done
+      if [ -n "$MISSING" ]; then
+        printf '{"check":"discipline","verdict":"alarm","headline":"CHECK DID NOT RUN — psql returned nothing for:%s. Those are failed queries, not measurements of zero.","cause":"Q() discards psql stderr, so the reason is not captured here — database down, table dropped, permissions changed, or the query timed out. Re-run it by hand against the touchline database (DATABASE_URL or postgresql://lume@localhost:5432/touchline) to see the error."}\n' "$MISSING"
+        exit 0
+      fi
+      V=ok; [ "$SCHOOLS" -lt "$TOTAL" ] && V=alarm
+      printf '{"check":"discipline","verdict":"%s","headline":"%s red cards across only %s of %s enabled programs (%s)","cause":"sidearm_parser.py:339-348 hardcodes yellow_card for every caution row at the SideArm programs"}\n' \
+        "$V" "$REDS" "$SCHOOLS" "$TOTAL" "$WHO"
+
+  # ── 7. Orphaned games ───────────────────────────────────────────────────
+  - id: orphans
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      DSN="${DATABASE_URL:-postgresql://lume@localhost:5432/touchline}"
+      Q() { psql "$DSN" -At -c "$1" 2>/dev/null; }
+      NOTEAM=$(Q "SELECT count(*) FROM games g WHERE NOT EXISTS (SELECT 1 FROM team_game_stats t WHERE t.game_id=g.game_id)")
+      NOPLAYER=$(Q "SELECT count(*) FROM games g WHERE NOT EXISTS (SELECT 1 FROM player_game_stats p WHERE p.game_id=g.game_id)")
+      NOEVENT=$(Q "SELECT count(*) FROM games g WHERE NOT EXISTS (SELECT 1 FROM game_events e WHERE e.game_id=g.game_id)")
+      OVERLONG=$(Q "SELECT coalesce(string_agg(a||' '||sy||'='||n,', '),'none') FROM (SELECT s.abbreviation a, g.season_year sy, count(*) n FROM games g JOIN schools s ON s.id=g.school_id GROUP BY 1,2 HAVING count(*) > 28) t")
+      # This check used to fail closed BY ACCIDENT: OVERLONG coalesces to 'none'
+      # on success, so on query failure it was empty and `[ "" != "none" ]` was a
+      # valid string comparison that happened to be true. That put the only
+      # safety net in this file inside a SQL sentinel. The guard below makes it
+      # deliberate; the `!= "none"` test now means only what it says — a season
+      # is implausibly long — and no longer doubles as the failure detector.
+      MISSING=
+      for v in NOTEAM NOPLAYER NOEVENT OVERLONG; do [ -n "${!v:-}" ] || MISSING="$MISSING $v"; done
+      if [ -n "$MISSING" ]; then
+        printf '{"check":"orphans","verdict":"alarm","headline":"CHECK DID NOT RUN — psql returned nothing for:%s. Those are failed queries, not measurements of zero.","cause":"Q() discards psql stderr, so the reason is not captured here — database down, table dropped, permissions changed, or the query timed out. Re-run it by hand against the touchline database (DATABASE_URL or postgresql://lume@localhost:5432/touchline) to see the error."}\n' "$MISSING"
+        exit 0
+      fi
+      V=ok; [ "$NOTEAM" -gt 0 ] && V=warn
+      [ "$OVERLONG" != "none" ] && V=alarm
+      printf '{"check":"orphans","verdict":"%s","headline":"%s games with no team stats, %s with no player stats, %s with no events; implausibly long seasons: %s","cause":"sidearm_discovery.py assigns game_num by enumerate() position — a late-published box score shifts every subsequent id and orphans the old rows"}\n' \
+        "$V" "$NOTEAM" "$NOPLAYER" "$NOEVENT" "$OVERLONG"
+
+  # ── 8. Parse failures ───────────────────────────────────────────────────
+  - id: parse-failures
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      D=data/errors
+      # This node reads the filesystem, so it fails open by a different mechanism
+      # than the psql checks: N can never be empty. The old else-branch set N=0 on
+      # a missing directory, which renders identically to a genuinely clean
+      # errors/ — so an unexpected cwd, or a moved directory, read as "clean".
+      # A missing directory is not an empty one.
+      if [ ! -d "$D" ]; then
+        printf '{"check":"parse-failures","verdict":"alarm","headline":"CHECK DID NOT RUN — no directory at %s (cwd %s). A missing directory is not an empty one.","cause":"the path is relative to the data repo root, so either this node ran from an unexpected working directory or data/errors was moved, renamed or deleted"}\n' "$D" "$(pwd)"
+        exit 0
+      fi
+      # The -d test above is necessary but NOT sufficient. A directory that exists but
+      # cannot be listed sends find to stderr, which is discarded, and leaves the pipe
+      # empty — so `wc -l` prints 0 and the node reported `0 unparsed box scores` with
+      # verdict ok. An UNREADABLE directory is no more an empty one than a missing one
+      # is. Listing entries needs r; descending into them needs x; find needs both.
+      if [ ! -r "$D" ] || [ ! -x "$D" ]; then
+        printf '{"check":"parse-failures","verdict":"alarm","headline":"CHECK DID NOT RUN — %s exists but is not both readable and searchable by this user (cwd %s). find prints nothing and the count reads 0, which is indistinguishable from a clean errors/.","cause":"permissions or ownership on the directory changed, or the node ran as a user that cannot list it — check with ls -ld on the path. An unreadable directory is not an empty one."}\n' "$D" "$(pwd)"
+        exit 0
+      fi
+      # One walk, and branch on find EXIT STATUS rather than on the count. The top-level
+      # permission test above cannot see a subdirectory under data/errors that find
+      # cannot descend into; that yields a partial walk, an undercount, and no signal at
+      # all in the count itself. A count taken from a failed walk is not a measurement.
+      FLIST=$(find "$D" -name '*.json' 2>/dev/null)
+      FRC=$?
+      if [ "$FRC" -ne 0 ]; then
+        printf '{"check":"parse-failures","verdict":"alarm","headline":"CHECK DID NOT RUN — find exited %s while walking %s (cwd %s), so the tree was only partly read and any count from it is an undercount, not a measurement of zero.","cause":"find stderr is discarded here — re-run the same find by hand from the data repo root to see which subdirectory it could not descend into, typically a permissions change somewhere under data/errors"}\n' "$FRC" "$D" "$(pwd)"
+        exit 0
+      fi
+      # Same count as before: one line per matched file. grep -c . also counts a final
+      # line with no trailing newline, which is what command substitution leaves behind.
+      N=$(printf '%s' "$FLIST" | grep -c . | tr -d ' ')
+      OLDEST=$(printf '%s' "$FLIST" | sort | head -1 | sed 's|.*/||')
+      # OLDEST is deliberately NOT asserted: it is legitimately empty exactly when
+      # N=0, which is the genuine clean state. N is asserted anyway.
+      if [ -z "$N" ]; then
+        printf '{"check":"parse-failures","verdict":"alarm","headline":"CHECK DID NOT RUN — could not count *.json under %s. That is a failed count, not a measurement of zero.","cause":"find succeeded but grep or tr produced no output for a directory that exists and is readable — re-run the count by hand"}\n' "$D"
+        exit 0
+      fi
+      V=ok; [ "$N" -gt 0 ] && V=warn
+      printf '{"check":"parse-failures","verdict":"%s","headline":"%s unparsed box scores in data/errors (oldest %s)","cause":"permanently failed parses — invisible to every consumer until retried"}\n' \
+        "$V" "$N" "${OLDEST:-none}"
+
+  # ── 9. Archive vs database agreement ────────────────────────────────────
+  - id: archive
+    timeout: 300000
+    bash: |
+      set -uo pipefail
+      DSN="${DATABASE_URL:-postgresql://lume@localhost:5432/touchline}"
+      CFG="$HOME/.keelson/rib-touchline/config.json"
+      PIPELINE_DIR="${TOUCHLINE_PIPELINE_DIR:-}"
+      if [ -z "$PIPELINE_DIR" ] && [ -f "$CFG" ]; then
+        PD=$(jq -r '.packageDir // empty' "$CFG" 2>/dev/null); [ -n "$PD" ] && PIPELINE_DIR="$PD/pipeline"
+      fi
+      [ -d "${PIPELINE_DIR:-/nonexistent}" ] || PIPELINE_DIR="$HOME/.keelson/node_modules/@keelson/rib-touchline/pipeline"
+      DB=$(psql "$DSN" -At -c "SELECT count(*) FROM games" 2>/dev/null)
+      # The database half needs none of the filesystem, so do not throw away a working
+      # measurement to report a broken one: DBHALF is computed up front and carried into
+      # whichever not-run headline fires below.
+      DBHALF="unavailable — psql returned nothing"
+      [ -n "${DB:-}" ] && DBHALF="$DB games in the touchline database"
+      if [ ! -d "$PIPELINE_DIR" ]; then
+        printf '{"check":"archive","verdict":"alarm","headline":"CHECK DID NOT RUN — no pipeline directory resolvable (TOUCHLINE_PIPELINE_DIR unset, no packageDir in %s, no installed rib), so reparse could not be invoked. Database half: %s.","cause":"install or link the touchline rib, or export TOUCHLINE_PIPELINE_DIR pointing at its pipeline/ directory."}\n' "$CFG" "$DBHALF"
+        exit 0
+      fi
+      uv run --project "$PIPELINE_DIR" reparse >/dev/null 2>&1; REPARSE_RC=$?
+      if [ "$REPARSE_RC" -ne 0 ]; then
+        printf '{"check":"archive","verdict":"alarm","headline":"PARQUET HALF DID NOT RUN — uv run reparse exited %s from the data repo, so no regenerated export exists to compare. Database half: %s.","cause":"reparse stderr is discarded here — run uv run --project <rib>/pipeline reparse from the data repo to expose a missing source-URL mapping, unreadable cached page, parser failure, or broken uv environment."}\n' "$REPARSE_RC" "$DBHALF"
+        exit 0
+      fi
+      # One line deliberately: a multi-line heredoc here would break out of the
+      # YAML block scalar at column 1 and silently unregister this workflow.
+      # Print the number of MATCHED FILES alongside the row sum. sum([]) is 0, so a glob
+      # that matched nothing used to render as `parquet all/ 0 rows` — a fabricated
+      # measurement that sails through the non-empty assertion below, because 0 is also
+      # what a real but empty export reports. The file count is the only thing that
+      # separates "the export holds no rows" from "there is no export to read".
+      # WHICH parquet corpus this reads, because the two are easy to confuse. The glob
+      # data/structured/*/all/games.parquet matches the PER-SCHOOL exports, each of
+      # which has its own all/ subdirectory. It does NOT match the merged export at
+      # data/structured/all/games.parquet — that path has no all/all/ under it. The
+      # per-school game_id set is the one expected to match Postgres exactly, so
+      # DB = PQ is the correct expectation and any gap is a real finding. The merged
+      # export can lag or carry retired-ordinal rows; MC measures it separately so
+      # the report can say so, and it never enters the DB/PQ equality.
+      PY='import glob,os,pandas as pd; fs=sorted(glob.glob("data/structured/*/all/games.parquet")); m="data/structured/all/games.parquet"; mc=(len(pd.read_parquet(m,columns=["game_id"])) if os.path.exists(m) else "absent"); print(len(fs), sum(len(pd.read_parquet(f,columns=["game_id"])) for f in fs), mc)'
+      # Piping straight into `tail -1` threw python's EXIT STATUS away. A run that dies
+      # partway — one corrupt or unreadable parquet — can have printed to stdout before
+      # it failed, and tail hands that line on as though it were the answer.
+      # Capture the whole stream, branch on the status, and only then take the last line.
+      PQRAW=$(uv run --project "$PIPELINE_DIR" python -c "$PY" 2>/dev/null); PQRC=$?
+      if [ "$PQRC" -ne 0 ]; then
+        printf '{"check":"archive","verdict":"alarm","headline":"PARQUET HALF DID NOT RUN — uv run python exited %s (cwd %s), so anything it printed before dying is not a measurement. Database half did run: %s.","cause":"python and uv stderr are discarded here — re-run the same one-liner by hand from the data repo to see it. Typically a missing or unreadable data/structured, a corrupt parquet, or a broken uv environment."}\n' "$PQRC" "$(pwd)" "$DBHALF"
+        exit 0
+      fi
+      PQOUT=$(printf '%s' "$PQRAW" | tail -1)
+      # Split only a well-formed three-field line: two integers and a third that is
+      # either an integer or the literal token absent. Anything else — a truncated
+      # line, a traceback tail, a uv diagnostic — leaves ALL THREE empty and trips the
+      # assertion, rather than being silently parsed as a count.
+      OK3='NF==3 && $1 ~ /^[0-9]+$/ && $2 ~ /^[0-9]+$/ && ($3 ~ /^[0-9]+$/ || $3 == "absent")'
+      PQFILES=$(printf '%s' "$PQOUT" | awk "$OK3"' {print $1}')
+      PQ=$(printf '%s' "$PQOUT" | awk "$OK3"' {print $2}')
+      MC=$(printf '%s' "$PQOUT" | awk "$OK3"' {print $3}')
+      # du keeps walking after a permission error, prints a total for what it COULD read,
+      # and exits nonzero — so `du -sh ... | cut` yields a plausible undercount with no
+      # signal in the value itself: `1.1G` and `4.0K` are equally well-formed. Piping to
+      # cut discarded that status. Branch on du's own status instead and leave RAW empty
+      # on a partial walk, so the assertion below names it.
+      RAW=
+      DUOUT=$(du -sh data/raw_html 2>/dev/null) && RAW=$(printf '%s' "$DUOUT" | cut -f1)
+      # In this layout the raw_html archive is the durable record and SHOULD be fully
+      # git-tracked — the opposite of the monorepo, where tracked HTML was a smell.
+      # Count disk and git over the same path, exit status checked on both, so the
+      # verdict below can compare them instead of alarming on mere existence.
+      ONDISK=
+      DISKLS=$(find data/raw_html -type f -name '*.html' 2>/dev/null) && ONDISK=$(printf '%s' "$DISKLS" | grep -c . | tr -d ' ')
+      # `git ls-files ... | wc -l` reports 0 when git ITSELF fails, which is
+      # indistinguishable from "nothing is tracked". Branch on git's exit status
+      # so a git failure leaves TRACKED empty and trips the assertion below.
+      TRACKED=
+      TRACKEDLS=$(git ls-files 'data/raw_html/**/*.html' 2>/dev/null) && TRACKED=$(printf '%s' "$TRACKEDLS" | grep -c . | tr -d ' ')
+      # DB is the whole point of this check and never entered the verdict at all —
+      # it appeared only as ${DB:-?} in the headline, so a dead database read
+      # "db ? games" with verdict ok. All captures are asserted here.
+      MISSING=
+      for v in DB PQ PQFILES MC RAW ONDISK TRACKED; do [ -n "${!v:-}" ] || MISSING="$MISSING $v"; done
+      if [ -n "$MISSING" ]; then
+        printf '{"check":"archive","verdict":"alarm","headline":"CHECK DID NOT RUN — no result for:%s (DB from psql, PQ PQFILES and MC from uv run python over data/structured, RAW from du, ONDISK from find, TRACKED from git ls-files). Those are failures, not measurements of zero. Database half: %s.","cause":"stderr is discarded on all of them, so the reason is not captured here — a dead database, a missing or unreadable parquet export, a missing or partly unreadable raw_html directory, an unexpected working directory, or git failing. Re-run the commands by hand from the data repo root."}\n' "$MISSING" "$DBHALF"
+        exit 0
+      fi
+      # DB and PQ are the two operands of the equality below, so being non-empty is
+      # not enough — they must be NUMBERS. `[ x -ne y ]` on a non-numeric operand is
+      # a test ERROR (exit 2), not false, so the comparison would silently not fire
+      # and V would keep its initialised ok. That is the exact shape of the bug this
+      # node is being fixed for, so the new comparison is guarded against it rather
+      # than reintroducing it one layer down.
+      NONNUM=
+      for v in DB PQ; do case "${!v}" in *[!0-9]*|"") NONNUM="$NONNUM $v";; esac; done
+      if [ -n "$NONNUM" ]; then
+        printf '{"check":"archive","verdict":"alarm","headline":"CHECK DID NOT RUN — non-numeric result for:%s, so the db-vs-parquet comparison cannot be made. A comparison that cannot be evaluated is not a pass.","cause":"psql or the parquet reader returned something that is not a row count. Re-run both by hand from the data repo root and look at what they actually printed."}\n' "$NONNUM"
+        exit 0
+      fi
+      # PQFILES is non-empty here, so it is a real count and 0 means the glob genuinely
+      # matched nothing. That is the parquet half failing to run, not an export of zero
+      # rows — and it is reported as such, with the database half preserved.
+      if [ "$PQFILES" -lt 1 ] 2>/dev/null; then
+        printf '{"check":"archive","verdict":"alarm","headline":"PARQUET HALF DID NOT RUN — the glob data/structured/*/all/games.parquet matched no files (cwd %s), so there is no export to compare against. The 0 rows this used to print was an absent export, not an empty one. Database half did run: %s.","cause":"data/structured was moved, renamed, or never generated, or the node ran from an unexpected working directory. Re-run reparse from the data repo, or list the glob by hand, then re-run this check."}\n' "$(pwd)" "$DBHALF"
+        exit 0
+      fi
+      V=ok
+      # THE REAL COMPARISON. This line used to read `[ "${PQ:-0}" -lt 0 ]` — a test for
+      # a NEGATIVE ROW COUNT, which cannot happen, so the verdict could never fire and
+      # DB and PQ were never compared to each other anywhere in the node. A parquet
+      # export holding 999,999 rows against a Postgres count printed ok. The counts
+      # happened to agree, so the check had been right by accident, not by measurement.
+      AGREE="counts agree"
+      # ALARM, not warn. This one comparison is the entire reason the node exists.
+      # A mismatch signalled at the same level as an ordinary warn is
+      # indistinguishable from one — which would leave the verdict exactly as inert
+      # as the `[ "${PQ:-0}" -lt 0 ]` test this replaced.
+      # Severity only ever RISES. Plain `V=warn` further down would silently downgrade an
+      # alarm set here — which is how the first attempt at this fix broke: the mismatch
+      # correctly set alarm, then an always-true condition on the next line reset it to
+      # warn, and the escalation was invisible. A later assignment that can undo an earlier
+      # signal is the same defect as the dead predicate this whole node was repaired for.
+      raise() { case "$V:$1" in ok:warn|ok:alarm|warn:alarm) V=$1 ;; esac; }
+      if [ "$DB" -ne "$PQ" ]; then raise alarm; AGREE="MISMATCH, parquet minus db = $((PQ - DB)) rows"; fi
+      # Tracked-vs-disk DRIFT is the warn condition here, not mere trackedness: the
+      # archive is canonical in git, so an on-disk file git does not know about is a
+      # collected game that never reached the durable record (or a deleted one still
+      # on disk). Equality is the healthy state.
+      [ "$TRACKED" -ne "$ONDISK" ] 2>/dev/null && raise warn
+      # The merged export is reported, never compared. It can lag the per-school
+      # exports or carry retired-ordinal rows — worth naming every run, because it
+      # is the file a careless consumer reads instead of the per-school ones.
+      # Absent is a legitimate state and says so rather than printing 0.
+      # Branch on the direction rather than printing db + $((MC - DB)) unconditionally:
+      # that phrasing asserts the merged export is a SUPERSET of the db, which need
+      # not hold. A merged export smaller than the db is a different and equally
+      # reportable state, and printing it as `db + -N rows` would be stating a
+      # relationship the data does not support.
+      if [ "$MC" = "absent" ]; then
+        MHALF="merged data/structured/all/games.parquet is absent, so nothing can read a stale superset"
+      elif [ "$MC" -gt "$DB" ]; then
+        MHALF="merged data/structured/all/games.parquet holds $MC rows = db + $((MC - DB)) rows the db does not have (retired school ordinals) and is NOT part of the comparison above"
+      elif [ "$MC" -lt "$DB" ]; then
+        MHALF="merged data/structured/all/games.parquet holds $MC rows, $((DB - MC)) FEWER than the db rather than the usual surplus, and is NOT part of the comparison above"
+        raise warn
+      else
+        MHALF="merged data/structured/all/games.parquet holds $MC rows, equal to the db"
+      fi
+      # Each number stated over the corpus it was measured on, and the corpus named in
+      # full: `parquet all/ N rows` is ambiguous between the per-school all/ exports
+      # that were actually summed and the single merged all/ export that was not.
+      printf '{"check":"archive","verdict":"%s","headline":"db %s games vs %s rows summed across the %s per-school data/structured/*/all/games.parquet exports — %s; %s; raw_html %s, %s of %s files on disk git-tracked","cause":"the db-vs-parquet equality is the right expectation for the per-school corpus: its game_id set is expected to match Postgres exactly in both directions, so a gap there is a real divergence and not an export convention. raw_html is the durable record in this repo, so tracked-vs-disk drift means collected games have not been committed."}\n' \
+        "$V" "$DB" "$PQ" "$PQFILES" "$AGREE" "$MHALF" "$RAW" "$TRACKED" "$ONDISK"
+
+  # ── 10. Merged export staleness ──────────────────────────────────────────
+  - id: export-staleness
+    timeout: 300000
+    depends_on: [archive]
+    bash: |
+      set -uo pipefail
+      DSN="${DATABASE_URL:-postgresql://lume@localhost:5432/touchline}"
+      CFG="$HOME/.keelson/rib-touchline/config.json"
+      PIPELINE_DIR="${TOUCHLINE_PIPELINE_DIR:-}"
+      if [ -z "$PIPELINE_DIR" ] && [ -f "$CFG" ]; then
+        PD=$(jq -r '.packageDir // empty' "$CFG" 2>/dev/null); [ -n "$PD" ] && PIPELINE_DIR="$PD/pipeline"
+      fi
+      [ -d "${PIPELINE_DIR:-/nonexistent}" ] || PIPELINE_DIR="$HOME/.keelson/node_modules/@keelson/rib-touchline/pipeline"
+      DB=$(psql "$DSN" -At -c "SELECT count(*) FROM games" 2>/dev/null); DBRC=$?
+      if [ ! -d "$PIPELINE_DIR" ]; then
+        printf '{"check":"export-staleness","verdict":"alarm","headline":"CHECK DID NOT RUN — no pipeline directory resolvable (TOUCHLINE_PIPELINE_DIR unset, no packageDir in %s, no installed rib), so reparse could not be invoked. Database half returned %s games.","cause":"install or link the touchline rib, or export TOUCHLINE_PIPELINE_DIR pointing at its pipeline/ directory."}\n' "$CFG" "${DB:-unavailable}"
+        exit 0
+      fi
+      uv run --project "$PIPELINE_DIR" reparse >/dev/null 2>&1; REPARSE_RC=$?
+      if [ "$REPARSE_RC" -ne 0 ]; then
+        printf '{"check":"export-staleness","verdict":"alarm","headline":"PARQUET HALF DID NOT RUN — uv run reparse exited %s from the data repo, so no regenerated merged export exists. Database half returned %s games.","cause":"reparse stderr is discarded here — run uv run --project <rib>/pipeline reparse from the data repo to expose a missing source-URL mapping, unreadable cached page, parser failure, or broken uv environment."}\n' "$REPARSE_RC" "${DB:-unavailable}"
+        exit 0
+      fi
+      PY='import pandas as pd; g=pd.read_parquet("data/structured/all/games.parquet",columns=["game_id"]); p=pd.read_parquet("data/structured/all/player_stats.parquet",columns=["game_id"]); print(len(g),int(((g["game_id"]//1000000)>14).sum()),len(p),int(((p["game_id"]//1000000)>14).sum()))'
+      PQRAW=$(uv run --project "$PIPELINE_DIR" python -c "$PY" 2>/dev/null); PQRC=$?
+      if [ "$DBRC" -ne 0 ] || [ -z "${DB:-}" ]; then
+        printf '{"check":"export-staleness","verdict":"alarm","headline":"DATABASE HALF DID NOT RUN — psql exited %s and returned no usable games count; the merged export cannot be compared with Postgres.","cause":"psql stderr is discarded here — re-run SELECT count(*) FROM games against the touchline database (DATABASE_URL or postgresql://lume@localhost:5432/touchline) to see whether the database is down, the table is missing, or permissions changed."}\n' "$DBRC"
+        exit 0
+      fi
+      if [ "$PQRC" -ne 0 ]; then
+        printf '{"check":"export-staleness","verdict":"alarm","headline":"PARQUET HALF DID NOT RUN — uv run python exited %s while opening data/structured/all/{games,player_stats}.parquet, so no retired-ordinal or row-count measurement exists. Database half did run: %s games.","cause":"python and uv stderr are discarded here — re-run the same reader from the data repo to expose a missing, unreadable, or corrupt merged export."}\n' "$PQRC" "$DB"
+        exit 0
+      fi
+      PQOUT=$(printf '%s' "$PQRAW" | tail -1)
+      OK4='NF==4 && $1 ~ /^[0-9]+$/ && $2 ~ /^[0-9]+$/ && $3 ~ /^[0-9]+$/ && $4 ~ /^[0-9]+$/'
+      GAMES=$(printf '%s' "$PQOUT" | awk "$OK4"' {print $1}')
+      RETIRED_GAMES=$(printf '%s' "$PQOUT" | awk "$OK4"' {print $2}')
+      PLAYERS=$(printf '%s' "$PQOUT" | awk "$OK4"' {print $3}')
+      RETIRED_PLAYERS=$(printf '%s' "$PQOUT" | awk "$OK4"' {print $4}')
+      MISSING=
+      for v in GAMES RETIRED_GAMES PLAYERS RETIRED_PLAYERS; do [ -n "${!v:-}" ] || MISSING="$MISSING $v"; done
+      if [ -n "$MISSING" ]; then
+        printf '{"check":"export-staleness","verdict":"alarm","headline":"PARQUET HALF DID NOT RUN — malformed reader output left no numeric result for:%s. A missing count is not a measurement of zero. Database half did run: %s games.","cause":"the parquet reader must emit exactly four integers: total and retired rows for games, then total and retired rows for player_stats. Re-run it by hand and inspect stdout."}\n' "$MISSING" "$DB"
+        exit 0
+      fi
+      case "$DB" in *[!0-9]*|"")
+        printf '{"check":"export-staleness","verdict":"alarm","headline":"DATABASE HALF DID NOT RUN — psql returned a non-numeric games count, so the merged export cannot be compared with Postgres.","cause":"re-run SELECT count(*) FROM games against the touchline database and inspect its output."}\n'
+        exit 0
+      ;; esac
+      V=ok
+      raise() { case "$V:$1" in ok:warn|ok:alarm|warn:alarm) V=$1 ;; esac; }
+      AGREE="counts agree"
+      if [ "$GAMES" -ne "$DB" ]; then raise alarm; AGREE="MISMATCH, parquet minus db = $((GAMES - DB)) rows"; fi
+      if [ "$RETIRED_GAMES" -gt 0 ] || [ "$RETIRED_PLAYERS" -gt 0 ]; then raise alarm; fi
+      printf '{"check":"export-staleness","verdict":"%s","headline":"merged games export %s rows vs db %s — %s; retired ordinals (>14): games %s of %s rows, player stats %s of %s rows","cause":"data/structured/all is stale or was merged from retired school directories. Regenerate only after prerequisite data repairs are present, then re-run this check."}\n' \
+        "$V" "$GAMES" "$DB" "$AGREE" "$RETIRED_GAMES" "$GAMES" "$RETIRED_PLAYERS" "$PLAYERS"
+
+  # ── Report ──────────────────────────────────────────────────────────────
+  - id: report
+    runtime: bun
+    always_run: true
+    trigger_rule: all_done
+    depends_on:
+      [freshness, conference-flag, conference-derivation, duplication, season-label, identity,
+       discipline, orphans, parse-failures, archive, export-staleness]
+    script: |
+      const IDS = ['freshness','conference_flag','conference_derivation','duplication','season_label','identity',
+                   'discipline','orphans','parse_failures','archive','export_staleness']
+      const MARK = { ok: '[ OK   ]', warn: '[ WARN ]', alarm: '[ ALARM]' }
+      const rows = []
+      for (const id of IDS) {
+        const raw = (process.env[`KEELSON_NODE_${id}_OUTPUT`] || '').trim()
+        if (!raw) { rows.push({ check: id, verdict: 'alarm', headline: 'check did not run', cause: '' }); continue }
+        try {
+          rows.push(JSON.parse(raw.split('\n').filter(l => l.trim().startsWith('{')).pop()))
+        } catch {
+          rows.push({ check: id, verdict: 'alarm', headline: `unparseable output: ${raw.slice(0, 160)}`, cause: '' })
+        }
+      }
+      const n = v => rows.filter(r => r.verdict === v).length
+      const worst = n('alarm') ? 'ALARM' : n('warn') ? 'WARN' : 'CLEAR'
+
+      console.log('')
+      console.log('  TOUCHLINE — DATA INTEGRITY')
+      console.log('  ' + '─'.repeat(72))
+      console.log(`  ${worst}   ${n('ok')} clear · ${n('warn')} warn · ${n('alarm')} alarm   (${rows.length} checks)`)
+      console.log('  ' + '─'.repeat(72))
+      console.log('')
+      for (const r of rows) {
+        console.log(`  ${MARK[r.verdict] || '[  ?   ]'}  ${String(r.check).toUpperCase().replace(/_/g, '-')}`)
+        console.log(`            ${r.headline}`)
+        if (r.cause && r.verdict !== 'ok') console.log(`            └ ${r.cause}`)
+        console.log('')
+      }
+      console.log('  ' + '─'.repeat(72))
+      console.log('  Read-only. Repairs are tracked as tl-* beads (bd ready).')
+      console.log('')
+      console.log(JSON.stringify({ verdict: worst, clear: n('ok'), warn: n('warn'), alarm: n('alarm'), checks: rows }))
