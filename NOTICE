@@ -1,0 +1,8 @@
+keelson-rib-touchline
+Copyright 2026 Daniel Scholl
+
+Touchline is a Keelson rib for college soccer season intelligence.
+
+The Python collection pipeline under pipeline/ was extracted from the
+ed-insights-ai/ed-insights-platform repository (packages/pipeline), where its
+development history remains.
