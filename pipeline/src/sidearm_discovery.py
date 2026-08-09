@@ -10,6 +10,7 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
+from src.errors import DiscoveryError
 from src.models import GameURL
 
 logger = logging.getLogger(__name__)
@@ -48,7 +49,7 @@ def discover_sidearm_season(year: int, base_url: str) -> list[GameURL]:
         resp.raise_for_status()
     except requests.RequestException as exc:
         logger.warning("Failed to fetch schedule %s: %s", schedule_url, exc)
-        return []
+        raise DiscoveryError(f"[{year}] failed to fetch schedule: {exc}") from exc
 
     html = resp.text
 
@@ -82,7 +83,9 @@ def discover_sidearm_season(year: int, base_url: str) -> list[GameURL]:
                 served_season,
                 resp.url,
             )
-            return []
+            raise DiscoveryError(
+                f"[{year}] schedule redirected to season {served_season}"
+            )
 
     # Extract sport path from base_url for the regex pattern
     # e.g. "https://obutigers.com/sports/mens-soccer" -> "mens-soccer"
@@ -131,7 +134,10 @@ def discover_sidearm_season(year: int, base_url: str) -> list[GameURL]:
                 total,
                 served_years,
             )
-        return []
+        served_seasons = ", ".join(str(value) for value in sorted(observed_years))
+        raise DiscoveryError(
+            f"[{year}] schedule contained only season {served_seasons} boxscores"
+        )
     if rejected:
         logger.warning(
             "[%d] Rejected %d of %d boxscore URLs with a different season",

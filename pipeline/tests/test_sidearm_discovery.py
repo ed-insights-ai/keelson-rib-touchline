@@ -5,6 +5,10 @@ from __future__ import annotations
 import logging
 from unittest.mock import MagicMock, patch
 
+import pytest
+import requests
+
+from src.errors import DiscoveryError
 from src.sidearm_discovery import discover_sidearm_season
 
 BASE_URL = "https://example.com/sports/mens-soccer"
@@ -44,7 +48,8 @@ def test_rejects_wrong_season_paths():
         <a href="/sports/mens-soccer/stats/2025/opponent-b/boxscore/2">Box score</a>
     """
 
-    assert _discover(2020, html) == []
+    with pytest.raises(DiscoveryError):
+        _discover(2020, html)
 
 
 def test_discovers_correct_season_paths():
@@ -78,9 +83,9 @@ def test_all_rejected_logs_observed_year(caplog):
     """
 
     with caplog.at_level(logging.ERROR, logger="src.sidearm_discovery"):
-        games = _discover(2026, html)
+        with pytest.raises(DiscoveryError):
+            _discover(2026, html)
 
-    assert games == []
     assert (
         "[2026] Rejected 2 of 2 boxscore URLs — schedule page served season 2025. "
         "Not ingesting."
@@ -92,14 +97,14 @@ def test_redirect_to_bare_schedule_with_no_boxscores_fails_loudly(caplog):
     html = "<title>2026 Men's Soccer Schedule - Example Athletics</title>"
 
     with caplog.at_level(logging.ERROR, logger="src.sidearm_discovery"):
-        games = _discover(
-            2020,
-            html,
-            url=f"{BASE_URL}/schedule",
-            history=[MagicMock()],
-        )
+        with pytest.raises(DiscoveryError):
+            _discover(
+                2020,
+                html,
+                url=f"{BASE_URL}/schedule",
+                history=[MagicMock()],
+            )
 
-    assert games == []
     assert (
         "[2020] Season slug redirected: requested "
         "https://example.com/sports/mens-soccer/schedule/2020 but served season "
@@ -117,14 +122,14 @@ def test_redirect_with_boxscores_fails_loudly(caplog):
     """
 
     with caplog.at_level(logging.ERROR, logger="src.sidearm_discovery"):
-        games = _discover(
-            2020,
-            html,
-            url=f"{BASE_URL}/schedule",
-            history=[MagicMock()],
-        )
+        with pytest.raises(DiscoveryError):
+            _discover(
+                2020,
+                html,
+                url=f"{BASE_URL}/schedule",
+                history=[MagicMock()],
+            )
 
-    assert games == []
     assert any("served season 2025" in message for message in caplog.messages)
 
 
@@ -198,15 +203,25 @@ def test_redirect_with_undeterminable_season_still_fails_loudly(caplog):
     html = "<title>Men's Soccer Schedule - Example Athletics</title>"
 
     with caplog.at_level(logging.ERROR, logger="src.sidearm_discovery"):
-        games = _discover(
-            2026,
-            html,
-            url=f"{BASE_URL}/schedule",
-            history=[MagicMock()],
-        )
+        with pytest.raises(DiscoveryError):
+            _discover(
+                2026,
+                html,
+                url=f"{BASE_URL}/schedule",
+                history=[MagicMock()],
+            )
 
-    assert games == []
     assert any("served season unknown" in message for message in caplog.messages)
+
+
+def test_network_failure_rejects_discovery():
+    with patch("src.sidearm_discovery._build_session") as mock_session_fn:
+        session = MagicMock()
+        session.get.side_effect = requests.RequestException("timed out")
+        mock_session_fn.return_value = session
+
+        with pytest.raises(DiscoveryError, match=r"\[2025\].*timed out"):
+            discover_sidearm_season(2025, BASE_URL)
 
 
 def test_reachable_2020_season_still_succeeds():
