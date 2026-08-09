@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 import json
+from pathlib import Path
 
 import pytest
 
@@ -14,11 +15,27 @@ CANON_PROGRAMMES = {
     (programme["institution_slug"], programme["gender"])
     for programme in PROGRAMMES.values()
 }
+MEMBERSHIP_PATH = (
+    Path(__file__).resolve().parents[2] / "data" / "reference" / "membership.json"
+)
 
 
 @pytest.fixture(scope="module")
 def membership_document() -> dict:
-    return membership.load_membership()
+    return membership.load_membership(MEMBERSHIP_PATH)
+
+
+def test_default_load_uses_configured_data_root(monkeypatch, tmp_path):
+    reference_dir = tmp_path / "data" / "reference"
+    reference_dir.mkdir(parents=True)
+    document = {"memberships": {}}
+    (reference_dir / "membership.json").write_text(
+        json.dumps(document),
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("TOUCHLINE_DATA_DIR", str(tmp_path))
+
+    assert membership.load_membership() == document
 
 
 def test_document_is_valid(membership_document):

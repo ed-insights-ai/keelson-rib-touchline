@@ -6,24 +6,19 @@ import json
 from pathlib import Path
 from typing import Any
 
+from src import paths
 from src.canon import PROGRAMMES, REGISTRY
 
-DEFAULT_MEMBERSHIP_PATH = (
-    Path(__file__).resolve().parent.parent
-    / "data"
-    / "reference"
-    / "membership.json"
-)
 SEASON_FROM = 2016
 SEASON_TO = 2025
 VALID_CONFERENCES = {"GAC", "MIAA", "independent", "non_member"}
 
 
 def load_membership(
-    path: str | Path = DEFAULT_MEMBERSHIP_PATH,
+    path: str | Path | None = None,
 ) -> dict[str, Any]:
     """Load the authored membership document."""
-    membership_path = Path(path)
+    membership_path = Path(path) if path is not None else paths.membership_path()
     if not membership_path.exists():
         raise FileNotFoundError(f"Membership file not found: {membership_path}")
 

@@ -28,6 +28,7 @@ def test_env_reroutes_every_path(monkeypatch, tmp_path):
     assert paths.source_urls_path() == root / "data" / "source_urls.csv"
     assert paths.reference_dir() == root / "data" / "reference"
     assert paths.canon_path() == root / "data" / "reference" / "canon.json"
+    assert paths.membership_path() == root / "data" / "reference" / "membership.json"
     assert paths.errors_dir() == root / "data" / "errors"
 
 

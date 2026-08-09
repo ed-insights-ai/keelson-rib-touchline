@@ -49,6 +49,10 @@ def canon_path() -> Path:
     return reference_dir() / "canon.json"
 
 
+def membership_path() -> Path:
+    return reference_dir() / "membership.json"
+
+
 def errors_dir() -> Path:
     return data_root() / "data" / "errors"
 
