@@ -1,10 +1,5 @@
 {
-  "conferences": [
-    "GAC",
-    "MIAA",
-    "independent",
-    "non_member"
-  ],
+  "conferences": ["GAC", "MIAA", "independent", "non_member"],
   "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2025. Authored from official GAC/MIAA records; each window cites its source. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
   "memberships": {
     "east-central": {
