@@ -1,0 +1,18 @@
+// Copyright 2026, Daniel Scholl
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+
+// The rib's static snapshot keys — one source of truth for the surface
+// layout, the view declarations, and every recompose call.
+//
+// Keys MUST live under `rib:touchline:*`. An out-of-namespace key is an
+// activation failure that takes the whole server boot down, not a warning.
+export const TOUCHLINE_SURFACE_ID = "touchline";
+export const BOARD_KEY = "rib:touchline:board";
+// The setup banner is a host-rendered `view` board, not our html frame: only a
+// board-origin action may collect input and launch work.
+export const SETUP_KEY = "rib:touchline:setup";

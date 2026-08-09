@@ -1,0 +1,232 @@
+// Copyright 2026, Daniel Scholl
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+
+import { z } from "zod";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// The file contract between the collection pipeline (writer) and the board
+// (reader). These files are the consumer's own data: plain JSON in their
+// project, readable without Postgres, diffable in git.
+//
+// Both files are versioned by a `schema` string. A reader that meets an
+// unknown schema says so rather than guessing — a board that silently renders
+// a half-understood file is worse than one that reports it cannot.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const FIXTURES_SCHEMA = "touchline.fixtures/1";
+export const ROSTERS_SCHEMA = "touchline.rosters/1";
+
+export const genderSchema = z.enum(["men", "women"]);
+export type Gender = z.infer<typeof genderSchema>;
+
+/** A fixture's lifecycle. `scheduled` is the pre-season resting state. */
+export const fixtureStatusSchema = z.enum(["scheduled", "live", "final", "postponed", "cancelled"]);
+export type FixtureStatus = z.infer<typeof fixtureStatusSchema>;
+
+export const programmeSchema = z
+  .object({
+    slug: z.string().min(1),
+    name: z.string().min(1),
+    abbr: z.string().min(1).max(6).optional(),
+  })
+  .strict();
+export type Programme = z.infer<typeof programmeSchema>;
+
+export const fixtureSchema = z
+  .object({
+    id: z.string().min(1),
+    /** ISO date, YYYY-MM-DD. Local to the venue; we never invent a timezone. */
+    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    /** Local kickoff, HH:MM 24h. Absent means the source published no time. */
+    time: z
+      .string()
+      .regex(/^\d{2}:\d{2}$/)
+      .optional(),
+    home: z.string().min(1),
+    away: z.string().min(1),
+    venue: z.string().optional(),
+    status: fixtureStatusSchema,
+    /** Scores are null until played — never 0, which is a real scoreline. */
+    home_score: z.number().int().nullable().optional(),
+    away_score: z.number().int().nullable().optional(),
+    /** Whether the result counts in the conference table. */
+    conference_game: z.boolean().optional(),
+    /** Minute, for a live fixture. */
+    clock: z.string().optional(),
+    source_url: z.string().optional(),
+  })
+  .strict();
+export type Fixture = z.infer<typeof fixtureSchema>;
+
+export const fixturesFileSchema = z
+  .object({
+    schema: z.literal(FIXTURES_SCHEMA),
+    season: z.number().int(),
+    gender: genderSchema,
+    conference: z.string().min(1),
+    collected_at: z.string().min(1),
+    /** True when membership had to be carried past its authored windows. */
+    membership_extrapolated: z.boolean().optional(),
+    /** How each fixture's conference flag was determined. The archive's own
+     *  is_conference_game is NULL throughout, so the exporter derives it from
+     *  both-sides-are-members and records that here rather than implying the
+     *  flag was published. */
+    conference_game_source: z.string().optional(),
+    programmes: z.array(programmeSchema),
+    fixtures: z.array(fixtureSchema),
+    /** Programmes whose schedule could not be collected. Never omit silently. */
+    missing: z.array(z.string()).optional(),
+  })
+  .strict();
+export type FixturesFile = z.infer<typeof fixturesFileSchema>;
+
+export const playerSchema = z
+  .object({
+    /** Jersey number as printed — a string, because "00" and "0" differ. */
+    number: z.string().optional(),
+    name: z.string().min(1),
+    position: z.string().optional(),
+    class_year: z.string().optional(),
+    height: z.string().optional(),
+    hometown: z.string().optional(),
+    source_url: z.string().optional(),
+  })
+  .strict();
+export type Player = z.infer<typeof playerSchema>;
+
+export const rosterSchema = z
+  .object({
+    programme: z.string().min(1),
+    source_url: z.string().optional(),
+    players: z.array(playerSchema),
+  })
+  .strict();
+export type Roster = z.infer<typeof rosterSchema>;
+
+export const rostersFileSchema = z
+  .object({
+    schema: z.literal(ROSTERS_SCHEMA),
+    season: z.number().int(),
+    gender: genderSchema,
+    collected_at: z.string().min(1),
+    rosters: z.record(z.string(), rosterSchema),
+    /** Programmes whose roster page yielded nothing. Named, never dropped. */
+    missing: z.array(z.string()).optional(),
+  })
+  .strict();
+export type RostersFile = z.infer<typeof rostersFileSchema>;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Derived view models — computed from the files, never stored.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface TableRow {
+  slug: string;
+  name: string;
+  played: number;
+  won: number;
+  drawn: number;
+  lost: number;
+  goalsFor: number;
+  goalsAgainst: number;
+  goalDiff: number;
+  points: number;
+}
+
+/** Three points for a win, one for a draw.
+ *
+ *  The table is the CONFERENCE table, so it counts only fixtures between two
+ *  member programmes. Two guards enforce that, and both are load-bearing: a
+ *  non-member opponent must never acquire a row (it would appear in the
+ *  standings of a conference it does not belong to), and a member's
+ *  non-conference results must never earn conference points. */
+export function computeTable(file: FixturesFile): TableRow[] {
+  const members = new Set(file.programmes.map((p) => p.slug));
+  const bySlug = new Map<string, TableRow>();
+  const nameOf = new Map(file.programmes.map((p) => [p.slug, p.name]));
+  const row = (slug: string): TableRow => {
+    let r = bySlug.get(slug);
+    if (!r) {
+      r = {
+        slug,
+        name: nameOf.get(slug) ?? slug,
+        played: 0,
+        won: 0,
+        drawn: 0,
+        lost: 0,
+        goalsFor: 0,
+        goalsAgainst: 0,
+        goalDiff: 0,
+        points: 0,
+      };
+      bySlug.set(slug, r);
+    }
+    return r;
+  };
+  // Seed every programme so a team that has not played yet still appears.
+  for (const p of file.programmes) row(p.slug);
+
+  for (const f of file.fixtures) {
+    if (f.status !== "final") continue;
+    if (f.conference_game === false) continue;
+    // Both sides must be members even when the flag is absent — an unflagged
+    // fixture against a non-member is not a conference result.
+    if (!members.has(f.home) || !members.has(f.away)) continue;
+    const hs = f.home_score;
+    const as = f.away_score;
+    if (typeof hs !== "number" || typeof as !== "number") continue;
+    const h = row(f.home);
+    const a = row(f.away);
+    h.played++;
+    a.played++;
+    h.goalsFor += hs;
+    h.goalsAgainst += as;
+    a.goalsFor += as;
+    a.goalsAgainst += hs;
+    if (hs > as) {
+      h.won++;
+      a.lost++;
+      h.points += 3;
+    } else if (as > hs) {
+      a.won++;
+      h.lost++;
+      a.points += 3;
+    } else {
+      h.drawn++;
+      a.drawn++;
+      h.points++;
+      a.points++;
+    }
+  }
+  for (const r of bySlug.values()) r.goalDiff = r.goalsFor - r.goalsAgainst;
+  return [...bySlug.values()].sort(
+    (x, y) => y.points - x.points || y.goalDiff - x.goalDiff || x.name.localeCompare(y.name),
+  );
+}
+
+/** Fixtures grouped by date, ascending, each group's fixtures ordered by time. */
+export function groupByDate(fixtures: readonly Fixture[]): { date: string; fixtures: Fixture[] }[] {
+  const by = new Map<string, Fixture[]>();
+  for (const f of fixtures) {
+    const list = by.get(f.date);
+    if (list) list.push(f);
+    else by.set(f.date, [f]);
+  }
+  return [...by.entries()]
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([date, list]) => ({
+      date,
+      fixtures: list.sort((a, b) => (a.time ?? "99:99").localeCompare(b.time ?? "99:99")),
+    }));
+}
+
+export function isPlayed(f: Fixture): boolean {
+  return (
+    f.status === "final" && typeof f.home_score === "number" && typeof f.away_score === "number"
+  );
+}
