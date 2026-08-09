@@ -1,0 +1,131 @@
+name: touchline-collect
+description: |
+  Use when: someone asks to get, pull down, retrieve, scrape or collect a soccer schedule, season, or rosters — for a whole conference or a single programme.
+  Triggers: "get the schedule", "pull down the roster", "collect the GAC season", "retrieve Harding's season".
+  Does: refuses any directory that is not a Touchline data home, then builds the season's fixture file from the collected archive and reports what it wrote and what it could not.
+  NOT for: repairing data (use data-integrity), or judging code.
+
+requiresProject: true
+# The run writes into the project's data tree, so keelson's own per-project
+# mutation lock serialises it. Two collects into one data home would race on
+# the same season file.
+mutates_checkout: true
+tags: [soccer, collection, touchline]
+
+inputs:
+  - name: conference
+    description: Conference the targets belong to, e.g. GAC. Used for labelling.
+    required: true
+  - name: gender
+    description: men or women.
+    required: true
+  - name: season
+    description: Season year, e.g. 2025.
+    required: true
+  - name: programmes
+    description: Comma-separated membership slugs to collect, already resolved by the caller.
+    required: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Runs with cwd = the consumer data repo.
+#
+# A bash body is NOT template-substituted — that split is the engine's security
+# boundary. Inputs arrive as KEELSON_INPUTS_<key> and an upstream node's output
+# as KEELSON_NODE_<id>_OUTPUT (hyphens become underscores). Only prompt bodies
+# take $inputs.<key> / $<id>.output.
+#
+# The pipeline lives in the installed rib; resolve it the way data-integrity.yml
+# does — env override, then the rib's config, then the installed package path —
+# and ALARM rather than guess.
+# ─────────────────────────────────────────────────────────────────────────────
+
+nodes:
+  - id: preflight
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      if [ ! -f touchline-data.yaml ]; then
+        printf 'REFUSED: %s is not a Touchline data home (no touchline-data.yaml marker).\n' "$PWD"
+        printf 'A collection only ever writes into a folder Touchline initialised, or one it already owns.\n'
+        exit 1
+      fi
+      KIND=$(sed -n 's/^[[:space:]]*kind:[[:space:]]*\(.*\)$/\1/p' touchline-data.yaml | head -1)
+      if [ "$KIND" != "touchline-data" ]; then
+        printf 'REFUSED: touchline-data.yaml exists but declares kind=%s, not touchline-data.\n' "${KIND:-(none)}"
+        exit 1
+      fi
+      for v in KEELSON_INPUTS_conference KEELSON_INPUTS_gender KEELSON_INPUTS_season KEELSON_INPUTS_programmes; do
+        eval "val=\${$v:-}"
+        if [ -z "$val" ]; then
+          printf 'REFUSED: required input %s is empty. Nothing was collected.\n' "$v"
+          exit 1
+        fi
+      done
+      printf 'data home OK: %s\n' "$PWD"
+      printf 'target: %s %s %s -> %s\n' \
+        "$KEELSON_INPUTS_conference" "$KEELSON_INPUTS_gender" \
+        "$KEELSON_INPUTS_season" "$KEELSON_INPUTS_programmes"
+
+  - id: resolve-pipeline
+    depends_on: [preflight]
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      CFG="$HOME/.keelson/rib-touchline/config.json"
+      PIPELINE_DIR="${TOUCHLINE_PIPELINE_DIR:-}"
+      if [ -z "$PIPELINE_DIR" ] && [ -f "$CFG" ]; then
+        PKG=$(jq -r '.packageDir // empty' "$CFG" 2>/dev/null)
+        [ -n "$PKG" ] && PIPELINE_DIR="$PKG/pipeline"
+      fi
+      if [ -z "$PIPELINE_DIR" ]; then
+        PIPELINE_DIR="$HOME/.keelson/node_modules/@keelson/rib-touchline/pipeline"
+      fi
+      if [ ! -f "$PIPELINE_DIR/pyproject.toml" ]; then
+        printf 'ALARM: cannot resolve the Touchline pipeline. Tried TOUCHLINE_PIPELINE_DIR, %s, and the installed package path. Last candidate: %s\n' "$CFG" "$PIPELINE_DIR"
+        exit 1
+      fi
+      printf '%s\n' "$PIPELINE_DIR"
+
+  - id: collect
+    depends_on: [resolve-pipeline]
+    timeout: 900000
+    bash: |
+      set -uo pipefail
+      PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
+      if [ ! -f "$PIPELINE_DIR/pyproject.toml" ]; then
+        printf 'ALARM: pipeline not found at %s (resolve-pipeline output did not carry a usable path)\n' "${PIPELINE_DIR:-<empty>}"
+        exit 1
+      fi
+
+      TOUCHLINE_DATA_DIR="$PWD" uv run --project "$PIPELINE_DIR" export-board \
+        --conference "$KEELSON_INPUTS_conference" \
+        --gender "$KEELSON_INPUTS_gender" \
+        --season "$KEELSON_INPUTS_season" \
+        --programmes "$KEELSON_INPUTS_programmes"
+      RC=$?
+      if [ "$RC" -ne 0 ]; then
+        printf '\nCollection exited %s — the season file may be absent or incomplete. Nothing above is a claim that data landed.\n' "$RC"
+        exit "$RC"
+      fi
+
+  - id: report
+    depends_on: [collect]
+    timeout: 120000
+    prompt: |
+      A Touchline collection run just finished.
+
+      Preflight reported:
+      $preflight.output
+
+      The collection command printed:
+      $collect.output
+
+      Write a SHORT report, in plain prose, for the person who asked for this data:
+      - what was collected (conference, gender, season, how many programmes and fixtures)
+      - anything the run explicitly reported as missing, collapsed as duplicates, or
+        DERIVED rather than published — name it, never soften it
+      - what is NOT in this data: the archive only holds games that already have a box
+        score, so unplayed fixtures are absent
+
+      Do not invent numbers. Every figure must appear in the text above; if a figure is
+      not there, say it was not reported.
