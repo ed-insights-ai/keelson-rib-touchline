@@ -6,6 +6,7 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
+from src.errors import DiscoveryError
 from src.models import GameURL
 
 logger = logging.getLogger(__name__)
@@ -57,6 +58,8 @@ def discover_season_games(
             games.append(GameURL(year=year, game_num=game_num, url=url))
         except requests.RequestException as exc:
             logger.warning("[%d] %02d: network error (%s) — stopping", year, game_num, exc)
-            break
+            raise DiscoveryError(
+                f"[{year}] network error probing game {game_num}: {exc}"
+            ) from exc
 
     return games
