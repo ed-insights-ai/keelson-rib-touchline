@@ -1,0 +1,227 @@
+{
+  "conferences": ["GAC", "MIAA", "independent", "non_member"],
+  "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2025. Authored from official GAC/MIAA records; each window cites its source. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
+  "memberships": {
+    "east-central": {
+      "women": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC Women's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=68 and https://greatamericanconference.com/standings.aspx?standings=214 (accessed 2026-08-09); East Central is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "fort-hays-state": {
+      "men": [
+        {
+          "conference": "non_member",
+          "from_season": 2016,
+          "source": "Great American Conference, 2018 GAC Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=102 (accessed 2026-08-09); Fort Hays State is absent before its first GAC/MIAA league appearance in 2019.",
+          "to_season": 2018
+        },
+        {
+          "conference": "GAC",
+          "from_season": 2019,
+          "source": "Great American Conference, 2019 and 2025 GAC/MIAA Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=118 and https://greatamericanconference.com/standings.aspx?standings=213 (accessed 2026-08-09); Fort Hays State is listed in both.",
+          "to_season": 2025
+        }
+      ],
+      "women": [
+        {
+          "conference": "MIAA",
+          "from_season": 2016,
+          "source": "Mid-America Intercollegiate Athletics Association, 2016 and 2025 MIAA Women's Soccer Standings, https://themiaa.com/standings.aspx?standings=50 and https://themiaa.com/standings.aspx?standings=158 (accessed 2026-08-09); Fort Hays State is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "harding": {
+      "men": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC/MIAA Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=67 and https://greatamericanconference.com/standings.aspx?standings=213 (accessed 2026-08-09); Harding is listed in both.",
+          "to_season": 2025
+        }
+      ],
+      "women": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC Women's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=68 and https://greatamericanconference.com/standings.aspx?standings=214 (accessed 2026-08-09); Harding is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "newman": {
+      "men": [
+        {
+          "conference": "non_member",
+          "from_season": 2016,
+          "source": "Great American Conference, 2018 GAC Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=102 (accessed 2026-08-09); Newman is absent before its first GAC/MIAA league appearance in 2019. Newman competed outside the GAC/MIAA league during this window.",
+          "to_season": 2018
+        },
+        {
+          "conference": "GAC",
+          "from_season": 2019,
+          "source": "Great American Conference, 2019 and 2025 GAC/MIAA Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=118 and https://greatamericanconference.com/standings.aspx?standings=213 (accessed 2026-08-09); Newman is listed in both.",
+          "to_season": 2025
+        }
+      ],
+      "women": [
+        {
+          "conference": "non_member",
+          "from_season": 2016,
+          "source": "Mid-America Intercollegiate Athletics Association, 2018 MIAA Women's Soccer Standings, https://themiaa.com/standings.aspx?standings=73 (accessed 2026-08-09); Newman is absent while competing outside the MIAA during this window.",
+          "to_season": 2018
+        },
+        {
+          "conference": "MIAA",
+          "from_season": 2019,
+          "source": "Mid-America Intercollegiate Athletics Association, 2019 and 2025 MIAA Women's Soccer Standings, https://themiaa.com/standings.aspx?standings=85 and https://themiaa.com/standings.aspx?standings=158 (accessed 2026-08-09); Newman is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "northeastern-state": {
+      "men": [
+        {
+          "conference": "non_member",
+          "from_season": 2016,
+          "source": "Great American Conference, 2018 GAC Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=102 (accessed 2026-08-09); Northeastern State is absent before its first GAC/MIAA league appearance in 2019.",
+          "to_season": 2018
+        },
+        {
+          "conference": "GAC",
+          "from_season": 2019,
+          "source": "Great American Conference, 2019 and 2025 GAC/MIAA Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=118 and https://greatamericanconference.com/standings.aspx?standings=213 (accessed 2026-08-09); Northeastern State is listed in both.",
+          "to_season": 2025
+        }
+      ],
+      "women": [
+        {
+          "conference": "MIAA",
+          "from_season": 2016,
+          "source": "Mid-America Intercollegiate Athletics Association, 2016 and 2025 MIAA Women's Soccer Standings, https://themiaa.com/standings.aspx?standings=50 and https://themiaa.com/standings.aspx?standings=158 (accessed 2026-08-09); Northeastern State is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "northwestern-oklahoma-state": {
+      "women": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC Women's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=68 and https://greatamericanconference.com/standings.aspx?standings=214 (accessed 2026-08-09); Northwestern Oklahoma State is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "oklahoma-baptist": {
+      "men": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 through 2019 GAC Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=67 and https://greatamericanconference.com/standings.aspx?standings=118 (accessed 2026-08-09); Oklahoma Baptist is listed in both.",
+          "to_season": 2019
+        },
+        {
+          "conference": "non_member",
+          "from_season": 2020,
+          "source": "Great American Conference, 2021 GAC Spring Men's Soccer Standings for the 2020-21 season and 2025 GAC/MIAA Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=135 and https://greatamericanconference.com/standings.aspx?standings=213 (accessed 2026-08-09); Oklahoma Baptist is absent from both after its last official standings appearance in 2019.",
+          "to_season": 2025
+        }
+      ],
+      "women": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC Women's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=68 and https://greatamericanconference.com/standings.aspx?standings=214 (accessed 2026-08-09); Oklahoma Baptist is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "ouachita-baptist": {
+      "men": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC/MIAA Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=67 and https://greatamericanconference.com/standings.aspx?standings=213 (accessed 2026-08-09); Ouachita Baptist is listed in both.",
+          "to_season": 2025
+        }
+      ],
+      "women": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC Women's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=68 and https://greatamericanconference.com/standings.aspx?standings=214 (accessed 2026-08-09); Ouachita Baptist is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "rogers-state": {
+      "men": [
+        {
+          "conference": "non_member",
+          "from_season": 2016,
+          "source": "Great American Conference, 2018 GAC Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=102 (accessed 2026-08-09); Rogers State is absent before its first GAC/MIAA league appearance in 2019. Rogers State competed outside the GAC/MIAA league during this window.",
+          "to_season": 2018
+        },
+        {
+          "conference": "GAC",
+          "from_season": 2019,
+          "source": "Great American Conference, 2019 and 2025 GAC/MIAA Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=118 and https://greatamericanconference.com/standings.aspx?standings=213 (accessed 2026-08-09); Rogers State is listed in both.",
+          "to_season": 2025
+        }
+      ],
+      "women": [
+        {
+          "conference": "non_member",
+          "from_season": 2016,
+          "source": "Mid-America Intercollegiate Athletics Association, 2018 MIAA Women's Soccer Standings, https://themiaa.com/standings.aspx?standings=73 (accessed 2026-08-09); Rogers State is absent while competing outside the MIAA during this window.",
+          "to_season": 2018
+        },
+        {
+          "conference": "MIAA",
+          "from_season": 2019,
+          "source": "Mid-America Intercollegiate Athletics Association, 2019 and 2025 MIAA Women's Soccer Standings, https://themiaa.com/standings.aspx?standings=85 and https://themiaa.com/standings.aspx?standings=158 (accessed 2026-08-09); Rogers State is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "southern-nazarene": {
+      "men": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC/MIAA Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=67 and https://greatamericanconference.com/standings.aspx?standings=213 (accessed 2026-08-09); Southern Nazarene is listed in both.",
+          "to_season": 2025
+        }
+      ],
+      "women": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC Women's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=68 and https://greatamericanconference.com/standings.aspx?standings=214 (accessed 2026-08-09); Southern Nazarene is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "southwestern-oklahoma-state": {
+      "women": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC Women's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=68 and https://greatamericanconference.com/standings.aspx?standings=214 (accessed 2026-08-09); Southwestern Oklahoma State is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    }
+  },
+  "seasons": {
+    "from": 2016,
+    "to": 2025
+  },
+  "version": 1
+}
