@@ -1,8 +1,8 @@
 name: touchline-collect
 description: |
-  Use when: someone asks for a soccer schedule, roster, or player statistics — for a whole conference or a single programme, current season or archive.
-  Triggers: "get the 2026 schedule", "pull down the 2026 roster", "collect GAC men 2026", "retrieve Harding 2019 stats".
-  Does: refuses any directory that is not a Touchline data home, fetches official season schedule, roster, and statistics pages, then writes the board files and names exact gaps.
+  Use when: someone asks for a soccer schedule, roster, player statistics, or match box scores — for a whole conference or a single programme, current season or archive.
+  Triggers: "get the 2026 schedule", "pull down the 2026 roster", "collect GAC men 2026", "retrieve Harding 2019 stats", "get the box scores".
+  Does: refuses any directory that is not a Touchline data home, fetches official season schedule, roster, statistics and box-score pages, then writes the board files and names exact gaps.
   NOT for: repairing data (use data-integrity), or judging code.
 
 # Deliberately NOT `requiresProject: true`: in Keelson that flag means the
@@ -29,9 +29,11 @@ inputs:
     required: true
   - name: layers
     description: >-
-      Comma-separated layers to collect: schedule, roster, stats. Defaults to
-      all three. Every layer is served per (site, season) back to 2016; a cell
-      that refuses comes back as a named gap, never a run failure.
+      Comma-separated layers to collect: schedule, roster, stats, matches.
+      Defaults to all four. Every layer is served per (site, season) back to
+      2016; a cell that refuses comes back as a named gap, never a run
+      failure. The matches layer fetches one box score per played fixture,
+      so it is the slowest — a full conference season is a couple of minutes.
     required: false
   - name: membership_extrapolated
     description: true when conference membership was carried beyond its last authored season.
@@ -80,7 +82,7 @@ nodes:
           ;;
       esac
       printf 'data home OK: %s\n' "$PWD"
-      printf 'layers: %s\n' "${KEELSON_INPUTS_layers:-schedule,roster,stats}"
+      printf 'layers: %s\n' "${KEELSON_INPUTS_layers:-schedule,roster,stats,matches}"
       printf 'target: %s %s %s -> %s\n' \
         "$KEELSON_INPUTS_conference" "$KEELSON_INPUTS_gender" \
         "$KEELSON_INPUTS_season" "$KEELSON_INPUTS_programmes"
@@ -131,7 +133,7 @@ nodes:
         --gender "$KEELSON_INPUTS_gender" \
         --season "$KEELSON_INPUTS_season" \
         --programmes "$KEELSON_INPUTS_programmes" \
-        --layers "${KEELSON_INPUTS_layers:-schedule,roster,stats}" \
+        --layers "${KEELSON_INPUTS_layers:-schedule,roster,stats,matches}" \
         $EXTRA
       RC=$?
       # Exit 0 means the coverage manifest was written and describes reality,
@@ -159,7 +161,7 @@ nodes:
       - anything the run explicitly reported as missing, collapsed as duplicates, or
         DERIVED rather than published — name it, never soften it
       - distinguish played from upcoming exactly as the collector reports them
-      - say that schedule, roster, and statistics data came from official programme season pages
+      - say that schedule, roster, statistics and box-score data came from official programme season pages
 
       Do not invent numbers. Every figure must appear in the text above; if a figure is
       not there, say it was not reported.

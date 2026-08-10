@@ -32,6 +32,8 @@ import {
   computeTable,
   type FixturesFile,
   fixturesFileSchema,
+  type MatchesFile,
+  matchesFileSchema,
   type RostersFile,
   type StatsFile,
   statsFileSchema,
@@ -1022,6 +1024,53 @@ describe("the fixtures schema", () => {
     ).toThrow();
   });
 
+  test("a matches file round-trips, and an unknown match field is rejected", () => {
+    const file = {
+      schema: "touchline.matches/1",
+      season: 2025,
+      gender: "men",
+      collected_at: "2026-08-10T00:00:00Z",
+      matches: {
+        "sidearm:harding:14830": {
+          source_url: "https://hardingsports.com/sports/mens-soccer/stats/2025/snu/boxscore/14830",
+          home_index: 1,
+          teams: [
+            {
+              name: "Southern Nazarene",
+              abbr: "SNU",
+              periods: [0, 3],
+              score: 3,
+              winner: true,
+              shots: 27,
+            },
+            {
+              name: "Harding",
+              abbr: "HU",
+              periods: [1, 1],
+              score: 2,
+              shots: 10,
+              keepers: [{ name: "Rinner Stewart", saves: 2 }],
+            },
+          ],
+          scoring: [{ time: "37:00", team: 1, scorer: "Nojus Grudis", assist: "Romario Castro" }],
+          cards: [{ time: "81:19", team: 1, type: "red", player: "Cian Halpin", number: "7" }],
+          stadium: "Stevens Soccer Complex",
+          attendance: 175,
+        },
+      },
+      missing: { "sidearm:harding:9999": "no box-score link on any collected schedule page" },
+    };
+    const parsed = matchesFileSchema.parse(file);
+    expect(parsed.matches["sidearm:harding:14830"]?.teams[0]?.shots).toBe(27);
+    expect(parsed.missing?.["sidearm:harding:9999"]).toContain("no box-score link");
+    const poisoned = structuredClone(file) as Record<string, unknown>;
+    const inner = (poisoned.matches as Record<string, Record<string, unknown>>)[
+      "sidearm:harding:14830"
+    ] as Record<string, unknown>;
+    inner.xg = 1.2;
+    expect(() => matchesFileSchema.parse(poisoned)).toThrow();
+  });
+
   test("a stats file round-trips, and an unknown stat field is rejected", () => {
     const file = {
       schema: "touchline.stats/1",
@@ -1065,16 +1114,17 @@ describe("understanding the ask", () => {
     // past schedules (results included) in its rendered markup; only the
     // embedded payload is stuck on the current season. The old roster-only
     // plan was reading the wrong layer. Statistics measured 2026-08-10:
-    // honest per-year pages on every site, back to 2016.
+    // honest per-year pages on every site, back to 2016 — and the box scores
+    // they link, measured the same day, prove their own match by title date.
     const plan = planForSeason(2019);
     expect(plan.empty).toBe(false);
-    expect(plan.attempted).toEqual(["schedule", "roster", "stats"]);
-    expect(planSummary(plan)).toContain("Collecting schedule, roster, and stats for 2019");
+    expect(plan.attempted).toEqual(["schedule", "roster", "stats", "matches"]);
+    expect(planSummary(plan)).toContain("Collecting schedule, roster, stats, and matches for 2019");
   });
 
   test("the current season plans every layer", () => {
     const plan = planForSeason(2026);
-    expect(plan.attempted).toEqual(["schedule", "roster", "stats"]);
+    expect(plan.attempted).toEqual(["schedule", "roster", "stats", "matches"]);
     expect(plan.empty).toBe(false);
   });
 
@@ -1121,5 +1171,206 @@ describe("understanding the ask", () => {
     const t = await resolveTargets("fort-hays-state", "men", 2018);
     expect(t.kind).toBe("programme");
     if (t.kind === "programme") expect(t.slugs).toEqual(["fort-hays-state"]);
+  });
+});
+
+describe("match detail (box scores)", () => {
+  const season2025: FixturesFile = {
+    ...base,
+    season: 2025,
+    fixtures: [
+      {
+        id: "sidearm:harding:14830",
+        date: "2025-09-27",
+        home: "harding",
+        away: "rogers-state",
+        status: "final",
+        home_score: 2,
+        away_score: 3,
+        conference_game: true,
+      },
+      {
+        id: "sidearm:harding:14840",
+        date: "2025-10-04",
+        home: "rogers-state",
+        away: "harding",
+        status: "final",
+        home_score: 1,
+        away_score: 0,
+      },
+      {
+        id: "sidearm:harding:14850",
+        date: "2025-11-20",
+        home: "harding",
+        away: "rogers-state",
+        status: "scheduled",
+        time: "19:00",
+      },
+    ],
+  };
+  const matches: MatchesFile = {
+    schema: "touchline.matches/1",
+    season: 2025,
+    gender: "men",
+    collected_at: "2026-08-10T00:00:00Z",
+    matches: {
+      "sidearm:harding:14830": {
+        source_url: "https://hardingsports.com/sports/mens-soccer/stats/2025/rsu/boxscore/14830",
+        home_index: 0,
+        teams: [
+          {
+            name: "Harding",
+            abbr: "HU",
+            periods: [1, 1],
+            score: 2,
+            shots: 10,
+            sog: 4,
+            saves: 6,
+            corners: 4,
+            fouls: 9,
+            keepers: [{ name: "Rinner Stewart", saves: 6, goals_against: 3, minutes: 90 }],
+          },
+          {
+            name: "Rogers State",
+            abbr: "RSU",
+            periods: [0, 3],
+            score: 3,
+            winner: true,
+            shots: 27,
+            sog: 9,
+            saves: 2,
+            corners: 9,
+            fouls: 7,
+            keepers: [{ name: "Milo Stopper", saves: 2, goals_against: 2, minutes: 90 }],
+          },
+        ],
+        scoring: [
+          {
+            time: "37:00",
+            team: 0,
+            scorer: "Nojus Grudis",
+            season_total: 4,
+            assist: "Romario Castro",
+            description: "pass to middle, shot to bottom right corner",
+          },
+          { time: "50:59", team: 1, scorer: "Braxton Decker" },
+          { time: "90:00", team: 0, scorer: "Sikan Akpanudo" },
+        ],
+        cards: [
+          { time: "62:17", team: 1, type: "yellow", player: "Omarion Velasquez", number: "12" },
+          { time: "81:19", team: 0, type: "red", player: "Cian Halpin", number: "7" },
+        ],
+        stadium: "Stevens Soccer Complex",
+        attendance: 175,
+        officials: ["Referee: Blake Kibboes"],
+      },
+    },
+    missing: {
+      "sidearm:harding:14840": "no box-score link on any collected schedule page",
+    },
+  };
+  const compose = (fixture?: string, team: string | undefined = "harding") =>
+    composeBoard({
+      projectName: "p",
+      fixtures: season2025,
+      matches,
+      team,
+      fixture,
+      today: "2026-08-09",
+    });
+
+  test("a played row carries the match at a glance — SOG and corner pairs, cards, scorers", () => {
+    const html = compose();
+    // Oriented mine–theirs from the team lens: Harding 4 SOG, RSU 9.
+    expect(html).toContain("SOG 4–9");
+    expect(html).toContain("CK 4–9");
+    // One yellow, one red between the sides; the strip counts them.
+    expect(html).toContain('class="cs y"');
+    expect(html).toContain('class="cs r"');
+    // The team lens names its own scorers with the goal minute read aloud.
+    expect(html).toContain("Nojus Grudis 37&prime;");
+    expect(html).toContain("Sikan Akpanudo 90&prime;");
+    // The opponent's scorer stays off the row.
+    expect(html).not.toContain("Braxton Decker 51&prime;");
+    // A played fixture with no collected box score renders a plain row.
+    const bare =
+      html.split('data-payload="{&quot;fixture&quot;:&quot;sidearm:harding:14840&quot;}"')[1] ?? "";
+    expect(bare.split('class="row')[0]).not.toContain("SOG");
+  });
+
+  test("the match drawer reads as a box score — period line, timeline, duels, keepers", () => {
+    const html = compose("sidearm:harding:14830");
+    // Header: both sides with the fixture's own scores, winner emphasised.
+    expect(html).toContain("Rogers State");
+    expect(html).toContain('class="mrow win"');
+    // Meta line from the box score's own details.
+    expect(html).toContain("Stevens Soccer Complex");
+    expect(html).toContain("175 attended");
+    // Period line with the served halves.
+    expect(html).toContain("Score by period");
+    // Scoring timeline: minute in bold, scorer, assist.
+    expect(html).toContain("<b>37&prime;</b>");
+    expect(html).toContain("assist Romario Castro");
+    // 90:00 exactly is the 90th minute, not the 91st.
+    expect(html).toContain("<b>90&prime;</b>");
+    // Cautions with typed cards.
+    expect(html).toContain("Omarion Velasquez");
+    // Team statistic duels.
+    expect(html).toContain(">Shots<");
+    expect(html).toContain(">Corners<");
+    // Keeper match lines from both sides.
+    expect(html).toContain("Milo Stopper");
+    expect(html).toContain("6 saved");
+    // Closes back to no fixture: veil, ✕, and the Escape contract.
+    expect(html.split('{"fixture":null}').length).toBeGreaterThan(2);
+    expect(html).toContain('data-close="open-fixture"');
+    expect(html).toContain("From the programme&#39;s published box score.");
+  });
+
+  test("a card the source did not colour stays neutral, not presumed yellow", () => {
+    const neutral = structuredClone(matches);
+    const detail = neutral.matches["sidearm:harding:14830"];
+    if (!detail) throw new Error("fixture missing from test data");
+    detail.cards = [{ time: "12:00", team: 0, type: "unknown", player: "Omarion Velasquez" }];
+    const html = composeBoard({
+      projectName: "p",
+      fixtures: season2025,
+      matches: neutral,
+      team: "harding",
+      fixture: "sidearm:harding:14830",
+      today: "2026-08-09",
+    });
+    expect(html).toContain('class="cs u" title="Card"');
+    const drawer = html.split('class="drawer"')[1] ?? "";
+    expect(drawer).not.toContain('title="Yellow card"');
+  });
+
+  test("a played match without a box score opens honestly, naming the collector's reason", () => {
+    const html = compose("sidearm:harding:14840");
+    expect(html).toContain("No box score collected");
+    expect(html).toContain("no box-score link on any collected schedule page");
+    expect(html).not.toContain("Score by period");
+  });
+
+  test("an upcoming fixture's drawer is a listing, not a result", () => {
+    const html = compose("sidearm:harding:14850");
+    expect(html).toContain("Not played yet");
+    expect(html).toContain("Kickoff 7:00 PM");
+  });
+
+  test("missing box scores count as named gaps on the board", () => {
+    const html = compose();
+    expect(html).toContain("1 match box score");
+  });
+
+  test("the conference matrix card offers the drawer for its selected match", () => {
+    const html = composeBoard({
+      projectName: "p",
+      fixtures: season2025,
+      matches,
+      today: "2026-08-09",
+    });
+    expect(html).toContain('id="mx-open"');
+    expect(html).toContain("Match details");
   });
 });

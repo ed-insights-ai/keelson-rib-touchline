@@ -1,9 +1,10 @@
 # Touchline
 
-Touchline v1 collects the published 2026 college-soccer schedule and roster,
-then renders those files as a living season board. Those two files are the
-complete first deliverable; historical box scores, standings, Postgres,
-parquet, and generated reports are outside the first-contact flow.
+Touchline collects the published college-soccer schedule, roster, player
+season statistics, and a box score for every played match — current season
+and archive back to 2016 — then renders those files as a living season board.
+Standings tables, Postgres, parquet, and generated reports remain outside the
+first-contact flow.
 
 `/touchline <folder-name>` creates an ordinary data directory under Keelson's
 default workspace and registers it for UI/workflow scope. It is not initialized

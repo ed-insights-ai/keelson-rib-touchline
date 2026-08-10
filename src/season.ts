@@ -24,6 +24,13 @@
 //             including the two sites whose SCHEDULE pages canonicalise the
 //             COVID season — so it carries no payload trap at all.
 //
+//   MATCHES   the box scores behind every played fixture, linked from the
+//             schedule page itself (measured 2026-08-10, 63 (site, season)
+//             cells back to 2016, COVID 2020 included). Server-rendered and
+//             match-specific: the title names the opponent and the exact
+//             date, which is the guard's join key — COVID-2020 matches were
+//             honestly played and titled in spring 2021.
+//
 //   SCHEDULE  served for every season tried, back to 2016 across seven sites —
 //             but only in the server-rendered DOM. The embedded event payload
 //             names the CURRENT season at every season URL, so the first
@@ -40,7 +47,7 @@
 // as a plan-time wall.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export const TOUCHLINE_LAYERS = ["schedule", "roster", "stats"] as const;
+export const TOUCHLINE_LAYERS = ["schedule", "roster", "stats", "matches"] as const;
 export type TouchlineLayer = (typeof TOUCHLINE_LAYERS)[number];
 
 /** The season the athletics sites currently publish as "this year".
@@ -89,6 +96,11 @@ export function planForSeason(season: number): CollectionPlan {
       layer: "stats",
       attempt: false,
       reason: `${season} statistics have not been published yet.`,
+    });
+    layers.push({
+      layer: "matches",
+      attempt: false,
+      reason: `${season} has no played matches to detail yet.`,
     });
   } else if (season < EARLIEST_LIVE_SEASON) {
     for (const layer of TOUCHLINE_LAYERS) {

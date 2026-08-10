@@ -21,6 +21,7 @@ import { z } from "zod";
 export const FIXTURES_SCHEMA = "touchline.fixtures/1";
 export const ROSTERS_SCHEMA = "touchline.rosters/1";
 export const STATS_SCHEMA = "touchline.stats/1";
+export const MATCHES_SCHEMA = "touchline.matches/1";
 
 export const genderSchema = z.enum(["men", "women"]);
 export type Gender = z.infer<typeof genderSchema>;
@@ -202,6 +203,107 @@ export const statsFileSchema = z
   })
   .strict();
 export type StatsFile = z.infer<typeof statsFileSchema>;
+
+/** One player's line in a single match, off the box score's own table. */
+export const matchPlayerLineSchema = z
+  .object({
+    name: z.string().min(1),
+    /** Same SideArm player id as the roster and season stats, when the row
+     *  linked a bio — the owner's players do, opponents usually don't. */
+    player_id: z.string().optional(),
+    number: z.string().optional(),
+    position: z.string().optional(),
+    started: z.boolean().optional(),
+    shots: z.number().int().optional(),
+    sog: z.number().int().optional(),
+    goals: z.number().int().optional(),
+    assists: z.number().int().optional(),
+    minutes: z.number().int().optional(),
+    goals_against: z.number().int().optional(),
+    saves: z.number().int().optional(),
+  })
+  .strict();
+export type MatchPlayerLine = z.infer<typeof matchPlayerLineSchema>;
+
+/** One side of a match, exactly as the box score served it. The name and
+ *  abbreviation are the page's own — consistent within a page, not across
+ *  pages — so scoring plays and cards reference sides by index. */
+export const matchTeamSchema = z
+  .object({
+    name: z.string().min(1),
+    abbr: z.string().optional(),
+    periods: z.array(z.number().int()),
+    score: z.number().int().optional(),
+    winner: z.boolean().optional(),
+    shots: z.number().int().optional(),
+    sog: z.number().int().optional(),
+    saves: z.number().int().optional(),
+    corners: z.number().int().optional(),
+    fouls: z.number().int().optional(),
+    offsides: z.number().int().optional(),
+    players: z.array(matchPlayerLineSchema).optional(),
+    keepers: z.array(matchPlayerLineSchema).optional(),
+  })
+  .strict();
+export type MatchTeam = z.infer<typeof matchTeamSchema>;
+
+export const matchScoringSchema = z
+  .object({
+    time: z.string().optional(),
+    /** Index into the match's teams array. */
+    team: z.number().int().optional(),
+    scorer: z.string().min(1),
+    /** The scorer's season goal count as of this goal, as printed. */
+    season_total: z.number().int().optional(),
+    assist: z.string().optional(),
+    description: z.string().optional(),
+  })
+  .strict();
+export type MatchScoring = z.infer<typeof matchScoringSchema>;
+
+export const matchCardSchema = z
+  .object({
+    time: z.string().optional(),
+    team: z.number().int().optional(),
+    type: z.enum(["yellow", "red", "unknown"]),
+    player: z.string().min(1),
+    number: z.string().optional(),
+  })
+  .strict();
+export type MatchCard = z.infer<typeof matchCardSchema>;
+
+/** One match's published box score. */
+export const matchDetailSchema = z
+  .object({
+    source_url: z.string().min(1),
+    teams: z.array(matchTeamSchema),
+    /** Which served side is the fixture's home team — absent when the page
+     *  gave no way to prove it (an unresolvable draw). */
+    home_index: z.number().int().optional(),
+    scoring: z.array(matchScoringSchema).optional(),
+    cards: z.array(matchCardSchema).optional(),
+    stadium: z.string().optional(),
+    attendance: z.number().int().optional(),
+    kickoff: z.string().optional(),
+    officials: z.array(z.string()).optional(),
+  })
+  .strict();
+export type MatchDetail = z.infer<typeof matchDetailSchema>;
+
+export const matchesFileSchema = z
+  .object({
+    schema: z.literal(MATCHES_SCHEMA),
+    season: z.number().int(),
+    gender: genderSchema,
+    collected_at: z.string().min(1),
+    /** Keyed by fixture id — the same ids the season's fixtures file carries. */
+    matches: z.record(z.string(), matchDetailSchema),
+    /** Played fixtures whose box score could not be collected, each with the
+     *  collector's named reason. */
+    missing: z.record(z.string(), z.string()).optional(),
+  })
+  .strict();
+export type MatchesFile = z.infer<typeof matchesFileSchema>;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Derived view models — computed from the files, never stored.
