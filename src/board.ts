@@ -131,7 +131,7 @@ font-weight:700;letter-spacing:.02em}
 .sheet{background:var(--sheet);border:1px solid var(--rule-firm);border-radius:10px;overflow:hidden}
 
 /* ── masthead ─────────────────────────────────────────────────────────── */
-.mast{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 14px;padding:14px 18px 12px}
+.mast{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 14px;padding:12px 18px 8px}
 .mast h1{margin:0;font-size:25px;line-height:1;text-transform:uppercase;letter-spacing:.015em;
 font-family:"Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;font-weight:700}
 .mast .season{font-size:25px;line-height:1;color:var(--faint);font-variant-numeric:tabular-nums;
@@ -143,11 +143,12 @@ font-family:"Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif
 font-size:21px;line-height:1;color:var(--faint);font-family:"Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;font-weight:700}
 .mast .yr:hover{color:var(--ink)}
 .mast .yr:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-radius:3px}
-.dek{padding:0 18px 12px;margin:0;font-size:12.5px;color:var(--muted)}
-.dek b{color:var(--ink-2);font-weight:600}
+.mast .gen{align-self:center;font:700 9.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.14em;text-transform:uppercase;color:var(--faint);border:1px solid var(--rule-firm);
+border-radius:4px;padding:3px 6px 2px}
 
 /* ── lens switch ──────────────────────────────────────────────────────── */
-.lens{display:flex;gap:2px;padding:0 18px 12px;flex-wrap:wrap}
+.lens{display:flex;gap:2px;padding:0 18px 10px;flex-wrap:wrap}
 .lens button{appearance:none;border:1px solid var(--rule-firm);background:transparent;color:var(--muted);
 font:700 10.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;letter-spacing:.09em;
 text-transform:uppercase;padding:6px 10px;cursor:pointer;border-radius:4px}
@@ -184,7 +185,7 @@ font-size:11.5px;color:var(--muted);padding-bottom:1px}
 
 /* ── one ruled stat line, not tiles ───────────────────────────────────── */
 .tally{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--rule)}
-.tally div{flex:1 1 108px;padding:10px 18px;border-right:1px solid var(--rule)}
+.tally div{flex:1 1 108px;padding:8px 18px;border-right:1px solid var(--rule)}
 .tally div:last-child{border-right:0}
 .tally b{display:block;font-size:20px;line-height:1.1;font-variant-numeric:tabular-nums;
 font-family:"Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;font-weight:700}
@@ -201,7 +202,7 @@ border-bottom:1px solid var(--rule);background:var(--sunk)}
 /* ── section head ─────────────────────────────────────────────────────── */
 /* --band is transparent in light — white space does the separating there;
    dark has no white space, so the band carries the same structure tonally. */
-.sec{display:flex;align-items:baseline;gap:10px;padding:12px 18px 8px;background:var(--band)}
+.sec{display:flex;align-items:baseline;gap:10px;padding:10px 18px 7px;background:var(--band)}
 .sec h2{margin:0;font:700 11px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
 letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .sec .count{margin-left:auto;font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
@@ -238,11 +239,8 @@ letter-spacing:.13em;text-transform:uppercase;color:var(--faint)}
 .chip{display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:6px;vertical-align:baseline}
 
 /* ── matchday matrix (conference lens) ────────────────────────────────── */
-.key{margin-left:auto;display:flex;gap:12px;align-items:center;font-size:11px;color:var(--muted);flex-wrap:wrap}
-.key span{display:inline-flex;align-items:center;gap:5px}
-.key i{display:inline-block;width:16px;height:12px;border-radius:3px;border:1px solid var(--rule-firm)}
-.key .kh i{background:var(--accent-soft);border-color:transparent}
-.key .ks i{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.key{display:flex;gap:12px;align-items:center;font-size:11px;color:var(--muted);flex-wrap:wrap}
+.key span{display:inline-flex;align-items:center;gap:4px}
 .mx-sel{display:flex;align-items:center;gap:12px;margin:4px 18px 12px;border:1px solid var(--rule);
 border-radius:8px;background:var(--raise);padding:9px 13px;min-height:54px}
 .mx-sel .db{flex:0 0 48px;text-align:center;border-right:1px solid var(--rule-firm);padding-right:12px}
@@ -517,16 +515,15 @@ min-width:0;overflow:hidden;white-space:nowrap}
 .rbal .cmix .gr{background:var(--gr)}
 .rbal .cmix .so,.rbal .cmix .fr{color:var(--ink)}
 .rbal .cmix .un,.rbal .cmix.unp{background:repeating-linear-gradient(45deg,var(--rule-firm),var(--rule-firm) 3px,transparent 3px,transparent 6px);color:var(--muted)}
-.rbal-foot .key i.fr{background:var(--fr)}.rbal-foot .key i.so{background:var(--so)}
-.rbal-foot .key i.jr{background:var(--jr)}.rbal-foot .key i.sr{background:var(--sr)}
-.rbal-foot .key i.gr{background:var(--gr)}
-.rbal-foot{display:flex;justify-content:space-between;gap:8px 18px;flex-wrap:wrap;
-padding:9px 18px 13px;font-size:11px;color:var(--muted)}
-.rbal-foot .key{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap}
-.rbal-foot .key span{display:inline-flex;align-items:center;gap:4px}
-.rbal-foot .key i{display:inline-block;width:15px;height:7px;border-radius:2px}
-.rbal-foot .key i.gk{background:var(--gk)}.rbal-foot .key i.d{background:var(--def)}
-.rbal-foot .key i.m{background:var(--mid)}.rbal-foot .key i.f{background:var(--fwd)}
+.rk{display:inline-flex;justify-content:flex-end;gap:8px;font-size:inherit;color:inherit}
+.rk i{display:inline-block;width:13px;height:7px;border-radius:2px}
+.rk i.gk{background:var(--gk)}.rk i.d{background:var(--def)}
+.rk i.m{background:var(--mid)}.rk i.f{background:var(--fwd)}
+.rk i.fr{background:var(--fr)}.rk i.so{background:var(--so)}
+.rk i.jr{background:var(--jr)}.rk i.sr{background:var(--sr)}
+.rk i.gr{background:var(--gr)}
+.rbal-foot{display:flex;justify-content:flex-end;gap:8px 18px;flex-wrap:wrap;
+padding:7px 18px 11px;font-size:11px;color:var(--muted)}
 
 /* ── empty / alarm states ─────────────────────────────────────────────── */
 .hero{padding:34px 22px 30px;text-align:center}
@@ -1257,14 +1254,10 @@ function matrix(
         ? `<span class="late-n">${late.length} played, not collected</span>`
         : "";
 
+  // No legend: the home tint and each cell's spoken label carry venue, and the
+  // selected cell explains itself — outlined, with the card above naming it.
   return `
-    <div class="sec"><h2>Matchday board</h2>
-      <span class="key">
-        <span class="kh"><i></i>Home</span>
-        <span><i></i>Away</span>
-        <span class="ks"><i></i>Selected</span>
-      </span>
-    </div>
+    <div class="sec"><h2>Matchday board</h2></div>
     <div class="mx-sel" aria-live="polite">
       <div class="db" aria-hidden="true"><div class="mo" id="mx-mo">${esc(picked.mo)}</div>
         <div class="dy num" id="mx-dy">${esc(picked.dy)}</div></div>
@@ -2076,16 +2069,23 @@ function rosterBalance(file: FixturesFile, rosters: RostersFile): string {
     })
     .join("");
 
+  // The colour keys ARE the bar columns' headers — each sits directly above
+  // the bars it decodes, where the eye actually asks what the colours mean.
+  // The hatched note only appears when some programme left something
+  // unpublished.
+  const hatched = rows.includes('class="un"') || rows.includes("cmix unp");
+  const posKeyHead = `<span class="key rk">${POSITIONS.map(
+    (p) => `<span><i class="${p.key}"></i>${p.abbr}</span>`,
+  ).join("")}</span>`;
+  const classKeyHead = `<span class="key rk">${CLASSES.map(
+    (c) => `<span><i class="${c.key}"></i>${c.abbr}</span>`,
+  ).join("")}</span>`;
   return `
     <div class="sec"><h2>Roster balance</h2><span class="count">Select a team for players</span></div>
     <div class="mx-wrap"><table class="rbal">
-      <thead><tr><th>Team</th><th>Players</th>${POSITIONS.map((p) => `<th>${p.abbr}</th>`).join("")}<th>Position</th><th>Class</th></tr></thead>
+      <thead><tr><th>Team</th><th>Players</th>${POSITIONS.map((p) => `<th>${p.abbr}</th>`).join("")}<th>${posKeyHead}</th><th>${classKeyHead}</th></tr></thead>
       <tbody>${rows}</tbody></table></div>
-    <div class="rbal-foot">
-      <span class="key">${POSITIONS.map((p) => `<span><i class="${p.key}"></i>${p.abbr}</span>`).join("")}</span>
-      <span class="key">${CLASSES.map((c) => `<span><i class="${c.key}"></i>${c.abbr}</span>`).join("")}</span>
-      <span>Hatched — not published by the programme.</span>
-    </div>`;
+    ${hatched ? `<div class="rbal-foot"><span>Hatched — not published by the programme.</span></div>` : ""}`;
 }
 
 export function composeBoard(input: BoardInput): string {
@@ -2153,20 +2153,18 @@ export function composeBoard(input: BoardInput): string {
       ? `<span class="seasons">${step(years[at - 1], "‹")}<span class="season num">${file.season}</span>${step(years[at + 1], "›")}</span>`
       : `<span class="season num">${file.season}</span>`;
 
+  // One header row carries everything the old dek line said better: the
+  // gender as a small tag beside the season — the programme count is
+  // self-evident from the chips and matrix, and the collected stamp lives in
+  // the panel head's byline (see stampPanel in index.ts), not on the sheet.
   const head = `
     <div class="mast">
       <h1>${esc(subject)}</h1>
       ${seasonCtl}
+      <span class="gen">${file.gender === "men" ? "Men" : "Women"}</span>
       <span class="sp"></span>
-      <span class="stamp">${played === 0 ? "pre-season · " : ""}collected ${esc(
-        file.collected_at.slice(0, 16).replace("T", " "),
-      )}</span>
+      ${played === 0 ? '<span class="stamp">pre-season</span>' : ""}
     </div>
-    <p class="dek">${team ? `${esc(file.conference)} · ` : ""}${file.gender === "men" ? "Men's" : "Women's"} soccer${
-      team
-        ? ""
-        : ` · <b>${file.programmes.length}</b> programme${file.programmes.length === 1 ? "" : "s"}`
-    }</p>
     ${lens}`;
 
   const notices = [
