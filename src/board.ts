@@ -480,8 +480,9 @@ letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .pbp .evs{padding:2px 0 6px}
 .pbp .ev{font-size:11.5px}
 .pbp .ev.gl .who{font-weight:700}
+/* The chip is inline inside .who, so it sits after the text on both sides —
+   row-reverse only reorders the flex items, not the narration's inline flow. */
 .pbp .ev .ps{margin-left:6px;font-size:10.5px;color:var(--faint);font-variant-numeric:tabular-nums}
-.pbp .ev.a .ps{margin-left:0;margin-right:6px}
 /* Team-statistic duels: bars grow from the centre toward each side. */
 .duel{display:grid;grid-template-columns:26px 1fr 64px 1fr 26px;gap:8px;align-items:center;
 padding:3px 18px 0;font-variant-numeric:tabular-nums}

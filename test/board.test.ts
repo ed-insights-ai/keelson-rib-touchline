@@ -1098,6 +1098,18 @@ describe("the fixtures schema", () => {
           ],
           scoring: [{ time: "37:00", team: 1, scorer: "Nojus Grudis", assist: "Romario Castro" }],
           cards: [{ time: "81:19", team: 1, type: "red", player: "Cian Halpin", number: "7" }],
+          plays: [
+            {
+              period: "1",
+              clock: "22:20",
+              team: 0,
+              text: "GOAL by SNU Fletcher, Alex.",
+              type: "goal",
+              score: [1, 0],
+            },
+            // Shootout rows carry no clock, and an untyped play is still a play.
+            { period: "SO", team: 1, text: "Official's timeout." },
+          ],
           stadium: "Stevens Soccer Complex",
           attendance: 175,
         },
@@ -1106,6 +1118,7 @@ describe("the fixtures schema", () => {
     };
     const parsed = matchesFileSchema.parse(file);
     expect(parsed.matches["sidearm:harding:14830"]?.teams[0]?.shots).toBe(27);
+    expect(parsed.matches["sidearm:harding:14830"]?.plays?.[0]?.score).toEqual([1, 0]);
     expect(parsed.missing?.["sidearm:harding:9999"]).toContain("no box-score link");
     const poisoned = structuredClone(file) as Record<string, unknown>;
     const inner = (poisoned.matches as Record<string, Record<string, unknown>>)[
@@ -1113,6 +1126,19 @@ describe("the fixtures schema", () => {
     ] as Record<string, unknown>;
     inner.xg = 1.2;
     expect(() => matchesFileSchema.parse(poisoned)).toThrow();
+    // A play must narrate: text is required, a running score is exactly two
+    // sides, and unknown play fields are refused like any other.
+    const bad = (mutate: (play: Record<string, unknown>) => void): unknown => {
+      const clone = structuredClone(file) as Record<string, unknown>;
+      const detail = (clone.matches as Record<string, Record<string, unknown>>)[
+        "sidearm:harding:14830"
+      ] as Record<string, unknown>;
+      mutate((detail.plays as Record<string, unknown>[])[0] as Record<string, unknown>);
+      return clone;
+    };
+    expect(() => matchesFileSchema.parse(bad((p) => delete p.text))).toThrow();
+    expect(() => matchesFileSchema.parse(bad((p) => (p.score = [1])))).toThrow();
+    expect(() => matchesFileSchema.parse(bad((p) => (p.xg = 0.4)))).toThrow();
   });
 
   test("a stats file round-trips, and an unknown stat field is rejected", () => {
