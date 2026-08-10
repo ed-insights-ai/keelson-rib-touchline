@@ -1530,6 +1530,28 @@ function compBar(
 // Tenure states facts ("first season on this roster"), never conclusions
 // ("transfer"): a debut sophomore may equally be a redshirt or late walk-on.
 
+/** Which earlier seasons the archive holds a non-empty roster for, and whether
+ *  that coverage runs unbroken from the programme's first collected roster to
+ *  the season before the one shown. Own-roster tenure claims are absence
+ *  claims — "first season on this roster" denies every earlier appearance, and
+ *  "3rd season" denies a fourth — so a skipped or unreadable archive season
+ *  could hide the very appearance a claim rules out. Complete coverage is the
+ *  licence to make them; positive sightings (a prior stint elsewhere) need no
+ *  such licence, because a gap can only hide more of them. */
+function priorRosterCoverage(
+  history: readonly RostersFile[],
+  programme: string,
+  season: number,
+): { covered: number[]; complete: boolean } {
+  const covered = history
+    .filter((f) => f.season < season && (f.rosters[programme]?.players.length ?? 0) > 0)
+    .map((f) => f.season)
+    .sort((a, b) => a - b);
+  const first = covered[0];
+  const complete = first !== undefined && covered.length === season - first;
+  return { covered, complete };
+}
+
 interface Tenure {
   /** Seasons up to and including the shown one where this name appears on
    *  this programme's roster, ascending. Later seasons are excluded so an
@@ -1538,9 +1560,9 @@ interface Tenure {
   /** Earlier appearances on other programmes' rosters — the intra-conference
    *  move worth a scouting note. Keyed by slug; the caller resolves names. */
   elsewhere: { programme: string; seasons: number[] }[];
-  /** Whether the archive holds any earlier roster for this programme at all.
-   *  Without one, "first season" would only mean "start of our records". */
-  hasPriorRoster: boolean;
+  /** Whether prior coverage for this programme is complete (see
+   *  priorRosterCoverage). False suppresses every own-roster claim. */
+  priorComplete: boolean;
 }
 
 function tenureFor(
@@ -1551,12 +1573,10 @@ function tenureFor(
 ): Tenure {
   const seasons: number[] = [];
   const elsewhere = new Map<string, number[]>();
-  let hasPriorRoster = false;
   for (const file of history) {
     if (file.season > season) continue;
     for (const [slug, roster] of Object.entries(file.rosters)) {
       if (slug === programme) {
-        if (file.season < season && roster.players.length > 0) hasPriorRoster = true;
         if (roster.players.some((p) => p.name === name)) seasons.push(file.season);
       } else if (file.season < season && roster.players.some((p) => p.name === name)) {
         elsewhere.set(slug, [...(elsewhere.get(slug) ?? []), file.season]);
@@ -1569,7 +1589,7 @@ function tenureFor(
       programme,
       seasons: ss.sort((a, b) => a - b),
     })),
-    hasPriorRoster,
+    priorComplete: priorRosterCoverage(history, programme, season).complete,
   };
 }
 
@@ -1603,16 +1623,23 @@ function tenureLine(
   names: Map<string, string>,
 ): string {
   const parts: string[] = [];
-  if (tenure.seasons.length > 1) {
-    parts.push(
-      `${ordinal(tenure.seasons.length)} season on the roster (${fmtSeasonSpans(tenure.seasons)})`,
-    );
-  } else if (tenure.hasPriorRoster) {
-    parts.push("First season on this roster");
-    // A debut above freshman class is the arrival worth flagging; the class
-    // year is the roster's own word for where they are, so print it verbatim.
-    const cls = classInfo(classYear);
-    if (cls && cls.key !== "fr") parts.push(`arrived as ${classYear}`);
+  if (tenure.priorComplete) {
+    if (tenure.seasons.length > 1) {
+      parts.push(
+        `${ordinal(tenure.seasons.length)} season on the roster (${fmtSeasonSpans(tenure.seasons)})`,
+      );
+    } else {
+      parts.push("First season on this roster");
+      // A debut above freshman class is the arrival worth flagging; the class
+      // year is the roster's own word for where they are, so print it verbatim.
+      const cls = classInfo(classYear);
+      if (cls && cls.key !== "fr") parts.push(`arrived as ${classYear}`);
+    }
+  } else if (tenure.seasons.length > 1) {
+    // Incomplete coverage (the 2020 rosters of two programmes are named
+    // collection gaps, for instance): no count, no "first season" — but the
+    // recorded sightings themselves are still facts worth stating.
+    parts.push(`On the roster in ${fmtSeasonSpans(tenure.seasons)}`);
   }
   for (const e of tenure.elsewhere) {
     parts.push(`previously at ${displayName(e.programme, names)} (${fmtSeasonSpans(e.seasons)})`);
@@ -1704,20 +1731,18 @@ function teamRosterBlock(
   const idx = statsIndex(stats);
 
   // First-season players earn a quiet chip; returning is the default state
-  // and carries no ink. Chips render only when the archive actually holds an
-  // earlier roster for this programme — with no history, every player would
-  // read as new, which is a statement about our records, not the squad.
+  // and carries no ink. Chips are absence claims, so they render only over
+  // complete prior coverage (see priorRosterCoverage) — a missing archive
+  // season could hide the appearance that would make a player returning, and
+  // with no history at all "new" would describe our records, not the squad.
+  const { complete: priorComplete } = priorRosterCoverage(history, roster.programme, season);
   const returning = new Set<string>();
-  let hasPriorRoster = false;
   for (const file of history) {
     if (file.season >= season) continue;
-    const prior = file.rosters[roster.programme];
-    if (!prior?.players.length) continue;
-    hasPriorRoster = true;
-    for (const p of prior.players) returning.add(p.name);
+    for (const p of file.rosters[roster.programme]?.players ?? []) returning.add(p.name);
   }
   const newChip = (p: Player) =>
-    hasPriorRoster && !returning.has(p.name)
+    priorComplete && !returning.has(p.name)
       ? '<span class="new" title="First season on this roster">NEW</span>'
       : "";
   const maxMinutes = Math.max(
@@ -1768,8 +1793,7 @@ function teamRosterBlock(
   ];
 
   // The continuity split at a glance: how much of the squad was here before.
-  // Rendered only when the archive holds an earlier roster — same guard as
-  // the chips, and for the same reason.
+  // Same complete-coverage guard as the chips, and for the same reason.
   const retCount = players.filter((p) => returning.has(p.name)).length;
   const tenSegs = [
     { cls: "ret", count: retCount, title: "Returning — on an earlier roster", abbr: "RET" },
@@ -1786,7 +1810,7 @@ function teamRosterBlock(
   const bars = `<div class="bars">
     ${hasPos ? barRow("Position", compBar(posSegs, players.length)) : ""}
     ${barRow("Class", compBar(clsSegs, players.length))}
-    ${hasPriorRoster ? barRow("Tenure", compBar(tenSegs, players.length)) : ""}
+    ${priorComplete ? barRow("Tenure", compBar(tenSegs, players.length)) : ""}
   </div>`;
 
   const playerRow = (p: Player) => {

@@ -25,6 +25,7 @@ import {
   isEffectivelyEmpty,
   listSeasons,
   loadFixtures,
+  loadRosterHistory,
   readMarker,
 } from "../src/datahome.ts";
 import { resolveConference, resolveTargets } from "../src/membership.ts";
@@ -355,6 +356,31 @@ describe("the data home", () => {
       hasFixtures: false,
       hasRosters: true,
     });
+  });
+
+  test("the roster history is per-gender, oldest first, and tolerates a corrupt season", async () => {
+    const root = await tempHome();
+    await bootstrapDataHome(root);
+    const roster = (season: number, gender: string) =>
+      JSON.stringify({
+        schema: "touchline.rosters/1",
+        season,
+        gender,
+        collected_at: "2026-08-09T00:00:00Z",
+        rosters: { harding: { programme: "harding", players: [{ name: "Aric McKinney" }] } },
+      });
+    const dir = join(root, "data", "rosters");
+    await writeFile(join(dir, "2026-men.json"), roster(2026, "men"), "utf8");
+    await writeFile(join(dir, "2024-men.json"), roster(2024, "men"), "utf8");
+    // A corrupt archive season narrows visible history, never fails the load.
+    await writeFile(join(dir, "2025-men.json"), "{not json", "utf8");
+    await writeFile(join(dir, "2024-women.json"), roster(2024, "women"), "utf8");
+
+    const men = await loadRosterHistory(root, "men");
+    expect(men.map((f) => f.season)).toEqual([2024, 2026]);
+    const women = await loadRosterHistory(root, "women");
+    expect(women.map((f) => f.season)).toEqual([2024]);
+    expect(await loadRosterHistory(join(root, "nowhere"), "men")).toEqual([]);
   });
 });
 
@@ -1436,15 +1462,45 @@ describe("roster tenure", () => {
   });
 
   test("a gap year reads as separate spans, not a continuous run", () => {
+    // 2023 is collected and Weir is simply not on it — a real gap year,
+    // not a hole in the archive.
     const current = season2026([{ name: "Davis Weir", class_year: "Senior" }]);
     const history = [
       rosterFile(2022, { harding: [{ name: "Davis Weir" }] }),
+      rosterFile(2023, { harding: [{ name: "Somebody Else" }] }),
       rosterFile(2024, { harding: [{ name: "Davis Weir" }] }),
       rosterFile(2025, { harding: [{ name: "Davis Weir" }] }),
       current,
     ];
     const html = compose(current, history, "Davis Weir");
     expect(html).toContain("4th season on the roster (2022, 2024–2026)");
+  });
+
+  test("a hole in the archive suppresses absence claims but not positive sightings", () => {
+    // 2024 and 2026 collected, 2025 unreadable or never collected: the player
+    // may well have been on the 2025 roster, so neither "first season" nor a
+    // season count can be claimed — but a sighting at another programme is a
+    // fact no gap can retract.
+    const current = season2026([
+      { name: "Jack Huls", class_year: "Sophomore" },
+      { name: "Gael Gonzalez", class_year: "Graduate Student" },
+    ]);
+    const history = [
+      rosterFile(2024, {
+        harding: [{ name: "Jack Huls" }],
+        "rogers-state": [{ name: "Gael Gonzalez" }],
+      }),
+      current,
+    ];
+    const huls = compose(current, history, "Jack Huls");
+    expect(huls).not.toContain("season on the roster");
+    // Recorded sightings still speak, without a count the gap could falsify.
+    expect(huls).toContain("On the roster in 2024, 2026");
+    const html = compose(current, history, "Gael Gonzalez");
+    expect(html).not.toContain("First season on this roster");
+    expect(html).toContain("previously at Rogers State (2024)");
+    expect(html).not.toContain(">NEW<");
+    expect(html).not.toContain(">Tenure<");
   });
 
   test("an above-freshman debut is flagged as an arrival, stated as fact not conclusion", () => {
