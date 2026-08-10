@@ -10,6 +10,7 @@ import { describe, expect, test } from "bun:test";
 import { mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { touchlineSystemPrompt } from "../src/agent.ts";
 import {
   composeBoard,
   composeNoProject,
@@ -27,8 +28,18 @@ import {
   readMarker,
 } from "../src/datahome.ts";
 import { resolveConference, resolveTargets } from "../src/membership.ts";
-import { computeTable, type FixturesFile, fixturesFileSchema } from "../src/model.ts";
-import { parseRequest } from "../src/setup.ts";
+import {
+  computeTable,
+  type FixturesFile,
+  fixturesFileSchema,
+  type RostersFile,
+} from "../src/model.ts";
+import {
+  planForSeason,
+  planSummary,
+  TOUCHLINE_V1_SEASON,
+  unsupportedSeasonMessage,
+} from "../src/season.ts";
 
 const base: FixturesFile = {
   schema: "touchline.fixtures/1",
@@ -305,7 +316,41 @@ describe("the data home", () => {
     const res = await loadFixtures(root, 2026, "men");
     expect(res.ok).toBe(true);
     const seasons = await listSeasons(root);
-    expect(seasons).toEqual([{ season: 2026, gender: "men", conference: "GAC" }]);
+    expect(seasons).toEqual([
+      { season: 2026, gender: "men", conference: "GAC", hasFixtures: true, hasRosters: false },
+    ]);
+  });
+
+  test("a roster-only past season is still listed", async () => {
+    // The historic case: each programme serves its CURRENT fixtures at every
+    // season address, so a 2019 collection lands a roster and no schedule. A
+    // season list keyed on fixtures alone would hide exactly the data the
+    // roster analysis needs.
+    const root = await tempHome();
+    await bootstrapDataHome(root);
+    await writeFile(join(root, "data", "fixtures", "2026-men.json"), JSON.stringify(base), "utf8");
+    await writeFile(
+      join(root, "data", "rosters", "2019-men.json"),
+      JSON.stringify({
+        schema: "touchline.rosters/1",
+        season: 2019,
+        gender: "men",
+        collected_at: "2026-08-09T00:00:00Z",
+        rosters: { harding: { programme: "harding", players: [{ name: "Aric McKinney" }] } },
+      }),
+      "utf8",
+    );
+
+    const seasons = await listSeasons(root);
+    expect(seasons.map((s) => s.season)).toEqual([2026, 2019]);
+    const past = seasons.find((s) => s.season === 2019);
+    expect(past).toEqual({
+      season: 2019,
+      gender: "men",
+      conference: "unknown",
+      hasFixtures: false,
+      hasRosters: true,
+    });
   });
 });
 
@@ -324,12 +369,13 @@ describe("the board markup", () => {
         { id: "1", date: "2026-08-27", home: "harding", away: "rogers-state", status: "scheduled" },
       ],
     });
-    expect(html).toContain("days to kickoff");
+    // The rail carries the countdown; a table of standings is not v1's job.
+    expect(html).toContain("First kickoff in");
     expect(html).not.toContain("Member record");
     expect(html).toContain("Pre-season is a valid state");
   });
 
-  test("a played season shows the table and labels it derived", () => {
+  test("a played fixture does not make v1 invent a standings table", () => {
     const html = render({
       conference_game_source: "derived:both-members",
       fixtures: [
@@ -344,9 +390,145 @@ describe("the board markup", () => {
         },
       ],
     });
-    expect(html).toContain("Member record");
-    expect(html).toContain("derived");
-    expect(html).toContain("Not the published conference table");
+    // Two programmes render the matchday matrix; the result appears in a cell,
+    // never as a derived standings row.
+    expect(html).toContain("Matchday board");
+    expect(html).toContain("2\u20131");
+    expect(html).not.toContain("Member record");
+    expect(html).not.toContain("<th>Pts</th>");
+  });
+
+  test("the conference lens is a matchday matrix: one game, both rows", () => {
+    const html = render({
+      fixtures: [
+        {
+          id: "g1",
+          date: "2026-09-17",
+          time: "19:00",
+          home: "harding",
+          away: "rogers-state",
+          venue: "Stevens Soccer Complex",
+          status: "scheduled",
+          conference_game: true,
+        },
+        // A non-conference visitor appears as a dashed cell, never as a row.
+        {
+          id: "g2",
+          date: "2026-08-27",
+          home: "harding",
+          away: "delta-st",
+          status: "scheduled",
+          conference_game: false,
+        },
+      ],
+    });
+    // The game renders in the home row (shaded) and the away row (outlined).
+    expect(html).toContain('class="m h"');
+    expect(html).toContain('data-h="harding" data-a="rogers-state"');
+    expect((html.match(/data-g="g1"/g) ?? []).length).toBe(2);
+    // The outsider gets a cell in Harding's row only \u2014 no delta-st row exists,
+    // and its slug expands to a readable name ("Delta ST" is not a school).
+    expect(html).toContain('class="m h nc');
+    expect(html).not.toContain('data-follow="delta-st"');
+    expect(html).toContain("Delta State at Harding");
+    // Each row carries its follow summary; the card names the next kickoff.
+    expect(html).toContain("Harding \u00b7 2 home \u00b7 0 away \u00b7 1 conference");
+    expect(html).toContain("Rogers State at Harding");
+    expect(html).toContain("Thursday \u00b7 7:00 PM \u00b7 Stevens Soccer Complex");
+  });
+
+  describe("the roster sheet", () => {
+    const rosters: RostersFile = {
+      schema: "touchline.rosters/1",
+      season: 2026,
+      gender: "men",
+      collected_at: "2026-08-09T21:00:00Z",
+      rosters: {
+        harding: {
+          programme: "harding",
+          players: [
+            {
+              number: "9",
+              name: "Reik Barrack",
+              position: "Forward",
+              class_year: "Senior",
+              height: "6'0\"",
+              hometown: "Panama City, Panama",
+            },
+            {
+              number: "1",
+              name: "Dillon Hart",
+              position: "Goalkeeper",
+              class_year: "Sophomore",
+              height: "6'5\"",
+              hometown: "Lavon, Texas",
+            },
+          ],
+        },
+        "rogers-state": {
+          programme: "rogers-state",
+          // No positions published — the real shape of two GAC rosters.
+          players: [{ name: "A Player", class_year: "Freshman", hometown: "Tulsa, Okla." }],
+        },
+      },
+    };
+    const compose = (team?: string) =>
+      composeBoard({
+        projectName: "p",
+        fixtures: {
+          ...base,
+          programmes: [...base.programmes, { slug: "newman", name: "Newman" }],
+          fixtures: [
+            {
+              id: "1",
+              date: "2026-09-01",
+              home: "harding",
+              away: "rogers-state",
+              status: "scheduled",
+            },
+          ],
+        },
+        rosters,
+        team,
+        today: "2026-08-09",
+      });
+
+    test("the team lens groups attack-first with hometown and height on the row", () => {
+      const html = compose("harding");
+      expect(html.indexOf("Forwards")).toBeLessThan(html.indexOf("Goalkeepers"));
+      // Height typeset with primes; an international region set apart; a US
+      // region left plain.
+      expect(html).toContain("6′0″");
+      expect(html).toContain("Panama City, <b>Panama</b>");
+      expect(html).toContain("Lavon, Texas");
+      expect(html).not.toContain("Lavon, <b>");
+    });
+
+    test("a roster without published positions is a squad, never fake buckets", () => {
+      const html = compose("rogers-state");
+      expect(html).toContain("Squad");
+      expect(html).not.toContain("Forwards");
+    });
+
+    test("the conference lens compares rosters and names every absence", () => {
+      const html = compose();
+      expect(html).toContain("Roster balance");
+      // rogers-state publishes no positions → hatched, dashed counts.
+      expect(html).toContain('class="cmix unp"');
+      // newman has no roster at all → named, not omitted.
+      expect(html).toContain("not collected");
+    });
+  });
+
+  test("a single-programme season keeps the ledger, not a one-row matrix", () => {
+    const html = render({
+      programmes: [{ slug: "harding", name: "Harding" }],
+      fixtures: [
+        { id: "1", date: "2026-09-01", home: "harding", away: "delta-st", status: "scheduled" },
+      ],
+    });
+    expect(html).not.toContain("Matchday board");
+    expect(html).toContain('class="led"');
   });
 
   test("collection gaps are named on the board, never hidden", () => {
@@ -385,7 +567,7 @@ describe("the board markup", () => {
     expect(html).not.toContain("<script>alert(2)");
   });
 
-  test("the team lens reports a record and offers player actions", () => {
+  test("the team lens reports published fixtures without deriving a record", () => {
     const html = render(
       {
         fixtures: [
@@ -402,8 +584,12 @@ describe("the board markup", () => {
       },
       "harding",
     );
-    expect(html).toContain("1–0–0");
-    expect(html).toContain("Harding");
+    // The ledger orients the scoreline to the team being viewed, and no
+    // W-L-D record is derived anywhere in v1.
+    expect(html).toContain("2\u20131");
+    expect(html).not.toContain("1–0–0");
+    expect(html).toContain("Rogers State");
+    expect(html).toContain(">H<");
   });
 
   test("every empty state renders real markup and names the next step", () => {
@@ -413,10 +599,10 @@ describe("the board markup", () => {
       composeNotAHome("p", false),
       composeNoSeasons("p"),
     ]) {
-      expect(html).toContain('<div class="wrap">');
+      expect(html).toContain('<div class="sheet">');
       expect(html.length).toBeGreaterThan(500);
     }
-    expect(composeNoProject([])).toContain("keelson project add");
+    expect(composeNoProject([])).toContain("/touchline my-soccer");
     expect(composeUnreadable("boom")).toContain("THE BOARD DID NOT RENDER");
   });
 
@@ -442,26 +628,46 @@ describe("the fixtures schema", () => {
 });
 
 describe("understanding the ask", () => {
-  test("a conference ask yields gender, season and subject", () => {
-    const r = parseRequest("Get the current schedule and rosters for D2 GAC men's soccer 2025");
-    expect(r.gender).toBe("men");
-    expect(r.season).toBe(2025);
-    expect(r.subject).toBe("gac");
+  test("the exact first-contact ask resolves and the agent no longer blocks 2026", async () => {
+    const target = await resolveTargets("harding", "men", 2026);
+    expect(target.kind).toBe("programme");
+    if (target.kind === "programme") expect(target.slugs).toEqual(["harding"]);
+
+    const prompt = touchlineSystemPrompt({ programmes: ["harding"] });
+    expect(prompt).not.toContain("stop at the 2025 season");
+    expect(prompt).not.toContain("This first flow is 2026 only");
+    expect(prompt).toContain("What each season can give you");
+    expect(prompt).toContain("the roster ONLY");
+    expect(TOUCHLINE_V1_SEASON).toBe(2026);
   });
 
-  test("a single-programme ask survives the filler", () => {
-    const r = parseRequest("pull down the schedule and roster for Harding 2025");
-    expect(r.subject).toBe("harding");
-    expect(r.season).toBe(2025);
+  test("a past season plans the roster and explains the missing schedule", () => {
+    const plan = planForSeason(2019);
+    expect(plan.empty).toBe(false);
+    expect(plan.attempted).toEqual(["roster"]);
+    const schedule = plan.layers.find((l) => l.layer === "schedule");
+    expect(schedule?.attempt).toBe(false);
+    // Measured against the live sites: /schedule/2019 answers 200 and its
+    // payload carries the 2026 season. The reason must say that, not "2019 is
+    // forbidden" — the difference is what makes historic rosters reachable.
+    expect(schedule?.reason).toContain("serves its 2026 fixtures at every season address");
+    expect(planSummary(plan)).toContain("Collecting roster for 2019");
   });
 
-  test("women is detected and not swallowed by the men pattern", () => {
-    expect(parseRequest("the whole GAC women 2024").gender).toBe("women");
-    expect(parseRequest("GAC women's soccer").gender).toBe("women");
+  test("the current season plans both layers", () => {
+    const plan = planForSeason(2026);
+    expect(plan.attempted).toEqual(["schedule", "roster"]);
+    expect(plan.empty).toBe(false);
   });
 
-  test("an ask with no year leaves season undefined rather than guessing", () => {
-    expect(parseRequest("the whole GAC men").season).toBeUndefined();
+  test("only an unservable season is refused outright", () => {
+    const future = planForSeason(2031);
+    expect(future.empty).toBe(true);
+    expect(unsupportedSeasonMessage(2031)).toContain("has not been published yet");
+
+    const ancient = planForSeason(1998);
+    expect(ancient.empty).toBe(true);
+    expect(unsupportedSeasonMessage(1998)).toContain("predates");
   });
 
   test("a conference resolves to its members for that season", async () => {

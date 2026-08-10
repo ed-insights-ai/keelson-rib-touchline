@@ -1,14 +1,16 @@
 name: touchline-collect
 description: |
-  Use when: someone asks to get, pull down, retrieve, scrape or collect a soccer schedule, season, or rosters — for a whole conference or a single programme.
-  Triggers: "get the schedule", "pull down the roster", "collect the GAC season", "retrieve Harding's season".
-  Does: refuses any directory that is not a Touchline data home, then builds the season's fixture file from the collected archive and reports what it wrote and what it could not.
+  Use when: someone asks for a 2026 soccer schedule and roster — for a whole conference or a single programme.
+  Triggers: "get the 2026 schedule", "pull down the 2026 roster", "collect GAC men 2026", "retrieve Harding 2026".
+  Does: refuses any directory that is not a Touchline data home, fetches official 2026 schedule and roster pages, then writes those two board files and names exact gaps.
   NOT for: repairing data (use data-integrity), or judging code.
 
-requiresProject: true
-# The run writes into the project's data tree, so keelson's own per-project
-# mutation lock serialises it. Two collects into one data home would race on
-# the same season file.
+# Deliberately NOT `requiresProject: true`: in Keelson that flag means the
+# working directory must be a Git repository. A Touchline home is an ordinary
+# registered directory. The selected project still supplies cwd/projectId, and
+# the exclusive mutation lock below still serialises writes to that directory.
+requiresProject: false
+# Two collects into one data home would race on the same season file.
 mutates_checkout: true
 tags: [soccer, collection, touchline]
 
@@ -20,14 +22,23 @@ inputs:
     description: men or women.
     required: true
   - name: season
-    description: Season year, e.g. 2025.
+    description: Season year, e.g. 2026 for the current season or 2019 for an archive roster.
     required: true
   - name: programmes
     description: Comma-separated membership slugs to collect, already resolved by the caller.
     required: true
+  - name: layers
+    description: >-
+      Comma-separated layers to collect: schedule, roster. Defaults to both.
+      Past seasons serve rosters but not schedules, so the caller passes
+      roster-only for any season before the current one.
+    required: false
+  - name: membership_extrapolated
+    description: true when conference membership was carried beyond its last authored season.
+    required: false
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Runs with cwd = the consumer data repo.
+# Runs with cwd = the consumer's Touchline data directory. Git is not required.
 #
 # A bash body is NOT template-substituted — that split is the engine's security
 # boundary. Inputs arrive as KEELSON_INPUTS_<key> and an upstream node's output
@@ -61,7 +72,15 @@ nodes:
           exit 1
         fi
       done
+      case "$KEELSON_INPUTS_season" in
+        [0-9][0-9][0-9][0-9]) ;;
+        *)
+          printf 'REFUSED: season %s is not a four-digit year.\n' "$KEELSON_INPUTS_season"
+          exit 1
+          ;;
+      esac
       printf 'data home OK: %s\n' "$PWD"
+      printf 'layers: %s\n' "${KEELSON_INPUTS_layers:-schedule,roster}"
       printf 'target: %s %s %s -> %s\n' \
         "$KEELSON_INPUTS_conference" "$KEELSON_INPUTS_gender" \
         "$KEELSON_INPUTS_season" "$KEELSON_INPUTS_programmes"
@@ -71,14 +90,15 @@ nodes:
     timeout: 60000
     bash: |
       set -uo pipefail
-      CFG="$HOME/.keelson/rib-touchline/config.json"
+      KEELSON_HOME_DIR="${KEELSON_HOME:-$HOME/.keelson}"
+      CFG="$KEELSON_HOME_DIR/rib-touchline/config.json"
       PIPELINE_DIR="${TOUCHLINE_PIPELINE_DIR:-}"
       if [ -z "$PIPELINE_DIR" ] && [ -f "$CFG" ]; then
         PKG=$(jq -r '.packageDir // empty' "$CFG" 2>/dev/null)
         [ -n "$PKG" ] && PIPELINE_DIR="$PKG/pipeline"
       fi
       if [ -z "$PIPELINE_DIR" ]; then
-        PIPELINE_DIR="$HOME/.keelson/node_modules/@keelson/rib-touchline/pipeline"
+        PIPELINE_DIR="$KEELSON_HOME_DIR/node_modules/@keelson/rib-touchline/pipeline"
       fi
       if [ ! -f "$PIPELINE_DIR/pyproject.toml" ]; then
         printf 'ALARM: cannot resolve the Touchline pipeline. Tried TOUCHLINE_PIPELINE_DIR, %s, and the installed package path. Last candidate: %s\n' "$CFG" "$PIPELINE_DIR"
@@ -97,14 +117,28 @@ nodes:
         exit 1
       fi
 
-      TOUCHLINE_DATA_DIR="$PWD" uv run --project "$PIPELINE_DIR" export-board \
+      # NOT a bash array: macOS ships bash 3.2 as /bin/bash, where expanding an
+      # EMPTY array under `set -u` raises "unbound variable" — which would fire
+      # on the common path, where no extra flag is set.
+      EXTRA=""
+      if [ "${KEELSON_INPUTS_membership_extrapolated:-false}" = "true" ]; then
+        EXTRA="--membership-extrapolated"
+      fi
+
+      # shellcheck disable=SC2086 # EXTRA is a single controlled flag or empty.
+      TOUCHLINE_DATA_DIR="$PWD" uv run --project "$PIPELINE_DIR" collect-board \
         --conference "$KEELSON_INPUTS_conference" \
         --gender "$KEELSON_INPUTS_gender" \
         --season "$KEELSON_INPUTS_season" \
-        --programmes "$KEELSON_INPUTS_programmes"
+        --programmes "$KEELSON_INPUTS_programmes" \
+        --layers "${KEELSON_INPUTS_layers:-schedule,roster}" \
+        $EXTRA
       RC=$?
+      # Exit 0 means the coverage manifest was written and describes reality,
+      # gaps included. A non-zero exit means no manifest — nothing above is then
+      # a claim that data landed.
       if [ "$RC" -ne 0 ]; then
-        printf '\nCollection exited %s — the season file may be absent or incomplete. Nothing above is a claim that data landed.\n' "$RC"
+        printf '\nCollection exited %s — no coverage manifest was written, so nothing above is a claim that data landed.\n' "$RC"
         exit "$RC"
       fi
 
@@ -120,12 +154,12 @@ nodes:
       The collection command printed:
       $collect.output
 
-      Write a SHORT report, in plain prose, for the person who asked for this data:
+      Write a SHORT completion summary, in plain prose, for the person who asked for this data:
       - what was collected (conference, gender, season, how many programmes and fixtures)
       - anything the run explicitly reported as missing, collapsed as duplicates, or
         DERIVED rather than published — name it, never soften it
-      - what is NOT in this data: the archive only holds games that already have a box
-        score, so unplayed fixtures are absent
+      - distinguish played from upcoming exactly as the collector reports them
+      - say that schedule and roster data came from official programme season pages
 
       Do not invent numbers. Every figure must appear in the text above; if a figure is
       not there, say it was not reported.

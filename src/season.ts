@@ -1,0 +1,122 @@
+// Copyright 2026, Daniel Scholl
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Season is a DIMENSION, not a constant. What varies by season is which layer a
+// collector can serve — so this module plans a collection rather than forbidding
+// one, and the collector remains the authority on what actually lands.
+//
+// Measured against the live sites on 2026-08-09, across Harding and Southern
+// Nazarene:
+//
+//   ROSTER    served for every season tried. Harding returned 30 players for
+//             2026, 29 for 2022 and 26 for 2019, with zero name overlap between
+//             2026 and 2019 and four between 2022 and 2019 — exactly what a
+//             four-year career window predicts. Past rosters are real data.
+//
+//   SCHEDULE  served only for the CURRENT season. `/schedule/2019` answers 200
+//             and keeps its year through every redirect, but the embedded event
+//             payload carries `title: "2026 Men's Soccer Schedule"`. The page
+//             wrapper is honest and the payload is this year's fixtures.
+//
+// The old shape refused the whole ask on the season. That made past rosters —
+// the substrate for roster analysis — unreachable, even though they work.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const TOUCHLINE_LAYERS = ["schedule", "roster"] as const;
+export type TouchlineLayer = (typeof TOUCHLINE_LAYERS)[number];
+
+/** The season the athletics sites currently publish as "this year".
+ *  It gates only the SCHEDULE layer, and it advances once a year. */
+export const TOUCHLINE_CURRENT_SEASON = 2026;
+
+/** Kept for the surface copy that still says "the current season". */
+export const TOUCHLINE_V1_SEASON = TOUCHLINE_CURRENT_SEASON;
+
+/** How far back a roster request is worth attempting. Below this the sites
+ *  predate SideArm's roster component and return nothing useful. */
+export const EARLIEST_LIVE_SEASON = 2010;
+
+export interface LayerPlan {
+  layer: TouchlineLayer;
+  /** Whether to attempt this layer at all for the requested season. */
+  attempt: boolean;
+  /** Why not, in the user's language. Present only when `attempt` is false. */
+  reason?: string;
+}
+
+export interface CollectionPlan {
+  season: number;
+  layers: LayerPlan[];
+  /** The layers to actually pass to the collector. */
+  attempted: TouchlineLayer[];
+  /** True when nothing at all can be attempted for this season. */
+  empty: boolean;
+}
+
+export function planForSeason(season: number): CollectionPlan {
+  const layers: LayerPlan[] = [];
+
+  if (season > TOUCHLINE_CURRENT_SEASON) {
+    layers.push({
+      layer: "schedule",
+      attempt: false,
+      reason: `${season} has not been published yet — the sites are still serving ${TOUCHLINE_CURRENT_SEASON}.`,
+    });
+    layers.push({
+      layer: "roster",
+      attempt: false,
+      reason: `${season} rosters have not been published yet.`,
+    });
+  } else if (season < EARLIEST_LIVE_SEASON) {
+    layers.push({
+      layer: "schedule",
+      attempt: false,
+      reason: `${season} predates the published season pages Touchline can read.`,
+    });
+    layers.push({
+      layer: "roster",
+      attempt: false,
+      reason: `${season} predates the published roster pages Touchline can read.`,
+    });
+  } else {
+    const current = season === TOUCHLINE_CURRENT_SEASON;
+    layers.push(
+      current
+        ? { layer: "schedule", attempt: true }
+        : {
+            layer: "schedule",
+            attempt: false,
+            reason: `Each programme serves its ${TOUCHLINE_CURRENT_SEASON} fixtures at every season address, so a ${season} schedule cannot be read from the live site. The ${season} roster can.`,
+          },
+    );
+    layers.push({ layer: "roster", attempt: true });
+  }
+
+  const attempted = layers.filter((p) => p.attempt).map((p) => p.layer);
+  return { season, layers, attempted, empty: attempted.length === 0 };
+}
+
+/** What to tell someone who asked for a season nothing can serve. */
+export function unsupportedSeasonMessage(season: number): string {
+  const plan = planForSeason(season);
+  const reasons = plan.layers.map((p) => p.reason).filter(Boolean);
+  return reasons.length
+    ? `Touchline cannot collect ${season}. ${reasons[0]}`
+    : `Touchline cannot collect ${season}.`;
+}
+
+/** One line naming what this season's collection will and will not include. */
+export function planSummary(plan: CollectionPlan): string {
+  const yes = plan.layers.filter((p) => p.attempt).map((p) => p.layer);
+  const no = plan.layers.filter((p) => !p.attempt);
+  const head = yes.length
+    ? `Collecting ${yes.join(" and ")} for ${plan.season}.`
+    : `Nothing can be collected for ${plan.season}.`;
+  return no.length ? `${head} ${no.map((p) => p.reason).join(" ")}` : head;
+}

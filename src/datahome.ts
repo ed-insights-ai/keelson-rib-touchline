@@ -36,7 +36,6 @@ export interface DataHome {
   root: string;
   fixturesDir: string;
   rostersDir: string;
-  reportsDir: string;
 }
 
 export function dataHome(root: string): DataHome {
@@ -44,7 +43,6 @@ export function dataHome(root: string): DataHome {
     root,
     fixturesDir: join(root, "data", "fixtures"),
     rostersDir: join(root, "data", "rosters"),
-    reportsDir: join(root, "reports"),
   };
 }
 
@@ -89,7 +87,7 @@ export async function isEffectivelyEmpty(root: string): Promise<boolean> {
  *  The `occupied` case is the one that matters: a directory holding somebody
  *  else's work is NOT a place to scaffold a data tree, even though it carries
  *  no conflicting marker. Without this check the rib would happily write
- *  data/ and a marker into a source repository the user merely had selected
+ *  data/ and a marker into a source directory the user merely had selected
  *  in the project picker. Refusing is the whole point — a collection target
  *  must be a folder we created or one a previous run already claimed. */
 export type HomeState =
@@ -133,7 +131,7 @@ export function explainRefusal(root: string, state: HomeState): string | undefin
 }
 
 const MARKER_BODY = [
-  "# Marker file: identifies this repository as a Touchline data directory.",
+  "# Marker file: identifies this directory as a Touchline data home.",
   "# The touchline rib validates this file before running workflows here.",
   `kind: ${MARKER_KIND}`,
   "version: 1",
@@ -143,22 +141,20 @@ const MARKER_BODY = [
 const README_BODY = [
   "# Touchline data",
   "",
-  "Your soccer data, in your repository. Collected by the Touchline keelson rib.",
+  "Your soccer data, in an ordinary directory. Collected by the Touchline keelson rib.",
+  "Git is not required; Keelson project registration only gives the folder a name and scope.",
   "",
   "| Path | What lives here |",
   "| --- | --- |",
-  "| `data/fixtures/` | Season schedules — one JSON file per season and gender. |",
-  "| `data/rosters/` | Team rosters — one JSON file per season and gender. |",
+  "| `data/fixtures/` | The published 2026 schedule — one JSON file per gender. |",
+  "| `data/rosters/` | The published 2026 roster — one JSON file per gender. |",
   "| `data/raw_html/` | The pages exactly as fetched, so any parse can be redone offline. |",
   "| `data/errors/` | Anything a collection run could not parse, kept rather than dropped. |",
-  "| `reports/` | Generated reports (player profiles, previews). |",
   "",
-  "These files are the source of truth. A Postgres index can be rebuilt from",
-  "them at any time, and nothing here requires a database to read.",
+  "The schedule and roster files are the complete Touchline v1 deliverable.",
+  "Nothing here requires Git or a database.",
   "",
 ].join("\n");
-
-const GITIGNORE_BODY = [".DS_Store", "__pycache__/", "*.pyc", ".venv/", ""].join("\n");
 
 export interface BootstrapResult {
   created: string[];
@@ -188,7 +184,6 @@ export async function bootstrapDataHome(
   for (const dir of [
     home.fixturesDir,
     home.rostersDir,
-    home.reportsDir,
     join(root, "data", "raw_html"),
     join(root, "data", "errors"),
     join(root, "data", "reference"),
@@ -207,7 +202,6 @@ export async function bootstrapDataHome(
   };
   await writeIfAbsent(MARKER_FILE, MARKER_BODY);
   await writeIfAbsent("README.md", README_BODY);
-  await writeIfAbsent(".gitignore", GITIGNORE_BODY);
   return { created, alreadyMarked: marker.state === "marked" };
 }
 
@@ -269,28 +263,47 @@ export interface SeasonRef {
   season: number;
   gender: string;
   conference: string;
+  /** Which layers actually landed. A past season commonly has a roster and no
+   *  schedule, because each programme serves its CURRENT fixtures at every
+   *  season address — so a season keyed on fixtures alone would hide it. */
+  hasFixtures: boolean;
+  hasRosters: boolean;
 }
 
 /** Every season present in the data home, newest first. Drives the board's
  *  default selection and the "what do I have?" answer in chat. */
 export async function listSeasons(root: string): Promise<SeasonRef[]> {
-  let files: string[];
-  try {
-    files = await readdir(dataHome(root).fixturesDir);
-  } catch {
-    return [];
-  }
+  const home = dataHome(root);
+  const NAME = /^(\d{4})-(men|women)\.json$/;
+
+  const scan = async (dir: string): Promise<Set<string>> => {
+    try {
+      const files = await readdir(dir);
+      return new Set(files.filter((f) => NAME.test(f)));
+    } catch {
+      return new Set();
+    }
+  };
+
+  const [fixtureFiles, rosterFiles] = await Promise.all([
+    scan(home.fixturesDir),
+    scan(home.rostersDir),
+  ]);
+
   const out: SeasonRef[] = [];
-  for (const f of files) {
-    const m = /^(\d{4})-(men|women)\.json$/.exec(f);
+  for (const f of new Set([...fixtureFiles, ...rosterFiles])) {
+    const m = NAME.exec(f);
     if (!m) continue;
     const season = Number(m[1]);
     const gender = m[2] as string;
-    const loaded = await loadFixtures(root, season, gender);
+    const hasFixtures = fixtureFiles.has(f);
+    const loaded = hasFixtures ? await loadFixtures(root, season, gender) : undefined;
     out.push({
       season,
       gender,
-      conference: loaded.ok ? loaded.value.conference : "unknown",
+      conference: loaded?.ok ? loaded.value.conference : "unknown",
+      hasFixtures,
+      hasRosters: rosterFiles.has(f),
     });
   }
   return out.sort((a, b) => b.season - a.season || a.gender.localeCompare(b.gender));

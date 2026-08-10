@@ -11,7 +11,7 @@ import { z } from "zod";
 // ─────────────────────────────────────────────────────────────────────────────
 // The file contract between the collection pipeline (writer) and the board
 // (reader). These files are the consumer's own data: plain JSON in their
-// project, readable without Postgres, diffable in git.
+// project, readable without a database, and portable without Git.
 //
 // Both files are versioned by a `schema` string. A reader that meets an
 // unknown schema says so rather than guessing — a board that silently renders
@@ -72,10 +72,8 @@ export const fixturesFileSchema = z
     collected_at: z.string().min(1),
     /** True when membership had to be carried past its authored windows. */
     membership_extrapolated: z.boolean().optional(),
-    /** How each fixture's conference flag was determined. The archive's own
-     *  is_conference_game is NULL throughout, so the exporter derives it from
-     *  both-sides-are-members and records that here rather than implying the
-     *  flag was published. */
+    /** How each fixture's conference flag was determined: published by the
+     *  schedule page for v1, or explicitly named as derived for older data. */
     conference_game_source: z.string().optional(),
     programmes: z.array(programmeSchema),
     fixtures: z.array(fixtureSchema),

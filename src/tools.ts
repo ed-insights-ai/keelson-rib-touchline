@@ -8,6 +8,7 @@
 
 import type { Project, RibContext, ToolContext, ToolDefinition } from "@keelson/shared";
 import { z } from "zod";
+import { initTouchlineHome, planTouchlineRemoval, removeTouchlineHome } from "./commands.ts";
 import {
   bootstrapDataHome,
   dataHomeState,
@@ -17,7 +18,13 @@ import {
   loadRosters,
   packageDir,
 } from "./datahome.ts";
-import { resolveConference, titleFromSlug } from "./membership.ts";
+import { resolveTargets, titleFromSlug } from "./membership.ts";
+import {
+  planForSeason,
+  planSummary,
+  TOUCHLINE_V1_SEASON,
+  unsupportedSeasonMessage,
+} from "./season.ts";
 import { findProject, getSelection, setScope, setSeason, setTeam } from "./state.ts";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -60,7 +67,7 @@ function pickProject(
         ok: false,
         message: `No keelson project named '${explicit}'. Registered: ${
           projects.map((p) => p.name).join(", ") || "(none)"
-        }. Register one with: keelson project add <name> <dir>`,
+        }. Create one with the touchline_init tool (or /touchline <folder-name> in the composer). It lives in the default Keelson workspace and does not need Git.`,
       };
     }
     return { ok: true, project: found };
@@ -141,18 +148,130 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
     }),
   };
 
+  // The MCP- and chat-reachable equivalent of `/touchline <name>`. Without it
+  // an agent can NAME the slash command but never run one — slash commands are
+  // a composer affordance the chat CLI and MCP cannot invoke — so the first
+  // step of the product is unreachable from the surface the product is sold on.
+  const initTool: ToolDefinition = {
+    name: "touchline_init",
+    description:
+      "Create a new Touchline data home: makes a folder in the Keelson workspace, initializes it, and registers it as a Keelson project. Use when someone wants to start collecting soccer data and has no project yet, or names a project that does not exist. Git is neither required nor initialized. Safe to re-run: an existing Touchline home is reported, never overwritten.",
+    inputSchema: z.object({
+      name: z
+        .string()
+        .describe(
+          "Folder name, lowercase, e.g. 'gac-soccer'. Created under the Keelson workspace.",
+        ),
+    }),
+    state_changing: true,
+    execute: guarded(async (input, tctx) => {
+      const { name } = input as { name: string };
+      const result = await initTouchlineHome(name, ctx);
+      if (!result.ok) return emit(tctx, result.error, true);
+
+      const lines = [
+        result.created
+          ? `Initialized ${result.rootPath} as a Touchline data home.`
+          : `${result.rootPath} was already a Touchline data home — nothing was overwritten.`,
+        result.registered
+          ? `Registered it as the Keelson project '${result.name}'.`
+          : `It was already registered as the Keelson project '${result.name}'.`,
+        "",
+        `Nothing has been collected yet. Name a conference or programme and a season to fill it — for example "Harding men ${TOUCHLINE_V1_SEASON}".`,
+      ];
+      refreshBoard();
+      emit(tctx, lines.join("\n"));
+    }),
+  };
+
+  // Removal is deliberately two-step. Called without `confirm` it only REPORTS
+  // what would be lost; deleting requires repeating the project's own name back,
+  // the way a destructive action should read to whoever is about to approve it.
+  const removeTool: ToolDefinition = {
+    name: "touchline_remove",
+    description:
+      "Remove a Touchline project. By default this only unregisters it and leaves every collected file on disk. Deleting the data is a separate, irreversible step that requires confirmation. Call it WITHOUT confirm first to see exactly what would be lost, relay that to the user, and only then call again with confirm.",
+    inputSchema: z.object({
+      project: z.string().describe("Keelson project name to remove."),
+      delete_data: z
+        .boolean()
+        .optional()
+        .describe(
+          "Also delete the folder and every collected file. Irreversible. Requires confirm.",
+        ),
+      confirm: z
+        .string()
+        .optional()
+        .describe("To delete data, this must equal the project name exactly."),
+    }),
+    state_changing: true,
+    requires_confirmation: true,
+    execute: guarded(async (input, tctx) => {
+      const args = input as { project: string; delete_data?: boolean; confirm?: string };
+      const planned = await planTouchlineRemoval(args.project, ctx);
+      if (!planned.ok) return emit(tctx, planned.error, true);
+      const { plan } = planned;
+
+      const inventory = plan.seasons.length
+        ? plan.seasons
+            .map(
+              (s) =>
+                `  ${s.season} ${s.gender}: ${s.fixtures} fixtures, ${s.players} roster players`,
+            )
+            .join("\n")
+        : "  (no collected seasons)";
+
+      // No confirmation supplied — report only, change nothing.
+      if (args.delete_data && args.confirm !== plan.name) {
+        return emit(
+          tctx,
+          [
+            `Nothing has been deleted. Deleting '${plan.name}' would permanently remove ${plan.rootPath}, containing:`,
+            inventory,
+            `  ${plan.rawPages} archived source page(s)`,
+            "",
+            plan.blocked
+              ? `REFUSED: ${plan.blocked}`
+              : `To proceed, call touchline_remove again with delete_data and confirm exactly "${plan.name}". This cannot be undone. Ask the user before doing so.`,
+          ].join("\n"),
+          true,
+        );
+      }
+
+      const result = await removeTouchlineHome(args.project, ctx, {
+        deleteData: args.delete_data === true,
+        ...(args.confirm ? { confirm: args.confirm } : {}),
+      });
+      if (!result.ok) return emit(tctx, result.error, true);
+      refreshBoard();
+      emit(
+        tctx,
+        args.delete_data ? result.message : `${result.message}\n\nWhat it held:\n${inventory}`,
+      );
+    }),
+  };
+
   const collectTool: ToolDefinition = {
     name: "touchline_collect",
     description:
-      "The front door: collect a conference season (schedule + rosters) into a project and light up the Touchline board. Resolves a conference name and gender to its member programmes from the membership record, initializes an empty directory as a Touchline data home if needed, then builds the season's fixture and roster files. Use when the user asks to get, retrieve, or scrape a schedule, season, or rosters.",
+      "The front door: collect published college-soccer data for a conference or one programme into the project, and light up the Touchline board. For the current season this is the schedule and the roster; for an earlier season it is that season's roster, because each programme serves its current fixtures at every season address. Use when the user asks to get, retrieve, pull down or scrape a schedule or roster.",
     inputSchema: z.object({
-      conference: z.string().describe("Conference name, e.g. 'GAC'."),
+      target: z
+        .string()
+        .optional()
+        .describe("Conference or programme name, e.g. 'GAC' or 'Harding'."),
+      conference: z
+        .string()
+        .optional()
+        .describe("Backward-compatible conference name. Prefer target."),
       gender: z.enum(["men", "women"]).describe("Which programme."),
       season: z
         .number()
         .int()
         .optional()
-        .describe("Season year, e.g. 2026. Defaults to the most recent season with data."),
+        .describe(
+          `Season year. ${TOUCHLINE_V1_SEASON} collects schedule and roster; an earlier season collects that season's roster.`,
+        ),
       project: z
         .string()
         .optional()
@@ -161,7 +280,8 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
     state_changing: true,
     execute: guarded(async (input, tctx) => {
       const args = input as {
-        conference: string;
+        target?: string;
+        conference?: string;
         gender: string;
         season?: number;
         project?: string;
@@ -172,23 +292,35 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
       const out: string[] = [];
 
       // 1. Resolve the target from membership data — never a hardcoded list.
-      const season = args.season ?? new Date().getUTCFullYear();
-      const res = await resolveConference(args.conference, args.gender, season);
-      if (!res.slugs.length) {
+      const season = args.season ?? TOUCHLINE_V1_SEASON;
+      const plan = planForSeason(season);
+      if (plan.empty) {
+        return emit(tctx, unsupportedSeasonMessage(season), true);
+      }
+      out.push(planSummary(plan));
+      const subject = args.target ?? args.conference;
+      if (!subject) {
+        return emit(tctx, "Name a target to collect, such as 'Harding' or 'GAC'.", true);
+      }
+      const target = await resolveTargets(subject, args.gender, season);
+      if (target.kind === "unknown") {
         return emit(
           tctx,
-          `No programmes resolved for ${res.conference} ${args.gender} ${season}. Conferences the membership record knows: ${res.known.join(", ")}.`,
+          `Touchline has no ${args.gender} collection recipe for '${subject}'. Known conferences: ${target.knownConferences.join(", ")}. Known programmes: ${target.suggestions.map(titleFromSlug).join(", ")}.`,
           true,
         );
       }
+      if (!target.slugs.length) {
+        return emit(tctx, `No programmes resolved for ${subject} ${args.gender} ${season}.`, true);
+      }
       out.push(
-        `Resolved ${res.conference} · ${args.gender} · ${season} → ${res.slugs.length} programmes: ${res.slugs
+        `Resolved ${target.conference} · ${args.gender} · ${season} → ${target.slugs.length} programme${target.slugs.length === 1 ? "" : "s"}: ${target.slugs
           .map(titleFromSlug)
           .join(", ")}`,
       );
-      if (res.extrapolated) {
+      if (target.extrapolated) {
         out.push(
-          `NOTE: the membership record is authored through ${res.authoredThrough}. This ${season} member list is ${res.authoredThrough}'s carried forward — well-founded, but not cited to a ${season} source.`,
+          `NOTE: the membership record is authored through ${target.authoredThrough}. This ${season} member list is ${target.authoredThrough}'s carried forward — well-founded, but not cited to a ${season} source.`,
         );
       }
 
@@ -206,34 +338,43 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
           : `Initialized ${root} as a Touchline data home (${boot.created.length} paths created).`,
       );
 
-      // 3. Build the season files from the local archive.
+      // 3. Fetch the official season schedule and roster pages. The collector
+      //    asserts the served season before parsing, so a site's silent
+      //    fallback to last year cannot land in the data home.
       const exec = ctx.getExec();
       const pipelineDir = `${packageDir()}/pipeline`;
-      const run = await exec.runText(
-        "uv",
-        [
-          "run",
-          "--project",
-          pipelineDir,
-          "export-board",
-          "--conference",
-          res.conference,
-          "--gender",
-          args.gender,
-          "--season",
-          String(season),
-          "--programmes",
-          res.slugs.join(","),
-        ],
-        {
-          cwd: root,
-          timeoutMs: 300_000,
-          acceptNonZeroExit: true,
-          env: { TOUCHLINE_DATA_DIR: root },
-        },
-      );
-      if (!run.ok) {
-        out.push(`Season build FAILED: ${run.error}`);
+      const command = [
+        "run",
+        "--project",
+        pipelineDir,
+        "collect-board",
+        "--conference",
+        target.conference,
+        "--gender",
+        args.gender,
+        "--season",
+        String(season),
+        "--programmes",
+        target.slugs.join(","),
+      ];
+      command.push("--layers", plan.attempted.join(","));
+      if (target.extrapolated) command.push("--membership-extrapolated");
+      const run = await exec.runText("uv", command, {
+        cwd: root,
+        timeoutMs: 300_000,
+        acceptNonZeroExit: true,
+        env: { TOUCHLINE_DATA_DIR: root },
+      });
+      // Exit 0 means the coverage manifest was written and describes reality.
+      // Named gaps travel in that manifest and in the run's own output — they
+      // are data, not failure, and discarding a good collection because one
+      // programme's roster is unpublished would be the worse error.
+      if (!run.ok || (run.exitCode != null && run.exitCode !== 0)) {
+        out.push(
+          !run.ok
+            ? `Collection FAILED: ${run.error}`
+            : `Collection FAILED (exit ${run.exitCode}): ${run.data.trim()}`,
+        );
         emit(tctx, out.join("\n"), true);
         return;
       }
@@ -242,9 +383,12 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
       // 4. Point the board at what we just built and repaint.
       setScope(picked.project.id);
       setSeason(season, args.gender);
+      setTeam(target.kind === "programme" ? target.slugs[0] : undefined);
       refreshBoard();
       out.push(
-        `Board now showing ${res.conference} ${args.gender} ${season} — open the Touchline surface.`,
+        `Board now showing ${target.conference} ${args.gender} ${season}${
+          target.kind === "programme" ? ` — ${titleFromSlug(target.slugs[0] as string)}` : ""
+        } — open the Touchline surface.`,
       );
       emit(tctx, out.join("\n"));
     }),
@@ -315,5 +459,5 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
     }),
   };
 
-  return [statusTool, collectTool, focusTool];
+  return [initTool, statusTool, collectTool, focusTool, removeTool];
 }

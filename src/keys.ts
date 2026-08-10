@@ -13,6 +13,3 @@
 // activation failure that takes the whole server boot down, not a warning.
 export const TOUCHLINE_SURFACE_ID = "touchline";
 export const BOARD_KEY = "rib:touchline:board";
-// The setup banner is a host-rendered `view` board, not our html frame: only a
-// board-origin action may collect input and launch work.
-export const SETUP_KEY = "rib:touchline:setup";

@@ -6,13 +6,13 @@
 //
 //     http://www.apache.org/licenses/LICENSE-2.0
 
-import { monogram } from "./membership.ts";
+import { monogram, titleFromSlug } from "./membership.ts";
 import {
-  computeTable,
   type Fixture,
   type FixturesFile,
-  groupByDate,
   isPlayed,
+  type Player,
+  type Roster,
   type RostersFile,
 } from "./model.ts";
 
@@ -21,11 +21,20 @@ import {
 // that the host renders in a sandboxed iframe. A strict CSP applies — no
 // network of any kind — so everything is inline and self-contained.
 //
-// Palette: the frame sits INSIDE the keelson app, so it opens on keelson's own
-// ground (tokens copied from @keelson/shared design-tokens) and adds a sport
-// layer on top. A cream-paper sports programme would read as pasted-in.
-// The host stamps data-theme on the root and pushes changes on
-// `keelson:canvas:html:theme`.
+// DESIGN
+//
+// A season's native artifact is a FIXTURE LIST — a dated, ruled column read top
+// to bottom — not a dashboard of tiles. So the structure here is a single ruled
+// sheet: masthead, season rail, one stat line, then the ledger. Cards, nested
+// panels and stat tiles are deliberately absent; they made every state look
+// identical and buried the one thing this rib uniquely knows, which is how much
+// of the season exists yet.
+//
+// The boldness is spent in ONE place: the season rail. Everything around it is
+// quiet — chalk rules, condensed caps for labels, tabular figures for anything
+// countable. The palette stays on keelson's own ground because the frame sits
+// inside the keelson app; a cream sports-programme palette would read as pasted
+// in next to the host chrome. The identity is carried by structure and type.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function esc(s: unknown): string {
@@ -75,160 +84,403 @@ export function hueFor(slug: string, allSlugs: readonly string[]): string {
 
 const STYLE = `
 :root{
---bg:#0d1429;--bg-soft:#131a30;--card:#161e3b;--card-2:#1f2a4d;--border:#2a3258;--border-soft:#1f2746;
---fg:#d8def0;--fg-strong:#f0f3ff;--muted:#8993b2;--dim:#5e6789;--accent:#9b8eff;
---pitch:#3fbf82;--pitch-soft:#1c3b30;
---win:#6dd28d;--win-soft:#17331f;--loss:#f08793;--loss-soft:#35202a;--draw:#f5c352;--draw-soft:#33290f;
---shadow:0 1px 2px rgba(0,0,0,.35),0 6px 18px rgba(0,0,0,.22);
+--bg:#f4f4f8;--sheet:#fff;--sunk:#eeeef5;
+--ink:#151827;--ink-2:#454b63;--muted:#6b7189;--faint:#9aa0b5;
+--rule:#e2e3ec;--rule-firm:#c9cbd9;
+--accent:#6d4fe0;--accent-soft:#efeafd;
+--played:#15834f;--played-soft:#e3f1e9;
+--live:#c2410c;--live-soft:#fbe9df;
+--late:#be123c;--late-soft:#fbe6ea;
+--draw:#b57a00;
+--gk:#7b61d7;--def:#3f70a9;--mid:#3b8a72;--fwd:#b8820f;
+--gr:#232a45;--sr:#7a2148;--jr:#a03b62;--so:#cf8ba3;--fr:#e9bfcc;
 }
-:root[data-theme="light"]{
---bg:#f3f0fa;--bg-soft:#eeeaf7;--card:#fff;--card-2:#eeeaf7;--border:#c8bfdc;--border-soft:#d9d1e8;
---fg:#161b31;--fg-strong:#0b0f1e;--muted:#5d5876;--dim:#7e7896;--accent:#6d4fe0;
---pitch:#15834f;--pitch-soft:#e2f0e8;
---win:#15834f;--win-soft:#e2f0e8;--loss:#d9385e;--loss-soft:#fbe6ea;--draw:#b57a00;--draw-soft:#f8eed6;
---shadow:0 1px 2px rgba(11,15,30,.06),0 6px 18px rgba(11,15,30,.06);
+:root[data-theme="dark"]{
+--bg:#0d1020;--sheet:#141a2e;--sunk:#0f1425;
+--ink:#e7eaf6;--ink-2:#b3bad2;--muted:#8990a8;--faint:#616880;
+--rule:#242b45;--rule-firm:#333c5c;
+--accent:#9b8eff;--accent-soft:#1e1f42;
+--played:#57cf90;--played-soft:#12301f;
+--live:#f5924d;--live-soft:#33200f;
+--late:#f0879a;--late-soft:#331a22;
+--draw:#f0c04f;
+--gk:#a895ff;--def:#74a7e2;--mid:#61c39f;--fwd:#eac160;
+--gr:#e8ecfb;--sr:#e77ba3;--jr:#c05a82;--so:#7e4260;--fr:#5c3247;
 }
 *{box-sizing:border-box}
-body{margin:0;padding:14px;background:var(--bg);color:var(--fg);
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);padding:12px;
 font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-.cond{font-family:"Avenir Next Condensed","Arial Narrow","Helvetica Neue",sans-serif;font-weight:700}
-.wrap{display:grid;gap:12px}
-.head{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 15px;
-display:flex;flex-wrap:wrap;align-items:center;gap:11px;box-shadow:var(--shadow);position:relative;overflow:hidden}
-.head::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--pitch),var(--accent))}
-.head h1{margin:0;font-size:18px;letter-spacing:.04em;text-transform:uppercase;color:var(--fg-strong);
-font-family:"Avenir Next Condensed","Arial Narrow",sans-serif;font-weight:700}
-.head .sub{color:var(--muted);font-size:12.5px;font-variant-numeric:tabular-nums}
-.head .sp{margin-left:auto}
-.stamp{color:var(--dim);font-size:11.5px;font-variant-numeric:tabular-nums}
-.lens{display:flex;border:1px solid var(--border);border-radius:7px;overflow:hidden;flex-wrap:wrap}
-.lens button{appearance:none;border:0;background:transparent;color:var(--muted);font:600 12px/1 inherit;
-letter-spacing:.06em;text-transform:uppercase;padding:7px 12px;cursor:pointer}
-.lens button[aria-selected="true"]{background:var(--accent);color:#fff}
-.lens button:focus-visible{outline:2px solid var(--pitch);outline-offset:-2px}
-.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(122px,1fr));gap:9px}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 12px;box-shadow:var(--shadow)}
-.stat b{display:block;font-size:23px;line-height:1.1;color:var(--fg-strong);font-variant-numeric:tabular-nums;
-font-family:"Avenir Next Condensed","Arial Narrow",sans-serif;font-weight:700}
-.stat span{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim)}
-.stat.warn b{color:var(--draw)}
-.split{display:grid;grid-template-columns:1fr 280px;gap:12px;align-items:start}
-@media(max-width:840px){.split{grid-template-columns:1fr}}
-.panel{background:var(--card);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow);overflow:hidden}
-.panel>h2{margin:0;padding:10px 14px;border-bottom:1px solid var(--border-soft);font-size:11.5px;
-letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;display:flex;align-items:center;gap:8px}
-.panel>h2 .n{margin-left:auto;color:var(--dim);letter-spacing:0;font-size:11.5px;font-variant-numeric:tabular-nums}
-.pb{padding:12px 14px 15px}
-.day{margin:0 0 15px}.day:last-child{margin-bottom:0}
-.day h3{margin:0 0 8px;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--pitch);
-font-weight:700;display:flex;align-items:center;gap:8px}
-.day h3::after{content:"";flex:1;height:1px;background:var(--border-soft)}
-.fx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:9px}
-.fx{background:var(--bg-soft);border:1px solid var(--border-soft);border-left:3px solid var(--dim);
-border-radius:8px;padding:9px 11px;display:grid;gap:5px}
-.fx .side{display:flex;align-items:center;gap:7px}
-.fx .hue{width:3px;height:14px;border-radius:2px;flex:none}
-.fx .nm{font-weight:600;font-size:13.5px;color:var(--fg-strong);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.fx .nm.dim{color:var(--muted);font-weight:500}
-.fx .g{margin-left:auto;font-size:17px;font-variant-numeric:tabular-nums;color:var(--fg-strong);
-font-family:"Avenir Next Condensed","Arial Narrow",sans-serif;font-weight:700}
-.fx .g.dim{color:var(--muted)}
-.fx .ft{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--dim);overflow:hidden}
-.tag{font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:2px 6px;border-radius:3px;white-space:nowrap}
-.fx.up{border-left-color:var(--pitch)}.fx.up .tag{background:var(--pitch-soft);color:var(--pitch)}
-.fx.won{border-left-color:var(--win)}.fx.won .tag{background:var(--win-soft);color:var(--win)}
-.fx.lost{border-left-color:var(--loss)}.fx.lost .tag{background:var(--loss-soft);color:var(--loss)}
-.fx.tied{border-left-color:var(--draw)}.fx.tied .tag{background:var(--draw-soft);color:var(--draw)}
-.fx.live{border-left-color:var(--loss)}.fx.live .tag{background:var(--loss-soft);color:var(--loss)}
-.fx.off{border-left-color:var(--draw)}.fx.off .tag{background:var(--draw-soft);color:var(--draw)}
-table{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
-th{text-align:left;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);
-font-weight:700;padding:5px;border-bottom:1px solid var(--border)}
-td{padding:5px;border-bottom:1px solid var(--border-soft)}
-td.r{text-align:right}.pts{font-weight:700;color:var(--fg-strong)}
-.chip{display:inline-block;width:3px;height:11px;border-radius:2px;margin-right:7px;vertical-align:-1px}
-.empty{text-align:center;padding:20px 12px}
-.empty .big{font-size:42px;line-height:1;color:var(--pitch);font-variant-numeric:tabular-nums;
-font-family:"Avenir Next Condensed","Arial Narrow",sans-serif;font-weight:700}
-.empty .lab{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-top:3px}
-.empty p{color:var(--muted);font-size:12.5px;margin:10px 0 0}
-.hero{background:var(--card);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow);
-padding:26px 22px;text-align:center;max-width:640px;margin:0 auto}
-.hero h1{margin:0 0 6px;font-size:23px;color:var(--fg-strong);
-font-family:"Avenir Next Condensed","Arial Narrow",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.03em}
-.hero p{color:var(--muted);margin:0 0 14px;font-size:13.5px}
-.hero .say{display:inline-block;background:var(--bg-soft);border:1px solid var(--border);border-radius:8px;
-padding:11px 15px;color:var(--fg-strong);font-size:13.5px;text-align:left}
-.hero .say b{color:var(--pitch);display:block;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:5px}
-.hero code{background:var(--bg-soft);border:1px solid var(--border-soft);border-radius:4px;padding:1px 5px;font-size:12px}
-.team-head{display:flex;align-items:center;gap:12px;padding:13px 14px 3px;flex-wrap:wrap}
-.crest{width:38px;height:38px;border-radius:8px;display:grid;place-items:center;color:#fff;font-size:14px;
-font-family:"Avenir Next Condensed","Arial Narrow",sans-serif;font-weight:700;flex:none}
-.team-head h2{margin:0;font-size:24px;text-transform:uppercase;color:var(--fg-strong);
-font-family:"Avenir Next Condensed","Arial Narrow",sans-serif;font-weight:700}
-.team-head .rec{margin-left:auto;text-align:right}
-.team-head .rec b{font-size:20px;color:var(--fg-strong);font-variant-numeric:tabular-nums;
-font-family:"Avenir Next Condensed","Arial Narrow",sans-serif}
-.team-head .rec span{display:block;font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim)}
-.run{display:flex;gap:4px;padding:10px 14px 4px;overflow-x:auto}
-.tick{flex:none;width:30px;height:34px;border-radius:5px;display:grid;place-items:center;font-size:11px;
-font-weight:700;border:1.5px solid var(--border);color:var(--dim)}
-.tick small{font-size:8px;font-weight:600}
-.tick.w{background:var(--win-soft);border-color:var(--win);color:var(--win)}
-.tick.l{background:var(--loss-soft);border-color:var(--loss);color:var(--loss)}
-.tick.d{background:var(--draw-soft);border-color:var(--draw);color:var(--draw)}
-.tick.q{border-style:dashed}
-.rost tr{cursor:pointer}
-.rost tr:hover td{background:var(--card-2)}
-.rost td.no{color:var(--pitch);font-weight:700;width:28px}
-.hint{color:var(--dim);font-size:11px;padding:7px 14px 12px}
-.note{color:var(--dim);font-size:11.5px;text-align:center}
-.alarm{background:var(--loss-soft);border:1px solid var(--loss);border-radius:9px;padding:11px 14px;color:var(--fg-strong)}
-.alarm b{color:var(--loss)}
-.warnbox{background:var(--draw-soft);border:1px solid var(--draw);border-radius:9px;padding:10px 13px;font-size:12.5px}
-.warnbox b{color:var(--draw)}
+/* Condensed caps are the scoreboard voice: labels, team names, section heads. */
+.cond{font-family:"Avenir Next Condensed","Roboto Condensed","Arial Narrow","Helvetica Neue",sans-serif;
+font-weight:700;letter-spacing:.02em}
+.num{font-variant-numeric:tabular-nums}
+
+.sheet{background:var(--sheet);border:1px solid var(--rule-firm);border-radius:10px;overflow:hidden}
+
+/* ── masthead ─────────────────────────────────────────────────────────── */
+.mast{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 14px;padding:14px 18px 12px}
+.mast h1{margin:0;font-size:25px;line-height:1;text-transform:uppercase;letter-spacing:.015em;
+font-family:"Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;font-weight:700}
+.mast .season{font-size:25px;line-height:1;color:var(--faint);font-variant-numeric:tabular-nums;
+font-family:"Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;font-weight:700}
+.mast .sp{margin-left:auto}
+.mast .stamp{font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums;white-space:nowrap}
+.dek{padding:0 18px 12px;margin:0;font-size:12.5px;color:var(--muted)}
+.dek b{color:var(--ink-2);font-weight:600}
+
+/* ── lens switch ──────────────────────────────────────────────────────── */
+.lens{display:flex;gap:2px;padding:0 18px 12px;flex-wrap:wrap}
+.lens button{appearance:none;border:1px solid var(--rule-firm);background:transparent;color:var(--muted);
+font:700 10.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;letter-spacing:.09em;
+text-transform:uppercase;padding:6px 10px;cursor:pointer;border-radius:4px}
+.lens button:hover{color:var(--ink);border-color:var(--muted)}
+.lens button[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:var(--sheet)}
+.lens button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+/* ── the season rail — the signature ──────────────────────────────────── */
+.rail{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+background:var(--sunk);padding:12px 18px;display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap}
+/* Weeks and month labels share one grid so a label sits exactly over the weeks
+   it spans — the rail has to read as a calendar, not an abstract bar. */
+.rail-strip{flex:0 0 auto}
+.rail-weeks{display:grid;grid-template-columns:repeat(var(--n),16px);gap:3px;align-items:end;
+padding-bottom:5px;border-bottom:1px solid var(--rule-firm)}
+.wk{display:flex;flex-direction:column-reverse;gap:2px;min-height:9px}
+.wk i{display:block;height:9px;border-radius:1.5px;border:1px solid var(--rule-firm);background:transparent}
+.rail-months{display:grid;grid-template-columns:repeat(var(--n),16px);gap:3px;margin-top:5px}
+.rail-months span{font:700 9px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.1em;text-transform:uppercase;color:var(--faint);white-space:nowrap}
+.wk i.played{background:var(--played);border-color:var(--played)}
+.wk i.live{background:var(--live);border-color:var(--live)}
+.wk i.late{background:var(--late-soft);border-color:var(--late)}
+.wk i.off{background:repeating-linear-gradient(45deg,var(--rule),var(--rule) 2px,transparent 2px,transparent 4px)}
+.wk.bye i{border-style:dotted;opacity:.5}
+.wk.now i{border-color:var(--accent)}
+.rail-foot{flex:1 1 200px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+font-size:11.5px;color:var(--muted);padding-bottom:1px}
+.rail-foot b{color:var(--ink);font-weight:650}
+.rail-foot .late-n{color:var(--late);font-weight:650}
+
+/* ── one ruled stat line, not tiles ───────────────────────────────────── */
+.tally{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--rule)}
+.tally div{flex:1 1 108px;padding:10px 18px;border-right:1px solid var(--rule)}
+.tally div:last-child{border-right:0}
+.tally b{display:block;font-size:20px;line-height:1.1;font-variant-numeric:tabular-nums;
+font-family:"Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;font-weight:700}
+.tally span{display:block;margin-top:1px;font:700 9.5px/1.3 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.13em;text-transform:uppercase;color:var(--faint)}
+.tally .warn b{color:var(--live)}
+
+/* ── notices ──────────────────────────────────────────────────────────── */
+.note{margin:0;padding:10px 18px;font-size:12px;line-height:1.5;color:var(--ink-2);
+border-bottom:1px solid var(--rule);background:var(--sunk)}
+.note b{font-weight:650;color:var(--ink)}
+.note.flag{border-left:3px solid var(--live);background:var(--live-soft)}
+
+/* ── section head ─────────────────────────────────────────────────────── */
+.sec{display:flex;align-items:baseline;gap:10px;padding:12px 18px 8px}
+.sec h2{margin:0;font:700 11px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.sec .count{margin-left:auto;font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
+
+/* ── fixture ledger ───────────────────────────────────────────────────── */
+.led{border-top:1px solid var(--rule)}
+.row{display:grid;grid-template-columns:62px 22px 1fr auto;gap:0 12px;align-items:baseline;
+padding:9px 18px;border-bottom:1px solid var(--rule);cursor:pointer}
+.row:hover{background:var(--sunk)}
+.row:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.row .d{font:700 11px/1.35 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-variant-numeric:tabular-nums}
+.row .d em{display:block;font-style:normal;color:var(--faint);font-size:9.5px;letter-spacing:.12em}
+.row.both{grid-template-columns:62px 1fr auto}
+.row .ha{font:700 9.5px/1.7 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.06em;color:var(--faint);border:1px solid var(--rule-firm);border-radius:3px;
+text-align:center;height:17px}
+.row .ha.h{color:var(--ink);border-color:var(--rule-firm)}
+.row .opp{min-width:0}
+.row .opp .n{display:block;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .opp .v{display:block;font-size:11px;color:var(--faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .r{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.row .r .sc{font:700 16px/1.1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif}
+.row .r .tm{font-size:12px;color:var(--muted)}
+.row .r .st{display:block;font:700 9px/1.5 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.13em;text-transform:uppercase;color:var(--faint)}
+.row.conf{box-shadow:inset 3px 0 0 var(--accent)}
+.row.won .r .sc{color:var(--played)}
+.row.lost .r .sc{color:var(--late)}
+.row.tied .r .sc{color:var(--draw)}
+.row.off{opacity:.55}
+.row.off .r .st{color:var(--late)}
+.chip{display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:6px;vertical-align:baseline}
+
+/* ── matchday matrix (conference lens) ────────────────────────────────── */
+.key{margin-left:auto;display:flex;gap:12px;align-items:center;font-size:11px;color:var(--muted);flex-wrap:wrap}
+.key span{display:inline-flex;align-items:center;gap:5px}
+.key i{display:inline-block;width:16px;height:12px;border-radius:3px;border:1px solid var(--rule-firm)}
+.key .kh i{background:var(--accent-soft);border-color:transparent}
+.key .ks i{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.mx-sel{display:flex;align-items:center;gap:12px;margin:4px 18px 12px;border:1px solid var(--rule);
+border-radius:8px;background:var(--sunk);padding:9px 13px;min-height:54px}
+.mx-sel .db{flex:0 0 48px;text-align:center;border-right:1px solid var(--rule-firm);padding-right:12px}
+.mx-sel .db .mo{font:700 9.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.mx-sel .db .dy{font:700 22px/1.15 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+font-variant-numeric:tabular-nums}
+.mx-sel .tt{font-size:13.5px;font-weight:600;line-height:1.3}
+.mx-sel .nt{font-size:11.5px;color:var(--muted);margin-top:1px}
+.mx-wrap{overflow-x:auto;border-top:1px solid var(--rule);
+scrollbar-width:thin;scrollbar-color:var(--rule-firm) transparent}
+.mx{border-collapse:separate;border-spacing:0;min-width:100%}
+.mx th,.mx td{padding:0;border-bottom:1px solid var(--rule);text-align:center}
+.mx thead th{background:var(--sunk)}
+.mx .mo-h{font:700 9px/2.2 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.14em;text-transform:uppercase;color:var(--faint);border-left:1px solid var(--rule)}
+.mx .dy-h{width:48px;min-width:48px;border-left:1px solid var(--rule);padding:4px 2px 6px;
+font:700 10.5px/1.25 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.04em;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.mx .dy-h em{display:block;font-style:normal;font-size:8.5px;letter-spacing:.12em;color:var(--faint)}
+.mx .tm-h{position:sticky;left:0;z-index:3;background:var(--sunk);min-width:148px;width:148px;
+text-align:left;padding:6px 12px;border-right:1px solid var(--rule-firm);
+font:700 9.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.mx .tm{position:sticky;left:0;z-index:2;background:var(--sheet);text-align:left;
+border-right:1px solid var(--rule-firm);padding:0}
+.mx .tm button{appearance:none;border:0;background:transparent;color:var(--ink);cursor:pointer;
+display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:5px 12px;font:inherit;text-align:left}
+.mx .tm .cd{flex:0 0 36px;display:inline-flex;align-items:center;justify-content:center;height:24px;
+border:1px solid var(--rule-firm);border-radius:5px;background:var(--sunk);color:var(--ink-2);
+font:700 9.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;letter-spacing:.05em}
+.mx .tm .nm{font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mx tr.foc .tm{box-shadow:inset 3px 0 0 var(--accent)}
+.mx tr.foc .tm .cd{border-color:var(--accent);color:var(--accent)}
+.mx td.c{width:48px;min-width:48px;height:46px;border-left:1px solid var(--rule);padding:4px 3px}
+.m{appearance:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+width:100%;height:100%;border:1px solid var(--rule-firm);border-radius:5px;background:transparent;
+color:var(--ink);cursor:pointer;padding:0;
+font:700 10px/1.1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;letter-spacing:.04em}
+.m.h{background:var(--accent-soft);border-color:transparent}
+.m.nc{border-style:dashed;color:var(--muted)}
+.m .sc{font-size:9px;letter-spacing:.02em;font-variant-numeric:tabular-nums;color:var(--muted)}
+.m.w .sc{color:var(--played)}.m.l .sc{color:var(--late)}.m.d .sc{color:var(--draw)}
+.m.lt{border-color:var(--late);border-style:dotted}
+.m.rel:not(.is-sel){box-shadow:inset 0 -3px 0 var(--accent)}
+.m.is-sel{border-color:var(--accent);border-style:solid;box-shadow:0 0 0 1px var(--accent)}
+.m.dim{opacity:.25}
+.m:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.mx-foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+padding:9px 18px 13px;font-size:11px;color:var(--muted)}
+.mx-foot b{color:var(--ink);font-weight:650}
+.mx-foot .late-n{color:var(--late);font-weight:650}
+
+/* ── roster ───────────────────────────────────────────────────────────── */
+/* Composition first: two bars say what the squad IS before the sheet lists
+   who is in it. Position colours are role colours, never identity hues. */
+.bars{display:grid;gap:8px;padding:12px 18px;background:var(--sunk);
+border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.bar-row{display:grid;grid-template-columns:56px 1fr;gap:10px;align-items:center}
+.bar-row .lbl{font:700 9.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.11em;text-transform:uppercase;color:var(--faint)}
+.bar{display:flex;height:17px;overflow:hidden;border-radius:3px}
+.bar span{display:flex;align-items:center;justify-content:center;color:var(--bg);
+font:700 9px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+min-width:0;overflow:hidden;white-space:nowrap}
+.bar .gk{background:var(--gk)}.bar .d{background:var(--def)}
+.bar .m{background:var(--mid)}.bar .f{background:var(--fwd)}
+.bar .fr{background:var(--fr)}.bar .so{background:var(--so)}.bar .jr{background:var(--jr)}
+.bar .sr{background:var(--sr)}.bar .gr{background:var(--gr)}
+/* The low-tenure end of the ramp sits near the theme ground, so its counts
+   take ink rather than the bg text the saturated segments carry. */
+.bar .so,.bar .fr{color:var(--ink)}
+.bar .un{background:repeating-linear-gradient(45deg,var(--rule-firm),var(--rule-firm) 3px,transparent 3px,transparent 6px);color:var(--muted)}
+
+/* Multi-column packing: a short group (four goalkeepers) shares its column
+   with the next group instead of leaving a group-sized hole in a grid row. */
+.rgrid{columns:300px;column-gap:28px;padding:10px 18px 16px}
+.rgroup{min-width:0;break-inside:avoid;-webkit-column-break-inside:avoid}
+/* A long group must be allowed to flow across columns — an unbreakable
+   45-player block would otherwise render as one giant column. */
+.rgroup.flow{break-inside:auto;-webkit-column-break-inside:auto}
+.rgroup h3{break-after:avoid;break-inside:avoid}
+.prow{break-inside:avoid}
+.rgroup h3{display:flex;align-items:baseline;gap:7px;margin:10px 0 0;padding:0 2px 5px;
+border-bottom:1px solid var(--rule-firm);font:700 10px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.rgroup h3 i{display:inline-block;width:14px;height:7px;border-radius:2px;align-self:center}
+.rgroup h3 i.gk{background:var(--gk)}.rgroup h3 i.d{background:var(--def)}
+.rgroup h3 i.m{background:var(--mid)}.rgroup h3 i.f{background:var(--fwd)}
+.rgroup h3 i.un{background:repeating-linear-gradient(45deg,var(--rule-firm),var(--rule-firm) 3px,transparent 3px,transparent 6px)}
+.rgroup h3 .n{margin-left:auto;color:var(--faint);font-size:10px;letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.prow{display:grid;grid-template-columns:26px minmax(0,1fr) 42px 38px;gap:0 10px;
+align-items:baseline;padding:6px 2px 7px;border-bottom:1px solid var(--rule)}
+.prow .no{font:700 12px/1.4 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+font-variant-numeric:tabular-nums;color:var(--faint);text-align:right}
+.prow .nm{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prow .ht{font:700 11px/1.5 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+font-variant-numeric:tabular-nums;color:var(--ink-2);text-align:right;white-space:nowrap}
+/* A low-key echo of the class ramp: a small tick in the class colour beside
+   the muted abbrev — enough to tell a senior from a freshman at a scan
+   without shouting on every row. */
+.prow .yr{justify-self:end;display:inline-flex;align-items:center;gap:4px;
+font:700 9.5px/1.7 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.05em;color:var(--muted);white-space:nowrap}
+.prow .yr i{display:inline-block;width:7px;height:7px;border-radius:2px}
+.prow .yr i.gr{background:var(--gr)}.prow .yr i.sr{background:var(--sr)}
+.prow .yr i.jr{background:var(--jr)}.prow .yr i.so{background:var(--so)}
+.prow .yr i.fr{background:var(--fr)}
+/* Hometown lives ON the row — a second line under the name, city plain and an
+   international region set apart, so the squad's reach is readable at a scan. */
+.prow .home{grid-column:2 / -1;font-size:10.5px;color:var(--muted);
+white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prow .home b{font-weight:650;color:var(--ink-2);letter-spacing:.03em}
+.prow .home .fl{font-style:normal;color:var(--accent);font-size:10px;margin-right:3px}
+
+/* ── roster balance (conference lens) ─────────────────────────────────── */
+.rbal{width:100%;border-collapse:collapse;font-size:12px}
+.rbal th{background:var(--sunk);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule-firm);
+padding:7px 9px;text-align:right;white-space:nowrap;
+font:700 9.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.rbal td{padding:7px 9px;border-bottom:1px solid var(--rule);text-align:right;font-variant-numeric:tabular-nums}
+.rbal th:first-child,.rbal td:first-child{text-align:left;padding-left:18px}
+.rbal th:last-child,.rbal td:last-child{padding-right:18px}
+.rbal td b{font-weight:650}
+.rbal .dim{color:var(--faint)}
+.rbal .open{appearance:none;border:0;background:transparent;color:var(--ink);cursor:pointer;
+display:inline-flex;align-items:center;gap:8px;font:inherit;padding:0;text-align:left}
+.rbal .open:hover .tn2{text-decoration:underline}
+.rbal .open:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.rbal .cd2{display:inline-flex;align-items:center;justify-content:center;width:38px;height:23px;
+border:1px solid var(--rule-firm);border-radius:5px;background:var(--sunk);color:var(--ink-2);
+font:700 9px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;letter-spacing:.05em}
+.rbal .tn2{font-weight:600;white-space:nowrap}
+/* Both composition bars — position and class — share one treatment: tall
+   enough to carry their counts inline, read left to right. */
+.rbal .cmix{display:flex;height:14px;min-width:128px;border-radius:2px;overflow:hidden;margin-left:auto}
+.rbal .cmix span{display:flex;align-items:center;justify-content:center;color:var(--bg);
+font:700 8.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+min-width:0;overflow:hidden;white-space:nowrap}
+.rbal .cmix .gk{background:var(--gk)}.rbal .cmix .d{background:var(--def)}
+.rbal .cmix .m{background:var(--mid)}.rbal .cmix .f{background:var(--fwd)}
+.rbal .cmix .fr{background:var(--fr)}.rbal .cmix .so{background:var(--so)}
+.rbal .cmix .jr{background:var(--jr)}.rbal .cmix .sr{background:var(--sr)}
+.rbal .cmix .gr{background:var(--gr)}
+.rbal .cmix .so,.rbal .cmix .fr{color:var(--ink)}
+.rbal .cmix .un,.rbal .cmix.unp{background:repeating-linear-gradient(45deg,var(--rule-firm),var(--rule-firm) 3px,transparent 3px,transparent 6px);color:var(--muted)}
+.rbal-foot .key i.fr{background:var(--fr)}.rbal-foot .key i.so{background:var(--so)}
+.rbal-foot .key i.jr{background:var(--jr)}.rbal-foot .key i.sr{background:var(--sr)}
+.rbal-foot .key i.gr{background:var(--gr)}
+.rbal-foot{display:flex;justify-content:space-between;gap:8px 18px;flex-wrap:wrap;
+padding:9px 18px 13px;font-size:11px;color:var(--muted)}
+.rbal-foot .key{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rbal-foot .key span{display:inline-flex;align-items:center;gap:4px}
+.rbal-foot .key i{display:inline-block;width:15px;height:7px;border-radius:2px}
+.rbal-foot .key i.gk{background:var(--gk)}.rbal-foot .key i.d{background:var(--def)}
+.rbal-foot .key i.m{background:var(--mid)}.rbal-foot .key i.f{background:var(--fwd)}
+
+/* ── empty / alarm states ─────────────────────────────────────────────── */
+.hero{padding:34px 22px 30px;text-align:center}
+.hero h1{margin:0 0 8px;font-size:26px;text-transform:uppercase;letter-spacing:.02em;
+font-family:"Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;font-weight:700}
+.hero p{margin:0 auto;max-width:52ch;color:var(--muted);font-size:13.5px}
+.say{margin:18px auto 0;max-width:52ch;border:1px dashed var(--rule-firm);border-radius:6px;
+padding:11px 14px;text-align:left;font-size:13px;color:var(--ink-2)}
+.say b{display:block;font:700 9.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:5px}
+.alarm{border:1px solid var(--late);background:var(--late-soft);border-radius:8px;padding:13px 15px;font-size:13px}
+.alarm b{color:var(--late)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 `;
 
 const SCRIPT = `
 (function(){
   function post(type,payload){
-    try{parent.postMessage({channel:"keelson:canvas:html:action",type:type,payload:payload||{}},"*");}catch(e){}
+    try{parent.postMessage({channel:"keelson:canvas:html:action",type:type,payload:payload},"*")}catch(e){}
   }
-  document.addEventListener("click",function(e){
-    var el=e.target&&e.target.closest?e.target.closest("[data-act]"):null;
+  document.addEventListener("click",function(ev){
+    var el=ev.target.closest("[data-act]");
     if(!el)return;
-    var type=el.getAttribute("data-act");
-    var raw=el.getAttribute("data-payload");
-    var payload={};
-    if(raw){try{payload=JSON.parse(raw);}catch(_){}}
-    post(type,payload);
+    var p={};
+    try{p=JSON.parse(el.getAttribute("data-payload")||"{}")}catch(e){}
+    post(el.getAttribute("data-act"),p);
   });
-  window.addEventListener("message",function(e){
-    var d=e&&e.data;
-    if(d&&d.channel==="keelson:canvas:html:theme"&&(d.theme==="dark"||d.theme==="light")){
+  window.addEventListener("message",function(ev){
+    var d=ev&&ev.data;
+    if(d&&d.channel==="keelson:canvas:html:theme"&&d.theme){
       document.documentElement.setAttribute("data-theme",d.theme);
     }
   });
+
+  // The matchday matrix is interactive without the host: following a team and
+  // inspecting a match are reading acts, so they stay inside the frame.
+  var mx=document.querySelector(".mx");
+  if(mx){
+    var sum=document.getElementById("mx-sum");
+    var card={mo:document.getElementById("mx-mo"),dy:document.getElementById("mx-dy"),
+              tt:document.getElementById("mx-tt"),nt:document.getElementById("mx-nt")};
+    var foc=null;
+    mx.addEventListener("click",function(ev){
+      var b=ev.target.closest("button");
+      if(!b)return;
+      if(b.hasAttribute("data-g")){
+        var g=b.getAttribute("data-g");
+        var ms=mx.querySelectorAll("[data-g]");
+        for(var i=0;i<ms.length;i++){
+          var on=ms[i].getAttribute("data-g")===g;
+          ms[i].classList.toggle("is-sel",on);
+          ms[i].setAttribute("aria-pressed",on?"true":"false");
+        }
+        if(card.tt){
+          card.mo.textContent=b.getAttribute("data-mo")||"";
+          card.dy.textContent=b.getAttribute("data-dy")||"";
+          card.tt.textContent=b.getAttribute("data-tt")||"";
+          card.nt.textContent=b.getAttribute("data-nt")||"";
+        }
+      }else if(b.hasAttribute("data-follow")){
+        var t=b.getAttribute("data-follow");
+        foc=(foc===t)?null:t;
+        var rows=mx.querySelectorAll("tr[data-team]");
+        for(var i=0;i<rows.length;i++){
+          rows[i].classList.toggle("foc",rows[i].getAttribute("data-team")===foc);
+        }
+        var all=mx.querySelectorAll("[data-g]");
+        for(var i=0;i<all.length;i++){
+          var rel=!!foc&&(all[i].getAttribute("data-h")===foc||all[i].getAttribute("data-a")===foc);
+          all[i].classList.toggle("dim",!!foc&&!rel);
+          all[i].classList.toggle("rel",rel);
+        }
+        if(sum){
+          var row=foc?mx.querySelector('tr[data-team="'+foc+'"]'):null;
+          sum.textContent=row?row.getAttribute("data-sum"):sum.getAttribute("data-default");
+        }
+      }
+    });
+  }
 })();
 `;
 
 function page(body: string): string {
-  return `<style>${STYLE}</style><div class="wrap">${body}</div><script>${SCRIPT}</script>`;
+  return `<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>${STYLE}</style></head><body><div class="sheet">${body}</div><script>${SCRIPT}</script></body></html>`;
 }
 
-// ── Empty / guidance states ─────────────────────────────────────────────────
+// ── states before there is a season ─────────────────────────────────────────
 
-export function composeNoProject(projectNames: readonly string[]): string {
-  const list = projectNames.length
-    ? `<p class="note">Registered projects: ${projectNames.map(esc).join(" · ")}</p>`
-    : `<p class="note">No projects registered yet — <code>keelson project add &lt;name&gt; &lt;dir&gt;</code>.</p>`;
+export function composeNoProject(dataHomeNames: readonly string[]): string {
+  const list = dataHomeNames.length
+    ? `<p class="dek" style="text-align:center">Touchline data homes: ${dataHomeNames.map(esc).join(" · ")}</p>`
+    : "";
   return page(`
     <div class="hero">
       <h1>Touchline</h1>
-      <p>Pick a project above to choose where your soccer data lives. An empty folder is the right starting point — Touchline will set it up.</p>
-      <div class="say"><b>Then say in chat</b>Get the current schedule and rosters for D2 GAC men's soccer.</div>
-    </div>
-    ${list}`);
+      <p>${
+        dataHomeNames.length
+          ? "Pick one of your data homes in the project picker above."
+          : "No Touchline data home exists yet — run <code>/touchline my-soccer</code> to create one in the Keelson workspace."
+      }</p>
+      ${list}
+    </div>`);
 }
 
 export function composeNotAHome(projectName: string, empty: boolean): string {
@@ -237,10 +489,10 @@ export function composeNotAHome(projectName: string, empty: boolean): string {
       <h1>${esc(projectName)}</h1>
       <p>${
         empty
-          ? "This folder is empty — exactly what a first collection expects. Ask in chat and Touchline will set it up and collect a season into it."
-          : "This folder is not a Touchline data home yet. Ask in chat to collect a season; Touchline will initialize it without disturbing what is already here."
+          ? "This folder is empty — exactly what Touchline expects. Open the Touchline chat with ✦ above and ask for a season; it initializes the folder and collects in one go."
+          : "This folder is not a Touchline data home yet. Open the Touchline chat with ✦ above and ask for a season; Touchline will not disturb what is already here."
       }</p>
-      <div class="say"><b>Say in chat</b>Get the current schedule and rosters for D2 GAC men's soccer.</div>
+      <div class="say"><b>Say in chat</b>Get the 2026 schedule and roster for Harding men's soccer.</div>
     </div>`);
 }
 
@@ -248,19 +500,21 @@ export function composeNoSeasons(projectName: string): string {
   return page(`
     <div class="hero">
       <h1>${esc(projectName)}</h1>
-      <p>This is a Touchline data home, but no season has been collected into it yet.</p>
-      <div class="say"><b>Say in chat</b>Get the current schedule and rosters for D2 GAC men's soccer.</div>
+      <p>A Touchline data home, with nothing collected into it yet.</p>
+      <div class="say"><b>Say in chat</b>Get the 2026 schedule and roster for Harding men's soccer.</div>
     </div>`);
 }
 
 export function composeUnreadable(detail: string): string {
   return page(`
-    <div class="alarm"><b>THE BOARD DID NOT RENDER.</b> ${esc(detail)}
-    <div style="margin-top:6px;color:var(--muted);font-size:12.5px">
-    This is a read failure, not an empty season. The data files are unchanged — nothing has been lost.</div></div>`);
+    <div style="padding:14px">
+      <div class="alarm"><b>THE BOARD DID NOT RENDER.</b> ${esc(detail)}
+      <div style="margin-top:6px;color:var(--muted);font-size:12px">
+      This is a read failure, not an empty season. The data files are unchanged — nothing has been lost.</div></div>
+    </div>`);
 }
 
-// ── The board ───────────────────────────────────────────────────────────────
+// ── the board ───────────────────────────────────────────────────────────────
 
 export interface BoardInput {
   projectName: string;
@@ -272,49 +526,23 @@ export interface BoardInput {
   today: string;
 }
 
-function fixtureClass(f: Fixture, perspective?: string): string {
-  if (f.status === "postponed" || f.status === "cancelled") return "off";
-  if (f.status === "live") return "live";
-  if (!isPlayed(f)) return "up";
-  if (!perspective) return "won"; // neutral 'final' styling in the conference lens
-  const hs = f.home_score as number;
-  const as = f.away_score as number;
-  if (hs === as) return "tied";
-  const teamIsHome = f.home === perspective;
-  const teamWon = teamIsHome ? hs > as : as > hs;
-  return teamWon ? "won" : "lost";
-}
+const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+const MONS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
-function statusTag(f: Fixture): string {
-  if (f.status === "postponed") return "Postponed";
-  if (f.status === "cancelled") return "Cancelled";
-  if (f.status === "live") return esc(f.clock ?? "Live");
-  if (isPlayed(f)) {
-    const hs = f.home_score as number;
-    const as = f.away_score as number;
-    return hs === as ? "Final · Draw" : "Final";
-  }
-  return f.time ? esc(fmtTime(f.time)) : "TBA";
+function parts(iso: string): { y: number; m: number; d: number; wd: number } {
+  const p = iso.split("-").map(Number);
+  const y = p[0] ?? 1970;
+  const m = p[1] ?? 1;
+  const d = p[2] ?? 1;
+  return { y, m, d, wd: new Date(Date.UTC(y, m - 1, d)).getUTCDay() };
 }
 
 function fmtTime(hhmm: string): string {
-  const parts = hhmm.split(":").map(Number);
-  const h = parts[0] ?? 0;
-  const m = parts[1] ?? 0;
-  const ampm = h >= 12 ? "PM" : "AM";
+  const p = hhmm.split(":").map(Number);
+  const h = p[0] ?? 0;
+  const m = p[1] ?? 0;
   const h12 = h % 12 === 0 ? 12 : h % 12;
-  return `${h12}:${String(m).padStart(2, "0")} ${ampm}`;
-}
-
-function fmtDate(iso: string): string {
-  const parts = iso.split("-").map(Number);
-  const y = parts[0] ?? 1970;
-  const m = parts[1] ?? 1;
-  const d = parts[2] ?? 1;
-  const dt = new Date(Date.UTC(y, m - 1, d));
-  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  const mons = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  return `${days[dt.getUTCDay()]} · ${mons[dt.getUTCMonth()]} ${dt.getUTCDate()}`;
+  return `${h12}:${String(m).padStart(2, "0")} ${h >= 12 ? "PM" : "AM"}`;
 }
 
 function daysBetween(fromIso: string, toIso: string): number {
@@ -324,55 +552,792 @@ function daysBetween(fromIso: string, toIso: string): number {
   return Math.round((b - a) / 86_400_000);
 }
 
-function fixtureCard(
+function addDays(iso: string, n: number): string {
+  const t = Date.parse(`${iso}T00:00:00Z`) + n * 86_400_000;
+  return new Date(t).toISOString().slice(0, 10);
+}
+
+function weekOf(iso: string, startIso: string): number {
+  return Math.max(0, Math.floor(daysBetween(startIso, iso) / 7));
+}
+
+function displayName(slug: string, names: Map<string, string>): string {
+  // A non-conference opponent has no programme entry, so its slug is all we
+  // hold. Title-case it rather than printing `delta-state` at the reader — and
+  // leave a bare acronym as an acronym, because "Dbu" is not a school.
+  const known = names.get(slug);
+  if (known) return known;
+  if (!slug.includes("-") && slug.length <= 4) return slug.toUpperCase();
+  // A trailing "-st" is the wire form of "State" (Delta St., Fort Hays St.);
+  // "Saint" never abbreviates in trailing position, so the expansion is safe.
+  return titleFromSlug(slug).replace(/ ST$/, " State");
+}
+
+/**
+ * The season rail — the signature element.
+ *
+ * One tick per fixture, laid out by week across the whole season, so the shape
+ * of the campaign is visible at a glance: dense weeks, bye weeks, and how far
+ * the results have filled from the left. It doubles as a collection check — a
+ * hollow tick BEHIND today is a match that has been played and never collected.
+ */
+function rail(fixtures: readonly Fixture[], today: string): string {
+  if (!fixtures.length) return "";
+  const dates = fixtures.map((f) => f.date).sort();
+  const first = dates[0] as string;
+  const last = dates[dates.length - 1] as string;
+  const total = weekOf(last, first) + 1;
+
+  const buckets: Fixture[][] = Array.from({ length: total }, () => []);
+  for (const f of fixtures) {
+    const idx = Math.min(total - 1, weekOf(f.date, first));
+    (buckets[idx] as Fixture[]).push(f);
+  }
+  const nowWeek = today >= first ? Math.min(total - 1, weekOf(today, first)) : -1;
+
+  // Month labels span the weeks they cover, so the rail reads as a calendar
+  // rather than an abstract bar chart.
+  const monthAt: number[] = buckets.map((week, i) => {
+    const anchor = week[0]?.date;
+    return anchor ? parts(anchor).m : parts(addDays(first, i * 7)).m;
+  });
+  const runs: { m: number; start: number; len: number }[] = [];
+  monthAt.forEach((m, i) => {
+    const last = runs[runs.length - 1];
+    if (last && last.m === m) last.len += 1;
+    else runs.push({ m, start: i, len: 1 });
+  });
+  // A one-week fragment cannot hold a three-letter label without colliding with
+  // its neighbour, so it goes unlabelled — the ticks still place it.
+  const months = runs
+    .filter((r) => r.len >= 2)
+    .map(
+      (r) =>
+        `<span style="grid-column:${r.start + 1} / span ${r.len}">${MONS[r.m - 1] ?? ""}</span>`,
+    )
+    .join("");
+
+  const weeks = buckets
+    .map((week, i) => {
+      const bars = week
+        .map((f) => {
+          const cls =
+            f.status === "postponed" || f.status === "cancelled"
+              ? "off"
+              : f.status === "live"
+                ? "live"
+                : isPlayed(f)
+                  ? "played"
+                  : f.date < today
+                    ? "late"
+                    : "";
+          return `<i class="${cls}" title="${esc(fmtDate(f.date))}"></i>`;
+        })
+        .join("");
+      const cls = [week.length ? "" : "bye", i === nowWeek ? "now" : ""].filter(Boolean).join(" ");
+      return `<div class="wk ${cls}">${bars || "<i></i>"}</div>`;
+    })
+    .join("");
+
+  const played = fixtures.filter(isPlayed).length;
+  const late = fixtures.filter((f) => !isPlayed(f) && f.date < today && f.status === "scheduled");
+  const toKickoff = daysBetween(today, first);
+
+  const right =
+    played === 0 && toKickoff > 0
+      ? `First kickoff in <b>${toKickoff}</b> day${toKickoff === 1 ? "" : "s"}`
+      : late.length
+        ? `<span class="late-n">${late.length} played, not collected</span>`
+        : `${total} week${total === 1 ? "" : "s"}`;
+
+  return `
+    <div class="rail">
+      <div class="rail-strip" style="--n:${total}">
+        <div class="rail-weeks">${weeks}</div>
+        <div class="rail-months">${months}</div>
+      </div>
+      <div class="rail-foot">
+        <span><b>${played}</b> of <b>${fixtures.length}</b> played</span>
+        <span>${right}</span>
+      </div>
+    </div>`;
+}
+
+export function fmtDate(iso: string): string {
+  const { m, d, wd } = parts(iso);
+  return `${DAYS[wd]} ${MONS[m - 1]} ${d}`;
+}
+
+/** One ledger row. In the team lens a fixture reads the way a schedule reads:
+ *  home-or-away, then the opponent. In the conference lens both sides are named. */
+function ledgerRow(
   f: Fixture,
   names: Map<string, string>,
   slugs: string[],
   perspective?: string,
 ): string {
-  const cls = fixtureClass(f, perspective);
+  const { m, d, wd } = parts(f.date);
   const played = isPlayed(f) || f.status === "live";
-  const hs = f.home_score;
-  const as = f.away_score;
-  const loserDim = (mine: number | null | undefined, theirs: number | null | undefined) =>
-    typeof mine === "number" && typeof theirs === "number" && mine < theirs ? " dim" : "";
-  const side = (
-    slug: string,
-    score: number | null | undefined,
-    other: number | null | undefined,
-  ) => `
-      <div class="side">
-        <i class="hue" style="background:${hueFor(slug, slugs)}"></i>
-        <span class="nm${played ? loserDim(score, other) : ""}">${esc(names.get(slug) ?? slug)}</span>
-        ${played ? `<span class="g${loserDim(score, other)}">${score ?? "–"}</span>` : ""}
-      </div>`;
+  const off = f.status === "postponed" || f.status === "cancelled";
+
+  let outcome = "";
+  if (
+    played &&
+    perspective &&
+    typeof f.home_score === "number" &&
+    typeof f.away_score === "number"
+  ) {
+    const mine = f.home === perspective ? f.home_score : f.away_score;
+    const theirs = f.home === perspective ? f.away_score : f.home_score;
+    outcome = mine > theirs ? "won" : mine < theirs ? "lost" : "tied";
+  }
+
+  // Without a perspective there is no H/A cell, so the row must switch to the
+  // three-column grid — otherwise the opponent lands in the 22px H/A track.
+  const cls = [
+    perspective ? "" : "both",
+    f.conference_game ? "conf" : "",
+    off ? "off" : "",
+    outcome,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  let ha = "";
+  let opponent: string;
+  if (perspective) {
+    const isHome = f.home === perspective;
+    const other = isHome ? f.away : f.home;
+    ha = `<div class="ha ${isHome ? "h" : ""}">${isHome ? "H" : "A"}</div>`;
+    opponent = `<span class="n">${esc(displayName(other, names))}</span>`;
+  } else {
+    // No H/A badge in the conference lens: neither side is "ours", and an empty
+    // bordered box on every row is an artifact, not information.
+    ha = "";
+    opponent = `<span class="n"><i class="chip" style="background:${hueFor(f.home, slugs)}"></i>${esc(
+      displayName(f.home, names),
+    )} <span style="color:var(--faint);font-weight:400">v</span> <i class="chip" style="background:${hueFor(
+      f.away,
+      slugs,
+    )}"></i>${esc(displayName(f.away, names))}</span>`;
+  }
+
+  let right: string;
+  if (off) {
+    right = `<span class="st">${f.status === "postponed" ? "Postponed" : "Cancelled"}</span>`;
+  } else if (played) {
+    const a = f.home_score ?? "–";
+    const b = f.away_score ?? "–";
+    const score = perspective ? (f.home === perspective ? `${a}–${b}` : `${b}–${a}`) : `${a}–${b}`;
+    right = `<span class="sc">${esc(score)}</span><span class="st">${f.status === "live" ? esc(f.clock ?? "Live") : "Final"}</span>`;
+  } else {
+    right = `<span class="tm">${f.time ? esc(fmtTime(f.time)) : "TBA"}</span>`;
+  }
+
   const payload = esc(JSON.stringify({ fixture: f.id, team: perspective ?? null }));
-  return `<div class="fx ${cls}" data-act="open-fixture" data-payload="${payload}">
-      ${side(f.home, hs, as)}
-      ${side(f.away, as, hs)}
-      <div class="ft"><span class="tag">${statusTag(f)}</span>${f.venue ? esc(f.venue) : ""}</div>
+  return `<div class="row ${cls}" tabindex="0" data-act="open-fixture" data-payload="${payload}">
+      <div class="d">${MONS[m - 1]} ${d}<em>${DAYS[wd]}</em></div>
+      ${ha}
+      <div class="opp">${opponent}${f.venue ? `<span class="v">${esc(f.venue)}</span>` : ""}</div>
+      <div class="r">${right}</div>
+    </div>`;
+}
+
+const WDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+/** What the selection card says about one fixture. Upcoming reads as a
+ *  listing ("Away at Home"); a result reads as a scoreline, home side first,
+ *  the way a final is reported. */
+function cardBits(
+  f: Fixture,
+  names: Map<string, string>,
+): { mo: string; dy: string; tt: string; nt: string } {
+  const { m, d, wd } = parts(f.date);
+  const home = displayName(f.home, names);
+  const away = displayName(f.away, names);
+  const off = f.status === "postponed" || f.status === "cancelled";
+  const played = isPlayed(f) || f.status === "live";
+  let tt: string;
+  let nt: string;
+  if (played) {
+    tt = `${home} ${f.home_score ?? "–"}–${f.away_score ?? "–"} ${away}`;
+    nt = [f.status === "live" ? (f.clock ?? "Live") : "Final", f.venue].filter(Boolean).join(" · ");
+  } else {
+    tt = `${away} at ${home}`;
+    nt = off
+      ? f.status === "postponed"
+        ? "Postponed"
+        : "Cancelled"
+      : [WDAYS[wd], f.time ? fmtTime(f.time) : undefined, f.venue].filter(Boolean).join(" · ");
+  }
+  return { mo: MONS[m - 1] ?? "", dy: String(d), tt, nt };
+}
+
+/**
+ * The matchday matrix — the conference lens when more than one programme is
+ * collected. Teams are rows, real fixture dates are columns, and a cell names
+ * the opponent: filled when the row team is at home, dashed when the opponent
+ * is from outside the conference. Following a team and inspecting a match are
+ * client-side; nothing here writes.
+ */
+function matrix(
+  file: FixturesFile,
+  fixtures: readonly Fixture[],
+  names: Map<string, string>,
+  today: string,
+): string {
+  const abbrs = new Map(file.programmes.map((p) => [p.slug, p.abbr]));
+  const codeFor = (slug: string): string => {
+    const a = abbrs.get(slug);
+    if (a) return a;
+    if (!slug.includes("-") && slug.length <= 4) return slug.toUpperCase();
+    return monogram(displayName(slug, names));
+  };
+
+  const dates = [...new Set(fixtures.map((f) => f.date))].sort();
+  const byCell = new Map<string, Fixture>();
+  for (const f of fixtures) {
+    for (const side of [f.home, f.away]) {
+      const k = `${side}|${f.date}`;
+      if (!byCell.has(k)) byCell.set(k, f);
+    }
+  }
+
+  // Month heads span the dates they cover, exactly like the season rail.
+  const runs: { m: number; len: number }[] = [];
+  for (const d of dates) {
+    const m = parts(d).m;
+    const last = runs[runs.length - 1];
+    if (last && last.m === m) last.len += 1;
+    else runs.push({ m, len: 1 });
+  }
+  const monthRow = runs
+    .map(
+      (r) => `<th class="mo-h" colspan="${r.len}">${r.len >= 2 ? (MONS[r.m - 1] ?? "") : ""}</th>`,
+    )
+    .join("");
+  const dayRow = dates
+    .map((d) => {
+      const p = parts(d);
+      return `<th class="dy-h" scope="col">${MONS[p.m - 1]} ${p.d}<em>${DAYS[p.wd]}</em></th>`;
+    })
+    .join("");
+
+  const teams = [...file.programmes].sort((a, b) => a.name.localeCompare(b.name));
+
+  // Default selection: the next fixture from today, or the last one played.
+  const pick = fixtures.find((f) => f.date >= today) ?? fixtures[fixtures.length - 1];
+
+  const rows = teams
+    .map((p) => {
+      let homeN = 0;
+      let awayN = 0;
+      let confN = 0;
+      const cells = dates
+        .map((d) => {
+          const f = byCell.get(`${p.slug}|${d}`);
+          if (!f) return `<td class="c"></td>`;
+          const isHome = f.home === p.slug;
+          if (isHome) homeN += 1;
+          else awayN += 1;
+          if (f.conference_game) confN += 1;
+          const opp = isHome ? f.away : f.home;
+          const played = isPlayed(f);
+          const late = !played && f.date < today && f.status === "scheduled";
+          let out = "";
+          let sc = "";
+          if (played && typeof f.home_score === "number" && typeof f.away_score === "number") {
+            const mine = isHome ? f.home_score : f.away_score;
+            const theirs = isHome ? f.away_score : f.home_score;
+            out = mine > theirs ? "w" : mine < theirs ? "l" : "d";
+            sc = `<span class="sc">${mine}–${theirs}</span>`;
+          }
+          const bits = cardBits(f, names);
+          const cls = [
+            "m",
+            isHome ? "h" : "",
+            f.conference_game ? "" : "nc",
+            late ? "lt" : "",
+            out,
+            f.id === pick?.id ? "is-sel" : "",
+          ]
+            .filter(Boolean)
+            .join(" ");
+          const label = `${p.name} ${isHome ? "hosts" : "visits"} ${displayName(opp, names)} on ${fmtDate(f.date)}${
+            sc
+              ? `, ${isHome ? f.home_score : f.away_score}–${isHome ? f.away_score : f.home_score}`
+              : ""
+          }`;
+          return `<td class="c"><button type="button" class="${cls}" data-g="${esc(f.id)}"
+            data-h="${esc(f.home)}" data-a="${esc(f.away)}"
+            data-mo="${esc(bits.mo)}" data-dy="${esc(bits.dy)}" data-tt="${esc(bits.tt)}" data-nt="${esc(bits.nt)}"
+            aria-pressed="${f.id === pick?.id}" aria-label="${esc(label)}">${esc(codeFor(opp))}${sc}</button></td>`;
+        })
+        .join("");
+      const sum = `${p.name} · ${homeN} home · ${awayN} away · ${confN} conference`;
+      return `<tr data-team="${esc(p.slug)}" data-sum="${esc(sum)}">
+        <th class="tm" scope="row"><button type="button" data-follow="${esc(p.slug)}" aria-label="Follow ${esc(p.name)}">
+          <span class="cd">${esc(codeFor(p.slug))}</span><span class="nm">${esc(p.name)}</span></button></th>
+        ${cells}</tr>`;
+    })
+    .join("");
+
+  const late = fixtures.filter((f) => !isPlayed(f) && f.date < today && f.status === "scheduled");
+  const defaultSum = `${dates.length} matchday${dates.length === 1 ? "" : "s"} · ${fixtures.length} match${fixtures.length === 1 ? "" : "es"}`;
+  const picked = pick ? cardBits(pick, names) : { mo: "", dy: "", tt: "", nt: "" };
+
+  // The rail carried the countdown; in matrix mode the footer carries it.
+  const playedN = fixtures.filter(isPlayed).length;
+  const toKickoff = dates.length ? daysBetween(today, dates[0] as string) : 0;
+  const middle =
+    playedN === 0 && toKickoff > 0
+      ? `<span>First kickoff in <b>${toKickoff}</b> day${toKickoff === 1 ? "" : "s"}</span>`
+      : late.length
+        ? `<span class="late-n">${late.length} played, not collected</span>`
+        : "";
+
+  return `
+    <div class="sec"><h2>Matchday board</h2>
+      <span class="key">
+        <span class="kh"><i></i>Home</span>
+        <span><i></i>Away</span>
+        <span class="ks"><i></i>Selected</span>
+      </span>
+    </div>
+    <div class="mx-sel" aria-live="polite">
+      <div class="db" aria-hidden="true"><div class="mo" id="mx-mo">${esc(picked.mo)}</div>
+        <div class="dy num" id="mx-dy">${esc(picked.dy)}</div></div>
+      <div><div class="tt" id="mx-tt">${esc(picked.tt)}</div><div class="nt" id="mx-nt">${esc(picked.nt)}</div></div>
+    </div>
+    <div class="mx-wrap" role="region" aria-label="Conference schedule grid" tabindex="0">
+      <table class="mx">
+        <thead>
+          <tr><th class="tm-h" rowspan="2" scope="col">Team</th>${monthRow}</tr>
+          <tr>${dayRow}</tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div class="mx-foot">
+      <span id="mx-sum" data-default="${esc(defaultSum)}">${esc(defaultSum)}</span>
+      ${middle}
+      <span>Select a team to follow it · select a match to inspect it</span>
+    </div>`;
+}
+
+// ── roster composition ──────────────────────────────────────────────────────
+// Everything here counts what the roster file publishes; nothing is derived
+// beyond bucketing the published strings. Two programmes publish no positions
+// at all, so every position visual carries an honest "not published" state.
+
+// Attack-first, the way a team sheet is read aloud.
+const POSITIONS = [
+  { key: "f", abbr: "FWD", head: "Forwards", test: /^(for|strik|wing)/i },
+  { key: "m", abbr: "MID", head: "Midfielders", test: /^mid/i },
+  { key: "d", abbr: "DEF", head: "Defenders", test: /^def/i },
+  { key: "gk", abbr: "GK", head: "Goalkeepers", test: /^goal/i },
+] as const;
+
+function posKey(position?: string): string | null {
+  if (!position) return null;
+  for (const p of POSITIONS) if (p.test.test(position)) return p.key;
+  return null;
+}
+
+// Most-senior first: the eye lands on the left of a bar, and experience is
+// the thing a class mix is read for. The ramp fades with tenure — deep wine
+// for graduates and seniors down to pale rose for freshmen.
+const CLASSES = [
+  { key: "gr", abbr: "GR", head: "Graduates (5th year+)", test: /grad/i },
+  { key: "sr", abbr: "SR", head: "Seniors", test: /senior/i },
+  { key: "jr", abbr: "JR", head: "Juniors", test: /junior/i },
+  { key: "so", abbr: "SO", head: "Sophomores", test: /soph/i },
+  { key: "fr", abbr: "FR", head: "Freshmen", test: /fresh/i },
+] as const;
+
+function classInfo(year?: string): { key: string; abbr: string } | null {
+  if (!year) return null;
+  for (const c of CLASSES) {
+    if (c.test.test(year)) {
+      return { key: c.key, abbr: /redshirt/i.test(year) ? `R-${c.abbr}` : c.abbr };
+    }
+  }
+  return null;
+}
+
+/** US state names and their AP-style abbreviations, as roster pages print
+ *  them — so an international hometown's region can be set apart. */
+const US_REGIONS = new Set([
+  ...[
+    "Alabama",
+    "Alaska",
+    "Arizona",
+    "Arkansas",
+    "California",
+    "Colorado",
+    "Connecticut",
+    "Delaware",
+    "Florida",
+    "Georgia",
+    "Hawaii",
+    "Idaho",
+    "Illinois",
+    "Indiana",
+    "Iowa",
+    "Kansas",
+    "Kentucky",
+    "Louisiana",
+    "Maine",
+    "Maryland",
+    "Massachusetts",
+    "Michigan",
+    "Minnesota",
+    "Mississippi",
+    "Missouri",
+    "Montana",
+    "Nebraska",
+    "Nevada",
+    "New Hampshire",
+    "New Jersey",
+    "New Mexico",
+    "New York",
+    "North Carolina",
+    "North Dakota",
+    "Ohio",
+    "Oklahoma",
+    "Oregon",
+    "Pennsylvania",
+    "Rhode Island",
+    "South Carolina",
+    "South Dakota",
+    "Tennessee",
+    "Texas",
+    "Utah",
+    "Vermont",
+    "Virginia",
+    "Washington",
+    "West Virginia",
+    "Wisconsin",
+    "Wyoming",
+  ],
+  ...[
+    "Ala.",
+    "Ariz.",
+    "Ark.",
+    "Calif.",
+    "Colo.",
+    "Conn.",
+    "Del.",
+    "Fla.",
+    "Ga.",
+    "Ill.",
+    "Ind.",
+    "Kan.",
+    "Ky.",
+    "La.",
+    "Md.",
+    "Mass.",
+    "Mich.",
+    "Minn.",
+    "Miss.",
+    "Mo.",
+    "Mont.",
+    "Neb.",
+    "Nev.",
+    "N.H.",
+    "N.J.",
+    "N.M.",
+    "N.Y.",
+    "N.C.",
+    "N.D.",
+    "Okla.",
+    "Ore.",
+    "Pa.",
+    "R.I.",
+    "S.C.",
+    "S.D.",
+    "Tenn.",
+    "Vt.",
+    "Va.",
+    "Wash.",
+    "W.Va.",
+    "Wis.",
+    "Wyo.",
+    "D.C.",
+  ],
+  ...[
+    "AL",
+    "AK",
+    "AZ",
+    "AR",
+    "CA",
+    "CO",
+    "CT",
+    "DE",
+    "FL",
+    "GA",
+    "HI",
+    "ID",
+    "IL",
+    "IN",
+    "IA",
+    "KS",
+    "KY",
+    "LA",
+    "ME",
+    "MD",
+    "MA",
+    "MI",
+    "MN",
+    "MS",
+    "MO",
+    "MT",
+    "NE",
+    "NV",
+    "NH",
+    "NJ",
+    "NM",
+    "NY",
+    "NC",
+    "ND",
+    "OH",
+    "OK",
+    "OR",
+    "PA",
+    "RI",
+    "SC",
+    "SD",
+    "TN",
+    "TX",
+    "UT",
+    "VT",
+    "VA",
+    "WA",
+    "WV",
+    "WI",
+    "WY",
+    "DC",
+  ],
+]);
+
+/** `5'8"` as printed → `5′8″` as typeset. */
+function heightDisplay(height?: string): string {
+  if (!height) return "";
+  return height.replace(/'/g, "′").replace(/"/g, "″");
+}
+
+/** City plain; a region outside the US set apart — the squad's reach should be
+ *  readable at a scan, which is why hometown lives on the row at all. */
+function hometownHtml(hometown?: string): string {
+  if (!hometown) return "";
+  const cut = hometown.lastIndexOf(",");
+  if (cut < 0) return esc(hometown);
+  const city = hometown.slice(0, cut).trim();
+  const region = hometown.slice(cut + 1).trim();
+  if (US_REGIONS.has(region)) return `${esc(city)}, ${esc(region)}`;
+  // The flag makes an international player findable at a scan; the bolded
+  // country still carries the where.
+  return `<i class="fl" aria-hidden="true">⚑</i>${esc(city)}, <b>${esc(region)}</b>`;
+}
+
+function compBar(
+  segs: readonly { cls: string; count: number; title: string; abbr?: string }[],
+  total: number,
+): string {
+  if (!total) return "";
+  const inner = segs
+    .filter((s) => s.count > 0)
+    .map((s) => {
+      const pct = (s.count / total) * 100;
+      // This bar spans the panel, so even a modest share has room to name
+      // itself; only a sliver falls back to its count or its title alone.
+      const label = pct >= 6 && s.abbr ? `${s.count} ${s.abbr}` : pct >= 4 ? String(s.count) : "";
+      return `<span class="${s.cls}" style="width:${pct.toFixed(2)}%" title="${esc(s.title)}: ${s.count}">${label}</span>`;
+    })
+    .join("");
+  return `<div class="bar">${inner}</div>`;
+}
+
+function teamRosterBlock(roster: Roster): string {
+  const players = roster.players;
+  const num = (p: Player): number => {
+    const n = Number.parseInt(p.number ?? "", 10);
+    return Number.isNaN(n) ? 999 : n;
+  };
+  const sorted = [...players].sort((a, b) => num(a) - num(b) || a.name.localeCompare(b.name));
+
+  const byPos = new Map<string | null, Player[]>();
+  for (const p of sorted) {
+    const k = posKey(p.position);
+    const list = byPos.get(k) ?? [];
+    list.push(p);
+    byPos.set(k, list);
+  }
+  const unlisted = byPos.get(null)?.length ?? 0;
+  const hasPos = players.length > unlisted;
+
+  const posSegs = [
+    ...POSITIONS.map((p) => ({
+      cls: p.key,
+      count: byPos.get(p.key)?.length ?? 0,
+      title: p.head,
+      abbr: p.abbr,
+    })),
+    { cls: "un", count: unlisted, title: "Position not published" },
+  ];
+  const clsCount = new Map<string, number>();
+  let clsUnknown = 0;
+  for (const p of sorted) {
+    const c = classInfo(p.class_year);
+    if (c) clsCount.set(c.key, (clsCount.get(c.key) ?? 0) + 1);
+    else clsUnknown += 1;
+  }
+  const clsSegs = [
+    ...CLASSES.map((c) => ({
+      cls: c.key,
+      count: clsCount.get(c.key) ?? 0,
+      title: c.head,
+      abbr: c.abbr,
+    })),
+    { cls: "un", count: clsUnknown, title: "Class not published" },
+  ];
+
+  const barRow = (label: string, bar: string) =>
+    `<div class="bar-row"><span class="lbl">${label}</span>${bar}</div>`;
+  const bars = `<div class="bars">
+    ${hasPos ? barRow("Position", compBar(posSegs, players.length)) : ""}
+    ${barRow("Class", compBar(clsSegs, players.length))}
+  </div>`;
+
+  const playerRow = (p: Player) => {
+    const cls = classInfo(p.class_year);
+    return `<div class="prow">
+      <div class="no">${esc(p.number ?? "")}</div>
+      <div class="nm">${esc(p.name)}</div>
+      <div class="ht">${esc(heightDisplay(p.height))}</div>
+      <div class="yr">${cls ? `<i class="${cls.key}"></i>${esc(cls.abbr)}` : ""}</div>
+      ${p.hometown ? `<div class="home">${hometownHtml(p.hometown)}</div>` : ""}
+    </div>`;
+  };
+
+  const group = (tick: string, head: string, list: readonly Player[]) =>
+    list.length
+      ? `<div class="rgroup${list.length > 12 ? " flow" : ""}"><h3><i class="${tick}"></i>${esc(head)}<span class="n">${list.length}</span></h3>
+        ${list.map(playerRow).join("")}</div>`
+      : "";
+
+  const groups = hasPos
+    ? [
+        ...POSITIONS.map((p) => group(p.key, p.head, byPos.get(p.key) ?? [])),
+        group("un", "Position not listed", byPos.get(null) ?? []),
+      ].join("")
+    : group("un", "Squad", sorted);
+
+  return `<div class="sec"><h2>Roster</h2><span class="count">${players.length} players</span></div>
+    ${bars}<div class="rgrid">${groups}</div>`;
+}
+
+/** The conference lens's roster section: comparable counts per programme, and
+ *  a stacked position-mix bar. Names appear only after choosing a team. */
+function rosterBalance(file: FixturesFile, rosters: RostersFile): string {
+  const teams = [...file.programmes].sort((a, b) => a.name.localeCompare(b.name));
+  const rows = teams
+    .map((t) => {
+      const r = rosters.rosters[t.slug];
+      const open = `<button type="button" class="open" data-act="select-lens" data-payload='${esc(
+        JSON.stringify({ team: t.slug }),
+      )}' aria-label="Open ${esc(t.name)} roster">
+        <span class="cd2">${esc(t.abbr ?? monogram(t.name))}</span><span class="tn2">${esc(t.name)}</span></button>`;
+      if (!r?.players.length) {
+        return `<tr><td>${open}</td><td class="dim">—</td><td class="dim" colspan="4">not collected</td><td></td><td></td></tr>`;
+      }
+      const counts = POSITIONS.map(
+        (p) => r.players.filter((x) => posKey(x.position) === p.key).length,
+      );
+      const total = r.players.length;
+      const unlisted = total - counts.reduce((a, b) => a + b, 0);
+      const hasPos = total > unlisted;
+      const seg = (cls: string, n: number, title: string) => {
+        if (!n) return "";
+        const pct = (n / total) * 100;
+        return `<span class="${cls}" style="width:${pct.toFixed(2)}%" title="${esc(title)}: ${n}">${
+          pct >= 10 ? n : ""
+        }</span>`;
+      };
+      const mix = hasPos
+        ? `<div class="cmix">${POSITIONS.map((p, i) => seg(p.key, counts[i] ?? 0, p.head)).join("")}${seg(
+            "un",
+            unlisted,
+            "Position not published",
+          )}</div>`
+        : `<div class="cmix unp" title="positions not published"></div>`;
+      const cells = counts
+        .map((n) =>
+          hasPos ? `<td>${n || '<span class="dim">0</span>'}</td>` : `<td class="dim">—</td>`,
+        )
+        .join("");
+
+      // Experience is read per team, not just compared — the class ramp
+      // carries its counts inline, seniors leftmost and deepest.
+      const clsCount = new Map<string, number>();
+      let clsUnknown = 0;
+      for (const p of r.players) {
+        const c = classInfo(p.class_year);
+        if (c) clsCount.set(c.key, (clsCount.get(c.key) ?? 0) + 1);
+        else clsUnknown += 1;
+      }
+      const cmix = `<div class="cmix">${CLASSES.map((c) =>
+        seg(c.key, clsCount.get(c.key) ?? 0, c.head),
+      ).join("")}${seg("un", clsUnknown, "Class not published")}</div>`;
+
+      return `<tr><td>${open}</td><td><b>${total}</b></td>${cells}<td>${mix}</td><td>${cmix}</td></tr>`;
+    })
+    .join("");
+
+  return `
+    <div class="sec"><h2>Roster balance</h2><span class="count">Select a team for players</span></div>
+    <div class="mx-wrap"><table class="rbal">
+      <thead><tr><th>Team</th><th>Players</th>${POSITIONS.map((p) => `<th>${p.abbr}</th>`).join("")}<th>Position</th><th>Class</th></tr></thead>
+      <tbody>${rows}</tbody></table></div>
+    <div class="rbal-foot">
+      <span class="key">${POSITIONS.map((p) => `<span><i class="${p.key}"></i>${p.abbr}</span>`).join("")}</span>
+      <span class="key">${CLASSES.map((c) => `<span><i class="${c.key}"></i>${c.abbr}</span>`).join("")}</span>
+      <span>Hatched — not published by the programme.</span>
     </div>`;
 }
 
 export function composeBoard(input: BoardInput): string {
-  // `today` is consumed by the lens builders through `input`, not here.
-  const { fixtures: file, rosters, team } = input;
+  const { fixtures: file, rosters, today } = input;
   const slugs = file.programmes.map((p) => p.slug).sort();
   const names = new Map(file.programmes.map((p) => [p.slug, p.name]));
-  for (const f of file.fixtures) {
-    if (!names.has(f.home)) names.set(f.home, f.home);
-    if (!names.has(f.away)) names.set(f.away, f.away);
-  }
 
-  const played = file.fixtures.filter(isPlayed).length;
-  const rosterCount = rosters
-    ? Object.values(rosters.rosters).reduce((n, r) => n + r.players.length, 0)
-    : 0;
+  // A single-programme season IS that team's season: render the team lens
+  // without requiring a stored scope. The conference framing only exists once
+  // there is more than one team to relate.
+  const single = file.programmes.length === 1;
+  const team = input.team ?? (single ? file.programmes[0]?.slug : undefined);
+
+  const mine = team
+    ? file.fixtures.filter((f) => f.home === team || f.away === team)
+    : file.fixtures;
+  const shown = [...mine].sort((a, b) => a.date.localeCompare(b.date));
+
+  const played = shown.filter(isPlayed).length;
+  const conference = shown.filter((f) => f.conference_game).length;
+  const roster = team ? rosters?.rosters[team] : undefined;
+  const rosterCount = team
+    ? (roster?.players.length ?? 0)
+    : rosters
+      ? Object.values(rosters.rosters).reduce((n, r) => n + r.players.length, 0)
+      : 0;
   const gaps = (file.missing?.length ?? 0) + (rosters?.missing?.length ?? 0);
 
-  const lens = `
-    <div class="lens" role="tablist">
-      <button role="tab" aria-selected="${team ? "false" : "true"}" data-act="select-lens" data-payload='{"team":null}'>Conference</button>
+  const subject = team ? displayName(team, names) : file.conference;
+
+  const lens = single
+    ? ""
+    : `<div class="lens" role="tablist">
+      <button role="tab" aria-selected="${team ? "false" : "true"}" data-act="select-lens" data-payload='{"team":null}'>${esc(file.conference)}</button>
       ${file.programmes
         .map(
           (p) =>
@@ -384,199 +1349,67 @@ export function composeBoard(input: BoardInput): string {
     </div>`;
 
   const head = `
-    <div class="head">
-      <h1>${esc(file.conference)} · ${file.gender === "men" ? "Men's" : "Women's"} Soccer</h1>
-      <span class="sub">${file.season}</span>
-      ${lens}
+    <div class="mast">
+      <h1>${esc(subject)}</h1>
+      <span class="season num">${file.season}</span>
       <span class="sp"></span>
-      <span class="stamp">${played === 0 ? "pre-season · " : ""}collected ${esc(file.collected_at.slice(0, 16).replace("T", " "))}</span>
+      <span class="stamp">${played === 0 ? "pre-season · " : ""}collected ${esc(
+        file.collected_at.slice(0, 16).replace("T", " "),
+      )}</span>
+    </div>
+    <p class="dek">${team ? `${esc(file.conference)} · ` : ""}${file.gender === "men" ? "Men's" : "Women's"} soccer${
+      team
+        ? ""
+        : ` · <b>${file.programmes.length}</b> programme${file.programmes.length === 1 ? "" : "s"}`
+    }</p>
+    ${lens}`;
+
+  const notices = [
+    file.membership_extrapolated
+      ? `<p class="note"><b>Membership carried forward.</b> The membership record is authored through an earlier season, so this ${file.season} member list is the most recent published one carried forward — well-founded, but not yet cited to a ${file.season} source.</p>`
+      : "",
+    gaps > 0
+      ? `<p class="note flag"><b>${gaps} collection gap${gaps === 1 ? "" : "s"}.</b> ${[
+          ...(file.missing ?? []).map((m) => `${esc(displayName(m, names))} (schedule)`),
+          ...(rosters?.missing ?? []).map((m) => `${esc(displayName(m, names))} (roster)`),
+        ].join(" · ")} — named rather than dropped; a re-collect retries them.</p>`
+      : "",
+    played === 0 && shown.length
+      ? `<p class="note">Pre-season is a valid state — a published ${file.season} schedule and roster with zero played matches is a complete collection.</p>`
+      : "",
+  ].join("");
+
+  const tally = `
+    <div class="tally">
+      <div><b class="num">${shown.length}</b><span>Matches</span></div>
+      <div><b class="num">${conference}</b><span>Conference</span></div>
+      <div><b class="num">${rosterCount}</b><span>${team ? "Squad" : "Roster players"}</span></div>
+      ${gaps ? `<div class="warn"><b class="num">${gaps}</b><span>Gaps</span></div>` : `<div><b class="num">${played}</b><span>Played</span></div>`}
     </div>`;
 
-  const warn = file.membership_extrapolated
-    ? `<div class="warnbox"><b>Membership carried forward.</b> The membership record is authored through an earlier season, so this ${file.season} member list is the most recent published one carried forward — well-founded, but not yet cited to a ${file.season} source.</div>`
-    : "";
+  // A conference of teams reads as a matrix — who plays whom, matchday by
+  // matchday. One team's schedule reads as a ledger. Both are the subject's
+  // native artifact; neither is a dashboard.
+  const asMatrix = !team && file.programmes.length > 1 && shown.length > 0;
+  const ledger = asMatrix
+    ? matrix(file, shown, names, today)
+    : shown.length
+      ? `<div class="sec"><h2>Schedule</h2><span class="count">${shown.length} listed</span></div>
+       <div class="led">${shown.map((f) => ledgerRow(f, names, slugs, team)).join("")}</div>`
+      : `<div class="sec"><h2>Schedule</h2></div>
+       <p class="note">No ${file.season} schedule collected${team ? ` for ${esc(subject)}` : ""}. The live site serves only the current season's matches, so an earlier season carries its roster alone.</p>`;
 
-  const gapsBox =
-    gaps > 0
-      ? `<div class="warnbox"><b>${gaps} collection gap${gaps === 1 ? "" : "s"}.</b> ${[
-          ...(file.missing ?? []).map((m) => `${esc(names.get(m) ?? m)} (schedule)`),
-          ...(rosters?.missing ?? []).map((m) => `${esc(names.get(m) ?? m)} (roster)`),
-        ].join(" · ")} — named rather than dropped; a re-collect retries them.</div>`
+  const rosterBlock = team
+    ? roster?.players.length
+      ? teamRosterBlock(roster)
+      : `<div class="sec"><h2>Roster</h2></div><p class="note">No roster collected for ${esc(subject)}.</p>`
+    : asMatrix && rosters
+      ? rosterBalance(file, rosters)
       : "";
 
-  const body = team
-    ? teamLens(input, slugs, names)
-    : conferenceLens(input, slugs, names, played, rosterCount, gaps);
-
-  return page(`${head}${warn}${gapsBox}${body}`);
-}
-
-function conferenceLens(
-  input: BoardInput,
-  slugs: string[],
-  names: Map<string, string>,
-  played: number,
-  rosterCount: number,
-  gaps: number,
-): string {
-  const file = input.fixtures;
-  const upcoming = file.fixtures.filter((f) => !isPlayed(f) && f.date >= input.today);
-  const recent = file.fixtures.filter(isPlayed).sort((a, b) => b.date.localeCompare(a.date));
-
-  // Pre-season shows the opening slate; in-season shows the current week
-  // forward plus what just happened. Either way the reader sees "what's next".
-  const showFixtures = upcoming.length ? upcoming.slice(0, 12) : recent.slice(0, 12);
-  const groups = groupByDate(showFixtures);
-
-  const firstDate = file.fixtures.map((f) => f.date).sort()[0];
-  const toKickoff = firstDate ? daysBetween(input.today, firstDate) : 0;
-
-  const table = computeTable(file);
-  const anyPlayed = played > 0;
-  // The archive publishes no conference flag, so the exporter derives one.
-  // The board must say so wherever the derived number is shown.
-  const derived = (file.conference_game_source ?? "").startsWith("derived");
-
-  const rail = anyPlayed
-    ? `<table>
-        <thead><tr><th>Team</th><th class="r">P</th><th class="r">W</th><th class="r">D</th><th class="r">L</th><th class="r">GD</th><th class="r">Pts</th></tr></thead>
-        <tbody>${table
-          .map(
-            (r) => `<tr>
-              <td><i class="chip" style="background:${hueFor(r.slug, slugs)}"></i>${esc(r.name)}</td>
-              <td class="r">${r.played}</td><td class="r">${r.won}</td><td class="r">${r.drawn}</td>
-              <td class="r">${r.lost}</td><td class="r">${r.goalDiff > 0 ? "+" : ""}${r.goalDiff}</td>
-              <td class="r pts">${r.points}</td></tr>`,
-          )
-          .join("")}</tbody></table>`
-    : `<div class="empty">
-        <div class="big">${toKickoff > 0 ? toKickoff : "—"}</div>
-        <div class="lab">${toKickoff > 0 ? "days to kickoff" : "season dates"}</div>
-        <p>The table appears after the first result. Fixture cards flip to scores as games are played.</p>
-      </div>`;
-
-  return `
-    <div class="strip">
-      <div class="stat"><b>${file.programmes.length}</b><span>Programmes</span></div>
-      <div class="stat"><b>${file.fixtures.length}</b><span>Fixtures</span></div>
-      <div class="stat"><b>${rosterCount}</b><span>Roster players</span></div>
-      <div class="stat"><b>${played}</b><span>Played</span></div>
-      ${gaps ? `<div class="stat warn"><b>${gaps}</b><span>Collection gaps</span></div>` : ""}
-    </div>
-    <div class="split">
-      <div class="panel">
-        <h2>${upcoming.length ? "Upcoming" : "Results"}<span class="n">${showFixtures.length} of ${file.fixtures.length}</span></h2>
-        <div class="pb">
-          ${
-            groups.length
-              ? groups
-                  .map(
-                    (g) => `<div class="day"><h3>${fmtDate(g.date)}</h3>
-                      <div class="fx-grid">${g.fixtures.map((f) => fixtureCard(f, names, slugs)).join("")}</div></div>`,
-                  )
-                  .join("")
-              : `<p class="note">No fixtures in this season file.</p>`
-          }
-        </div>
-      </div>
-      <aside class="panel">
-        <h2>${anyPlayed ? "Member record" : "Kickoff"}${
-          anyPlayed && derived ? '<span class="n">derived</span>' : ""
-        }</h2>
-        <div class="pb">${rail}${
-          anyPlayed && derived
-            ? `<p class="hint" style="padding:9px 0 0">Every result between two member programmes, including postseason meetings. Not the published conference table — the archive carries no conference flag, so this is derived from membership.</p>`
-            : ""
-        }</div>
-      </aside>
-    </div>
-    ${played === 0 ? `<p class="note">Pre-season is a valid state — a full slate with zero results is what a correct first collection looks like.</p>` : ""}`;
-}
-
-function teamLens(input: BoardInput, slugs: string[], names: Map<string, string>): string {
-  const file = input.fixtures;
-  const team = input.team as string;
-  const name = names.get(team) ?? team;
-  const mine = file.fixtures
-    .filter((f) => f.home === team || f.away === team)
-    .sort((a, b) => a.date.localeCompare(b.date));
-
-  let w = 0;
-  let d = 0;
-  let l = 0;
-  const ticks = mine
-    .map((f) => {
-      if (!isPlayed(f)) {
-        const opp = f.home === team ? f.away : f.home;
-        const oppName = names.get(opp) ?? opp;
-        return `<div class="tick q" title="${esc(oppName)}">${esc(monogram(oppName))}</div>`;
-      }
-      const hs = f.home_score as number;
-      const as = f.away_score as number;
-      const isHome = f.home === team;
-      const mineScore = isHome ? hs : as;
-      const theirs = isHome ? as : hs;
-      let cls: string;
-      let ch: string;
-      if (mineScore > theirs) {
-        cls = "w";
-        ch = "W";
-        w++;
-      } else if (mineScore < theirs) {
-        cls = "l";
-        ch = "L";
-        l++;
-      } else {
-        cls = "d";
-        ch = "D";
-        d++;
-      }
-      return `<div class="tick ${cls}">${ch}<small>${mineScore}–${theirs}</small></div>`;
-    })
-    .join("");
-
-  const next = mine.filter((f) => !isPlayed(f) && f.date >= input.today).slice(0, 4);
-  const roster = input.rosters?.rosters[team];
-
-  const rosterBody = roster
-    ? `<table class="rost">
-        <thead><tr><th>#</th><th>Player</th><th>Pos</th><th>Class</th><th>Hometown</th></tr></thead>
-        <tbody>${roster.players
-          .map(
-            (p) => `<tr data-act="player-profile" data-payload='${esc(
-              JSON.stringify({ team, player: p.name }),
-            )}'>
-              <td class="no">${esc(p.number ?? "")}</td><td>${esc(p.name)}</td>
-              <td>${esc(p.position ?? "")}</td><td>${esc(p.class_year ?? "")}</td>
-              <td>${esc(p.hometown ?? "")}</td></tr>`,
-          )
-          .join("")}</tbody></table>
-        <p class="hint" style="padding:9px 0 0">Click a player to research a profile.</p>`
-    : `<p class="note" style="padding:14px 0">No roster collected for ${esc(name)} yet.</p>`;
-
-  return `
-    <div class="split">
-      <div class="panel">
-        <div class="team-head">
-          <div class="crest" style="background:${hueFor(team, slugs)}">${esc(monogram(name))}</div>
-          <h2>${esc(name)}</h2>
-          <div class="rec"><b>${w}–${l}–${d}</b><span>${w + l + d === 0 ? "Season not started" : "W–L–D"}</span></div>
-        </div>
-        <div class="run">${ticks || '<span class="note">No fixtures.</span>'}</div>
-        <p class="hint">Results fill the run-in left to right; hollow ticks are still to play.</p>
-        <div class="pb" style="border-top:1px solid var(--border-soft)">${rosterBody}</div>
-      </div>
-      <aside class="panel">
-        <h2>Next up</h2>
-        <div class="pb">
-          ${
-            next.length
-              ? `<div class="fx-grid" style="grid-template-columns:1fr">${next
-                  .map((f) => fixtureCard(f, names, slugs, team))
-                  .join("")}</div>`
-              : `<p class="note">No fixtures remaining.</p>`
-          }
-        </div>
-      </aside>
-    </div>`;
+  // The matrix header is itself the calendar, so the rail would say the same
+  // thing twice; the rail stays where the ledger's dates run vertically.
+  return page(
+    `${head}${asMatrix ? "" : rail(shown, today)}${tally}${notices}${ledger}${rosterBlock}`,
+  );
 }

@@ -26,10 +26,22 @@ class SchoolConfig:
     ordinal: int = 0
     gender: str = "men"
     scraper: str = "statcrew"
+    # The current schedule/roster site. Historical StatCrew sources use a
+    # different host, so Harding supplies this explicitly; SideArm sources can
+    # use base_url directly.
+    live_base_url: str = ""
 
     def build_game_url(self, year: int, game_num: int) -> str:
         """Build a game URL from the template, substituting {year}, {prefix}, {num:02d}."""
         return self.base_url.format(year=year, prefix=self.prefix, num=game_num)
+
+    def live_sport_url(self) -> str:
+        """Return the season schedule/roster base, or empty when unknown."""
+        if self.live_base_url:
+            return self.live_base_url.rstrip("/")
+        if "/sports/" in self.base_url and "{" not in self.base_url:
+            return self.base_url.rstrip("/")
+        return ""
 
 
 def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
@@ -61,6 +73,7 @@ def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
             ordinal=entry.get("ordinal", idx),
             gender=entry.get("gender", "men"),
             scraper=entry.get("scraper", "statcrew"),
+            live_base_url=entry.get("live_base_url", ""),
         )
         if school.enabled and not school.base_url:
             raise ValueError(
