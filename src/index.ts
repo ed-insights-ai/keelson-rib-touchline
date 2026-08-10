@@ -33,6 +33,7 @@ import {
   listSeasons,
   loadFixtures,
   loadMatches,
+  loadRosterHistory,
   loadRosters,
   loadStats,
   readMarker,
@@ -181,6 +182,9 @@ async function composeTouchlineBoardInner(): Promise<{ html: string; collectedAt
   const rs = await loadRosters(root, want.season, want.gender);
   const st = await loadStats(root, want.season, want.gender);
   const mt = await loadMatches(root, want.season, want.gender);
+  // The full roster archive feeds tenure lines — how many seasons a player
+  // has been on the roster, and prior stints at other conference programmes.
+  const history = await loadRosterHistory(root, want.gender);
 
   // A team lens carried across seasons only holds if the team is actually in
   // the season being shown — a 2016 board has three programmes, not seven.
@@ -193,6 +197,7 @@ async function composeTouchlineBoardInner(): Promise<{ html: string; collectedAt
     rosters: rs.ok ? rs.value : undefined,
     stats: st.ok ? st.value : undefined,
     matches: mt.ok ? mt.value : undefined,
+    rosterHistory: history,
     team,
     player: team ? sel.player : undefined,
     fixture: sel.fixture,
