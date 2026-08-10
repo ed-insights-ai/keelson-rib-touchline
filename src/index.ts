@@ -58,6 +58,35 @@ let snapshots: SnapshotManager | undefined;
 let unregisterBoard: (() => void) | undefined;
 let getProjects: (() => readonly Project[]) | undefined;
 let seedTimer: ReturnType<typeof setTimeout> | undefined;
+let invalidateManifest: (() => void) | undefined;
+
+// The board panel's head is host chrome, static per manifest fetch — but the
+// rib contract sanctions mutating a declared region's presentation and calling
+// invalidateManifest when a value really changed. The collected stamp lives
+// there as the region byline, out of the sheet entirely: the composer knows
+// which season file it just rendered, so the stamp follows the viewed season.
+const boardPanel: {
+  key: string;
+  title: string;
+  glyph: { char: string; tone: "ok" };
+  live: boolean;
+  byline?: string;
+} = {
+  key: BOARD_KEY,
+  title: "Season board",
+  glyph: { char: "◎", tone: "ok" },
+  live: true,
+};
+
+function stampPanel(collectedAt?: string): void {
+  const byline = collectedAt
+    ? `collected ${collectedAt.slice(0, 16).replace("T", " ")}`
+    : undefined;
+  if (boardPanel.byline === byline) return;
+  if (byline === undefined) delete boardPanel.byline;
+  else boardPanel.byline = byline;
+  invalidateManifest?.();
+}
 
 // The boot-time compose can run before the server has finished loading
 // projects, so the first frame can honestly report "no projects registered"
@@ -99,6 +128,12 @@ async function currentScope(): Promise<{
 }
 
 async function composeTouchlineBoard(): Promise<string> {
+  const { html, collectedAt } = await composeTouchlineBoardInner();
+  stampPanel(collectedAt);
+  return html;
+}
+
+async function composeTouchlineBoardInner(): Promise<{ html: string; collectedAt?: string }> {
   const sel = getSelection();
   const { project, all, home } = await currentScope();
   if (!project) {
@@ -109,30 +144,32 @@ async function composeTouchlineBoard(): Promise<string> {
       const marker = await readMarker(p.rootPath).catch(() => ({ state: "unmarked" as const }));
       if (marker.state === "marked") homes.push(p.name);
     }
-    return composeNoProject(homes);
+    return { html: composeNoProject(homes) };
   }
-  if (!home) return composeUnreadable(`${project.rootPath} could not be inspected.`);
+  if (!home) return { html: composeUnreadable(`${project.rootPath} could not be inspected.`) };
 
   if (home.state === "foreign" || home.state === "missing" || home.state === "occupied") {
-    return composeUnreadable(explainRefusal(project.rootPath, home) as string);
+    return { html: composeUnreadable(explainRefusal(project.rootPath, home) as string) };
   }
-  if (home.state === "empty") return composeNotAHome(project.name, true);
+  if (home.state === "empty") return { html: composeNotAHome(project.name, true) };
 
   const root = project.rootPath;
   const seasons = await listSeasons(root);
-  if (!seasons.length) return composeNoSeasons(project.name);
+  if (!seasons.length) return { html: composeNoSeasons(project.name) };
 
   const want =
     seasons.find((s) => s.season === sel.season && s.gender === sel.gender) ?? seasons[0];
-  if (!want) return composeNoSeasons(project.name);
+  if (!want) return { html: composeNoSeasons(project.name) };
 
   const fx = await loadFixtures(root, want.season, want.gender);
   if (!fx.ok) {
-    return composeUnreadable(
-      fx.reason === "absent"
-        ? `No fixtures file at ${fx.path}.`
-        : `${fx.reason} fixtures file at ${fx.path} — ${"detail" in fx ? fx.detail : ""}`,
-    );
+    return {
+      html: composeUnreadable(
+        fx.reason === "absent"
+          ? `No fixtures file at ${fx.path}.`
+          : `${fx.reason} fixtures file at ${fx.path} — ${"detail" in fx ? fx.detail : ""}`,
+      ),
+    };
   }
   const rs = await loadRosters(root, want.season, want.gender);
   const st = await loadStats(root, want.season, want.gender);
@@ -143,7 +180,7 @@ async function composeTouchlineBoard(): Promise<string> {
   const team =
     sel.team && fx.value.programmes.some((p) => p.slug === sel.team) ? sel.team : undefined;
 
-  return composeBoard({
+  const html = composeBoard({
     projectName: project.name,
     fixtures: fx.value,
     rosters: rs.ok ? rs.value : undefined,
@@ -155,6 +192,7 @@ async function composeTouchlineBoard(): Promise<string> {
     today: todayIso(),
     seasons: seasons.map((s) => ({ season: s.season, gender: s.gender })),
   });
+  return { html, collectedAt: fx.value.collected_at };
 }
 
 /** Build the chat seed from the live situation, so the agent opens knowing
@@ -199,12 +237,7 @@ const rib: Rib = {
         // opens the Touchline agent, which holds every write path (init,
         // collect, focus, remove) as tools. A parallel form would be a second,
         // dumber way to say the same thing.
-        header: {
-          key: BOARD_KEY,
-          title: "Season board",
-          glyph: { char: "◎", tone: "ok" },
-          live: true,
-        },
+        header: boardPanel,
         rows: [],
       },
     },
@@ -300,6 +333,7 @@ const rib: Rib = {
     unregisterBoard = undefined;
     snapshots = ctx.getSnapshotManager?.();
     getProjects = () => ctx.getProjects?.() ?? [];
+    invalidateManifest = ctx.invalidateManifest;
     // Workflow bash nodes cannot see this module's location. Persist the
     // package route at activation; authStatus reports any write/parse failure.
     void ensureActivationConfig().catch(() => undefined);

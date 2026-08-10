@@ -618,6 +618,13 @@ describe("the board markup", () => {
     expect(html).toContain("Harding \u00b7 2 home \u00b7 0 away \u00b7 1 conference");
     expect(html).toContain("Rogers State at Harding");
     expect(html).toContain("Thursday \u00b7 7:00 PM \u00b7 Stevens Soccer Complex");
+    // No legend: the home tint and spoken labels carry venue.
+    expect(html).not.toContain(">Selected<");
+    // The masthead carries the gender as a tag; the dek line is gone, and the
+    // collected stamp lives in the panel head, not on the sheet.
+    expect(html).toContain('<span class="gen">Men</span>');
+    expect(html).not.toContain("programmes</p>");
+    expect(html).not.toContain("collected 2026-08-09");
   });
 
   describe("the roster sheet", () => {
