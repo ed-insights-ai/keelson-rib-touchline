@@ -66,3 +66,8 @@ Further rules:
   supplied (by a human at the approval gate) or discovered (on a profile
   page, in a Google snippet, via a site: query) should always be fetched:
   one fetch can upgrade an attested claim to confirmed with a date.
+- **Threads profiles render fully to a plain fetch.** For any league or club
+  in scope, fetch `threads.com/@<handle>` directly — award posts (Team of
+  the Season, Best XI) often live there verbatim, dated, on the league's own
+  account. Check Threads BEFORE declaring a social surface unindexed;
+  Instagram handles usually map to the same name on Threads.
