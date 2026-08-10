@@ -93,32 +93,23 @@ nodes:
       You are the research stage of a Touchline player profile. ONE player:
       '$inputs.player' of programme '$inputs.programme' ($inputs.gender).
 
+      The pipeline directory is:
+      $resolve-pipeline.output
+      Read <pipeline-parent>/prompts/player-profile.md FIRST and follow it
+      exactly — it is the research method contract: disambiguate before
+      anything else, anchor on official pages, build the timeline backward,
+      sweep adjacent competition (summer leagues, honors follow-up), chase
+      the focus year specifically, and keep the three evidence verdicts
+      (confirmed / ruled out / no indexed mention) distinct. Its rules of
+      evidence are absolute.
+
       The assembled record (identity, career seasons, availability flags):
       $assemble.output
+      The focus year is the identity's roster_season.
 
-      Research this player's activity OUTSIDE the college record with this
-      recipe:
-      1. BARE NAME first: search the plain name alone, then name + hometown,
-         then name + school. League award posts and social announcements
-         surface under bare names when structured queries miss.
-      2. CLUB-FIRST: from the hometown and campus geography, fetch the squad
-         pages of plausible summer clubs (USL League Two, NPSL, UPSL, The
-         League for Clubs) and look for the name.
-      3. HONORS FOLLOW-UP: any club membership found triggers an immediate
-         player+league honors search (all-conference, Team of the Season,
-         Best XI, weekly awards).
-      4. Also check: signing/commitment announcements, pre-college honors,
-         youth national-team appearances, transfer trails (previous colleges,
-         Transfermarkt/Soccerway pages for internationals).
-
-      EVIDENCE RULES — absolute: a finding exists only if verifiable at a URL
-      you fetched or that appears unambiguously in search results, AND the
-      identity plausibly matches (hometown, school, age). Never stretch a name
-      match. Confidence: league/club official pages and local news high; club
-      social capturable at a stable URL medium; player self-posts (soccer
-      content only, never personal life) medium. A claim you believe but
-      cannot capture at a URL goes in attested_uncaptured, never in findings.
-      "Nothing found" is a normal result.
+      Findings that are "ruled out" verdicts belong in the reply, not the
+      findings array; "no indexed mention" surfaces go in unswept with the
+      reason.
 
       Write data/reports/research/players/$inputs.programme-<player-key>.json
       (player-key: the lowercase hyphenated name), containing:
