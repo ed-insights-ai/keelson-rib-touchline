@@ -493,6 +493,17 @@ describe("the board markup", () => {
         today: "2026-08-09",
       });
 
+    test("a team page leads with its people — roster above schedule", () => {
+      const html = compose("harding");
+      expect(html.indexOf("<h2>Roster</h2>")).toBeGreaterThan(-1);
+      expect(html.indexOf("<h2>Roster</h2>")).toBeLessThan(html.indexOf("<h2>Schedule</h2>"));
+    });
+
+    test("the conference lens keeps the matchday board above roster balance", () => {
+      const html = compose();
+      expect(html.indexOf("Matchday board")).toBeLessThan(html.indexOf("Roster balance"));
+    });
+
     test("the team lens groups attack-first with hometown and height on the row", () => {
       const html = compose("harding");
       expect(html.indexOf("Forwards")).toBeLessThan(html.indexOf("Goalkeepers"));

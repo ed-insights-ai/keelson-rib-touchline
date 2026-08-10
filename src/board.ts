@@ -85,6 +85,7 @@ export function hueFor(slug: string, allSlugs: readonly string[]): string {
 const STYLE = `
 :root{
 --bg:#f4f4f8;--sheet:#fff;--sunk:#eeeef5;
+--band:transparent;--raise:#eeeef5;--hover:#eeeef5;--zebra:transparent;
 --ink:#151827;--ink-2:#454b63;--muted:#6b7189;--faint:#9aa0b5;
 --rule:#e2e3ec;--rule-firm:#c9cbd9;
 --accent:#6d4fe0;--accent-soft:#efeafd;
@@ -95,13 +96,17 @@ const STYLE = `
 --gk:#7b61d7;--def:#3f70a9;--mid:#3b8a72;--fwd:#b8820f;
 --gr:#232a45;--sr:#7a2148;--jr:#a03b62;--so:#cf8ba3;--fr:#e9bfcc;
 }
+/* Dark is the light theme's structure translated surface-by-surface, not one
+   navy applied everywhere: a four-step ladder (page < shell < band < raised)
+   where light's white-vs-lavender gaps become deliberate tonal steps. */
 :root[data-theme="dark"]{
---bg:#0d1020;--sheet:#141a2e;--sunk:#0f1425;
---ink:#e7eaf6;--ink-2:#b3bad2;--muted:#8990a8;--faint:#616880;
---rule:#242b45;--rule-firm:#333c5c;
---accent:#9b8eff;--accent-soft:#1e1f42;
+--bg:#0b1224;--sheet:#101831;--sunk:#192542;
+--band:#182340;--raise:#1f2d4e;--hover:#23345b;--zebra:#131b36;
+--ink:#e9edf7;--ink-2:#aab5cd;--muted:#8b97b5;--faint:#6d7994;
+--rule:#263554;--rule-firm:#3a4b72;
+--accent:#9b8eff;--accent-soft:#252b52;
 --played:#57cf90;--played-soft:#12301f;
---live:#f5924d;--live-soft:#33200f;
+--live:#f5924d;--live-soft:#2a2117;
 --late:#f0879a;--late-soft:#331a22;
 --draw:#f0c04f;
 --gk:#a895ff;--def:#74a7e2;--mid:#61c39f;--fwd:#eac160;
@@ -179,7 +184,9 @@ border-bottom:1px solid var(--rule);background:var(--sunk)}
 .note.flag{border-left:3px solid var(--live);background:var(--live-soft)}
 
 /* ── section head ─────────────────────────────────────────────────────── */
-.sec{display:flex;align-items:baseline;gap:10px;padding:12px 18px 8px}
+/* --band is transparent in light — white space does the separating there;
+   dark has no white space, so the band carries the same structure tonally. */
+.sec{display:flex;align-items:baseline;gap:10px;padding:12px 18px 8px;background:var(--band)}
 .sec h2{margin:0;font:700 11px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
 letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .sec .count{margin-left:auto;font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
@@ -188,7 +195,8 @@ letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .led{border-top:1px solid var(--rule)}
 .row{display:grid;grid-template-columns:62px 22px 1fr auto;gap:0 12px;align-items:baseline;
 padding:9px 18px;border-bottom:1px solid var(--rule);cursor:pointer}
-.row:hover{background:var(--sunk)}
+.row:nth-child(even){background:var(--zebra)}
+.row:hover{background:var(--hover)}
 .row:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .row .d{font:700 11px/1.35 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
 letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-variant-numeric:tabular-nums}
@@ -221,7 +229,7 @@ letter-spacing:.13em;text-transform:uppercase;color:var(--faint)}
 .key .kh i{background:var(--accent-soft);border-color:transparent}
 .key .ks i{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
 .mx-sel{display:flex;align-items:center;gap:12px;margin:4px 18px 12px;border:1px solid var(--rule);
-border-radius:8px;background:var(--sunk);padding:9px 13px;min-height:54px}
+border-radius:8px;background:var(--raise);padding:9px 13px;min-height:54px}
 .mx-sel .db{flex:0 0 48px;text-align:center;border-right:1px solid var(--rule-firm);padding-right:12px}
 .mx-sel .db .mo{font:700 9.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
 letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
@@ -1409,7 +1417,7 @@ export function composeBoard(input: BoardInput): string {
 
   // The matrix header is itself the calendar, so the rail would say the same
   // thing twice; the rail stays where the ledger's dates run vertically.
-  return page(
-    `${head}${asMatrix ? "" : rail(shown, today)}${tally}${notices}${ledger}${rosterBlock}`,
-  );
+  // A team page leads with its people: roster first, then the schedule.
+  const body = team ? `${rosterBlock}${ledger}` : `${ledger}${rosterBlock}`;
+  return page(`${head}${asMatrix ? "" : rail(shown, today)}${tally}${notices}${body}`);
 }
