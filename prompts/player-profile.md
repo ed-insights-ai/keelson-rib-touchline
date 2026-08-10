@@ -66,6 +66,11 @@ Further rules:
   supplied (by a human at the approval gate) or discovered (on a profile
   page, in a Google snippet, via a site: query) should always be fetched:
   one fetch can upgrade an attested claim to confirmed with a date.
+- **When a club publishes no names, read its opponents.** Rival clubs' match
+  reports, fan-site coverage (e.g. an academy side's beat coverage), scorer
+  lists, and tagged match photos name opposing players a roster-less club
+  never will. The league's own news page and weekly-award posts are the
+  other side of the same move.
 - **Threads profiles render fully to a plain fetch.** For any league or club
   in scope, fetch `threads.com/@<handle>` directly — award posts (Team of
   the Season, Best XI) often live there verbatim, dated, on the league's own

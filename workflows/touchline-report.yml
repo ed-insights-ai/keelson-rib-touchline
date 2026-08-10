@@ -224,9 +224,10 @@ nodes:
           digest, it does not appear in your prose.
         data/reports/research/$inputs.season-$inputs.gender/verified.json —
           the only admissible news and offseason findings, each with source,
-          url, and date. attested_uncaptured items may be mentioned ONLY in
-          an uncertainty or takeaway as "attested but uncaptured — needs a
-          link", never as fact.
+          url, and date. attested_uncaptured items NEVER appear in the
+          report in any form — they stay in the research artifacts for the
+          approval gate. If it isn't discoverable, it isn't in the report.
+          An undated source cannot date a claim.
 
       Write data/reports/narrative-$inputs.season-$inputs.gender.json
       conforming to the touchline.report-narrative/2 contract documented at

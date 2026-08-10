@@ -12,6 +12,12 @@ answer; this file says *how it must read and look*. Tune the product here.
 - News-layer claims (coaching changes, arrivals, polls) carry a source and
   a date, fetched and verified — or they are not made. "No verified news"
   is written when that is the truth.
+- **If it isn't discoverable, it isn't in the report.** Attested-but-
+  uncaptured claims never appear in report content — not as fact, not as a
+  hedge, not in an uncertainty. They live only in the research artifacts,
+  surfaced at the approval gate for a human to capture or discard. An
+  undated source cannot date a claim: a name-only squad listing with no
+  season stamp does not establish a current-season fact.
 - Missing data is a named gap, stated plainly ("2026 roster not yet
   published — turnover unknown"), never papered over.
 - Patterns computed over partial box-score coverage state the coverage
