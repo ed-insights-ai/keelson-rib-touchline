@@ -136,6 +136,11 @@ nodes:
            data/rosters/$inputs.season-$inputs.gender.json (names, hometowns).
            If the roster is missing, write a file recording exactly that as the
            only finding and finish.
+        3b. Check data/players/$inputs.gender/<slug>/ for existing player
+           profiles. Their findings are ALREADY VERIFIED — copy relevant ones
+           into this programme's findings as-is (same text, source, url,
+           date), and let their unswept notes save you repeat work. Probed
+           players still get a fresh focus-year check for anything newer.
         4. Research the roster with THIS recipe, in order:
            a. CLUB-FIRST: from the hometowns, list plausible summer clubs
               (USL League Two, NPSL, UPSL, The League for Clubs) near campus
