@@ -606,3 +606,28 @@ def test_roster_position_blob_is_peeled_into_fields() -> None:
             "weight": "165 lbs",
         }
     ]
+
+
+def test_a_logo_only_conference_marker_still_counts_as_published() -> None:
+    """One theme marks conference games with a bare logo image and no text."""
+    rows = (
+        _dom_game(
+            game_id="1",
+            opponent="Harding",
+            date="Oct 3 (Sat)",
+            conference='<img alt="Great American Conference" src="/gac.png">',
+        )
+        + _dom_game(game_id="2", opponent="Drury", date="Sep 2 (Wed)")
+    )
+    fixtures = parse_schedule_page(
+        _dom_page(rows),
+        page_url="https://example.test/schedule/2026",
+        year=2026,
+        owner_slug="northeastern-state",
+        aliases=identity_aliases(_gac(), "men"),
+    )
+    flags = {str(f["id"]).rsplit(":", 1)[-1]: f for f in fixtures}
+    assert flags["1"]["conference_game"] is True
+    assert flags["2"]["conference_game"] is False
+    # The logo is the publisher speaking — nothing here is derived.
+    assert all("conference_game_source" not in f for f in fixtures)

@@ -395,11 +395,19 @@ def _parse_schedule_dom(
     """
     soup = BeautifulSoup(html, "lxml")
     rows = soup.select("li.sidearm-schedule-game")
-    theme_marks_conference = any(
-        (marker := row.select_one(".sidearm-schedule-game-conference"))
-        and marker.get_text(strip=True)
-        for row in rows
-    )
+
+    def conference_marked(row: object) -> bool:
+        """A theme marks conference games with text ("GAC") or a bare logo.
+
+        Measured: one site renders only ``<img alt="Great American Conference">``
+        inside the conference cell — no text — so text alone under-detects.
+        """
+        marker = row.select_one(".sidearm-schedule-game-conference")  # type: ignore[attr-defined]
+        if marker is None:
+            return False
+        return bool(marker.get_text(strip=True)) or marker.select_one("img") is not None
+
+    theme_marks_conference = any(conference_marked(row) for row in rows)
     member_slugs = set(aliases.values())
 
     fixtures: list[dict[str, object]] = []
@@ -467,8 +475,7 @@ def _parse_schedule_dom(
             "source_url": page_url,
         }
         if theme_marks_conference:
-            marker = row.select_one(".sidearm-schedule-game-conference")
-            fixture["conference_game"] = bool(marker and marker.get_text(strip=True))
+            fixture["conference_game"] = conference_marked(row)
         else:
             exhibition = bool(re.search(r"exhib", opponent_raw, re.IGNORECASE))
             fixture["conference_game"] = not exhibition and all(

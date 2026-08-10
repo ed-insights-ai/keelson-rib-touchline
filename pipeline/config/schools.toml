@@ -72,11 +72,12 @@ gender       = "men"
 ordinal      = 4
 prefix       = "nsu"
 base_url     = "https://nsuathletics.com/sports/mens-soccer"
+live_base_url = "https://goriverhawksgo.com/sports/mens-soccer"
 years        = [2019, 2020, 2021, 2022, 2023, 2024, 2025]
 scraper      = "sidearm_legacy"
 data_status  = "unverified"
-enabled      = false
-notes        = "SideArm Legacy (KnockoutJS) — schedule/YEAR redirects to SPA homepage. Scraper not yet implemented."
+enabled      = true
+notes        = "Athletics moved to goriverhawksgo.com (standard SideArm; school's primary conference is now MIAA, but 2026 men's soccer is GAC-marked on its own schedule). Old domains nsuathletics.com and nsuriverhawks.com are GoDaddy-parked, so the sidearm_legacy historical recipe at base_url is dead — repoint it before any historical backfill."
 
 [[schools]]
 name         = "Ouachita Baptist"
