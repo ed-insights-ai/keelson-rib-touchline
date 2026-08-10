@@ -583,6 +583,43 @@ def returning_table(profiles: list[dict]) -> str:
     )
 
 
+def availability_block(last: dict | None) -> str:
+    """Players whose participation stopped early — rendered as PROJECTED.
+
+    The digest reports the observed pattern; the injury reading is inference,
+    and the block says so in place.
+    """
+    flags = (last or {}).get("availability_flags") or []
+    if not flags:
+        return ""
+    rows = []
+    for flag in flags[:5]:
+        roster = flag.get("on_current_roster")
+        status = ""
+        if roster is True:
+            status = '<span class="tag tag-ret">on new roster</span>'
+        elif roster is False:
+            status = '<span class="tag tag-dep">not on new roster</span>'
+        rows.append(
+            f"<tr><td><b>{esc(flag.get('name', ''))}</b></td>"
+            f'<td class="num">{flag.get("appearances")}</td>'
+            f'<td class="num">{flag.get("minutes")}</td>'
+            f'<td class="num">{esc(_long_date(str(flag.get("last_seen", ""))))}</td>'
+            f'<td class="num">{flag.get("missed_after")} of {flag.get("of_matches")}</td>'
+            f"<td>{status}</td></tr>"
+        )
+    return (
+        f'<div class="viz-title">Availability watch {label_chip("projected")}</div>'
+        '<table class="grid slim"><thead><tr><th>Player</th><th class="num">Apps</th>'
+        '<th class="num">Min</th><th class="num">Last seen</th><th class="num">Missed</th>'
+        "<th></th></tr></thead><tbody>" + "".join(rows) + "</tbody></table>"
+        '<div class="viz-note">Inferred from participation patterns in held box scores: a '
+        "regular who stops appearing while the team plays on. The record cannot distinguish "
+        "injury from transfer, discipline, or redshirt — treat these as leads for film and "
+        "roster verification, not conclusions.</div>"
+    )
+
+
 def keeper_line(last: dict | None, turnover: dict | None) -> str:
     if not last or not last.get("keepers"):
         return ""
@@ -834,6 +871,7 @@ def opponent_card(digest: dict, slug: str, narrative: dict, names: dict[str, str
     <div>{turnover_block(turnover, digest.get("season", ""))}{keeper_line(last, turnover)}</div>
   </div>
   {returning_table(section.get("top_returning") or [])}
+  {availability_block(last)}
   {h2h_strip(section.get("head_to_head"), names, digest["focus"])}
   {fixtures_line(section.get("fixtures_vs_focus"), digest["focus"])}
   <div class="story">{prose(story.get("overview"))}</div>
@@ -1035,6 +1073,7 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
     <div>{turnover_block(focus.get("turnover"), digest.get("season", ""))}{keeper_line(focus_last, focus.get("turnover"))}</div>
   </div>
   {returning_table(focus.get("top_returning") or [])}
+  {availability_block(focus_last)}
   <div class="story">{prose(focus_story.get("overview"))}</div>
   {news_cards(focus_story.get("news"))}
   {offseason_ledger(focus_story.get("offseason"))}

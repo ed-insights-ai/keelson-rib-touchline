@@ -57,10 +57,15 @@ content contract — tune it here, not in code.
   walked back in the door, and what do the numbers say we must fix?
 - F2. **The summer ledger**: what did our own roster do between seasons that
   the public record can verify — summer-league minutes (USL League Two,
-  NPSL, UPSL), national or youth-national call-ups, honors, notable club
-  activity? Deep-search every rostered player. Only findings verified at a
-  source make the ledger; an empty summer renders as nothing, never as
-  filler.
+  NPSL, UPSL, The League for Clubs), national or youth-national call-ups,
+  honors, notable club activity? Search club-first (fetch the rosters of
+  geographically plausible summer clubs and cross-reference names), then
+  player-first. Source classes, in confidence order: league/club official
+  pages and local news (high); club social announcements when capturable at
+  a stable URL (medium); a player's own public posts about their soccer
+  activity (medium, soccer-relevant only — never personal life). Only
+  findings verified at a source make the ledger; an empty summer renders as
+  nothing, never as filler.
 
 ## The watch list (once)
 

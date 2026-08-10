@@ -441,6 +441,89 @@ def top_returning(
     return profiles
 
 
+#: A player must have played this much before stopping to be worth flagging —
+#: either sustained minutes or a real run of appearances; a few cameo minutes
+#: disappearing is rotation noise, not an availability signal.
+AVAILABILITY_MIN_APPS = 5
+AVAILABILITY_MIN_MINUTES = 180
+#: ...and this many held matches must remain after their last appearance.
+AVAILABILITY_MIN_MISSED = 3
+
+
+def availability_flags(
+    fixtures_payload: dict,
+    matches_payload: dict,
+    slug: str,
+    current_rosters: dict | None,
+) -> list[dict]:
+    """Players whose season participation stopped early — an INFERRED signal.
+
+    Built from per-match minutes in held box scores: a regular who vanishes
+    while the team keeps playing usually means injury, but the record cannot
+    distinguish injury from transfer, discipline, or redshirt — so the digest
+    reports the pattern (apps, minutes, last seen, matches missed) and never
+    the cause.  Consumers must label conclusions drawn from this as projected.
+    """
+    matches = matches_payload.get("matches") or {}
+    timeline: list[tuple[str, dict]] = []
+    for fixture in sorted(
+        _finals(fixtures_payload, slug), key=lambda row: str(row.get("date"))
+    ):
+        match = matches.get(str(fixture.get("id")))
+        if not isinstance(match, dict):
+            continue
+        slugs = _team_slugs(fixture, match)
+        if slug not in slugs:
+            continue
+        team = (match.get("teams") or [])[slugs.index(slug)]
+        timeline.append((str(fixture.get("date")), team))
+
+    if len(timeline) <= AVAILABILITY_MIN_MISSED:
+        return []
+
+    players: dict[str, dict] = {}
+    for index, (date, team) in enumerate(timeline):
+        for row in team.get("players") or []:
+            name = str(row.get("name") or "").strip()
+            if not name:
+                continue
+            key = normalize_name(name)
+            entry = players.setdefault(
+                key,
+                {"name": name, "appearances": 0, "minutes": 0, "last_index": -1, "last_seen": ""},
+            )
+            entry["appearances"] += 1
+            entry["minutes"] += int(row.get("minutes") or 0)
+            entry["last_index"] = index
+            entry["last_seen"] = date
+
+    returning = set(_roster_names(current_rosters, slug)) if current_rosters else set()
+    flags = []
+    total = len(timeline)
+    for key, entry in players.items():
+        missed = total - 1 - entry["last_index"]
+        if missed < AVAILABILITY_MIN_MISSED:
+            continue
+        if (
+            entry["appearances"] < AVAILABILITY_MIN_APPS
+            and entry["minutes"] < AVAILABILITY_MIN_MINUTES
+        ):
+            continue
+        flags.append(
+            {
+                "name": entry["name"],
+                "appearances": entry["appearances"],
+                "minutes": entry["minutes"],
+                "last_seen": entry["last_seen"],
+                "missed_after": missed,
+                "of_matches": total,
+                "on_current_roster": key in returning if current_rosters else None,
+            }
+        )
+    flags.sort(key=lambda flag: (-flag["minutes"], flag["name"]))
+    return flags
+
+
 def head_to_head(
     fixtures_by_season: dict[int, dict | None], focus: str, slug: str
 ) -> dict | None:
@@ -571,6 +654,11 @@ def build_digest(
             }
             if prev_matches is not None:
                 last["patterns"] = match_patterns(prev_fixtures, prev_matches, slug)
+                flags = availability_flags(
+                    prev_fixtures, prev_matches, slug, current_rosters
+                )
+                if flags:
+                    last["availability_flags"] = flags
             if prev_stats is not None:
                 last["discipline"] = discipline(prev_stats, slug)
                 last["keepers"] = keepers(prev_stats, slug)

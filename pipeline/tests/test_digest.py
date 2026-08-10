@@ -269,6 +269,77 @@ def test_top_returning_ranks_by_points_and_builds_career_lines():
     assert [line["season"] for line in role["career"]] == [2025]
 
 
+# ── availability_flags ───────────────────────────────────────────────────────
+
+
+def _season_of_matches(dates_and_squads):
+    """Build fixtures+matches payloads where alpha plays on each date with the
+    given player rows (each row: (name, minutes))."""
+    fixtures = []
+    matches = {}
+    for index, (date, squad) in enumerate(dates_and_squads):
+        fixture_id = f"m{index}"
+        fixtures.append(final(date, "alpha", "beta", 1, 0, fixture_id=fixture_id))
+        matches[fixture_id] = {
+            "home_index": 0,
+            "teams": [
+                {"name": "Alpha", "players": [{"name": name, "minutes": minutes} for name, minutes in squad]},
+                {"name": "Beta", "players": []},
+            ],
+        }
+    return fixtures_payload(2025, fixtures), {"schema": "touchline.matches/1", "matches": matches}
+
+
+def test_availability_flags_a_regular_who_stops_appearing():
+    from src.digest import availability_flags
+
+    ever_present = ("Ever Present", 90)
+    squads = [
+        ("2025-09-01", [ever_present, ("Hurt Star", 90)]),
+        ("2025-09-08", [ever_present, ("Hurt Star", 88)]),
+        ("2025-09-15", [ever_present, ("Hurt Star", 90)]),
+        ("2025-09-22", [ever_present, ("Late Sub", 12)]),
+        ("2025-09-29", [ever_present, ("Late Sub", 8)]),
+        ("2025-10-06", [ever_present, ("Late Sub", 15)]),
+        ("2025-10-13", [ever_present]),
+    ]
+    fixtures, matches = _season_of_matches(squads)
+    current = {"rosters": {"alpha": roster(["Ever Present", "Hurt Star"])}}
+    flags = availability_flags(fixtures, matches, "alpha", current)
+    assert [flag["name"] for flag in flags] == ["Hurt Star"]
+    flag = flags[0]
+    assert flag["appearances"] == 3
+    assert flag["minutes"] == 268
+    assert flag["last_seen"] == "2025-09-15"
+    assert flag["missed_after"] == 4
+    assert flag["of_matches"] == 7
+    # The scouting gold: he is back on the new roster.
+    assert flag["on_current_roster"] is True
+    # Late Sub stopped too (missed 1) and Ever Present never stopped — neither flagged.
+
+
+def test_availability_ignores_fringe_players_and_short_seasons():
+    from src.digest import availability_flags
+
+    squads = [
+        ("2025-09-01", [("Cameo", 6), ("Regular", 90)]),
+        ("2025-09-08", [("Cameo", 4), ("Regular", 90)]),
+        ("2025-09-15", [("Cameo", 5), ("Regular", 90)]),
+        ("2025-09-22", [("Regular", 90)]),
+        ("2025-09-29", [("Regular", 90)]),
+        ("2025-10-06", [("Regular", 90)]),
+        ("2025-10-13", [("Regular", 90)]),
+    ]
+    fixtures, matches = _season_of_matches(squads)
+    # Cameo stopped appearing, but 3 apps for 15 minutes is rotation noise,
+    # not an availability signal.
+    assert availability_flags(fixtures, matches, "alpha", None) == []
+
+    # A held season of three matches is too short to infer anything.
+    short_fixtures, short_matches = _season_of_matches(squads[:3])
+    assert availability_flags(short_fixtures, short_matches, "alpha", None) == []
+
+
 # ── head_to_head / upcoming ──────────────────────────────────────────────────
 
 
