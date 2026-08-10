@@ -11,6 +11,10 @@ requiresProject: false
 mutates_checkout: true
 # The research stage lives on the open web.
 webSearchMode: live
+# Loop iterations take the WORKFLOW-level model, so the deep pin must live
+# here for the research loop to get it. This workflow runs rarely and its
+# output faces a coach — every agent node earns the deep tier.
+model: deep
 tags: [soccer, touchline, report, scouting]
 
 inputs:
@@ -186,6 +190,7 @@ nodes:
   - id: verify
     depends_on: [research]
     context: fresh
+    model: deep
     timeout: 900000
     prompt: |
       You are the verification pass of the Touchline report workflow — the
@@ -213,6 +218,8 @@ nodes:
   - id: narrative
     depends_on: [verify]
     context: fresh
+    # The narrative is the report's judgment core — always the deep tier.
+    model: deep
     timeout: 900000
     prompt: |
       You are the narrative writer of the Touchline report workflow. The
