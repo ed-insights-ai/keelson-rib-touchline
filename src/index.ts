@@ -33,6 +33,7 @@ import {
   listSeasons,
   loadFixtures,
   loadRosters,
+  loadStats,
   readMarker,
   type SeasonRef,
 } from "./datahome.ts";
@@ -42,6 +43,7 @@ import {
   getSelection,
   resetSelection,
   resolveProject,
+  setPlayer,
   setScope,
   setSeason,
   setTeam,
@@ -69,6 +71,7 @@ function refresh(): void {
 const selectProjectPayload = z.object({ scopeId: z.string().min(1).optional() });
 const lensPayload = z.object({ team: z.string().min(1).nullable().optional() });
 const seasonPayload = z.object({ season: z.number().int(), gender: z.string().min(1) });
+const playerPayload = z.object({ player: z.string().min(1).nullable().optional() });
 
 /** Today as YYYY-MM-DD, UTC. Passed into the composer so its output is a pure
  *  function of (data, date) and a test can pin the day. */
@@ -129,6 +132,7 @@ async function composeTouchlineBoard(): Promise<string> {
     );
   }
   const rs = await loadRosters(root, want.season, want.gender);
+  const st = await loadStats(root, want.season, want.gender);
 
   // A team lens carried across seasons only holds if the team is actually in
   // the season being shown — a 2016 board has three programmes, not seven.
@@ -139,7 +143,9 @@ async function composeTouchlineBoard(): Promise<string> {
     projectName: project.name,
     fixtures: fx.value,
     rosters: rs.ok ? rs.value : undefined,
+    stats: st.ok ? st.value : undefined,
     team,
+    player: team ? sel.player : undefined,
     today: todayIso(),
     seasons: seasons.map((s) => ({ season: s.season, gender: s.gender })),
   });
@@ -180,7 +186,7 @@ const rib: Rib = {
       title: "Touchline",
       heading: "Touchline",
       subtitle:
-        "Published college-soccer schedules, rosters and results — current season and archive — collected into your own data folder.",
+        "Published college-soccer schedules, rosters, results and player statistics — current season and archive — collected into your own data folder.",
       projectScoped: true,
       layout: {
         // One panel: the board. Collection is a conversation — the panel's ✦
@@ -203,7 +209,7 @@ const rib: Rib = {
       slug: TOUCHLINE_AGENT_SLUG,
       name: "Touchline",
       description:
-        "Name a conference or programme and Touchline collects its schedule and roster — any season back to 2016 — into your project.",
+        "Name a conference or programme and Touchline collects its schedule, roster, and player statistics — any season back to 2016 — into your project.",
     },
   ],
 
@@ -253,6 +259,9 @@ const rib: Rib = {
         "  with status `scheduled`, `live`, `final`, `postponed`, or `cancelled`.",
         "  Scores are null until played — never 0, which is a real scoreline.",
         "- `data/rosters/<season>-<gender>.json` — the published roster per programme.",
+        "- `data/stats/<season>-<gender>.json` — each programme's published cumulative player",
+        "  statistics: minutes, goals, assists, shots for outfield players; saves, goals",
+        "  against, and save percentage for goalkeepers.",
         "",
         "Both name what could NOT be collected in a `missing` array. A gap is always",
         "reported, never silently dropped.",
@@ -345,6 +354,21 @@ const rib: Rib = {
       const keptTeam = getSelection().team;
       setSeason(parsed.data.season, parsed.data.gender);
       if (keptTeam) setTeam(keptTeam);
+      refresh();
+      return { ok: true as const };
+    }
+
+    // Read-only: opens or closes the player drawer on the team page. The key
+    // is the roster's SideArm player id when it has one, else the name.
+    if (action.type === "select-player") {
+      const parsed = playerPayload.safeParse(action.payload ?? {});
+      if (!parsed.success) {
+        return {
+          ok: false as const,
+          error: "select-player payload must be { player?: string | null }",
+        };
+      }
+      setPlayer(parsed.data.player ?? undefined);
       refresh();
       return { ok: true as const };
     }

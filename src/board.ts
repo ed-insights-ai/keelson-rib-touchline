@@ -11,9 +11,13 @@ import {
   type Fixture,
   type FixturesFile,
   isPlayed,
+  type KeeperStats,
   type Player,
+  type PlayerStats,
   type Roster,
   type RostersFile,
+  type StatsFile,
+  type TeamStats,
 } from "./model.ts";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -357,6 +361,70 @@ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .prow .home b{font-weight:650;color:var(--ink-2);letter-spacing:.03em}
 .prow .home .fl{font-style:normal;color:var(--accent);font-size:10px;margin-right:3px}
 
+/* ── roster season-stat strip ─────────────────────────────────────────── */
+/* A third line on the row: minutes as a bar against the squad's most-used
+   player, then the two or three numbers that tell this player's season.
+   Green and red keep their board-wide meanings — made and conceded. */
+button.prow{appearance:none;border:0;border-bottom:1px solid var(--rule);background:transparent;
+width:100%;font:inherit;color:inherit;text-align:left;cursor:pointer}
+button.prow:hover .nm{text-decoration:underline}
+button.prow:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.prow .st{grid-column:2 / -1;display:flex;flex-wrap:wrap;align-items:center;gap:3px 9px;margin-top:3px;min-width:0}
+.prow .st .stat,.prow .st .mn{flex:0 0 auto}
+.prow .st .mb{flex:0 0 58px;height:4px;border-radius:2px;background:var(--rule-firm);overflow:hidden}
+.prow .st .mb span{display:block;height:100%;background:var(--accent);border-radius:2px}
+.prow .st .mn{font:700 9.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+color:var(--faint);font-variant-numeric:tabular-nums;white-space:nowrap}
+.prow .st .stat{font:700 9.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.06em;color:var(--muted);white-space:nowrap}
+.prow .st .stat b{font-size:10.5px;font-variant-numeric:tabular-nums;color:var(--ink);margin-right:2px}
+.prow .st .stat.g b,.prow .st .stat.sv b{color:var(--played)}
+.prow .st .stat.ga b{color:var(--late)}
+
+/* ── player drawer ────────────────────────────────────────────────────── */
+.dr-veil{position:fixed;inset:0;z-index:40;appearance:none;border:0;cursor:pointer;
+background:rgba(10,14,20,.45)}
+.drawer{position:fixed;top:0;right:0;bottom:0;z-index:41;width:min(400px,94vw);
+background:var(--bg);border-left:1px solid var(--rule-firm);
+box-shadow:-16px 0 44px rgba(0,0,0,.3);overflow-y:auto;padding-bottom:10px}
+.dr-head{display:flex;gap:12px;align-items:flex-start;padding:18px 18px 13px;
+border-bottom:1px solid var(--rule-firm)}
+.dr-no{font:700 30px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+color:var(--faint);font-variant-numeric:tabular-nums}
+.dr-head h2{margin:0;font:700 19px/1.15 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+text-transform:uppercase;letter-spacing:.02em}
+.dr-head p{margin:3px 0 0;font-size:11.5px;color:var(--muted)}
+.dr-x{appearance:none;margin-left:auto;flex:0 0 auto;width:26px;height:26px;
+border:1px solid var(--rule-firm);border-radius:5px;background:transparent;
+color:var(--muted);cursor:pointer;font-size:11px;line-height:1}
+.dr-x:hover{color:var(--ink);border-color:var(--ink)}
+.dr-x:focus-visible,.dr-veil:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.dr-bio{padding:10px 18px;font-size:12px;color:var(--ink-2);border-bottom:1px solid var(--rule)}
+.dr-bio b{font-weight:650}
+.dr-bio .fl{font-style:normal;color:var(--accent);font-size:10px;margin-right:3px}
+.dr-sec{padding:14px 18px 0;font:700 9.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.dr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);
+border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-top:8px}
+.dr-grid div{background:var(--bg);padding:9px 12px 10px;min-width:0}
+.dr-grid b{display:block;font:700 19px/1.1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+font-variant-numeric:tabular-nums}
+.dr-grid span{font-size:9.5px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+.dr-bar-row{padding:12px 18px 0}
+.dr-lbl{display:block;font:700 9.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.dr-min-n{display:block;margin-top:4px;font-size:11.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.dr-min{height:6px;border-radius:3px;background:var(--rule-firm);overflow:hidden;margin-top:5px}
+.dr-min span{display:block;height:100%;background:var(--accent);border-radius:3px}
+.dr-split{display:flex;height:18px;border-radius:3px;overflow:hidden;margin-top:6px}
+.dr-split span{display:flex;align-items:center;justify-content:center;color:var(--bg);
+font:700 9.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+min-width:0;overflow:hidden;white-space:nowrap}
+.dr-split .sv{background:var(--played)}
+.dr-split .ga{background:var(--late)}
+.dr-note{padding:10px 18px 0;margin:0;font-size:11.5px;color:var(--muted)}
+.dr-foot{padding:14px 18px 6px;margin:0;font-size:10px;color:var(--faint)}
+
 /* ── roster balance (conference lens) ─────────────────────────────────── */
 .rbal{width:100%;border-collapse:collapse;font-size:12px}
 .rbal th{background:var(--sunk);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule-firm);
@@ -430,6 +498,11 @@ const SCRIPT = `
     var d=ev&&ev.data;
     if(d&&d.channel==="keelson:canvas:html:theme"&&d.theme){
       document.documentElement.setAttribute("data-theme",d.theme);
+    }
+  });
+  document.addEventListener("keydown",function(ev){
+    if(ev.key==="Escape"&&document.querySelector(".drawer")){
+      post("select-player",{player:null});
     }
   });
 
@@ -542,8 +615,12 @@ export interface BoardInput {
   projectName: string;
   fixtures: FixturesFile;
   rosters?: RostersFile;
+  stats?: StatsFile;
   /** Slug of the team lens, or undefined for the conference lens. */
   team?: string;
+  /** Player key for the drawer — the roster's SideArm player id when it has
+   *  one, else the player's name. Meaningful only alongside `team`. */
+  player?: string;
   /** Today, as YYYY-MM-DD. Passed in so the composer stays deterministic. */
   today: string;
   /** Every season on disk, so the masthead can step through the archive. */
@@ -1225,8 +1302,88 @@ function compBar(
   return `<div class="bar">${inner}</div>`;
 }
 
-function teamRosterBlock(roster: Roster): string {
+// ── player season statistics ────────────────────────────────────────────────
+// The stats file joins to the roster by SideArm's own player id — the tail of
+// the roster bio URL and the id on the stats row's anchor are the same number.
+// Name is the fallback for the rare row whose id differs between the pages.
+
+function rosterPlayerId(p: Player): string | undefined {
+  return /\/(\d+)\/?$/.exec(p.source_url ?? "")?.[1];
+}
+
+/** The select-player action key for a roster player: stable id when there is
+ *  one, else the name. What the drawer looks up must match what the row posts. */
+export function playerKey(p: Player): string {
+  return rosterPlayerId(p) ?? p.name;
+}
+
+/** One player's season, as published: a keeper has both lines when they also
+ *  appear in the offensive table. */
+interface SeasonLine {
+  field?: PlayerStats;
+  keeper?: KeeperStats;
+}
+
+function statsIndex(team: TeamStats | undefined): Map<string, SeasonLine> {
+  const by = new Map<string, SeasonLine>();
+  if (!team) return by;
+  const put = (key: string | undefined, patch: SeasonLine) => {
+    if (key) by.set(key, { ...by.get(key), ...patch });
+  };
+  for (const s of team.players) {
+    put(s.player_id, { field: s });
+    put(s.name.toLowerCase(), { field: s });
+  }
+  for (const k of team.keepers) {
+    put(k.player_id, { keeper: k });
+    put(k.name.toLowerCase(), { keeper: k });
+  }
+  return by;
+}
+
+function lineFor(index: Map<string, SeasonLine>, p: Player): SeasonLine | undefined {
+  return index.get(rosterPlayerId(p) ?? "") ?? index.get(p.name.toLowerCase());
+}
+
+/** The row's at-a-glance season: a minutes bar scaled to the squad's most-used
+ *  player, then the two or three numbers that tell this player's story. */
+function statStrip(line: SeasonLine | undefined, maxMinutes: number): string {
+  if (!line) return "";
+  const { field: f, keeper: k } = line;
+  const minutes = k?.minutes ?? f?.minutes ?? 0;
+  const pct = maxMinutes > 0 ? Math.min(100, (minutes / maxMinutes) * 100) : 0;
+  const chips: string[] = [];
+  const chip = (cls: string, value: number | string, label: string, title: string) =>
+    chips.push(
+      `<span class="stat ${cls}" title="${esc(title)}"><b>${esc(value)}</b>${esc(label)}</span>`,
+    );
+  if (k) {
+    if (typeof k.saves === "number") chip("sv", k.saves, "SV", `${k.saves} saves`);
+    if (typeof k.goals_against === "number")
+      chip("ga", k.goals_against, "GA", `${k.goals_against} goals against`);
+    if (typeof k.save_pct === "number")
+      chip(
+        "pc",
+        `${Math.round(k.save_pct * 100)}%`,
+        "",
+        `Save percentage ${(k.save_pct * 100).toFixed(1)}%`,
+      );
+  } else if (f) {
+    if (f.goals) chip("g", f.goals, "G", `${f.goals} goals`);
+    if (f.assists) chip("a", f.assists, "A", `${f.assists} assists`);
+    if (f.shots) chip("sh", f.shots, "SH", `${f.shots} shots`);
+  }
+  return `<span class="st"><span class="mb" title="${minutes} minutes played"><span style="width:${pct.toFixed(1)}%"></span></span><span class="mn">${minutes}&prime;</span>${chips.join("")}</span>`;
+}
+
+function teamRosterBlock(roster: Roster, stats?: TeamStats): string {
   const players = roster.players;
+  const idx = statsIndex(stats);
+  const maxMinutes = Math.max(
+    0,
+    ...(stats?.players ?? []).map((s) => s.minutes ?? 0),
+    ...(stats?.keepers ?? []).map((k) => k.minutes ?? 0),
+  );
   const num = (p: Player): number => {
     const n = Number.parseInt(p.number ?? "", 10);
     return Number.isNaN(n) ? 999 : n;
@@ -1278,13 +1435,20 @@ function teamRosterBlock(roster: Roster): string {
 
   const playerRow = (p: Player) => {
     const cls = classInfo(p.class_year);
-    return `<div class="prow">
+    const inner = `
       <div class="no">${esc(p.number ?? "")}</div>
       <div class="nm">${esc(p.name)}</div>
       <div class="ht">${esc(heightDisplay(p.height))}</div>
       <div class="yr">${cls ? `<i class="${cls.key}"></i>${esc(cls.abbr)}` : ""}</div>
       ${p.hometown ? `<div class="home">${hometownHtml(p.hometown)}</div>` : ""}
-    </div>`;
+      ${statStrip(lineFor(idx, p), maxMinutes)}`;
+    // Rows open the player drawer only once a season's statistics exist —
+    // a clickable row that leads nowhere would be worse than a plain one.
+    return stats
+      ? `<button type="button" class="prow act" data-act="select-player" data-payload='${esc(
+          JSON.stringify({ player: playerKey(p) }),
+        )}' aria-label="Open ${esc(p.name)}&#39;s season details">${inner}</button>`
+      : `<div class="prow">${inner}</div>`;
   };
 
   const group = (tick: string, head: string, list: readonly Player[]) =>
@@ -1302,6 +1466,138 @@ function teamRosterBlock(roster: Roster): string {
 
   return `<div class="sec"><h2>Roster</h2><span class="count">${players.length} players</span></div>
     ${bars}<div class="rgrid">${groups}</div>`;
+}
+
+/** The player drawer: the roster row's person, then their published season.
+ *  It renders over the sheet and closes from the veil, the ✕, or Escape. */
+function playerDrawer(
+  key: string,
+  roster: Roster | undefined,
+  stats: TeamStats | undefined,
+  teamName: string,
+  season: number,
+  teamPlayed: number,
+): string {
+  const rosterP = roster?.players.find((p) => playerKey(p) === key || p.name === key);
+  const idx = statsIndex(stats);
+  const line = rosterP ? lineFor(idx, rosterP) : (idx.get(key) ?? idx.get(key.toLowerCase()));
+  const f = line?.field;
+  const k = line?.keeper;
+  const name = rosterP?.name ?? f?.name ?? k?.name;
+  if (!name) return "";
+  const number = rosterP?.number ?? f?.number ?? k?.number;
+
+  const bio = [
+    rosterP?.position,
+    rosterP?.class_year,
+    heightDisplay(rosterP?.height) || undefined,
+    rosterP?.weight,
+  ]
+    .filter(Boolean)
+    .map((v) => esc(v))
+    .join(" · ");
+  const bioBlock =
+    bio || rosterP?.hometown
+      ? `<div class="dr-bio">${bio}${bio && rosterP?.hometown ? "<br>" : ""}${
+          rosterP?.hometown ? hometownHtml(rosterP.hometown) : ""
+        }</div>`
+      : "";
+
+  const cell = (value: string, label: string) => `<div><b>${value}</b><span>${label}</span></div>`;
+  const n = (value: number | undefined): string =>
+    typeof value === "number" ? String(value) : "–";
+  const sections: string[] = [];
+
+  const appearances =
+    line && typeof (k?.gp ?? f?.gp) === "number"
+      ? `${n(k?.gp ?? f?.gp)} appearance${(k?.gp ?? f?.gp) === 1 ? "" : "s"}${
+          typeof (k?.gs ?? f?.gs) === "number" ? `, ${n(k?.gs ?? f?.gs)} starts` : ""
+        }`
+      : "";
+  const minutes = k?.minutes ?? f?.minutes;
+  // Ninety minutes per played match is the honest denominator the schedule
+  // provides; overtime can push a full-season figure past it, so clamp.
+  const available = teamPlayed * 90;
+  const minutesBlock =
+    typeof minutes === "number"
+      ? `<div class="dr-bar-row"><span class="dr-lbl">Minutes</span>
+         <span class="dr-min-n">${minutes}&prime;${available ? ` of ${available}&prime; available` : ""}${appearances ? ` · ${appearances}` : ""}</span>
+         ${available ? `<div class="dr-min"><span style="width:${Math.min(100, (minutes / available) * 100).toFixed(1)}%"></span></div>` : ""}
+       </div>`
+      : "";
+
+  if (k) {
+    const shots = (k.saves ?? 0) + (k.goals_against ?? 0);
+    const split =
+      shots > 0
+        ? `<div class="dr-bar-row"><span class="dr-lbl">Shots on target faced</span>
+           <div class="dr-split">${
+             k.saves ? `<span class="sv" style="flex:${k.saves}">${k.saves} saved</span>` : ""
+}${
+             k.goals_against
+               ? `<span class="ga" style="flex:${k.goals_against}">${k.goals_against} conceded</span>`
+               : ""
+}</div></div>`
+        : "";
+    const record =
+      typeof k.wins === "number" || typeof k.losses === "number"
+        ? cell(`${n(k.wins)}–${n(k.losses)}–${n(k.ties ?? 0)}`, "Record in goal")
+        : "";
+    sections.push(`<div class="dr-sec">Goalkeeping</div>
+      <div class="dr-grid">
+        ${cell(typeof k.save_pct === "number" ? `${(k.save_pct * 100).toFixed(1)}%` : "–", "Save pct")}
+        ${cell(n(k.gaa), "Goals against avg")}
+        ${cell(n(k.shutouts), "Shutouts")}
+        ${cell(n(k.saves), "Saves")}
+        ${cell(n(k.goals_against), "Goals against")}
+        ${record || cell(n(k.shots_faced), "Shots faced")}
+      </div>${split}`);
+  }
+
+  if (f && (!k || (f.shots ?? 0) > 0 || (f.goals ?? 0) > 0)) {
+    const accuracy =
+      (f.shots ?? 0) > 0 && typeof f.sog === "number"
+        ? `<div class="dr-bar-row"><span class="dr-lbl">Shooting</span>
+           <span class="dr-min-n">${f.sog} of ${f.shots} shots on target</span>
+           <div class="dr-min acc"><span style="width:${(((f.sog ?? 0) / (f.shots || 1)) * 100).toFixed(1)}%"></span></div>
+         </div>`
+        : "";
+    const extras: string[] = [];
+    if (f.game_winners) extras.push(`${f.game_winners} game-winning`);
+    if (f.penalty_attempts)
+      extras.push(`${f.penalty_goals ?? 0} of ${f.penalty_attempts} penalties scored`);
+    if ((f.yellow ?? 0) > 0 || (f.red ?? 0) > 0)
+      extras.push(`${f.yellow ?? 0} yellow, ${f.red ?? 0} red`);
+    sections.push(`<div class="dr-sec">${k ? "In front of goal" : "Season"}</div>
+      <div class="dr-grid">
+        ${cell(n(f.goals), "Goals")}
+        ${cell(n(f.assists), "Assists")}
+        ${cell(n(f.points), "Points")}
+        ${cell(n(f.shots), "Shots")}
+        ${cell(n(f.sog), "On target")}
+        ${cell(typeof f.shot_pct === "number" ? `${(f.shot_pct * 100).toFixed(1)}%` : "–", "Conversion")}
+      </div>${accuracy}${extras.length ? `<p class="dr-note">${esc(extras.join(" · "))}</p>` : ""}`);
+  }
+
+  const body = line
+    ? `${minutesBlock}${sections.join("")}`
+    : `<p class="dr-note">${
+        stats
+          ? `No minutes recorded in the ${season} season statistics — on the roster, but yet to appear.`
+          : `No ${season} season statistics collected for ${esc(teamName)} yet.`
+      }</p>`;
+
+  const close = `data-act="select-player" data-payload='{"player":null}'`;
+  return `<button type="button" class="dr-veil" ${close} aria-label="Close player details"></button>
+    <aside class="drawer" role="dialog" aria-label="${esc(name)} season details">
+      <div class="dr-head">
+        ${number ? `<span class="dr-no">${esc(number)}</span>` : ""}
+        <div><h2>${esc(name)}</h2><p>${esc(teamName)} · ${season} season</p></div>
+        <button type="button" class="dr-x" ${close} aria-label="Close">✕</button>
+      </div>
+      ${bioBlock}${body}
+      <p class="dr-foot">From the programme&#39;s published season statistics.</p>
+    </aside>`;
 }
 
 /** The conference lens's roster section: comparable counts per programme, and
@@ -1392,12 +1688,16 @@ export function composeBoard(input: BoardInput): string {
   const played = shown.filter(isPlayed).length;
   const conference = shown.filter((f) => f.conference_game).length;
   const roster = team ? rosters?.rosters[team] : undefined;
+  const teamStats = team ? input.stats?.teams[team] : undefined;
   const rosterCount = team
     ? (roster?.players.length ?? 0)
     : rosters
       ? Object.values(rosters.rosters).reduce((n, r) => n + r.players.length, 0)
       : 0;
-  const gaps = (file.missing?.length ?? 0) + (rosters?.missing?.length ?? 0);
+  const gaps =
+    (file.missing?.length ?? 0) +
+    (rosters?.missing?.length ?? 0) +
+    (input.stats?.missing?.length ?? 0);
 
   const subject = team ? displayName(team, names) : file.conference;
 
@@ -1417,11 +1717,9 @@ export function composeBoard(input: BoardInput): string {
 
   // The masthead year steps through whatever the archive holds for this
   // gender: one collected season renders as plain text, more grow chevrons.
-  const years = [...new Set(
-    (input.seasons ?? [])
-      .filter((s) => s.gender === file.gender)
-      .map((s) => s.season),
-  )].sort((a, b) => a - b);
+  const years = [
+    ...new Set((input.seasons ?? []).filter((s) => s.gender === file.gender).map((s) => s.season)),
+  ].sort((a, b) => a - b);
   const at = years.indexOf(file.season);
   const step = (target: number | undefined, glyph: string): string =>
     target === undefined
@@ -1458,6 +1756,7 @@ export function composeBoard(input: BoardInput): string {
       ? `<p class="note flag"><b>${gaps} collection gap${gaps === 1 ? "" : "s"}.</b> ${[
           ...(file.missing ?? []).map((m) => `${esc(displayName(m, names))} (schedule)`),
           ...(rosters?.missing ?? []).map((m) => `${esc(displayName(m, names))} (roster)`),
+          ...(input.stats?.missing ?? []).map((m) => `${esc(displayName(m, names))} (stats)`),
         ].join(" · ")} — named rather than dropped; a re-collect retries them.</p>`
       : "",
     played === 0 && shown.length
@@ -1487,15 +1786,22 @@ export function composeBoard(input: BoardInput): string {
 
   const rosterBlock = team
     ? roster?.players.length
-      ? teamRosterBlock(roster)
+      ? teamRosterBlock(roster, teamStats)
       : `<div class="sec"><h2>Roster</h2></div><p class="note">No roster collected for ${esc(subject)}.</p>`
     : asMatrix && rosters
       ? rosterBalance(file, rosters)
+      : "";
+
+  const drawer =
+    team && input.player
+      ? playerDrawer(input.player, roster, teamStats, subject, file.season, played)
       : "";
 
   // The matrix header is itself the calendar, so the rail would say the same
   // thing twice; the rail stays where the ledger's dates run vertically.
   // A team page leads with its people: roster first, then the schedule.
   const body = team ? `${rosterBlock}${ledger}` : `${ledger}${rosterBlock}`;
-  return page(`${head}${asMatrix ? "" : rail(shown, today, team)}${tally}${notices}${body}`);
+  return page(
+    `${head}${asMatrix ? "" : rail(shown, today, team)}${tally}${notices}${body}${drawer}`,
+  );
 }

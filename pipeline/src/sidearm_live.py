@@ -20,6 +20,13 @@ results).  A past season is therefore collected DOM-only: the season filter
 in ``parse_schedule_page`` drops the current-season payload events, and
 ``assert_untrapped_schedule`` refuses the one dangerous shape — a page whose
 rendered games ARE the payload's current-season events under a past URL.
+
+The stats layer reads ``/stats/{year}`` — SideArm's cumulative-statistics
+page.  It is fully server-rendered with an honest per-year title on every
+site measured (2026-08-10, seven sites, back to 2016), so the wrapper check
+in ``assert_served_season`` is the whole guard; there is no payload to trap
+it.  ``parse_stats_page`` reads the individual offensive and goalkeeping
+tables into per-player season lines.
 """
 
 from __future__ import annotations
@@ -53,7 +60,8 @@ class PublishedPage:
 
 LAYER_SCHEDULE = "schedule"
 LAYER_ROSTER = "roster"
-DEFAULT_LAYERS: tuple[str, ...] = (LAYER_SCHEDULE, LAYER_ROSTER)
+LAYER_STATS = "stats"
+DEFAULT_LAYERS: tuple[str, ...] = (LAYER_SCHEDULE, LAYER_ROSTER, LAYER_STATS)
 
 # The vocabulary the coverage manifest renders.  These three states are the
 # whole reason the manifest exists: an empty results column means something
@@ -85,6 +93,10 @@ class ProgrammeCollection:
     roster_url: str = ""
     schedule_html: str = ""
     roster_html: str = ""
+    stat_players: list[dict[str, object]] | None = None
+    stat_keepers: list[dict[str, object]] | None = None
+    stats_url: str = ""
+    stats_html: str = ""
 
     def state(self, layer: str) -> str:
         outcome = self.outcomes.get(layer)
@@ -118,10 +130,15 @@ def _season_in_title(html: str, kind: str) -> int | None:
     title = BeautifulSoup(html, "lxml").title
     if title is None:
         return None
+    # Prefix match, not whole-word: the /stats/ URL kind appears in titles as
+    # "Cumulative Statistics", and "schedule"/"roster" only ever gain suffixes.
     match = re.search(
-        rf"\b(\d{{4}})(?:-\d{{2}})?\b.*\b{kind}\b", title.get_text(" "), re.I
+        rf"\b(\d{{4}})(?:-\d{{2}})?\b.*\b{kind}", title.get_text(" "), re.I
     )
     return int(match.group(1)) if match else None
+
+
+TITLE_WORDS = {LAYER_STATS: "statistic"}
 
 
 def assert_served_season(page: PublishedPage, year: int, kind: str) -> None:
@@ -132,7 +149,7 @@ def assert_served_season(page: PublishedPage, year: int, kind: str) -> None:
     When both path and title name a season, both must agree.
     """
     path_year = _season_in_path(page.final_url, kind)
-    title_year = _season_in_title(page.html, kind)
+    title_year = _season_in_title(page.html, TITLE_WORDS.get(kind, kind))
     observed = [value for value in (path_year, title_year) if value is not None]
     if not observed:
         raise LiveCollectionError(
@@ -723,6 +740,160 @@ def parse_roster_page(html: str, *, page_url: str) -> list[dict[str, str]]:
     return players
 
 
+def _stat_int(text: str) -> int | None:
+    text = text.strip()
+    if not text or text in {"-", "–"}:
+        return None
+    try:
+        return int(text)
+    except ValueError:
+        return None
+
+
+def _stat_float(text: str) -> float | None:
+    text = text.strip().rstrip("%")
+    if not text or text in {"-", "–"}:
+        return None
+    try:
+        return float(text)
+    except ValueError:
+        return None
+
+
+def _stat_minutes(text: str) -> int | None:
+    """Minutes as printed: outfield rows are plain ("1753"), keeper rows carry
+    seconds ("956:15"). Whole minutes are enough for anything downstream."""
+    match = re.fullmatch(r"(\d+)(?::\d{2})?", text.strip())
+    return int(match.group(1)) if match else None
+
+
+def _stat_pair(text: str) -> tuple[int, int] | None:
+    match = re.fullmatch(r"(\d+)\s*-\s*(\d+)", text.strip())
+    return (int(match.group(1)), int(match.group(2))) if match else None
+
+
+def _stats_player_name(published: str) -> str:
+    """Flip the stats page's "Last, First" to the roster's "First Last"."""
+    head, _, tail = published.partition(",")
+    return f"{tail.strip()} {head.strip()}".strip() if tail.strip() else published.strip()
+
+
+def parse_stats_page(
+    html: str, *, page_url: str
+) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
+    """Read the two individual tables off a cumulative-statistics page.
+
+    Measured 2026-08-10 across seven sites and seasons back to 2016: every
+    ``/stats/{year}`` page server-renders an "Individual Overall Offensive
+    Statistics" and an "Individual Overall Goalkeeping Statistics" table, each
+    stat cell labelled with ``data-label``, each player row anchored by
+    ``a[data-player-id]`` — and the Total/Opponents footer rows carry no such
+    anchor, which is what keeps them out.  Unlike schedules there is no payload
+    trap: the pages are honest per year on every site, including the two whose
+    schedule pages canonicalise the COVID season.
+    """
+    soup = BeautifulSoup(html, "lxml")
+
+    def rows_of(caption: str) -> list[dict[str, object]]:
+        for table in soup.find_all("table"):
+            found = table.find("caption")
+            if found is None or found.get_text(strip=True) != caption:
+                continue
+            out: list[dict[str, object]] = []
+            seen: set[str] = set()
+            for row in table.find_all("tr"):
+                anchor = row.find("a", attrs={"data-player-id": True})
+                if anchor is None:
+                    continue
+                player_id = str(anchor.get("data-player-id") or "").strip()
+                name = _stats_player_name(anchor.get_text(" ", strip=True))
+                if not name or player_id in seen:
+                    continue
+                seen.add(player_id)
+                cells = {
+                    str(cell.get("data-label")): cell.get_text(" ", strip=True)
+                    for cell in row.find_all("td")
+                    if cell.get("data-label")
+                }
+                entry: dict[str, object] = {"name": name}
+                if player_id:
+                    entry["player_id"] = player_id
+                jersey = row.find("td")
+                number = jersey.get_text(strip=True) if jersey is not None else ""
+                if number:
+                    entry["number"] = number
+                bio = row.find("a", href=re.compile(r"/roster/"))
+                if bio is not None:
+                    entry["bio_url"] = urljoin(page_url, str(bio["href"]))
+                entry["cells"] = cells
+                out.append(entry)
+            return out
+        return []
+
+    def take(
+        entry: dict[str, object],
+        cells: dict[str, str],
+        fields: dict[str, tuple[str, object]],
+    ) -> None:
+        for label, (field, convert) in fields.items():
+            value = convert(cells.get(label, ""))
+            if value is not None:
+                entry[field] = value
+
+    players: list[dict[str, object]] = []
+    for raw in rows_of("Individual Overall Offensive Statistics"):
+        cells = raw.pop("cells")
+        take(
+            raw,
+            cells,  # type: ignore[arg-type]
+            {
+                "GP": ("gp", _stat_int),
+                "GS": ("gs", _stat_int),
+                "MIN": ("minutes", _stat_minutes),
+                "G": ("goals", _stat_int),
+                "A": ("assists", _stat_int),
+                "PTS": ("points", _stat_int),
+                "SH": ("shots", _stat_int),
+                "SH%": ("shot_pct", _stat_float),
+                "SOG": ("sog", _stat_int),
+                "SOG%": ("sog_pct", _stat_float),
+                "GW": ("game_winners", _stat_int),
+            },
+        )
+        cards = _stat_pair(cells.get("YC-RC", ""))  # type: ignore[union-attr]
+        if cards:
+            raw["yellow"], raw["red"] = cards
+        penalties = _stat_pair(cells.get("PG-PA", ""))  # type: ignore[union-attr]
+        if penalties:
+            raw["penalty_goals"], raw["penalty_attempts"] = penalties
+        players.append(raw)
+
+    keepers: list[dict[str, object]] = []
+    for raw in rows_of("Individual Overall Goalkeeping Statistics"):
+        cells = raw.pop("cells")
+        take(
+            raw,
+            cells,  # type: ignore[arg-type]
+            {
+                "GP": ("gp", _stat_int),
+                "GS": ("gs", _stat_int),
+                "MIN": ("minutes", _stat_minutes),
+                "GA": ("goals_against", _stat_int),
+                "GAA": ("gaa", _stat_float),
+                "SV": ("saves", _stat_int),
+                "SV%": ("save_pct", _stat_float),
+                "W": ("wins", _stat_int),
+                "L": ("losses", _stat_int),
+                "T": ("ties", _stat_int),
+                "SHO": ("shutouts", _stat_int),
+                "SF": ("shots_faced", _stat_int),
+            },
+        )
+        keepers.append(raw)
+
+    return players, keepers
+
+
 def collect_programme(
     school: SchoolConfig,
     year: int,
@@ -743,10 +914,14 @@ def collect_programme(
     outcomes: dict[str, LayerOutcome] = {}
     fixtures: list[dict[str, object]] = []
     players: list[dict[str, str]] = []
+    stat_players: list[dict[str, object]] = []
+    stat_keepers: list[dict[str, object]] = []
     schedule_html = ""
     roster_html = ""
+    stats_html = ""
     schedule_url = ""
     roster_url = ""
+    stats_url = ""
 
     base_url = school.live_sport_url()
     if not base_url:
@@ -824,6 +999,30 @@ def collect_programme(
                 LAYER_ROSTER, STATE_UNAVAILABLE, reason=str(exc), source_url=roster_url
             )
 
+    if LAYER_STATS in wanted:
+        stats_url = f"{base_url}/stats/{year}"
+        try:
+            page = fetch_published_page(client, base_url, year, "stats")
+            stats_html = page.html
+            stats_url = page.final_url
+            stat_players, stat_keepers = parse_stats_page(
+                page.html, page_url=page.final_url
+            )
+            count = len(stat_players) + len(stat_keepers)
+            outcomes[LAYER_STATS] = LayerOutcome(
+                LAYER_STATS,
+                STATE_COMPLETE if count else STATE_EMPTY,
+                count=count,
+                reason=None
+                if count
+                else f"[{year}] the {year} statistics page proved its season but listed no players",
+                source_url=page.final_url,
+            )
+        except LiveCollectionError as exc:
+            outcomes[LAYER_STATS] = LayerOutcome(
+                LAYER_STATS, STATE_UNAVAILABLE, reason=str(exc), source_url=stats_url
+            )
+
     return ProgrammeCollection(
         slug=slug,
         name=school.name,
@@ -834,6 +1033,10 @@ def collect_programme(
         roster_url=roster_url,
         schedule_html=schedule_html,
         roster_html=roster_html,
+        stat_players=stat_players,
+        stat_keepers=stat_keepers,
+        stats_url=stats_url,
+        stats_html=stats_html,
     )
 
 
@@ -841,7 +1044,7 @@ def write_raw_pages(
     root: Path, result: ProgrammeCollection, year: int, gender: str
 ) -> None:
     """Archive whatever was actually served, so any parse can be redone offline."""
-    if not (result.schedule_html or result.roster_html):
+    if not (result.schedule_html or result.roster_html or result.stats_html):
         return
     directory = root / "data" / "raw_html" / result.slug
     directory.mkdir(parents=True, exist_ok=True)
@@ -852,4 +1055,8 @@ def write_raw_pages(
     if result.roster_html:
         (directory / f"{year}-{gender}-roster.html").write_text(
             result.roster_html, encoding="utf-8"
+        )
+    if result.stats_html:
+        (directory / f"{year}-{gender}-stats.html").write_text(
+            result.stats_html, encoding="utf-8"
         )

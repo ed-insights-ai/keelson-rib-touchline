@@ -13,6 +13,8 @@ import {
   fixturesFileSchema,
   type RostersFile,
   rostersFileSchema,
+  type StatsFile,
+  statsFileSchema,
 } from "./model.ts";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -36,6 +38,7 @@ export interface DataHome {
   root: string;
   fixturesDir: string;
   rostersDir: string;
+  statsDir: string;
 }
 
 export function dataHome(root: string): DataHome {
@@ -43,6 +46,7 @@ export function dataHome(root: string): DataHome {
     root,
     fixturesDir: join(root, "data", "fixtures"),
     rostersDir: join(root, "data", "rosters"),
+    statsDir: join(root, "data", "stats"),
   };
 }
 
@@ -148,6 +152,7 @@ const README_BODY = [
   "| --- | --- |",
   "| `data/fixtures/` | Published schedules — one JSON file per season and gender. |",
   "| `data/rosters/` | Published rosters — one JSON file per season and gender. |",
+  "| `data/stats/` | Published player season statistics — one JSON file per season and gender. |",
   "| `data/raw_html/` | The pages exactly as fetched, so any parse can be redone offline. |",
   "| `data/errors/` | Anything a collection run could not parse, kept rather than dropped. |",
   "",
@@ -184,6 +189,7 @@ export async function bootstrapDataHome(
   for (const dir of [
     home.fixturesDir,
     home.rostersDir,
+    home.statsDir,
     join(root, "data", "raw_html"),
     join(root, "data", "errors"),
     join(root, "data", "reference"),
@@ -257,6 +263,15 @@ export function loadRosters(
 ): Promise<LoadResult<RostersFile>> {
   const path = join(dataHome(root).rostersDir, seasonFileName(season, gender));
   return loadJson(path, (raw) => rostersFileSchema.parse(raw));
+}
+
+export function loadStats(
+  root: string,
+  season: number,
+  gender: string,
+): Promise<LoadResult<StatsFile>> {
+  const path = join(dataHome(root).statsDir, seasonFileName(season, gender));
+  return loadJson(path, (raw) => statsFileSchema.parse(raw));
 }
 
 export interface SeasonRef {

@@ -20,6 +20,7 @@ import { z } from "zod";
 
 export const FIXTURES_SCHEMA = "touchline.fixtures/1";
 export const ROSTERS_SCHEMA = "touchline.rosters/1";
+export const STATS_SCHEMA = "touchline.stats/1";
 
 export const genderSchema = z.enum(["men", "women"]);
 export type Gender = z.infer<typeof genderSchema>;
@@ -124,6 +125,83 @@ export const rostersFileSchema = z
   })
   .strict();
 export type RostersFile = z.infer<typeof rostersFileSchema>;
+
+/** One outfield player's cumulative season line, as the site published it.
+ *  Every stat is optional — a site prints what its stat crew recorded, and an
+ *  absent number is "not published", never zero. */
+export const playerStatsSchema = z
+  .object({
+    name: z.string().min(1),
+    /** SideArm's own player id — the join key to the roster's bio URL. */
+    player_id: z.string().optional(),
+    number: z.string().optional(),
+    bio_url: z.string().optional(),
+    gp: z.number().int().optional(),
+    gs: z.number().int().optional(),
+    minutes: z.number().int().optional(),
+    goals: z.number().int().optional(),
+    assists: z.number().int().optional(),
+    /** 2 × goals + assists, the NCAA points convention. */
+    points: z.number().int().optional(),
+    shots: z.number().int().optional(),
+    shot_pct: z.number().optional(),
+    sog: z.number().int().optional(),
+    sog_pct: z.number().optional(),
+    game_winners: z.number().int().optional(),
+    yellow: z.number().int().optional(),
+    red: z.number().int().optional(),
+    penalty_goals: z.number().int().optional(),
+    penalty_attempts: z.number().int().optional(),
+  })
+  .strict();
+export type PlayerStats = z.infer<typeof playerStatsSchema>;
+
+/** A goalkeeper's cumulative season line. Keepers also appear in the outfield
+ *  table when they took a shot; this line is the goalkeeping story. */
+export const keeperStatsSchema = z
+  .object({
+    name: z.string().min(1),
+    player_id: z.string().optional(),
+    number: z.string().optional(),
+    bio_url: z.string().optional(),
+    gp: z.number().int().optional(),
+    gs: z.number().int().optional(),
+    minutes: z.number().int().optional(),
+    goals_against: z.number().int().optional(),
+    gaa: z.number().optional(),
+    saves: z.number().int().optional(),
+    save_pct: z.number().optional(),
+    wins: z.number().int().optional(),
+    losses: z.number().int().optional(),
+    ties: z.number().int().optional(),
+    shutouts: z.number().int().optional(),
+    shots_faced: z.number().int().optional(),
+  })
+  .strict();
+export type KeeperStats = z.infer<typeof keeperStatsSchema>;
+
+export const teamStatsSchema = z
+  .object({
+    programme: z.string().min(1),
+    source_url: z.string().optional(),
+    players: z.array(playerStatsSchema),
+    keepers: z.array(keeperStatsSchema),
+  })
+  .strict();
+export type TeamStats = z.infer<typeof teamStatsSchema>;
+
+export const statsFileSchema = z
+  .object({
+    schema: z.literal(STATS_SCHEMA),
+    season: z.number().int(),
+    gender: genderSchema,
+    collected_at: z.string().min(1),
+    teams: z.record(z.string(), teamStatsSchema),
+    /** Programmes whose statistics page yielded nothing. Named, never dropped. */
+    missing: z.array(z.string()).optional(),
+  })
+  .strict();
+export type StatsFile = z.infer<typeof statsFileSchema>;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Derived view models — computed from the files, never stored.

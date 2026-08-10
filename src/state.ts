@@ -24,6 +24,9 @@ export interface Selection {
   gender?: string;
   /** Programme slug for the team lens; undefined = conference lens. */
   team?: string;
+  /** Player key for the drawer — SideArm player id when the roster has one,
+   *  else the player's name. Only meaningful while a team is selected. */
+  player?: string;
 }
 
 const selection: Selection = {};
@@ -41,16 +44,23 @@ export function setScope(scopeId: string | undefined): void {
   selection.season = undefined;
   selection.gender = undefined;
   selection.team = undefined;
+  selection.player = undefined;
 }
 
 export function setSeason(season: number | undefined, gender: string | undefined): void {
   selection.season = season;
   selection.gender = gender;
   selection.team = undefined;
+  selection.player = undefined;
 }
 
 export function setTeam(team: string | undefined): void {
+  if (selection.team !== team) selection.player = undefined;
   selection.team = team;
+}
+
+export function setPlayer(player: string | undefined): void {
+  selection.player = player;
 }
 
 export function resetSelection(): void {
@@ -58,6 +68,7 @@ export function resetSelection(): void {
   selection.season = undefined;
   selection.gender = undefined;
   selection.team = undefined;
+  selection.player = undefined;
 }
 
 /** The project the board should render, resolved against the live list. */

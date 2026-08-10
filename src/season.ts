@@ -18,6 +18,12 @@
 //             2026 and 2019 and four between 2022 and 2019 — exactly what a
 //             four-year career window predicts. Past rosters are real data.
 //
+//   STATS     served for every season tried, back to 2016 across seven sites
+//             (measured 2026-08-10). The cumulative-statistics page is fully
+//             server-rendered with an honest per-year title everywhere —
+//             including the two sites whose SCHEDULE pages canonicalise the
+//             COVID season — so it carries no payload trap at all.
+//
 //   SCHEDULE  served for every season tried, back to 2016 across seven sites —
 //             but only in the server-rendered DOM. The embedded event payload
 //             names the CURRENT season at every season URL, so the first
@@ -34,7 +40,7 @@
 // as a plan-time wall.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export const TOUCHLINE_LAYERS = ["schedule", "roster"] as const;
+export const TOUCHLINE_LAYERS = ["schedule", "roster", "stats"] as const;
 export type TouchlineLayer = (typeof TOUCHLINE_LAYERS)[number];
 
 /** The season the athletics sites currently publish as "this year".
@@ -79,20 +85,21 @@ export function planForSeason(season: number): CollectionPlan {
       attempt: false,
       reason: `${season} rosters have not been published yet.`,
     });
+    layers.push({
+      layer: "stats",
+      attempt: false,
+      reason: `${season} statistics have not been published yet.`,
+    });
   } else if (season < EARLIEST_LIVE_SEASON) {
-    layers.push({
-      layer: "schedule",
-      attempt: false,
-      reason: `${season} predates the published season pages Touchline can read.`,
-    });
-    layers.push({
-      layer: "roster",
-      attempt: false,
-      reason: `${season} predates the published roster pages Touchline can read.`,
-    });
+    for (const layer of TOUCHLINE_LAYERS) {
+      layers.push({
+        layer,
+        attempt: false,
+        reason: `${season} predates the published season pages Touchline can read.`,
+      });
+    }
   } else {
-    layers.push({ layer: "schedule", attempt: true });
-    layers.push({ layer: "roster", attempt: true });
+    for (const layer of TOUCHLINE_LAYERS) layers.push({ layer, attempt: true });
   }
 
   const attempted = layers.filter((p) => p.attempt).map((p) => p.layer);
@@ -112,8 +119,10 @@ export function unsupportedSeasonMessage(season: number): string {
 export function planSummary(plan: CollectionPlan): string {
   const yes = plan.layers.filter((p) => p.attempt).map((p) => p.layer);
   const no = plan.layers.filter((p) => !p.attempt);
+  const listed =
+    yes.length > 2 ? `${yes.slice(0, -1).join(", ")}, and ${yes.at(-1)}` : yes.join(" and ");
   const head = yes.length
-    ? `Collecting ${yes.join(" and ")} for ${plan.season}.`
+    ? `Collecting ${listed} for ${plan.season}.`
     : `Nothing can be collected for ${plan.season}.`;
   return no.length ? `${head} ${no.map((p) => p.reason).join(" ")}` : head;
 }

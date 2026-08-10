@@ -33,6 +33,8 @@ import {
   type FixturesFile,
   fixturesFileSchema,
   type RostersFile,
+  type StatsFile,
+  statsFileSchema,
 } from "../src/model.ts";
 import {
   planForSeason,
@@ -432,9 +434,33 @@ describe("the board markup", () => {
         ...base,
         season: 2025,
         fixtures: [
-          { id: "1", date: "2025-09-05", home: "harding", away: "rogers-state", status: "final", home_score: 2, away_score: 1 },
-          { id: "2", date: "2025-09-12", home: "rogers-state", away: "harding", status: "final", home_score: 3, away_score: 0 },
-          { id: "3", date: "2025-09-19", home: "harding", away: "rogers-state", status: "final", home_score: 1, away_score: 1 },
+          {
+            id: "1",
+            date: "2025-09-05",
+            home: "harding",
+            away: "rogers-state",
+            status: "final",
+            home_score: 2,
+            away_score: 1,
+          },
+          {
+            id: "2",
+            date: "2025-09-12",
+            home: "rogers-state",
+            away: "harding",
+            status: "final",
+            home_score: 3,
+            away_score: 0,
+          },
+          {
+            id: "3",
+            date: "2025-09-19",
+            home: "harding",
+            away: "rogers-state",
+            status: "final",
+            home_score: 1,
+            away_score: 1,
+          },
         ],
       },
       team: "harding",
@@ -452,7 +478,13 @@ describe("the board markup", () => {
         ...base,
         programmes: [...base.programmes, { slug: "newman", name: "Newman" }],
         fixtures: [
-          { id: "1", date: "2026-08-27", home: "harding", away: "rogers-state", status: "scheduled" },
+          {
+            id: "1",
+            date: "2026-08-27",
+            home: "harding",
+            away: "rogers-state",
+            status: "scheduled",
+          },
         ],
       },
       today: "2026-08-09",
@@ -467,8 +499,24 @@ describe("the board markup", () => {
         ...base,
         season: 2025,
         fixtures: [
-          { id: "1", date: "2025-09-05", home: "harding", away: "rogers-state", status: "final", home_score: 2, away_score: 1 },
-          { id: "2", date: "2025-09-12", home: "rogers-state", away: "harding", status: "final", home_score: 3, away_score: 3 },
+          {
+            id: "1",
+            date: "2025-09-05",
+            home: "harding",
+            away: "rogers-state",
+            status: "final",
+            home_score: 2,
+            away_score: 1,
+          },
+          {
+            id: "2",
+            date: "2025-09-12",
+            home: "rogers-state",
+            away: "harding",
+            status: "final",
+            home_score: 3,
+            away_score: 3,
+          },
         ],
       },
       today: "2026-08-09",
@@ -482,7 +530,13 @@ describe("the board markup", () => {
       fixtures: {
         ...base,
         fixtures: [
-          { id: "1", date: "2026-08-27", home: "harding", away: "rogers-state", status: "scheduled" },
+          {
+            id: "1",
+            date: "2026-08-27",
+            home: "harding",
+            away: "rogers-state",
+            status: "scheduled",
+          },
         ],
       },
       today: "2026-08-09",
@@ -690,6 +744,178 @@ describe("the board markup", () => {
     });
   });
 
+  describe("player season statistics", () => {
+    const rosters: RostersFile = {
+      schema: "touchline.rosters/1",
+      season: 2025,
+      gender: "men",
+      collected_at: "2026-08-10T00:00:00Z",
+      rosters: {
+        harding: {
+          programme: "harding",
+          players: [
+            {
+              number: "11",
+              name: "Nojus Grudis",
+              position: "Forward",
+              class_year: "Senior",
+              source_url: "https://hardingsports.com/sports/mens-soccer/roster/nojus-grudis/18800",
+            },
+            {
+              number: "1",
+              name: "Rinner Stewart",
+              position: "Goalkeeper",
+              source_url:
+                "https://hardingsports.com/sports/mens-soccer/roster/rinner-stewart/19271",
+            },
+            // No bio URL — the join must fall back to the published name.
+            { number: "14", name: "Mason Hahn", position: "Forward" },
+            // On the roster, never appeared: no stats line at all.
+            { number: "31", name: "Fresh Walkon", position: "Midfielder" },
+          ],
+        },
+      },
+    };
+    const stats: StatsFile = {
+      schema: "touchline.stats/1",
+      season: 2025,
+      gender: "men",
+      collected_at: "2026-08-10T00:00:00Z",
+      teams: {
+        harding: {
+          programme: "harding",
+          players: [
+            {
+              name: "Nojus Grudis",
+              player_id: "18800",
+              number: "11",
+              gp: 16,
+              gs: 16,
+              minutes: 1152,
+              goals: 4,
+              assists: 2,
+              points: 10,
+              shots: 18,
+              sog: 9,
+              yellow: 3,
+              red: 0,
+            },
+            { name: "Mason Hahn", player_id: "99999", minutes: 129, goals: 2, shots: 3 },
+          ],
+          keepers: [
+            {
+              name: "Rinner Stewart",
+              player_id: "19271",
+              gp: 14,
+              gs: 14,
+              minutes: 1212,
+              goals_against: 31,
+              gaa: 2.3,
+              saves: 77,
+              save_pct: 0.713,
+              wins: 2,
+              losses: 10,
+              ties: 1,
+              shutouts: 1,
+              shots_faced: 246,
+            },
+          ],
+        },
+      },
+    };
+    const season2025: FixturesFile = {
+      ...base,
+      season: 2025,
+      fixtures: [
+        {
+          id: "1",
+          date: "2025-09-01",
+          home: "harding",
+          away: "rogers-state",
+          status: "final",
+          home_score: 2,
+          away_score: 1,
+        },
+      ],
+    };
+    const compose = (player?: string, withStats = true) =>
+      composeBoard({
+        projectName: "p",
+        fixtures: season2025,
+        rosters,
+        stats: withStats ? stats : undefined,
+        team: "harding",
+        player,
+        today: "2026-08-09",
+      });
+
+    test("roster rows carry the season at a glance — minutes bar and the telling numbers", () => {
+      const html = compose();
+      // Grudis: joined by id; minutes scaled against the squad's most-used
+      // player (the keeper's 1212).
+      expect(html).toContain("1152&prime;");
+      expect(html).toContain("<b>4</b>G");
+      expect(html).toContain("<b>2</b>A");
+      // The keeper row tells the keeper's story, not a shots story.
+      expect(html).toContain("<b>77</b>SV");
+      expect(html).toContain("<b>31</b>GA");
+      expect(html).toContain("71%");
+      // Name-fallback join: Hahn has no bio URL but still gets his line.
+      expect(html).toContain("129&prime;");
+    });
+
+    test("rows are buttons into the drawer only once statistics exist", () => {
+      const withStats = compose();
+      expect(withStats).toContain('data-act="select-player"');
+      expect(withStats).toContain("&quot;player&quot;:&quot;18800&quot;");
+      // Hahn's key falls back to his name.
+      expect(withStats).toContain("&quot;player&quot;:&quot;Mason Hahn&quot;");
+      const without = compose(undefined, false);
+      expect(without).not.toContain('data-act="select-player"');
+    });
+
+    test("the drawer tells one player's season, and every close path posts null", () => {
+      const html = compose("18800");
+      expect(html).toContain('role="dialog"');
+      expect(html).toContain("Nojus Grudis");
+      expect(html).toContain("Harding · 2025 season");
+      // Minutes against the schedule's available minutes: 1 played match = 90.
+      expect(html).toContain("1152&prime; of 90&prime; available");
+      expect(html).toContain("<b>4</b><span>Goals</span>");
+      expect(html).toContain("9 of 18 shots on target");
+      expect(html).toContain("3 yellow, 0 red");
+      const closes = html.match(/data-payload='\{"player":null\}'/g) ?? [];
+      expect(closes.length).toBeGreaterThanOrEqual(2); // veil and ✕
+    });
+
+    test("a keeper's drawer is saves against goals, not a shooting card", () => {
+      const html = compose("19271");
+      expect(html).toContain("Goalkeeping");
+      expect(html).toContain("71.3%");
+      expect(html).toContain("77 saved");
+      expect(html).toContain("31 conceded");
+      expect(html).toContain("2–10–1");
+      expect(html).not.toContain("<span>Conversion</span>");
+    });
+
+    test("a rostered player who never appeared gets an honest drawer, not zeros", () => {
+      const html = compose("Fresh Walkon");
+      expect(html).toContain("on the roster, but yet to appear");
+      expect(html).not.toContain("<b>0</b><span>Goals</span>");
+    });
+
+    test("statistics gaps are named alongside schedule and roster gaps", () => {
+      const html = composeBoard({
+        projectName: "p",
+        fixtures: season2025,
+        rosters,
+        stats: { ...stats, missing: ["rogers-state"] },
+        today: "2026-08-09",
+      });
+      expect(html).toContain("Rogers State (stats)");
+    });
+  });
+
   test("a single-programme season keeps the ledger, not a one-row matrix", () => {
     const html = render({
       programmes: [{ slug: "harding", name: "Harding" }],
@@ -795,6 +1021,29 @@ describe("the fixtures schema", () => {
       }),
     ).toThrow();
   });
+
+  test("a stats file round-trips, and an unknown stat field is rejected", () => {
+    const file = {
+      schema: "touchline.stats/1",
+      season: 2025,
+      gender: "men",
+      collected_at: "2026-08-10T00:00:00Z",
+      teams: {
+        harding: {
+          programme: "harding",
+          players: [{ name: "Nojus Grudis", player_id: "18800", goals: 4, minutes: 1152 }],
+          keepers: [{ name: "Rinner Stewart", saves: 77, save_pct: 0.713 }],
+        },
+      },
+    };
+    expect(statsFileSchema.parse(file).teams.harding?.players[0]?.goals).toBe(4);
+    const poisoned = structuredClone(file) as Record<string, unknown>;
+    (
+      (poisoned.teams as Record<string, { players: Record<string, unknown>[] }>).harding
+        ?.players[0] as Record<string, unknown>
+    ).xg = 1.2;
+    expect(() => statsFileSchema.parse(poisoned)).toThrow();
+  });
 });
 
 describe("understanding the ask", () => {
@@ -811,20 +1060,21 @@ describe("understanding the ask", () => {
     expect(TOUCHLINE_V1_SEASON).toBe(2026);
   });
 
-  test("a past season plans both layers — the archive serves schedules too", () => {
+  test("a past season plans every layer — the archive serves them all", () => {
     // Remeasured 2026-08-09 with the DOM parser: every site serves genuine
     // past schedules (results included) in its rendered markup; only the
     // embedded payload is stuck on the current season. The old roster-only
-    // plan was reading the wrong layer.
+    // plan was reading the wrong layer. Statistics measured 2026-08-10:
+    // honest per-year pages on every site, back to 2016.
     const plan = planForSeason(2019);
     expect(plan.empty).toBe(false);
-    expect(plan.attempted).toEqual(["schedule", "roster"]);
-    expect(planSummary(plan)).toContain("Collecting schedule and roster for 2019");
+    expect(plan.attempted).toEqual(["schedule", "roster", "stats"]);
+    expect(planSummary(plan)).toContain("Collecting schedule, roster, and stats for 2019");
   });
 
-  test("the current season plans both layers", () => {
+  test("the current season plans every layer", () => {
     const plan = planForSeason(2026);
-    expect(plan.attempted).toEqual(["schedule", "roster"]);
+    expect(plan.attempted).toEqual(["schedule", "roster", "stats"]);
     expect(plan.empty).toBe(false);
   });
 

@@ -1,4 +1,4 @@
-"""Collect published schedule and roster pages into the Touchline board contract.
+"""Collect published schedule, roster, and statistics pages into the board contract.
 
 Layers are collected independently.  A site can serve a past season's schedule
 from its DOM archive while its embedded payload still names the current season,
@@ -27,6 +27,7 @@ from src.sidearm_live import (
     DEFAULT_LAYERS,
     LAYER_ROSTER,
     LAYER_SCHEDULE,
+    LAYER_STATS,
     STATE_COMPLETE,
     STATE_EMPTY,
     collect_programme,
@@ -37,6 +38,7 @@ from src.sidearm_live import (
 
 FIXTURES_SCHEMA = "touchline.fixtures/1"
 ROSTERS_SCHEMA = "touchline.rosters/1"
+STATS_SCHEMA = "touchline.stats/1"
 
 COLLECTOR = "sidearm-live"
 
@@ -123,7 +125,12 @@ def collect(
     config_path: Path,
     membership_extrapolated: bool,
 ) -> tuple[
-    dict[str, object], dict[str, object], dict[str, dict[str, object]], list[str], int
+    dict[str, object],
+    dict[str, object],
+    dict[str, object],
+    dict[str, dict[str, object]],
+    list[str],
+    int,
 ]:
     schools = load_schools(config_path)
     # `enabled = false` records a programme whose site we have no working recipe
@@ -261,11 +268,41 @@ def collect(
     if roster_missing and LAYER_ROSTER in layers:
         roster_payload["missing"] = roster_missing
 
-    return fixture_payload, roster_payload, cells, errors, duplicates
+    stats_served = set(_served(LAYER_STATS))
+    stats_teams = {
+        result.slug: {
+            "programme": result.slug,
+            "source_url": result.stats_url,
+            "players": result.stat_players or [],
+            "keepers": result.stat_keepers or [],
+        }
+        for result in results
+        if result.state(LAYER_STATS) in {STATE_COMPLETE, STATE_EMPTY}
+    }
+    stats_payload: dict[str, object] = {
+        "schema": STATS_SCHEMA,
+        "season": season,
+        "gender": gender,
+        "collected_at": now,
+        "teams": stats_teams,
+    }
+    stats_missing = sorted(
+        {slug for slug in wanted if slug not in stats_served}
+        | {
+            result.slug
+            for result in results
+            if result.slug in stats_served
+            and not (result.stat_players or result.stat_keepers)
+        }
+    )
+    if stats_missing and LAYER_STATS in layers:
+        stats_payload["missing"] = stats_missing
+
+    return fixture_payload, roster_payload, stats_payload, cells, errors, duplicates
 
 
 def widen_to_existing_scope(
-    wanted: list[str], fixtures_path: Path, rosters_path: Path
+    wanted: list[str], *season_paths: Path
 ) -> tuple[list[str], list[str]]:
     """A season file's scope only ever widens.
 
@@ -277,7 +314,7 @@ def widen_to_existing_scope(
     slugs that were added to it.
     """
     existing: set[str] = set()
-    for path in (fixtures_path, rosters_path):
+    for path in season_paths:
         try:
             payload = json.loads(path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
@@ -287,9 +324,10 @@ def widen_to_existing_scope(
         for entry in payload.get("programmes") or []:
             if isinstance(entry, dict) and entry.get("slug"):
                 existing.add(str(entry["slug"]))
-        rosters = payload.get("rosters")
-        if isinstance(rosters, dict):
-            existing.update(str(slug) for slug in rosters)
+        for field in ("rosters", "teams"):
+            keyed = payload.get(field)
+            if isinstance(keyed, dict):
+                existing.update(str(slug) for slug in keyed)
         for slug in payload.get("missing") or []:
             existing.add(str(slug))
     added = sorted(existing - set(wanted))
@@ -309,7 +347,7 @@ def main() -> int:
     parser.add_argument(
         "--layers",
         default=",".join(DEFAULT_LAYERS),
-        help="Comma-separated layers to collect: schedule, roster.",
+        help="Comma-separated layers to collect: schedule, roster, stats.",
     )
     args = parser.parse_args()
 
@@ -321,7 +359,10 @@ def main() -> int:
     data_root = paths.data_root()
     fixture_path = data_root / "data" / "fixtures" / f"{args.season}-{args.gender}.json"
     roster_path = data_root / "data" / "rosters" / f"{args.season}-{args.gender}.json"
-    wanted, widened = widen_to_existing_scope(wanted, fixture_path, roster_path)
+    stats_path = data_root / "data" / "stats" / f"{args.season}-{args.gender}.json"
+    wanted, widened = widen_to_existing_scope(
+        wanted, fixture_path, roster_path, stats_path
+    )
     if widened:
         print(
             f"scope widened to the season unit: this data home's {args.season} {args.gender} "
@@ -341,7 +382,7 @@ def main() -> int:
         print("--layers resolved to an empty list", file=sys.stderr)
         return 2
 
-    fixtures, rosters, cells, errors, duplicates = collect(
+    fixtures, rosters, stats, cells, errors, duplicates = collect(
         season=args.season,
         gender=args.gender,
         conference=args.conference,
@@ -357,6 +398,9 @@ def main() -> int:
     if LAYER_ROSTER in layers:
         _atomic_json(roster_path, rosters)
         written.append(roster_path)
+    if LAYER_STATS in layers:
+        _atomic_json(stats_path, stats)
+        written.append(stats_path)
 
     # The manifest is the run's real deliverable: it is what lets the next ask
     # be about what is missing rather than about everything.
@@ -387,6 +431,13 @@ def main() -> int:
         players = sum(len(roster["players"]) for roster in rosters["rosters"].values())
         served = len(wanted) - len(rosters.get("missing", []))
         print(f"roster: {served}/{len(wanted)} programmes, {players} players")
+    if LAYER_STATS in layers:
+        lines = sum(
+            len(team["players"]) + len(team["keepers"])
+            for team in stats["teams"].values()
+        )
+        served = len(wanted) - len(stats.get("missing", []))
+        print(f"stats: {served}/{len(wanted)} programmes, {lines} player season lines")
 
     if duplicates:
         print(

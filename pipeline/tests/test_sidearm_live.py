@@ -189,6 +189,7 @@ def test_wrong_season_roster_does_not_discard_valid_schedule() -> None:
         2026,
         {"southern nazarene": "southern-nazarene"},
         session=session,
+        layers=("schedule", "roster"),
     )
 
     assert len(result.fixtures) == 1
@@ -394,7 +395,9 @@ def test_a_trapped_schedule_does_not_discard_a_good_historical_roster() -> None:
     session = MagicMock()
     session.get.side_effect = [schedule_response, roster_response]
 
-    result = collect_programme(_school(), 2019, {}, session=session)
+    result = collect_programme(
+        _school(), 2019, {}, session=session, layers=("schedule", "roster")
+    )
 
     assert result.state("schedule") == "unavailable"
     assert "renders the season-2026 schedule" in (
@@ -776,3 +779,144 @@ def test_a_logo_only_conference_marker_still_counts_as_published() -> None:
     assert flags["2"]["conference_game"] is False
     # The logo is the publisher speaking — nothing here is derived.
     assert all("conference_game_source" not in f for f in fixtures)
+
+
+# ── the statistics layer ─────────────────────────────────────────────────────
+
+
+def _stats_html(title: str = "2019 Men's Soccer Cumulative Statistics") -> str:
+    """A cumulative-stats page in the shape every measured site serves:
+    data-labelled cells, player rows anchored by a[data-player-id], and
+    Total/Opponents footer rows with no anchor at all."""
+
+    def cell(label: str, value: str) -> str:
+        return f'<td data-label="{label}">{value}</td>'
+
+    offense = (
+        '<table><caption>Individual Overall Offensive Statistics</caption>'
+        "<tr><th>#</th><th>Player</th><th>GP</th></tr>"
+        '<tr><td data-sort="7">7</td>'
+        '<td><a data-player-id="2914" href="#">Simpson, Jake</a>'
+        '<a href="/sports/mens-soccer/roster/jake-simpson/2914">View Bio</a></td>'
+        + cell("GP", "20")
+        + cell("GS", "20")
+        + cell("MIN", "1753")
+        + cell("G", "14")
+        + cell("A", "8")
+        + cell("PTS", "36")
+        + cell("SH", "72")
+        + cell("SH%", ".194")
+        + cell("SOG", "37")
+        + cell("SOG%", ".514")
+        + cell("YC-RC", "5-0")
+        + cell("GW", "2")
+        + cell("PG-PA", "1-1")
+        + "</tr>"
+        "<tr><td></td><td>Total</td>"
+        + cell("GP", "20")
+        + cell("MIN", "20459")
+        + "</tr></table>"
+    )
+    keeping = (
+        '<table><caption>Individual Overall Goalkeeping Statistics</caption>'
+        "<tr><th>#</th><th>Player</th><th>GP</th></tr>"
+        '<tr><td data-sort="1">1</td>'
+        '<td><a data-player-id="2902" href="#">Dean, Dillon</a></td>'
+        + cell("GP", "10")
+        + cell("GS", "9")
+        + cell("MIN", "905:07")
+        + cell("GA", "4")
+        + cell("GAA", "0.40")
+        + cell("SV", "26")
+        + cell("SV%", ".867")
+        + cell("W", "8")
+        + cell("L", "1")
+        + cell("T", "0")
+        + cell("SHO", "5")
+        + cell("SF", "97")
+        + "</tr>"
+        "<tr><td></td><td>Opponents</td>" + cell("GA", "42") + "</tr></table>"
+    )
+    return (
+        f"<html><head><title>{title} - Example</title></head>"
+        f"<body>{offense}{keeping}</body></html>"
+    )
+
+
+def test_stats_parser_reads_both_tables_and_skips_the_totals() -> None:
+    from src.sidearm_live import parse_stats_page
+
+    players, keepers = parse_stats_page(
+        _stats_html(), page_url="https://example.test/sports/mens-soccer/stats/2019"
+    )
+    assert [p["name"] for p in players] == ["Jake Simpson"]  # flipped, no Total row
+    simpson = players[0]
+    assert simpson["player_id"] == "2914"
+    assert simpson["number"] == "7"
+    assert simpson["bio_url"] == (
+        "https://example.test/sports/mens-soccer/roster/jake-simpson/2914"
+    )
+    assert (simpson["gp"], simpson["minutes"], simpson["goals"]) == (20, 1753, 14)
+    assert (simpson["assists"], simpson["points"], simpson["shots"]) == (8, 36, 72)
+    assert (simpson["sog"], simpson["sog_pct"]) == (37, 0.514)
+    assert (simpson["yellow"], simpson["red"]) == (5, 0)
+    assert (simpson["penalty_goals"], simpson["penalty_attempts"]) == (1, 1)
+
+    assert [k["name"] for k in keepers] == ["Dillon Dean"]
+    dean = keepers[0]
+    # Keeper minutes are printed with seconds; whole minutes land.
+    assert dean["minutes"] == 905
+    assert (dean["goals_against"], dean["gaa"]) == (4, 0.40)
+    assert (dean["saves"], dean["save_pct"]) == (26, 0.867)
+    assert (dean["wins"], dean["losses"], dean["ties"]) == (8, 1, 0)
+    assert (dean["shutouts"], dean["shots_faced"]) == (5, 97)
+
+
+def test_a_stats_page_serving_another_season_is_refused() -> None:
+    """The wrapper check is the whole stats guard — the page is fully
+    server-rendered, so a canonicalised year shows up in the title."""
+    response = MagicMock()
+    response.url = "https://example.test/sports/mens-soccer/stats/2026"
+    response.text = _stats_html(title="2026 Men's Soccer Cumulative Statistics")
+    session = MagicMock()
+    session.get.return_value = response
+
+    result = collect_programme(_school(), 2019, {}, session=session, layers=("stats",))
+
+    assert result.state("stats") == "unavailable"
+    reason = result.outcomes["stats"].reason or ""
+    assert "2026" in reason and "2019" in reason
+
+
+def test_an_honest_stats_page_lands_complete_with_both_lines_counted() -> None:
+    response = MagicMock()
+    response.url = "https://example.test/sports/mens-soccer/stats/2019"
+    response.text = _stats_html()
+    session = MagicMock()
+    session.get.return_value = response
+
+    result = collect_programme(_school(), 2019, {}, session=session, layers=("stats",))
+
+    (url,), _ = session.get.call_args
+    assert url.endswith("/stats/2019")
+    assert result.state("stats") == "complete"
+    assert result.outcomes["stats"].count == 2
+    assert result.stat_players and result.stat_players[0]["name"] == "Jake Simpson"
+    assert result.stat_keepers and result.stat_keepers[0]["name"] == "Dillon Dean"
+
+
+def test_an_honest_stats_page_with_no_players_is_empty_not_unavailable() -> None:
+    response = MagicMock()
+    response.url = "https://example.test/sports/mens-soccer/stats/2019"
+    response.text = (
+        "<html><head><title>2019 Men's Soccer Cumulative Statistics</title></head>"
+        "<body><table><caption>Individual Overall Offensive Statistics</caption>"
+        "<tr><th>#</th></tr></table></body></html>"
+    )
+    session = MagicMock()
+    session.get.return_value = response
+
+    result = collect_programme(_school(), 2019, {}, session=session, layers=("stats",))
+
+    assert result.state("stats") == "empty"
+    assert "listed no players" in (result.outcomes["stats"].reason or "")
