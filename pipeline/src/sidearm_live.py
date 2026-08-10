@@ -954,6 +954,20 @@ def assert_served_match(page: PublishedPage, year: int, fixture: dict[str, objec
             f"[{year}] {fixture_id}: {page.requested_url} redirected to "
             f"{page.final_url}, which is not a box-score page"
         )
+    # The trailing game id is the identity join, so a redirect that swaps it
+    # is a different match even when the destination shares the fixture date
+    # (a tournament day can put two same-day matches on one site).
+    requested_game = re.search(r"/boxscore/(\d+)", urlparse(page.requested_url).path)
+    served_game = re.search(r"/boxscore/(\d+)", urlparse(page.final_url).path)
+    if (
+        requested_game is not None
+        and served_game is not None
+        and requested_game.group(1) != served_game.group(1)
+    ):
+        raise LiveCollectionError(
+            f"[{year}] {fixture_id}: requested box score {requested_game.group(1)} "
+            f"but {page.final_url} served box score {served_game.group(1)}"
+        )
     served_date, title_text = _title_box_date(page.html)
     if not re.search(r"box\s*score", title_text, re.I):
         raise LiveCollectionError(
@@ -1344,10 +1358,12 @@ def collect_match(
     page = PublishedPage(url, response.url, response.text)
     assert_served_match(page, year, fixture)
     detail = parse_boxscore_page(response.text, page_url=response.url)
-    if not detail.get("teams"):
+    teams = detail.get("teams") or []
+    if len(teams) != 2:  # type: ignore[arg-type]
         raise LiveCollectionError(
             f"[{year}] {fixture.get('id')}: {response.url} proved its match but "
-            f"rendered no score-by-period table"
+            f"its score-by-period table rendered {len(teams)} team(s) "  # type: ignore[arg-type]
+            f"where a match needs exactly two"
         )
     orient_match(detail, fixture)
     return detail

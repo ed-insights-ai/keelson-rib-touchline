@@ -1327,6 +1327,24 @@ describe("match detail (box scores)", () => {
     expect(html).toContain("From the programme&#39;s published box score.");
   });
 
+  test("a card the source did not colour stays neutral, not presumed yellow", () => {
+    const neutral = structuredClone(matches);
+    const detail = neutral.matches["sidearm:harding:14830"];
+    if (!detail) throw new Error("fixture missing from test data");
+    detail.cards = [{ time: "12:00", team: 0, type: "unknown", player: "Omarion Velasquez" }];
+    const html = composeBoard({
+      projectName: "p",
+      fixtures: season2025,
+      matches: neutral,
+      team: "harding",
+      fixture: "sidearm:harding:14830",
+      today: "2026-08-09",
+    });
+    expect(html).toContain('class="cs u" title="Card"');
+    const drawer = html.split('class="drawer"')[1] ?? "";
+    expect(drawer).not.toContain('title="Yellow card"');
+  });
+
   test("a played match without a box score opens honestly, naming the collector's reason", () => {
     const html = compose("sidearm:harding:14840");
     expect(html).toContain("No box score collected");

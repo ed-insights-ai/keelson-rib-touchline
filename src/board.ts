@@ -442,6 +442,7 @@ letter-spacing:.06em;color:var(--muted);font-variant-numeric:tabular-nums;white-
 .cs{display:inline-block;width:7px;height:9px;border-radius:1.5px;vertical-align:-1px;margin-right:3px}
 .cs.y{background:var(--draw)}
 .cs.r{background:var(--late)}
+.cs.u{background:var(--faint)}
 .mhead .mteams{flex:1;min-width:0}
 .mhead .mrow{display:flex;align-items:baseline;gap:10px;padding:1px 0}
 .mhead .mrow span{flex:1;min-width:0;font:700 17px/1.3 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
@@ -1938,9 +1939,15 @@ function matchDrawer(
           .map((c) => {
             const at = drawerSide(c.team);
             const cls = at === 0 ? "h" : at === 1 ? "a" : "";
-            return `<div class="ev ${cls}"><b>${matchMinute(c.time) || "–"}</b><span class="who"><i class="cs ${
-              c.type === "red" ? "r" : "y"
-            }" title="${c.type === "red" ? "Red card" : "Yellow card"}"></i>${esc(c.player)}</span></div>`;
+            // A card whose colour the page did not mark stays neutral — the
+            // source being unreadable is not evidence of a yellow.
+            const [swatch, label] =
+              c.type === "red"
+                ? ["r", "Red card"]
+                : c.type === "yellow"
+                  ? ["y", "Yellow card"]
+                  : ["u", "Card"];
+            return `<div class="ev ${cls}"><b>${matchMinute(c.time) || "–"}</b><span class="who"><i class="cs ${swatch}" title="${label}"></i>${esc(c.player)}</span></div>`;
           })
           .join("")}</div>`,
       );

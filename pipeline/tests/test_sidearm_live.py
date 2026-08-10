@@ -1128,6 +1128,18 @@ def test_a_boxscore_redirected_to_the_schedule_is_refused() -> None:
         assert_served_match(page, 2026, {"id": "sidearm:x:1", "date": "2026-09-01"})
 
 
+def test_a_boxscore_redirected_to_another_game_id_is_refused() -> None:
+    from src.sidearm_live import assert_served_match
+
+    page = PublishedPage(
+        "https://example.test/stats/2025/union/boxscore/14824",
+        "https://example.test/stats/2025/harding/boxscore/14999",
+        _boxscore_html(),
+    )
+    with pytest.raises(LiveCollectionError, match="served box score 14999"):
+        assert_served_match(page, 2025, dict(_OT_FIXTURE))
+
+
 def test_a_draw_orients_by_name_affinity_not_score() -> None:
     from src.sidearm_live import orient_match
 
@@ -1185,3 +1197,22 @@ def test_collect_match_proves_and_parses_one_fixture() -> None:
     assert detail["home_index"] == 1
     assert detail["teams"][0]["name"] == "Harding"
     assert detail["source_url"].endswith("/boxscore/14824")
+
+
+def test_a_boxscore_with_one_team_is_refused_not_persisted(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from src import sidearm_live
+
+    response = MagicMock()
+    response.url = "https://example.test/sports/mens-soccer/stats/2025/union-tn-/boxscore/14824"
+    response.text = _boxscore_html()
+    session = MagicMock()
+    session.get.return_value = response
+    monkeypatch.setattr(
+        sidearm_live,
+        "parse_boxscore_page",
+        lambda html, *, page_url: {"source_url": page_url, "teams": [{"name": "Harding"}]},
+    )
+    with pytest.raises(LiveCollectionError, match="rendered 1 team"):
+        sidearm_live.collect_match(session, response.url, 2025, dict(_OT_FIXTURE))
