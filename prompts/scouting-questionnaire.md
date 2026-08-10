@@ -60,7 +60,12 @@ content contract — tune it here, not in code.
   NPSL, UPSL, The League for Clubs), national or youth-national call-ups,
   honors, notable club activity? Search club-first (fetch the rosters of
   geographically plausible summer clubs and cross-reference names), then
-  player-first. Source classes, in confidence order: league/club official
+  player-first — and for every rostered player, run the BARE NAME as its own
+  query, not only name+league combinations: league award posts and social
+  announcements surface under the plain name when structured queries miss
+  them entirely. When a hit is found, immediately search the player's name
+  plus that league for honors (all-conference, Best XI, weekly awards) —
+  membership found means performance evidence may exist too. Source classes, in confidence order: league/club official
   pages and local news (high); club social announcements when capturable at
   a stable URL (medium); a player's own public posts about their soccer
   activity (medium, soccer-relevant only — never personal life). Only

@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 
 from src import paths
-from src.report import render_report
+from src.report import render_appendix, render_report
 
 
 def main() -> int:
@@ -53,6 +53,10 @@ def main() -> int:
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(render_report(digest, narrative), encoding="utf-8")
     print(f"wrote {out}")
+
+    appendix = root / "data" / "reports" / f"preseason-{args.season}-{args.gender}-appendix.html"
+    appendix.write_text(render_appendix(digest), encoding="utf-8")
+    print(f"wrote {appendix}")
     return 0
 
 

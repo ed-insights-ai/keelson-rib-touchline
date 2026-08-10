@@ -23,39 +23,45 @@ Every important claim carries an evidence label:
 interpretation that requires film).  There is no xG anywhere: shot locations
 are not collected, and a transparent absence beats false precision.
 
-Narrative contract (``touchline.report-narrative/2``)::
+Narrative contract (``touchline.report-narrative/3``)::
 
     {
-      "schema": "touchline.report-narrative/2",
+      "schema": "touchline.report-narrative/3",
       "headline": str,
       "exec": {
-        "findings":      [{"text": str, "label": LABEL, "confidence": CONF}],
-        "decisions":     [{"title": str, "text": str}],
-        "uncertainties": [str]
+        "bottom_line": str,
+        "findings":   [{"evidence": str, "meaning": str, "implication": str,
+                        "label": LABEL, "confidence": CONF}],   # 3-4, no more
+        "decisions":  [{"title": str, "text": str}],            # at most 3
+        "priorities": [str]                                     # preseason work
       },
-      "landscape": str,
-      "gain": str,
+      "landscape": str,   # positioning AND where the focus side gains ground
       "focus": {"overview": str, "takeaways": [str], "news": [NEWS],
-                 "offseason": [LEDGER]},
-      "programmes": {slug: {"overview": str, "takeaways": [str],
+                 "offseason": [LEDGER]},   # offseason: at most 3 signals
+      "programmes": {slug: {"threat": str, "vulnerability": str,
+                             "roster_note": str, "implication": str,
                              "news": [NEWS], "priority": bool}},
-      "breakouts": [{"player": str, "text": str, "label": LABEL}],
+      "watchlist": [{"player": str, "programme": str, "note": str,
+                      "label": LABEL}],
       "dossiers":  [{"player": str, "role": str, "verdict": str,
                      "strengths": [str], "limitations": [str], "fit": str,
                      "question": str, "video_checks": [str]}],
       "questions": [str]
     }
-    LABEL = "observed" | "projected" | "judgment"
+    LABEL = "observed" | "projected" | "signal" | "judgment"
     CONF  = "high" | "medium" | "low"
     NEWS   = {"text", "source", "url", "date"}
-    LEDGER = {"player", "text", "source"?, "url"?, "date"?}
+    LEDGER = {"player", "text", "sources"?: [{"source", "url"?, "date"?}]}
 
+``signal`` marks an observed pattern whose cause is unverified (participation
+gaps, minutes collapses) — the record shows the gap, not the reason.
 Paragraph breaks in prose are blank lines.
 """
 
 from __future__ import annotations
 
 import html
+from datetime import date
 from statistics import median
 from typing import Any
 
@@ -68,6 +74,7 @@ PLACEHOLDER = (
 LABEL_NAMES = {
     "observed": "Observed",
     "projected": "Projected",
+    "signal": "Unverified signal",
     "judgment": "Scouting judgment",
 }
 
@@ -77,7 +84,8 @@ def esc(value: Any) -> str:
 
 
 def record_line(rec: dict) -> str:
-    return f"{rec.get('wins', 0)}-{rec.get('draws', 0)}-{rec.get('losses', 0)}"
+    """American college order — W-L-T — everywhere a record appears."""
+    return f"{rec.get('wins', 0)}-{rec.get('losses', 0)}-{rec.get('draws', 0)}"
 
 
 def prose(text: str | None) -> str:
@@ -159,18 +167,16 @@ def _programme_rates(section: dict) -> dict | None:
     }
 
 
-def _streak(versus: dict | None) -> str:
-    """Current run of identical results from the focus side, e.g. ``L5``."""
-    meetings = (versus or {}).get("meetings") or []
-    if not meetings:
-        return "–"
-    last = meetings[-1].get("focus_result")
-    count = 0
-    for meeting in reversed(meetings):
-        if meeting.get("focus_result") != last:
-            break
-        count += 1
-    return f"{last}{count}"
+def _day_gap(prev_iso: str | None, cur_iso: str | None) -> int | None:
+    """Days between two ISO dates, for conference-fixture turnaround."""
+    if not prev_iso or not cur_iso:
+        return None
+    try:
+        prev = date.fromisoformat(str(prev_iso))
+        cur = date.fromisoformat(str(cur_iso))
+    except ValueError:
+        return None
+    return (cur - prev).days
 
 
 # ── Visual atoms ─────────────────────────────────────────────────────────────
@@ -204,7 +210,7 @@ def indicator_tiles(digest: dict) -> str:
             f"+{counts.get('newcomers', 0)} new, {counts.get('departed', 0)} departed",
         )
     if conf:
-        tile(record_line(conf), f"{last.get('season')} conference", f"{conf.get('gf')}:{conf.get('ga')} goals")
+        tile(record_line(conf), f"{last.get('season')} conference (W-L-T)", f"{conf.get('gf')}:{conf.get('ga')} goals")
     return (
         f'<div class="tiles">{"".join(tiles)}</div>'
         '<div class="viz-note">All four indicators observed — computed from published '
@@ -407,9 +413,11 @@ def h2h_strip(versus: dict | None, names: dict[str, str], focus: str, limit: int
             f'<b>{result}</b> <span class="num">{esc(score)}</span>'
             f'<i class="num">{esc(meeting.get("season"))}</i></span>'
         )
+    first_season = meetings[0].get("season") if meetings else None
+    span_word = f"since {first_season}" if first_season else "held record"
     overall = (
-        f'<span class="h2h-rec num">{versus.get("wins")}-{versus.get("draws")}-{versus.get("losses")}'
-        f"</span> all-time in {len(meetings)} held meetings"
+        f'<span class="h2h-rec num">{versus.get("wins")}-{versus.get("losses")}-{versus.get("draws")}'
+        f"</span> W-L-T {span_word}, {len(meetings)} held meetings"
     )
     return (
         f'<div class="h2h"><div class="viz-title">Head-to-head <span class="dim">({overall})</span></div>'
@@ -434,19 +442,26 @@ def news_cards(items: list[dict] | None) -> str:
     return "".join(cards)
 
 
+def _cite(source: str, url: str, when: str) -> str:
+    link = f'<a href="{esc(url)}">{esc(source)}</a>' if url else esc(source)
+    return " · ".join(part for part in (link, esc(when)) if part)
+
+
 def offseason_ledger(items: list[dict] | None) -> str:
+    """At most three consolidated signals; each item carries every source
+    that supports it as footnoted citations."""
     if not items:
         return ""
     rows = []
-    for item in items:
-        source = esc(item.get("source", ""))
-        url = esc(item.get("url", ""))
-        cite = f'<a href="{url}">{source}</a>' if url else source
-        date = esc(item.get("date", ""))
+    for item in items[:3]:
+        cites = [
+            _cite(src.get("source", ""), src.get("url", ""), src.get("date", ""))
+            for src in item.get("sources") or []
+        ]
+        if not cites and (item.get("source") or item.get("date")):
+            cites = [_cite(item.get("source", ""), item.get("url", ""), item.get("date", ""))]
         cite_row = (
-            f'<span class="ledger-cite">{" · ".join(part for part in (cite, date) if part)}</span>'
-            if cite or date
-            else ""
+            f'<span class="ledger-cite">{"&ensp;·&ensp;".join(cites)}</span>' if cites else ""
         )
         rows.append(
             f'<div class="ledger-row"><b>{esc(item.get("player", ""))}</b>'
@@ -510,17 +525,19 @@ def landscape_table(digest: dict) -> str:
     return (
         '<table class="grid"><thead><tr>'
         f'<th>{esc(digest.get("conference", ""))} programme</th>'
-        f'<th class="num">{season} W-D-L</th><th class="num">GF:GA</th>'
-        '<th class="num">Conf</th><th class="num">Conf GF:GA</th>'
+        f'<th class="num">{season} W-L-T</th><th class="num">GF:GA</th>'
+        '<th class="num">Conf W-L-T</th><th class="num">Conf GF:GA</th>'
         '<th class="num">CS</th><th>Returning goals</th>'
         "</tr></thead><tbody>" + "".join(rows) + "</tbody></table>"
-        '<div class="viz-note">Observed · records from published results; returning share '
-        "joins the two published rosters against last season's statistics.</div>"
+        '<div class="viz-note">Observed · records from published results, W-L-T order; returning '
+        "share joins the two published rosters against last season's statistics.</div>"
     )
 
 
-def schedule_matrix(digest: dict, names: dict[str, str]) -> str:
-    """Every 2026 meeting with a conference opponent, chronological."""
+def schedule_matrix(digest: dict, names: dict[str, str], narrative: dict | None = None) -> str:
+    """Every meeting with a conference opponent, chronological — planning
+    columns (turnaround, venue, opponent continuity, priority), not history."""
+    stories = (narrative or {}).get("programmes") or {}
     rows = []
     fixtures = []
     for slug, section in digest["programmes"].items():
@@ -529,29 +546,47 @@ def schedule_matrix(digest: dict, names: dict[str, str]) -> str:
         for fixture in section.get("fixtures_vs_focus") or []:
             fixtures.append((slug, section, fixture))
     fixtures.sort(key=lambda item: str(item[2].get("date")))
+    seasons = digest.get("seasons_held") or []
+    first_held = seasons[0] if seasons else None
+    prev_date: str | None = None
+    prev_away = False
     for slug, section, fixture in fixtures:
         at_home = fixture.get("home") == digest["focus"]
-        last = section.get("last_season") or {}
-        conf = last.get("conference", {})
         turnover = section.get("turnover") or {}
-        share = (turnover.get("returning_share") or {}).get("goals")
+        share = (turnover.get("returning_share") or {}).get("minutes")
         versus = section.get("head_to_head")
+        gap = _day_gap(prev_date, str(fixture.get("date")))
+        gap_cell = f"{gap}d" if gap is not None else "–"
+        if gap is not None and gap <= 4:
+            gap_cell = f'<span class="tight">{gap}d</span>'
+        trip = ""
+        if not at_home and prev_away:
+            trip = ' <span class="tag tag-away">2nd straight</span>'
+        priority = bool((stories.get(slug) or {}).get("priority"))
         rows.append(
-            f'<tr><td class="num">{esc(_long_date(str(fixture.get("date"))))}</td>'
-            f"<td>{esc(section.get('name', slug))}</td>"
-            f'<td><span class="tag tag-{"home" if at_home else "away"}">{"HOME" if at_home else "AWAY"}</span></td>'
-            f'<td class="num">{record_line(conf)}</td>'
+            f'<tr{" class=" + chr(34) + "is-focus" + chr(34) if priority else ""}>'
+            f'<td class="num">{esc(_long_date(str(fixture.get("date"))))}</td>'
+            f"<td>{esc(section.get('name', slug))}"
+            + (' <span class="prio-mini">priority</span>' if priority else "")
+            + "</td>"
+            f'<td><span class="tag tag-{"home" if at_home else "away"}">{"HOME" if at_home else "AWAY"}</span>{trip}</td>'
+            f'<td class="num">{gap_cell}</td>'
             f'<td class="num">{f"{round(share * 100)}%" if share is not None else "–"}</td>'
-            f'<td class="num">{record_line(versus) if versus else "–"}</td>'
-            f'<td class="num streak">{_streak(versus)}</td></tr>'
+            f'<td class="num">{record_line(versus) if versus else "–"}</td></tr>'
         )
+        prev_date = str(fixture.get("date"))
+        prev_away = not at_home
+    h2h_head = f"H2H since {first_held}" if first_held else "H2H held"
     return (
         '<table class="grid"><thead><tr><th class="num">Date</th><th>Opponent</th><th>Venue</th>'
-        f'<th class="num">{digest.get("previous_season")} conf</th>'
-        '<th class="num">Goals returning</th><th class="num">H2H (all-time)</th>'
-        '<th class="num">Streak</th></tr></thead><tbody>' + "".join(rows) + "</tbody></table>"
-        '<div class="viz-note">Observed · streak reads from the focus side (L5 = five straight '
-        "losses in the series). H2H spans every held season.</div>"
+        '<th class="num">Turnaround</th>'
+        f'<th class="num">Opp. continuity</th><th class="num">{h2h_head}</th>'
+        "</tr></thead><tbody>" + "".join(rows) + "</tbody></table>"
+        '<div class="viz-note">Observed · turnaround counts days since the previous conference '
+        "fixture only — non-conference matches in between are not shown, so true rest may be "
+        "shorter, never longer. Opponent continuity is the share of last season's minutes "
+        "returning on the opponent's published roster. H2H is W-L-T from the focus side over "
+        "held seasons.</div>"
     )
 
 
@@ -584,22 +619,28 @@ def returning_table(profiles: list[dict]) -> str:
 
 
 def availability_block(last: dict | None) -> str:
-    """Players whose participation stopped early — rendered as PROJECTED.
+    """Participation gaps whose cause the record cannot state — rendered as
+    UNVERIFIED SIGNAL, and only for players still relevant to the new season.
 
-    The digest reports the observed pattern; the injury reading is inference,
-    and the block says so in place.
+    The gap is observed; the reason (injury, transfer, discipline, redshirt)
+    is unknown. Departed players are omitted — a resolved case changes no
+    decision.
     """
-    flags = (last or {}).get("availability_flags") or []
+    flags = [
+        flag
+        for flag in (last or {}).get("availability_flags") or []
+        if flag.get("on_current_roster") is not False
+    ]
     if not flags:
         return ""
     rows = []
-    for flag in flags[:6]:
+    for flag in flags[:4]:
         roster = flag.get("on_current_roster")
-        status = ""
-        if roster is True:
-            status = '<span class="tag tag-ret">on new roster</span>'
-        elif roster is False:
-            status = '<span class="tag tag-dep">not on new roster</span>'
+        status = (
+            '<span class="tag tag-ret">on new roster</span>'
+            if roster
+            else '<span class="tag tag-away">roster pending</span>'
+        )
         if flag.get("kind") == "gap":
             pattern = (
                 f"out after {_long_date(str(flag.get('out_after', '')))}, "
@@ -622,14 +663,14 @@ def availability_block(last: dict | None) -> str:
             f"<td>{status}</td></tr>"
         )
     return (
-        f'<div class="viz-title">Availability watch {label_chip("projected")}</div>'
+        f'<div class="viz-title">Availability — requires confirmation {label_chip("signal")}</div>'
         '<table class="grid slim"><thead><tr><th>Player</th><th class="num">Apps</th>'
         '<th class="num">Min</th><th>Pattern</th>'
         "<th></th></tr></thead><tbody>" + "".join(rows) + "</tbody></table>"
-        '<div class="viz-note">Inferred from participation patterns in held box scores: a '
-        "regular who stops appearing while the team plays on. The record cannot distinguish "
-        "injury from transfer, discipline, or redshirt — treat these as leads for film and "
-        "roster verification, not conclusions.</div>"
+        '<div class="viz-note">The participation gaps are observed in held box scores; their '
+        "causes are not — injury, discipline, and redshirt look identical here. Anyone reading "
+        "the public record sees the same pattern, so treat each row as a question to resolve "
+        "before opponents answer it for themselves. Resolved departures are omitted.</div>"
     )
 
 
@@ -650,15 +691,15 @@ def usage_block(section: dict) -> str:
             f'<td class="num">−{shift.get("drop_pct")}%</td></tr>'
         )
     return (
-        f'<div class="viz-title">Usage shifts, year over year {label_chip("projected")}</div>'
+        f'<div class="viz-title">Usage shifts, year over year {label_chip("signal")}</div>'
         '<table class="grid slim"><thead><tr><th>Player</th><th class="num">Before</th>'
         '<th class="num">After</th><th class="num">Δ minutes</th></tr></thead><tbody>'
         + "".join(rows)
         + "</tbody></table>"
         '<div class="viz-note">Players still on the new roster whose minutes collapsed between '
-        "the last two seasons. Possible analysis only — an injury year, a lost position battle, "
-        "and a redshirt look identical in this data. A returner whose heavy season was two years "
-        "ago may be better than last season's film suggests.</div>"
+        "the last two seasons. The collapse is observed; the cause is not — an injury year, a "
+        "lost position battle, and a redshirt look identical in this data. A returner whose "
+        "heavy season was two years ago may be better than last season's film suggests.</div>"
     )
 
 
@@ -734,7 +775,7 @@ def turnover_block(turnover: dict | None, season: int | str) -> str:
             f"{esc(leader['name'])} ({leader['goals']}g, {leader['points']}pts, {leader['minutes']}′)"
             for leader in leaders
         )
-        leader_text = f'<div class="departed"><span class="viz-title">Walked out the door</span> {led}</div>'
+        leader_text = f'<div class="departed"><span class="viz-title">Departed production</span> {led}</div>'
     return (
         f'<div class="turnover"><div class="turnover-counts num">'
         f'<span><b>{counts.get("returning")}</b> return</span>'
@@ -869,58 +910,88 @@ def dossier_sheet(digest: dict, entry: dict) -> str:
 </section>"""
 
 
-def breakout_cards(digest: dict, entries: list[dict] | None) -> str:
+def watchlist_table(entries: list[dict] | None) -> str:
+    """Monitoring candidates in one line each — players whose held record
+    shows an upward indicator on a sample too small for a full treatment."""
     if not entries:
         return f'<p class="pending">{PLACEHOLDER}</p>'
-    cards = []
-    for entry in entries:
-        profile = _find_profile(digest, entry.get("player", ""))
-        trend = ""
-        if profile and len(profile.get("career") or []) >= 2:
-            trend = career_table(profile)
-        elif profile:
-            trend = career_table(profile)
-        cards.append(
-            f'<div class="breakout"><div class="breakout-head"><b>{esc(entry.get("player", ""))}</b>'
-            f'{label_chip(entry.get("label") or "judgment")}</div>'
-            f'<div class="story"><p>{esc(entry.get("text", ""))}</p></div>{trend}</div>'
-        )
-    return "".join(cards)
+    rows = "".join(
+        f"<tr><td><b>{esc(entry.get('player', ''))}</b></td>"
+        f"<td>{esc(entry.get('programme', ''))}</td>"
+        f"<td>{esc(entry.get('note', ''))} {label_chip(entry.get('label') or 'judgment')}</td></tr>"
+        for entry in entries
+    )
+    return (
+        '<table class="grid slim"><thead><tr><th>Player</th><th>Programme</th>'
+        "<th>Why watch</th></tr></thead><tbody>" + rows + "</tbody></table>"
+        '<div class="viz-note">Monitoring candidates, not conclusions — the samples behind these '
+        "rows are too small to carry a projection. Re-evaluate after the first two matchdays.</div>"
+    )
 
 
 # ── Opponent cards ───────────────────────────────────────────────────────────
 
 
-def opponent_card(digest: dict, slug: str, narrative: dict, names: dict[str, str]) -> str:
+def opponent_half_card(digest: dict, slug: str, narrative: dict, names: dict[str, str]) -> str:
+    """Half a page per priority opponent: identity, roster change, key threat,
+    vulnerability, and what it means for the focus side.  Five fields — if a
+    field has nothing verified to say, it says so."""
     section = digest["programmes"][slug]
     last = section.get("last_season") or {}
+    overall = last.get("overall", {})
+    conf = last.get("conference", {})
     story = (narrative.get("programmes") or {}).get(slug) or {}
     first_meeting = (section.get("fixtures_vs_focus") or [{}])[0].get("date", "")
-    turnover = section.get("turnover")
+    turnover = section.get("turnover") or {}
+    share = turnover.get("returning_share") or {}
+    counts = turnover.get("counts") or {}
+    top = (section.get("top_returning") or [{}])[0]
+    top_line = ""
+    if top.get("name"):
+        last_line = top["career"][-1] if top.get("career") else {}
+        top_line = (
+            f"<b>{esc(top['name'])}</b> — {last_line.get('goals', 0)}g, "
+            f"{last_line.get('points', 0)}pts in {last_line.get('minutes', 0)}′ last season. "
+        )
+    roster_bits = []
+    if counts.get("returning") is not None:
+        roster_bits.append(
+            f"{counts['returning']} return, {counts.get('newcomers', 0)} new, "
+            f"{counts.get('departed', 0)} departed"
+        )
+    if share.get("minutes") is not None:
+        roster_bits.append(f"{round(share['minutes'] * 100)}% of minutes back")
+    if share.get("goals") is not None:
+        roster_bits.append(f"{round(share['goals'] * 100)}% of goals back")
+    roster_line = " · ".join(roster_bits) or "roster not yet published"
+
+    def field(title: str, body: str, cls: str = "") -> str:
+        if not body:
+            body = "Nothing verified to report."
+        return (
+            f'<div class="opp-field{" " + cls if cls else ""}">'
+            f'<span class="viz-title">{esc(title)}</span>'
+            f"<p>{body}</p></div>"
+        )
+
     return f"""
-<section class="sheet opponent">
+<div class="half-opp">
   <header class="opp-head">
     <span class="opp-abbr">{esc(section.get("abbr", slug[:3].upper()))}</span>
     <div>
-      <h2>{esc(section.get("name", slug))}</h2>
-      <div class="opp-sub num">First meeting {esc(_long_date(first_meeting)) if first_meeting else "TBD"}</div>
+      <h3>{esc(section.get("name", slug))}</h3>
+      <div class="opp-sub num">{record_line(overall)} overall · {record_line(conf)} conf (W-L-T) ·
+      {overall.get("gf")}:{overall.get("ga")} · first meeting {esc(_long_date(first_meeting)) if first_meeting else "TBD"}</div>
     </div>
-    <span class="prio">Priority opponent</span>
+    <span class="prio">Priority</span>
   </header>
-  {stat_grid(last)}
-  <div class="two-col">
-    <div>{minute_chart(last.get("patterns"))}</div>
-    <div>{turnover_block(turnover, digest.get("season", ""))}{keeper_line(last, turnover)}</div>
-  </div>
-  {returning_table(section.get("top_returning") or [])}
-  {availability_block(last)}
-  {usage_block(section)}
-  {h2h_strip(section.get("head_to_head"), names, digest["focus"])}
-  {fixtures_line(section.get("fixtures_vs_focus"), digest["focus"])}
-  <div class="story">{prose(story.get("overview"))}</div>
+  {field("Roster change", esc(story.get("roster_note", "")) + f'<span class="dim"> [{esc(roster_line)}]</span>')}
+  {field("Key threat", top_line + esc(story.get("threat", "")))}
+  {field("Vulnerability", esc(story.get("vulnerability", "")), "riskfield")}
+  {field("What it means for the focus side", esc(story.get("implication", "")), "goldfield")}
   {news_cards(story.get("news"))}
-  {takeaway_list(story.get("takeaways"), "What this changes for the focus side")}
-</section>"""
+  {h2h_strip(section.get("head_to_head"), names, digest["focus"], limit=6)}
+</div>"""
 
 
 def compact_card(digest: dict, slug: str, narrative: dict, names: dict[str, str]) -> str:
@@ -941,16 +1012,15 @@ def compact_card(digest: dict, slug: str, narrative: dict, names: dict[str, str]
             f"<b>{esc(top['name'])}</b> — {last_line.get('goals', 0)}g, "
             f"{last_line.get('points', 0)}pts in {last_line.get('minutes', 0)}′</div>"
         )
-    takeaway = (story.get("takeaways") or [""])[0]
+    takeaway = story.get("implication") or ""
     return f"""
 <div class="compact">
   <div class="compact-head"><span class="opp-abbr sm">{esc(section.get("abbr", slug[:3].upper()))}</span>
     <b>{esc(section.get("name", slug))}</b>
-    <span class="num dim">{record_line(overall)} · conf {record_line(conf)} · {overall.get("gf")}:{overall.get("ga")}</span></div>
+    <span class="num dim">{record_line(overall)} · conf {record_line(conf)} (W-L-T) · {overall.get("gf")}:{overall.get("ga")}</span></div>
   <div class="compact-line"><span class="viz-title">Returning goals</span>
     <span class="num">{f"{round(share * 100)}%" if share is not None else "roster pending"}</span>
-    · <span class="viz-title">H2H</span> <span class="num">{record_line(versus) if versus else "–"}</span>
-    · <span class="viz-title">Streak</span> <span class="num">{_streak(versus)}</span></div>
+    · <span class="viz-title">H2H</span> <span class="num">{record_line(versus) if versus else "–"}</span></div>
   {top_line}
   {f'<div class="compact-note">{esc(takeaway)}</div>' if takeaway else ""}
 </div>"""
@@ -973,13 +1043,25 @@ def _schedule_order(digest: dict) -> list[str]:
 
 
 def exec_sheet(digest: dict, narrative: dict) -> str:
+    """Bottom line → three or four findings, each split evidence / meaning /
+    implication → decisions and preseason priorities.  A finding whose
+    interpretation cannot be separated from its evidence doesn't belong here.
+    """
     exec_block = narrative.get("exec") or {}
-    findings = exec_block.get("findings") or []
-    decisions = exec_block.get("decisions") or []
-    uncertainties = exec_block.get("uncertainties") or []
+    findings = (exec_block.get("findings") or [])[:4]
+    decisions = (exec_block.get("decisions") or [])[:3]
+    priorities = exec_block.get("priorities") or []
+    bottom = exec_block.get("bottom_line")
     finding_rows = "".join(
-        f'<li>{esc(item.get("text", ""))} {label_chip(item.get("label"))}'
-        f"{confidence_dot(item.get('confidence'))}</li>"
+        f'<li><span class="ev">{esc(item.get("evidence", ""))}</span> '
+        f"{label_chip(item.get('label'))}{confidence_dot(item.get('confidence'))}"
+        f'<span class="fm"><b>Meaning</b> {esc(item.get("meaning", ""))}</span>'
+        + (
+            f'<span class="fm"><b>For the staff</b> {esc(item["implication"])}</span>'
+            if item.get("implication")
+            else ""
+        )
+        + "</li>"
         for item in findings
     ) or f'<li class="pending">{PLACEHOLDER}</li>'
     decision_rows = "".join(
@@ -987,28 +1069,32 @@ def exec_sheet(digest: dict, narrative: dict) -> str:
         f'<div><b>{esc(item.get("title", ""))}</b><p>{esc(item.get("text", ""))}</p></div></div>'
         for index, item in enumerate(decisions, start=1)
     ) or f'<p class="pending">{PLACEHOLDER}</p>'
-    uncertainty_rows = "".join(
-        f"<li>{esc(item)}</li>" for item in uncertainties
+    priority_rows = "".join(
+        f"<li>{esc(item)}</li>" for item in priorities
     ) or f'<li class="pending">{PLACEHOLDER}</li>'
+    bottom_block = (
+        f'<div class="bottomline"><span class="viz-title">Bottom line</span>'
+        f"<p>{esc(bottom)}</p></div>"
+        if bottom
+        else f'<p class="pending">{PLACEHOLDER}</p>'
+    )
     return f"""
 <section class="sheet">
   <h2 class="section-head">Executive brief</h2>
+  {bottom_block}
   {indicator_tiles(digest)}
   <div class="viz-title big">Findings</div>
-  <ol class="findings">{finding_rows}</ol>
+  <ol class="findings split">{finding_rows}</ol>
   <div class="exec-cols">
     <div><div class="viz-title big">Coaching decisions</div>{decision_rows}</div>
-    <div><div class="viz-title big risk">Major uncertainties</div>
-      <ul class="plain risklist">{uncertainty_rows}</ul></div>
+    <div><div class="viz-title big">Preseason priorities</div>
+      <ul class="plain">{priority_rows}</ul></div>
   </div>
 </section>"""
 
 
-def sources_sheet(digest: dict) -> str:
-    source_rows = "".join(
-        f'<tr><td>{esc(key)}</td><td class="num">{esc(str(value)[:10])}</td></tr>'
-        for key, value in sorted((digest.get("sources") or {}).items())
-    )
+def sources_sheet(digest: dict, focus_name: str) -> str:
+    file_count = len(digest.get("sources") or {})
     return f"""
 <section class="sheet">
   <h2 class="section-head">Sources, definitions, and method</h2>
@@ -1016,31 +1102,63 @@ def sources_sheet(digest: dict) -> str:
   <div class="story">
     <p>{label_chip("observed")} Computed directly from published schedules, results, rosters,
     statistics pages, and box-score play-by-play. Every observed figure in this report traces to
-    the digest file named below.</p>
+    the collection record.</p>
     <p>{label_chip("projected")} A model-based estimate with stated assumptions. This report
     contains no projected figures unless labeled.</p>
+    <p>{label_chip("signal")} An observed pattern whose cause is unverified — a participation
+    gap or a minutes collapse. The pattern is fact; the reason requires confirmation.</p>
     <p>{label_chip("judgment")} Interpretation that requires film or coaching context to
     validate. Player strengths and limitations are judgments, not measurements.</p>
   </div>
   <div class="viz-title big">Definitions</div>
   <div class="story">
-    <p>Minutes, goals, assists, points, shots, and cards are as published by each programme's
-    official statistics page. Save percentage = saves ÷ (saves + goals against). Returning share
-    joins consecutive published rosters by normalized player name and weights last season's
-    production. Goal timing comes from published play-by-play; band charts state their match
-    sample. Head-to-head covers only seasons held in the archive
-    ({esc(digest.get("seasons_held", ["–"])[0])}–{esc(digest.get("seasons_held", ["–"])[-1])}).
-    Shot locations are not collected, so xG is not reported anywhere in this document.</p>
+    <p>Records read wins-losses-ties (W-L-T) throughout. Minutes, goals, assists, points, shots,
+    and cards are as published by each programme's official statistics page. Save percentage =
+    saves ÷ (saves + goals against). Returning share joins consecutive published rosters by
+    normalized player name and weights last season's production. Goal timing comes from published
+    play-by-play; band charts state their match sample. Head-to-head covers only seasons held in
+    the archive ({esc(digest.get("seasons_held", ["–"])[0])}–{esc(digest.get("seasons_held", ["–"])[-1])}) —
+    it is a held record, not an all-time one. Shot locations are not collected, so xG is not
+    reported anywhere in this document.</p>
+    <p>The full collection record — {file_count} season files with collection dates — is
+    published separately as the technical appendix accompanying this report.</p>
   </div>
-  <div class="viz-title big">Collection record</div>
-  <table class="grid slim sources"><thead><tr><th>Season file</th><th class="num">Collected</th></tr></thead>
-  <tbody>{source_rows}</tbody></table>
   <div class="foot-note">
     <p>Independent analysis prepared by EDInsights from public, published data. Not issued by or
-    affiliated with Harding University Athletics; no institutional marks are used.</p>
+    affiliated with {esc(focus_name)} University Athletics; no institutional marks are used.</p>
     <p class="mark">EDInsights · Empowered Data. Artificial Intelligence. Real Results.</p>
   </div>
 </section>"""
+
+
+def render_appendix(digest: dict) -> str:
+    """The technical appendix — the collection record, out of the coach's way."""
+    source_rows = "".join(
+        f'<tr><td>{esc(key)}</td><td class="num">{esc(str(value)[:10])}</td></tr>'
+        for key, value in sorted((digest.get("sources") or {}).items())
+    )
+    title = (
+        f"{digest.get('conference', '')} {digest.get('gender', '')} "
+        f"{digest.get('season', '')} — Technical appendix"
+    )
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{esc(title)}</title>
+<style>{CSS}</style>
+</head>
+<body>
+<section class="sheet">
+  <h2 class="section-head">Technical appendix — collection record</h2>
+  <p class="section-sub">Every season file behind the preseason briefing, with its collection
+  date. Digest generated {esc(str(digest.get("generated_at", ""))[:10])}.</p>
+  <table class="grid slim sources"><thead><tr><th>Season file</th><th class="num">Collected</th></tr></thead>
+  <tbody>{source_rows}</tbody></table>
+</section>
+</body>
+</html>"""
 
 
 def render_report(digest: dict, narrative: dict | None = None) -> str:
@@ -1064,7 +1182,18 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
     rest = [slug for slug in ordered if slug not in priority]
 
     priority_sheets = "".join(
-        opponent_card(digest, slug, narrative, names) for slug in priority
+        '<section class="sheet opponent">'
+        + (
+            '<h2 class="section-head">Priority opponents</h2>'
+            if index == 0
+            else '<h2 class="section-head">Priority opponents, continued</h2>'
+        )
+        + "".join(
+            opponent_half_card(digest, slug, narrative, names)
+            for slug in priority[index : index + 2]
+        )
+        + "</section>"
+        for index in range(0, len(priority), 2)
     )
     compact_cards = "".join(compact_card(digest, slug, narrative, names) for slug in rest)
 
@@ -1109,13 +1238,15 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
 {exec_sheet(digest, narrative)}
 
 <section class="sheet">
-  <h2 class="section-head">{esc(focus_name)} — the honest baseline</h2>
+  <h2 class="section-head">{esc(focus_name)} — the view from outside</h2>
+  <p class="section-sub">What the public record shows about {esc(focus_name)} — the same numbers
+  and patterns every opposing staff can read. The roster itself needs no introduction here; what
+  it looks like from the other bench does.</p>
   {stat_grid(focus_last)}
   <div class="two-col">
     <div>{minute_chart(focus_last.get("patterns"))}</div>
     <div>{turnover_block(focus.get("turnover"), digest.get("season", ""))}{keeper_line(focus_last, focus.get("turnover"))}</div>
   </div>
-  {returning_table(focus.get("top_returning") or [])}
   {availability_block(focus_last)}
   {usage_block(focus)}
   <div class="story">{prose(focus_story.get("overview"))}</div>
@@ -1125,48 +1256,37 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
 </section>
 
 <section class="sheet">
-  <h2 class="section-head">The conference landscape</h2>
+  <h2 class="section-head">The landscape — and where {esc(focus_name)} gains ground</h2>
   {landscape_table(digest)}
-  {landscape_scatter(digest)}
+  <p class="section-sub">Observed per-match rates against the conference median — these gaps are
+  the controllable ones.</p>
+  {dumbbell_chart(digest)}
   <div class="story">{prose(narrative.get("landscape"))}</div>
 </section>
 
 <section class="sheet">
-  <h2 class="section-head">Where {esc(focus_name)} can gain ground</h2>
-  <p class="section-sub">Observed per-match rates against the conference median — the gaps are the
-  coaching surface area.</p>
-  {dumbbell_chart(digest)}
-  <div class="story">{prose(narrative.get("gain"))}</div>
-</section>
-
-<section class="sheet">
-  <h2 class="section-head">Schedule and matchup matrix</h2>
-  {schedule_matrix(digest, names)}
+  <h2 class="section-head">Preseason validation and the conference schedule</h2>
+  <p class="section-sub">The bridge from analysis to the training ground — what to test before
+  the opener, then the conference slate as a planning surface.</p>
+  <div class="viz-title big">To validate in preseason</div>
+  <ol class="findings">{questions}</ol>
+  <div class="viz-title big">Schedule and matchup matrix</div>
+  {schedule_matrix(digest, names, narrative)}
 </section>
 
 {priority_sheets}
 
 <section class="sheet">
-  <h2 class="section-head">The rest of the conference</h2>
+  <h2 class="section-head">The rest of the conference — and the watchlist</h2>
   <p class="section-sub">Compact cards — full treatment reserved for the priority opponents above.</p>
   {compact_cards}
-</section>
-
-<section class="sheet">
-  <h2 class="section-head">Breakout candidates</h2>
-  <p class="section-sub">Roster players whose held record shows upward indicators. Trajectories are
-  observed; the reads are scouting judgment.</p>
-  {breakout_cards(digest, narrative.get("breakouts"))}
+  <div class="viz-title big">Conference watchlist</div>
+  {watchlist_table(narrative.get("watchlist"))}
 </section>
 
 {dossier_sheets}
 
-<section class="sheet">
-  <h2 class="section-head">To validate in preseason</h2>
-  <ol class="findings">{questions}</ol>
-</section>
-
-{sources_sheet(digest)}
+{sources_sheet(digest, focus_name)}
 
 </body>
 </html>"""
@@ -1214,6 +1334,7 @@ border-bottom:2px solid var(--gold-fill);padding-bottom:8px}
 text-transform:uppercase;padding:3px 6px;border-radius:2px;vertical-align:1.5px;white-space:nowrap}
 .lbl-observed{background:var(--gold-wash);color:var(--gold);border:1px solid var(--gold-fill)}
 .lbl-projected{background:#eeece5;color:var(--bench);border:1px solid var(--rule2)}
+.lbl-signal{background:#ece7f0;color:#5e5375;border:1px solid #b9aecb}
 .lbl-judgment{background:var(--rose-wash);color:var(--rose);border:1px solid #d9aab6}
 .conf{font:700 9px/1 "Avenir Next Condensed","Arial Narrow",sans-serif;letter-spacing:.08em;
 text-transform:uppercase;margin-left:6px;padding-left:12px;position:relative;color:var(--muted)}
@@ -1234,6 +1355,15 @@ letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);margin-top:6px}
 
 .findings{margin:6px 0 18px 22px}
 .findings li{margin:9px 0;font-size:14px;max-width:72ch}
+.bottomline{border-left:4px solid var(--gold);background:var(--gold-wash);
+padding:12px 16px;margin:4px 0 16px}
+.bottomline .viz-title{margin:0 0 4px;color:var(--gold)}
+.bottomline p{font-size:15px;line-height:1.5;color:var(--ink);max-width:68ch}
+.findings.split li{margin:13px 0}
+.findings.split .ev{font-weight:600}
+.findings.split .fm{display:block;font-size:12.5px;color:var(--ink2);margin-top:3px}
+.findings.split .fm b{font:700 9.5px/1 "Avenir Next Condensed","Arial Narrow",sans-serif;
+letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:5px}
 .exec-cols{display:grid;grid-template-columns:1.4fr 1fr;gap:26px}
 @media(max-width:700px){.exec-cols{grid-template-columns:1fr}}
 .decision{display:flex;gap:12px;margin:12px 0}
@@ -1268,6 +1398,20 @@ border-radius:4px;overflow:hidden;vertical-align:2px;margin-right:8px}
 .streak{font-weight:700}
 
 .opponent{padding-top:44px}
+.half-opp{border-top:2px solid var(--rule2);padding:16px 0 8px;margin-top:14px}
+.half-opp:first-of-type{border-top:none;margin-top:0}
+.half-opp h3{font:700 21px/1.05 "Avenir Next Condensed","Arial Narrow",sans-serif;
+text-transform:uppercase;letter-spacing:.02em}
+.opp-field{margin:9px 0}
+.opp-field .viz-title{margin:0 0 2px}
+.opp-field p{font-size:13px;color:var(--ink2);max-width:76ch}
+.riskfield .viz-title{color:var(--rose)}
+.goldfield{border-left:3px solid var(--gold-fill);padding-left:12px}
+.goldfield .viz-title{color:var(--gold)}
+.prio-mini{font:700 8.5px/1 "Avenir Next Condensed","Arial Narrow",sans-serif;
+letter-spacing:.1em;text-transform:uppercase;color:var(--gold);
+border:1px solid var(--gold-fill);padding:2px 5px;margin-left:6px;vertical-align:1px}
+.tight{color:var(--rose);font-weight:700}
 .opp-head{display:flex;align-items:center;gap:16px;margin-bottom:16px}
 .opp-abbr{display:inline-flex;align-items:center;justify-content:center;
 min-width:54px;height:54px;padding:0 8px;background:var(--gold-wash);border:1px solid var(--gold-fill);

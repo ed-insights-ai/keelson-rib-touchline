@@ -25,28 +25,85 @@ answer; this file says *how it must read and look*. Tune the product here.
 - When conference membership was carried forward past its last authored
   season, the report says so once, up front.
 
+## Credibility rules (absolute)
+
+- **Records read W-L-T** — wins, losses, ties — everywhere, labeled on
+  first use. American college coaches read `2-14-2` as W-L-T; a W-D-L
+  record silently misreports the season.
+- **Evidence and judgment never share a sentence.** Every executive
+  finding splits into evidence (the fact), meaning (the interpretation),
+  and implication (what the staff does with it). "Roster returns 19
+  players" is observed; "continuity makes them the better pick" is
+  judgment — the split keeps both honest.
+- **A gap is a signal, not a diagnosis.** Participation gaps and minutes
+  collapses are labeled *Unverified signal — requires confirmation*, never
+  "projected injury". The gap is observed; the cause is not.
+- **No conclusions from absence of evidence.** "No other public summer
+  minutes found" is a defensible statement of coverage. "The rest of the
+  squad trained all summer" is invention — never write the second kind.
+- **Claim only what the data measures.** Corner counts show territorial
+  and restart exposure, not marking quality or set-piece defending; shot
+  counts show shot volume, not possession. Recommend the film audit, do
+  not pre-judge its result.
+- **Small samples stay small.** A player with two goals from 129 minutes
+  is a watchlist line, not a breakout narrative. State the sample beside
+  any claim built on it.
+- **Held records are not all-time records.** Head-to-head and historical
+  claims say "since <first archived season>" or "held record".
+
+## The insight filter
+
+Before an insight enters the report, score it: focus-side relevance
+(0-2), changes a coaching decision (0-2), evidence strength (0-2),
+non-duplicative (0-1), current for this season (0-1), adequate sample
+(0-1), explainable in one sentence (0-1). Score 7-10 → main report; 5-6 →
+watchlist or appendix; below 5 → cut. Every major block must be able to
+populate Evidence, Meaning, Action, and Caveat — if there is no Action a
+coach could take, it does not belong in the coach-facing report.
+
 ## Voice
 
 - Written by a scouting department for a coaching staff. Direct, specific,
   tactical. Short declarative sentences. No hype, no filler, no "exciting
   season ahead". Never flatter the reader.
+- Plain soccer language, never consulting language: "reset expectations",
+  not "re-price the season"; "controllable gaps", not "coaching surface
+  area"; "early roster integration", not "chemistry curve". If a coach
+  would not say the phrase at training, rewrite it.
 - Insight is a hypothesis anchored to a cited number: "They conceded 9 of
   14 goals after the 60th minute — sustained second-half pressure is the
   percentage play." Not: "They tend to tire late."
 - Players are named with position and class year on first mention.
 - The reader knows soccer. Explain nothing about the sport; explain only
   what the data shows.
+- The focus side's own roster needs no introduction — its coach picked it.
+  Cover the focus programme outside-in: what the public record shows an
+  opponent, and say so. Trend signals about focus players (availability
+  gaps, usage shifts, offseason footprints) stay — they show what others
+  can see.
 
 ## Structure
 
+Ten to twelve finished US Letter pages. Prioritization is the product:
+fewer, stronger items beat coverage.
+
 1. Cover: competition, season, focus programme, "prepared" date, data
    provenance line (seasons held, collection date).
-2. Conference landscape (table + returning-production visual + narrative).
-3. The focus programme, honestly assessed.
-4. One opponent section per conference opponent, in schedule order.
-5. Watch list.
-6. Provenance and caveats footer: what the digest covers, what it cannot
-   see, when it was collected.
+2. Executive brief: bottom line, 3-4 split findings, at most 3 decisions,
+   preseason priorities.
+3. The focus programme from outside — what the public record shows;
+   availability signals, usage shifts, offseason ledger (max 3
+   consolidated signals, footnoted sources).
+4. Conference landscape and where the focus side gains ground — one page.
+5. Preseason validation questions + the schedule as a planning matrix
+   (turnaround, venue, opponent continuity, priority — not history).
+6. Priority opponents as half-page cards, two per page: identity, roster
+   change, key threat, vulnerability, implication.
+7. Rest of the conference compact + watchlist (one line per monitoring
+   candidate).
+8. Two player dossiers.
+9. Sources, definitions, evidence labels. The collection file ledger goes
+   to a separate technical appendix, not the main report.
 
 ## Look
 
