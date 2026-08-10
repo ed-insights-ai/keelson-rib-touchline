@@ -873,14 +873,25 @@ describe("the board markup", () => {
       expect(html).toContain("129&prime;");
     });
 
-    test("rows are buttons into the drawer only once statistics exist", () => {
+    test("rows are buttons into the drawer with or without statistics", () => {
       const withStats = compose();
       expect(withStats).toContain('data-act="select-player"');
       expect(withStats).toContain("&quot;player&quot;:&quot;18800&quot;");
       // Hahn's key falls back to his name.
       expect(withStats).toContain("&quot;player&quot;:&quot;Mason Hahn&quot;");
+      // Pre-season the drawer still holds the bio and tenure, so the row
+      // must open it even before any statistics are collected.
       const without = compose(undefined, false);
-      expect(without).not.toContain('data-act="select-player"');
+      expect(without).toContain('data-act="select-player"');
+    });
+
+    test("a pre-season drawer offers the bio and says statistics are yet to come", () => {
+      const html = compose("18800", false);
+      expect(html).toContain('role="dialog"');
+      expect(html).toContain("Nojus Grudis");
+      expect(html).toContain("Forward · Senior");
+      expect(html).toContain("No 2025 season statistics collected for Harding yet.");
+      expect(html).toContain("From the programme&#39;s published roster.");
     });
 
     test("the drawer tells one player's season, and every close path posts null", () => {
@@ -1379,5 +1390,130 @@ describe("match detail (box scores)", () => {
     });
     expect(html).toContain('id="mx-open"');
     expect(html).toContain("Match details");
+  });
+});
+
+describe("roster tenure", () => {
+  // The archive the tenure lines read from. Names join within a programme —
+  // SideArm roster ids change every season, so identity is the printed name.
+  const rosterFile = (
+    season: number,
+    rosters: Record<string, { name: string; class_year?: string }[]>,
+  ): RostersFile => ({
+    schema: "touchline.rosters/1",
+    season,
+    gender: "men",
+    collected_at: "2026-08-10T00:00:00Z",
+    rosters: Object.fromEntries(
+      Object.entries(rosters).map(([programme, players]) => [programme, { programme, players }]),
+    ),
+  });
+
+  const season2026 = (players: { name: string; class_year?: string }[]) =>
+    rosterFile(2026, { harding: players });
+
+  const compose = (current: RostersFile, history: RostersFile[], player?: string) =>
+    composeBoard({
+      projectName: "p",
+      fixtures: base,
+      rosters: current,
+      rosterHistory: history,
+      team: "harding",
+      player,
+      today: "2026-08-09",
+    });
+
+  test("a returning player's drawer counts their seasons on this roster", () => {
+    const current = season2026([{ name: "Aitor Scholl", class_year: "Junior" }]);
+    const history = [
+      rosterFile(2024, { harding: [{ name: "Aitor Scholl" }] }),
+      rosterFile(2025, { harding: [{ name: "Aitor Scholl" }] }),
+      current,
+    ];
+    const html = compose(current, history, "Aitor Scholl");
+    expect(html).toContain("3rd season on the roster (2024–2026)");
+    expect(html).not.toContain("First season on this roster");
+  });
+
+  test("a gap year reads as separate spans, not a continuous run", () => {
+    const current = season2026([{ name: "Davis Weir", class_year: "Senior" }]);
+    const history = [
+      rosterFile(2022, { harding: [{ name: "Davis Weir" }] }),
+      rosterFile(2024, { harding: [{ name: "Davis Weir" }] }),
+      rosterFile(2025, { harding: [{ name: "Davis Weir" }] }),
+      current,
+    ];
+    const html = compose(current, history, "Davis Weir");
+    expect(html).toContain("4th season on the roster (2022, 2024–2026)");
+  });
+
+  test("an above-freshman debut is flagged as an arrival, stated as fact not conclusion", () => {
+    const current = season2026([{ name: "Jack Huls", class_year: "Sophomore" }]);
+    const history = [rosterFile(2025, { harding: [{ name: "Somebody Else" }] }), current];
+    const html = compose(current, history, "Jack Huls");
+    expect(html).toContain("First season on this roster · arrived as Sophomore");
+    expect(html).not.toContain("transfer");
+    // The grid gives them the quiet chip.
+    expect(html).toContain('title="First season on this roster">NEW<');
+  });
+
+  test("a freshman debut is new but not an arrival", () => {
+    const current = season2026([{ name: "Quin Brice", class_year: "Freshman" }]);
+    const history = [rosterFile(2025, { harding: [{ name: "Somebody Else" }] }), current];
+    const html = compose(current, history, "Quin Brice");
+    expect(html).toContain("First season on this roster");
+    expect(html).not.toContain("arrived as");
+  });
+
+  test("the tenure bar splits the squad into returning and new", () => {
+    const current = season2026([
+      { name: "Aitor Scholl", class_year: "Junior" },
+      { name: "Davis Weir", class_year: "Senior" },
+      { name: "Quin Brice", class_year: "Freshman" },
+    ]);
+    const history = [
+      rosterFile(2025, { harding: [{ name: "Aitor Scholl" }, { name: "Davis Weir" }] }),
+      current,
+    ];
+    const html = compose(current, history);
+    expect(html).toContain(">Tenure<");
+    expect(html).toContain('title="Returning — on an earlier roster: 2"');
+    expect(html).toContain('title="First season on this roster: 1"');
+  });
+
+  test("without an earlier roster in the archive, nobody is claimed to be new", () => {
+    // "First season" with no prior data would describe our records, not the
+    // squad — so both the chip and the drawer claim stay silent.
+    const current = season2026([{ name: "Jack Huls", class_year: "Sophomore" }]);
+    const html = compose(current, [current], "Jack Huls");
+    expect(html).not.toContain(">NEW<");
+    expect(html).not.toContain("First season on this roster");
+    expect(html).not.toContain(">Tenure<");
+  });
+
+  test("a prior stint at another conference programme earns a note", () => {
+    const current = season2026([{ name: "Gael Gonzalez", class_year: "Graduate Student" }]);
+    const history = [rosterFile(2025, { "rogers-state": [{ name: "Gael Gonzalez" }] }), current];
+    const html = compose(current, history, "Gael Gonzalez");
+    expect(html).toContain("previously at Rogers State (2025)");
+  });
+
+  test("an archive season never counts rosters from its future", () => {
+    // Viewing 2025: the player is on the 2025 and 2026 rosters, but 2025 was
+    // their first season — the 2026 file must not inflate the count.
+    const f2025 = rosterFile(2025, { harding: [{ name: "Noah Legge", class_year: "Freshman" }] });
+    const f2026 = rosterFile(2026, { harding: [{ name: "Noah Legge", class_year: "Sophomore" }] });
+    const f2024 = rosterFile(2024, { harding: [{ name: "Somebody Else" }] });
+    const html = composeBoard({
+      projectName: "p",
+      fixtures: { ...base, season: 2025 },
+      rosters: f2025,
+      rosterHistory: [f2024, f2025, f2026],
+      team: "harding",
+      player: "Noah Legge",
+      today: "2026-08-09",
+    });
+    expect(html).toContain("First season on this roster");
+    expect(html).not.toContain("2nd season");
   });
 });

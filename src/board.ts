@@ -102,6 +102,7 @@ const STYLE = `
 --draw:#b57a00;
 --gk:#7b61d7;--def:#3f70a9;--mid:#3b8a72;--fwd:#b8820f;
 --gr:#232a45;--sr:#7a2148;--jr:#a03b62;--so:#cf8ba3;--fr:#e9bfcc;
+--ret:#4c5566;--arr:#2b7f8e;
 }
 /* Dark is the light theme's structure translated surface-by-surface, not one
    navy applied everywhere: a four-step ladder (page < shell < band < raised)
@@ -118,6 +119,7 @@ const STYLE = `
 --draw:#f0c04f;
 --gk:#a895ff;--def:#74a7e2;--mid:#61c39f;--fwd:#eac160;
 --gr:#e8ecfb;--sr:#e77ba3;--jr:#c05a82;--so:#7e4260;--fr:#5c3247;
+--ret:#9aa5b8;--arr:#6fc4d4;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
@@ -316,6 +318,7 @@ min-width:0;overflow:hidden;white-space:nowrap}
 .bar .m{background:var(--mid)}.bar .f{background:var(--fwd)}
 .bar .fr{background:var(--fr)}.bar .so{background:var(--so)}.bar .jr{background:var(--jr)}
 .bar .sr{background:var(--sr)}.bar .gr{background:var(--gr)}
+.bar .ret{background:var(--ret)}.bar .arr{background:var(--arr)}
 /* The low-tenure end of the ramp sits near the theme ground, so its counts
    take ink rather than the bg text the saturated segments carry. */
 .bar .so,.bar .fr{color:var(--ink)}
@@ -343,6 +346,8 @@ align-items:baseline;padding:6px 2px 7px;border-bottom:1px solid var(--rule)}
 .prow .no{font:700 12px/1.4 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
 font-variant-numeric:tabular-nums;color:var(--faint);text-align:right}
 .prow .nm{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prow .nm .new{margin-left:6px;vertical-align:1px;font:700 8px/1 "Avenir Next Condensed","Arial Narrow",sans-serif;
+  letter-spacing:.12em;color:var(--faint);border:1px solid var(--rule-firm);border-radius:3px;padding:2px 3px 1px}
 .prow .ht{font:700 11px/1.5 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
 font-variant-numeric:tabular-nums;color:var(--ink-2);text-align:right;white-space:nowrap}
 /* A low-key echo of the class ramp: a small tick in the class colour beside
@@ -405,6 +410,7 @@ color:var(--muted);cursor:pointer;font-size:11px;line-height:1}
 .dr-x:hover{color:var(--ink);border-color:var(--ink)}
 .dr-x:focus-visible,.dr-veil:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .dr-bio{padding:10px 18px;font-size:12px;color:var(--ink-2);border-bottom:1px solid var(--rule)}
+.dr-tenure{padding:8px 18px;font-size:11.5px;color:var(--muted);border-bottom:1px solid var(--rule)}
 .dr-bio b{font-weight:650}
 .dr-bio .fl{font-style:normal;color:var(--accent);font-size:10px;margin-right:3px}
 .dr-sec{padding:14px 18px 0;font:700 9.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
@@ -761,6 +767,9 @@ export interface BoardInput {
   player?: string;
   /** Fixture id for the match drawer. */
   fixture?: string;
+  /** The roster archive for the shown gender — every season's roster file,
+   *  for tenure lines. Order does not matter; each file carries its season. */
+  rosterHistory?: readonly RostersFile[];
   /** Today, as YYYY-MM-DD. Passed in so the composer stays deterministic. */
   today: string;
   /** Every season on disk, so the masthead can step through the archive. */
@@ -1514,6 +1523,103 @@ function compBar(
   return `<div class="bar">${inner}</div>`;
 }
 
+// ── roster tenure ───────────────────────────────────────────────────────────
+// SideArm's roster ids are per-season entry ids, not stable player ids, so
+// continuity joins on exact name within a programme — verified clean across
+// the collected archive (no name appears on two programmes in one season).
+// Tenure states facts ("first season on this roster"), never conclusions
+// ("transfer"): a debut sophomore may equally be a redshirt or late walk-on.
+
+interface Tenure {
+  /** Seasons up to and including the shown one where this name appears on
+   *  this programme's roster, ascending. Later seasons are excluded so an
+   *  archive board never counts a future the season did not know about. */
+  seasons: number[];
+  /** Earlier appearances on other programmes' rosters — the intra-conference
+   *  move worth a scouting note. Keyed by slug; the caller resolves names. */
+  elsewhere: { programme: string; seasons: number[] }[];
+  /** Whether the archive holds any earlier roster for this programme at all.
+   *  Without one, "first season" would only mean "start of our records". */
+  hasPriorRoster: boolean;
+}
+
+function tenureFor(
+  history: readonly RostersFile[],
+  programme: string,
+  name: string,
+  season: number,
+): Tenure {
+  const seasons: number[] = [];
+  const elsewhere = new Map<string, number[]>();
+  let hasPriorRoster = false;
+  for (const file of history) {
+    if (file.season > season) continue;
+    for (const [slug, roster] of Object.entries(file.rosters)) {
+      if (slug === programme) {
+        if (file.season < season && roster.players.length > 0) hasPriorRoster = true;
+        if (roster.players.some((p) => p.name === name)) seasons.push(file.season);
+      } else if (file.season < season && roster.players.some((p) => p.name === name)) {
+        elsewhere.set(slug, [...(elsewhere.get(slug) ?? []), file.season]);
+      }
+    }
+  }
+  return {
+    seasons: seasons.sort((a, b) => a - b),
+    elsewhere: [...elsewhere.entries()].map(([programme, ss]) => ({
+      programme,
+      seasons: ss.sort((a, b) => a - b),
+    })),
+    hasPriorRoster,
+  };
+}
+
+/** "2024–2026", "2022, 2024–2026" — consecutive seasons fold into a span. */
+function fmtSeasonSpans(seasons: readonly number[]): string {
+  const spans: string[] = [];
+  let start: number | undefined;
+  let prev: number | undefined;
+  for (const s of seasons) {
+    if (start === undefined || prev === undefined || s !== prev + 1) {
+      if (start !== undefined && prev !== undefined)
+        spans.push(start === prev ? String(start) : `${start}–${prev}`);
+      start = s;
+    }
+    prev = s;
+  }
+  if (start !== undefined && prev !== undefined)
+    spans.push(start === prev ? String(start) : `${start}–${prev}`);
+  return spans.join(", ");
+}
+
+function ordinal(n: number): string {
+  const suffix = n % 100 >= 11 && n % 100 <= 13 ? "th" : (["th", "st", "nd", "rd"][n % 10] ?? "th");
+  return `${n}${suffix}`;
+}
+
+/** The drawer's tenure sentence, or "" when the archive cannot support one. */
+function tenureLine(
+  tenure: Tenure,
+  classYear: string | undefined,
+  names: Map<string, string>,
+): string {
+  const parts: string[] = [];
+  if (tenure.seasons.length > 1) {
+    parts.push(
+      `${ordinal(tenure.seasons.length)} season on the roster (${fmtSeasonSpans(tenure.seasons)})`,
+    );
+  } else if (tenure.hasPriorRoster) {
+    parts.push("First season on this roster");
+    // A debut above freshman class is the arrival worth flagging; the class
+    // year is the roster's own word for where they are, so print it verbatim.
+    const cls = classInfo(classYear);
+    if (cls && cls.key !== "fr") parts.push(`arrived as ${classYear}`);
+  }
+  for (const e of tenure.elsewhere) {
+    parts.push(`previously at ${displayName(e.programme, names)} (${fmtSeasonSpans(e.seasons)})`);
+  }
+  return parts.length ? `<div class="dr-tenure">${parts.map((p) => esc(p)).join(" · ")}</div>` : "";
+}
+
 // ── player season statistics ────────────────────────────────────────────────
 // The stats file joins to the roster by SideArm's own player id — the tail of
 // the roster bio URL and the id on the stats row's anchor are the same number.
@@ -1588,9 +1694,32 @@ function statStrip(line: SeasonLine | undefined, maxMinutes: number): string {
   return `<span class="st"><span class="mb" title="${minutes} minutes played"><span style="width:${pct.toFixed(1)}%"></span></span><span class="mn">${minutes}&prime;</span>${chips.join("")}</span>`;
 }
 
-function teamRosterBlock(roster: Roster, stats?: TeamStats): string {
+function teamRosterBlock(
+  roster: Roster,
+  stats: TeamStats | undefined,
+  season: number,
+  history: readonly RostersFile[],
+): string {
   const players = roster.players;
   const idx = statsIndex(stats);
+
+  // First-season players earn a quiet chip; returning is the default state
+  // and carries no ink. Chips render only when the archive actually holds an
+  // earlier roster for this programme — with no history, every player would
+  // read as new, which is a statement about our records, not the squad.
+  const returning = new Set<string>();
+  let hasPriorRoster = false;
+  for (const file of history) {
+    if (file.season >= season) continue;
+    const prior = file.rosters[roster.programme];
+    if (!prior?.players.length) continue;
+    hasPriorRoster = true;
+    for (const p of prior.players) returning.add(p.name);
+  }
+  const newChip = (p: Player) =>
+    hasPriorRoster && !returning.has(p.name)
+      ? '<span class="new" title="First season on this roster">NEW</span>'
+      : "";
   const maxMinutes = Math.max(
     0,
     ...(stats?.players ?? []).map((s) => s.minutes ?? 0),
@@ -1638,29 +1767,43 @@ function teamRosterBlock(roster: Roster, stats?: TeamStats): string {
     { cls: "un", count: clsUnknown, title: "Class not published" },
   ];
 
+  // The continuity split at a glance: how much of the squad was here before.
+  // Rendered only when the archive holds an earlier roster — same guard as
+  // the chips, and for the same reason.
+  const retCount = players.filter((p) => returning.has(p.name)).length;
+  const tenSegs = [
+    { cls: "ret", count: retCount, title: "Returning — on an earlier roster", abbr: "RET" },
+    {
+      cls: "arr",
+      count: players.length - retCount,
+      title: "First season on this roster",
+      abbr: "NEW",
+    },
+  ];
+
   const barRow = (label: string, bar: string) =>
     `<div class="bar-row"><span class="lbl">${label}</span>${bar}</div>`;
   const bars = `<div class="bars">
     ${hasPos ? barRow("Position", compBar(posSegs, players.length)) : ""}
     ${barRow("Class", compBar(clsSegs, players.length))}
+    ${hasPriorRoster ? barRow("Tenure", compBar(tenSegs, players.length)) : ""}
   </div>`;
 
   const playerRow = (p: Player) => {
     const cls = classInfo(p.class_year);
     const inner = `
       <div class="no">${esc(p.number ?? "")}</div>
-      <div class="nm">${esc(p.name)}</div>
+      <div class="nm">${esc(p.name)}${newChip(p)}</div>
       <div class="ht">${esc(heightDisplay(p.height))}</div>
       <div class="yr">${cls ? `<i class="${cls.key}"></i>${esc(cls.abbr)}` : ""}</div>
       ${p.hometown ? `<div class="home">${hometownHtml(p.hometown)}</div>` : ""}
       ${statStrip(lineFor(idx, p), maxMinutes)}`;
-    // Rows open the player drawer only once a season's statistics exist —
-    // a clickable row that leads nowhere would be worse than a plain one.
-    return stats
-      ? `<button type="button" class="prow act" data-act="select-player" data-payload='${esc(
-          JSON.stringify({ player: playerKey(p) }),
-        )}' aria-label="Open ${esc(p.name)}&#39;s season details">${inner}</button>`
-      : `<div class="prow">${inner}</div>`;
+    // Every row opens the drawer: even before a season's statistics exist,
+    // the drawer carries the published bio and the player's roster tenure —
+    // and it says plainly that statistics are yet to come.
+    return `<button type="button" class="prow act" data-act="select-player" data-payload='${esc(
+      JSON.stringify({ player: playerKey(p) }),
+    )}' aria-label="Open ${esc(p.name)}&#39;s details">${inner}</button>`;
   };
 
   const group = (tick: string, head: string, list: readonly Player[]) =>
@@ -1689,6 +1832,8 @@ function playerDrawer(
   teamName: string,
   season: number,
   teamPlayed: number,
+  history: readonly RostersFile[],
+  names: Map<string, string>,
 ): string {
   const rosterP = roster?.players.find((p) => playerKey(p) === key || p.name === key);
   const idx = statsIndex(stats);
@@ -1713,6 +1858,17 @@ function playerDrawer(
       ? `<div class="dr-bio">${bio}${bio && rosterP?.hometown ? "<br>" : ""}${
           rosterP?.hometown ? hometownHtml(rosterP.hometown) : ""
         }</div>`
+      : "";
+
+  // Tenure needs a roster identity to join on: a stats-only player (no roster
+  // row) gets no tenure claim rather than a name-matched guess.
+  const tenureBlock =
+    rosterP && roster && history.length
+      ? tenureLine(
+          tenureFor(history, roster.programme, rosterP.name, season),
+          rosterP.class_year,
+          names,
+        )
       : "";
 
   const cell = (value: string, label: string) => `<div><b>${value}</b><span>${label}</span></div>`;
@@ -1812,8 +1968,8 @@ function playerDrawer(
         <div><h2>${esc(name)}</h2><p>${esc(teamName)} · ${season} season</p></div>
         <button type="button" class="dr-x" ${close} aria-label="Close">✕</button>
       </div>
-      ${bioBlock}${body}
-      <p class="dr-foot">From the programme&#39;s published season statistics.</p>
+      ${bioBlock}${tenureBlock}${body}
+      <p class="dr-foot">From the programme&#39;s published ${line ? "season statistics" : "roster"}.</p>
     </aside>`;
 }
 
@@ -2206,7 +2362,7 @@ export function composeBoard(input: BoardInput): string {
 
   const rosterBlock = team
     ? roster?.players.length
-      ? teamRosterBlock(roster, teamStats)
+      ? teamRosterBlock(roster, teamStats, file.season, input.rosterHistory ?? [])
       : `<div class="sec"><h2>Roster</h2></div><p class="note">No roster collected for ${esc(subject)}.</p>`
     : asMatrix && rosters
       ? rosterBalance(file, rosters)
@@ -2216,7 +2372,16 @@ export function composeBoard(input: BoardInput): string {
   const drawer = input.fixture
     ? matchDrawer(input.fixture, file, input.matches, names)
     : team && input.player
-      ? playerDrawer(input.player, roster, teamStats, subject, file.season, played)
+      ? playerDrawer(
+          input.player,
+          roster,
+          teamStats,
+          subject,
+          file.season,
+          played,
+          input.rosterHistory ?? [],
+          names,
+        )
       : "";
 
   // The matrix header is itself the calendar, so the rail would say the same

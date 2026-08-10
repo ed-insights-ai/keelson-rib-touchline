@@ -289,6 +289,29 @@ export function loadMatches(
   return loadJson(path, (raw) => matchesFileSchema.parse(raw));
 }
 
+/** Every readable roster file for a gender, oldest season first — the archive
+ *  the board's tenure lines are computed from. Tenure is enrichment: a corrupt
+ *  or missing archive season narrows a player's visible history rather than
+ *  failing the current board, so unreadable files are skipped, not raised. */
+export async function loadRosterHistory(root: string, gender: string): Promise<RostersFile[]> {
+  const home = dataHome(root);
+  let files: string[];
+  try {
+    files = await readdir(home.rostersDir);
+  } catch {
+    return [];
+  }
+  const NAME = /^(\d{4})-(men|women)\.json$/;
+  const out: RostersFile[] = [];
+  for (const f of files) {
+    const m = NAME.exec(f);
+    if (!m || m[2] !== gender) continue;
+    const loaded = await loadRosters(root, Number(m[1]), gender);
+    if (loaded.ok) out.push(loaded.value);
+  }
+  return out.sort((a, b) => a.season - b.season);
+}
+
 export interface SeasonRef {
   season: number;
   gender: string;
