@@ -363,6 +363,133 @@ describe("the board markup", () => {
       today: "2026-08-09",
     });
 
+  test("the masthead grows chevrons only when the archive holds neighbours", () => {
+    const seasons = [
+      { season: 2026, gender: "men" },
+      { season: 2025, gender: "men" },
+      { season: 2024, gender: "men" },
+    ];
+    const mid = composeBoard({
+      projectName: "p",
+      fixtures: { ...base, season: 2025 },
+      today: "2026-08-09",
+      seasons,
+    });
+    expect(mid).toContain('data-act="select-season"');
+    expect(mid).toContain("&quot;season&quot;:2024");
+    expect(mid).toContain("&quot;season&quot;:2026");
+
+    // The newest season has no forward step; the oldest no backward step.
+    const newest = composeBoard({
+      projectName: "p",
+      fixtures: base,
+      today: "2026-08-09",
+      seasons,
+    });
+    expect(newest).toContain("&quot;season&quot;:2025");
+    expect(newest).not.toContain("&quot;season&quot;:2026");
+
+    // One season on disk is a year, not a control.
+    const lone = composeBoard({ projectName: "p", fixtures: base, today: "2026-08-09" });
+    expect(lone).not.toContain('data-act="select-season"');
+  });
+
+  test("a completed past season renders as results, not as lateness", () => {
+    const html = composeBoard({
+      projectName: "p",
+      fixtures: {
+        ...base,
+        season: 2025,
+        fixtures: [
+          {
+            id: "1",
+            date: "2025-09-12",
+            home: "harding",
+            away: "rogers-state",
+            status: "final",
+            home_score: 2,
+            away_score: 1,
+            conference_game: true,
+          },
+        ],
+      },
+      team: "harding",
+      today: "2026-08-09",
+      seasons: [
+        { season: 2026, gender: "men" },
+        { season: 2025, gender: "men" },
+      ],
+    });
+    expect(html).toContain("Final");
+    expect(html).not.toContain("Pre-season");
+    expect(html).not.toContain("First kickoff in");
+  });
+
+  test("a team's rail reads as a form strip — win, loss and draw ticks", () => {
+    const html = composeBoard({
+      projectName: "p",
+      fixtures: {
+        ...base,
+        season: 2025,
+        fixtures: [
+          { id: "1", date: "2025-09-05", home: "harding", away: "rogers-state", status: "final", home_score: 2, away_score: 1 },
+          { id: "2", date: "2025-09-12", home: "rogers-state", away: "harding", status: "final", home_score: 3, away_score: 0 },
+          { id: "3", date: "2025-09-19", home: "harding", away: "rogers-state", status: "final", home_score: 1, away_score: 1 },
+        ],
+      },
+      team: "harding",
+      today: "2026-08-09",
+    });
+    expect(html).toContain('class="w" title="FRI SEP 5 · W 2–1"');
+    expect(html).toContain('class="l" title="FRI SEP 12 · L 3–0"');
+    expect(html).toContain('class="d" title="FRI SEP 19 · D 1–1"');
+
+    // The conference rail keeps its single played colour — a matchday tick
+    // aggregates several teams' games and has no one outcome.
+    const conference = composeBoard({
+      projectName: "p",
+      fixtures: {
+        ...base,
+        programmes: [...base.programmes, { slug: "newman", name: "Newman" }],
+        fixtures: [
+          { id: "1", date: "2026-08-27", home: "harding", away: "rogers-state", status: "scheduled" },
+        ],
+      },
+      today: "2026-08-09",
+    });
+    expect(conference).not.toContain('class="w"');
+  });
+
+  test("matrix team cells carry a record bar once matches are played", () => {
+    const html = composeBoard({
+      projectName: "p",
+      fixtures: {
+        ...base,
+        season: 2025,
+        fixtures: [
+          { id: "1", date: "2025-09-05", home: "harding", away: "rogers-state", status: "final", home_score: 2, away_score: 1 },
+          { id: "2", date: "2025-09-12", home: "rogers-state", away: "harding", status: "final", home_score: 3, away_score: 3 },
+        ],
+      },
+      today: "2026-08-09",
+    });
+    expect(html).toContain('title="1 won · 1 drawn · 0 lost"');
+    expect(html).toContain('title="0 won · 1 drawn · 1 lost"');
+
+    // Pre-season: nothing played, no bar — the cell stays a name.
+    const pre = composeBoard({
+      projectName: "p",
+      fixtures: {
+        ...base,
+        fixtures: [
+          { id: "1", date: "2026-08-27", home: "harding", away: "rogers-state", status: "scheduled" },
+        ],
+      },
+      today: "2026-08-09",
+    });
+    expect(pre).not.toContain('class="rec"');
+  });
+
   test("pre-season shows a countdown and no table", () => {
     const html = render({
       fixtures: [
@@ -680,21 +807,19 @@ describe("understanding the ask", () => {
     expect(prompt).not.toContain("stop at the 2025 season");
     expect(prompt).not.toContain("This first flow is 2026 only");
     expect(prompt).toContain("What each season can give you");
-    expect(prompt).toContain("the roster ONLY");
+    expect(prompt).toContain("Any earlier season back to 2016");
     expect(TOUCHLINE_V1_SEASON).toBe(2026);
   });
 
-  test("a past season plans the roster and explains the missing schedule", () => {
+  test("a past season plans both layers — the archive serves schedules too", () => {
+    // Remeasured 2026-08-09 with the DOM parser: every site serves genuine
+    // past schedules (results included) in its rendered markup; only the
+    // embedded payload is stuck on the current season. The old roster-only
+    // plan was reading the wrong layer.
     const plan = planForSeason(2019);
     expect(plan.empty).toBe(false);
-    expect(plan.attempted).toEqual(["roster"]);
-    const schedule = plan.layers.find((l) => l.layer === "schedule");
-    expect(schedule?.attempt).toBe(false);
-    // Measured against the live sites: /schedule/2019 answers 200 and its
-    // payload carries the 2026 season. The reason must say that, not "2019 is
-    // forbidden" — the difference is what makes historic rosters reachable.
-    expect(schedule?.reason).toContain("serves its 2026 fixtures at every season address");
-    expect(planSummary(plan)).toContain("Collecting roster for 2019");
+    expect(plan.attempted).toEqual(["schedule", "roster"]);
+    expect(planSummary(plan)).toContain("Collecting schedule and roster for 2019");
   });
 
   test("the current season plans both layers", () => {

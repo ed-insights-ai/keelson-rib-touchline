@@ -12,8 +12,8 @@ from src.sidearm_live import (
     identity_aliases,
     opponent_slug,
     PublishedPage,
-    assert_payload_season,
     assert_served_season,
+    assert_untrapped_schedule,
     collect_programme,
     parse_roster_page,
     parse_schedule_page,
@@ -211,35 +211,178 @@ def _school() -> SchoolConfig:
     )
 
 
-def test_payload_season_rejects_a_page_that_serves_the_current_schedule() -> None:
-    """Measured against live sites 2026-08-09.
+def _trap_html(requested: int) -> str:
+    """A past-season URL whose rendered games ARE the current season's.
 
-    ``/schedule/2019`` answers 200, keeps ``/2019`` through every redirect, and
-    titles itself for 2019 — while its embedded events carry the 2026 season.
-    The wrapper assertion cannot see that; only the payload can.
+    Measured 2026-08-09: two sites answer ``/schedule/2020`` with the current
+    schedule. Payload and DOM carry the same games under the same event ids.
     """
-    with pytest.raises(LiveCollectionError, match="published for season 2026"):
-        assert_payload_season(
-            _stale_payload_html(2019), 2019, "https://example.test/schedule/2019"
+    component = (
+        "<script>\nvar obj = "
+        + json.dumps(
+            {
+                "type": "events",
+                "data": [
+                    {
+                        "id": 7655,
+                        "date": "2026-08-27T18:00:00",
+                        "schedule": {"title": "2026 Men's Soccer Schedule"},
+                    }
+                ],
+            }
+        )
+        + ";\n</script>"
+    )
+    rows = _dom_game(game_id="7655", opponent="Southern Nazarene", date="Aug 27 (Thu)")
+    return (
+        f"<html><head><title>{requested} Men's Soccer Schedule - Example</title>"
+        f"</head><body>{component}<ul>{rows}</ul></body></html>"
+    )
+
+
+def test_a_past_url_serving_the_current_dom_schedule_is_refused() -> None:
+    """The one dangerous shape: a past URL canonicalised to the current page.
+
+    The payload alone proves nothing (it names the current season at EVERY
+    season URL, genuine archives included) — the tell is a parsed fixture
+    sharing an event id with the payload's games.
+    """
+    html = _trap_html(2020)
+    fixtures = parse_schedule_page(
+        html,
+        page_url="https://example.test/schedule/2020",
+        year=2020,
+        owner_slug="harding",
+        aliases={},
+    )
+    with pytest.raises(LiveCollectionError, match="renders the season-2026 schedule"):
+        assert_untrapped_schedule(
+            html, 2020, "https://example.test/schedule/2020", fixtures, "harding"
         )
 
 
-def test_payload_season_names_an_unpublished_schedule_separately() -> None:
-    with pytest.raises(LiveCollectionError, match="published no schedule payload"):
-        assert_payload_season(
-            "<html></html>", 2026, "https://example.test/schedule/2026"
+def test_a_genuine_archive_page_parses_dom_only_without_current_pollution() -> None:
+    """Measured 2026-08-09 across seven sites back to 2016: ``/schedule/{year}``
+    renders the genuine past season in the DOM while the embedded payload still
+    names the current one. The past season is DOM-only, and not one current-
+    season payload event may leak into it."""
+    component = (
+        "<script>\nvar obj = "
+        + json.dumps(
+            {
+                "type": "events",
+                "data": [
+                    {
+                        "id": 7655,
+                        "date": "2026-08-27T18:00:00",
+                        "schedule": {"title": "2026 Men's Soccer Schedule"},
+                        "opponent": {"title": "Southern Nazarene"},
+                        "location_indicator": "H",
+                    }
+                ],
+            }
         )
+        + ";\n</script>"
+    )
+    rows = _dom_game(
+        game_id="9001",
+        opponent="Southern Nazarene",
+        date="Sep 12 (Thu)",
+        result="W, 2-1",
+    ) + _dom_game(
+        game_id="9002",
+        opponent="Rogers State",
+        date="Oct 05 (Sat)",
+        side="away",
+        result="L, 0-3",
+    )
+    html = (
+        "<html><head><title>2019 Men's Soccer Schedule - Example</title></head>"
+        f"<body>{component}<ul>{rows}</ul></body></html>"
+    )
+    fixtures = parse_schedule_page(
+        html,
+        page_url="https://example.test/schedule/2019",
+        year=2019,
+        owner_slug="harding",
+        aliases={"southern nazarene": "southern-nazarene", "rogers state": "rogers-state"},
+    )
+    assert_untrapped_schedule(
+        html, 2019, "https://example.test/schedule/2019", fixtures, "harding"
+    )
+
+    assert [str(fixture["id"]) for fixture in fixtures] == [
+        "sidearm:harding:9001",
+        "sidearm:harding:9002",
+    ]
+    assert [str(fixture["date"]) for fixture in fixtures] == [
+        "2019-09-12",
+        "2019-10-05",
+    ]
+    assert all(fixture["status"] == "final" for fixture in fixtures)
+    assert (fixtures[0]["home_score"], fixtures[0]["away_score"]) == (2, 1)
+    # Away result re-oriented from the owner's perspective to home/away.
+    assert (fixtures[1]["home_score"], fixtures[1]["away_score"]) == (3, 0)
 
 
-def test_a_failed_schedule_does_not_discard_a_good_historical_roster() -> None:
-    """The capability that makes past-season roster analysis possible.
+def test_a_spring_completion_lands_in_the_following_calendar_year() -> None:
+    """The COVID 2020 season was finished in spring 2021; the rendered date
+    carries no year, so January–June belongs to the year after the season's."""
+    rows = _dom_game(
+        game_id="8801", opponent="Southern Nazarene", date="Feb 20 (Sat)", result="W, 1-0"
+    )
+    html = (
+        "<html><head><title>2020 Men's Soccer Schedule - Example</title></head>"
+        f"<body><ul>{rows}</ul></body></html>"
+    )
+    fixtures = parse_schedule_page(
+        html,
+        page_url="https://example.test/schedule/2020",
+        year=2020,
+        owner_slug="harding",
+        aliases={},
+    )
+    assert [str(fixture["date"]) for fixture in fixtures] == ["2021-02-20"]
 
-    For any past season the site serves the roster and refuses the schedule, so
-    a programme treated as one indivisible unit yields nothing at all.
-    """
+
+def test_an_honest_empty_season_is_empty_not_unavailable() -> None:
+    """Measured: one site's 2020 page is honestly titled and lists no games —
+    a season that was not played, not a page that could not be read."""
+    schedule_response = MagicMock()
+    schedule_response.url = "https://example.test/sports/mens-soccer/schedule/2020"
+    schedule_response.text = _stale_payload_html(2020)
+    session = MagicMock()
+    session.get.side_effect = [schedule_response]
+
+    result = collect_programme(_school(), 2020, {}, session=session, layers=("schedule",))
+
+    assert result.state("schedule") == "empty"
+    assert "listed no fixtures" in (result.outcomes["schedule"].reason or "")
+
+
+def test_a_page_with_no_schedule_shape_at_all_is_unavailable() -> None:
     schedule_response = MagicMock()
     schedule_response.url = "https://example.test/sports/mens-soccer/schedule/2019"
-    schedule_response.text = _stale_payload_html(2019)
+    schedule_response.text = (
+        "<html><head><title>2019 Men's Soccer Schedule - Example</title></head>"
+        "<body><p>Welcome to our athletics site.</p></body></html>"
+    )
+    session = MagicMock()
+    session.get.side_effect = [schedule_response]
+
+    result = collect_programme(_school(), 2019, {}, session=session, layers=("schedule",))
+
+    assert result.state("schedule") == "unavailable"
+    assert "no rendered games" in (result.outcomes["schedule"].reason or "")
+
+
+def test_a_trapped_schedule_does_not_discard_a_good_historical_roster() -> None:
+    """The capability that makes past-season analysis possible: each layer
+    stands or falls on its own, so a site that canonicalises past schedule
+    URLs to the current season can still serve its roster archive."""
+    schedule_response = MagicMock()
+    schedule_response.url = "https://example.test/sports/mens-soccer/schedule/2019"
+    schedule_response.text = _trap_html(2019)
     roster_response = MagicMock()
     roster_response.url = "https://example.test/sports/mens-soccer/roster/2019"
     roster_response.text = (
@@ -254,7 +397,9 @@ def test_a_failed_schedule_does_not_discard_a_good_historical_roster() -> None:
     result = collect_programme(_school(), 2019, {}, session=session)
 
     assert result.state("schedule") == "unavailable"
-    assert "published for season 2026" in (result.outcomes["schedule"].reason or "")
+    assert "renders the season-2026 schedule" in (
+        result.outcomes["schedule"].reason or ""
+    )
     assert result.state("roster") == "complete"
     assert [player["name"] for player in result.players] == ["Adrian Renteria"]
 

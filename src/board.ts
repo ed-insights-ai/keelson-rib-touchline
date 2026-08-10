@@ -131,6 +131,11 @@ font-family:"Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif
 font-family:"Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;font-weight:700}
 .mast .sp{margin-left:auto}
 .mast .stamp{font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums;white-space:nowrap}
+.mast .seasons{display:inline-flex;align-items:baseline;gap:5px}
+.mast .yr{appearance:none;border:0;background:transparent;padding:0 3px;cursor:pointer;
+font-size:21px;line-height:1;color:var(--faint);font-family:"Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;font-weight:700}
+.mast .yr:hover{color:var(--ink)}
+.mast .yr:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-radius:3px}
 .dek{padding:0 18px 12px;margin:0;font-size:12.5px;color:var(--muted)}
 .dek b{color:var(--ink-2);font-weight:600}
 
@@ -157,6 +162,9 @@ padding-bottom:5px;border-bottom:1px solid var(--rule-firm)}
 .rail-months span{font:700 9px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
 letter-spacing:.1em;text-transform:uppercase;color:var(--faint);white-space:nowrap}
 .wk i.played{background:var(--played);border-color:var(--played)}
+.wk i.w{background:var(--played);border-color:var(--played)}
+.wk i.l{background:var(--late);border-color:var(--late)}
+.wk i.d{background:var(--draw);border-color:var(--draw)}
 .wk i.live{background:var(--live);border-color:var(--live)}
 .wk i.late{background:var(--late-soft);border-color:var(--late)}
 .wk i.off{background:repeating-linear-gradient(45deg,var(--rule),var(--rule) 2px,transparent 2px,transparent 4px)}
@@ -260,6 +268,12 @@ display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:5px 1
 border:1px solid var(--rule-firm);border-radius:5px;background:var(--sunk);color:var(--ink-2);
 font:700 9.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;letter-spacing:.05em}
 .mx .tm .nm{font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mx .tm .who{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.mx .tm .rec{display:flex;height:3px;border-radius:2px;overflow:hidden;max-width:120px}
+.mx .tm .rec i{display:block}
+.mx .tm .rec .w{background:var(--played)}
+.mx .tm .rec .d{background:var(--draw)}
+.mx .tm .rec .l{background:var(--late)}
 .mx tr.foc .tm{box-shadow:inset 3px 0 0 var(--accent)}
 .mx tr.foc .tm .cd{border-color:var(--accent);color:var(--accent)}
 .mx td.c{width:48px;min-width:48px;height:46px;border-left:1px solid var(--rule);padding:4px 3px}
@@ -532,6 +546,8 @@ export interface BoardInput {
   team?: string;
   /** Today, as YYYY-MM-DD. Passed in so the composer stays deterministic. */
   today: string;
+  /** Every season on disk, so the masthead can step through the archive. */
+  seasons?: ReadonlyArray<{ season: number; gender: string }>;
 }
 
 const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
@@ -589,7 +605,18 @@ function displayName(slug: string, names: Map<string, string>): string {
  * the results have filled from the left. It doubles as a collection check — a
  * hollow tick BEHIND today is a match that has been played and never collected.
  */
-function rail(fixtures: readonly Fixture[], today: string): string {
+/** A fixture's outcome from one team's perspective, once it is played. */
+function outcomeFor(f: Fixture, team: string): "w" | "l" | "d" | undefined {
+  if (!isPlayed(f) || typeof f.home_score !== "number" || typeof f.away_score !== "number")
+    return undefined;
+  if (f.home !== team && f.away !== team) return undefined;
+  if (f.home_score === f.away_score) return "d";
+  return (f.home === team) === f.home_score > f.away_score ? "w" : "l";
+}
+
+const OUTCOME_WORD = { w: "W", l: "L", d: "D" } as const;
+
+function rail(fixtures: readonly Fixture[], today: string, team?: string): string {
   if (!fixtures.length) return "";
   const dates = fixtures.map((f) => f.date).sort();
   const first = dates[0] as string;
@@ -629,17 +656,23 @@ function rail(fixtures: readonly Fixture[], today: string): string {
     .map((week, i) => {
       const bars = week
         .map((f) => {
+          // With a team in view the played tick carries the outcome — the rail
+          // reads as a form strip: green won, red lost, amber drawn.
+          const outcome = team ? outcomeFor(f, team) : undefined;
           const cls =
             f.status === "postponed" || f.status === "cancelled"
               ? "off"
               : f.status === "live"
                 ? "live"
                 : isPlayed(f)
-                  ? "played"
+                  ? (outcome ?? "played")
                   : f.date < today
                     ? "late"
                     : "";
-          return `<i class="${cls}" title="${esc(fmtDate(f.date))}"></i>`;
+          const title = outcome
+            ? `${fmtDate(f.date)} · ${OUTCOME_WORD[outcome]} ${f.home_score}–${f.away_score}`
+            : fmtDate(f.date);
+          return `<i class="${cls}" title="${esc(title)}"></i>`;
         })
         .join("");
       const cls = [week.length ? "" : "bye", i === nowWeek ? "now" : ""].filter(Boolean).join(" ");
@@ -882,10 +915,36 @@ function matrix(
             aria-pressed="${f.id === pick?.id}" aria-label="${esc(label)}">${esc(codeFor(opp))}${sc}</button></td>`;
         })
         .join("");
-      const sum = `${p.name} · ${homeN} home · ${awayN} away · ${confN} conference`;
+      // Once matches are played the team cell carries a thin record bar —
+      // won, drawn, lost by share — so the left column reads as a table of
+      // form without adding a standings table the matrix already implies.
+      let wonN = 0;
+      let drawnN = 0;
+      let lostN = 0;
+      for (const f of fixtures) {
+        const o = outcomeFor(f, p.slug);
+        if (o === "w") wonN += 1;
+        else if (o === "d") drawnN += 1;
+        else if (o === "l") lostN += 1;
+      }
+      const recTitle = `${wonN} won · ${drawnN} drawn · ${lostN} lost`;
+      const rec =
+        wonN + drawnN + lostN > 0
+          ? `<span class="rec" title="${recTitle}" role="img" aria-label="${esc(`${p.name}: ${recTitle}`)}">${(
+              [
+                ["w", wonN],
+                ["d", drawnN],
+                ["l", lostN],
+              ] as const
+            )
+              .filter(([, n]) => n > 0)
+              .map(([k, n]) => `<i class="${k}" style="flex:${n}"></i>`)
+              .join("")}</span>`
+          : "";
+      const sum = `${p.name} · ${wonN + drawnN + lostN ? `${wonN}W ${drawnN}D ${lostN}L · ` : ""}${homeN} home · ${awayN} away · ${confN} conference`;
       return `<tr data-team="${esc(p.slug)}" data-sum="${esc(sum)}">
         <th class="tm" scope="row"><button type="button" data-follow="${esc(p.slug)}" aria-label="Follow ${esc(p.name)}">
-          <span class="cd">${esc(codeFor(p.slug))}</span><span class="nm">${esc(p.name)}</span></button></th>
+          <span class="cd">${esc(codeFor(p.slug))}</span><span class="who"><span class="nm">${esc(p.name)}</span>${rec}</span></button></th>
         ${cells}</tr>`;
     })
     .join("");
@@ -1356,10 +1415,29 @@ export function composeBoard(input: BoardInput): string {
         .join("")}
     </div>`;
 
+  // The masthead year steps through whatever the archive holds for this
+  // gender: one collected season renders as plain text, more grow chevrons.
+  const years = [...new Set(
+    (input.seasons ?? [])
+      .filter((s) => s.gender === file.gender)
+      .map((s) => s.season),
+  )].sort((a, b) => a - b);
+  const at = years.indexOf(file.season);
+  const step = (target: number | undefined, glyph: string): string =>
+    target === undefined
+      ? ""
+      : `<button class="yr" data-act="select-season" data-payload='${esc(
+          JSON.stringify({ season: target, gender: file.gender }),
+        )}' aria-label="View the ${target} season">${glyph}</button>`;
+  const seasonCtl =
+    years.length > 1 && at >= 0
+      ? `<span class="seasons">${step(years[at - 1], "‹")}<span class="season num">${file.season}</span>${step(years[at + 1], "›")}</span>`
+      : `<span class="season num">${file.season}</span>`;
+
   const head = `
     <div class="mast">
       <h1>${esc(subject)}</h1>
-      <span class="season num">${file.season}</span>
+      ${seasonCtl}
       <span class="sp"></span>
       <span class="stamp">${played === 0 ? "pre-season · " : ""}collected ${esc(
         file.collected_at.slice(0, 16).replace("T", " "),
@@ -1405,7 +1483,7 @@ export function composeBoard(input: BoardInput): string {
       ? `<div class="sec"><h2>Schedule</h2><span class="count">${shown.length} listed</span></div>
        <div class="led">${shown.map((f) => ledgerRow(f, names, slugs, team)).join("")}</div>`
       : `<div class="sec"><h2>Schedule</h2></div>
-       <p class="note">No ${file.season} schedule collected${team ? ` for ${esc(subject)}` : ""}. The live site serves only the current season's matches, so an earlier season carries its roster alone.</p>`;
+       <p class="note">No ${file.season} schedule collected${team ? ` for ${esc(subject)}` : ""}. Ask in the Touchline chat to collect it — the sites publish schedule archives with results back to 2016.</p>`;
 
   const rosterBlock = team
     ? roster?.players.length
@@ -1419,5 +1497,5 @@ export function composeBoard(input: BoardInput): string {
   // thing twice; the rail stays where the ledger's dates run vertically.
   // A team page leads with its people: roster first, then the schedule.
   const body = team ? `${rosterBlock}${ledger}` : `${ledger}${rosterBlock}`;
-  return page(`${head}${asMatrix ? "" : rail(shown, today)}${tally}${notices}${body}`);
+  return page(`${head}${asMatrix ? "" : rail(shown, today, team)}${tally}${notices}${body}`);
 }

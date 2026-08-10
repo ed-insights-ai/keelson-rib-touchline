@@ -9,6 +9,17 @@ games on one theme) while the DOM always carries every game.  Both sources
 share one event-id space, so this module reads the JSON first (it is richer:
 ISO timestamps, typed results, an explicit conference flag) and fills the
 rest from the DOM, without turning an unplayed match into a result.
+
+The two sources also disagree about PAST seasons, in opposite directions.
+The embedded payload names the current season no matter which season URL
+served it, so it can never prove — or supply — a past season.  The DOM is
+the reverse: measured 2026-08-09 across seven sites and seasons back to
+2016, ``/schedule/{year}`` renders the genuine requested season (honest
+title, game-id sets fully disjoint from the current season's, complete
+results).  A past season is therefore collected DOM-only: the season filter
+in ``parse_schedule_page`` drops the current-season payload events, and
+``assert_untrapped_schedule`` refuses the one dangerous shape — a page whose
+rendered games ARE the payload's current-season events under a past URL.
 """
 
 from __future__ import annotations
@@ -196,26 +207,58 @@ def payload_seasons(html: str) -> set[int]:
     return years
 
 
-def assert_payload_season(html: str, year: int, page_url: str) -> None:
-    """Refuse a schedule whose own payload belongs to a different season.
+def _payload_event_ids(html: str, owner_slug: str) -> set[str]:
+    """Fixture ids of every embedded event, whatever season the payload claims."""
+    ids: set[str] = set()
+    for component in _component_objects(html):
+        if component.get("type") != "events":
+            continue
+        data = component.get("data")
+        if not isinstance(data, list):
+            continue
+        for raw in data:
+            if isinstance(raw, dict) and raw.get("id"):
+                ids.add(f"sidearm:{owner_slug}:{raw['id']}")
+    return ids
 
-    Raises with two distinguishable reasons, because the coverage manifest has to
-    tell them apart: a site that serves its current schedule at every season URL
-    is a permanent capability gap, while a season page that carries no fixtures
-    yet is a temporary one that will fill in on its own.
+
+def _has_schedule_markup(html: str) -> bool:
+    """Whether the page carries any SideArm schedule shape at all."""
+    if any(
+        component.get("type") == "events" for component in _component_objects(html)
+    ):
+        return True
+    return BeautifulSoup(html, "lxml").select_one("li.sidearm-schedule-game") is not None
+
+
+def assert_untrapped_schedule(
+    html: str,
+    year: int,
+    page_url: str,
+    fixtures: list[dict[str, object]],
+    owner_slug: str,
+) -> None:
+    """Refuse a season page whose rendered games are the current season's.
+
+    The embedded payload names the current season at every season URL, so a
+    payload naming another year proves nothing by itself — the DOM alongside it
+    is genuinely the requested season on every site measured (2026-08-09, id
+    sets fully disjoint).  The one dangerous shape is a server that canonicalises
+    a past URL to the current schedule under an honest-looking wrapper: there the
+    rendered games and the payload's events are the same games, so any parsed
+    fixture sharing an id with the payload betrays it.
     """
     served = payload_seasons(html)
-    if not served:
+    if year in served:
+        return
+    overlap = _payload_event_ids(html, owner_slug) & {
+        str(fixture["id"]) for fixture in fixtures
+    }
+    if overlap:
+        listed = ", ".join(str(value) for value in sorted(served)) or "another season"
         raise LiveCollectionError(
-            f"[{year}] {page_url} published no schedule payload — "
-            f"either the season is not released yet or the page is not SideArm"
-        )
-    if year not in served:
-        listed = ", ".join(str(value) for value in sorted(served))
-        raise LiveCollectionError(
-            f"[{year}] {page_url} is published for season {listed} — "
-            f"this site serves its current schedule at every season URL, "
-            f"so {year} fixtures cannot be collected from it"
+            f"[{year}] {page_url} renders the season-{listed} schedule at this "
+            f"season URL, so {year} fixtures cannot be collected from it"
         )
 
 
@@ -339,13 +382,20 @@ _DOM_MONTHS = {
 
 
 def _dom_date(text: str, year: int) -> str | None:
-    """Resolve a rendered date like ``Aug 13 (Thu)`` against the season year."""
+    """Resolve a rendered date like ``Aug 13 (Thu)`` against the season year.
+
+    The rendered date carries no year, and a fall season can finish in the
+    following spring — the COVID 2020 season was played into spring 2021 —
+    so January–June belongs to the calendar year after the season's.
+    """
     match = re.search(r"([A-Za-z]{3})[a-z.]*\s+(\d{1,2})", text)
     if not match:
         return None
     month = _DOM_MONTHS.get(match.group(1).lower())
     if month is None:
         return None
+    if month < 7:
+        year += 1
     return f"{year:04d}-{month:02d}-{int(match.group(2)):02d}"
 
 
@@ -682,10 +732,11 @@ def collect_programme(
 ) -> ProgrammeCollection:
     """Collect the requested layers, each standing or falling on its own.
 
-    Layer independence is the point.  For any past season the roster is served
-    and the schedule is not, so a collector that fails the whole programme when
-    the schedule fails can never retrieve a historical roster — which is the
-    substrate the roster analysis work needs.
+    Layer independence is the point.  Each layer is served or refused per
+    (site, season) — a site can hold a full schedule archive and no roster for
+    a year, or refuse one COVID season while serving every neighbour — so a
+    collector that fails the whole programme when one layer fails discards the
+    layers that worked.
     """
     slug = programme_slug(school.name)
     wanted = tuple(layers)
@@ -717,7 +768,6 @@ def collect_programme(
         schedule_url = f"{base_url}/schedule/{year}"
         try:
             page = fetch_published_page(client, base_url, year, "schedule")
-            assert_payload_season(page.html, year, page.final_url)
             schedule_html = page.html
             schedule_url = page.final_url
             fixtures = parse_schedule_page(
@@ -727,6 +777,15 @@ def collect_programme(
                 owner_slug=slug,
                 aliases=aliases,
             )
+            assert_untrapped_schedule(
+                page.html, year, page.final_url, fixtures, slug
+            )
+            if not fixtures and not _has_schedule_markup(page.html):
+                raise LiveCollectionError(
+                    f"[{year}] {page.final_url} published no schedule payload "
+                    f"and no rendered games — either the season is not "
+                    f"released yet or the page is not SideArm"
+                )
             outcomes[LAYER_SCHEDULE] = LayerOutcome(
                 LAYER_SCHEDULE,
                 STATE_COMPLETE if fixtures else STATE_EMPTY,

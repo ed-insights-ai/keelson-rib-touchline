@@ -11,21 +11,27 @@
 // collector can serve — so this module plans a collection rather than forbidding
 // one, and the collector remains the authority on what actually lands.
 //
-// Measured against the live sites on 2026-08-09, across Harding and Southern
-// Nazarene:
+// Measured against the live sites on 2026-08-09, twice:
 //
 //   ROSTER    served for every season tried. Harding returned 30 players for
 //             2026, 29 for 2022 and 26 for 2019, with zero name overlap between
 //             2026 and 2019 and four between 2022 and 2019 — exactly what a
 //             four-year career window predicts. Past rosters are real data.
 //
-//   SCHEDULE  served only for the CURRENT season. `/schedule/2019` answers 200
-//             and keeps its year through every redirect, but the embedded event
-//             payload carries `title: "2026 Men's Soccer Schedule"`. The page
-//             wrapper is honest and the payload is this year's fixtures.
+//   SCHEDULE  served for every season tried, back to 2016 across seven sites —
+//             but only in the server-rendered DOM. The embedded event payload
+//             names the CURRENT season at every season URL, so the first
+//             measurement (which read only the payload) concluded past
+//             schedules were unreachable. The remeasure with the DOM parser
+//             found honest titles, game-id sets fully disjoint from the
+//             current season's, and complete W/L results. The collector reads
+//             a past season DOM-only and refuses the one dangerous shape — a
+//             site that canonicalises a past URL to its current schedule
+//             (measured: two sites do this for the COVID 2020 season).
 //
-// The old shape refused the whole ask on the season. That made past rosters —
-// the substrate for roster analysis — unreachable, even though they work.
+// So both layers are attempted for any plausible season, and per-(site,
+// season) refusals surface as named gaps in the coverage manifest rather than
+// as a plan-time wall.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const TOUCHLINE_LAYERS = ["schedule", "roster"] as const;
@@ -85,16 +91,7 @@ export function planForSeason(season: number): CollectionPlan {
       reason: `${season} predates the published roster pages Touchline can read.`,
     });
   } else {
-    const current = season === TOUCHLINE_CURRENT_SEASON;
-    layers.push(
-      current
-        ? { layer: "schedule", attempt: true }
-        : {
-            layer: "schedule",
-            attempt: false,
-            reason: `Each programme serves its ${TOUCHLINE_CURRENT_SEASON} fixtures at every season address, so a ${season} schedule cannot be read from the live site. The ${season} roster can.`,
-          },
-    );
+    layers.push({ layer: "schedule", attempt: true });
     layers.push({ layer: "roster", attempt: true });
   }
 

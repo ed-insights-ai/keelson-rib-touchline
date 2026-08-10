@@ -1,10 +1,10 @@
 """Collect published schedule and roster pages into the Touchline board contract.
 
-Layers are collected independently.  For the current season a site serves both
-its schedule and its roster; for a past season it serves only the roster, and
-answers every schedule URL with the current season's fixtures.  A collector that
-treated a programme as one indivisible unit could therefore never retrieve a
-historical roster, which is the substrate roster analysis needs.
+Layers are collected independently.  A site can serve a past season's schedule
+from its DOM archive while its embedded payload still names the current season,
+serve a roster for a year whose schedule it refuses, or the reverse — each
+layer is proven and lands (or is refused with a named reason) on its own, so
+one layer's failure never discards another's data.
 
 Every run writes `data/coverage.json`, and the exit code reports only whether
 that manifest was written.  Named gaps are data, not failures: a run that
@@ -309,10 +309,7 @@ def main() -> int:
     parser.add_argument(
         "--layers",
         default=",".join(DEFAULT_LAYERS),
-        help=(
-            "Comma-separated layers to collect: schedule, roster. Past seasons "
-            "serve rosters but not schedules, so a historical ask is roster-only."
-        ),
+        help="Comma-separated layers to collect: schedule, roster.",
     )
     args = parser.parse_args()
 

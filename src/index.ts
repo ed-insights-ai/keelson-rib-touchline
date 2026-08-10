@@ -68,6 +68,7 @@ function refresh(): void {
 
 const selectProjectPayload = z.object({ scopeId: z.string().min(1).optional() });
 const lensPayload = z.object({ team: z.string().min(1).nullable().optional() });
+const seasonPayload = z.object({ season: z.number().int(), gender: z.string().min(1) });
 
 /** Today as YYYY-MM-DD, UTC. Passed into the composer so its output is a pure
  *  function of (data, date) and a test can pin the day. */
@@ -129,12 +130,18 @@ async function composeTouchlineBoard(): Promise<string> {
   }
   const rs = await loadRosters(root, want.season, want.gender);
 
+  // A team lens carried across seasons only holds if the team is actually in
+  // the season being shown — a 2016 board has three programmes, not seven.
+  const team =
+    sel.team && fx.value.programmes.some((p) => p.slug === sel.team) ? sel.team : undefined;
+
   return composeBoard({
     projectName: project.name,
     fixtures: fx.value,
     rosters: rs.ok ? rs.value : undefined,
-    team: sel.team,
+    team,
     today: todayIso(),
+    seasons: seasons.map((s) => ({ season: s.season, gender: s.gender })),
   });
 }
 
@@ -173,7 +180,7 @@ const rib: Rib = {
       title: "Touchline",
       heading: "Touchline",
       subtitle:
-        "Published 2026 college-soccer schedules and rosters, collected into your own data folder.",
+        "Published college-soccer schedules, rosters and results — current season and archive — collected into your own data folder.",
       projectScoped: true,
       layout: {
         // One panel: the board. Collection is a conversation — the panel's ✦
@@ -196,7 +203,7 @@ const rib: Rib = {
       slug: TOUCHLINE_AGENT_SLUG,
       name: "Touchline",
       description:
-        "Name a conference or programme and Touchline collects its 2026 schedule and roster into your project.",
+        "Name a conference or programme and Touchline collects its schedule and roster — any season back to 2016 — into your project.",
     },
   ],
 
@@ -242,10 +249,10 @@ const rib: Rib = {
         "",
         "## The data files",
         "",
-        "- `data/fixtures/2026-<gender>.json` — the published schedule, one entry per fixture,",
+        "- `data/fixtures/<season>-<gender>.json` — the published schedule, one entry per fixture,",
         "  with status `scheduled`, `live`, `final`, `postponed`, or `cancelled`.",
         "  Scores are null until played — never 0, which is a real scoreline.",
-        "- `data/rosters/2026-<gender>.json` — the published roster per programme.",
+        "- `data/rosters/<season>-<gender>.json` — the published roster per programme.",
         "",
         "Both name what could NOT be collected in a `missing` array. A gap is always",
         "reported, never silently dropped.",
@@ -320,6 +327,24 @@ const rib: Rib = {
           };
         }
       }
+      refresh();
+      return { ok: true as const };
+    }
+
+    // Read-only: the masthead chevrons step through seasons already on disk.
+    // The team lens survives the step when the target season has that team;
+    // composeTouchlineBoard drops it when it does not.
+    if (action.type === "select-season") {
+      const parsed = seasonPayload.safeParse(action.payload ?? {});
+      if (!parsed.success) {
+        return {
+          ok: false as const,
+          error: "select-season payload must be { season: number, gender: string }",
+        };
+      }
+      const keptTeam = getSelection().team;
+      setSeason(parsed.data.season, parsed.data.gender);
+      if (keptTeam) setTeam(keptTeam);
       refresh();
       return { ok: true as const };
     }
