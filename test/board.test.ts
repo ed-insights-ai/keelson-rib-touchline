@@ -510,6 +510,38 @@ describe("the board markup", () => {
       expect(html).not.toContain("Forwards");
     });
 
+    test("abbreviated positions group the same as full words", () => {
+      // Two live themes publish bare abbreviations: GK/D/MF/F and GK/DEF/MID/FWD.
+      const abbreviated: RostersFile = {
+        ...rosters,
+        rosters: {
+          harding: {
+            programme: "harding",
+            players: [
+              { name: "A Fwd", position: "F" },
+              { name: "B Fwd", position: "FWD" },
+              { name: "C Mid", position: "MF" },
+              { name: "D Mid", position: "MID" },
+              { name: "E Def", position: "D" },
+              { name: "F Def", position: "DEF" },
+              { name: "G Keeper", position: "GK" },
+            ],
+          },
+        },
+      };
+      const html = composeBoard({
+        projectName: "p",
+        fixtures: base,
+        rosters: abbreviated,
+        team: "harding",
+        today: "2026-08-09",
+      });
+      for (const head of ["Forwards", "Midfielders", "Defenders", "Goalkeepers"]) {
+        expect(html).toContain(head);
+      }
+      expect(html).not.toContain("Position not listed");
+    });
+
     test("the conference lens compares rosters and names every absence", () => {
       const html = compose();
       expect(html).toContain("Roster balance");

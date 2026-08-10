@@ -375,3 +375,234 @@ def test_a_programme_with_no_live_recipe_reports_every_layer_unavailable() -> No
     assert result.state("schedule") == "unavailable"
     assert result.state("roster") == "unavailable"
     assert "no live schedule/roster recipe" in (result.outcomes["roster"].reason or "")
+
+
+def _dom_game(
+    *,
+    game_id: str,
+    opponent: str,
+    date: str,
+    side: str = "home",
+    time: str = "",
+    conference: str = "",
+    result: str = "",
+    facility: str = "",
+) -> str:
+    side_class = f"sidearm-schedule-{side}-game"
+    indicator = "at" if side == "away" else "vs"
+    time_html = (
+        f'<div class="sidearm-schedule-game-time"><span>{time}</span></div>'
+        if time
+        else ""
+    )
+    result_html = (
+        f'<div class="sidearm-schedule-game-result">{result}</div>' if result else ""
+    )
+    facility_html = (
+        f'<div class="sidearm-schedule-game-location"><span>Somewhere, OK</span>'
+        f'<span><a href="/facilities/?id=1">{facility}</a></span></div>'
+        if facility
+        else ""
+    )
+    return f"""
+    <li class="sidearm-schedule-game {side_class} upcoming-game" data-game-id="{game_id}">
+      <span class="sidearm-schedule-game-opponent-date"><span>{date}</span></span>
+      {time_html}
+      <div class="sidearm-schedule-game-opponent-text">
+        <span class="sidearm-schedule-game-{"away" if side == "away" else "home"}">{indicator}</span>
+        <span class="sidearm-schedule-game-opponent-name"><a>{opponent}</a></span>
+      </div>
+      <div class="sidearm-schedule-game-conference">{conference}</div>
+      {facility_html}
+      {result_html}
+    </li>
+    """
+
+
+def _dom_page(rows: str, *, component: str = "") -> str:
+    return (
+        "<html><head><title>2026 Men's Soccer Schedule - Example</title></head>"
+        f"<body>{component}<ul>{rows}</ul></body></html>"
+    )
+
+
+def test_dom_games_fill_in_what_the_json_stub_omits() -> None:
+    """The measured defect: one theme embedded 1 of 27 games as JSON.
+
+    The stub game must keep its richer JSON detail; the DOM game arrives under
+    the same id space so a later full payload cannot double it.
+    """
+    event = {
+        "id": 7655,
+        "date": "2026-08-13T19:00:00",
+        "tbd": False,
+        "location_indicator": "H",
+        "is_conference": False,
+        "type": "upcoming",
+        "schedule": {"title": "2026 Men's Soccer Schedule"},
+        "opponent": {"title": "Oklahoma Wesleyan (Exhibition)"},
+        "result": {"team_score": None, "opponent_score": None, "status": None},
+    }
+    component = (
+        "<script>\nvar obj = "
+        + json.dumps({"type": "events", "data": [event]})
+        + ";\n</script>"
+    )
+    rows = _dom_game(
+        game_id="7655", opponent="Oklahoma Wesleyan (Exhibition)", date="Aug 13 (Thu)"
+    ) + _dom_game(
+        game_id="7660",
+        opponent="Harding (Ark.)",
+        date="Oct 1 (Thu)",
+        time="7:00 p.m.",
+        facility="Soldier Field",
+    )
+    fixtures = parse_schedule_page(
+        _dom_page(rows, component=component),
+        page_url="https://example.test/schedule/2026",
+        year=2026,
+        owner_slug="rogers-state",
+        aliases=identity_aliases(_gac(), "men"),
+    )
+    assert [fixture["id"] for fixture in fixtures] == [
+        "sidearm:rogers-state:7655",
+        "sidearm:rogers-state:7660",
+    ]
+    stub, dom = fixtures
+    assert stub["time"] == "19:00"  # JSON detail retained, not overwritten
+    assert dom["home"] == "rogers-state"
+    assert dom["away"] == "harding"
+    assert dom["time"] == "19:00"
+    assert dom["venue"] == "Soldier Field"
+    assert dom["status"] == "scheduled"
+
+
+def test_marker_less_theme_derives_conference_and_says_so() -> None:
+    """A theme with no conference column anywhere cannot publish the flag.
+
+    Membership derivation fills it — and stamps the source, so a derived value
+    can never masquerade as the publisher's claim.  An exhibition against a
+    member is still not a conference game.
+    """
+    rows = (
+        _dom_game(game_id="1", opponent="Harding (Ark.)", date="Oct 1 (Thu)")
+        + _dom_game(game_id="2", opponent="Maryville (Mo.)", date="Sep 6 (Sun)")
+        + _dom_game(game_id="3", opponent="Newman (Exhibition)", date="Aug 15 (Sat)")
+    )
+    fixtures = parse_schedule_page(
+        _dom_page(rows),
+        page_url="https://example.test/schedule/2026",
+        year=2026,
+        owner_slug="rogers-state",
+        aliases=identity_aliases(_gac(), "men"),
+    )
+    by_id = {str(fixture["id"]).rsplit(":", 1)[-1]: fixture for fixture in fixtures}
+    assert by_id["1"]["conference_game"] is True
+    assert by_id["2"]["conference_game"] is False
+    assert by_id["3"]["conference_game"] is False
+    assert all(
+        fixture["conference_game_source"] == "derived:membership"
+        for fixture in fixtures
+    )
+
+
+def test_marked_theme_publishes_the_conference_flag() -> None:
+    rows = _dom_game(
+        game_id="1", opponent="Harding", date="Oct 1 (Thu)", conference="GAC"
+    ) + _dom_game(game_id="2", opponent="Maryville (Mo.)", date="Sep 6 (Sun)")
+    fixtures = parse_schedule_page(
+        _dom_page(rows),
+        page_url="https://example.test/schedule/2026",
+        year=2026,
+        owner_slug="rogers-state",
+        aliases=identity_aliases(_gac(), "men"),
+    )
+    assert [fixture["conference_game"] for fixture in fixtures] == [False, True]
+    assert all("conference_game_source" not in fixture for fixture in fixtures)
+
+
+def test_a_hosted_tournament_row_belongs_to_the_named_teams() -> None:
+    """A host lists other teams' games on its own page; the host is not in them."""
+    rows = _dom_game(
+        game_id="9",
+        opponent="Southern Nazarene vs. Maryville",
+        date="Aug 27 (Thu)",
+    )
+    fixtures = parse_schedule_page(
+        _dom_page(rows),
+        page_url="https://example.test/schedule/2026",
+        year=2026,
+        owner_slug="rogers-state",
+        aliases=identity_aliases(_gac(), "men"),
+    )
+    assert len(fixtures) == 1
+    assert fixtures[0]["home"] == "southern-nazarene"
+    assert fixtures[0]["away"] == "maryville"
+    assert fixtures[0]["conference_game"] is False
+
+
+def test_postseason_placeholder_rows_are_not_fixtures() -> None:
+    rows = (
+        _dom_game(game_id="20", opponent="TBA", date="Nov 6 (Fri)")
+        + _dom_game(
+            game_id="21",
+            opponent="NCAA Tournament First and Second Rounds",
+            date="Nov 13 (Fri)",
+        )
+        + _dom_game(
+            game_id="22",
+            opponent="GAC/MIAA Championship Tournament",
+            date="Nov 8 (Sun)",
+        )
+    )
+    fixtures = parse_schedule_page(
+        _dom_page(rows),
+        page_url="https://example.test/schedule/2026",
+        year=2026,
+        owner_slug="rogers-state",
+        aliases=identity_aliases(_gac(), "men"),
+    )
+    assert fixtures == []
+
+
+def test_dom_result_is_oriented_from_the_owner_perspective() -> None:
+    rows = _dom_game(
+        game_id="30",
+        opponent="Harding",
+        date="Oct 29 (Thu)",
+        side="away",
+        result="L, 0-1",
+    )
+    fixture = parse_schedule_page(
+        _dom_page(rows),
+        page_url="https://example.test/schedule/2026",
+        year=2026,
+        owner_slug="rogers-state",
+        aliases=identity_aliases(_gac(), "men"),
+    )[0]
+    assert fixture["status"] == "final"
+    assert fixture["home"] == "harding"
+    assert fixture["home_score"] == 1
+    assert fixture["away"] == "rogers-state"
+    assert fixture["away_score"] == 0
+
+
+def test_roster_position_blob_is_peeled_into_fields() -> None:
+    """Themes without the long-short span pack pos/height/weight into one text."""
+    row = """
+    <li class="sidearm-roster-player" data-player-id="7">
+      <div class="sidearm-roster-player-position">D 5'11" 165 lbs</div>
+      <div class="sidearm-roster-player-name"><a>Casey Blob</a></div>
+    </li>
+    """
+    players = parse_roster_page(
+        f"<ul>{row}</ul>", page_url="https://example.test/roster/2026"
+    )
+    assert players == [
+        {
+            "name": "Casey Blob",
+            "position": "D",
+            "height": "5'11\"",
+            "weight": "165 lbs",
+        }
+    ]

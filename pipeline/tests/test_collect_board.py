@@ -10,7 +10,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from scripts.collect_board import widen_to_existing_scope
+from scripts.collect_board import _dedupe_fixtures, widen_to_existing_scope
 
 
 def _write(path: Path, payload: dict) -> Path:
@@ -72,3 +72,69 @@ def test_a_malformed_file_is_ignored_rather_than_fatal(tmp_path: Path) -> None:
     wanted, added = widen_to_existing_scope(["harding"], bad, tmp_path / "ro.json")
     assert wanted == ["harding"]
     assert added == []
+
+
+def _fx(**over: object) -> dict[str, object]:
+    fixture: dict[str, object] = {
+        "id": "sidearm:harding:1",
+        "date": "2026-10-08",
+        "home": "harding",
+        "away": "rogers-state",
+        "status": "scheduled",
+        "conference_game": False,
+        "source_url": "https://example.test",
+    }
+    fixture.update(over)
+    return fixture
+
+
+def test_dedupe_a_published_claim_beats_a_derived_one() -> None:
+    published_false = _fx(id="sidearm:harding:1", conference_game=False)
+    derived_true = _fx(
+        id="sidearm:rogers-state:9",
+        conference_game=True,
+        conference_game_source="derived:membership",
+    )
+    merged, duplicates = _dedupe_fixtures([derived_true, published_false])
+    assert duplicates == 1
+    assert len(merged) == 1
+    assert merged[0]["conference_game"] is False
+    assert "conference_game_source" not in merged[0]
+
+
+def test_dedupe_two_published_claims_or_together() -> None:
+    unmarked = _fx(id="sidearm:harding:1", conference_game=False)
+    marked = _fx(id="sidearm:rogers-state:9", conference_game=True)
+    merged, _ = _dedupe_fixtures([unmarked, marked])
+    assert merged[0]["conference_game"] is True
+
+
+def test_dedupe_keeps_detail_the_other_side_published() -> None:
+    bare = _fx(id="sidearm:harding:1", status="final", home_score=2, away_score=1)
+    detailed = _fx(
+        id="sidearm:rogers-state:9", time="19:00", venue="Soldier Field"
+    )
+    merged, _ = _dedupe_fixtures([bare, detailed])
+    assert len(merged) == 1
+    # The final wins the row; the loser's kickoff and venue survive the merge.
+    assert merged[0]["status"] == "final"
+    assert merged[0]["time"] == "19:00"
+    assert merged[0]["venue"] == "Soldier Field"
+
+
+def test_dedupe_two_derived_claims_or_together() -> None:
+    one = _fx(
+        id="sidearm:rogers-state:9",
+        conference_game=True,
+        conference_game_source="derived:membership",
+    )
+    other = _fx(
+        id="sidearm:ouachita-baptist:4",
+        home="rogers-state",
+        away="harding",
+        conference_game=False,
+        conference_game_source="derived:membership",
+    )
+    merged, _ = _dedupe_fixtures([other, one])
+    assert merged[0]["conference_game"] is True
+    assert merged[0]["conference_game_source"] == "derived:membership"

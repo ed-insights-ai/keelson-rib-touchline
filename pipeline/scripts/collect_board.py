@@ -48,6 +48,33 @@ def _atomic_json(path: Path, payload: dict[str, object]) -> None:
     temporary.replace(path)
 
 
+def _merge_conference_claim(
+    winner: dict[str, object], loser: dict[str, object]
+) -> None:
+    """Resolve one conference flag from a game's two published rows.
+
+    A publisher's own marking (no ``conference_game_source``) outranks a flag
+    we derived from membership; between two claims of the same rank a positive
+    marking wins, because themes that mark conference games at all only mark
+    the positives.
+    """
+
+    def claim(row: dict[str, object]) -> tuple[int, bool]:
+        published = "conference_game_source" not in row
+        return (1 if published else 0, bool(row.get("conference_game")))
+
+    winning_rank, winning_flag = claim(winner)
+    losing_rank, losing_flag = claim(loser)
+    if losing_rank > winning_rank or (
+        losing_rank == winning_rank and losing_flag and not winning_flag
+    ):
+        winner["conference_game"] = losing_flag
+        source = loser.get("conference_game_source")
+        winner.pop("conference_game_source", None)
+        if source is not None:
+            winner["conference_game_source"] = source
+
+
 def _dedupe_fixtures(
     fixtures: list[dict[str, object]],
 ) -> tuple[list[dict[str, object]], int]:
@@ -60,16 +87,26 @@ def _dedupe_fixtures(
         key = (str(fixture["date"]), pair[0], pair[1])
         existing = by_match.get(key)
         if existing is None:
-            by_match[key] = fixture
+            by_match[key] = dict(fixture)
             continue
         duplicates += 1
         # Prefer the source that has reached the later lifecycle stage, then
-        # retain whichever published more detail.
+        # retain whichever published more detail — but never lose detail the
+        # other side published: each site is authoritative for its own extras
+        # (kickoff time, facility), and the conference claim resolves by rank.
         rank = {"scheduled": 0, "postponed": 1, "cancelled": 1, "live": 2, "final": 3}
         existing_score = rank.get(str(existing["status"]), 0) * 10 + len(existing)
         candidate_score = rank.get(str(fixture["status"]), 0) * 10 + len(fixture)
-        if candidate_score > existing_score:
-            by_match[key] = fixture
+        winner, loser = (
+            (dict(fixture), existing)
+            if candidate_score > existing_score
+            else (existing, dict(fixture))
+        )
+        for field in ("time", "venue"):
+            if field not in winner and field in loser:
+                winner[field] = loser[field]
+        _merge_conference_claim(winner, loser)
+        by_match[key] = winner
     values = sorted(
         by_match.values(), key=lambda value: (str(value["date"]), str(value["id"]))
     )

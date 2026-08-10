@@ -927,15 +927,15 @@ function matrix(
 
 // ── roster composition ──────────────────────────────────────────────────────
 // Everything here counts what the roster file publishes; nothing is derived
-// beyond bucketing the published strings. Two programmes publish no positions
-// at all, so every position visual carries an honest "not published" state.
+// beyond bucketing the published strings, which range from full words
+// ("Goalkeeper") to bare abbreviations ("GK", "D", "MF", "FWD") by theme.
 
 // Attack-first, the way a team sheet is read aloud.
 const POSITIONS = [
-  { key: "f", abbr: "FWD", head: "Forwards", test: /^(for|strik|wing)/i },
-  { key: "m", abbr: "MID", head: "Midfielders", test: /^mid/i },
-  { key: "d", abbr: "DEF", head: "Defenders", test: /^def/i },
-  { key: "gk", abbr: "GK", head: "Goalkeepers", test: /^goal/i },
+  { key: "f", abbr: "FWD", head: "Forwards", test: /^(f|fw|fwd)$|^(for|strik|wing)/i },
+  { key: "m", abbr: "MID", head: "Midfielders", test: /^(m|mf)$|^mid/i },
+  { key: "d", abbr: "DEF", head: "Defenders", test: /^(d|df)$|^def/i },
+  { key: "gk", abbr: "GK", head: "Goalkeepers", test: /^(gk|k)$|^goal/i },
 ] as const;
 
 function posKey(position?: string): string | null {

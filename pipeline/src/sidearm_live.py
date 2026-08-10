@@ -1,9 +1,14 @@
 """Collect published SideArm schedules and rosters.
 
 The historical pipeline starts from box scores, which necessarily omits every
-future fixture.  SideArm season pages already contain the complete schedule as
-structured component JSON and the roster as semantic HTML.  This module reads
-those two published sources without turning an unplayed match into a result.
+future fixture.  SideArm season pages publish the schedule twice: as embedded
+component JSON and as server-rendered ``li.sidearm-schedule-game`` markup.
+Only some themes embed the full season in the JSON — most ship a short
+"upcoming" stub there (measured 2026-08-09 across one conference: 1 of 27
+games on one theme) while the DOM always carries every game.  Both sources
+share one event-id space, so this module reads the JSON first (it is richer:
+ISO timestamps, typed results, an explicit conference flag) and fills the
+rest from the DOM, without turning an unplayed match into a result.
 """
 
 from __future__ import annotations
@@ -317,6 +322,186 @@ def _event_status(event: dict[str, object]) -> str:
     return "scheduled"
 
 
+_DOM_MONTHS = {
+    "jan": 1,
+    "feb": 2,
+    "mar": 3,
+    "apr": 4,
+    "may": 5,
+    "jun": 6,
+    "jul": 7,
+    "aug": 8,
+    "sep": 9,
+    "oct": 10,
+    "nov": 11,
+    "dec": 12,
+}
+
+
+def _dom_date(text: str, year: int) -> str | None:
+    """Resolve a rendered date like ``Aug 13 (Thu)`` against the season year."""
+    match = re.search(r"([A-Za-z]{3})[a-z.]*\s+(\d{1,2})", text)
+    if not match:
+        return None
+    month = _DOM_MONTHS.get(match.group(1).lower())
+    if month is None:
+        return None
+    return f"{year:04d}-{month:02d}-{int(match.group(2)):02d}"
+
+
+def _dom_time(text: str) -> str | None:
+    """Parse rendered kickoff text: ``7:00 p.m.``, ``3 PM``, ``Noon``, ``TBD``."""
+    cleaned = text.strip().lower()
+    if "noon" in cleaned:
+        return "12:00"
+    match = re.search(r"(\d{1,2})(?::(\d{2}))?\s*([ap])\.?\s*m\b", cleaned)
+    if not match:
+        return None
+    hour = int(match.group(1)) % 12
+    if match.group(3) == "p":
+        hour += 12
+    return f"{hour:02d}:{int(match.group(2) or 0):02d}"
+
+
+def _dom_result(text: str) -> tuple[str, int, int] | None:
+    """Parse an owner-perspective result like ``W, 2-0`` or ``T, 1-1 (2OT)``."""
+    match = re.search(r"\b([WLT])\s*,?\s*(\d+)\s*-\s*(\d+)", text)
+    if not match:
+        return None
+    return match.group(1), int(match.group(2)), int(match.group(3))
+
+
+def _parse_schedule_dom(
+    html: str,
+    *,
+    page_url: str,
+    year: int,
+    owner_slug: str,
+    aliases: dict[str, str],
+) -> list[dict[str, object]]:
+    """Read the server-rendered game list.
+
+    Emits the same fixture shape and the same ``sidearm:{owner}:{game-id}``
+    identifiers as the component-JSON path, so the two sources merge by id.
+
+    The conference flag is evidence-tiered.  Some themes render a conference
+    marker per game and their word is taken as published truth; some render no
+    marker anywhere (measured: two of six themes in one conference), and there
+    the flag is derived from configured membership — both sides configured for
+    this collection and the game not an exhibition — and stamped
+    ``conference_game_source: derived:membership`` so no derived value can
+    masquerade as a publisher's claim.  Membership means the school list this
+    run was configured with, never a conference named in code.
+    """
+    soup = BeautifulSoup(html, "lxml")
+    rows = soup.select("li.sidearm-schedule-game")
+    theme_marks_conference = any(
+        (marker := row.select_one(".sidearm-schedule-game-conference"))
+        and marker.get_text(strip=True)
+        for row in rows
+    )
+    member_slugs = set(aliases.values())
+
+    fixtures: list[dict[str, object]] = []
+    for row in rows:
+        game_id = str(row.get("data-game-id") or "").strip()
+        opponent_raw = _first_text(row, ".sidearm-schedule-game-opponent-name") or ""
+        opponent_name = _clean_team_name(opponent_raw)
+        date = _dom_date(
+            _first_text(row, ".sidearm-schedule-game-opponent-date") or "", year
+        )
+        if not game_id or not opponent_name or not date:
+            continue
+        # Postseason structure rows are events, not fixtures: "TBA" hotel
+        # blocks and "NCAA Tournament First and Second Rounds" carry no
+        # opponent, and their date is a range.  Real matches from those rounds
+        # arrive later with actual opponents.
+        if re.fullmatch(r"tbd|tba", opponent_name, re.IGNORECASE) or re.search(
+            r"tournament|championship", opponent_name, re.IGNORECASE
+        ):
+            continue
+        hosted = re.split(r"\s+vs\.?\s+", opponent_name)
+        if len(hosted) == 2:
+            # A tournament host lists other teams' games on its own schedule
+            # ("Southern Nazarene vs. Maryville" on the host's page).  That is
+            # a real fixture between the two named teams at the host's venue —
+            # the owner is not in it.
+            home = opponent_slug(hosted[0], aliases)
+            away = opponent_slug(hosted[1], aliases)
+            owner_is_home = None
+            participant_slugs = (home, away)
+        else:
+            other_slug = opponent_slug(opponent_name, aliases)
+            classes = set(row.get("class") or [])
+            if "sidearm-schedule-neutral-game" in classes:
+                # Neutral rows keep the "vs"/"at" span as the only side
+                # indicator.
+                indicator = _first_text(
+                    row, ".sidearm-schedule-game-home, .sidearm-schedule-game-away"
+                )
+                owner_is_home = (indicator or "vs").strip().lower() != "at"
+            else:
+                owner_is_home = "sidearm-schedule-home-game" in classes
+            home, away = (
+                (owner_slug, other_slug) if owner_is_home else (other_slug, owner_slug)
+            )
+            participant_slugs = (other_slug,)
+
+        result_text = _first_text(row, ".sidearm-schedule-game-result") or ""
+        result = _dom_result(result_text) if owner_is_home is not None else None
+        if re.search(r"cancel", result_text, re.IGNORECASE):
+            status = "cancelled"
+        elif re.search(r"postpon", result_text, re.IGNORECASE):
+            status = "postponed"
+        elif result:
+            status = "final"
+        else:
+            status = "scheduled"
+
+        fixture: dict[str, object] = {
+            "id": f"sidearm:{owner_slug}:{game_id}",
+            "date": date,
+            "home": home,
+            "away": away,
+            "status": status,
+            "source_url": page_url,
+        }
+        if theme_marks_conference:
+            marker = row.select_one(".sidearm-schedule-game-conference")
+            fixture["conference_game"] = bool(marker and marker.get_text(strip=True))
+        else:
+            exhibition = bool(re.search(r"exhib", opponent_raw, re.IGNORECASE))
+            fixture["conference_game"] = not exhibition and all(
+                slug in member_slugs for slug in participant_slugs
+            )
+            fixture["conference_game_source"] = "derived:membership"
+        # Some themes render kickoff in a dedicated element; at least one packs
+        # it into the date text ("Aug 27 (Thu) 3:00 p.m.").
+        time = _dom_time(
+            _first_text(row, ".sidearm-schedule-game-time") or ""
+        ) or _dom_time(_first_text(row, ".sidearm-schedule-game-opponent-date") or "")
+        if time:
+            fixture["time"] = time
+        location = row.select_one(".sidearm-schedule-game-location")
+        if location is not None:
+            facility = location.select_one("a")
+            venue = (
+                facility.get_text(" ", strip=True)
+                if facility is not None
+                else location.get_text(" ", strip=True)
+            )
+            if venue:
+                fixture["venue"] = venue
+        if result:
+            _, owner_score, other_score = result
+            if owner_is_home:
+                fixture["home_score"], fixture["away_score"] = owner_score, other_score
+            else:
+                fixture["home_score"], fixture["away_score"] = other_score, owner_score
+        fixtures.append(fixture)
+    return fixtures
+
+
 def parse_schedule_page(
     html: str,
     *,
@@ -404,6 +589,15 @@ def parse_schedule_page(
                     team_score,
                 )
         fixtures.append(fixture)
+
+    # The component JSON is authoritative where it speaks; the DOM supplies
+    # every game the JSON stub left out, under the same identifiers.
+    json_ids = {str(fixture["id"]) for fixture in fixtures}
+    for fixture in _parse_schedule_dom(
+        html, page_url=page_url, year=year, owner_slug=owner_slug, aliases=aliases
+    ):
+        if str(fixture["id"]) not in json_ids:
+            fixtures.append(fixture)
     return sorted(fixtures, key=lambda value: (str(value["date"]), str(value["id"])))
 
 
@@ -433,12 +627,32 @@ def parse_roster_page(html: str, *, page_url: str) -> list[dict[str, str]]:
             "number": ".sidearm-roster-player-jersey-number",
             "position": ".sidearm-roster-player-position-long-short.hide-on-small-down",
             "height": ".sidearm-roster-player-height",
+            "weight": ".sidearm-roster-player-weight",
             "hometown": ".sidearm-roster-player-hometown",
         }
         for field, selector in fields.items():
             value = _first_text(row, selector)
             if value:
                 player[field] = value
+        if "position" not in player:
+            # Themes without the long-short span pack everything into one
+            # container: "D 5'11\" 165 lbs".  Peel height and weight off the
+            # blob (keeping any dedicated-element value), and what remains is
+            # the published position abbreviation.
+            blob = _first_text(row, ".sidearm-roster-player-position") or ""
+            height = re.search(r"\d+'\s*\d+(?:\.\d+)?\"", blob)
+            if height and "height" not in player:
+                player["height"] = re.sub(r"'\s+", "'", height.group(0))
+            weight = re.search(r"(\d+)\s*lbs\b", blob)
+            if weight and "weight" not in player:
+                player["weight"] = f"{weight.group(1)} lbs"
+            position = blob
+            for token in (height, weight):
+                if token:
+                    position = position.replace(token.group(0), " ")
+            position = " ".join(position.split()).strip()
+            if position:
+                player["position"] = position
         class_values = [
             element.get_text(" ", strip=True)
             for element in row.select(".sidearm-roster-player-academic-year")

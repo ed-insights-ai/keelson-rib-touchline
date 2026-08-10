@@ -56,6 +56,10 @@ export const fixtureSchema = z
     away_score: z.number().int().nullable().optional(),
     /** Whether the result counts in the conference table. */
     conference_game: z.boolean().optional(),
+    /** Present only when the flag was NOT published by a schedule page —
+     *  e.g. "derived:membership" where neither side's theme marks conference
+     *  games. Absence means the publisher's own marking. */
+    conference_game_source: z.string().optional(),
     /** Minute, for a live fixture. */
     clock: z.string().optional(),
     source_url: z.string().optional(),
@@ -91,6 +95,8 @@ export const playerSchema = z
     position: z.string().optional(),
     class_year: z.string().optional(),
     height: z.string().optional(),
+    /** As printed, e.g. "165 lbs". Only some themes publish it. */
+    weight: z.string().optional(),
     hometown: z.string().optional(),
     source_url: z.string().optional(),
   })
