@@ -456,13 +456,15 @@ def availability_flags(
     slug: str,
     current_rosters: dict | None,
 ) -> list[dict]:
-    """Players whose season participation stopped early — an INFERRED signal.
+    """Players with large unexplained holes in their participation — INFERRED.
 
-    Built from per-match minutes in held box scores: a regular who vanishes
-    while the team keeps playing usually means injury, but the record cannot
-    distinguish injury from transfer, discipline, or redshirt — so the digest
-    reports the pattern (apps, minutes, last seen, matches missed) and never
-    the cause.  Consumers must label conclusions drawn from this as projected.
+    Built from per-match minutes in held box scores.  Two shapes are flagged:
+    ``stopped`` (a regular who vanishes and never returns — the season-ending
+    shape) and ``gap`` (played, missed a run of matches, came back — the
+    injury-and-recovery shape).  The record cannot distinguish injury from
+    transfer, discipline, or redshirt, so the digest reports only the pattern
+    (apps, starts, minutes, the dates around the hole) and never the cause.
+    Consumers must label conclusions drawn from this as projected.
     """
     matches = matches_payload.get("matches") or {}
     timeline: list[tuple[str, dict]] = []
@@ -490,38 +492,126 @@ def availability_flags(
             key = normalize_name(name)
             entry = players.setdefault(
                 key,
-                {"name": name, "appearances": 0, "minutes": 0, "last_index": -1, "last_seen": ""},
+                {"name": name, "appearances": [], "starts": 0, "minutes": 0},
             )
-            entry["appearances"] += 1
+            entry["appearances"].append(index)
             entry["minutes"] += int(row.get("minutes") or 0)
-            entry["last_index"] = index
-            entry["last_seen"] = date
+            if row.get("started"):
+                entry["starts"] += 1
 
     returning = set(_roster_names(current_rosters, slug)) if current_rosters else set()
     flags = []
     total = len(timeline)
     for key, entry in players.items():
-        missed = total - 1 - entry["last_index"]
-        if missed < AVAILABILITY_MIN_MISSED:
-            continue
+        played = entry["appearances"]
         if (
-            entry["appearances"] < AVAILABILITY_MIN_APPS
+            len(played) < AVAILABILITY_MIN_APPS
             and entry["minutes"] < AVAILABILITY_MIN_MINUTES
         ):
             continue
+
+        # The tail: a player who never came back.
+        tail_missed = total - 1 - played[-1]
+
+        # Interior gaps: the largest run of team matches missed between two of
+        # the player's own appearances — the "played, vanished, returned"
+        # shape a season-interrupting injury leaves behind.
+        gap_missed, gap_out, gap_back = 0, -1, -1
+        for previous, current in zip(played, played[1:]):
+            run = current - previous - 1
+            if run > gap_missed:
+                gap_missed, gap_out, gap_back = run, previous, current
+
+        if tail_missed >= AVAILABILITY_MIN_MISSED and tail_missed >= gap_missed:
+            kind, detail = "stopped", {
+                "last_seen": timeline[played[-1]][0],
+                "missed_after": tail_missed,
+            }
+        elif gap_missed >= AVAILABILITY_MIN_MISSED:
+            kind, detail = "gap", {
+                "out_after": timeline[gap_out][0],
+                "back_on": timeline[gap_back][0],
+                "missed": gap_missed,
+            }
+        else:
+            continue
+
         flags.append(
             {
                 "name": entry["name"],
-                "appearances": entry["appearances"],
+                "appearances": len(played),
+                "starts": entry["starts"],
                 "minutes": entry["minutes"],
-                "last_seen": entry["last_seen"],
-                "missed_after": missed,
+                "kind": kind,
+                **detail,
                 "of_matches": total,
                 "on_current_roster": key in returning if current_rosters else None,
             }
         )
-    flags.sort(key=lambda flag: (-flag["minutes"], flag["name"]))
+    flags.sort(key=lambda flag: (-flag["starts"], -flag["minutes"], flag["name"]))
     return flags
+
+
+#: A season counts as "a lot of playing time" above this many minutes…
+USAGE_DROP_FLOOR = 600
+#: …and the next season is a collapse at or below this fraction of it.
+USAGE_DROP_RATIO = 0.5
+
+
+def usage_shifts(
+    stats_by_season: dict[int, dict | None],
+    slug: str,
+    prev_season: int,
+    current_rosters: dict | None,
+) -> list[dict]:
+    """Returning players whose minutes collapsed year over year — INFERRED.
+
+    A player with heavy minutes two seasons ago and a fraction of them last
+    season, still on the new roster, is a theory generator: injury year,
+    position battle lost, academic redshirt — the record cannot say which.
+    Only players on the current published roster are reported; departures
+    are the turnover section's story.  Consumers must present conclusions
+    from this as possible analysis, labeled projected.
+    """
+    before_stats = stats_by_season.get(prev_season - 1)
+    after_stats = stats_by_season.get(prev_season)
+    if before_stats is None or after_stats is None or current_rosters is None:
+        return []
+    on_roster = set(_roster_names(current_rosters, slug))
+    if not on_roster:
+        return []
+
+    team_before = ((before_stats.get("teams") or {}).get(slug) or {}).get("players") or []
+    shifts = []
+    for row in team_before:
+        minutes_before = int(row.get("minutes") or 0)
+        if minutes_before < USAGE_DROP_FLOOR:
+            continue
+        name = str(row.get("name") or "").strip()
+        key = normalize_name(name)
+        if key not in on_roster:
+            continue
+        after_row = _stat_row(
+            after_stats, slug, key, str(row.get("player_id") or "") or None
+        )
+        if after_row is None:
+            # Not in last season's statistics at all — the strongest form of
+            # the same signal for a player still on the roster.
+            minutes_after = 0
+        else:
+            minutes_after = int(after_row.get("minutes") or 0)
+        if minutes_after > minutes_before * USAGE_DROP_RATIO:
+            continue
+        shifts.append(
+            {
+                "name": name,
+                "before": {"season": prev_season - 1, "minutes": minutes_before},
+                "after": {"season": prev_season, "minutes": minutes_after},
+                "drop_pct": round((1 - minutes_after / minutes_before) * 100),
+            }
+        )
+    shifts.sort(key=lambda shift: -shift["drop_pct"])
+    return shifts
 
 
 def head_to_head(
@@ -663,6 +753,11 @@ def build_digest(
                 last["discipline"] = discipline(prev_stats, slug)
                 last["keepers"] = keepers(prev_stats, slug)
             section["last_season"] = last
+
+        if prev_season is not None:
+            shifts = usage_shifts(stats_by_season, slug, prev_season, current_rosters)
+            if shifts:
+                section["usage_shifts"] = shifts
 
         churn = turnover(prev_rosters, current_rosters, prev_stats, slug)
         if churn is not None:

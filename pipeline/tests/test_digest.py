@@ -340,6 +340,60 @@ def test_availability_ignores_fringe_players_and_short_seasons():
     assert availability_flags(short_fixtures, short_matches, "alpha", None) == []
 
 
+# ── usage_shifts ─────────────────────────────────────────────────────────────
+
+
+def test_usage_shift_flags_a_minutes_collapse_for_a_rostered_player():
+    from src.digest import usage_shifts
+
+    stats_by_season = {
+        2024: {
+            "teams": {
+                "alpha": stats_team(
+                    [
+                        {"name": "Was A Starter", "minutes": 1200},
+                        {"name": "Still Going", "minutes": 1400},
+                        {"name": "Left Anyway", "minutes": 900},
+                    ]
+                )
+            }
+        },
+        2025: {
+            "teams": {
+                "alpha": stats_team(
+                    [
+                        {"name": "Was A Starter", "minutes": 150},
+                        {"name": "Still Going", "minutes": 1350},
+                    ]
+                )
+            }
+        },
+    }
+    current = {"rosters": {"alpha": roster(["Was A Starter", "Still Going", "Ghosted"])}}
+    shifts = usage_shifts(stats_by_season, "alpha", 2025, current)
+    # Still Going held steady; Left Anyway is off the roster (turnover's story).
+    assert [shift["name"] for shift in shifts] == ["Was A Starter"]
+    shift = shifts[0]
+    assert shift["before"] == {"season": 2024, "minutes": 1200}
+    assert shift["after"] == {"season": 2025, "minutes": 150}
+    assert shift["drop_pct"] == 88
+
+
+def test_usage_shift_treats_vanishing_from_stats_as_a_full_collapse():
+    from src.digest import usage_shifts
+
+    stats_by_season = {
+        2024: {"teams": {"alpha": stats_team([{"name": "Gone Dark", "minutes": 800}])}},
+        2025: {"teams": {"alpha": stats_team([])}},
+    }
+    current = {"rosters": {"alpha": roster(["Gone Dark"])}}
+    shifts = usage_shifts(stats_by_season, "alpha", 2025, current)
+    assert shifts[0]["after"]["minutes"] == 0
+    assert shifts[0]["drop_pct"] == 100
+    # Without both seasons of statistics there is nothing to infer from.
+    assert usage_shifts({2025: stats_by_season[2025]}, "alpha", 2025, current) == []
+
+
 # ── head_to_head / upcoming ──────────────────────────────────────────────────
 
 
