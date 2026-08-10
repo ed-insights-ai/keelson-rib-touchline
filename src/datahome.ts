@@ -11,6 +11,8 @@ import { dirname, join, resolve } from "node:path";
 import {
   type FixturesFile,
   fixturesFileSchema,
+  type MatchesFile,
+  matchesFileSchema,
   type RostersFile,
   rostersFileSchema,
   type StatsFile,
@@ -39,6 +41,7 @@ export interface DataHome {
   fixturesDir: string;
   rostersDir: string;
   statsDir: string;
+  matchesDir: string;
 }
 
 export function dataHome(root: string): DataHome {
@@ -47,6 +50,7 @@ export function dataHome(root: string): DataHome {
     fixturesDir: join(root, "data", "fixtures"),
     rostersDir: join(root, "data", "rosters"),
     statsDir: join(root, "data", "stats"),
+    matchesDir: join(root, "data", "matches"),
   };
 }
 
@@ -153,6 +157,7 @@ const README_BODY = [
   "| `data/fixtures/` | Published schedules — one JSON file per season and gender. |",
   "| `data/rosters/` | Published rosters — one JSON file per season and gender. |",
   "| `data/stats/` | Published player season statistics — one JSON file per season and gender. |",
+  "| `data/matches/` | Published per-match box scores — one JSON file per season and gender. |",
   "| `data/raw_html/` | The pages exactly as fetched, so any parse can be redone offline. |",
   "| `data/errors/` | Anything a collection run could not parse, kept rather than dropped. |",
   "",
@@ -190,6 +195,7 @@ export async function bootstrapDataHome(
     home.fixturesDir,
     home.rostersDir,
     home.statsDir,
+    home.matchesDir,
     join(root, "data", "raw_html"),
     join(root, "data", "errors"),
     join(root, "data", "reference"),
@@ -272,6 +278,15 @@ export function loadStats(
 ): Promise<LoadResult<StatsFile>> {
   const path = join(dataHome(root).statsDir, seasonFileName(season, gender));
   return loadJson(path, (raw) => statsFileSchema.parse(raw));
+}
+
+export function loadMatches(
+  root: string,
+  season: number,
+  gender: string,
+): Promise<LoadResult<MatchesFile>> {
+  const path = join(dataHome(root).matchesDir, seasonFileName(season, gender));
+  return loadJson(path, (raw) => matchesFileSchema.parse(raw));
 }
 
 export interface SeasonRef {

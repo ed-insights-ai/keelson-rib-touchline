@@ -12,6 +12,9 @@ import {
   type FixturesFile,
   isPlayed,
   type KeeperStats,
+  type MatchDetail,
+  type MatchesFile,
+  type MatchTeam,
   type Player,
   type PlayerStats,
   type Roster,
@@ -118,7 +121,7 @@ const STYLE = `
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--bg);color:var(--ink);padding:12px;
+body{position:relative;background:var(--bg);color:var(--ink);padding:12px;
 font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 /* Condensed caps are the scoreboard voice: labels, team names, section heads. */
 .cond{font-family:"Avenir Next Condensed","Roboto Condensed","Arial Narrow","Helvetica Neue",sans-serif;
@@ -382,11 +385,15 @@ letter-spacing:.06em;color:var(--muted);white-space:nowrap}
 .prow .st .stat.ga b{color:var(--late)}
 
 /* ── player drawer ────────────────────────────────────────────────────── */
-.dr-veil{position:fixed;inset:0;z-index:40;appearance:none;border:0;cursor:pointer;
+/* The board iframe is auto-height — the host page scrolls, the frame never
+   does — so a fixed drawer would pin to the document top, out of view for a
+   row clicked far down the sheet. Both drawer and veil are absolute instead,
+   and the frame script aligns the drawer with the element that opened it. */
+.dr-veil{position:absolute;inset:0;z-index:40;appearance:none;border:0;cursor:pointer;
 background:rgba(10,14,20,.45)}
-.drawer{position:fixed;top:0;right:0;bottom:0;z-index:41;width:min(400px,94vw);
-background:var(--bg);border-left:1px solid var(--rule-firm);
-box-shadow:-16px 0 44px rgba(0,0,0,.3);overflow-y:auto;padding-bottom:10px}
+.drawer{position:absolute;top:0;right:6px;z-index:41;width:min(400px,94vw);
+background:var(--bg);border:1px solid var(--rule-firm);border-radius:9px;
+box-shadow:0 18px 54px rgba(0,0,0,.35);padding-bottom:10px}
 .dr-head{display:flex;gap:12px;align-items:flex-start;padding:18px 18px 13px;
 border-bottom:1px solid var(--rule-firm)}
 .dr-no{font:700 30px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
@@ -423,7 +430,59 @@ min-width:0;overflow:hidden;white-space:nowrap}
 .dr-split .sv{background:var(--played)}
 .dr-split .ga{background:var(--late)}
 .dr-note{padding:10px 18px 0;margin:0;font-size:11.5px;color:var(--muted)}
+.dr-note.dim{color:var(--faint);font-size:10.5px}
 .dr-foot{padding:14px 18px 6px;margin:0;font-size:10px;color:var(--faint)}
+
+/* ── match detail: row strip and drawer ───────────────────────────────── */
+/* The strip sits under the opponent name, same register as the venue line. */
+.row .msx{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline;margin-top:2px}
+.row .msx .ms{flex:0 0 auto;font:600 10px/1.4 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.06em;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.row .msx .gls{flex:0 0 auto;font-size:10.5px;color:var(--faint);font-variant-numeric:tabular-nums}
+.cs{display:inline-block;width:7px;height:9px;border-radius:1.5px;vertical-align:-1px;margin-right:3px}
+.cs.y{background:var(--draw)}
+.cs.r{background:var(--late)}
+.mhead .mteams{flex:1;min-width:0}
+.mhead .mrow{display:flex;align-items:baseline;gap:10px;padding:1px 0}
+.mhead .mrow span{flex:1;min-width:0;font:700 17px/1.3 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+text-transform:uppercase;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)}
+.mhead .mrow b{font:700 21px/1.2 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+font-variant-numeric:tabular-nums;color:var(--muted)}
+.mhead .mrow.win span,.mhead .mrow.win b{color:var(--ink)}
+.mhead .mrow:only-child span,.mhead .mrow:only-child b{color:var(--ink)}
+.pline{border-collapse:collapse;margin:8px 18px 0;font-variant-numeric:tabular-nums}
+.pline th,.pline td{padding:3px 10px;text-align:center;font-size:12px;border-bottom:1px solid var(--rule)}
+.pline thead th{font:700 9px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.1em;color:var(--faint)}
+.pline tbody th{text-align:left;padding-left:0;font:700 10px/1.6 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.06em;color:var(--ink-2)}
+.pline td b{font-weight:700}
+/* Timeline rows: home reads from the left edge, away from the right. */
+.evs{padding:6px 18px 0}
+.ev{display:flex;gap:8px;align-items:baseline;padding:2.5px 0;font-size:12px}
+.ev b{flex:0 0 30px;font:700 11px/1.5 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+color:var(--faint);font-variant-numeric:tabular-nums}
+.ev .who{min-width:0}
+.ev .who em{font-style:normal;display:block;font-size:10.5px;color:var(--faint)}
+.ev.a{flex-direction:row-reverse;text-align:right}
+/* Team-statistic duels: bars grow from the centre toward each side. */
+.duel{display:grid;grid-template-columns:26px 1fr 64px 1fr 26px;gap:8px;align-items:center;
+padding:3px 18px 0;font-variant-numeric:tabular-nums}
+.duel b{font:700 12.5px/1.5 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif}
+.duel b:first-child{text-align:right}
+.duel .dn{text-align:center;font:700 9px/1.6 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.duel .db{height:6px;border-radius:3px;background:var(--sunk);overflow:hidden;display:flex}
+.duel .db.l{justify-content:flex-end}
+.duel .db span{display:block;height:100%;background:var(--accent);border-radius:3px}
+.duel.head{padding-top:12px}
+.duel.head b{color:var(--faint);font-size:10px;letter-spacing:.08em}
+.mx-open{appearance:none;margin-left:auto;align-self:center;flex:0 0 auto;border:1px solid var(--rule-firm);
+border-radius:5px;background:transparent;color:var(--ink-2);cursor:pointer;
+font:700 10px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.08em;text-transform:uppercase;padding:7px 10px}
+.mx-open:hover{color:var(--ink);border-color:var(--ink)}
+.mx-open:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* ── roster balance (conference lens) ─────────────────────────────────── */
 .rbal{width:100%;border-collapse:collapse;font-size:12px}
@@ -500,9 +559,87 @@ const SCRIPT = `
       document.documentElement.setAttribute("data-theme",d.theme);
     }
   });
+  // Place an open drawer inside the VISIBLE slice of the board. The frame is
+  // auto-height and never scrolls itself, so document coordinates ARE host-page
+  // coordinates — but the frame cannot read the host scroll directly. An
+  // IntersectionObserver on the body can: even from a sandboxed frame it
+  // reports which rectangle of the document the host viewport actually shows.
+  // The drawer starts beside the element that opened it, then is clamped and
+  // sized to that visible rectangle so it never opens below the fold.
+  var dr=document.querySelector(".drawer");
+  if(dr){
+    var want=dr.getAttribute("data-anchor")||"";
+    var anchor=null;
+    if(want){
+      var acts=document.querySelectorAll("[data-payload]");
+      for(var i=0;i<acts.length;i++){
+        if(acts[i].getAttribute("data-payload")===want){anchor=acts[i];break;}
+      }
+    }
+    var anchorY=function(){return anchor?anchor.getBoundingClientRect().top:0};
+    var docMax=document.body.scrollHeight-dr.offsetHeight-16;
+    dr.style.top=Math.max(8,Math.min(anchorY()-12,docMax))+"px";
+    // The drawer keeps its full content height — no inner scrollbox. It is
+    // pulled up just enough to fit inside the visible slice when it can; when
+    // it is taller than the window it starts at the visible top and the host
+    // page scrolls through the rest like any other content.
+    var place=function(visTop,visBottom){
+      if(!(visBottom-visTop>120))return;
+      var h=dr.offsetHeight;
+      var y=anchor?anchorY()-12:visTop+12;
+      y=Math.min(y,visBottom-h-12,document.body.scrollHeight-h-8);
+      y=Math.max(y,visTop+12,8);
+      dr.style.top=y+"px";
+    };
+    // A fresh observe() always fires once with the CURRENT rectangle, so a
+    // one-shot observer is an async read of the visible slice. One reading is
+    // not enough: this script runs mid document-swap, while the host is still
+    // re-measuring the iframe for auto-height and restoring its scroll, so the
+    // first rectangle often describes a transient layout. Re-read a few times
+    // while the swap settles, and again whenever the host resizes the frame
+    // (an iframe height change fires resize inside the frame). Once settled,
+    // host scrolling fires nothing, so the drawer stays put while reading.
+    var measure=function(){
+      try{
+        var io=new IntersectionObserver(function(entries){
+          io.disconnect();
+          var e=entries[entries.length-1];
+          if(e&&e.intersectionRect&&e.intersectionRect.height>0){
+            place(e.intersectionRect.top,e.intersectionRect.bottom);
+          }
+        });
+        io.observe(document.body);
+        setTimeout(function(){io.disconnect()},3000);
+      }catch(e){}
+    };
+    measure();
+    setTimeout(measure,250);
+    setTimeout(measure,700);
+    setTimeout(measure,1400);
+    var rz;
+    window.addEventListener("resize",function(){
+      clearTimeout(rz);
+      rz=setTimeout(measure,150);
+    });
+  }
+
   document.addEventListener("keydown",function(ev){
-    if(ev.key==="Escape"&&document.querySelector(".drawer")){
-      post("select-player",{player:null});
+    if(ev.key==="Escape"){
+      var dr=document.querySelector(".drawer");
+      if(dr){
+        var p={player:null};
+        try{p=JSON.parse(dr.getAttribute("data-close-payload")||'{"player":null}')}catch(e){}
+        post(dr.getAttribute("data-close")||"select-player",p);
+      }
+      return;
+    }
+    // Ledger rows are focusable divs; Enter and Space must act like the click.
+    if((ev.key==="Enter"||ev.key===" ")&&ev.target&&ev.target.getAttribute&&
+       ev.target.getAttribute("data-act")&&ev.target.tagName!=="BUTTON"){
+      ev.preventDefault();
+      var q={};
+      try{q=JSON.parse(ev.target.getAttribute("data-payload")||"{}")}catch(e){}
+      post(ev.target.getAttribute("data-act"),q);
     }
   });
 
@@ -531,6 +668,8 @@ const SCRIPT = `
           card.tt.textContent=b.getAttribute("data-tt")||"";
           card.nt.textContent=b.getAttribute("data-nt")||"";
         }
+        var op=document.getElementById("mx-open");
+        if(op){op.hidden=false;op.setAttribute("data-payload",JSON.stringify({fixture:g}));}
       }else if(b.hasAttribute("data-follow")){
         var t=b.getAttribute("data-follow");
         foc=(foc===t)?null:t;
@@ -616,11 +755,14 @@ export interface BoardInput {
   fixtures: FixturesFile;
   rosters?: RostersFile;
   stats?: StatsFile;
+  matches?: MatchesFile;
   /** Slug of the team lens, or undefined for the conference lens. */
   team?: string;
   /** Player key for the drawer — the roster's SideArm player id when it has
    *  one, else the player's name. Meaningful only alongside `team`. */
   player?: string;
+  /** Fixture id for the match drawer. */
+  fixture?: string;
   /** Today, as YYYY-MM-DD. Passed in so the composer stays deterministic. */
   today: string;
   /** Every season on disk, so the masthead can step through the archive. */
@@ -786,6 +928,78 @@ export function fmtDate(iso: string): string {
   return `${DAYS[wd]} ${MONS[m - 1]} ${d}`;
 }
 
+// ── match detail (box scores) ───────────────────────────────────────────────
+// The matches file keys one box score per fixture id. Sides inside a detail
+// are as the page served them; `home_index` is the collector's proof of which
+// side is the fixture's home team, and everything oriented hangs off it.
+
+/** Which served side is `perspective` (else the home side). Undefined when the
+ *  collector could not prove orientation — render as-served or not at all. */
+function sideIndexFor(detail: MatchDetail, f: Fixture, perspective?: string): number | undefined {
+  const h = detail.home_index;
+  if (h !== 0 && h !== 1) return undefined;
+  if (!perspective || f.home === perspective) return h;
+  return 1 - h;
+}
+
+function cardCount(detail: MatchDetail, side: number, kind: "yellow" | "red"): number {
+  return (detail.cards ?? []).filter((c) => c.team === side && c.type === kind).length;
+}
+
+/** "82:11" → the 83rd minute, the way a goal is read aloud. */
+function matchMinute(clock: string | undefined): string {
+  const m = /^(\d+):(\d{2})/.exec(clock ?? "");
+  if (!m) return "";
+  const mins = Number(m[1]) + (m[2] === "00" ? 0 : 1);
+  return `${mins}&prime;`;
+}
+
+/** The row's at-a-glance match: shot-on-goal and corner pairs read
+ *  mine–theirs (home–away without a perspective), plus any cards. */
+function matchStrip(f: Fixture, detail: MatchDetail | undefined, perspective?: string): string {
+  if (!detail) return "";
+  const mineIdx = sideIndexFor(detail, f, perspective);
+  if (mineIdx === undefined) return "";
+  const mine = detail.teams[mineIdx];
+  const theirs = detail.teams[1 - mineIdx];
+  if (!mine || !theirs) return "";
+  const bits: string[] = [];
+  const pair = (
+    label: string,
+    a: number | undefined,
+    b: number | undefined,
+    title: string,
+  ): void => {
+    if (typeof a === "number" && typeof b === "number")
+      bits.push(`<span class="ms" title="${esc(title)}: ${a}–${b}">${label} ${a}–${b}</span>`);
+  };
+  pair("SOG", mine.sog, theirs.sog, "Shots on goal");
+  pair("CK", mine.corners, theirs.corners, "Corner kicks");
+  const yc = cardCount(detail, mineIdx, "yellow") + cardCount(detail, 1 - mineIdx, "yellow");
+  const rc = cardCount(detail, mineIdx, "red") + cardCount(detail, 1 - mineIdx, "red");
+  if (yc)
+    bits.push(
+      `<span class="ms" title="Yellow cards: ${cardCount(detail, mineIdx, "yellow")}–${cardCount(detail, 1 - mineIdx, "yellow")}"><i class="cs y"></i>${yc}</span>`,
+    );
+  if (rc)
+    bits.push(
+      `<span class="ms" title="Red cards: ${cardCount(detail, mineIdx, "red")}–${cardCount(detail, 1 - mineIdx, "red")}"><i class="cs r"></i>${rc}</span>`,
+    );
+
+  // In the team lens the row also names who scored — the one fact a coach
+  // reads a results column for.
+  let scorers = "";
+  if (perspective) {
+    const own = (detail.scoring ?? []).filter((s) => s.team === mineIdx);
+    if (own.length) {
+      scorers = `<span class="gls">${own
+        .map((s) => `${esc(s.scorer)} ${matchMinute(s.time)}`)
+        .join(" · ")}</span>`;
+    }
+  }
+  return bits.length || scorers ? `<span class="msx">${bits.join("")}${scorers}</span>` : "";
+}
+
 /** One ledger row. In the team lens a fixture reads the way a schedule reads:
  *  home-or-away, then the opponent. In the conference lens both sides are named. */
 function ledgerRow(
@@ -793,6 +1007,7 @@ function ledgerRow(
   names: Map<string, string>,
   slugs: string[],
   perspective?: string,
+  detail?: MatchDetail,
 ): string {
   const { m, d, wd } = parts(f.date);
   const played = isPlayed(f) || f.status === "live";
@@ -852,11 +1067,12 @@ function ledgerRow(
     right = `<span class="tm">${f.time ? esc(fmtTime(f.time)) : "TBA"}</span>`;
   }
 
-  const payload = esc(JSON.stringify({ fixture: f.id, team: perspective ?? null }));
-  return `<div class="row ${cls}" tabindex="0" data-act="open-fixture" data-payload="${payload}">
+  const payload = esc(JSON.stringify({ fixture: f.id }));
+  return `<div class="row ${cls}" tabindex="0" role="button" data-act="open-fixture" data-payload="${payload}"
+      aria-label="Open match details">
       <div class="d">${MONS[m - 1]} ${d}<em>${DAYS[wd]}</em></div>
       ${ha}
-      <div class="opp">${opponent}${f.venue ? `<span class="v">${esc(f.venue)}</span>` : ""}</div>
+      <div class="opp">${opponent}${f.venue ? `<span class="v">${esc(f.venue)}</span>` : ""}${matchStrip(f, detail, perspective)}</div>
       <div class="r">${right}</div>
     </div>`;
 }
@@ -1052,6 +1268,8 @@ function matrix(
       <div class="db" aria-hidden="true"><div class="mo" id="mx-mo">${esc(picked.mo)}</div>
         <div class="dy num" id="mx-dy">${esc(picked.dy)}</div></div>
       <div><div class="tt" id="mx-tt">${esc(picked.tt)}</div><div class="nt" id="mx-nt">${esc(picked.nt)}</div></div>
+      <button type="button" class="mx-open" id="mx-open" ${pick ? "" : "hidden "}data-act="open-fixture"
+        data-payload='${esc(JSON.stringify({ fixture: pick?.id ?? null }))}'>Match details</button>
     </div>
     <div class="mx-wrap" role="region" aria-label="Conference schedule grid" tabindex="0">
       <table class="mx">
@@ -1587,9 +1805,14 @@ function playerDrawer(
           : `No ${season} season statistics collected for ${esc(teamName)} yet.`
       }</p>`;
 
+  // No data-anchor: the roster is a grid, so binding to the clicked card's row
+  // would open the panel at arbitrary heights. An inspector belongs in one
+  // predictable spot — the frame script places anchorless drawers at the top
+  // of the visible slice. Match drawers keep their row anchor: the schedule is
+  // a full-width list where "beside the row you clicked" reads naturally.
   const close = `data-act="select-player" data-payload='{"player":null}'`;
   return `<button type="button" class="dr-veil" ${close} aria-label="Close player details"></button>
-    <aside class="drawer" role="dialog" aria-label="${esc(name)} season details">
+    <aside class="drawer" role="dialog" aria-label="${esc(name)} season details" data-close="select-player" data-close-payload='{"player":null}'>
       <div class="dr-head">
         ${number ? `<span class="dr-no">${esc(number)}</span>` : ""}
         <div><h2>${esc(name)}</h2><p>${esc(teamName)} · ${season} season</p></div>
@@ -1597,6 +1820,195 @@ function playerDrawer(
       </div>
       ${bioBlock}${body}
       <p class="dr-foot">From the programme&#39;s published season statistics.</p>
+    </aside>`;
+}
+
+/** The match drawer: the fixture's published box score. Opens from a ledger
+ *  row or the matrix's selection card; closes from the veil, the ✕, or Escape.
+ *  A fixture without a collected box score still opens — the drawer then says
+ *  exactly why there is nothing behind it. */
+function matchDrawer(
+  fixtureId: string,
+  file: FixturesFile,
+  matches: MatchesFile | undefined,
+  names: Map<string, string>,
+): string {
+  const f = file.fixtures.find((x) => x.id === fixtureId);
+  if (!f) return "";
+  const detail = matches?.matches[fixtureId];
+  const played = isPlayed(f);
+
+  const close = `data-act="open-fixture" data-payload='{"fixture":null}'`;
+  const homeName = displayName(f.home, names);
+  const awayName = displayName(f.away, names);
+
+  // Sides in home/away order when proven; otherwise as the page served them.
+  const hi = detail?.home_index;
+  const oriented = hi === 0 || hi === 1;
+  const sides: { team: MatchTeam; index: number }[] = detail
+    ? oriented
+      ? [
+          { team: detail.teams[hi] as MatchTeam, index: hi },
+          { team: detail.teams[1 - hi] as MatchTeam, index: 1 - hi },
+        ]
+      : detail.teams.map((team, index) => ({ team, index }))
+    : [];
+  const sideAbbr = (i: number): string => {
+    const t = sides[i]?.team;
+    return t?.abbr ?? monogram(t?.name ?? "");
+  };
+  // Map a served-side index (scoring/cards reference these) to drawer order.
+  const drawerSide = (served: number | undefined): number | undefined => {
+    const at = sides.findIndex((s) => s.index === served);
+    return at === -1 ? undefined : at;
+  };
+
+  const scoreRows = oriented
+    ? [
+        { name: homeName, score: f.home_score },
+        { name: awayName, score: f.away_score },
+      ]
+    : played && typeof f.home_score === "number"
+      ? [
+          { name: homeName, score: f.home_score },
+          { name: awayName, score: f.away_score },
+        ]
+      : [
+          { name: homeName, score: undefined },
+          { name: awayName, score: undefined },
+        ];
+  const best = Math.max(...scoreRows.map((r) => r.score ?? -1));
+  const head = `<div class="dr-head mhead">
+      <div class="mteams">${scoreRows
+        .map(
+          (r) =>
+            `<div class="mrow${typeof r.score === "number" && r.score === best && scoreRows.some((o) => o.score !== r.score) ? " win" : ""}"><span>${esc(r.name)}</span><b>${typeof r.score === "number" ? r.score : "–"}</b></div>`,
+        )
+        .join("")}</div>
+      <button type="button" class="dr-x" ${close} aria-label="Close">✕</button>
+    </div>
+    <div class="dr-bio">${[
+      `${fmtDate(f.date)} ${f.date.slice(0, 4)}`,
+      played ? "Final" : f.time ? `Kickoff ${fmtTime(f.time)}` : "Scheduled",
+      detail?.stadium ?? f.venue,
+      typeof detail?.attendance === "number" ? `${detail.attendance} attended` : undefined,
+    ]
+      .filter(Boolean)
+      .map((v) => esc(v))
+      .join(" · ")}</div>`;
+
+  const sections: string[] = [];
+
+  if (detail && sides.length === 2) {
+    const periodCount = Math.max(...sides.map((s) => s.team.periods.length));
+    if (periodCount > 0) {
+      const label = (i: number): string => (i < 2 ? String(i + 1) : i === 2 ? "OT" : `${i - 1}OT`);
+      sections.push(`<div class="dr-sec">Score by period</div>
+        <table class="pline"><thead><tr><th></th>${Array.from({ length: periodCount }, (_, i) => `<th>${label(i)}</th>`).join("")}<th>T</th></tr></thead>
+        <tbody>${sides
+          .map(
+            (s, i) =>
+              `<tr><th scope="row">${esc(sideAbbr(i))}</th>${Array.from(
+                { length: periodCount },
+                (_, p) => `<td>${s.team.periods[p] ?? ""}</td>`,
+              ).join("")}<td><b>${s.team.score ?? "–"}</b></td></tr>`,
+          )
+          .join("")}</tbody></table>`);
+    }
+
+    const scoring = detail.scoring ?? [];
+    if (scoring.length) {
+      sections.push(
+        `<div class="dr-sec">Scoring</div><div class="evs">${scoring
+          .map((s) => {
+            const at = drawerSide(s.team);
+            const cls = at === 0 ? "h" : at === 1 ? "a" : "";
+            return `<div class="ev ${cls}"><b>${matchMinute(s.time) || "–"}</b><span class="who">${esc(s.scorer)}${
+              s.assist ? `<em>assist ${esc(s.assist)}</em>` : ""
+            }</span></div>`;
+          })
+          .join("")}</div>`,
+      );
+    }
+
+    const cards = detail.cards ?? [];
+    if (cards.length) {
+      sections.push(
+        `<div class="dr-sec">Cautions</div><div class="evs">${cards
+          .map((c) => {
+            const at = drawerSide(c.team);
+            const cls = at === 0 ? "h" : at === 1 ? "a" : "";
+            return `<div class="ev ${cls}"><b>${matchMinute(c.time) || "–"}</b><span class="who"><i class="cs ${
+              c.type === "red" ? "r" : "y"
+            }" title="${c.type === "red" ? "Red card" : "Yellow card"}"></i>${esc(c.player)}</span></div>`;
+          })
+          .join("")}</div>`,
+      );
+    }
+
+    const duels: { key: keyof MatchTeam; label: string }[] = [
+      { key: "shots", label: "Shots" },
+      { key: "sog", label: "On target" },
+      { key: "saves", label: "Saves" },
+      { key: "corners", label: "Corners" },
+      { key: "fouls", label: "Fouls" },
+      { key: "offsides", label: "Offsides" },
+    ];
+    const duelRows = duels
+      .map(({ key, label }) => {
+        const a = sides[0]?.team[key];
+        const b = sides[1]?.team[key];
+        if (typeof a !== "number" || typeof b !== "number") return "";
+        const top = Math.max(a, b, 1);
+        return `<div class="duel"><b>${a}</b><div class="db l"><span style="width:${((a / top) * 100).toFixed(1)}%"></span></div><span class="dn">${label}</span><div class="db r"><span style="width:${((b / top) * 100).toFixed(1)}%"></span></div><b>${b}</b></div>`;
+      })
+      .filter(Boolean)
+      .join("");
+    if (duelRows) {
+      sections.push(`<div class="dr-sec">Team statistics</div>
+        <div class="duel head"><b>${esc(sideAbbr(0))}</b><span class="dn"></span><b>${esc(sideAbbr(1))}</b></div>
+        ${duelRows}`);
+    }
+
+    const keeperRows = sides
+      .flatMap((s, i) =>
+        (s.team.keepers ?? []).map(
+          (k) =>
+            `<div class="ev ${i === 0 ? "h" : "a"}"><b>${esc(sideAbbr(i))}</b><span class="who">${esc(k.name)}<em>${[
+              typeof k.saves === "number" ? `${k.saves} saved` : undefined,
+              typeof k.goals_against === "number" ? `${k.goals_against} conceded` : undefined,
+              typeof k.minutes === "number" ? `${k.minutes}&prime;` : undefined,
+            ]
+              .filter(Boolean)
+              .join(" · ")}</em></span></div>`,
+        ),
+      )
+      .join("");
+    if (keeperRows) {
+      sections.push(`<div class="dr-sec">Goalkeepers</div><div class="evs">${keeperRows}</div>`);
+    }
+  } else if (played) {
+    const reason = matches?.missing?.[fixtureId];
+    sections.push(
+      `<p class="dr-note">${
+        reason
+          ? `No box score collected — ${esc(reason)}`
+          : `No box score collected for this match yet. A re-collect of the ${file.season} season fetches it.`
+      }</p>`,
+    );
+  } else {
+    sections.push(`<p class="dr-note">Not played yet.</p>`);
+  }
+
+  const officials =
+    detail?.officials?.length && sections.length
+      ? `<p class="dr-note dim">${detail.officials.map((o) => esc(o)).join(" · ")}</p>`
+      : "";
+  const foot = detail ? `<p class="dr-foot">From the programme&#39;s published box score.</p>` : "";
+  return `<button type="button" class="dr-veil" ${close} aria-label="Close match details"></button>
+    <aside class="drawer" role="dialog" aria-label="Match details" data-close="open-fixture" data-close-payload='{"fixture":null}'
+      data-anchor='${esc(JSON.stringify({ fixture: fixtureId }))}'>
+      ${head}${sections.join("")}${officials}${foot}
     </aside>`;
 }
 
@@ -1694,10 +2106,12 @@ export function composeBoard(input: BoardInput): string {
     : rosters
       ? Object.values(rosters.rosters).reduce((n, r) => n + r.players.length, 0)
       : 0;
+  const matchGaps = Object.keys(input.matches?.missing ?? {}).length;
   const gaps =
     (file.missing?.length ?? 0) +
     (rosters?.missing?.length ?? 0) +
-    (input.stats?.missing?.length ?? 0);
+    (input.stats?.missing?.length ?? 0) +
+    matchGaps;
 
   const subject = team ? displayName(team, names) : file.conference;
 
@@ -1757,6 +2171,7 @@ export function composeBoard(input: BoardInput): string {
           ...(file.missing ?? []).map((m) => `${esc(displayName(m, names))} (schedule)`),
           ...(rosters?.missing ?? []).map((m) => `${esc(displayName(m, names))} (roster)`),
           ...(input.stats?.missing ?? []).map((m) => `${esc(displayName(m, names))} (stats)`),
+          ...(matchGaps ? [`${matchGaps} match box score${matchGaps === 1 ? "" : "s"}`] : []),
         ].join(" · ")} — named rather than dropped; a re-collect retries them.</p>`
       : "",
     played === 0 && shown.length
@@ -1780,7 +2195,7 @@ export function composeBoard(input: BoardInput): string {
     ? matrix(file, shown, names, today)
     : shown.length
       ? `<div class="sec"><h2>Schedule</h2><span class="count">${shown.length} listed</span></div>
-       <div class="led">${shown.map((f) => ledgerRow(f, names, slugs, team)).join("")}</div>`
+       <div class="led">${shown.map((f) => ledgerRow(f, names, slugs, team, input.matches?.matches[f.id])).join("")}</div>`
       : `<div class="sec"><h2>Schedule</h2></div>
        <p class="note">No ${file.season} schedule collected${team ? ` for ${esc(subject)}` : ""}. Ask in the Touchline chat to collect it — the sites publish schedule archives with results back to 2016.</p>`;
 
@@ -1792,8 +2207,10 @@ export function composeBoard(input: BoardInput): string {
       ? rosterBalance(file, rosters)
       : "";
 
-  const drawer =
-    team && input.player
+  // One drawer at a time; the selection state enforces the exclusivity.
+  const drawer = input.fixture
+    ? matchDrawer(input.fixture, file, input.matches, names)
+    : team && input.player
       ? playerDrawer(input.player, roster, teamStats, subject, file.season, played)
       : "";
 

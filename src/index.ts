@@ -32,6 +32,7 @@ import {
   type HomeState,
   listSeasons,
   loadFixtures,
+  loadMatches,
   loadRosters,
   loadStats,
   readMarker,
@@ -43,6 +44,7 @@ import {
   getSelection,
   resetSelection,
   resolveProject,
+  setFixture,
   setPlayer,
   setScope,
   setSeason,
@@ -72,6 +74,7 @@ const selectProjectPayload = z.object({ scopeId: z.string().min(1).optional() })
 const lensPayload = z.object({ team: z.string().min(1).nullable().optional() });
 const seasonPayload = z.object({ season: z.number().int(), gender: z.string().min(1) });
 const playerPayload = z.object({ player: z.string().min(1).nullable().optional() });
+const fixturePayload = z.object({ fixture: z.string().min(1).nullable().optional() });
 
 /** Today as YYYY-MM-DD, UTC. Passed into the composer so its output is a pure
  *  function of (data, date) and a test can pin the day. */
@@ -133,6 +136,7 @@ async function composeTouchlineBoard(): Promise<string> {
   }
   const rs = await loadRosters(root, want.season, want.gender);
   const st = await loadStats(root, want.season, want.gender);
+  const mt = await loadMatches(root, want.season, want.gender);
 
   // A team lens carried across seasons only holds if the team is actually in
   // the season being shown — a 2016 board has three programmes, not seven.
@@ -144,8 +148,10 @@ async function composeTouchlineBoard(): Promise<string> {
     fixtures: fx.value,
     rosters: rs.ok ? rs.value : undefined,
     stats: st.ok ? st.value : undefined,
+    matches: mt.ok ? mt.value : undefined,
     team,
     player: team ? sel.player : undefined,
+    fixture: sel.fixture,
     today: todayIso(),
     seasons: seasons.map((s) => ({ season: s.season, gender: s.gender })),
   });
@@ -387,7 +393,21 @@ const rib: Rib = {
       return { ok: true as const };
     }
 
-    if (action.type === "open-fixture" || action.type === "player-profile") {
+    // Read-only: opens or closes the match drawer — the fixture's box score.
+    if (action.type === "open-fixture") {
+      const parsed = fixturePayload.safeParse(action.payload ?? {});
+      if (!parsed.success) {
+        return {
+          ok: false as const,
+          error: "open-fixture payload must be { fixture?: string | null }",
+        };
+      }
+      setFixture(parsed.data.fixture ?? undefined);
+      refresh();
+      return { ok: true as const };
+    }
+
+    if (action.type === "player-profile") {
       return {
         ok: false as const,
         error: `'${action.type}' is not implemented yet — the research workflow behind it is still to be built.`,

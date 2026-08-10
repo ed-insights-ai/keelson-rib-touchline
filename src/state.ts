@@ -27,6 +27,9 @@ export interface Selection {
   /** Player key for the drawer — SideArm player id when the roster has one,
    *  else the player's name. Only meaningful while a team is selected. */
   player?: string;
+  /** Fixture id for the match drawer. One drawer at a time: selecting a
+   *  fixture clears the player and vice versa. */
+  fixture?: string;
 }
 
 const selection: Selection = {};
@@ -45,6 +48,7 @@ export function setScope(scopeId: string | undefined): void {
   selection.gender = undefined;
   selection.team = undefined;
   selection.player = undefined;
+  selection.fixture = undefined;
 }
 
 export function setSeason(season: number | undefined, gender: string | undefined): void {
@@ -52,15 +56,25 @@ export function setSeason(season: number | undefined, gender: string | undefined
   selection.gender = gender;
   selection.team = undefined;
   selection.player = undefined;
+  selection.fixture = undefined;
 }
 
 export function setTeam(team: string | undefined): void {
-  if (selection.team !== team) selection.player = undefined;
+  if (selection.team !== team) {
+    selection.player = undefined;
+    selection.fixture = undefined;
+  }
   selection.team = team;
 }
 
 export function setPlayer(player: string | undefined): void {
   selection.player = player;
+  if (player !== undefined) selection.fixture = undefined;
+}
+
+export function setFixture(fixture: string | undefined): void {
+  selection.fixture = fixture;
+  if (fixture !== undefined) selection.player = undefined;
 }
 
 export function resetSelection(): void {
@@ -69,6 +83,7 @@ export function resetSelection(): void {
   selection.gender = undefined;
   selection.team = undefined;
   selection.player = undefined;
+  selection.fixture = undefined;
 }
 
 /** The project the board should render, resolved against the live list. */

@@ -920,3 +920,268 @@ def test_an_honest_stats_page_with_no_players_is_empty_not_unavailable() -> None
 
     assert result.state("stats") == "empty"
     assert "listed no players" in (result.outcomes["stats"].reason or "")
+
+
+# ─── box scores ──────────────────────────────────────────────────────────────
+
+
+def _boxscore_html(
+    *,
+    title: str = "Men's Soccer vs Union (TN) on 9/6/2025 - Box Score - Harding University Athletics",
+) -> str:
+    """A box score with the measured shapes: name/abbr span pairs, a winner
+    marker, the Fouls group mislabelled id="offsides", a Totals footer in the
+    goalie table, and an anonymous "#0 0" bench caution."""
+    return f"""<html><head><title>{title}</title></head><body>
+    <dl class="text-center inline">
+      <dt>Date:</dt><dd>09/06/2025</dd>
+      <dt>Time:</dt><dd>07:30</dd>
+      <dt>Stadium:</dt><dd>Smith Memorial Soccer Complex</dd>
+      <dt>Attendance:</dt><dd>115</dd>
+      <dt>Officials</dt><dd>Referee: A Person</dd><dd>Asst. Referee: B Person</dd>
+      <dt>VIEW</dt><dd><a href="/history">Match History</a></dd>
+    </dl>
+    <table><caption>Team Score By Period</caption>
+      <thead><tr><th scope="col">Team</th><th>1</th><th>2</th><th>OT</th><th>Total</th></tr></thead>
+      <tbody>
+      <tr><th scope="row"><span class="hide-on-small-down">Harding</span><span class="hide-on-medium">HU</span></th>
+        <td>0</td><td>1</td><td>1</td><td class="emphasize">2</td></tr>
+      <tr><th scope="row"><span class="boxscore-winner"><span class="sr-only">Winner</span></span>
+        <span class="hide-on-small-down">Union (TN)</span><span class="hide-on-medium">Union</span></th>
+        <td>1</td><td>1</td><td>1</td><td class="emphasize">3</td></tr>
+      </tbody></table>
+    <table><caption>Scoring Summary</caption>
+      <tr><th>Time</th><th>Team</th><th>Description</th></tr>
+      <tr><td>37:00</td><td><span class="hide">HU</span><img alt="HU" src="x.png"></td>
+        <td><span class='text-bold'>Nojus Grudis (4)</span><br>
+        <span class='text-italic'>Assisted By: Romario Castro</span><br>
+        <span class="text-capitalize">pass to middle, shot to bottom right corner</span></td></tr>
+      <tr><td>88:33</td><td><span class="hide">Union</span></td>
+        <td><span class='text-bold'>Solomon Pela (2)</span><br>
+        <span class="text-capitalize">GOAL by Union Pela, Solomon.</span></td></tr>
+    </table>
+    <table><caption>Cautions and Ejections</caption>
+      <tr><th>Time</th><th>Team</th><th>Type</th><th>Player</th></tr>
+      <tr><td class="penalty-type yellow"></td><td>41:45</td><td>Union</td><td>#8 Wesley Mhlanga</td></tr>
+      <tr><td class="penalty-type red"></td><td>81:19</td><td>HU</td><td>#7 Cian Halpin</td></tr>
+      <tr><td class="penalty-type yellow"></td><td>42:54</td><td>HU</td><td>#0 0</td></tr>
+    </table>
+    <table><caption>Team Statistics</caption>
+      <thead><tr><th class="text-hide">Statistic</th><th id="team-period-1">1</th><th id="team-period-2">2</th><th id="total">T</th></tr></thead>
+      <tbody>
+      <tr><th class="header-group" colspan="4" id="shots">Shots</th></tr>
+      <tr><td>HU</td><td headers="team-period-1 shots">3</td><td headers="team-period-2 shots">11</td>
+        <td headers="total shots"><span class="text-bold">14</span> <span class="text-italic">(8)</span></td></tr>
+      <tr><td>Union</td><td headers="team-period-1 shots">6</td><td headers="team-period-2 shots">7</td>
+        <td headers="total shots"><span class="text-bold">13</span> <span class="text-italic">(6)</span></td></tr>
+      <tr><th class="header-group" colspan="4" id="saves">Saves</th></tr>
+      <tr><td>HU</td><td>2</td><td>3</td><td class="text-bold" headers="total saves">5</td></tr>
+      <tr><td>Union</td><td>4</td><td>3</td><td class="text-bold" headers="total saves">7</td></tr>
+      <tr><th class="header-group" colspan="4" id="corners">Corner Kicks</th></tr>
+      <tr><td>HU</td><td>3</td><td>2</td><td headers="total corners">5</td></tr>
+      <tr><td>Union</td><td>1</td><td>4</td><td headers="total corners">5</td></tr>
+      <tr><th class="header-group" colspan="4" id="offsides">Fouls</th></tr>
+      <tr><td>HU</td><td>6</td><td>7</td><td headers="total offsides">13</td></tr>
+      <tr><td>Union</td><td>5</td><td>8</td><td headers="total offsides">13</td></tr>
+      </tbody></table>
+    <table><caption>HU - Player Stats</caption>
+      <tr><th>Pos</th><th>#</th><th>Player</th><th>SH</th><th>SOG</th><th>G</th><th>A</th><th>MIN</th></tr>
+      <tr><th class="header-group" colspan="8">Starters</th></tr>
+      <tr><td class="hide-on-small-down">FWD</td><td class="hide-on-small-down text-center">11</td>
+        <td><span class="hide-on-medium mobile-jersey-number">11</span>
+          <a class="boxscore_player_link" href="/sports/mens-soccer/roster/nojus-grudis/18800">Grudis, Nojus</a></td>
+        <td data-label="SH">4</td><td data-label="SOG">2</td><td data-label="G">1</td><td data-label="A">0</td><td data-label="MIN">90</td></tr>
+      <tr><th class="header-group" colspan="8">Substitutes</th></tr>
+      <tr><td class="hide-on-small-down">MID</td><td class="hide-on-small-down text-center">14</td>
+        <td><span class="hide-on-medium mobile-jersey-number">14</span>
+          <a class="boxscore_player_link" href="/sports/mens-soccer/roster/jimmy-tuyishime/18811">Tuyishime, Jimmy</a></td>
+        <td data-label="SH">2</td><td data-label="SOG">1</td><td data-label="G">1</td><td data-label="A">0</td><td data-label="MIN">45</td></tr>
+    </table>
+    <table><caption>Harding - Goalie Statistics</caption>
+      <tr><th>Position</th><th>#</th><th>Goalie</th><th>Minutes</th><th>GA</th><th>Saves</th></tr>
+      <tr><th class="header-group" colspan="6">Goalkeeping</th></tr>
+      <tr><td class="hide-on-small-down">GK</td><td class="hide-on-small-down text-center">1</td>
+        <td><span class="hide-on-medium mobile-jersey-number">1</span>
+          <a class="boxscore_player_link" href="/sports/mens-soccer/roster/rinner-stewart/19271">Stewart, Rinner</a></td>
+        <td data-label="Mins.">90:00</td><td data-label="GA">3</td><td data-label="S">5</td></tr>
+      <tr><td class="hide-on-small-down"></td><td class="hide-on-small-down"></td><td>Totals</td>
+        <td data-label="Mins.">90:00</td><td data-label="GA">3</td><td data-label="S">5</td></tr>
+    </table>
+    <table><caption>Union - Player Stats</caption>
+      <tr><th>Pos</th><th>#</th><th>Player</th><th>SH</th><th>SOG</th><th>G</th><th>A</th><th>MIN</th></tr>
+      <tr><th class="header-group" colspan="8">Starters</th></tr>
+      <tr><td class="hide-on-small-down">FWD</td><td class="hide-on-small-down text-center">9</td>
+        <td><span class="hide-on-medium mobile-jersey-number">9</span>Pela, Solomon</td>
+        <td data-label="SH">5</td><td data-label="SOG">3</td><td data-label="G">1</td><td data-label="A">0</td><td data-label="MIN">90</td></tr>
+    </table>
+    </body></html>"""
+
+
+_OT_FIXTURE = {
+    "id": "sidearm:harding:14824",
+    "date": "2025-09-06",
+    "home": "union",
+    "away": "harding",
+    "home_score": 3,
+    "away_score": 2,
+    "status": "final",
+}
+
+
+def test_boxscore_parser_reads_the_whole_match() -> None:
+    from src.sidearm_live import orient_match, parse_boxscore_page
+
+    detail = parse_boxscore_page(
+        _boxscore_html(), page_url="https://example.test/boxscore/14824"
+    )
+    orient_match(detail, dict(_OT_FIXTURE))
+
+    harding, union = detail["teams"]
+    assert harding["name"] == "Harding" and harding["abbr"] == "HU"
+    assert harding["periods"] == [0, 1, 1] and harding["score"] == 2
+    assert union["winner"] is True and "winner" not in harding
+    # The Fouls group is mislabelled id="offsides" in the template; the visible
+    # header text must win.
+    assert harding["shots"] == 14 and harding["sog"] == 8
+    assert union["saves"] == 7 and union["corners"] == 5 and union["fouls"] == 13
+    assert "offsides" not in harding
+
+    first, second = detail["scoring"]
+    assert first == {
+        "time": "37:00",
+        "team": 0,
+        "scorer": "Nojus Grudis",
+        "season_total": 4,
+        "assist": "Romario Castro",
+        "description": "pass to middle, shot to bottom right corner",
+    }
+    assert second["team"] == 1 and second["scorer"] == "Solomon Pela"
+
+    yellow, red, bench = detail["cards"]
+    assert yellow == {"type": "yellow", "player": "Wesley Mhlanga", "number": "8", "time": "41:45", "team": 1}
+    assert red["type"] == "red" and red["player"] == "Cian Halpin" and red["team"] == 0
+    assert bench["player"] == "0"  # the site's own anonymous bench caution
+
+    starters = detail["teams"][0]["players"]
+    assert starters[0] == {
+        "name": "Nojus Grudis",
+        "player_id": "18800",
+        "position": "FWD",
+        "number": "11",
+        "started": True,
+        "shots": 4,
+        "sog": 2,
+        "goals": 1,
+        "assists": 0,
+        "minutes": 90,
+    }
+    assert starters[1]["started"] is False and starters[1]["name"] == "Jimmy Tuyishime"
+    keepers = detail["teams"][0]["keepers"]
+    assert len(keepers) == 1  # the Totals footer row is not a person
+    assert keepers[0]["name"] == "Rinner Stewart" and keepers[0]["minutes"] == 90
+    assert detail["teams"][1]["players"][0]["name"] == "Solomon Pela"
+
+    assert detail["stadium"] == "Smith Memorial Soccer Complex"
+    assert detail["attendance"] == 115 and detail["kickoff"] == "07:30"
+    assert detail["officials"] == ["Referee: A Person", "Asst. Referee: B Person"]
+    # Decided match orients by score: Union 3 = home.
+    assert detail["home_index"] == 1
+
+
+def test_a_boxscore_for_another_date_is_refused_by_name() -> None:
+    from src.sidearm_live import assert_served_match
+
+    page = PublishedPage(
+        "https://example.test/stats/2025/union/boxscore/14824",
+        "https://example.test/stats/2025/union/boxscore/14824",
+        _boxscore_html(
+            title="Men's Soccer vs Union (TN) on 9/7/2025 - Box Score - Example"
+        ),
+    )
+    with pytest.raises(LiveCollectionError) as refused:
+        assert_served_match(page, 2025, dict(_OT_FIXTURE))
+    assert "2025-09-06" in str(refused.value) and "2025-09-07" in str(refused.value)
+
+
+def test_a_covid_season_boxscore_dated_the_following_spring_is_accepted() -> None:
+    from src.sidearm_live import assert_served_match
+
+    page = PublishedPage(
+        "https://example.test/stats/2020/rogers-state/boxscore/900",
+        "https://example.test/stats/2020/rogers-state/boxscore/900",
+        "<html><head><title>Men's Soccer vs Rogers State on 4/3/2021 - Box Score - Example</title></head></html>",
+    )
+    assert_served_match(
+        page, 2020, {"id": "sidearm:x:900", "date": "2021-04-03"}
+    )
+
+
+def test_a_boxscore_redirected_to_the_schedule_is_refused() -> None:
+    from src.sidearm_live import assert_served_match
+
+    page = PublishedPage(
+        "https://example.test/stats/2026/x/boxscore/1",
+        "https://example.test/sports/mens-soccer/schedule",
+        "<html><head><title>2026 Men's Soccer Schedule</title></head></html>",
+    )
+    with pytest.raises(LiveCollectionError, match="not a box-score page"):
+        assert_served_match(page, 2026, {"id": "sidearm:x:1", "date": "2026-09-01"})
+
+
+def test_a_draw_orients_by_name_affinity_not_score() -> None:
+    from src.sidearm_live import orient_match
+
+    detail = {
+        "teams": [
+            {"name": "Northeastern St.", "score": 1},
+            {"name": "Harding", "score": 1},
+        ]
+    }
+    orient_match(
+        detail,
+        {
+            "home": "harding",
+            "away": "northeastern-state",
+            "home_score": 1,
+            "away_score": 1,
+        },
+    )
+    assert detail["home_index"] == 1
+
+
+def test_an_unresolvable_draw_stays_unoriented() -> None:
+    from src.sidearm_live import orient_match
+
+    detail = {"teams": [{"name": "Alpha", "score": 0}, {"name": "Beta", "score": 0}]}
+    orient_match(detail, {"home": "gamma", "away": "delta", "home_score": 0, "away_score": 0})
+    assert "home_index" not in detail
+
+
+def test_boxscore_links_join_on_the_game_id() -> None:
+    from src.sidearm_live import boxscore_links
+
+    html = (
+        '<a href="/sports/mens-soccer/stats/2025/union-tn-/boxscore/14824">Box Score</a>'
+        '<a href="/sports/mens-soccer/stats/2025/drury/boxscore/14820">Box Score</a>'
+    )
+    links = boxscore_links(html, "https://example.test/sports/mens-soccer/schedule/2025")
+    assert links == {
+        "14824": "https://example.test/sports/mens-soccer/stats/2025/union-tn-/boxscore/14824",
+        "14820": "https://example.test/sports/mens-soccer/stats/2025/drury/boxscore/14820",
+    }
+
+
+def test_collect_match_proves_and_parses_one_fixture() -> None:
+    from src.sidearm_live import collect_match
+
+    response = MagicMock()
+    response.url = "https://example.test/sports/mens-soccer/stats/2025/union-tn-/boxscore/14824"
+    response.text = _boxscore_html()
+    session = MagicMock()
+    session.get.return_value = response
+
+    detail = collect_match(session, response.url, 2025, dict(_OT_FIXTURE))
+
+    assert detail["home_index"] == 1
+    assert detail["teams"][0]["name"] == "Harding"
+    assert detail["source_url"].endswith("/boxscore/14824")

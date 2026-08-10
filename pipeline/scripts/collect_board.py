@@ -1,4 +1,4 @@
-"""Collect published schedule, roster, and statistics pages into the board contract.
+"""Collect published schedule, roster, statistics, and box-score pages into the board contract.
 
 Layers are collected independently.  A site can serve a past season's schedule
 from its DOM archive while its embedded payload still names the current season,
@@ -18,6 +18,7 @@ import argparse
 import json
 import os
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -25,11 +26,17 @@ from src import coverage, paths
 from src.config import DEFAULT_CONFIG, load_schools
 from src.sidearm_live import (
     DEFAULT_LAYERS,
+    LAYER_MATCHES,
     LAYER_ROSTER,
     LAYER_SCHEDULE,
     LAYER_STATS,
     STATE_COMPLETE,
     STATE_EMPTY,
+    STATE_UNAVAILABLE,
+    LiveCollectionError,
+    boxscore_links,
+    build_session,
+    collect_match,
     collect_programme,
     identity_aliases,
     programme_slug,
@@ -39,6 +46,7 @@ from src.sidearm_live import (
 FIXTURES_SCHEMA = "touchline.fixtures/1"
 ROSTERS_SCHEMA = "touchline.rosters/1"
 STATS_SCHEMA = "touchline.stats/1"
+MATCHES_SCHEMA = "touchline.matches/1"
 
 COLLECTOR = "sidearm-live"
 
@@ -125,6 +133,7 @@ def collect(
     config_path: Path,
     membership_extrapolated: bool,
 ) -> tuple[
+    dict[str, object],
     dict[str, object],
     dict[str, object],
     dict[str, object],
@@ -298,7 +307,127 @@ def collect(
     if stats_missing and LAYER_STATS in layers:
         stats_payload["missing"] = stats_missing
 
-    return fixture_payload, roster_payload, stats_payload, cells, errors, duplicates
+    matches: dict[str, object] = {}
+    matches_missing: dict[str, str] = {}
+    if LAYER_MATCHES in layers:
+        # One box score per deduplicated fixture: a conference game sits on two
+        # schedules, and each publishes its own link to the same match under its
+        # own game id.  Every published (owner, id) pair is a candidate, so a
+        # missing or refusing link on the surviving row's site can still be
+        # collected through the other programme's link.
+        links_by_owner = {
+            result.slug: boxscore_links(
+                result.schedule_html, result.schedule_url or ""
+            )
+            for result in results
+            if result.schedule_html
+        }
+        candidates_by_match: dict[tuple[str, str, str], list[str]] = {}
+        for fixture in all_fixtures:
+            pair = sorted((str(fixture["home"]), str(fixture["away"])))
+            key = (str(fixture["date"]), pair[0], pair[1])
+            owner, _, game_id = str(fixture["id"]).rpartition(":")
+            owner = owner.split(":")[-1]
+            url = links_by_owner.get(owner, {}).get(game_id)
+            if url:
+                candidates_by_match.setdefault(key, []).append(url)
+
+        session = build_session()
+        for fixture in fixtures:
+            if str(fixture.get("status")) != "final":
+                continue
+            fixture_id = str(fixture["id"])
+            pair = sorted((str(fixture["home"]), str(fixture["away"])))
+            key = (str(fixture["date"]), pair[0], pair[1])
+            urls = candidates_by_match.get(key, [])
+            if not urls:
+                matches_missing[fixture_id] = (
+                    "no box-score link on any collected schedule page"
+                )
+                errors.append(
+                    f"match {fixture_id}: no box-score link on any collected schedule page"
+                )
+                continue
+            failures: list[str] = []
+            for url in urls:
+                try:
+                    matches[fixture_id] = collect_match(session, url, season, fixture)
+                    break
+                except LiveCollectionError as exc:
+                    failures.append(str(exc))
+                finally:
+                    time.sleep(0.2)
+            else:
+                matches_missing[fixture_id] = "; ".join(failures)
+                errors.append(f"match {fixture_id}: {'; '.join(failures)}")
+
+        for result in results:
+            if result.state(LAYER_SCHEDULE) not in {STATE_COMPLETE, STATE_EMPTY}:
+                record(
+                    result.slug,
+                    LAYER_MATCHES,
+                    STATE_UNAVAILABLE,
+                    reason=f"[{season}] no proven schedule to take box-score links from",
+                )
+                continue
+            involved = [
+                fixture
+                for fixture in fixtures
+                if str(fixture.get("status")) == "final"
+                and result.slug in (str(fixture["home"]), str(fixture["away"]))
+            ]
+            collected = [
+                fixture for fixture in involved if str(fixture["id"]) in matches
+            ]
+            if not involved:
+                record(
+                    result.slug,
+                    LAYER_MATCHES,
+                    STATE_EMPTY,
+                    count=0,
+                    reason=f"[{season}] no played fixtures to detail",
+                )
+            elif len(collected) == len(involved):
+                record(
+                    result.slug, LAYER_MATCHES, STATE_COMPLETE, count=len(collected)
+                )
+            else:
+                gaps = [
+                    str(fixture["id"])
+                    for fixture in involved
+                    if str(fixture["id"]) not in matches
+                ]
+                record(
+                    result.slug,
+                    LAYER_MATCHES,
+                    STATE_COMPLETE if collected else STATE_UNAVAILABLE,
+                    count=len(collected),
+                    reason=(
+                        f"[{season}] box scores missing for "
+                        f"{len(gaps)} of {len(involved)} played fixtures: "
+                        + ", ".join(gaps)
+                    ),
+                )
+
+    matches_payload: dict[str, object] = {
+        "schema": MATCHES_SCHEMA,
+        "season": season,
+        "gender": gender,
+        "collected_at": now,
+        "matches": matches,
+    }
+    if matches_missing:
+        matches_payload["missing"] = matches_missing
+
+    return (
+        fixture_payload,
+        roster_payload,
+        stats_payload,
+        matches_payload,
+        cells,
+        errors,
+        duplicates,
+    )
 
 
 def widen_to_existing_scope(
@@ -347,7 +476,7 @@ def main() -> int:
     parser.add_argument(
         "--layers",
         default=",".join(DEFAULT_LAYERS),
-        help="Comma-separated layers to collect: schedule, roster, stats.",
+        help="Comma-separated layers to collect: schedule, roster, stats, matches.",
     )
     args = parser.parse_args()
 
@@ -360,6 +489,7 @@ def main() -> int:
     fixture_path = data_root / "data" / "fixtures" / f"{args.season}-{args.gender}.json"
     roster_path = data_root / "data" / "rosters" / f"{args.season}-{args.gender}.json"
     stats_path = data_root / "data" / "stats" / f"{args.season}-{args.gender}.json"
+    matches_path = data_root / "data" / "matches" / f"{args.season}-{args.gender}.json"
     wanted, widened = widen_to_existing_scope(
         wanted, fixture_path, roster_path, stats_path
     )
@@ -381,8 +511,14 @@ def main() -> int:
     if not layers:
         print("--layers resolved to an empty list", file=sys.stderr)
         return 2
+    if LAYER_MATCHES in layers and LAYER_SCHEDULE not in layers:
+        print(
+            "matches are collected through the schedule's own box-score links, "
+            "so the schedule layer is included as well."
+        )
+        layers = (LAYER_SCHEDULE, *layers)
 
-    fixtures, rosters, stats, cells, errors, duplicates = collect(
+    fixtures, rosters, stats, matches, cells, errors, duplicates = collect(
         season=args.season,
         gender=args.gender,
         conference=args.conference,
@@ -401,6 +537,9 @@ def main() -> int:
     if LAYER_STATS in layers:
         _atomic_json(stats_path, stats)
         written.append(stats_path)
+    if LAYER_MATCHES in layers:
+        _atomic_json(matches_path, matches)
+        written.append(matches_path)
 
     # The manifest is the run's real deliverable: it is what lets the next ask
     # be about what is missing rather than about everything.
@@ -438,6 +577,14 @@ def main() -> int:
         )
         served = len(wanted) - len(stats.get("missing", []))
         print(f"stats: {served}/{len(wanted)} programmes, {lines} player season lines")
+    if LAYER_MATCHES in layers:
+        played = sum(
+            1 for fixture in fixtures["fixtures"] if fixture["status"] == "final"
+        )
+        print(
+            f"matches: {len(matches['matches'])} of {played} played fixtures "
+            f"carry a collected box score"
+        )
 
     if duplicates:
         print(

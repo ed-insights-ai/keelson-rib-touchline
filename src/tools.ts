@@ -254,7 +254,7 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
   const collectTool: ToolDefinition = {
     name: "touchline_collect",
     description:
-      "The front door: collect published college-soccer data for a conference or one programme into the project, and light up the Touchline board. Any season back to 2016 serves its schedule (results included), its roster, and its player season statistics from each site's published archive; the rare (site, season) refusal comes back as a named gap. Use when the user asks to get, retrieve, pull down or scrape a schedule, roster, past results or player stats.",
+      "The front door: collect published college-soccer data for a conference or one programme into the project, and light up the Touchline board. Any season back to 2016 serves its schedule (results included), its roster, its player season statistics, and a box score for every played match from each site's published archive; the rare (site, season) refusal comes back as a named gap. Use when the user asks to get, retrieve, pull down or scrape a schedule, roster, past results, player stats or match statistics.",
     inputSchema: z.object({
       target: z
         .string()
@@ -270,7 +270,7 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
         .int()
         .optional()
         .describe(
-          `Season year, ${TOUCHLINE_V1_SEASON} by default. Any year back to 2016 collects that season's schedule, roster, and player statistics.`,
+          `Season year, ${TOUCHLINE_V1_SEASON} by default. Any year back to 2016 collects that season's schedule, roster, player statistics, and per-match box scores.`,
         ),
       project: z
         .string()

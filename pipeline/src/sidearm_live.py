@@ -27,6 +27,19 @@ site measured (2026-08-10, seven sites, back to 2016), so the wrapper check
 in ``assert_served_season`` is the whole guard; there is no payload to trap
 it.  ``parse_stats_page`` reads the individual offensive and goalkeeping
 tables into per-player season lines.
+
+The matches layer reads the per-game box-score pages that every schedule
+page links for its played fixtures (measured 2026-08-10, 63 (site, season)
+cells across seven sites back to 2016, COVID 2020 included): the link's
+trailing id IS the schedule's own game id, and the page is fully
+server-rendered — captioned tables for score by period, scoring summary,
+cautions, team statistics, and per-team player and goalie lines.  The page
+proves WHICH match it is: its title reads "vs <Opponent> on M/D/YYYY - Box
+Score", and ``assert_served_match`` requires that date to equal the
+fixture's own date.  The season year alone would be the wrong anchor — the
+COVID 2020 season's matches were played in spring 2021 and their titles
+honestly say so.  A goalless match legitimately omits the Scoring Summary
+table, so no guard may require it.
 """
 
 from __future__ import annotations
@@ -61,7 +74,16 @@ class PublishedPage:
 LAYER_SCHEDULE = "schedule"
 LAYER_ROSTER = "roster"
 LAYER_STATS = "stats"
-DEFAULT_LAYERS: tuple[str, ...] = (LAYER_SCHEDULE, LAYER_ROSTER, LAYER_STATS)
+# Collected per deduplicated fixture by the board collector, not per programme
+# in `collect_programme` — a conference game appears on two schedules but its
+# box score should be fetched once.
+LAYER_MATCHES = "matches"
+DEFAULT_LAYERS: tuple[str, ...] = (
+    LAYER_SCHEDULE,
+    LAYER_ROSTER,
+    LAYER_STATS,
+    LAYER_MATCHES,
+)
 
 # The vocabulary the coverage manifest renders.  These three states are the
 # whole reason the manifest exists: an empty results column means something
@@ -892,6 +914,443 @@ def parse_stats_page(
         keepers.append(raw)
 
     return players, keepers
+
+
+def boxscore_links(schedule_html: str, base_url: str) -> dict[str, str]:
+    """Map game id → absolute box-score URL from a schedule page's own links.
+
+    The trailing id in ``…/boxscore/<id>`` is the same game id the schedule's
+    fixtures carry, so this is an exact join.  The opponent slug inside the
+    URL is cosmetic — the id alone selects the match — but the served href is
+    kept verbatim rather than reconstructed.
+    """
+    links: dict[str, str] = {}
+    for match in re.finditer(r'href="([^"]*?/boxscore/(\d+))"', schedule_html):
+        links.setdefault(match.group(2), urljoin(base_url, match.group(1)))
+    return links
+
+
+def _title_box_date(html: str) -> tuple[str | None, str]:
+    title = BeautifulSoup(html, "lxml").title
+    text = title.get_text(" ") if title is not None else ""
+    match = re.search(r"\bon\s+(\d{1,2})/(\d{1,2})/(\d{4})", text)
+    if not match:
+        return None, text
+    month, day, year = (int(part) for part in match.groups())
+    return f"{year:04d}-{month:02d}-{day:02d}", text
+
+
+def assert_served_match(page: PublishedPage, year: int, fixture: dict[str, object]) -> None:
+    """A box score must prove WHICH match it is, not merely which season.
+
+    The title reads "vs <Opponent> on M/D/YYYY - Box Score" and that date must
+    equal the fixture's own date.  Matching on the season year instead would
+    wrongly refuse every COVID-2020 match — played in spring 2021, and titled
+    so, under an honest ``/stats/2020/`` URL.
+    """
+    fixture_id = str(fixture.get("id", ""))
+    if "/boxscore/" not in urlparse(page.final_url).path:
+        raise LiveCollectionError(
+            f"[{year}] {fixture_id}: {page.requested_url} redirected to "
+            f"{page.final_url}, which is not a box-score page"
+        )
+    served_date, title_text = _title_box_date(page.html)
+    if not re.search(r"box\s*score", title_text, re.I):
+        raise LiveCollectionError(
+            f"[{year}] {fixture_id}: {page.final_url} does not title itself a box score"
+        )
+    if served_date is None:
+        raise LiveCollectionError(
+            f"[{year}] {fixture_id}: cannot prove which match {page.final_url} "
+            f"served — its title names no match date"
+        )
+    if served_date != str(fixture.get("date")):
+        raise LiveCollectionError(
+            f"[{year}] {fixture_id}: requested the {fixture.get('date')} match "
+            f"but {page.final_url} served the match of {served_date}"
+        )
+
+
+def _box_span_pair(node: object) -> tuple[str, str]:
+    """SideArm renders team identity twice per cell: full name for wide
+    viewports, abbreviation for narrow ones."""
+    full = node.find("span", class_="hide-on-small-down")  # type: ignore[attr-defined]
+    abbr = node.find("span", class_="hide-on-medium")  # type: ignore[attr-defined]
+    return (
+        full.get_text(strip=True) if full is not None else "",
+        abbr.get_text(strip=True) if abbr is not None else "",
+    )
+
+
+# Visible header-group text → detail field.  Keyed by text, not element id:
+# the SideArm template mislabels the Fouls group with id="offsides".
+_TEAM_STAT_LABELS = {
+    "shots": "shots",
+    "saves": "saves",
+    "corner kicks": "corners",
+    "fouls": "fouls",
+    "offsides": "offsides",
+}
+
+
+def _box_player_name(cell: object) -> tuple[str, str | None]:
+    anchor = cell.find("a")  # type: ignore[attr-defined]
+    node = anchor if anchor is not None else cell
+    name = _stats_player_name(node.get_text(" ", strip=True))
+    player_id = None
+    if anchor is not None:
+        match = re.search(r"/(\d+)/?$", str(anchor.get("href", "")))
+        if match:
+            player_id = match.group(1)
+    return name, player_id
+
+
+def parse_boxscore_page(html: str, *, page_url: str) -> dict[str, object]:
+    """Read one match's published detail off its box-score page.
+
+    Team references (scoring summary, cautions, player-table captions) use
+    whatever abbreviation the page chose — consistent within a page, not
+    across pages, and sometimes truncated ("Hardin") — so every reference is
+    resolved against the score-by-period table's own name/abbreviation pairs
+    and stored as an index into ``teams``.
+    """
+    soup = BeautifulSoup(html, "lxml")
+
+    def captioned(predicate: object) -> list[tuple[str, object]]:
+        found = []
+        for table in soup.find_all("table"):
+            caption = table.find("caption")
+            if caption is None:
+                continue
+            text = re.sub(r"\s+", " ", caption.get_text(strip=True))
+            if predicate(text):  # type: ignore[operator]
+                found.append((text, table))
+        return found
+
+    teams: list[dict[str, object]] = []
+    for _, table in captioned(lambda text: text == "Team Score By Period"):
+        for row in table.find_all("tr"):
+            header = row.find("th", scope="row")
+            if header is None:
+                continue
+            name, abbr = _box_span_pair(header)
+            if not name and not abbr:
+                continue
+            cells = [_stat_int(cell.get_text(strip=True)) for cell in row.find_all("td")]
+            team: dict[str, object] = {"name": name or abbr}
+            if abbr:
+                team["abbr"] = abbr
+            if cells and cells[-1] is not None:
+                team["score"] = cells[-1]
+            team["periods"] = [value for value in cells[:-1] if value is not None]
+            if header.find("span", class_="boxscore-winner") is not None:
+                team["winner"] = True
+            teams.append(team)
+        break
+
+    def side(reference: str) -> int | None:
+        text = reference.strip()
+        if not text:
+            return None
+        for index, team in enumerate(teams):
+            if text in {team.get("abbr"), team.get("name")}:
+                return index
+        return None
+
+    for _, table in captioned(lambda text: text == "Team Statistics"):
+        field = None
+        for row in table.find_all("tr"):
+            group = row.find("th", class_="header-group")
+            if group is not None:
+                field = _TEAM_STAT_LABELS.get(group.get_text(strip=True).lower())
+                continue
+            cells = row.find_all("td")
+            if field is None or not cells:
+                continue
+            index = side(cells[0].get_text(strip=True))
+            if index is None:
+                continue
+            total_cell = cells[-1]
+            bold = total_cell.find("span", class_="text-bold")
+            total = _stat_int(
+                bold.get_text(strip=True) if bold is not None else total_cell.get_text(strip=True)
+            )
+            if total is not None:
+                teams[index][field] = total
+            if field == "shots":
+                italic = total_cell.find("span", class_="text-italic")
+                on_goal = re.search(r"\((\d+)\)", italic.get_text() if italic is not None else "")
+                if on_goal:
+                    teams[index]["sog"] = int(on_goal.group(1))
+        break
+
+    scoring: list[dict[str, object]] = []
+    for _, table in captioned(lambda text: text == "Scoring Summary"):
+        for row in table.find_all("tr"):
+            cells = row.find_all("td")
+            if len(cells) < 3:
+                continue
+            entry: dict[str, object] = {}
+            clock = cells[0].get_text(strip=True)
+            if clock:
+                entry["time"] = clock
+            hidden = cells[1].find("span", class_="hide")
+            image = cells[1].find("img")
+            reference = (
+                hidden.get_text(strip=True)
+                if hidden is not None
+                else str(image.get("alt", "")) if image is not None else cells[1].get_text(strip=True)
+            )
+            index = side(reference)
+            if index is not None:
+                entry["team"] = index
+            bold = cells[2].find("span", class_="text-bold")
+            scorer = bold.get_text(" ", strip=True) if bold is not None else ""
+            count = re.search(r"^(.*?)\s*\((\d+)\)\s*$", scorer)
+            if count:
+                entry["scorer"] = count.group(1)
+                entry["season_total"] = int(count.group(2))
+            elif scorer:
+                entry["scorer"] = scorer
+            italic = cells[2].find("span", class_="text-italic")
+            if italic is not None:
+                assist = re.sub(r"^Assisted\s+By:\s*", "", italic.get_text(" ", strip=True), flags=re.I)
+                if assist:
+                    entry["assist"] = assist
+            described = cells[2].find("span", class_="text-capitalize")
+            if described is not None:
+                description = described.get_text(" ", strip=True)
+                if description:
+                    entry["description"] = description
+            if entry.get("scorer"):
+                scoring.append(entry)
+        break
+
+    cards: list[dict[str, object]] = []
+    for _, table in captioned(lambda text: text == "Cautions and Ejections"):
+        for row in table.find_all("tr"):
+            cells = row.find_all("td")
+            if len(cells) < 4:
+                continue
+            kind_classes = set(cells[0].get("class") or [])
+            kind = next(
+                (value for value in ("yellow", "red") if value in kind_classes), None
+            )
+            player_text = cells[3].get_text(" ", strip=True)
+            number = re.match(r"#(\d+)\s+(.*)", player_text)
+            entry = {
+                "type": kind or "unknown",
+                "player": number.group(2) if number else player_text,
+            }
+            if number:
+                entry["number"] = number.group(1)
+            clock = cells[1].get_text(strip=True)
+            if clock:
+                entry["time"] = clock
+            index = side(cells[2].get_text(strip=True))
+            if index is not None:
+                entry["team"] = index
+            if entry["player"]:
+                cards.append(entry)
+        break
+
+    def match_lines(suffix: str) -> dict[int, object]:
+        by_side: dict[int, object] = {}
+        for text, table in captioned(lambda value, suffix=suffix: value.endswith(suffix)):
+            index = side(text[: -len(suffix)].strip())
+            if index is None:
+                continue
+            lines: list[dict[str, object]] = []
+            started: bool | None = None
+            for row in table.find_all("tr"):
+                group = row.find("th", class_="header-group")
+                if group is not None:
+                    label = group.get_text(strip=True).lower()
+                    started = True if label == "starters" else False if label == "substitutes" else None
+                    continue
+                cells = row.find_all("td")
+                labelled = {
+                    str(cell.get("data-label")): cell.get_text(" ", strip=True)
+                    for cell in cells
+                    if cell.get("data-label")
+                }
+                name_cell = next(
+                    (cell for cell in cells if not cell.get("data-label") and cell.find("a") is not None),
+                    None,
+                )
+                if name_cell is None:
+                    name_cell = next(
+                        (
+                            cell
+                            for cell in cells
+                            if not cell.get("data-label")
+                            and re.search(r"[A-Za-z]{2}", cell.get_text(strip=True))
+                            and "hide-on-small-down" not in (cell.get("class") or [])
+                        ),
+                        None,
+                    )
+                if not labelled or name_cell is None:
+                    continue
+                jersey = name_cell.find("span", class_="mobile-jersey-number")
+                if jersey is not None:
+                    jersey.extract()
+                name, player_id = _box_player_name(name_cell)
+                # Footer rows ("Totals", "TM Team") carry data-labelled cells
+                # too; only real people belong in a match line.
+                if not name or name.lower() in {"totals", "team", "tm", "tm team", "team tm"}:
+                    continue
+                line: dict[str, object] = {"name": name}
+                if player_id:
+                    line["player_id"] = player_id
+                plain = [
+                    cell.get_text(strip=True)
+                    for cell in cells
+                    if not cell.get("data-label") and cell is not name_cell
+                ]
+                position = next((value for value in plain if re.fullmatch(r"[A-Za-z]{1,3}", value)), None)
+                number = next((value for value in plain if re.fullmatch(r"\d{1,3}", value)), None)
+                if position:
+                    line["position"] = position
+                if number:
+                    line["number"] = number
+                if started is not None:
+                    line["started"] = started
+                for label, (field, convert) in (
+                    {
+                        "SH": ("shots", _stat_int),
+                        "SOG": ("sog", _stat_int),
+                        "G": ("goals", _stat_int),
+                        "A": ("assists", _stat_int),
+                        "MIN": ("minutes", _stat_minutes),
+                        "Mins.": ("minutes", _stat_minutes),
+                        "GA": ("goals_against", _stat_int),
+                        "S": ("saves", _stat_int),
+                    }
+                ).items():
+                    value = convert(labelled.get(label, ""))
+                    if value is not None:
+                        line[field] = value
+                lines.append(line)
+            by_side[index] = lines
+        return by_side
+
+    for index, lines in match_lines(" - Player Stats").items():
+        teams[index]["players"] = lines
+    for index, lines in match_lines(" - Goalie Statistics").items():
+        teams[index]["keepers"] = lines
+
+    detail: dict[str, object] = {"source_url": page_url, "teams": teams}
+    if scoring:
+        detail["scoring"] = scoring
+    if cards:
+        detail["cards"] = cards
+
+    for block in soup.find_all("dl"):
+        entries: dict[str, list[str]] = {}
+        key = None
+        for child in block.find_all(["dt", "dd"]):
+            if child.name == "dt":
+                key = child.get_text(strip=True).rstrip(":").lower()
+                entries.setdefault(key, [])
+            elif key is not None:
+                entries[key].append(child.get_text(" ", strip=True))
+        if "stadium" not in entries and "attendance" not in entries:
+            continue
+        stadium = next(iter(entries.get("stadium", [])), "")
+        if stadium:
+            detail["stadium"] = stadium
+        attendance = _stat_int(next(iter(entries.get("attendance", [])), ""))
+        if attendance is not None:
+            detail["attendance"] = attendance
+        kickoff = next(iter(entries.get("time", [])), "")
+        if kickoff:
+            detail["kickoff"] = kickoff
+        officials = [value for value in entries.get("officials", []) if ":" in value]
+        if officials:
+            detail["officials"] = officials
+        break
+
+    return detail
+
+
+def _name_slug_affinity(name: str, slug: str) -> int:
+    """How strongly a served team name resembles a fixture slug, by token
+    overlap with prefix credit — "Northeastern St." must beat "Harding" for
+    the slug ``northeastern-state``."""
+    name_tokens = re.findall(r"[a-z0-9]+", name.lower())
+    slug_tokens = [token for token in slug.split("-") if token]
+    score = 0
+    for left in name_tokens:
+        for right in slug_tokens:
+            if left == right:
+                score += 2
+            elif left.startswith(right) or right.startswith(left):
+                score += 1
+    return score
+
+
+def orient_match(detail: dict[str, object], fixture: dict[str, object]) -> None:
+    """Record which served side is the fixture's home team, when provable.
+
+    A decided match orients by score; a draw falls back to name affinity
+    against the fixture's own slugs.  When neither is conclusive the match
+    stays unoriented — the served order still renders honestly.
+    """
+    teams = detail.get("teams")
+    if not isinstance(teams, list) or len(teams) != 2:
+        return
+    home_score = fixture.get("home_score")
+    away_score = fixture.get("away_score")
+    first, second = (team.get("score") for team in teams)
+    if (
+        isinstance(home_score, int)
+        and isinstance(away_score, int)
+        and home_score != away_score
+        and first is not None
+        and second is not None
+    ):
+        if (first, second) == (home_score, away_score):
+            detail["home_index"] = 0
+        elif (first, second) == (away_score, home_score):
+            detail["home_index"] = 1
+        return
+    home_slug, away_slug = str(fixture.get("home", "")), str(fixture.get("away", ""))
+    straight = _name_slug_affinity(str(teams[0].get("name", "")), home_slug) + _name_slug_affinity(
+        str(teams[1].get("name", "")), away_slug
+    )
+    crossed = _name_slug_affinity(str(teams[0].get("name", "")), away_slug) + _name_slug_affinity(
+        str(teams[1].get("name", "")), home_slug
+    )
+    if straight > crossed:
+        detail["home_index"] = 0
+    elif crossed > straight:
+        detail["home_index"] = 1
+
+
+def collect_match(
+    session: requests.Session,
+    url: str,
+    year: int,
+    fixture: dict[str, object],
+) -> dict[str, object]:
+    """Fetch one fixture's box score, prove it is that fixture's, and parse it."""
+    try:
+        response = session.get(url, timeout=30)
+        response.raise_for_status()
+    except requests.RequestException as exc:
+        raise LiveCollectionError(
+            f"[{year}] {fixture.get('id')}: failed to fetch box score {url}: {exc}"
+        ) from exc
+    page = PublishedPage(url, response.url, response.text)
+    assert_served_match(page, year, fixture)
+    detail = parse_boxscore_page(response.text, page_url=response.url)
+    if not detail.get("teams"):
+        raise LiveCollectionError(
+            f"[{year}] {fixture.get('id')}: {response.url} proved its match but "
+            f"rendered no score-by-period table"
+        )
+    orient_match(detail, fixture)
+    return detail
 
 
 def collect_programme(
