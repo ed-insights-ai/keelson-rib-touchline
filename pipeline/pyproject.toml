@@ -26,6 +26,7 @@ build-canon = "scripts.build_canon:main"
 check-membership = "scripts.check_membership:main"
 export-board = "scripts.export_board:main"
 collect-board = "scripts.collect_board:main"
+build-digest = "scripts.build_digest:main"
 
 [build-system]
 requires = ["hatchling"]
