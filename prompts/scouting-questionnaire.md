@@ -55,6 +55,12 @@ content contract — tune it here, not in code.
 - F1. The same form, patterns, turnover, and returning-threat treatment,
   written as a self-assessment: what does the record say we were, what
   walked back in the door, and what do the numbers say we must fix?
+- F2. **The summer ledger**: what did our own roster do between seasons that
+  the public record can verify — summer-league minutes (USL League Two,
+  NPSL, UPSL), national or youth-national call-ups, honors, notable club
+  activity? Deep-search every rostered player. Only findings verified at a
+  source make the ledger; an empty summer renders as nothing, never as
+  filler.
 
 ## The watch list (once)
 
