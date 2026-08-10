@@ -6,8 +6,13 @@ description: |
   NOT for: whole-roster sweeps (touchline-report's research stage) or collecting season data (touchline-collect).
 
 requiresProject: false
-# Writes the profile and research files into the data home.
+# Writes only per-player files (data/players/..., data/reports/research/
+# players/...), which are disjoint between runs — so profile runs can fan out
+# in PARALLEL against one data home. `shared` keeps them mutually exclusive
+# with a mutating run (a collect rewriting season files) without serializing
+# them against each other.
 mutates_checkout: true
+locking: shared
 webSearchMode: live
 tags: [soccer, touchline, player, profile, scouting]
 
