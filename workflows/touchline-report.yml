@@ -55,6 +55,7 @@ nodes:
         printf 'REFUSED: touchline-data.yaml declares kind=%s, not touchline-data.\n' "${KIND:-(none)}"
         exit 1
       fi
+      printf 'data home: %s\n' "$PWD"
       for v in KEELSON_INPUTS_season KEELSON_INPUTS_gender KEELSON_INPUTS_focus; do
         eval "val=\${$v:-}"
         if [ -z "$val" ]; then
@@ -171,7 +172,11 @@ nodes:
            claim you believe but cannot capture at a URL goes in
            attested_uncaptured, NOT in findings. "Nothing found" per player
            is a normal result.
-        6. Write data/reports/research/$inputs.season-$inputs.gender/research-<slug>.json:
+        6. Write the file INSIDE THE DATA HOME (the absolute directory on
+           the 'data home:' line of: $preflight.output) — reading contracts
+           takes you into the pipeline package, but output written relative
+           to anywhere else is silently lost — at
+           data/reports/research/$inputs.season-$inputs.gender/research-<slug>.json:
            {
              "schema": "touchline.research/1",
              "programme": "<slug>",
@@ -203,7 +208,9 @@ nodes:
       survives. A finding whose page cannot be fetched or does not support the
       text is dropped — recorded, never softened into the report.
 
-      Write data/reports/research/$inputs.season-$inputs.gender/verified.json:
+      Write — under the data home named on the 'data home:' line of
+      $preflight.output, never relative to another directory —
+      data/reports/research/$inputs.season-$inputs.gender/verified.json:
       {
         "schema": "touchline.research-verified/1",
         "findings": [ ...surviving findings, unchanged... ],

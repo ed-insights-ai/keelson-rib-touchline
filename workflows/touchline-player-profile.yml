@@ -55,8 +55,9 @@ nodes:
         men|women) ;;
         *) printf 'REFUSED: gender must be men or women, not %s.\n' "$KEELSON_INPUTS_gender"; exit 1 ;;
       esac
-      printf 'profile target: %s (%s, %s) in %s\n' \
-        "$KEELSON_INPUTS_player" "$KEELSON_INPUTS_programme" "$KEELSON_INPUTS_gender" "$PWD"
+      printf 'profile target: %s (%s, %s)\n' \
+        "$KEELSON_INPUTS_player" "$KEELSON_INPUTS_programme" "$KEELSON_INPUTS_gender"
+      printf 'data home: %s\n' "$PWD"
 
   - id: resolve-pipeline
     depends_on: [preflight]
@@ -116,8 +117,15 @@ nodes:
       findings array; "no indexed mention" surfaces go in unswept with the
       reason.
 
-      Write data/reports/research/players/$inputs.programme-<player-key>.json
-      (player-key: the lowercase hyphenated name), containing:
+      Write the findings file INSIDE THE DATA HOME — the absolute directory
+      on the 'data home:' line of:
+      $preflight.output
+      at <data-home>/data/reports/research/players/
+      $inputs.programme-<player-key>.json (player-key: the lowercase
+      hyphenated name). Reading the method contract takes you into the
+      pipeline package directory — the findings file still goes under the
+      data home ABSOLUTE path above, never relative to wherever you are.
+      A file written anywhere else is silently lost. Its contents:
       {
         "schema": "touchline.player-findings/1",
         "player": "$inputs.player",
@@ -141,7 +149,10 @@ nodes:
       The research node reported:
       $research.output
 
-      Read the findings file it names. For EACH finding, re-fetch the URL and
+      Read the findings file it names — if the reported path is relative,
+      resolve it against the data home on the 'data home:' line of:
+      $preflight.output
+      For EACH finding, re-fetch the URL and
       check the page actually supports the claim as written (name present,
       honor named, date plausible). You are trying to REFUTE each claim; keep
       only what survives. Rewrite the SAME file in place with the surviving
