@@ -27,7 +27,7 @@ import {
   touchlineProjectPath,
 } from "../src/commands.ts";
 import { dataHomeState } from "../src/datahome.ts";
-import rib from "../src/index.ts";
+import rib, { composeTouchlineBoard, setScope } from "../src/index.ts";
 import { makeTouchlineTools } from "../src/tools.ts";
 
 const originalWorkspace = process.env.KEELSON_WORKSPACE;
@@ -215,6 +215,63 @@ describe("first-contact commands", () => {
     const second = await initTouchlineHome("gac-soccer", ctx);
     expect(second).toMatchObject({ ok: true, created: false, registered: false });
     expect(projects).toHaveLength(1);
+  });
+
+  test("the collected stamp rides the panel byline and clears with the scope", async () => {
+    const workspace = await tempRoot("byline-workspace");
+    const configRoot = await tempRoot("byline-config");
+    process.env.KEELSON_WORKSPACE = workspace;
+    process.env.TOUCHLINE_CONFIG_PATH = join(configRoot, "config.json");
+    const projects: Project[] = [];
+    let invalidations = 0;
+    const ctx: RibContext = {
+      ...fakeContext(projects),
+      invalidateManifest: () => {
+        invalidations += 1;
+      },
+    };
+
+    const made = await initTouchlineHome("gac-soccer", ctx);
+    expect(made.ok).toBe(true);
+    if (!made.ok) return;
+    await writeFile(
+      join(made.rootPath, "data", "fixtures", "2025-men.json"),
+      JSON.stringify({
+        schema: "touchline.fixtures/1",
+        season: 2025,
+        gender: "men",
+        conference: "GAC",
+        collected_at: "2026-08-09T21:00:00Z",
+        programmes: [{ slug: "harding", name: "Harding" }],
+        fixtures: [],
+      }),
+    );
+
+    rib.registerTools?.(ctx);
+    const project = projects[0];
+    if (!project) throw new Error("init registered no project");
+    setScope(project.id);
+    try {
+      const html = await composeTouchlineBoard();
+      const header = rib.surfaces?.[0]?.layout.header as { byline?: string } | undefined;
+      // The stamp lives in the panel head, not on the sheet, and setting it
+      // nudged exactly one manifest re-fetch.
+      expect(header?.byline).toBe("collected 2026-08-09 21:00");
+      expect(invalidations).toBe(1);
+      expect(html).not.toContain("collected 2026-08-09");
+      // An unchanged stamp must not re-invalidate: every call re-fetches for
+      // every client.
+      await composeTouchlineBoard();
+      expect(invalidations).toBe(1);
+      // Pointing the board at nothing clears the stamp rather than leaving a
+      // stale season's freshness beside an empty state.
+      setScope(undefined);
+      await composeTouchlineBoard();
+      expect(header?.byline).toBeUndefined();
+      expect(invalidations).toBe(2);
+    } finally {
+      setScope(undefined);
+    }
   });
 
   test("the init and remove tools are registered so MCP and chat can reach them", () => {

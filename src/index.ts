@@ -128,9 +128,16 @@ async function currentScope(): Promise<{
 }
 
 async function composeTouchlineBoard(): Promise<string> {
-  const { html, collectedAt } = await composeTouchlineBoardInner();
-  stampPanel(collectedAt);
-  return html;
+  try {
+    const { html, collectedAt } = await composeTouchlineBoardInner();
+    stampPanel(collectedAt);
+    return html;
+  } catch (err) {
+    // The registered callback renders a failure sheet for a throwing composer;
+    // a stale "collected …" byline must not survive next to it.
+    stampPanel(undefined);
+    throw err;
+  }
 }
 
 async function composeTouchlineBoardInner(): Promise<{ html: string; collectedAt?: string }> {
