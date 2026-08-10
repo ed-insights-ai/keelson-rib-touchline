@@ -1169,6 +1169,94 @@ def test_an_unresolvable_draw_stays_unoriented() -> None:
     assert "home_index" not in detail
 
 
+def test_play_by_play_reads_every_period_with_team_attribution() -> None:
+    from pathlib import Path
+
+    from src.sidearm_live import parse_boxscore_page
+
+    detail = parse_boxscore_page(
+        Path("tests/fixtures/sidearm_boxscore_6126.html").read_text(), page_url="x"
+    )
+    # Sides resolve through the column-header abbreviations, so an event's
+    # team index agrees with the Score By Period order, not column position.
+    assert [team["abbr"] for team in detail["teams"]] == ["OBU", "HU"]
+    plays = detail["plays"]
+    assert len(plays) == 101
+    assert plays[0] == {
+        "period": "1",
+        "text": "Stewart, Rinner at goalie for Harding",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie",
+    }
+    goals = [play for play in plays if play.get("type") == "goal"]
+    # Running score cells are aligned to the teams order: OBU 2, then HU pull one back.
+    assert [goal["score"] for goal in goals] == [[1, 0], [2, 0], [2, 1]]
+    assert {play["period"] for play in plays} == {"1", "2"}
+    assert all("team" in play for play in plays)
+
+
+def _play_panel_html(rows: str, *, left: str, right: str) -> str:
+    return f"""<html><body>
+    <table><caption>Team Score By Period</caption>
+      <tr><th scope="row"><span class="hide-on-small-down">Alpha</span>
+        <span class="hide-on-medium">AU</span></th><td>0</td><td>1</td><td>1</td></tr>
+      <tr><th scope="row"><span class="hide-on-small-down">Beta</span>
+        <span class="hide-on-medium">BU</span></th><td>1</td><td>0</td><td>1</td></tr>
+    </table>
+    <section id="play-by-play" class="panel"><section id="period-SO" class="period-SO">
+      <table class="sidearm-table play-by-play">
+        <thead><tr><th class="text-hide">Clock</th>
+          <th class="text-center hide-on-medium-down">{left}<span class="hide"> - Play Description</span></th>
+          <th class="text-hide hide-on-medium-down">Visiting Team Score</th>
+          <th class="text-hide hide-on-medium-down">Team Logo</th>
+          <th class="text-hide hide-on-medium-down">Home Team Score</th>
+          <th class="text-center hide-on-medium-down">{right}<span class="hide"> - Play Description</span></th>
+          <th aria-hidden="true" class="text-hide">Score</th>
+          <th aria-hidden="true" class="hide">Team Indicator</th>
+          <th aria-hidden="true" class="text-hide">Play</th></tr></thead>
+        <tbody>{rows}</tbody>
+      </table>
+    </section></section></body></html>"""
+
+
+def _play_row(clock: str, left: str, right: str, visiting: str = "", home: str = "") -> str:
+    return f"""<tr><td>{clock}</td>
+      <td class="text-right hide-on-medium-down">{left}</td>
+      <td class="text-center text-bold hide-on-medium-down">{visiting}</td>
+      <td class="text-center hide-on-medium-down"></td>
+      <td class="text-center text-bold hide-on-medium-down">{home}</td>
+      <td class="hide-on-medium-down">{right}</td>
+      <td aria-hidden="true" class="hide-on-large text-center text-bold"></td>
+      <td aria-hidden="true" class="hide-on-large play"></td>
+      <td aria-hidden="true" class="hide-on-large">{left or right}</td></tr>"""
+
+
+def test_play_by_play_scores_align_by_abbreviation_not_column_order() -> None:
+    from src.sidearm_live import parse_boxscore_page
+
+    # Beta is the visiting (left) column but sits second in the teams order,
+    # and shootout rows carry no game clock.
+    html = _play_panel_html(
+        _play_row("--", "Shootout attempt by BU Doe, Jan MADE [Keeper, Al].", "", "1", "0")
+        + _play_row("00:00", "", "*")
+        + _play_row("00:00", "", "GOAL by AU Roe, Sam."),
+        left="BU",
+        right="AU",
+    )
+    detail = parse_boxscore_page(html, page_url="x")
+    shootout, goal = detail["plays"]
+    assert shootout == {
+        "period": "SO",
+        "text": "Shootout attempt by BU Doe, Jan MADE [Keeper, Al].",
+        "team": 1,
+        "type": "shootout",
+        "score": [0, 1],
+    }
+    # The letterless "*" footnote row narrates nothing and is dropped.
+    assert goal["team"] == 0 and goal["type"] == "goal" and "score" not in goal
+
+
 def test_boxscore_links_join_on_the_game_id() -> None:
     from src.sidearm_live import boxscore_links
 
