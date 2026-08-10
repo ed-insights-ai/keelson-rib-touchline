@@ -1098,6 +1098,18 @@ describe("the fixtures schema", () => {
           ],
           scoring: [{ time: "37:00", team: 1, scorer: "Nojus Grudis", assist: "Romario Castro" }],
           cards: [{ time: "81:19", team: 1, type: "red", player: "Cian Halpin", number: "7" }],
+          plays: [
+            {
+              period: "1",
+              clock: "22:20",
+              team: 0,
+              text: "GOAL by SNU Fletcher, Alex.",
+              type: "goal",
+              score: [1, 0],
+            },
+            // Shootout rows carry no clock, and an untyped play is still a play.
+            { period: "SO", team: 1, text: "Official's timeout." },
+          ],
           stadium: "Stevens Soccer Complex",
           attendance: 175,
         },
@@ -1106,6 +1118,7 @@ describe("the fixtures schema", () => {
     };
     const parsed = matchesFileSchema.parse(file);
     expect(parsed.matches["sidearm:harding:14830"]?.teams[0]?.shots).toBe(27);
+    expect(parsed.matches["sidearm:harding:14830"]?.plays?.[0]?.score).toEqual([1, 0]);
     expect(parsed.missing?.["sidearm:harding:9999"]).toContain("no box-score link");
     const poisoned = structuredClone(file) as Record<string, unknown>;
     const inner = (poisoned.matches as Record<string, Record<string, unknown>>)[
@@ -1113,6 +1126,19 @@ describe("the fixtures schema", () => {
     ] as Record<string, unknown>;
     inner.xg = 1.2;
     expect(() => matchesFileSchema.parse(poisoned)).toThrow();
+    // A play must narrate: text is required, a running score is exactly two
+    // sides, and unknown play fields are refused like any other.
+    const bad = (mutate: (play: Record<string, unknown>) => void): unknown => {
+      const clone = structuredClone(file) as Record<string, unknown>;
+      const detail = (clone.matches as Record<string, Record<string, unknown>>)[
+        "sidearm:harding:14830"
+      ] as Record<string, unknown>;
+      mutate((detail.plays as Record<string, unknown>[])[0] as Record<string, unknown>);
+      return clone;
+    };
+    expect(() => matchesFileSchema.parse(bad((p) => delete p.text))).toThrow();
+    expect(() => matchesFileSchema.parse(bad((p) => (p.score = [1])))).toThrow();
+    expect(() => matchesFileSchema.parse(bad((p) => (p.xg = 0.4)))).toThrow();
   });
 
   test("a stats file round-trips, and an unknown stat field is rejected", () => {
@@ -1313,11 +1339,15 @@ describe("match detail (box scores)", () => {
       "sidearm:harding:14840": "no box-score link on any collected schedule page",
     },
   };
-  const compose = (fixture?: string, team: string | undefined = "harding") =>
+  const compose = (
+    fixture?: string,
+    team: string | undefined = "harding",
+    file: MatchesFile = matches,
+  ) =>
     composeBoard({
       projectName: "p",
       fixtures: season2025,
-      matches,
+      matches: file,
       team,
       fixture,
       today: "2026-08-09",
@@ -1369,6 +1399,91 @@ describe("match detail (box scores)", () => {
     expect(html.split('{"fixture":null}').length).toBeGreaterThan(2);
     expect(html).toContain('data-close="open-fixture"');
     expect(html).toContain("From the programme&#39;s published box score.");
+  });
+
+  test("the drawer narrates the play-by-play, folded by period", () => {
+    const narrated = structuredClone(matches);
+    const detail = narrated.matches["sidearm:harding:14830"];
+    if (!detail) throw new Error("fixture missing from test data");
+    detail.plays = [
+      { period: "1", clock: "00:00", team: 0, text: "FOR HU: , #30 Morris, Caden", type: "lineup" },
+      {
+        period: "1",
+        clock: "05:43",
+        team: 1,
+        text: "Shot by RSU Decker, Braxton, out right.",
+        type: "shot",
+      },
+      { period: "1", clock: "19:27", text: "Corner kick [19:27].", type: "corner" },
+      { period: "1", clock: "44:00", team: 0, text: "Official's timeout." },
+      { period: "1", clock: "45:00", team: 0, text: "End of period [45:00].", type: "period" },
+      {
+        period: "2",
+        clock: "50:59",
+        team: 1,
+        text: "GOAL by RSU Decker, Braxton.",
+        type: "goal",
+        score: [0, 1],
+      },
+      {
+        period: "2",
+        clock: "62:17",
+        team: 1,
+        text: "Yellow card on RSU Velasquez, Omarion.",
+        type: "yellow",
+      },
+      {
+        period: "SO",
+        team: 0,
+        text: "Shootout attempt by HU Grudis, Nojus MADE [Stopper, Milo].",
+        type: "shootout",
+      },
+    ];
+    const html = compose("sidearm:harding:14830", "harding", narrated);
+    expect(html).toContain(">Play by play<");
+    // Periods fold shut, each labelled with its own count — the lineup listing
+    // and the end-of-period marker are structure, not plays.
+    expect(html).toContain("Period 1 · 3 plays</summary>");
+    expect(html).toContain("Period 2 · 2 plays</summary>");
+    expect(html).toContain("Shootout · 1 play</summary>");
+    expect(html).not.toContain("FOR HU:");
+    expect(html).not.toContain("End of period");
+    // An untyped play still renders — the text is the record.
+    expect(html).toContain("Official&#39;s timeout.");
+    // The goal is emphasised and carries the running score, home side first.
+    const goal = html.split("GOAL by RSU Decker, Braxton.")[0]?.split('<div class="ev').pop() ?? "";
+    expect(goal).toContain("a gl");
+    expect(html).toContain('GOAL by RSU Decker, Braxton.<span class="ps">0–1</span>');
+    // A shootout row has no game clock to read aloud.
+    expect(html).toContain("<b>–</b>");
+    expect(html).toContain("Shootout attempt by HU Grudis, Nojus");
+  });
+
+  test("running scores read home-first even when the page served home second", () => {
+    const flipped = structuredClone(matches);
+    const detail = flipped.matches["sidearm:harding:14830"];
+    if (!detail) throw new Error("fixture missing from test data");
+    // Served order [HU, RSU] with RSU proven home: a 0–1 in served order is
+    // 1–0 from the drawer's home-first reading.
+    detail.home_index = 1;
+    detail.plays = [
+      {
+        period: "1",
+        clock: "10:00",
+        team: 1,
+        text: "GOAL by RSU Decker, Braxton.",
+        type: "goal",
+        score: [0, 1],
+      },
+    ];
+    const html = compose("sidearm:harding:14830", "harding", flipped);
+    expect(html).toContain('<span class="ps">1–0</span>');
+  });
+
+  test("a played match whose box score has no play-by-play says so", () => {
+    const html = compose("sidearm:harding:14830");
+    expect(html).toContain("No play-by-play collected for this match.");
+    expect(html).not.toContain(">Play by play<");
   });
 
   test("a card the source did not colour stays neutral, not presumed yellow", () => {

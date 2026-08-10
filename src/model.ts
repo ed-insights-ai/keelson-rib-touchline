@@ -272,6 +272,25 @@ export const matchCardSchema = z
   .strict();
 export type MatchCard = z.infer<typeof matchCardSchema>;
 
+/** One play-by-play event, as the box score narrated it. The text is the
+ *  record — free prose typed by the home stat crew — and the type exists only
+ *  where the collector recognized the phrasing, so an untyped play is still a
+ *  play. The period is the page's own section token ("1", "2", "3", "SO"). */
+export const matchPlaySchema = z
+  .object({
+    period: z.string().min(1),
+    /** Match clock as printed; shootout rows have none. */
+    clock: z.string().optional(),
+    /** Index into the match's teams array. */
+    team: z.number().int().optional(),
+    text: z.string().min(1),
+    type: z.string().optional(),
+    /** Running score after this play, aligned to the teams order. */
+    score: z.tuple([z.number().int(), z.number().int()]).optional(),
+  })
+  .strict();
+export type MatchPlay = z.infer<typeof matchPlaySchema>;
+
 /** One match's published box score. */
 export const matchDetailSchema = z
   .object({
@@ -282,6 +301,7 @@ export const matchDetailSchema = z
     home_index: z.number().int().optional(),
     scoring: z.array(matchScoringSchema).optional(),
     cards: z.array(matchCardSchema).optional(),
+    plays: z.array(matchPlaySchema).optional(),
     stadium: z.string().optional(),
     attendance: z.number().int().optional(),
     kickoff: z.string().optional(),

@@ -1019,6 +1019,34 @@ def _box_player_name(cell: object) -> tuple[str, str | None]:
     return name, player_id
 
 
+# Play-by-play lines are free text typed by each home stat crew, so a play is
+# typed only when its wording matches a known SideArm phrasing — the raw text
+# is the record, the type is an index into it.  First match wins: a penalty
+# goal reads "PENALTY KICK GOAL by …" and is a goal before it is a penalty.
+_PLAY_TYPE_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
+    ("goal", re.compile(r"\bGOAL by\b", re.I)),
+    ("penalty", re.compile(r"\bPENALTY KICK\b", re.I)),
+    ("shot", re.compile(r"\bShot by\b", re.I)),
+    ("goalie", re.compile(r"\bat goalie for\b", re.I)),
+    ("foul", re.compile(r"^Foul\b", re.I)),
+    ("corner", re.compile(r"^Corner kick\b", re.I)),
+    ("sub", re.compile(r"\bsubstitution\b", re.I)),
+    ("offside", re.compile(r"^Offside\b", re.I)),
+    ("yellow", re.compile(r"\bYellow card\b", re.I)),
+    ("red", re.compile(r"\bRed card\b", re.I)),
+    ("shootout", re.compile(r"^Shootout attempt\b", re.I)),
+    ("lineup", re.compile(r"^FOR [A-Z].*#\d", re.I)),
+    ("period", re.compile(r"^(?:Start|End) of\b", re.I)),
+)
+
+
+def _play_type(text: str) -> str | None:
+    for name, pattern in _PLAY_TYPE_PATTERNS:
+        if pattern.search(text):
+            return name
+    return None
+
+
 def parse_boxscore_page(html: str, *, page_url: str) -> dict[str, object]:
     """Read one match's published detail off its box-score page.
 
@@ -1168,6 +1196,59 @@ def parse_boxscore_page(html: str, *, page_url: str) -> dict[str, object]:
                 cards.append(entry)
         break
 
+    # The play-by-play panel renders one table per period section, each row
+    # holding the event twice: two team-attributed desktop columns and one
+    # unattributed mobile cell.  Only the desktop columns are read — the
+    # column an event lives in IS its team attribution, resolved through the
+    # column header's abbreviation ("HAR - Play Description").  The header
+    # also fixes the layout: the left column is the visiting side, sitting
+    # beside the "Visiting Team Score" cell that fills in on goals.
+    plays: list[dict[str, object]] = []
+    panel = soup.find(id="play-by-play")
+    sections = panel.find_all("section", id=re.compile(r"^period-")) if panel is not None else []
+    for section in sections:
+        period = str(section.get("id", ""))[len("period-") :]
+        table = section.find("table", class_="play-by-play")
+        if table is None or not period:
+            continue
+        abbrs: list[str] = []
+        head = table.find("thead")
+        for th in head.find_all("th") if head is not None else []:
+            classes = set(th.get("class") or [])
+            if "text-center" in classes and "hide-on-medium-down" in classes:
+                abbrs.append(next(th.stripped_strings, ""))
+        left = side(abbrs[0]) if len(abbrs) == 2 else None
+        right = side(abbrs[1]) if len(abbrs) == 2 else None
+        body = table.find("tbody")
+        for row in body.find_all("tr") if body is not None else []:
+            cells = [td for td in row.find_all("td") if "hide-on-large" not in (td.get("class") or [])]
+            if len(cells) != 6:
+                continue
+            left_text = cells[1].get_text(" ", strip=True)
+            right_text = cells[5].get_text(" ", strip=True)
+            text = left_text or right_text
+            # A row with no letters ("*" footnote markers) narrates nothing.
+            if not re.search(r"[A-Za-z]", text):
+                continue
+            play: dict[str, object] = {"period": period, "text": text}
+            clock = cells[0].get_text(strip=True)
+            if re.fullmatch(r"\d+:\d{2}", clock):
+                play["clock"] = clock
+            team_index = left if left_text else right
+            if team_index is not None:
+                play["team"] = team_index
+            kind = _play_type(text)
+            if kind:
+                play["type"] = kind
+            visiting = _stat_int(cells[2].get_text(strip=True))
+            home = _stat_int(cells[4].get_text(strip=True))
+            if visiting is not None and home is not None and {left, right} == {0, 1}:
+                score = [0, 0]
+                score[left] = visiting  # type: ignore[index]
+                score[right] = home  # type: ignore[index]
+                play["score"] = score
+            plays.append(play)
+
     def match_lines(suffix: str) -> dict[int, object]:
         by_side: dict[int, object] = {}
         for text, table in captioned(lambda value, suffix=suffix: value.endswith(suffix)):
@@ -1258,6 +1339,8 @@ def parse_boxscore_page(html: str, *, page_url: str) -> dict[str, object]:
         detail["scoring"] = scoring
     if cards:
         detail["cards"] = cards
+    if plays:
+        detail["plays"] = plays
 
     for block in soup.find_all("dl"):
         entries: dict[str, list[str]] = {}

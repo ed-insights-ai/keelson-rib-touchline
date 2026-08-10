@@ -14,6 +14,7 @@ import {
   type KeeperStats,
   type MatchDetail,
   type MatchesFile,
+  type MatchPlay,
   type MatchTeam,
   type Player,
   type PlayerStats,
@@ -470,6 +471,18 @@ color:var(--faint);font-variant-numeric:tabular-nums}
 .ev .who{min-width:0}
 .ev .who em{font-style:normal;display:block;font-size:10.5px;color:var(--faint)}
 .ev.a{flex-direction:row-reverse;text-align:right}
+/* Play-by-play periods fold shut so a 150-event narration stays scannable. */
+.pbp{margin:6px 18px 0}
+.pbp summary{cursor:pointer;padding:3px 0;font:700 10px/1.6 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.pbp summary:hover{color:var(--ink)}
+.pbp summary:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.pbp .evs{padding:2px 0 6px}
+.pbp .ev{font-size:11.5px}
+.pbp .ev.gl .who{font-weight:700}
+/* The chip is inline inside .who, so it sits after the text on both sides —
+   row-reverse only reorders the flex items, not the narration's inline flow. */
+.pbp .ev .ps{margin-left:6px;font-size:10.5px;color:var(--faint);font-variant-numeric:tabular-nums}
 /* Team-statistic duels: bars grow from the centre toward each side. */
 .duel{display:grid;grid-template-columns:26px 1fr 64px 1fr 26px;gap:8px;align-items:center;
 padding:3px 18px 0;font-variant-numeric:tabular-nums}
@@ -2166,6 +2179,55 @@ function matchDrawer(
       .join("");
     if (keeperRows) {
       sections.push(`<div class="dr-sec">Goalkeepers</div><div class="evs">${keeperRows}</div>`);
+    }
+
+    // The play-by-play: the box score's own narration, folded one period at a
+    // time. Lineup listings and start/end markers are structural rows whose
+    // information the period grouping already carries, so they are not rows
+    // here — every other event renders verbatim, typed or not.
+    const plays = (detail.plays ?? []).filter((p) => p.type !== "lineup" && p.type !== "period");
+    if (plays.length) {
+      const periods: { token: string; plays: MatchPlay[] }[] = [];
+      for (const p of plays) {
+        const last = periods[periods.length - 1];
+        if (last && last.token === p.period) last.plays.push(p);
+        else periods.push({ token: p.period, plays: [p] });
+      }
+      const periodName = (token: string): string =>
+        token === "SO"
+          ? "Shootout"
+          : token === "3"
+            ? "Overtime"
+            : token === "4"
+              ? "Overtime 2"
+              : `Period ${token}`;
+      // Running scores are stored in served-team order; the drawer reads them
+      // in its own home-first order.
+      const runningScore = (s: [number, number] | undefined): string =>
+        s ? `<span class="ps">${s[sides[0]?.index ?? 0]}–${s[sides[1]?.index ?? 1]}</span>` : "";
+      const playRow = (p: MatchPlay): string => {
+        const at = drawerSide(p.team);
+        const cls = at === 0 ? "h" : at === 1 ? "a" : "";
+        const swatch =
+          p.type === "yellow"
+            ? `<i class="cs y" title="Yellow card"></i>`
+            : p.type === "red"
+              ? `<i class="cs r" title="Red card"></i>`
+              : "";
+        return `<div class="ev ${cls}${p.type === "goal" ? " gl" : ""}"><b>${matchMinute(p.clock) || "–"}</b><span class="who">${swatch}${esc(p.text)}${runningScore(p.score)}</span></div>`;
+      };
+      sections.push(
+        `<div class="dr-sec">Play by play</div>${periods
+          .map(
+            (g) =>
+              `<details class="pbp"><summary>${esc(periodName(g.token))} · ${g.plays.length} play${
+                g.plays.length === 1 ? "" : "s"
+              }</summary><div class="evs">${g.plays.map(playRow).join("")}</div></details>`,
+          )
+          .join("")}`,
+      );
+    } else if (played) {
+      sections.push(`<p class="dr-note dim">No play-by-play collected for this match.</p>`);
     }
   } else if (played) {
     const reason = matches?.missing?.[fixtureId];
