@@ -1,0 +1,310 @@
+name: touchline-report
+description: |
+  Use when: someone wants the preseason scouting briefing for a collected season — opponent analysis, roster turnover, availability leads, verified offseason research, rendered as the print-first report.
+  Triggers: "build the preseason report", "generate the scouting briefing", "preseason intelligence for Harding".
+  Does: computes the deterministic digest, fans research out one programme at a time (summer leagues, honors, coaching changes — verified at sources), writes the narrative under the style contract, renders the briefing, and pauses for human approval.
+  NOT for: collecting season data (run touchline-collect first), or repairing data (data-integrity).
+
+# A Touchline home is an ordinary registered directory, not a git repo.
+requiresProject: false
+# Writes research, narrative, and the rendered briefing into data/reports/.
+mutates_checkout: true
+# The research stage lives on the open web.
+webSearchMode: live
+tags: [soccer, touchline, report, scouting]
+
+inputs:
+  - name: season
+    description: Season year the report is for, e.g. 2026.
+    required: true
+  - name: gender
+    description: men or women.
+    required: true
+  - name: focus
+    description: Programme slug the report is prepared for, e.g. harding.
+    required: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# The evidence chain, in order:
+#   digest (deterministic numbers) → research (fan-out, one programme per
+#   iteration, findings verified at URLs) → verify (re-fetch every claimed
+#   source; unsupported claims are dropped, not softened) → narrative (prose
+#   under the style contract, figures from the digest only) → render
+#   (deterministic HTML) → human approval.
+#
+# A bash body is NOT template-substituted — inputs arrive as
+# KEELSON_INPUTS_<key>, upstream output as KEELSON_NODE_<id>_OUTPUT.
+# Prompt bodies take $inputs.<key> / $<id>.output.
+# ─────────────────────────────────────────────────────────────────────────────
+
+nodes:
+  - id: preflight
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      if [ ! -f touchline-data.yaml ]; then
+        printf 'REFUSED: %s is not a Touchline data home (no touchline-data.yaml marker).\n' "$PWD"
+        exit 1
+      fi
+      KIND=$(sed -n 's/^[[:space:]]*kind:[[:space:]]*\(.*\)$/\1/p' touchline-data.yaml | head -1)
+      if [ "$KIND" != "touchline-data" ]; then
+        printf 'REFUSED: touchline-data.yaml declares kind=%s, not touchline-data.\n' "${KIND:-(none)}"
+        exit 1
+      fi
+      for v in KEELSON_INPUTS_season KEELSON_INPUTS_gender KEELSON_INPUTS_focus; do
+        eval "val=\${$v:-}"
+        if [ -z "$val" ]; then
+          printf 'REFUSED: required input %s is empty.\n' "$v"
+          exit 1
+        fi
+      done
+      case "$KEELSON_INPUTS_season" in
+        [0-9][0-9][0-9][0-9]) ;;
+        *) printf 'REFUSED: season %s is not a four-digit year.\n' "$KEELSON_INPUTS_season"; exit 1 ;;
+      esac
+      case "$KEELSON_INPUTS_gender" in
+        men|women) ;;
+        *) printf 'REFUSED: gender must be men or women, not %s.\n' "$KEELSON_INPUTS_gender"; exit 1 ;;
+      esac
+      if [ ! -f "data/fixtures/${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}.json" ]; then
+        printf 'REFUSED: no collected fixtures for %s %s in this home — run touchline-collect first.\n' \
+          "$KEELSON_INPUTS_season" "$KEELSON_INPUTS_gender"
+        exit 1
+      fi
+      printf 'data home OK: %s\n' "$PWD"
+      printf 'report target: %s %s, prepared for %s\n' \
+        "$KEELSON_INPUTS_season" "$KEELSON_INPUTS_gender" "$KEELSON_INPUTS_focus"
+
+  - id: resolve-pipeline
+    depends_on: [preflight]
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      KEELSON_HOME_DIR="${KEELSON_HOME:-$HOME/.keelson}"
+      CFG="$KEELSON_HOME_DIR/rib-touchline/config.json"
+      PIPELINE_DIR="${TOUCHLINE_PIPELINE_DIR:-}"
+      if [ -z "$PIPELINE_DIR" ] && [ -f "$CFG" ]; then
+        PKG=$(jq -r '.packageDir // empty' "$CFG" 2>/dev/null)
+        [ -n "$PKG" ] && PIPELINE_DIR="$PKG/pipeline"
+      fi
+      if [ -z "$PIPELINE_DIR" ]; then
+        PIPELINE_DIR="$KEELSON_HOME_DIR/node_modules/@keelson/rib-touchline/pipeline"
+      fi
+      if [ ! -f "$PIPELINE_DIR/pyproject.toml" ]; then
+        printf 'ALARM: cannot resolve the Touchline pipeline. Last candidate: %s\n' "$PIPELINE_DIR"
+        exit 1
+      fi
+      printf '%s\n' "$PIPELINE_DIR"
+
+  - id: digest
+    depends_on: [resolve-pipeline]
+    timeout: 300000
+    bash: |
+      set -uo pipefail
+      PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
+      TOUCHLINE_DATA_DIR="$PWD" uv run --project "$PIPELINE_DIR" build-digest \
+        --season "$KEELSON_INPUTS_season" \
+        --gender "$KEELSON_INPUTS_gender" \
+        --focus "$KEELSON_INPUTS_focus"
+
+  - id: research
+    depends_on: [digest]
+    loop:
+      max_iterations: 12
+      fresh_context: true
+      until: ALL RESEARCHED
+      until_bash: |
+        set -u
+        D="data/reports/research/${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}"
+        DG="data/reports/digest-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}.json"
+        N=$(jq '.programmes | length' "$DG" 2>/dev/null || echo 99)
+        C=$(ls "$D"/research-*.json 2>/dev/null | wc -l | tr -d ' ')
+        [ "$C" -ge "$N" ]
+      prompt: |
+        You are one iteration of the Touchline offseason research stage for the
+        $inputs.season $inputs.gender season, prepared for '$inputs.focus'. Each
+        iteration researches EXACTLY ONE programme, then stops.
+
+        1. Read data/reports/digest-$inputs.season-$inputs.gender.json — the
+           programme list, and each programme's availability_flags and
+           usage_shifts (your special-interest players).
+        2. List data/reports/research/$inputs.season-$inputs.gender/ — pick the
+           FIRST programme (the focus programme first, then alphabetical) with
+           no research-<slug>.json yet. If every programme has one, reply
+           exactly: ALL RESEARCHED
+        3. Read that programme's roster from
+           data/rosters/$inputs.season-$inputs.gender.json (names, hometowns).
+           If the roster is missing, write a file recording exactly that as the
+           only finding and finish.
+        4. Research the roster with THIS recipe, in order:
+           a. CLUB-FIRST: from the hometowns, list plausible summer clubs
+              (USL League Two, NPSL, UPSL, The League for Clubs) near campus
+              and near player-cluster geographies; fetch each club's roster or
+              squad page; cross-reference names.
+           b. BARE-NAME: for each distinctive name, search the plain name
+              alone — league award and social posts surface there when
+              structured queries miss.
+           c. HONORS FOLLOW-UP: any membership hit triggers an immediate
+              player+league honors search (all-conference, Team of the
+              Season, Best XI, weekly awards).
+           d. SPECIAL INTEREST: for every player in this programme's
+              availability_flags or usage_shifts, search their bare name plus
+              hometown — summer activity for a player with a participation
+              hole is the highest-value finding.
+           e. Also check for programme-level news: head-coach changes,
+              preseason polls, signing-class announcements.
+        5. EVIDENCE RULES — absolute: a finding exists only if you can verify
+           it at a URL you fetched or that appears unambiguously in search
+           results, AND identity plausibly matches (hometown, school, age).
+           Never stretch a name match. Confidence: league/club official pages
+           and local news are high; club social capturable at a stable URL is
+           medium; player self-posts (soccer-relevant only) are medium. A
+           claim you believe but cannot capture at a URL goes in
+           attested_uncaptured, NOT in findings. "Nothing found" per player
+           is a normal result.
+        6. Write data/reports/research/$inputs.season-$inputs.gender/research-<slug>.json:
+           {
+             "schema": "touchline.research/1",
+             "programme": "<slug>",
+             "findings": [ { "player": str|null, "type":
+               "summer-league"|"honor"|"news"|"coach"|"signing",
+               "text": str, "source": str, "url": str, "date": str,
+               "confidence": "high"|"medium" } ],
+             "attested_uncaptured": [ str ],
+             "unswept": [ "club or league whose roster could not be read, with reason" ],
+             "clubs_checked": [ str ]
+           }
+        7. Reply with one line: the programme slug, findings count, and
+           unswept count. Do NOT reply ALL RESEARCHED unless step 2 found no
+           remaining programme.
+
+  - id: verify
+    depends_on: [research]
+    context: fresh
+    timeout: 900000
+    prompt: |
+      You are the verification pass of the Touchline report workflow — the
+      adversary of the research stage. Season $inputs.season $inputs.gender.
+
+      Read every file in data/reports/research/$inputs.season-$inputs.gender/.
+      For EACH finding, re-fetch its URL and check that the page actually
+      supports the claim as written (the name appears, the honor is named, the
+      date is plausible). You are trying to REFUTE each claim; keep only what
+      survives. A finding whose page cannot be fetched or does not support the
+      text is dropped — recorded, never softened into the report.
+
+      Write data/reports/research/$inputs.season-$inputs.gender/verified.json:
+      {
+        "schema": "touchline.research-verified/1",
+        "findings": [ ...surviving findings, unchanged... ],
+        "dropped": [ { "programme": str, "text": str, "reason": str } ],
+        "attested_uncaptured": [ ...merged from all research files... ],
+        "unswept": [ ...merged, deduplicated... ]
+      }
+
+      Reply with one line: surviving count, dropped count, attested count,
+      unswept count.
+
+  - id: narrative
+    depends_on: [verify]
+    context: fresh
+    timeout: 900000
+    prompt: |
+      You are the narrative writer of the Touchline report workflow. The
+      pipeline directory is:
+      $resolve-pipeline.output
+      Its parent directory holds the report's content contracts — read BOTH
+      before writing anything:
+        <pipeline-parent>/prompts/scouting-questionnaire.md  (what to answer)
+        <pipeline-parent>/prompts/style-contract.md          (how it must read)
+
+      Your inputs, in this data home (the current directory):
+        data/reports/digest-$inputs.season-$inputs.gender.json  — every figure
+          you may cite. THE ONLY SOURCE OF NUMBERS. If a figure is not in the
+          digest, it does not appear in your prose.
+        data/reports/research/$inputs.season-$inputs.gender/verified.json —
+          the only admissible news and offseason findings, each with source,
+          url, and date. attested_uncaptured items may be mentioned ONLY in
+          an uncertainty or takeaway as "attested but uncaptured — needs a
+          link", never as fact.
+
+      Write data/reports/narrative-$inputs.season-$inputs.gender.json
+      conforming to the touchline.report-narrative/2 contract documented at
+      the top of <pipeline>/src/report.py (read it). Requirements:
+      - exec: exactly 5 findings (each labeled observed/projected/judgment
+        with confidence), 3 decisions, 2 uncertainties
+      - landscape and gain prose; focus overview/takeaways/news/offseason;
+        per-programme sections with priority: true for the 3-4 opponents that
+        most affect the focus side; breakouts; 2 dossiers; preseason
+        questions
+      - verified findings flow into news/offseason arrays with their sources
+        and dates; digest availability_flags and usage_shifts may be
+        referenced as projected possible analysis, never as conclusions
+      - voice per the style contract: direct, tactical, no hype, hypotheses
+        anchored to cited numbers
+
+      Reply with one line per top-level section you wrote and its item count.
+
+  - id: validate-narrative
+    depends_on: [narrative]
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      F="data/reports/narrative-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}.json"
+      if [ ! -f "$F" ]; then
+        printf 'ALARM: narrative node reported success but %s does not exist.\n' "$F"
+        exit 1
+      fi
+      SCHEMA=$(jq -r '.schema // empty' "$F" 2>/dev/null)
+      if [ "$SCHEMA" != "touchline.report-narrative/2" ]; then
+        printf 'ALARM: %s schema is %s, expected touchline.report-narrative/2.\n' "$F" "${SCHEMA:-unparseable}"
+        exit 1
+      fi
+      FINDINGS=$(jq '.exec.findings | length' "$F")
+      DECISIONS=$(jq '.exec.decisions | length' "$F")
+      PROGS=$(jq '.programmes | length' "$F")
+      if [ "$FINDINGS" -lt 1 ] || [ "$DECISIONS" -lt 1 ] || [ "$PROGS" -lt 1 ]; then
+        printf 'ALARM: narrative is structurally empty (findings=%s decisions=%s programmes=%s).\n' \
+          "$FINDINGS" "$DECISIONS" "$PROGS"
+        exit 1
+      fi
+      printf 'narrative OK: %s findings, %s decisions, %s programme sections\n' \
+        "$FINDINGS" "$DECISIONS" "$PROGS"
+
+  - id: render
+    depends_on: [validate-narrative]
+    timeout: 120000
+    bash: |
+      set -uo pipefail
+      PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
+      TOUCHLINE_DATA_DIR="$PWD" uv run --project "$PIPELINE_DIR" render-report \
+        --season "$KEELSON_INPUTS_season" \
+        --gender "$KEELSON_INPUTS_gender"
+
+  - id: approve
+    depends_on: [render]
+    approval:
+      message: |
+        The preseason briefing is rendered. Review it before it goes anywhere:
+        open data/reports/preseason-$inputs.season-$inputs.gender.html in a
+        browser (print preview shows the paginated report). The verification
+        pass reported: $verify.output — anything attested-but-uncaptured needs
+        a human-supplied link before it can become a report fact. Approve to
+        finish, or reject with feedback.
+      capture_response: true
+
+  - id: summary
+    depends_on: [approve]
+    timeout: 120000
+    prompt: |
+      The Touchline preseason report run finished. Write a SHORT completion
+      summary for the person who asked:
+      - the digest line: $digest.output
+      - the research verification line: $verify.output
+      - the narrative sections: $narrative.output
+      - the render line: $render.output
+      - the reviewer's response: $approve.output
+      Name what was dropped or left unswept exactly as reported — never soften
+      it. The report file is data/reports/preseason-$inputs.season-$inputs.gender.html;
+      research artifacts live under data/reports/research/. Do not invent
+      numbers: every figure must appear in the text above.
