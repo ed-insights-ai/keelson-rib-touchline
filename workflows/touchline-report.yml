@@ -279,7 +279,10 @@ nodes:
         one sentence; at most 3 decisions — a decision is a call the
         staff settles in preseason, before the first match; a fixture,
         checkpoint, or anything on the season calendar is never a
-        decision; a short priorities list (it renders on the roster page,
+        decision; apply the generic-decision test from the style
+        contract: a decision title that would fit another team's report
+        unchanged is under-specified — rebind it to named players and
+        this team's numbers until it could belong to no one else; a short priorities list (it renders on the roster page,
         so do not repeat the decisions)
       - the roster shape counts each squad's international players from
         published hometowns. Where the share is notable — especially in a

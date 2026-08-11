@@ -113,6 +113,17 @@ patterns are provisional; a transfer moves a known threat between cards;
 an arrival changes a depth chart. Length cuts never remove this class of
 news.
 
+## The generic-decision test
+
+If a decision's title would sit unchanged in another team's report, it is
+under-specified — "name the second attacking route" fits half the teams
+in college soccer. Rebind it to this team's facts until it could belong
+to no one else: not "find a second scorer" but "replace Ovelar's 15
+goals" for one team and "decide who plays off Grudis" for another. The
+same underlying concern, told through different facts, produces
+different decisions. Apply the same test to findings, priorities, and
+dossier verdicts.
+
 ## The toolkit rule (absolute)
 
 The page structure is a toolkit, not a template. Which decisions surface,
