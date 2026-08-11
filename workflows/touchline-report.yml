@@ -312,11 +312,18 @@ nodes:
         implication, and a tier: "benchmark" (sets the standard), "swing"
         (winnable fixture that decides the season), or "update" (too
         little data — say what to re-check and when). Tier from the
-        findings, not from last season's table position alone. Use each
+        findings, not from last season's table position alone. The tier
+        word itself never appears in prose — the card displays it; the
+        implication says what to DO, and consecutive cards must not
+        share a closing sentence shape. Use each
         opponent's roster_shape the same way as the focus side's. If a
         field has nothing verified, leave it empty — the renderer says
         "Nothing verified to report."
-      - watchlist: one-line monitoring notes; a player with a dossier
+      - watchlist: one-line monitoring notes drawn from DIFFERENT
+        evidence classes where the record offers them (a verified
+        offseason move, a small-sample riser, an availability or usage
+        signal, a top returner) — never five entries of one class; vary
+        the sentence scaffold across notes; a player with a dossier
         never repeats on the watchlist; dossier subjects are wherever the
         findings point (a position battle page is a dossier framed on the
         battle, not the individual); preseason questions become the

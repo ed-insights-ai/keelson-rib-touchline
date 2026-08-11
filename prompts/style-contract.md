@@ -124,6 +124,25 @@ same underlying concern, told through different facts, produces
 different decisions. Apply the same test to findings, priorities, and
 dossier verdicts.
 
+## Anti-formula rules
+
+- **Vary the scaffold.** Consecutive items in one list (watchlist notes,
+  implications, questions, priorities) must not share an opening verb or
+  sentence shape. Eleven notes that all begin "Track the returning
+  forward's..." are a formula wearing analysis clothes.
+- **Contract examples are illustrations, not required phrasing.** A
+  concept named in this contract ("performance after 60 minutes") applies
+  only where THIS team's data flags it — do not import another report's
+  storyline vocabulary because the contract used it in an example.
+- **Tier names never appear in prose.** "Benchmark", "swing", and
+  "update" are layout classifications the card already displays; prose
+  that announces "tier X as a swing" is the system narrating itself. Say
+  what to do about the opponent instead.
+- **A watchlist draws from different evidence classes** where the record
+  offers them: a verified offseason move, a small-sample riser, an
+  availability or usage signal, a top returner. One class repeated five
+  times is a formula, not a watchlist.
+
 ## The toolkit rule (absolute)
 
 The page structure is a toolkit, not a template. Which decisions surface,
