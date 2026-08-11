@@ -20,7 +20,13 @@ and the structured output contract; this file governs *how to look* and
 2. **Build the timeline backward.** Focus year first, then prior seasons,
    then the pre-college trail: youth clubs, signing announcements, selection
    events, high-school honors, previous colleges, and (for international
-   players) federation or Transfermarkt/Soccerway records.
+   players) federation or Transfermarkt/Soccerway records. Name the
+   COMPETITION TIER of what you find — MLS Next, ECNL, a pro or federation
+   academy, USL academy, JUCO, NAIA, a lower NCAA division — because the
+   tier is the experience signal: an MLS Next or ECNL background marks a
+   player proven above standard high-school level, and a JUCO season is
+   real minutes against variable competition. A club name without its tier
+   is half a finding.
 3. **Sweep adjacent competition.** Summer and offseason leagues — USL League
    Two, NPSL, UPSL, The League for Clubs, pro-am circuits — plus all-star or
    selection events and national-team / dual-citizenship angles. Work
