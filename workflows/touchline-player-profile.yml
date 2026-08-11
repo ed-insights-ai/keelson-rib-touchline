@@ -1,0 +1,218 @@
+name: touchline-player-profile
+description: |
+  Use when: you want the full accumulated profile for one player — college record, participation patterns, plus fresh verified offseason research (summer leagues, honors, news).
+  Triggers: "build a profile for Aitor Scholl", "profile Carter Adams", "who is their number 9".
+  Does: assembles the player's deterministic record from collected data, researches the player on the open web under fetch-to-verify rules, refutes what it can, and upserts the verified result into data/players/ — re-runs enrich, never replace.
+  NOT for: whole-roster sweeps (touchline-report's research stage) or collecting season data (touchline-collect).
+
+requiresProject: false
+# Writes only per-player files (data/players/..., data/reports/research/
+# players/...), which are disjoint between runs — so profile runs can fan out
+# in PARALLEL against one data home. `shared` keeps them mutually exclusive
+# with a mutating run (a collect rewriting season files) without serializing
+# them against each other.
+mutates_checkout: true
+locking: shared
+webSearchMode: live
+tags: [soccer, touchline, player, profile, scouting]
+
+inputs:
+  - name: player
+    description: Player name as published on the roster, e.g. "Aitor Scholl".
+    required: true
+  - name: programme
+    description: Programme slug the player belongs to, e.g. harding.
+    required: true
+  - name: gender
+    description: men or women.
+    required: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# assemble (deterministic record from season files — fails if the player has
+# no trace, so a typo cannot masquerade as a person) → research (one player,
+# the validated recipe) → verify (refute pass) → merge (additive upsert into
+# data/players/) → summary. Bash bodies read KEELSON_INPUTS_* / KEELSON_NODE_*;
+# prompt bodies take $inputs.* / $<id>.output.
+# ─────────────────────────────────────────────────────────────────────────────
+
+nodes:
+  - id: preflight
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      if [ ! -f touchline-data.yaml ]; then
+        printf 'REFUSED: %s is not a Touchline data home (no touchline-data.yaml marker).\n' "$PWD"
+        exit 1
+      fi
+      for v in KEELSON_INPUTS_player KEELSON_INPUTS_programme KEELSON_INPUTS_gender; do
+        eval "val=\${$v:-}"
+        if [ -z "$val" ]; then
+          printf 'REFUSED: required input %s is empty.\n' "$v"
+          exit 1
+        fi
+      done
+      case "$KEELSON_INPUTS_gender" in
+        men|women) ;;
+        *) printf 'REFUSED: gender must be men or women, not %s.\n' "$KEELSON_INPUTS_gender"; exit 1 ;;
+      esac
+      printf 'profile target: %s (%s, %s)\n' \
+        "$KEELSON_INPUTS_player" "$KEELSON_INPUTS_programme" "$KEELSON_INPUTS_gender"
+      printf 'data home: %s\n' "$PWD"
+
+  - id: resolve-pipeline
+    depends_on: [preflight]
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      KEELSON_HOME_DIR="${KEELSON_HOME:-$HOME/.keelson}"
+      CFG="$KEELSON_HOME_DIR/rib-touchline/config.json"
+      PIPELINE_DIR="${TOUCHLINE_PIPELINE_DIR:-}"
+      if [ -z "$PIPELINE_DIR" ] && [ -f "$CFG" ]; then
+        PKG=$(jq -r '.packageDir // empty' "$CFG" 2>/dev/null)
+        [ -n "$PKG" ] && PIPELINE_DIR="$PKG/pipeline"
+      fi
+      if [ -z "$PIPELINE_DIR" ]; then
+        PIPELINE_DIR="$KEELSON_HOME_DIR/node_modules/@keelson/rib-touchline/pipeline"
+      fi
+      if [ ! -f "$PIPELINE_DIR/pyproject.toml" ]; then
+        printf 'ALARM: cannot resolve the Touchline pipeline. Last candidate: %s\n' "$PIPELINE_DIR"
+        exit 1
+      fi
+      printf '%s\n' "$PIPELINE_DIR"
+
+  - id: assemble
+    depends_on: [resolve-pipeline]
+    timeout: 120000
+    bash: |
+      set -uo pipefail
+      PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
+      TOUCHLINE_DATA_DIR="$PWD" uv run --project "$PIPELINE_DIR" build-profile \
+        --programme "$KEELSON_INPUTS_programme" \
+        --gender "$KEELSON_INPUTS_gender" \
+        --player "$KEELSON_INPUTS_player"
+
+  - id: research
+    depends_on: [assemble]
+    context: fresh
+    model: gpt-5.6-terra
+    effort: medium
+    timeout: 900000
+    prompt: |
+      You are the research stage of a Touchline player profile. ONE player:
+      '$inputs.player' of programme '$inputs.programme' ($inputs.gender).
+
+      The pipeline directory is:
+      $resolve-pipeline.output
+      Read <pipeline-parent>/prompts/player-profile.md FIRST and follow it
+      exactly — it is the research method contract: disambiguate before
+      anything else, anchor on official pages, build the timeline backward,
+      sweep adjacent competition (summer leagues, honors follow-up), chase
+      the focus year specifically, and keep the three evidence verdicts
+      (confirmed / ruled out / no indexed mention) distinct. Its rules of
+      evidence are absolute.
+
+      The assembled record (identity, career seasons, availability flags):
+      $assemble.output
+      The focus year is the identity's roster_season.
+
+      Findings that are "ruled out" verdicts belong in the reply, not the
+      findings array; "no indexed mention" surfaces go in unswept with the
+      reason.
+
+      Write the findings file INSIDE THE DATA HOME — the absolute directory
+      on the 'data home:' line of:
+      $preflight.output
+      at <data-home>/data/reports/research/players/
+      $inputs.programme-<player-key>.json (player-key: the lowercase
+      hyphenated name). Reading the method contract takes you into the
+      pipeline package directory — the findings file still goes under the
+      data home ABSOLUTE path above, never relative to wherever you are.
+      A file written anywhere else is silently lost. Its contents:
+      {
+        "schema": "touchline.player-findings/1",
+        "player": "$inputs.player",
+        "programme": "$inputs.programme",
+        "findings": [ { "type": "summer-league"|"honor"|"news"|"signing"|
+          "transfer-trail", "text": str, "source": str, "url": str,
+          "date": str, "confidence": "high"|"medium" } ],
+        "attested_uncaptured": [ str ],
+        "unswept": [ str ],
+        "searched": [ str ]
+      }
+      Reply with one line: findings count, attested count, unswept count, and
+      the file path you wrote.
+
+  - id: verify
+    depends_on: [research]
+    context: fresh
+    model: gpt-5.6-luna
+    timeout: 600000
+    prompt: |
+      You are the verification pass — the adversary of the research stage.
+      The research node reported:
+      $research.output
+
+      Read the findings file it names — if the reported path is relative,
+      resolve it against the data home on the 'data home:' line of:
+      $preflight.output
+      For EACH finding, re-fetch the URL and
+      check the page actually supports the claim as written (name present,
+      honor named, date plausible). You are trying to REFUTE each claim; keep
+      only what survives. Rewrite the SAME file in place with the surviving
+      findings, moving each dropped claim into a "dropped" array with a
+      one-line reason. Do not soften, merge, or editorialize claims — a
+      finding is kept verbatim or dropped with its reason.
+
+      Reply with one line: surviving count, dropped count, and the file path.
+
+  - id: merge
+    depends_on: [verify]
+    timeout: 120000
+    bash: |
+      set -uo pipefail
+      PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
+      KEY=$(printf '%s' "$KEELSON_INPUTS_player" \
+        | tr '[:upper:]' '[:lower:]' \
+        | iconv -f utf-8 -t ascii//TRANSLIT 2>/dev/null || printf '%s' "$KEELSON_INPUTS_player" | tr '[:upper:]' '[:lower:]')
+      KEY=$(printf '%s' "$KEY" | sed 's/[^a-z0-9]\{1,\}/-/g; s/^-//; s/-$//')
+      F="data/reports/research/players/${KEELSON_INPUTS_programme}-${KEY}.json"
+      if [ ! -f "$F" ]; then
+        # Rescue a findings file an agent wrote relative to the rib repo
+        # instead of the data home — the one misdirection prompts cannot
+        # fully prevent.
+        STRAY="$(dirname "$PIPELINE_DIR")/$F"
+        if [ -f "$STRAY" ]; then
+          mkdir -p "$(dirname "$F")"
+          mv "$STRAY" "$F"
+          printf 'rescued findings file from %s\n' "$STRAY"
+        fi
+      fi
+      if [ ! -f "$F" ]; then
+        printf 'ALARM: research/verify reported success but %s does not exist. Profile keeps its previous findings.\n' "$F"
+        exit 1
+      fi
+      if ! jq -e '.schema == "touchline.player-findings/1"' "$F" >/dev/null 2>&1; then
+        printf 'ALARM: %s is not a valid touchline.player-findings/1 file.\n' "$F"
+        exit 1
+      fi
+      TOUCHLINE_DATA_DIR="$PWD" uv run --project "$PIPELINE_DIR" build-profile \
+        --programme "$KEELSON_INPUTS_programme" \
+        --gender "$KEELSON_INPUTS_gender" \
+        --player "$KEELSON_INPUTS_player" \
+        --findings "$F"
+
+  - id: summary
+    depends_on: [merge]
+    model: gpt-5.6-luna
+    timeout: 120000
+    prompt: |
+      A player profile build just finished for $inputs.player
+      ($inputs.programme, $inputs.gender). Write a SHORT summary for the
+      person who asked:
+      - the assembled record: $assemble.output
+      - what research verified and dropped: $verify.output
+      - the merged profile: $merge.output
+      State where the profile lives (the path in the merge output), that
+      re-runs enrich it rather than replace it, and name anything
+      attested-but-uncaptured or unswept exactly as reported. Do not invent
+      numbers — every figure must appear in the text above.

@@ -1,0 +1,447 @@
+name: touchline-report
+description: |
+  Use when: someone wants the preseason scouting briefing for a collected season — opponent analysis, roster turnover, availability leads, verified offseason research, rendered as the print-first report.
+  Triggers: "build the preseason report", "generate the scouting briefing", "preseason intelligence for Harding".
+  Does: computes the deterministic digest, fans research out one programme at a time (summer leagues, honors, coaching changes — verified at sources), writes the narrative under the style contract, renders the briefing, and reports what was verified, dropped, and unswept.
+  NOT for: collecting season data (run touchline-collect first), or repairing data (data-integrity).
+
+# A Touchline home is an ordinary registered directory, not a git repo.
+requiresProject: false
+# Writes research, narrative, and the rendered briefing into data/reports/.
+mutates_checkout: true
+# The research stage lives on the open web.
+webSearchMode: live
+# Loop iterations take the WORKFLOW-level model and effort, so the research
+# loop's tier lives here: terra balances the fetch-heavy research work.
+# NOTE: model *classes* (deep/balanced/fast) all map to `auto` on this
+# provider, which silently resolves to the smallest tier — pin literal ids.
+model: gpt-5.6-terra
+modelReasoningEffort: medium
+tags: [soccer, touchline, report, scouting]
+
+inputs:
+  - name: season
+    description: Season year the report is for, e.g. 2026.
+    required: true
+  - name: gender
+    description: men or women.
+    required: true
+  - name: focus
+    description: Programme slug the report is prepared for, e.g. harding.
+    required: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# The evidence chain, in order:
+#   digest (deterministic numbers) → research (fan-out, one programme per
+#   iteration, findings verified at URLs) → verify (re-fetch every claimed
+#   source; unsupported claims are dropped, not softened) → narrative (prose
+#   under the style contract, figures from the digest only) → render
+#   (deterministic HTML) → summary.
+#
+# A bash body is NOT template-substituted — inputs arrive as
+# KEELSON_INPUTS_<key>, upstream output as KEELSON_NODE_<id>_OUTPUT.
+# Prompt bodies take $inputs.<key> / $<id>.output.
+# ─────────────────────────────────────────────────────────────────────────────
+
+nodes:
+  - id: preflight
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      if [ ! -f touchline-data.yaml ]; then
+        printf 'REFUSED: %s is not a Touchline data home (no touchline-data.yaml marker).\n' "$PWD"
+        exit 1
+      fi
+      KIND=$(sed -n 's/^[[:space:]]*kind:[[:space:]]*\(.*\)$/\1/p' touchline-data.yaml | head -1)
+      if [ "$KIND" != "touchline-data" ]; then
+        printf 'REFUSED: touchline-data.yaml declares kind=%s, not touchline-data.\n' "${KIND:-(none)}"
+        exit 1
+      fi
+      printf 'data home: %s\n' "$PWD"
+      for v in KEELSON_INPUTS_season KEELSON_INPUTS_gender KEELSON_INPUTS_focus; do
+        eval "val=\${$v:-}"
+        if [ -z "$val" ]; then
+          printf 'REFUSED: required input %s is empty.\n' "$v"
+          exit 1
+        fi
+      done
+      case "$KEELSON_INPUTS_season" in
+        [0-9][0-9][0-9][0-9]) ;;
+        *) printf 'REFUSED: season %s is not a four-digit year.\n' "$KEELSON_INPUTS_season"; exit 1 ;;
+      esac
+      case "$KEELSON_INPUTS_gender" in
+        men|women) ;;
+        *) printf 'REFUSED: gender must be men or women, not %s.\n' "$KEELSON_INPUTS_gender"; exit 1 ;;
+      esac
+      if [ ! -f "data/fixtures/${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}.json" ]; then
+        printf 'REFUSED: no collected fixtures for %s %s in this home — run touchline-collect first.\n' \
+          "$KEELSON_INPUTS_season" "$KEELSON_INPUTS_gender"
+        exit 1
+      fi
+      printf 'data home OK: %s\n' "$PWD"
+      printf 'report target: %s %s, prepared for %s\n' \
+        "$KEELSON_INPUTS_season" "$KEELSON_INPUTS_gender" "$KEELSON_INPUTS_focus"
+
+  - id: resolve-pipeline
+    depends_on: [preflight]
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      KEELSON_HOME_DIR="${KEELSON_HOME:-$HOME/.keelson}"
+      CFG="$KEELSON_HOME_DIR/rib-touchline/config.json"
+      PIPELINE_DIR="${TOUCHLINE_PIPELINE_DIR:-}"
+      if [ -z "$PIPELINE_DIR" ] && [ -f "$CFG" ]; then
+        PKG=$(jq -r '.packageDir // empty' "$CFG" 2>/dev/null)
+        [ -n "$PKG" ] && PIPELINE_DIR="$PKG/pipeline"
+      fi
+      if [ -z "$PIPELINE_DIR" ]; then
+        PIPELINE_DIR="$KEELSON_HOME_DIR/node_modules/@keelson/rib-touchline/pipeline"
+      fi
+      if [ ! -f "$PIPELINE_DIR/pyproject.toml" ]; then
+        printf 'ALARM: cannot resolve the Touchline pipeline. Last candidate: %s\n' "$PIPELINE_DIR"
+        exit 1
+      fi
+      printf '%s\n' "$PIPELINE_DIR"
+
+  - id: digest
+    depends_on: [resolve-pipeline]
+    timeout: 300000
+    bash: |
+      set -uo pipefail
+      PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
+      TOUCHLINE_DATA_DIR="$PWD" uv run --project "$PIPELINE_DIR" build-digest \
+        --season "$KEELSON_INPUTS_season" \
+        --gender "$KEELSON_INPUTS_gender" \
+        --focus "$KEELSON_INPUTS_focus"
+
+  - id: research
+    depends_on: [digest]
+    loop:
+      max_iterations: 12
+      fresh_context: true
+      until: ALL RESEARCHED
+      until_bash: |
+        set -u
+        D="data/reports/research/${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}"
+        DG="data/reports/digest-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
+        N=$(jq '.programmes | length' "$DG" 2>/dev/null || echo 99)
+        C=$(ls "$D"/research-*.json 2>/dev/null | wc -l | tr -d ' ')
+        [ "$C" -ge "$N" ]
+      prompt: |
+        You are one iteration of the Touchline offseason research stage for the
+        $inputs.season $inputs.gender season, prepared for '$inputs.focus'. Each
+        iteration researches EXACTLY ONE programme, then stops.
+
+        MANDATORY FIRST CHECK, every programme, no exceptions: who is the
+        head coach for the $inputs.season season, and did that change since
+        last season? Fetch the programme's staff directory or athletics news
+        page and record the answer as a finding either way — a verified
+        coaching change is among the most important facts a scouting report
+        can carry (it voids the opponent's film library), and a confirmed
+        unchanged coach is also a finding. A research file without a
+        coaching answer is incomplete.
+
+        1. Read data/reports/digest-$inputs.season-$inputs.gender-$inputs.focus.json — the
+           programme list, and each programme's availability_flags and
+           usage_shifts (your special-interest players).
+        2. List data/reports/research/$inputs.season-$inputs.gender/ — pick the
+           FIRST programme (the focus programme first, then alphabetical) with
+           no research-<slug>.json yet. If every programme has one, reply
+           exactly: ALL RESEARCHED
+        3. Read that programme's roster from
+           data/rosters/$inputs.season-$inputs.gender.json (names, hometowns).
+           If the roster is missing, write a file recording exactly that as the
+           only finding and finish.
+        3b. Check data/players/$inputs.gender/<slug>/ for existing player
+           profiles. Their findings are ALREADY VERIFIED — copy relevant ones
+           into this programme's findings as-is (same text, source, url,
+           date), and let their unswept notes save you repeat work. Probed
+           players still get a fresh focus-year check for anything newer.
+        4. Research the roster with THIS recipe, in order:
+           a. CLUB-FIRST: from the hometowns, list plausible summer clubs
+              (USL League Two, NPSL, UPSL, The League for Clubs) near campus
+              and near player-cluster geographies; fetch each club's roster or
+              squad page; cross-reference names.
+           b. BARE-NAME: for each distinctive name, search the plain name
+              alone — league award and social posts surface there when
+              structured queries miss.
+           c. HONORS FOLLOW-UP: any membership hit triggers an immediate
+              player+league honors search (all-conference, Team of the
+              Season, Best XI, weekly awards).
+           d. SPECIAL INTEREST: for every player in this programme's
+              availability_flags or usage_shifts, search their bare name plus
+              hometown — summer activity for a player with a participation
+              hole is the highest-value finding.
+           e. Also check for programme-level news: head-coach changes,
+              preseason polls, signing-class announcements.
+        5. EVIDENCE RULES — absolute: a finding exists only if you can verify
+           it at a URL you fetched or that appears unambiguously in search
+           results, AND identity plausibly matches (hometown, school, age).
+           Never stretch a name match. Confidence: league/club official pages
+           and local news are high; club social capturable at a stable URL is
+           medium; player self-posts (soccer-relevant only) are medium. A
+           claim you believe but cannot capture at a URL goes in
+           attested_uncaptured, NOT in findings. "Nothing found" per player
+           is a normal result.
+        6. Write the file INSIDE THE DATA HOME (the absolute directory on
+           the 'data home:' line of: $preflight.output) — reading contracts
+           takes you into the pipeline package, but output written relative
+           to anywhere else is silently lost — at
+           data/reports/research/$inputs.season-$inputs.gender/research-<slug>.json:
+           {
+             "schema": "touchline.research/1",
+             "programme": "<slug>",
+             "findings": [ { "player": str|null, "type":
+               "summer-league"|"honor"|"news"|"coach"|"signing",
+               "text": str, "source": str, "url": str, "date": str,
+               "confidence": "high"|"medium" } ],
+             "attested_uncaptured": [ str ],
+             "unswept": [ "club or league whose roster could not be read, with reason" ],
+             "clubs_checked": [ str ]
+           }
+        7. Reply with one line: the programme slug, findings count, and
+           unswept count. Do NOT reply ALL RESEARCHED unless step 2 found no
+           remaining programme.
+
+  - id: verify
+    depends_on: [research]
+    context: fresh
+    # Mechanical refutation: fetch each URL, keep or drop. The small tier
+    # is enough.
+    model: gpt-5.6-luna
+    timeout: 900000
+    prompt: |
+      You are the verification pass of the Touchline report workflow — the
+      adversary of the research stage. Season $inputs.season $inputs.gender.
+
+      Read every file in data/reports/research/$inputs.season-$inputs.gender/.
+      For EACH finding, re-fetch its URL and check that the page actually
+      supports the claim as written (the name appears, the honor is named, the
+      date is plausible). You are trying to REFUTE each claim; keep only what
+      survives. A finding whose page cannot be fetched or does not support the
+      text is dropped — recorded, never softened into the report.
+
+      Write — under the data home named on the 'data home:' line of
+      $preflight.output, never relative to another directory —
+      data/reports/research/$inputs.season-$inputs.gender/verified.json:
+      {
+        "schema": "touchline.research-verified/1",
+        "findings": [ ...surviving findings, unchanged... ],
+        "dropped": [ { "programme": str, "text": str, "reason": str } ],
+        "attested_uncaptured": [ ...merged from all research files... ],
+        "unswept": [ ...merged, deduplicated... ]
+      }
+
+      Reply with one line: surviving count, dropped count, attested count,
+      unswept count.
+
+  - id: narrative
+    depends_on: [verify]
+    context: fresh
+    # The narrative is the report's judgment core: the top tier, thinking
+    # hard. This node is where the report is actually written.
+    model: gpt-5.6-sol
+    effort: xhigh
+    timeout: 900000
+    prompt: |
+      You are the narrative writer of the Touchline report workflow. The
+      pipeline directory is:
+      $resolve-pipeline.output
+      Its parent directory holds the report's content contracts — read BOTH
+      before writing anything:
+        <pipeline-parent>/prompts/scouting-questionnaire.md  (what to answer)
+        <pipeline-parent>/prompts/style-contract.md          (how it must read)
+
+      Your inputs, in this data home (the current directory):
+        data/reports/digest-$inputs.season-$inputs.gender-$inputs.focus.json  — every figure
+          you may cite. THE ONLY SOURCE OF NUMBERS. If a figure is not in the
+          digest, it does not appear in your prose.
+        data/reports/research/$inputs.season-$inputs.gender/verified.json —
+          the only admissible news and offseason findings, each with source,
+          url, and date. attested_uncaptured items NEVER appear in the
+          report in any form — they stay in the research artifacts for the
+          run summary. If it isn't discoverable, it isn't in the report.
+          An undated source cannot date a claim.
+
+      Write data/reports/narrative-$inputs.season-$inputs.gender-$inputs.focus.json
+      conforming to the touchline.report-narrative/3 contract documented at
+      the top of <pipeline>/src/report.py (read it). Requirements:
+      - THE STRUCTURE IS A TOOLKIT, NOT A TEMPLATE. Which decisions get
+        made, which players get dossiers, which opponents land in which
+        tier, and which position groups get attention all come from THIS
+        team's digest and findings at this moment — never from a prior
+        report's topics. Do not assume any fixed decision (a goalkeeper
+        battle, a scoring gap) exists; find what the data says and write
+        that.
+      - exec: a bottom_line paragraph; EXACTLY 3 findings, each split into
+        evidence (the fact), meaning (the interpretation), and implication
+        (what the staff does with it) — never blend fact and judgment in
+        one sentence; at most 3 decisions — a decision is a call the
+        staff settles in preseason, before the first match; a fixture,
+        checkpoint, or anything on the season calendar is never a
+        decision; apply the generic-decision test from the style
+        contract: a decision title that would fit another team's report
+        unchanged is under-specified — rebind it to named players and
+        this team's numbers until it could belong to no one else; a short priorities list (it renders on the roster page,
+        so do not repeat the decisions)
+      - the roster shape counts each squad's international players from
+        published hometowns. Where the share is notable — especially in a
+        newcomer class — say so and read experience accordingly: D2
+        eligibility rules mean internationals often arrive older than
+        domestic freshmen, so class year understates experience. The same
+        goes for verified pedigree in the research: MLS Next / ECNL /
+        academy backgrounds mark a freshman proven above high-school
+        level (roughly JUCO-transfer equivalent); JUCO and
+        lower-division transfers are real minutes against variable
+        competition. Use the ladder to calibrate newcomer expectations
+        where pedigree is verified; otherwise the newcomer is unscouted.
+        A structural note about the squad, never a verdict on a named
+        player.
+      - focus.roster: an ARRAY of {title, text} rows, one per line of the
+        team (In goal, Back line, Midfield, Front line, Squad age — use
+        the digest's roster_shape groups), tying last season's problems
+        to this season's makeup. Ground every claim in the shape numbers
+        and write shares as people ("the keepers who played 85% of the
+        minutes are gone"), never as portfolios.
+      - one landscape prose section covering BOTH conference positioning
+        and where the focus side gains ground (they share a page)
+      - focus overview/news/offseason. The offseason ledger holds AT MOST
+        3 consolidated signals — one item per player with every supporting
+        citation in its sources array, never one item per source
+      - per-programme sections: threat, vulnerability, roster_note,
+        implication, and a tier: "benchmark" (sets the standard), "swing"
+        (winnable fixture that decides the season), or "update" (too
+        little data — say what to re-check and when). Tier from the
+        findings, not from last season's table position alone. The tier
+        word itself never appears in prose — the card displays it; the
+        implication says what to DO, and consecutive cards must not
+        share a closing sentence shape. Use each
+        opponent's roster_shape the same way as the focus side's. If a
+        field has nothing verified, leave it empty — the renderer says
+        "Nothing verified to report."
+      - watchlist: one-line monitoring notes drawn from DIFFERENT
+        evidence classes where the record offers them (a verified
+        offseason move, a small-sample riser, an availability or usage
+        signal, a top returner) — never five entries of one class; vary
+        the sentence scaffold across notes; a player with a dossier
+        never repeats on the watchlist; dossier subjects are wherever the
+        findings point (a position battle page is a dossier framed on the
+        battle, not the individual); preseason questions become the
+        scorecard — write them as testable checks
+      - LENGTH: 2,800-3,200 words of prose across the whole narrative.
+        Apply the insight filter in the style contract; state each
+        conclusion once and stop. Repetition, not facts, is what makes a
+        report long.
+      - credibility rules (absolute): records are written W-L-T; the
+        digest's availability_flags and usage_shifts are unverified
+        signals — observed gaps with unknown causes, never conclusions;
+        head-to-head is a held record since the first archived season,
+        never "all-time"; never draw a conclusion from absence of
+        evidence; never claim possession, set-piece quality, fitness, or
+        any trait the data does not measure — corner counts show
+        territorial exposure, and late goals show "performance after 60
+        minutes", not fitness; name the measure when ranking players
+        (shot-on-target rate, conversion), never bare "efficiency"
+      - voice per the style contract: the vocabulary of a beat writer or
+        an assistant coach, direct, no hype, every claim anchored to a
+        cited number or source
+      - PER-PROGRAMME DATA FIDELITY: every record, count, and share you
+        write about a programme must be read directly from THAT
+        programme's section of the digest at the moment you write it —
+        never from a summary table you built earlier, never from memory
+        of another programme's row. Cross-programme scrambles (one team's
+        shots under another's name, a departed player listed as
+        returning) are the worst possible failure. AFTER drafting,
+        re-open the digest and re-verify, programme by programme: each
+        W-L-T record, each returning count, each named player's status
+        (the turnover section's returning/departed lists are
+        authoritative — a player in an opponent's departed list who
+        appears on the focus roster is a transfer, and a major story).
+        Fix every mismatch before writing the file.
+      - the report NEVER names its own machinery: the words "digest",
+        "roster shape", "verified pool", or any reference to this system
+        must not appear in narrative prose. Say "the published record",
+        "the held record", or state the fact plainly. "No roster shape is
+        verified" becomes "the 2026 roster has not been published".
+      - major verified programme news is never omitted: a head-coach
+        change, a verified transfer between conference programmes, or a
+        decorated arrival in the verified findings MUST appear in that
+        programme's news array or roster note IN EVERY REPORT — focus side
+        or opponent. From the opponent's side, frame it as what it means
+        for preparation: a new head coach voids last season's film
+        ("system unknown, treat 2025 patterns as provisional"), a transfer
+        moves a known threat, an arrival changes the depth chart. Cutting
+        for length never cuts a coaching change.
+
+      Reply with one line per top-level section you wrote and its item count.
+
+  - id: validate-narrative
+    depends_on: [narrative]
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      F="data/reports/narrative-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
+      if [ ! -f "$F" ]; then
+        printf 'ALARM: narrative node reported success but %s does not exist.\n' "$F"
+        exit 1
+      fi
+      SCHEMA=$(jq -r '.schema // empty' "$F" 2>/dev/null)
+      if [ "$SCHEMA" != "touchline.report-narrative/3" ]; then
+        printf 'ALARM: %s schema is %s, expected touchline.report-narrative/3.\n' "$F" "${SCHEMA:-unparseable}"
+        exit 1
+      fi
+      FINDINGS=$(jq '.exec.findings | length' "$F")
+      DECISIONS=$(jq '.exec.decisions | length' "$F")
+      PROGS=$(jq '.programmes | length' "$F")
+      BOTTOM=$(jq -r '.exec.bottom_line // empty | length' "$F")
+      if [ "$FINDINGS" -lt 1 ] || [ "$FINDINGS" -gt 3 ] || [ "$DECISIONS" -lt 1 ] \
+        || [ "$DECISIONS" -gt 3 ] || [ "$PROGS" -lt 1 ] || [ "${BOTTOM:-0}" -lt 1 ]; then
+        printf 'ALARM: narrative out of contract (findings=%s max 3, decisions=%s max 3, programmes=%s, bottom_line len=%s).\n' \
+          "$FINDINGS" "$DECISIONS" "$PROGS" "${BOTTOM:-0}"
+        exit 1
+      fi
+      LEDGER=$(jq '[.focus.offseason // [] | length] | first' "$F")
+      if [ "$LEDGER" -gt 3 ]; then
+        printf 'ALARM: offseason ledger has %s items; the contract caps it at 3 consolidated signals.\n' "$LEDGER"
+        exit 1
+      fi
+      SPLIT=$(jq '[.exec.findings[] | select((.evidence // "") == "" or (.meaning // "") == "")] | length' "$F")
+      if [ "$SPLIT" -gt 0 ]; then
+        printf 'ALARM: %s finding(s) missing the evidence/meaning split required by narrative/3.\n' "$SPLIT"
+        exit 1
+      fi
+      MACHINERY=$(jq -r '.. | strings' "$F" | grep -ci 'digest\|roster shape\|roster_shape\|verified pool' || true)
+      if [ "$MACHINERY" -gt 0 ]; then
+        printf 'ALARM: narrative prose names report machinery %s time(s) ("digest"/"roster shape"/"verified pool") — banned by the style contract. Rewrite those sentences in plain language.\n' "$MACHINERY"
+        exit 1
+      fi
+      printf 'narrative OK: %s findings, %s decisions, %s programme sections, ledger %s\n' \
+        "$FINDINGS" "$DECISIONS" "$PROGS" "$LEDGER"
+
+  - id: render
+    depends_on: [validate-narrative]
+    timeout: 120000
+    bash: |
+      set -uo pipefail
+      PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
+      TOUCHLINE_DATA_DIR="$PWD" uv run --project "$PIPELINE_DIR" render-report \
+        --season "$KEELSON_INPUTS_season" \
+        --gender "$KEELSON_INPUTS_gender" \
+        --focus "$KEELSON_INPUTS_focus"
+
+  - id: summary
+    model: gpt-5.6-luna
+    depends_on: [render]
+    timeout: 120000
+    prompt: |
+      The Touchline preseason report run finished. Write a SHORT completion
+      summary for the person who asked:
+      - the digest line: $digest.output
+      - the research verification line: $verify.output
+      - the narrative sections: $narrative.output
+      - the render line: $render.output
+      Name what was dropped, attested-but-uncaptured, or left unswept exactly
+      as reported — never soften it: with no approval gate, this summary is
+      where a human learns what needs their eyes. The report file is data/reports/preseason-$inputs.season-$inputs.gender-$inputs.focus.html;
+      research artifacts live under data/reports/research/. Do not invent
+      numbers: every figure must appear in the text above.
