@@ -413,6 +413,7 @@ def h2h_strip(versus: dict | None, names: dict[str, str], focus: str, limit: int
     meetings = versus.get("meetings", [])
     for meeting in meetings[-limit:]:
         result = meeting.get("focus_result", "?")
+        letter = "T" if result == "D" else result
         score = str(meeting.get("score", ""))
         if meeting.get("home") != focus and "-" in score:
             home_goals, _, away_goals = score.partition("-")
@@ -422,7 +423,7 @@ def h2h_strip(versus: dict | None, names: dict[str, str], focus: str, limit: int
             f'{esc(names.get(meeting.get("home"), meeting.get("home")))} '
             f'{esc(meeting.get("score"))} '
             f'{esc(names.get(meeting.get("away"), meeting.get("away")))}">'
-            f'<b>{result}</b> <span class="num">{esc(score)}</span>'
+            f'<b>{letter}</b> <span class="num">{esc(score)}</span>'
             f'<i class="num">{esc(meeting.get("season"))}</i></span>'
         )
     first_season = meetings[0].get("season") if meetings else None

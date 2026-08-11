@@ -11,15 +11,24 @@ answer; this file says *how it must read and look*. Tune the product here.
   already computed, no estimates, no "roughly".
 - News-layer claims (coaching changes, arrivals, polls) carry a source and
   a date, fetched and verified — or they are not made. "No verified news"
-  is written when that is the truth.
+  is written when that is the truth. This layer is the one exception to
+  the digest rule: a news claim's own figures (a date, a poll position, a
+  transfer's published stat line) come verbatim from the cited page
+  instead of the digest, and from nowhere else.
 - **If it isn't discoverable, it isn't in the report.** Attested-but-
   uncaptured claims never appear in report content — not as fact, not as a
   hedge, not in an uncertainty. They live only in the research artifacts,
   surfaced in the run summary for a human to capture or discard. An
   undated source cannot date a claim: a name-only squad listing with no
-  season stamp does not establish a current-season fact.
+  season stamp does not establish a current-season fact. The boundary
+  with named gaps: a coverage statement describes what the search or the
+  public record returned ("2026 roster not yet published", "no other
+  public summer minutes found") and is required; a shadow of a failed
+  claim ("reports suggest an injury but could not be confirmed") smuggles
+  the uncaptured claim in as a hedge and is banned. If the claim cannot
+  be cited, neither the claim nor its silhouette appears.
 - Missing data is a named gap, stated plainly ("2026 roster not yet
-  published — turnover unknown"), never papered over.
+  published, so turnover is unknown"), never papered over.
 - Patterns computed over partial box-score coverage state the coverage
   ("18 of 18 matches", "11 of 14 matches").
 - When conference membership was carried forward past its last authored
@@ -64,7 +73,10 @@ answer; this file says *how it must read and look*. Tune the product here.
   back", "their goalkeeper returns after playing every minute". If a
   returning-share number cannot be attached to people in the sentence,
   rewrite the sentence. Tables may carry the raw percentages; prose
-  carries the people.
+  carries the people. Translating a table figure into people-language
+  ("74.3%" becoming "roughly three-quarters") is presentation, not new
+  arithmetic: it is allowed exactly when the precise figure sits in a
+  table or tile on the same page.
 - **More diction swaps** (the left column is banned): "for the focus
   side" → "for <team name>"; "inflection date" → "first competitive
   checkpoint"; "shapes everything downstream" → "must be decided early";
@@ -80,9 +92,13 @@ it belongs in the opponent card or the schedule, once.
 
 ## The international lens (D2 recruiting)
 
-Division II eligibility rules let international players arrive older and
-more experienced than domestic freshmen, and some programmes recruit
-internationally at volume to buy experience wholesale. The digest counts
+Division II's enrollment-based eligibility clock commonly lets
+international players arrive older and more experienced than domestic
+freshmen, and some programmes recruit internationally at volume to buy
+experience wholesale. Treat the mechanism as background context, not a
+citable fact: eligibility rules change, so never assert a specific
+regulation in report prose — read each player's published age, class, and
+record instead. The digest counts
 each squad's international share from published hometowns. Read a
 heavily-international newcomer class differently from a domestic freshman
 class: class year understates experience, and the impact variance runs
@@ -91,8 +107,10 @@ when sizing a roster — never a judgment about a named individual, whose
 record and film speak for themselves.
 
 The same lens extends to every incoming player: class year is the
-weakest experience signal, and verified pedigree calibrates it. As a
-rough ladder — pro or federation academies and senior international
+weakest experience signal, and verified pedigree calibrates it. The
+ladder below is a scouting heuristic — a judgment about typical
+competition level, not an established equivalence — and claims built on
+it carry the judgment label. As a rough ladder — pro or federation academies and senior international
 club football sit at the top; MLS Next and ECNL club backgrounds mark a
 freshman proven at a higher level than standard high-school play, often
 comparable to a JUCO transfer; JUCO and lower-division college transfers
@@ -111,7 +129,7 @@ not only the programme's own. The lens shifts with the reader: a new
 coach means the opponent's film library just expired and last season's
 patterns are provisional; a transfer moves a known threat between cards;
 an arrival changes a depth chart. Length cuts never remove this class of
-news.
+news, and it bypasses the insight filter — it is never scored out.
 
 ## The generic-decision test
 
@@ -126,10 +144,13 @@ dossier verdicts.
 
 ## Anti-formula rules
 
-- **Vary the scaffold.** Consecutive items in one list (watchlist notes,
-  implications, questions, priorities) must not share an opening verb or
-  sentence shape. Eleven notes that all begin "Track the returning
-  forward's..." are a formula wearing analysis clothes.
+- **Vary the scaffold.** This rule governs prose inside the fields, not
+  the fields themselves: the evidence/meaning/implication split and the
+  fixed card anatomy repeat by design. Within them, consecutive items in
+  one list (watchlist profiles, implications, questions, priorities)
+  must not share an opening verb or sentence shape. Eleven notes that
+  all begin "Track the returning forward's..." are a formula wearing
+  analysis clothes.
 - **Contract examples are illustrations, not required phrasing.** A
   concept named in this contract ("performance after 60 minutes") applies
   only where THIS team's data flags it — do not import another report's
@@ -159,8 +180,10 @@ limits what the analysis is allowed to conclude.
 
 ## Length
 
-2,400–2,900 words of prose for the whole report. Each page is a complete
-story with one conclusion, stated once. Repetition, not facts, is what
+2,400–2,900 words of prose for the whole report — deliberately sparse,
+roughly 150–200 words of prose per page, because the tables, charts, and
+career lines carry the rest. Do not over-write to fill pages. Each page
+is a complete story with one conclusion, stated once. Repetition, not facts, is what
 makes a report long: if a point appears in the executive brief, it does
 not reappear as a takeaway elsewhere.
 
@@ -171,8 +194,11 @@ Before an insight enters the report, score it: focus-side relevance
 non-duplicative (0-1), current for this season (0-1), adequate sample
 (0-1), explainable in one sentence (0-1). Score 7-10 → main report; 5-6 →
 watchlist or appendix; below 5 → cut. Every major block must be able to
-populate Evidence, Meaning, Action, and Caveat — if there is no Action a
-coach could take, it does not belong in the coach-facing report.
+populate Evidence, Meaning, Implication, and Caveat — if the implication
+names no action a coach could take, it does not belong in the coach-facing
+report. The major-news class (coach changes, intra-conference transfers,
+decorated arrivals) bypasses this filter entirely: it is never scored out
+of a report.
 
 ## No self-reference (absolute)
 
@@ -180,15 +206,25 @@ The report never talks about itself. It does not explain why content was
 included, what the analysis system can or cannot see, how sections relate
 to each other, or who the intended reader is. Lines like "that is why
 they belong in this report" or "this page is about the battle" are
-editorial scaffolding — delete them and let the content stand. Provenance
-lives in exactly two places: the cover's data line and the technical appendix.
+editorial scaffolding — delete them and let the content stand.
+
+The boundary: statements about the public record's limits are allowed and
+required ("2026 roster not yet published", "11 of 14 matches held", "no
+other public summer minutes found") — they describe what exists to be
+read. Statements about this system's limits ("the analysis cannot see",
+"our data does not include") are the banned kind of self-reference.
+Dataset provenance — which seasons are held, when they were collected —
+lives in exactly two places: the cover's data line and the technical
+appendix. Claim-level citations (news sources, ledger footnotes) and
+interpretation caveats always travel with their claims; the two-places
+rule never suppresses them.
 
 ## Captions
 
 A visual's caption exists only for a legend the reader needs or a caveat
 that changes interpretation (coverage, sample, carried-forward data).
 Pure provenance ("observed, computed from published rosters") is never a
-caption: the evidence chips and the cover legend already carry it.
+caption: the evidence labels and the cover legend already carry it.
 
 ## Punctuation and cadence
 
@@ -225,14 +261,14 @@ caption: the evidence chips and the cover legend already carry it.
   quarterly business review (leverage, hierarchy, fluidity, structural,
   optimize, capability), swap it for the word the locker room uses.
 - Insight is a hypothesis anchored to a cited number: "They conceded 9 of
-  14 goals after the 60th minute — sustained second-half pressure is the
+  14 goals after the 60th minute. Sustained second-half pressure is the
   percentage play." Not: "They tend to tire late."
 - Players are named with position and class year on first mention.
 - The reader knows soccer. Explain nothing about the sport; explain only
   what the data shows.
 - The focus side's own roster needs no introduction — its coach picked it.
-  Cover the focus programme outside-in: what the public record shows an
-  opponent, and say so. Trend signals about focus players (availability
+  Cover the focus programme outside-in: what the public record would show
+  an opposing staff, and say so. Trend signals about focus players (availability
   gaps, usage shifts, offseason footprints) stay — they show what others
   can see.
 
@@ -256,13 +292,19 @@ fewer, stronger items beat coverage.
 5. Opponent cards, one per sheet at about three-quarters of a page:
    identity, roster change, key threat, potential opening, implication,
    at most 2 news items, head-to-head strip. Benchmark tier first.
+   The tiers: "benchmark" is a side that sets the standard the season is
+   measured against; "swing" is a winnable fixture likely to decide the
+   finish; "update" has too little published data to card — say what to
+   re-check and when. Tier counts are not fixed; assignment comes from
+   the findings, not from last season's table position alone, and the
+   tier words never appear in prose.
 6. Watchlist — one sheet per opponent: exactly two half-page player
    profiles (held career line, why watch ≤90 words, what preseason
    verifies). No focus-side entries, no separate dossier section.
 
 There is no schedule sheet and no sources page. The collection file
 ledger lives in the technical appendix; definitions travel with the
-evidence chips and the cover legend.
+evidence labels (rendered as chips) and the cover legend.
 
 ## Look
 
@@ -270,17 +312,24 @@ evidence chips and the cover legend.
   tabular numerals, disciplined color. It should feel like a team's own
   scouting department produced it.
 - Print-neutral palette, always: near-black ink on white paper, one
-  restrained accent for structure, semantic green/red for W/L, muted rose
-  for risk. Never a school's colors — the report is independent analysis
-  and school-agnostic by design, and the same palette must serve every
-  programme and conference without retheming. Avenir Next Condensed
-  display over a system text face.
-- Every visual is drawn from digest values only: W/D/L form strips,
+  restrained accent for structure. Result colors are semantic and carry
+  ties as a first-class outcome: green for wins, red for losses, muted
+  gold for ties. The muted rose used for risk fields is a separate hue
+  with a separate job — it marks potential openings and negative gaps,
+  never match results; keep the two reds visually distinct. Never a
+  school's colors — the report is independent analysis and
+  school-agnostic by design, and the same palette must serve every
+  programme and conference without retheming. Display face: Avenir Next
+  Condensed with an explicit fallback stack (Arial Narrow, then any
+  condensed sans) so the same layout resolves off macOS; body text in a
+  system text face.
+- Every visual is drawn from digest values only: W-L-T result strips,
   goals-by-minute band bars, returning-share bars, head-to-head timelines.
   Inline SVG, no chart libraries, no external assets.
-- One signature visual per opponent section (the minute-band profile), not
-  decoration everywhere. Numbers a coach must compare sit in tables, not
-  prose.
+- Visuals follow the findings, not a quota: a chart appears where this
+  team's data flags something worth seeing, and the head-to-head strip is
+  the only fixed visual an opponent card carries. Numbers a coach must
+  compare sit in tables, not prose.
 - Branding: best look first. Company brand alignment (edinsights.ai —
   "Empowered Data. Artificial Intelligence. Real Results.") comes later; a
   discreet "EDInsights" provenance mark in the footer is enough for now.
