@@ -313,6 +313,19 @@ nodes:
       - voice per the style contract: the vocabulary of a beat writer or
         an assistant coach, direct, no hype, every claim anchored to a
         cited number or source
+      - PER-PROGRAMME DATA FIDELITY: every record, count, and share you
+        write about a programme must be read directly from THAT
+        programme's section of the digest at the moment you write it —
+        never from a summary table you built earlier, never from memory
+        of another programme's row. Cross-programme scrambles (one team's
+        shots under another's name, a departed player listed as
+        returning) are the worst possible failure. AFTER drafting,
+        re-open the digest and re-verify, programme by programme: each
+        W-L-T record, each returning count, each named player's status
+        (the turnover section's returning/departed lists are
+        authoritative — a player in an opponent's departed list who
+        appears on the focus roster is a transfer, and a major story).
+        Fix every mismatch before writing the file.
       - the report NEVER names its own machinery: the words "digest",
         "roster shape", "verified pool", or any reference to this system
         must not appear in narrative prose. Say "the published record",
@@ -363,6 +376,11 @@ nodes:
       SPLIT=$(jq '[.exec.findings[] | select((.evidence // "") == "" or (.meaning // "") == "")] | length' "$F")
       if [ "$SPLIT" -gt 0 ]; then
         printf 'ALARM: %s finding(s) missing the evidence/meaning split required by narrative/3.\n' "$SPLIT"
+        exit 1
+      fi
+      MACHINERY=$(jq -r '.. | strings' "$F" | grep -ci 'digest\|roster shape\|roster_shape\|verified pool' || true)
+      if [ "$MACHINERY" -gt 0 ]; then
+        printf 'ALARM: narrative prose names report machinery %s time(s) ("digest"/"roster shape"/"verified pool") — banned by the style contract. Rewrite those sentences in plain language.\n' "$MACHINERY"
         exit 1
       fi
       printf 'narrative OK: %s findings, %s decisions, %s programme sections, ledger %s\n' \
