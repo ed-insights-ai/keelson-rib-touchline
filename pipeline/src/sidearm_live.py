@@ -301,8 +301,16 @@ def assert_untrapped_schedule(
         )
 
 
+# A poll rank is published three ways and moves week to week, so leaving it in
+# the name mints a new identity every time it changes: the archive holds
+# no-4-csu-pueblo beside no-15-csu-pueblo, and three separate slugs for
+# Midwestern State. Two digits is the whole range a poll uses, which is what
+# stops the bare-number form from eating a name that starts with a numeral.
+_RANK_PREFIX = re.compile(r"^(?:#\s*\d{1,2}|no\.?\s*\d{1,2}|\d{1,2})\s+", re.IGNORECASE)
+
+
 def _clean_team_name(name: object) -> str:
-    return re.sub(r"^#\d+\s+", "", str(name or "").strip())
+    return _RANK_PREFIX.sub("", str(name or "").strip())
 
 
 def _identity_key(name: str) -> str:
@@ -312,10 +320,18 @@ def _identity_key(name: str) -> str:
     and neither belongs in an institution's identity: a disambiguating region
     ("Rogers State University (Okla.)") and a match-type annotation ("Oklahoma
     Wesleyan (Exhibition)").
+
+    "St." is two different words and position tells them apart. Trailing, it
+    abbreviates State ("Northeastern St."); before another word it abbreviates
+    Saint ("St. Edward's", "Missouri-St. Louis"). Expanding it to State
+    unconditionally corrupted every Saint school in the archive, and the Lone
+    Star Conference alone brings two more.
     """
     text = _clean_team_name(name).lower().replace("&", " and ")
     text = re.sub(r"\([^)]*\)", " ", text)
-    text = re.sub(r"\bst\.?\b", "state", text)
+    text = text.replace("'", "").replace("’", "")
+    text = re.sub(r"\bst\.?\s*$", " state", text)
+    text = re.sub(r"\b(?:st\.\s*|st\s+)(?=[a-z])", "saint ", text)
     text = re.sub(r"\buniv(?:ersity)?\b|\bcollege\b|\bthe\b", " ", text)
     return re.sub(r"[^a-z0-9]+", " ", text).strip()
 

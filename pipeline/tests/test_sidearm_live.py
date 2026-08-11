@@ -499,6 +499,44 @@ def test_unconfigured_opponents_fold_on_the_normalized_key() -> None:
     )
 
 
+def test_a_poll_rank_is_not_part_of_an_identity() -> None:
+    """A rank moves week to week, so keeping it mints one slug per week.
+
+    Measured in the archive: no-4-csu-pueblo beside no-15-csu-pueblo,
+    no-25-maryville beside no-12-maryville, and three separate slugs for
+    Midwestern State. Sites publish the rank as "#4", "No. 4", "No 4" and bare
+    "4", and only the first form was being stripped.
+    """
+    aliases = identity_aliases(_gac(), "men")
+    assert (
+        opponent_slug("#4 CSU Pueblo", aliases)
+        == opponent_slug("No. 4 CSU Pueblo", aliases)
+        == opponent_slug("No 15 CSU Pueblo", aliases)
+        == opponent_slug("10 CSU Pueblo", aliases)
+        == opponent_slug("CSU Pueblo", aliases)
+        == "csu-pueblo"
+    )
+    # A ranked configured member must still fold onto its canonical slug.
+    assert opponent_slug("No. 7 Fort Hays State", aliases) == "fort-hays-state"
+
+
+def test_st_is_saint_before_a_word_and_state_at_the_end() -> None:
+    """One abbreviation, two different words, told apart by position.
+
+    Expanding "St." to State unconditionally slugged St. Edward's as
+    state-edward-s and Missouri-St. Louis as missouri-state-louis. Both are
+    real programmes, and the Lone Star Conference brings two more Saint
+    schools, so this blocks conference expansion rather than following it.
+    """
+    aliases = identity_aliases(_gac(), "men")
+    assert opponent_slug("St. Edward's", aliases) == "saint-edwards"
+    assert opponent_slug("St. Mary's (Texas)", aliases) == "saint-marys"
+    assert opponent_slug("Missouri-St. Louis", aliases) == "missouri-saint-louis"
+    # Trailing "St." still means State, which is why the rule exists at all.
+    assert opponent_slug("Northeastern St.", aliases) == "northeastern-state"
+    assert opponent_slug("Delta St.", aliases) == "delta-state"
+
+
 def test_an_opaque_abbreviation_is_recorded_rather_than_guessed() -> None:
     """DBU really is Dallas Baptist, and the collector must NOT infer that.
 
