@@ -433,7 +433,11 @@ nodes:
         implication, an optional coach line, and a tier: "benchmark"
         (sets the standard), "swing" (winnable fixture that decides the
         season), or "update" (too little data — say what to re-check and
-        when). The coach line applies the bench lens from the style
+        when). "update" is a DATA-COVERAGE tier only: a programme with
+        a held record and a published roster is NEVER update — a new
+        coach or an unknown system is expressed inside the full card
+        (the bench line, provisional-patterns framing), never by
+        dropping the card. The coach line applies the bench lens from the style
         contract: when the verified pool's coaches section holds a
         verified entry, write ONE line saying who runs the programme,
         the verified tenure or change, and what that does to pattern

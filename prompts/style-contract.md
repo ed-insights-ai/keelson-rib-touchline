@@ -335,7 +335,11 @@ fewer, stronger items beat coverage.
    benchmark first, then swing, then the update entries. Tier counts
    are not fixed; assignment comes from the findings, not from last
    season's table position alone, and the tier words never appear in
-   prose.
+   prose. Update is a data-coverage judgment only: a programme with a
+   held record and a published roster is never update-tier. A new
+   coach or an uncertain system changes what the card says — the
+   bench line and provisional-patterns framing — never whether the
+   full card runs.
 6. Watchlist — up to two half-page player profiles per opponent (held
    career line, why watch ≤90 words, what preseason verifies), each
    admitted by the insight filter, never by quota. An opponent whose
