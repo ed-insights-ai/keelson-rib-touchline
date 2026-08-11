@@ -1,0 +1,617 @@
+<meta charset="utf-8">
+<title>Touchline Prototype · How a machine scouts a season</title>
+<style>
+  :root{
+    --bg:#eef2f7; --sheet:#f4f7fb; --ink:#1c3450; --head:#132c49; --mut:#5b6b7c;
+    --blue:#2170c0; --blue-deep:#1b4f8a; --navy:#1e3a5f;
+    --green:#3e7c4f; --green-bg:#eef5ef;
+    --amber:#b47417; --amber-bg:#faf3e6;
+    --red:#b0392e; --red-bg:#faeeec;
+    --line:#c6d2de; --box:#ffffff;
+    --mono:"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{background:#d9dfe7}
+  body{font:12.2px/1.5 "Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);
+       -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sheet{width:8.5in;height:11in;background:var(--sheet);margin:24px auto;box-shadow:0 2px 14px rgba(20,40,60,.18);
+         padding:.5in .58in .72in;position:relative;overflow:hidden;page-break-after:always;break-after:page}
+  @page{size:letter;margin:0}
+  @media print{ html{background:none} .sheet{margin:0;box-shadow:none} }
+  .foot{position:absolute;left:.58in;right:.58in;bottom:.34in;display:flex;justify-content:space-between;
+        font-size:8.6px;letter-spacing:.06em;color:var(--mut);border-top:1px solid var(--line);padding-top:6px}
+  .foot b{font-weight:600;color:var(--navy)}
+
+  .eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.24em;color:var(--blue);margin-bottom:8px}
+  h1{font-size:33px;line-height:1.08;font-weight:700;color:var(--head);letter-spacing:-.01em}
+  .dek{font-size:14px;color:var(--mut);margin:9px 0 13px;line-height:1.4}
+  .rule{border:none;border-top:2.5px solid var(--navy);margin:2px 0 12px}
+  p{margin:0 0 8px}
+  .lead{font-size:12.5px}
+  b,strong{font-weight:600;color:var(--head)}
+  .sec{display:flex;align-items:baseline;gap:10px;margin:14px 0 3px}
+  .sec .no{font-size:19px;font-weight:700;color:var(--blue);font-family:var(--mono)}
+  .sec h2{font-size:16.5px;font-weight:700;color:var(--head)}
+  .sub{font-size:11.4px;color:var(--mut);margin:0 0 8px;font-style:italic}
+  .lbl{font-size:9.8px;font-weight:700;letter-spacing:.18em;color:var(--mut);margin:12px 0 6px}
+  .lbl.blue{color:var(--blue)}
+  code,.mono{font-family:var(--mono);font-size:.92em}
+  .cap{font-size:9.7px;color:var(--mut);line-height:1.45;margin:4px 0 8px}
+
+  table{width:100%;border-collapse:collapse;margin:5px 0 9px;font-size:10.6px;line-height:1.38}
+  th{font-size:9.2px;letter-spacing:.14em;font-weight:700;color:var(--mut);text-align:left;
+     border-bottom:1.5px solid var(--navy);padding:3px 10px 4px 0}
+  td{border-bottom:1px solid var(--line);padding:4.5px 10px 4.5px 0;vertical-align:top}
+  td.first,th.first{font-weight:600;color:var(--head)}
+  tr:last-child td{border-bottom:none}
+
+  .take{border:1.5px solid var(--navy);border-radius:9px;background:var(--box);padding:8px 12px;margin:9px 0;font-size:11.2px}
+  .never{border:1.5px solid var(--red);border-radius:9px;background:var(--red-bg);padding:7px 12px;margin:8px 0;
+         font-size:11.2px;color:#7c2a22}
+  .never b{color:var(--red)}
+  .story{border:1.5px dashed var(--amber);border-radius:9px;background:var(--amber-bg);padding:8px 12px;margin:8px 0;font-size:11.2px}
+  .story .k{font-size:9.3px;letter-spacing:.18em;font-weight:700;color:var(--amber);margin-bottom:3px}
+
+  .honest{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+  .honest .row{border:1.5px solid var(--line);border-radius:8px;background:var(--box);padding:6px 12px;font-size:10.9px}
+  .honest .row.dark{background:var(--navy);border-color:var(--navy);color:#e8eef5}
+  .honest .row.dark b{color:#fff}
+
+  .flow{display:flex;align-items:stretch;margin:8px 0}
+  .fbox{flex:1;border:1.7px solid var(--navy);border-radius:9px;background:var(--box);padding:8px 11px}
+  .fbox .k{font-size:9px;letter-spacing:.16em;font-weight:700;margin-bottom:2px;color:var(--blue-deep)}
+  .fbox .t{font-size:12px;font-weight:700;color:var(--head);line-height:1.25}
+  .fbox .s{font-size:9.8px;color:var(--mut);margin-top:3px;line-height:1.35}
+  .fbox.green{border-color:var(--green)} .fbox.green .k{color:var(--green)}
+  .fbox.amber{border-color:var(--amber)} .fbox.amber .k{color:var(--amber)}
+  .fbox.gray{border-color:#8b9aab} .fbox.gray .k{color:#6b7c8e}
+  .arr{align-self:center;padding:0 7px;color:var(--navy);font-size:16px;font-weight:700}
+
+  /* stat tiles (echo of the briefing's own tiles) */
+  .tiles{display:flex;gap:8px;margin:7px 0}
+  .tile{flex:1;border:1.4px solid var(--line);border-radius:8px;background:var(--box);padding:7px 10px}
+  .tile .k{font-size:8.2px;letter-spacing:.14em;font-weight:700;color:var(--mut)}
+  .tile .v{font-size:21px;font-weight:700;color:var(--head);font-family:var(--mono);letter-spacing:-.02em;line-height:1.15}
+  .tile .s{font-size:8.8px;color:var(--mut)}
+
+  /* layer bands */
+  .band{display:flex;align-items:center;gap:12px;border:1.6px solid var(--line);border-radius:9px;
+        background:var(--box);padding:6px 12px}
+  .band.model{border-color:var(--amber);background:var(--amber-bg)}
+  .band .tag{width:1.02in;flex:none;font-size:10.3px;font-weight:700;letter-spacing:.14em;color:var(--head)}
+  .band .desc{flex:1;font-size:10.6px;line-height:1.35}
+  .who{flex:none;font-size:8.8px;font-weight:700;letter-spacing:.14em;border-radius:20px;padding:3px 11px}
+  .who.code{background:#e3edf8;color:var(--blue-deep);border:1.3px solid var(--blue)}
+  .who.model{background:#fff;color:var(--amber);border:1.3px solid var(--amber)}
+  .vconn{text-align:center;color:var(--mut);font-size:10px;line-height:1;padding:2px 0}
+  .stack{margin:8px 0}
+  .gchip{display:inline-block;background:var(--navy);color:#fff;border-radius:5px;font-size:7.8px;font-weight:700;
+         letter-spacing:.08em;padding:2px 6px;vertical-align:1px}
+  .ministages{display:flex;align-items:center;gap:4px;margin-top:4px;font-size:9px;color:var(--head)}
+  .mstage{border:1.2px solid var(--amber);border-radius:5px;background:#fff;padding:1.5px 7px;font-weight:600}
+
+  /* instrumented run strip */
+  .runstrip{display:flex;align-items:stretch;gap:0;margin:7px 0}
+  .rbox{flex:1;border:1.4px solid var(--navy);border-radius:7px;background:var(--box);padding:5px 7px;text-align:center}
+  .rbox .v{font-family:var(--mono);font-size:12.5px;font-weight:700;color:var(--head);line-height:1.2}
+  .rbox .k{font-size:7.6px;letter-spacing:.06em;color:var(--mut);line-height:1.3;margin-top:1px}
+  .rbox.amber{border-color:var(--amber)}
+  .rarr{align-self:center;padding:0 3px;color:var(--navy);font-size:11px;font-weight:700}
+
+  /* bar chart */
+  .chart{border:1.5px solid var(--line);border-radius:9px;background:var(--box);padding:10px 14px 8px;margin:7px 0}
+  .bars{display:flex;align-items:flex-end;gap:9px;height:100px}
+  .bcol{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+  .bcol .n{font-size:9px;font-family:var(--mono);color:var(--head);margin-bottom:2px}
+  .bcol .bar{width:100%;background:#7a9cc4;border-radius:2.5px 2.5px 0 0}
+  .bcol .bar.dim{background:#c3d2e2}
+  .bcol .bar.zero{background:none;border:1.4px dashed var(--amber);border-bottom:none;height:96px !important}
+  .bx{display:flex;gap:9px;border-top:1.5px solid var(--navy);margin-top:0;padding-top:3px}
+  .bx span{flex:1;text-align:center;font-size:8.4px;color:var(--mut);font-family:var(--mono)}
+  .anno{font-size:8.6px;color:var(--amber);font-weight:600}
+
+  /* matrix */
+  .matrix td{padding:3.5px 8px 3.5px 0;font-size:10.2px}
+  .dot{font-size:11px;color:var(--blue-deep)}
+  .dot.miss{color:var(--red);font-weight:700}
+  .dot.unk{color:var(--amber);font-weight:700}
+
+  /* funnel */
+  .funnel{margin:7px 0}
+  .frow{display:flex;align-items:center;gap:9px;margin-bottom:5px}
+  .frow .fl{width:1.5in;flex:none;font-size:9.4px;font-weight:700;letter-spacing:.06em;color:var(--head);text-align:right;line-height:1.25}
+  .frow .fl .m{display:block;font-weight:500;color:var(--mut);letter-spacing:0;font-size:8.6px}
+  .ftrack{flex:1;display:flex;gap:2px;height:22px}
+  .fseg{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:center;
+        font-family:var(--mono);font-size:9.5px;font-weight:700;color:#fff;min-width:26px}
+  .fseg.hi{background:var(--blue-deep)} .fseg.med{background:#7a9cc4;min-width:30px}
+  .fseg.drop{background:var(--red);min-width:74px} .fseg.hold{background:#b9c6d4;color:var(--head)}
+  .fseg.free{background:var(--green)} .fseg.restrict{background:var(--amber);min-width:86px}
+
+  /* authorship bars */
+  .auth{margin:7px 0}
+  .arow{display:flex;align-items:center;gap:9px;margin-bottom:5px}
+  .arow .al{width:1.72in;flex:none;font-size:9.6px;font-weight:600;color:var(--head);text-align:right;line-height:1.25}
+  .atrack{flex:1;display:flex;height:20px;border-radius:4px;overflow:hidden}
+  .aseg{display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;font-family:var(--mono)}
+  .aseg.code{background:var(--blue-deep)} .aseg.model{background:var(--amber)}
+
+  /* annotated excerpt */
+  .exwrap{border:1.5px solid var(--line);border-radius:9px;background:#fff;padding:8px;margin:7px 0;display:flex;gap:10px}
+  .exwrap img{display:block;width:100%;height:auto;border-radius:4px}
+  .exmain{flex:1;min-width:0}
+  .exkeys{width:1.62in;flex:none;display:flex;flex-direction:column;gap:6px;justify-content:center}
+  .exkey{border-left:4px solid var(--blue-deep);padding:4px 8px;font-size:9.3px;line-height:1.4;background:#f2f6fa;border-radius:0 6px 6px 0}
+  .exkey.model{border-left-color:var(--amber);background:var(--amber-bg)}
+  .exkey b{display:block;font-size:8.6px;letter-spacing:.1em}
+
+  /* thumbnails + strips */
+  .thumbs{display:flex;gap:12px;margin:7px 0}
+  .thumb{flex:1;text-align:center}
+  .thumb img{width:100%;height:auto;border:1.4px solid var(--line);border-radius:5px;box-shadow:0 1.5px 6px rgba(20,40,60,.14)}
+  .thumb .c{font-size:9.3px;color:var(--mut);margin-top:3px}
+  .thumb .c b{font-family:var(--mono)}
+  .strips{display:flex;gap:12px;margin:5px 0 2px}
+  .strip{flex:1;display:flex;gap:2px}
+  .pg{flex:1;height:14px;border-radius:2.5px}
+  .pg.cover{background:var(--navy)} .pg.brief{background:var(--blue-deep)} .pg.focus{background:#7a9cc4}
+  .pg.landscape{background:var(--green)} .pg.card{background:#c3d2e2} .pg.watch{background:var(--amber)}
+  .legend{display:flex;gap:12px;font-size:8.6px;color:var(--mut);margin:4px 0 6px;justify-content:center}
+  .legend span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+  .lg-cover::before{background:var(--navy)} .lg-brief::before{background:var(--blue-deep)} .lg-focus::before{background:#7a9cc4}
+  .lg-landscape::before{background:var(--green)} .lg-card::before{background:#c3d2e2} .lg-watch::before{background:var(--amber)}
+
+  /* gate chain */
+  .gatechain{display:flex;align-items:center;margin:20px 0 8px}
+  .gstep{flex:1;border:1.6px solid var(--navy);border-radius:8px;background:var(--box);text-align:center;
+         padding:7px 4px;font-size:10.2px;font-weight:600;color:var(--head);line-height:1.25}
+  .gstep .m{display:block;font-size:8.4px;color:var(--mut);font-weight:500}
+  .gstep.ai{border-color:var(--amber);background:var(--amber-bg)}
+  .gate{flex:none;background:var(--navy);color:#fff;border-radius:6px;font-size:8.4px;font-weight:700;
+        letter-spacing:.06em;padding:5px 6px;margin:0 4px;text-align:center;line-height:1.3;position:relative}
+  .gate .x{position:absolute;top:-17px;left:50%;transform:translateX(-50%);color:var(--red);font-size:13px;font-weight:700}
+  .glue{flex:none;color:var(--navy);font-weight:700;padding:0 4px}
+
+  .purpose{position:absolute;top:.5in;right:.58in;background:var(--navy);color:#fff;border-radius:9px;
+           padding:9px 16px;text-align:center;max-width:2.5in}
+  .purpose .k{font-size:9px;letter-spacing:.22em;font-weight:700;color:#aec6e2;margin-bottom:2px}
+  .purpose .v{font-size:12.6px;font-weight:700;line-height:1.25}
+  .purpose .s{font-size:9.3px;color:#c9d8ea;margin-top:2px}
+  ul.tight{margin:2px 0 8px 16px}
+  ul.tight li{margin-bottom:3px;font-size:11.2px}
+  .fine{font-size:9.6px;color:var(--mut);line-height:1.45;border-top:1px solid var(--line);padding-top:8px;margin-top:11px}
+</style>
+
+<!-- ============================ PAGE 1 ============================ -->
+<div class="sheet">
+  <div class="eyebrow">TOUCHLINE PROTOTYPE · DESIGN CONCEPT</div>
+  <h1>How a machine scouts a season</h1>
+  <div class="dek">Published data in · every number computed · every claim graded and cited ·<br>a coach-grade briefing out, repeatable across programmes</div>
+  <div class="purpose"><div class="k">PURPOSE</div><div class="v">A briefing you can check</div><div class="s">not one you must take on faith</div></div>
+  <hr class="rule">
+  <p class="lead">College soccer publishes nearly everything a scout needs — schedules, rosters, player statistics, a box
+  score for every match — on the athletics sites every programme already maintains. What almost no programme below the
+  top divisions has is the analyst to assemble it. The Touchline prototype tests whether a system pairing
+  <b>deterministic computation</b> with a <b>language model held to an evidence standard</b> can do that assembly and
+  return a preseason briefing a coaching staff can verify line by line. These pages show the design, the measurements,
+  and the learnings.</p>
+
+  <div class="sec"><span class="no">01</span><h2>The problem: the data exists, the analyst does not</h2></div>
+  <p class="sub">Preseason questions are the same at every level. The staff to answer them is not.</p>
+  <table>
+    <tr><th class="first" style="width:31%">WHAT THE STAFF ASKS</th><th style="width:36%">WHERE THE ANSWER LIVES TODAY</th><th>THE COST OF GETTING IT</th></tr>
+    <tr><td class="first">Who did they lose, who comes back?</td><td>Two seasons' roster pages, compared by hand</td><td>An hour per opponent, done accurately</td></tr>
+    <tr><td class="first">What did their season look like?</td><td>Box scores scattered across match pages</td><td>Hours per opponent, so it is skipped</td></tr>
+    <tr><td class="first">Has anything changed over there?</td><td>Coach bios, local coverage, transfer notes</td><td>Found by accident, if at all</td></tr>
+    <tr><td class="first">Which of our dates are dangerous?</td><td>The schedule, plus all of the above, assembled</td><td>Judgment without the evidence in front of it</td></tr>
+  </table>
+
+  <div class="lbl blue">ONE CONFERENCE, AS PUBLISHED DATA · WHAT "BY HAND" WOULD MEAN</div>
+  <div class="tiles">
+    <div class="tile"><div class="k">PROGRAMMES</div><div class="v">7</div><div class="s">one conference</div></div>
+    <div class="tile"><div class="k">SEASONS</div><div class="v">11</div><div class="s">2016 – 2026</div></div>
+    <div class="tile"><div class="k">MATCH RECORDS</div><div class="v">687</div><div class="s">box scores held</div></div>
+    <div class="tile"><div class="k">PLAYER RECORDS</div><div class="v">201</div><div class="s">career &amp; season lines</div></div>
+    <div class="tile"><div class="k">PAGES ARCHIVED</div><div class="v">183</div><div class="s">verbatim, with URL + date</div></div>
+  </div>
+  <p class="cap">The corpus behind one conference's preseason read, as held by the prototype today. A staff preparing by
+  hand reads some fraction of this once a year; the system re-reads all of it on every run. (Tiles like these are how the
+  briefing itself reports numbers — the document you are reading uses its subject's own conventions.)</p>
+
+  <div class="take"><b>Takeaway.</b> The prototype is not a chatbot asked about soccer. It is a data pipeline with a
+  language model employed at exactly one stage, under contract, between a verifier and a set of mechanical gates — and
+  the interesting design decisions are all about where that boundary sits.</div>
+
+  <div class="lbl">TWO READERS, ONE DOCUMENT</div>
+  <div class="flow">
+    <div class="fbox"><div class="k">FOR THE RESEARCH READER</div><div class="t">A composition study, measured</div>
+      <div class="s">deterministic computation with retrieval-grounded, adversarially verified, gate-checked generation —
+      the methods and their measurements are in sections 04–07, the evaluation agenda in 09</div></div>
+    <div class="arr">·</div>
+    <div class="fbox green"><div class="k">FOR THE COACH &amp; ATHLETIC DIRECTOR</div><div class="t">What to demand of any AI tool</div>
+      <div class="s">what the briefing gives a staff (01, 07), what "trustworthy" should mean in a product like this (04–06),
+      and what the same engine does in-season (08)</div></div>
+  </div>
+  <div class="foot"><span><b>TOUCHLINE PROTOTYPE</b> · How a machine scouts a season</span><span>Page 1 of 9</span></div>
+</div>
+
+<!-- ============================ PAGE 2 ============================ -->
+<div class="sheet">
+  <div class="sec"><span class="no">02</span><h2>The system in one view</h2></div>
+  <p class="sub">Five layers, two kinds of worker, and one place where a model is allowed to be wrong.</p>
+  <p>Four layers are ordinary software: deterministic, tested, and boring the way data infrastructure should be. One is
+  generative. In the vocabulary of current AI research, the pattern is <b>retrieval-grounded generation</b> — the model
+  writes only from retrieved, dated sources and computed figures, never from its own parametric memory — followed by an
+  adversarial <b>model-as-judge</b> verification stage, with <b>machine-checked guardrails</b> between every generative
+  step and full <b>data lineage</b> from archived page to printed claim:</p>
+
+  <div class="stack">
+    <div class="band"><div class="tag">COLLECT</div><div class="desc">Scrape the pages schools already publish; archive every page verbatim with URL and date.</div><span class="who code">CODE</span></div>
+    <div class="vconn">▼</div>
+    <div class="band"><div class="tag">CURATE</div><div class="desc">Parse and reconcile into canonical records; standing integrity audits; every database rebuildable from the archive.</div><span class="who code">CODE</span></div>
+    <div class="vconn">▼</div>
+    <div class="band"><div class="tag">ANALYZE</div><div class="desc">Compute the digest: every figure the report will show, computed once, deterministically.</div><span class="who code">CODE</span></div>
+    <div class="vconn">▼</div>
+    <div class="band model"><div class="tag">INTERPRET</div><div class="desc">Read the digest and the open web; file graded findings; survive refutation; write the narrative — words only.
+      <div class="ministages"><span class="mstage">research</span><span class="gchip">GATE</span><span class="mstage">verify</span><span class="gchip">GATE</span><span class="mstage">write</span><span class="gchip">GATE</span></div>
+    </div><span class="who model">MODEL · GATED</span></div>
+    <div class="vconn">▼</div>
+    <div class="band"><div class="tag">RENDER</div><div class="desc">Compose and print the briefing; then machine-verify the PDF itself, page by page. <span class="gchip">PAGE CHECK</span></div><span class="who code">CODE</span></div>
+  </div>
+
+  <div class="lbl blue">ONE RUN, MEASURED · THE 2026 PRESEASON PIPELINE, END TO END</div>
+  <div class="runstrip">
+    <div class="rbox"><div class="v">183</div><div class="k">pages archived</div></div><div class="rarr">→</div>
+    <div class="rbox"><div class="v">687 + 201</div><div class="k">match + player records</div></div><div class="rarr">→</div>
+    <div class="rbox"><div class="v">1,932</div><div class="k">numbers in one digest</div></div><div class="rarr">→</div>
+    <div class="rbox amber"><div class="v">127</div><div class="k">findings filed, graded</div></div><div class="rarr">→</div>
+    <div class="rbox amber"><div class="v">121 · 6</div><div class="k">kept · dropped by verify</div></div><div class="rarr">→</div>
+    <div class="rbox amber"><div class="v">2,770</div><div class="k">words drafted to contract</div></div><div class="rarr">→</div>
+    <div class="rbox"><div class="v">17 pp</div><div class="k">briefing + appendix, checked</div></div>
+  </div>
+  <p class="cap">Actual counts from the Harding 2026 run. Navy boxes are deterministic stages; amber boxes are generative
+  ones — and every amber box is followed by a gate that can stop the run (section 06).</p>
+
+  <p>A person stays at the workbench throughout: runs are launched and steered in conversation, a failed gate stops the
+  machine with a named reason, and the finished PDF is reviewed by the person it was written for. Nothing publishes
+  itself.</p>
+
+  <div class="take"><b>Takeaway.</b> Division of labor is the architecture. Code computes everything countable, the
+  model interprets everything that needs reading, and validators referee the boundary. Every failure the prototype hit
+  traces to that boundary being drawn too loosely — and every fix was drawing it tighter, never asking the model to try
+  harder.</div>
+  <div class="foot"><span><b>TOUCHLINE PROTOTYPE</b> · How a machine scouts a season</span><span>Page 2 of 9</span></div>
+</div>
+
+<!-- ============================ PAGE 3 ============================ -->
+<div class="sheet">
+  <div class="sec"><span class="no">03</span><h2>Collection and cleansing: the unglamorous foundation</h2></div>
+  <p class="sub">Archive the page, derive everything else, and let a partial run fail loudly.</p>
+  <p>Everything downstream inherits the honesty of this layer. The collectors read only what schools publish — nothing
+  gated, nothing private — at a respectful cadence, and a standing integrity workflow re-audits coverage, membership,
+  and parser drift on demand. What the archive holds is best shown, not described:</p>
+
+  <div class="chart">
+    <div class="lbl blue" style="margin:0 0 6px">MATCH RECORDS HELD, BY SEASON · MEN'S SOCCER, ONE CONFERENCE</div>
+    <div class="bars">
+      <div class="bcol"><span class="n">52</span><div class="bar" style="height:54%"></div></div>
+      <div class="bcol"><span class="n">44</span><div class="bar" style="height:45%"></div></div>
+      <div class="bcol"><span class="n">46</span><div class="bar" style="height:47%"></div></div>
+      <div class="bcol"><span class="n">85</span><div class="bar" style="height:88%"></div></div>
+      <div class="bcol"><span class="n">23</span><div class="bar dim" style="height:24%"></div></div>
+      <div class="bcol"><span class="n">83</span><div class="bar" style="height:86%"></div></div>
+      <div class="bcol"><span class="n">86</span><div class="bar" style="height:89%"></div></div>
+      <div class="bcol"><span class="n">85</span><div class="bar" style="height:88%"></div></div>
+      <div class="bcol"><span class="n">90</span><div class="bar" style="height:93%"></div></div>
+      <div class="bcol"><span class="n">93</span><div class="bar" style="height:96%"></div></div>
+      <div class="bcol"><span class="n">0</span><div class="bar zero"></div></div>
+    </div>
+    <div class="bx"><span>2016</span><span>2017</span><span>2018</span><span>2019</span><span class="anno">2020<br>pandemic</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>2025</span><span class="anno">2026<br>fills as played</span></div>
+  </div>
+  <p class="cap">The archive tells its own story honestly: the 2020 collapse is the pandemic season, not a collection
+  failure, and the empty 2026 column is the not-yet-played season this briefing prepares for — section 08 is about what
+  happens as it fills.</p>
+
+  <div class="lbl blue">WHAT IS HELD PER PROGRAMME, RIGHT NOW · ABSENCE LEFT VISIBLE</div>
+  <table class="matrix">
+    <tr><th class="first">PROGRAMME</th><th>2025 RESULTS</th><th>2026 ROSTER</th><th>VERIFIED FINDINGS</th><th>COACH STATUS</th></tr>
+    <tr><td class="first">Harding <span style="color:var(--mut);font-weight:400">(focus)</span></td><td><span class="dot">●</span> complete</td><td><span class="dot">●</span> published</td><td class="mono">35</td><td>returning</td></tr>
+    <tr><td class="first">Fort Hays State</td><td><span class="dot">●</span> complete</td><td><span class="dot">●</span> published</td><td class="mono">23</td><td><b>new · 2026</b></td></tr>
+    <tr><td class="first">Rogers State</td><td><span class="dot">●</span> complete</td><td><span class="dot">●</span> published</td><td class="mono">22</td><td>returning</td></tr>
+    <tr><td class="first">Northeastern State</td><td><span class="dot">●</span> complete</td><td><span class="dot">●</span> published</td><td class="mono">18</td><td>returning</td></tr>
+    <tr><td class="first">Newman</td><td><span class="dot">●</span> complete</td><td><span class="dot">●</span> published</td><td class="mono">15</td><td>returning</td></tr>
+    <tr><td class="first">Ouachita Baptist</td><td><span class="dot">●</span> complete</td><td><span class="dot">●</span> published</td><td class="mono">12</td><td>returning</td></tr>
+    <tr><td class="first">Southern Nazarene</td><td><span class="dot">●</span> complete</td><td><span class="dot miss">○</span> not yet published</td><td class="mono">2</td><td><span class="dot unk">?</span> unknown</td></tr>
+  </table>
+  <p class="cap">The two irregular cells are the design working: the unpublished roster and the unknown coach are carried
+  as facts, surface as printed caveats in the briefing, and heal themselves on the first run after the school publishes.</p>
+
+  <table>
+    <tr><th class="first" style="width:30%">THE RULE</th><th>WHAT IT BUYS</th></tr>
+    <tr><td class="first">Archive the page, not the parse</td><td>The verbatim HTML is the system of record; parser fixes rerun offline against all of history. Every other store — parquet, SQL — is disposable and rebuilds from it.</td></tr>
+    <tr><td class="first">A partial run is a failed run</td><td>A scrape that lands incomplete exits non-zero. The system never quietly holds a dataset it believes is whole and is not.</td></tr>
+    <tr><td class="first">Conference is configuration</td><td>No conference is named in logic; membership is modeled as dated windows, so realignment is data and a school's 2019 results belong to its 2019 conference.</td></tr>
+  </table>
+  <div class="never"><b>Never done: silent repair.</b> No stage fills a missing value with a plausible one, and no model
+  "fixes" a record. Cleansing here is reconciliation — same programme, four names; same player, two spellings — resolved
+  into canonical identities with the mapping kept inspectable.</div>
+  <div class="foot"><span><b>TOUCHLINE PROTOTYPE</b> · How a machine scouts a season</span><span>Page 3 of 9</span></div>
+</div>
+
+<!-- ============================ PAGE 4 ============================ -->
+<div class="sheet">
+  <div class="sec"><span class="no">04</span><h2>The determinism boundary</h2></div>
+  <p class="sub">Code computes every number. The model writes only words. Here is what that looks like on a real page.</p>
+  <p>Below is an actual excerpt from the Harding briefing — the executive brief's numbers panel. Everything in it was
+  authored by exactly one of two workers, and a reader can always tell which:</p>
+
+  <div class="exwrap">
+    <div class="exmain"><img src="assets/excerpt-numbers.png" alt="Excerpt of the briefing's numbers panel: stat tiles, a goals-by-minute chart, and a model-written paragraph"></div>
+    <div class="exkeys">
+      <div class="exkey"><b>COMPUTED · CODE</b>The stat tiles and the goals-by-minute chart are drawn by the renderer
+      from digest fields. No model can alter a box, a bar, or a value.</div>
+      <div class="exkey model"><b>WRITTEN · MODEL</b>The paragraph is the model's — but every figure inside it is quoted
+      from the digest, and every non-numeric claim traces to a cited finding.</div>
+    </div>
+  </div>
+
+  <div class="lbl blue">ONE BRIEFING, BY AUTHOR · HARDING RUN, MEASURED</div>
+  <div class="auth">
+    <div class="arow"><div class="al">the 1,932 numbers</div><div class="atrack"><div class="aseg code" style="width:100%">100% computed by code</div></div></div>
+    <div class="arow"><div class="al">the 4,502 words on the pages</div><div class="atrack"><div class="aseg model" style="width:62%">62% drafted by the model</div><div class="aseg code" style="width:38%">38% code-set labels</div></div></div>
+    <div class="arow"><div class="al">every chart &amp; graphic</div><div class="atrack"><div class="aseg code" style="width:100%">100% drawn by the renderer</div></div></div>
+  </div>
+  <p class="cap">The generative surface is enumerable: the model authors roughly three of every five words and none of
+  the numbers or graphics. Hallucination risk is confined to sentences — exactly the surface the evidence standard of
+  section 05 governs.</p>
+
+  <div class="never"><b>Never published: a number the model wrote.</b> If a figure appears anywhere in the briefing,
+  code produced it from the archive. The model's contribution is prose, and prose claims carry citations.</div>
+
+  <p>The seam between the two workers is a <b>versioned narrative contract</b>: a JSON schema of prose slots the model
+  must fill and the renderer composes. It evolves additively, like an API — when the system learned to reason about
+  coaching tenure, the schema gained one optional field and every earlier narrative remained renderable. The narrative
+  is also the one artifact a rerun cannot reproduce: the model's reading of a programme at a moment in time, against
+  that day's web. So it is kept, beside the PDF it produced, as a pair.</p>
+
+  <div class="take"><b>Takeaway.</b> Deciding what the model is <i>not allowed to author</i> did more for quality than
+  any prompt refinement. A generative system becomes auditable at the moment a reviewer can point at any element of the
+  output and say which worker produced it and which check covers it.</div>
+  <div class="foot"><span><b>TOUCHLINE PROTOTYPE</b> · How a machine scouts a season</span><span>Page 4 of 9</span></div>
+</div>
+
+<!-- ============================ PAGE 5 ============================ -->
+<div class="sheet">
+  <div class="sec"><span class="no">05</span><h2>Research as evidence, not recall</h2></div>
+  <p class="sub">The model is a reader of sources, never a source. Retrieval, grading, refutation — measured below.</p>
+  <p>A model asked "what do you know about this programme?" answers fluently from training data of unknown age. The
+  prototype never asks that question. Its researcher searches the live web and files findings — each a claim with a
+  source, URL, date, and a source-strength grade — and a second pass, prompted to <b>refute</b> rather than confirm,
+  attacks every one. Here is the 2026 pool, end to end:</p>
+
+  <div class="funnel">
+    <div class="frow"><div class="fl">FILED<span class="m">127 findings · 7 programmes</span></div>
+      <div class="ftrack"><div class="fseg hi" style="flex:122">122 graded high</div><div class="fseg med" style="flex:5">5</div></div></div>
+    <div class="frow"><div class="fl">AFTER REFUTATION<span class="m">verify pass, adversarial</span></div>
+      <div class="ftrack"><div class="fseg hi" style="flex:118">118 confirmed high</div><div class="fseg med" style="flex:3">3</div><div class="fseg drop" style="flex:6">6 dropped</div></div></div>
+    <div class="frow"><div class="fl">PRINT RIGHTS<span class="m">the stated threshold</span></div>
+      <div class="ftrack"><div class="fseg free" style="flex:118">118 may support any claim</div><div class="fseg restrict" style="flex:9">3 restricted</div></div></div>
+  </div>
+  <table style="margin-top:2px">
+    <tr><th class="first" style="width:26%">GRADE × VERDICT</th><th style="width:34%">RIGHT TO PRINT</th><th>RATIONALE</th></tr>
+    <tr><td class="first">high · confirmed</td><td>Supports any claim, freely</td><td>Strong source, survived refutation</td></tr>
+    <tr><td class="first">medium · confirmed</td><td>Only with source kind named; never sole support</td><td>Real but thinner sourcing — the reader sees the seam</td></tr>
+    <tr><td class="first">any · refuted</td><td>Never prints; stays in the pool, downgraded</td><td>The failed check is itself evidence for future runs</td></tr>
+  </table>
+  <p class="cap">Each dropped finding carries a named reason — one reads, in full: <i>"The source page returned HTTP 403
+  Forbidden on re-fetch."</i> Restricted findings print only with their source kind named and never as sole support.
+  Alongside the pool, the verifier records what it could <i>not</i> sweep — 18 flagged corners — so even the unread is on
+  the record.</p>
+
+  <div class="lbl blue">A FINDING, AS THE SYSTEM STORES IT</div>
+  <div style="border:1.5px solid var(--navy);border-radius:9px;background:var(--box);padding:8px 13px;margin:5px 0 9px;
+              font-family:var(--mono);font-size:9.6px;line-height:1.5;color:var(--head)">
+    claim:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"New head coach hired ahead of the 2026 season"<br>
+    coach:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ name, status: <b>new</b>, since_season: 2026 }<br>
+    source:&nbsp;&nbsp;&nbsp;&nbsp;athletics-site staff announcement&nbsp;&nbsp;<span style="color:var(--mut)">· url · dated</span><br>
+    confidence: <b>high</b> → verify: <b>confirmed</b>&nbsp;&nbsp;<span style="color:var(--mut)">· eligible for print, any claim</span>
+  </div>
+
+  <p><b>Downgrade, never delete.</b> What fails refutation stays in the pool at reduced standing: the record of what was
+  checked and found wanting prevents the next run from rediscovering the same false lead, and leaves an audit trail a
+  human can read. The grades themselves are the researcher's own source-strength reports — uncalibrated, which is why
+  the print threshold, not the grade alone, decides what reaches the page.</p>
+  <p><b>The bench lens.</b> The highest-leverage qualitative fact turned out to be the coaching bench: a new coach makes
+  last season's film provisional; tenure makes patterns inferable. It entered the system as a structured object flowing
+  through the same grading, refutation, and gates as everything else — today's map reads 5 returning, 1 new, 1 unknown,
+  and <b>unknown is a legal value that prints as such</b>.</p>
+
+  <div class="take"><b>Takeaway.</b> "AI insight" here means a machine read more pages than a staff had time to, and
+  wrote down what it found, where it found it. The intelligence is coverage and synthesis — never the model's memory.</div>
+  <div class="foot"><span><b>TOUCHLINE PROTOTYPE</b> · How a machine scouts a season</span><span>Page 5 of 9</span></div>
+</div>
+
+<!-- ============================ PAGE 6 ============================ -->
+<div class="sheet">
+  <div class="sec"><span class="no">06</span><h2>Guardrails: the model declares, the validator decides</h2></div>
+  <p class="sub">Mechanical gates between every generative step — because one day the model said "done," and wasn't.</p>
+
+  <div class="story"><div class="k">A LESSON, KEPT ON THE RECORD</div>
+  Asked to extend the research pool, the loop announced completion with three of seven programmes still missing their
+  coach entries — and its design let the declaration end the work. The fix was structural, not a sterner prompt:
+  <b>a model's claim of completion is now merely a request to be checked.</b></div>
+
+  <div class="gatechain">
+    <div class="gstep ai">research<span class="m">agent · web</span></div>
+    <div class="gate"><span class="x">✗</span>GATE<br>count files<br>&amp; objects</div>
+    <div class="gstep ai">verify<span class="m">agent · refute</span></div>
+    <div class="gate">GATE<br>keys &amp;<br>coverage</div>
+    <div class="gstep">normalize<span class="m">code</span></div>
+    <div class="glue">→</div>
+    <div class="gstep ai">narrative<span class="m">model · contract</span></div>
+    <div class="gate">GATE<br>schema &amp;<br>slots</div>
+    <div class="gstep">render<span class="m">code</span></div>
+    <div class="glue">→</div>
+    <div class="gstep">page check<span class="m">code · pixels</span></div>
+  </div>
+  <p class="cap">Amber stages are generative; every one is followed by a deterministic gate that can stop the run. The
+  ✗ marks where the founding incident would now be caught. Even the finished PDF is machine-verified — page counts,
+  overflow, spill — before a briefing is considered produced.</p>
+
+  <table>
+    <tr><th class="first" style="width:21%">GATE</th><th style="width:37%">CHECKS, MECHANICALLY</th><th>A REAL CATCH</th></tr>
+    <tr><td class="first mono">validate-research</td><td>Every programme has its research file and required evidence objects</td><td>Completion declared with 3 of 7 coach entries missing</td></tr>
+    <tr><td class="first mono">validate-verified</td><td>The verification record covers every key and every programme</td><td>A verification record omitting its coach map entirely</td></tr>
+    <tr><td class="first mono">validate-narrative</td><td>Narrative parses against its versioned schema; slot and watchlist rules hold</td><td>Stops contract drift before anything renders</td></tr>
+    <tr><td class="first mono">page check</td><td>The PDF itself: page counts, edge artifacts, overflow, spill</td><td>Caught footer-spill pages repeatedly during layout work</td></tr>
+  </table>
+
+  <div class="lbl">THE STYLE CONTRACT · JUDGMENT, GOVERNED IN PROSE</div>
+  <div class="honest">
+    <div class="row"><b>Tiering is data coverage, never judgment.</b> An opponent gets a smaller card only because less is published about them; uncertainty is expressed inside a full card, in words — the report's shape describes the evidence, not the author's mood.</div>
+    <div class="row"><b>Absence is promoted, not absorbed.</b> The unpublished roster on page 3's matrix surfaces as a printed cover caveat and a table footnote — computed, so the notes vanish on the first run after the school publishes.</div>
+    <div class="row dark"><b>A rule moves from prose to gate the moment it is stated precisely enough for a script to check.</b> One rule found by human diff — a fully-covered programme mis-tiered — is now written contract; the structure that makes such drift visible is machine-checked.</div>
+  </div>
+
+  <div class="take"><b>Takeaway.</b> Prompts steer; only gates guarantee. The reliability of a multi-step generative
+  system is the product of the checks between the steps, not the eloquence within them.</div>
+  <div class="foot"><span><b>TOUCHLINE PROTOTYPE</b> · How a machine scouts a season</span><span>Page 6 of 9</span></div>
+</div>
+
+<!-- ============================ PAGE 7 ============================ -->
+<div class="sheet">
+  <div class="sec"><span class="no">07</span><h2>The reproducibility test</h2></div>
+  <p class="sub">Same prompts, contract, validators, renderer — three programmes. The claim is the diff, and it is measured.</p>
+  <p>A system like this is easy to tune into a one-team demo. The acceptance test was to run it where it was not tuned
+  and compare. These are the three briefings, as produced:</p>
+
+  <div class="thumbs">
+    <div class="thumb"><img src="assets/cover-harding.png" alt="Harding briefing cover"><div class="c"><b>Harding</b> · 17 pages · the tuning subject</div></div>
+    <div class="thumb"><img src="assets/cover-fhsu.png" alt="Fort Hays State briefing cover"><div class="c"><b>Fort Hays State</b> · 17 pages · first cold run</div></div>
+    <div class="thumb"><img src="assets/cover-newman.png" alt="Newman briefing cover"><div class="c"><b>Newman</b> · 18 pages · weakest published data</div></div>
+  </div>
+
+  <div class="lbl blue">THE SAME SKELETON, PAGE BY PAGE · LENGTH DRIVEN BY DATA, NOT PADDING</div>
+  <div class="strips">
+    <div class="strip"><div class="pg cover"></div><div class="pg brief"></div><div class="pg brief"></div><div class="pg brief"></div><div class="pg focus"></div><div class="pg focus"></div><div class="pg landscape"></div><div class="pg card"></div><div class="pg card"></div><div class="pg card"></div><div class="pg card"></div><div class="pg card"></div><div class="pg watch"></div><div class="pg watch"></div><div class="pg watch"></div><div class="pg watch"></div><div class="pg watch"></div></div>
+    <div class="strip"><div class="pg cover"></div><div class="pg brief"></div><div class="pg brief"></div><div class="pg brief"></div><div class="pg focus"></div><div class="pg card"></div><div class="pg landscape"></div><div class="pg card"></div><div class="pg card"></div><div class="pg card"></div><div class="pg card"></div><div class="pg card"></div><div class="pg watch"></div><div class="pg watch"></div><div class="pg watch"></div><div class="pg watch"></div><div class="pg watch"></div></div>
+    <div class="strip"><div class="pg cover"></div><div class="pg brief"></div><div class="pg brief"></div><div class="pg brief"></div><div class="pg focus"></div><div class="pg card"></div><div class="pg landscape"></div><div class="pg card"></div><div class="pg card"></div><div class="pg card"></div><div class="pg card"></div><div class="pg card"></div><div class="pg card"></div><div class="pg watch"></div><div class="pg watch"></div><div class="pg watch"></div><div class="pg watch"></div><div class="pg watch"></div></div>
+  </div>
+  <div class="legend"><span class="lg-cover">cover</span><span class="lg-brief">executive brief</span><span class="lg-focus">focus</span><span class="lg-landscape">landscape</span><span class="lg-card">opponent cards</span><span class="lg-watch">watchlist</span></div>
+
+  <div class="honest">
+    <div class="row"><b>Language reuse, measured — not asserted.</b> Cross-narrative 5-gram Jaccard overlap between any
+    two briefings: <span class="mono">3.4%</span>. Every shared 8-gram is a data artifact — a source URL or a citation
+    line — not template language. The contract constrains form; it does not leak phrasing.</div>
+    <div class="row"><b>Perspective travels with the evidence.</b> The one verified coaching change appears in two
+    briefings from two lenses — a programme's own story in one, an opponent's threat in the other — from the same
+    finding object.</div>
+    <div class="row"><b>Weak data degrades honestly.</b> Newman's positionless published roster surfaced as "position
+    unlisted," and a returner's usage collapse was flagged from the minutes ledger rather than smoothed over.</div>
+  </div>
+
+  <p><b>A finding worth the price of the prototype.</b> An exemplar report initially rode along as a quality reference —
+  and its phrasing leaked into every output. It was removed entirely; the quality bar now lives in written contracts and
+  validators, which constrain without being copyable. <b>Contracts generalize; examples imprint.</b> Two gaps found in
+  these comparison runs became contract rules; the third run was clean.</p>
+
+  <div class="take"><b>Takeaway.</b> Reproducibility was treated as a gate, not a hope: run the system where it was not
+  tuned, diff the results, and let every gap found become a rule in the contract or a check in a gate. For any system of
+  this type, the cold run on a second subject is the single most informative test that exists — schedule it early.</div>
+  <div class="foot"><span><b>TOUCHLINE PROTOTYPE</b> · How a machine scouts a season</span><span>Page 7 of 9</span></div>
+</div>
+
+<!-- ============================ PAGE 8 ============================ -->
+<div class="sheet">
+  <div class="sec"><span class="no">08</span><h2>The living season, and the learning lane</h2></div>
+  <p class="sub">A briefing is a run, not a document. New data keeps arriving; old data is a training substrate.</p>
+  <p>The preseason briefing is the season's <i>first</i> run, not its last. A box score is published within hours of the
+  final whistle, and everything on these pages — collect, curate, analyze, interpret, render — is a circuit, not a
+  one-time build. The empty 2026 column on page 3 fills match by match, and every fill is one rerun away from a current
+  briefing:</p>
+
+  <div class="flow">
+    <div class="fbox gray"><div class="k">SATURDAY</div><div class="t">Match played</div><div class="s">box score published within hours</div></div>
+    <div class="arr">→</div>
+    <div class="fbox"><div class="k">SAME CIRCUIT</div><div class="t">Collect · curate · analyze</div><div class="s">archive +1 page · digest recomputed · season board current</div></div>
+    <div class="arr">→</div>
+    <div class="fbox"><div class="k">BEFORE THE NEXT MATCH</div><div class="t">A current assessment</div><div class="s">the opponent read re-written on the latest evidence, not August's</div></div>
+    <div class="arr">↺</div>
+    <div class="fbox green"><div class="k">ALL SEASON</div><div class="t">Every week, the same engine</div><div class="s">what changed is data; the process never does</div></div>
+  </div>
+  <p class="cap">In-season value is a freshness property, and freshness is exactly what the architecture already buys:
+  because every store derives from the archive, "up to date" means "rerun," never "rebuild."</p>
+
+  <div class="lbl blue">TWO LANES FROM ONE ARCHIVE · WHAT IS BUILT, WHAT IS ENABLED</div>
+  <div class="flow">
+    <div class="fbox"><div class="k">BUILT · THE FRESHNESS LANE</div><div class="t">New data informs</div><div class="s">the latest results, through the same gates, into a pre-match
+    assessment as of this morning — the analyst who never sleeps on a result</div></div>
+    <div class="arr">·</div>
+    <div class="fbox amber"><div class="k">ENABLED · THE LEARNING LANE</div><div class="t">Old data trains</div><div class="s">eleven archived seasons as substrate for predictive models —
+    outcome patterns, roster-turnover effects, the measurable cost of a coaching change — validated by backtesting
+    against seasons the model never saw</div></div>
+  </div>
+  <p>The two lanes justify each other. The learning lane is honest future work — no predictive model ships in the
+  prototype — but it is <i>enabled now</i>, because its precondition is not modeling talent; it is a decade of clean,
+  reconciled, never-pruned history, which is precisely what the collection rules of section 03 have been quietly
+  accumulating. And any model trained there inherits the same discipline: its predictions would enter the briefing as
+  one more graded, sourced finding — <i>computed by code, attributed, and checkable</i> — never as oracle text.</p>
+
+  <div class="lbl">WHAT THE SAME ENGINE ANSWERS, WEEK BY WEEK</div>
+  <table>
+    <tr><th class="first" style="width:32%">THE IN-SEASON QUESTION</th><th>HOW THE EXISTING MACHINERY ANSWERS IT</th></tr>
+    <tr><td class="first">"Who do we play Saturday?"</td><td>An opponent assessment rendered from the latest archive state — the preseason card, re-read with the games since</td></tr>
+    <tr><td class="first">"What changed since August?"</td><td>Two digests of the same season diffed by code: form, minutes, and roster deltas, printed as deltas</td></tr>
+    <tr><td class="first">"Is our preseason read holding?"</td><td>The briefing's claims re-scored against results as they land — the beginning of the predictive-validity test section 09 calls for</td></tr>
+  </table>
+
+  <div class="take"><b>Takeaway.</b> Old data is not the leftover of the pipeline; it is an asset with a different
+  maturity. Fresh data answers "who are we playing Saturday?" — the archive answers "what patterns hold?" One serves the
+  coach this week, the other serves the model that may one day advise the coach, and the same never-prune rule feeds
+  both.</div>
+  <div class="foot"><span><b>TOUCHLINE PROTOTYPE</b> · How a machine scouts a season</span><span>Page 8 of 9</span></div>
+</div>
+
+<!-- ============================ PAGE 9 ============================ -->
+<div class="sheet">
+  <div class="sec"><span class="no">09</span><h2>What building it taught</h2></div>
+  <p class="sub">Eight learnings for anyone attempting a system of this type, in any domain where evidence matters.</p>
+  <div class="honest">
+    <div class="row"><b>1 · Put a gate after every generative step.</b> The model's claim that work is complete is a request to be checked, never an exit condition.</div>
+    <div class="row"><b>2 · Draw the determinism boundary early; never let a number cross it.</b> Code computes, the model writes — and the system becomes auditable the moment its generative surface is enumerable.</div>
+    <div class="row"><b>3 · Use the model as a reader, never as a source.</b> Findings come from the live web with source, date, and grade. A claim without provenance does not exist.</div>
+    <div class="row"><b>4 · Grade evidence; never delete it.</b> A refuted claim, downgraded and kept, protects every future run. A cleaned pool is a less trustworthy one.</div>
+    <div class="row"><b>5 · Contracts beat examples.</b> Written rules plus validators reproduce quality across subjects; a reference sample imprints its phrasing on everything it touches.</div>
+    <div class="row"><b>6 · Absence is data.</b> Compute the gaps and print them; a derived caveat heals itself when the data arrives, where a hand-written one goes stale and lies.</div>
+    <div class="row"><b>7 · Archive primary sources; treat every store as derived.</b> The raw pages plus their URLs are the record. Everything else must be regenerable from them, forever.</div>
+    <div class="row"><b>8 · A report is a run, not a document.</b> Design for the rerun from day one — freshness in-season and trainability across seasons both fall out of the same decision.</div>
+  </div>
+
+  <div class="lbl">THE IMPLEMENTATION, BRIEFLY</div>
+  <p style="font-size:11.2px">The prototype runs on a local agent workbench, packaged as an installable extension: four declarative
+  workflows (<span class="mono">collect</span>, <span class="mono">report</span>, <span class="mono">player-profile</span>,
+  <span class="mono">data-integrity</span>) sequencing shell steps, agent loops, and validator gates; a Python pipeline for
+  scraping, parsing, digest, and rendering; prompts as versioned, reviewed files. Reports are composed as HTML by code,
+  printed by a headless browser, and machine-verified page by page. The data home separates <b>evidence</b> (the research
+  pool, tracked), <b>deliverables</b> (narrative-and-PDF pairs), and <b>scratch</b> (regenerable intermediates).</p>
+
+  <div class="story"><div class="k">STATED LIMITS · WHAT THIS PROTOTYPE HAS NOT SHOWN</div>
+  One conference, one season, and a three-run reproducibility evaluation — not a controlled study. No predictive-validity
+  test yet (does the briefing's reading correlate with season outcomes?), and no user study with coaching staffs.
+  Confidence grades are the researcher's own uncalibrated source-strength reports, constrained downstream by the print
+  threshold rather than calibrated upstream. A research audience should read these pages as a working method with
+  measured internal properties, and an evaluation agenda stated in the open.</div>
+
+  <p style="font-size:11.2px">For the researcher, the contribution is the composition — deterministic computation with
+  retrieval-grounded, adversarially verified, gate-checked generation — and none of it is soccer-specific. For the coach
+  and the athletic director, the argument is simpler: the information advantage that used to require an analytics staff
+  is now a question of assembling public data carefully, and trustworthiness is a property you can demand and check —
+  every number computed, every claim cited, every gap named.</p>
+
+  <div class="fine">This report states the design of the Touchline prototype as built, with all counts measured from the
+  system's own stores on the date of writing. The moving detail lives with the code: the workflow definitions carry the
+  run graphs and gates, the prompt files carry the research protocol and style contract verbatim, the pipeline carries
+  the collectors, parsers, digest, and renderer, and each data home carries the archive, the evidence pool, and every
+  briefing pair produced. Where these pages and the code disagree, the code is current and these pages are history.</div>
+  <div class="foot"><span><b>TOUCHLINE PROTOTYPE</b> · How a machine scouts a season</span><span>Page 9 of 9</span></div>
+</div>
