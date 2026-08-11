@@ -107,6 +107,13 @@ they belong in this report" or "this page is about the battle" are
 editorial scaffolding — delete them and let the content stand. Provenance
 lives in exactly two places: the cover's data line and the sources page.
 
+## Captions
+
+A visual's caption exists only for a legend the reader needs or a caveat
+that changes interpretation (coverage, sample, carried-forward data).
+Pure provenance ("observed, computed from published rosters") is never a
+caption: the evidence chips and the sources page already carry it.
+
 ## Punctuation and cadence
 
 - **The em-dash is a once-per-paragraph tool at most**, used only where a

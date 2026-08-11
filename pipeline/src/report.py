@@ -225,11 +225,7 @@ def indicator_tiles(digest: dict) -> str:
         )
     if conf:
         tile(record_line(conf), f"{last.get('season')} conference (W-L-T)", f"{conf.get('gf')}:{conf.get('ga')} goals")
-    return (
-        f'<div class="tiles">{"".join(tiles)}</div>'
-        '<div class="viz-note">All four indicators observed: computed from published '
-        "rosters, statistics, and results.</div>"
-    )
+    return f'<div class="tiles">{"".join(tiles)}</div>'
 
 
 def share_bars(share: dict | None) -> str:
@@ -302,8 +298,8 @@ def minute_chart(patterns: dict | None) -> str:
     counted = patterns.get("matches_counted")
     total = patterns.get("played_total")
     coverage = (
-        f'<div class="viz-note">Goals by minute of match · observed over {counted} of {total} '
-        "matches with a held box score · goal times from published play-by-play</div>"
+        f'<div class="viz-note">Goals by minute of match · {counted} of {total} matches '
+        "with a held box score</div>"
         if counted is not None
         else ""
     )
@@ -362,8 +358,8 @@ def dumbbell_chart(digest: dict) -> str:
     legend = (
         '<div class="viz-note"><span class="dot dot-own"></span> '
         f"{esc(digest['programmes'][digest['focus']].get('name', digest['focus']))}"
-        ' &nbsp; <span class="dot dot-med"></span> conference median · observed, from held '
-        f"box scores of the {digest.get('previous_season')} season</div>"
+        ' &nbsp; <span class="dot dot-med"></span> conference median · '
+        f"{digest.get('previous_season')} season</div>"
     )
     return f'<div class="dumbbell">{"".join(parts)}{legend}</div>'
 
@@ -543,8 +539,8 @@ def landscape_table(digest: dict) -> str:
         '<th class="num">Conf W-L-T</th><th class="num">Conf GF:GA</th>'
         '<th class="num">CS</th><th>Returning goals</th>'
         "</tr></thead><tbody>" + "".join(rows) + "</tbody></table>"
-        '<div class="viz-note">Observed · records from published results, W-L-T order; returning '
-        "share joins the two published rosters against last season's statistics.</div>"
+        '<div class="viz-note">Returning goals: the share of last season\'s goals scored by '
+        "players on the new roster.</div>"
     )
 
 
@@ -596,7 +592,7 @@ def schedule_matrix(digest: dict, names: dict[str, str], narrative: dict | None 
         '<th class="num">Turnaround</th>'
         f'<th class="num">Opp. continuity</th><th class="num">{h2h_head}</th>'
         "</tr></thead><tbody>" + "".join(rows) + "</tbody></table>"
-        '<div class="viz-note">Observed · turnaround counts days since the previous conference '
+        '<div class="viz-note">Turnaround counts days since the previous conference '
         "fixture only. Non-conference matches in between are not shown, so true rest may be "
         "shorter, never longer. Opponent continuity is the share of last season's minutes "
         "returning on the opponent's published roster. H2H is W-L-T from the focus side over "
@@ -960,7 +956,6 @@ def career_table(profile: dict) -> str:
         '<th class="num">G</th><th class="num">A</th><th class="num">Pts</th>'
         '<th class="num">Sh</th><th class="num">SOG</th></tr></thead>'
         f"<tbody>{rows}</tbody></table>"
-        '<div class="viz-note">Observed · published season statistics, all held seasons.</div>'
     )
 
 
