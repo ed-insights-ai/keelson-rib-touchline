@@ -1261,8 +1261,7 @@ def sources_sheet(digest: dict, focus_name: str) -> str:
   <div class="viz-title big">Definitions</div>
   <div class="f-grid def-grid">{definition_rows}</div>
   <div class="foot-note">
-    <p>Independent analysis by <b>EDInsights</b> from public, published data · not issued by or
-    affiliated with {esc(focus_name)} University Athletics · no institutional marks are used</p>
+    <p>Independent analysis by <b>EDInsights</b> from public, published data</p>
   </div>
 </section>"""
 
