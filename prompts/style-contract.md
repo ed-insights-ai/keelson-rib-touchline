@@ -126,6 +126,20 @@ more ready than either. Use the ladder to set expectations when the
 research holds verified pedigree; where it holds nothing, say the
 newcomer is unscouted rather than guessing a tier.
 
+## The bench lens
+
+Bench continuity weights every other pattern in a card. A coach in
+their sixth season means the held record and the timing bands describe
+a stable system: patterns can be trusted further. A first-year coach
+means the film library just expired — last season's patterns are
+provisional, and roster churn is the structural expectation as the
+programme is remade. State the verified fact (tenure or change, cited
+like any news claim) and the reliability consequence in one line; the
+card's bench line is its home. The limits: churn under a new coach is
+a squad-level expectation, never a claim that a named player was
+pushed out unless a source says so, and an unverified coach is a named
+gap only where it changes preparation, not a line on every card.
+
 ## Major news travels to every report
 
 A verified head-coach change, intra-conference transfer, or decorated
@@ -310,7 +324,8 @@ fewer, stronger items beat coverage.
 4. Conference landscape and where the focus side gains ground — one
    page: standings table, gap chart, prose ≤100 words.
 5. Opponent cards, one per sheet at about three-quarters of a page:
-   identity, roster change, key threat, potential opening, implication,
+   identity, bench line (when the coach is verified — see the bench
+   lens), roster change, key threat, potential opening, implication,
    at most 2 ordinary news items (major news is never cut — see above),
    head-to-head strip. The tiers: "benchmark" is a side that sets the
    standard the season is measured against; "swing" is a winnable
