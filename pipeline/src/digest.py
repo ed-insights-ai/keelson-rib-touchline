@@ -286,6 +286,109 @@ def _roster_names(rosters_payload: dict | None, slug: str) -> dict[str, str]:
     return names
 
 
+#: Published position strings, folded to four groups a coach thinks in.
+POSITION_BUCKETS = (
+    ("GK", ("goalkeeper", "keeper", "gk")),
+    ("D", ("defender", "defense", "defence", "back", "d")),
+    ("M", ("midfielder", "midfield", "mf", "m")),
+    ("F", ("forward", "striker", "attacker", "fw", "f")),
+)
+
+CLASS_BUCKETS = (
+    ("Fr", ("fr", "freshman", "r-fr", "rs fr", "rfr", "redshirt freshman")),
+    ("So", ("so", "sophomore", "r-so", "rs so")),
+    ("Jr", ("jr", "junior", "r-jr", "rs jr")),
+    ("Sr", ("sr", "senior", "r-sr", "rs sr", "gr", "graduate", "5th")),
+)
+
+
+def _position_bucket(raw: str | None) -> str:
+    """First listed position wins; combos like 'Midfielder/Forward' fold to
+    the first role."""
+    first = str(raw or "").strip().lower().replace("/", " ").split()
+    head = first[0].rstrip(".") if first else ""
+    for bucket, words in POSITION_BUCKETS:
+        if head in words:
+            return bucket
+    return "?"
+
+
+def _class_bucket(raw: str | None) -> str:
+    text = str(raw or "").strip().lower().rstrip(".")
+    for bucket, words in CLASS_BUCKETS:
+        if text in words:
+            return bucket
+    return "?"
+
+
+def roster_shape(
+    prev_rosters: dict | None,
+    current_rosters: dict | None,
+    prev_stats: dict | None,
+    slug: str,
+) -> dict | None:
+    """The squad's makeup by position group and class year.
+
+    Answers the questions a coach grounds a preseason plan in: where is the
+    roster experienced, where is it new, and how much of last season's
+    playing time returns at each position. Positions come from the roster a
+    player is listed on; last-season minutes join by normalized name.
+    """
+    current = ((current_rosters or {}).get("rosters") or {}).get(slug) or {}
+    players = current.get("players") or []
+    if not players:
+        return None
+    previous_names = set(_roster_names(prev_rosters, slug)) if prev_rosters else set()
+    prev_players = (((prev_rosters or {}).get("rosters") or {}).get(slug) or {}).get(
+        "players"
+    ) or []
+    prev_position = {
+        normalize_name(str(p.get("name") or "")): _position_bucket(p.get("position"))
+        for p in prev_players
+    }
+    minutes_by_name = {
+        normalize_name(str(p.get("name") or "")): int(p.get("minutes") or 0)
+        for p in (((prev_stats or {}).get("teams") or {}).get(slug) or {}).get("players")
+        or []
+    }
+
+    by_position: dict[str, dict] = {}
+    by_class: dict[str, int] = {}
+    for player in players:
+        key = normalize_name(str(player.get("name") or ""))
+        pos = _position_bucket(player.get("position"))
+        cls = _class_bucket(player.get("class_year"))
+        row = by_position.setdefault(
+            pos,
+            {"returning": 0, "newcomers": 0, "newcomer_freshmen": 0, "returning_minutes": 0},
+        )
+        if previous_names and key in previous_names:
+            row["returning"] += 1
+            row["returning_minutes"] += minutes_by_name.get(key, 0)
+        else:
+            row["newcomers"] += 1
+            if cls == "Fr":
+                row["newcomer_freshmen"] += 1
+        by_class[cls] = by_class.get(cls, 0) + 1
+
+    if minutes_by_name and prev_position:
+        prev_minutes: dict[str, int] = {}
+        for key, minutes in minutes_by_name.items():
+            bucket = prev_position.get(key, "?")
+            prev_minutes[bucket] = prev_minutes.get(bucket, 0) + minutes
+        for pos, row in by_position.items():
+            held = prev_minutes.get(pos)
+            row["minutes_share"] = (
+                round(row["returning_minutes"] / held, 3) if held else None
+            )
+
+    return {
+        "by_position": by_position,
+        "by_class": by_class,
+        "turnover_known": bool(previous_names),
+    }
+
+
 def turnover(
     prev_rosters: dict | None,
     current_rosters: dict | None,
@@ -758,6 +861,10 @@ def build_digest(
             shifts = usage_shifts(stats_by_season, slug, prev_season, current_rosters)
             if shifts:
                 section["usage_shifts"] = shifts
+
+        shape = roster_shape(prev_rosters, current_rosters, prev_stats, slug)
+        if shape is not None:
+            section["roster_shape"] = shape
 
         churn = turnover(prev_rosters, current_rosters, prev_stats, slug)
         if churn is not None:

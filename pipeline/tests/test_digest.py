@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 
 from src.digest import (
+    roster_shape,
     build_digest,
     discipline,
     head_to_head,
@@ -582,3 +583,57 @@ def test_build_digest_refuses_an_unknown_focus(tmp_path):
         assert "alpha" in str(exc)
     else:
         raise AssertionError("expected ValueError for an unknown focus")
+
+
+# ── roster_shape ─────────────────────────────────────────────────────────────
+
+
+def _shape_roster(players: list[dict]) -> dict:
+    return {"rosters": {"alpha": {"programme": "alpha", "players": players}}}
+
+
+def test_roster_shape_groups_position_and_class():
+    prev = _shape_roster(
+        [
+            {"name": "Alan Keep", "position": "Goalkeeper", "class_year": "Jr."},
+            {"name": "Bob Back", "position": "Defender", "class_year": "Sr."},
+            {"name": "Carl Mid", "position": "Midfielder/Forward", "class_year": "So."},
+        ]
+    )
+    current = _shape_roster(
+        [
+            {"name": "Alan Keep", "position": "Goalkeeper", "class_year": "Sr."},
+            {"name": "New Wall", "position": "Defender", "class_year": "Fr."},
+            {"name": "Carl Mid", "position": "Midfielder/Forward", "class_year": "Jr."},
+            {"name": "Extra Fwd", "position": "Forward", "class_year": "Fr."},
+        ]
+    )
+    stats = {
+        "teams": {
+            "alpha": {
+                "players": [
+                    {"name": "Alan Keep", "minutes": 900},
+                    {"name": "Bob Back", "minutes": 1000},
+                    {"name": "Carl Mid", "minutes": 500},
+                ]
+            }
+        }
+    }
+    shape = roster_shape(prev, current, stats, "alpha")
+    assert shape["turnover_known"] is True
+    gk = shape["by_position"]["GK"]
+    assert gk["returning"] == 1 and gk["returning_minutes"] == 900
+    assert gk["minutes_share"] == 1.0
+    d = shape["by_position"]["D"]
+    assert d["newcomers"] == 1 and d["newcomer_freshmen"] == 1
+    assert d["returning"] == 0 and d["minutes_share"] == 0.0
+    assert shape["by_class"] == {"Sr": 1, "Fr": 2, "Jr": 1}
+
+
+def test_roster_shape_without_previous_roster_counts_everyone_new():
+    current = _shape_roster(
+        [{"name": "Solo Player", "position": "F", "class_year": "Freshman"}]
+    )
+    shape = roster_shape(None, current, None, "alpha")
+    assert shape["turnover_known"] is False
+    assert shape["by_position"]["F"]["newcomers"] == 1

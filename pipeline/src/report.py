@@ -31,16 +31,27 @@ Narrative contract (``touchline.report-narrative/3``)::
       "exec": {
         "bottom_line": str,
         "findings":   [{"evidence": str, "meaning": str, "implication": str,
-                        "label": LABEL, "confidence": CONF}],   # 3-4, no more
+                        "label": LABEL, "confidence": CONF}],   # exactly 3
         "decisions":  [{"title": str, "text": str}],            # at most 3
-        "priorities": [str]                                     # preseason work
+        "priorities": [str]   # renders on the roster-decisions page
       },
       "landscape": str,   # positioning AND where the focus side gains ground
-      "focus": {"overview": str, "takeaways": [str], "news": [NEWS],
-                 "offseason": [LEDGER]},   # offseason: at most 3 signals
+      "focus": {"overview": str, "roster": str, "takeaways": [str],
+                 "news": [NEWS], "offseason": [LEDGER]},
+                 # roster: reads the digest's roster_shape — ties last
+                 # season's problems to this season's makeup, line by line.
+                 # offseason: at most 3 consolidated signals.
       "programmes": {slug: {"threat": str, "vulnerability": str,
                              "roster_note": str, "implication": str,
-                             "news": [NEWS], "priority": bool}},
+                             "news": [NEWS],
+                             "tier": "benchmark"|"swing"|"update"}},
+                             # benchmark: the sides that set the standard
+                             # (two full cards per page, news included);
+                             # swing: winnable fixtures that decide the
+                             # season (three condensed cards per page);
+                             # update: too little data — re-run before the
+                             # fixture. "vulnerability" renders under the
+                             # header "Potential opening".
       "watchlist": [{"player": str, "programme": str, "note": str,
                       "label": LABEL}],
       "dossiers":  [{"player": str, "role": str, "verdict": str,
@@ -703,6 +714,85 @@ def usage_block(section: dict) -> str:
     )
 
 
+POSITION_LABELS = {
+    "GK": "In goal",
+    "D": "Back line",
+    "M": "Midfield",
+    "F": "Front line",
+    "?": "Position unlisted",
+}
+POSITION_ORDER = ("GK", "D", "M", "F", "?")
+
+
+def shape_strip(section: dict) -> str:
+    """The squad's makeup by line: who returns, who is new, and how much of
+    last season's playing time comes back at each position.  All observed."""
+    shape = section.get("roster_shape")
+    if not shape:
+        return ""
+    rows = []
+    for pos in POSITION_ORDER:
+        row = (shape.get("by_position") or {}).get(pos)
+        if not row:
+            continue
+        share = row.get("minutes_share")
+        share_cell = (
+            f'<span class="mini-track"><span class="mini-fill" style="width:{round(share * 100)}%"></span></span>'
+            f'<span class="num">{round(share * 100)}%</span>'
+            if share is not None
+            else '<span class="dim">–</span>'
+        )
+        freshmen = row.get("newcomer_freshmen") or 0
+        new_cell = f"{row.get('newcomers', 0)}"
+        if freshmen:
+            new_cell += f" ({freshmen} Fr)"
+        rows.append(
+            f"<tr><td>{esc(POSITION_LABELS.get(pos, pos))}</td>"
+            f'<td class="num">{row.get("returning", 0)}</td>'
+            f'<td class="num">{esc(new_cell)}</td>'
+            f'<td class="share-cell">{share_cell}</td></tr>'
+        )
+    if not rows:
+        return ""
+    classes = shape.get("by_class") or {}
+    class_bits = " · ".join(
+        f"{classes[key]} {key}"
+        for key in ("Fr", "So", "Jr", "Sr", "?")
+        if classes.get(key)
+    ).replace("?", "unlisted")
+    note = (
+        "Observed · positions and class years as published on the roster; minutes-back "
+        "joins last season's statistics by player."
+        if shape.get("turnover_known")
+        else "Observed · previous roster not held, so every player counts as new here."
+    )
+    return (
+        '<table class="grid slim shape"><thead><tr><th>Line</th>'
+        '<th class="num">Return</th><th class="num">New</th>'
+        "<th>Minutes back</th></tr></thead><tbody>" + "".join(rows) + "</tbody></table>"
+        + (f'<div class="viz-note">Squad: {esc(class_bits)}</div>' if class_bits else "")
+        + f'<div class="viz-note">{note}</div>'
+    )
+
+
+def shape_line(section: dict) -> str:
+    """One-line minutes-back summary for opponent cards."""
+    shape = section.get("roster_shape")
+    if not shape or not shape.get("turnover_known"):
+        return ""
+    bits = []
+    for pos in POSITION_ORDER[:4]:
+        row = (shape.get("by_position") or {}).get(pos) or {}
+        share = row.get("minutes_share")
+        if share is not None:
+            bits.append(f"{pos} {round(share * 100)}%")
+    if not bits:
+        return ""
+    return (
+        f'<div class="viz-note">Minutes back by line: <span class="num">{esc(" · ".join(bits))}</span></div>'
+    )
+
+
 def keeper_line(last: dict | None, turnover: dict | None) -> str:
     if not last or not last.get("keepers"):
         return ""
@@ -932,10 +1022,17 @@ def watchlist_table(entries: list[dict] | None) -> str:
 # ── Opponent cards ───────────────────────────────────────────────────────────
 
 
-def opponent_half_card(digest: dict, slug: str, narrative: dict, names: dict[str, str]) -> str:
-    """Half a page per priority opponent: identity, roster change, key threat,
-    vulnerability, and what it means for the focus side.  Five fields — if a
-    field has nothing verified to say, it says so."""
+def opponent_half_card(
+    digest: dict,
+    slug: str,
+    narrative: dict,
+    names: dict[str, str],
+    condensed: bool = False,
+) -> str:
+    """One card per opponent: identity, roster change, key threat, potential
+    opening, and the implication for the focus side.  Condensed cards (swing
+    tier) drop the news blocks and shorten the head-to-head strip so three
+    fit a page.  A field with nothing verified says so."""
     section = digest["programmes"][slug]
     last = section.get("last_season") or {}
     overall = last.get("overall", {})
@@ -974,8 +1071,10 @@ def opponent_half_card(digest: dict, slug: str, narrative: dict, names: dict[str
             f"<p>{body}</p></div>"
         )
 
+    focus_name = names.get(digest["focus"], digest["focus"])
+    tier_word = esc(str(story.get("tier", "priority")).capitalize())
     return f"""
-<div class="half-opp">
+<div class="half-opp{" condensed" if condensed else ""}">
   <header class="opp-head">
     <span class="opp-abbr">{esc(section.get("abbr", slug[:3].upper()))}</span>
     <div>
@@ -983,14 +1082,15 @@ def opponent_half_card(digest: dict, slug: str, narrative: dict, names: dict[str
       <div class="opp-sub num">{record_line(overall)} overall · {record_line(conf)} conf (W-L-T) ·
       {overall.get("gf")}:{overall.get("ga")} · first meeting {esc(_long_date(first_meeting)) if first_meeting else "TBD"}</div>
     </div>
-    <span class="prio">Priority</span>
+    <span class="prio">{tier_word}</span>
   </header>
   {field("Roster change", esc(story.get("roster_note", "")) + f'<span class="dim"> [{esc(roster_line)}]</span>')}
+  {shape_line(section)}
   {field("Key threat", top_line + esc(story.get("threat", "")))}
-  {field("Vulnerability", esc(story.get("vulnerability", "")), "riskfield")}
-  {field("What it means for the focus side", esc(story.get("implication", "")), "goldfield")}
-  {news_cards(story.get("news"))}
-  {h2h_strip(section.get("head_to_head"), names, digest["focus"], limit=6)}
+  {field("Potential opening", esc(story.get("vulnerability", "")), "riskfield")}
+  {field(f"Implication for {esc(focus_name)}", esc(story.get("implication", "")), "goldfield")}
+  {news_cards(story.get("news")) if not condensed else ""}
+  {h2h_strip(section.get("head_to_head"), names, digest["focus"], limit=4 if condensed else 6)}
 </div>"""
 
 
@@ -1043,14 +1143,13 @@ def _schedule_order(digest: dict) -> list[str]:
 
 
 def exec_sheet(digest: dict, narrative: dict) -> str:
-    """Bottom line → three or four findings, each split evidence / meaning /
-    implication → decisions and preseason priorities.  A finding whose
-    interpretation cannot be separated from its evidence doesn't belong here.
+    """One page: bottom line → three findings, each split evidence / meaning /
+    implication → three decisions.  Priorities render on the roster-decisions
+    page, not here — the brief states conclusions once.
     """
     exec_block = narrative.get("exec") or {}
-    findings = (exec_block.get("findings") or [])[:4]
+    findings = (exec_block.get("findings") or [])[:3]
     decisions = (exec_block.get("decisions") or [])[:3]
-    priorities = exec_block.get("priorities") or []
     bottom = exec_block.get("bottom_line")
     finding_rows = "".join(
         f'<li><span class="ev">{esc(item.get("evidence", ""))}</span> '
@@ -1069,9 +1168,6 @@ def exec_sheet(digest: dict, narrative: dict) -> str:
         f'<div><b>{esc(item.get("title", ""))}</b><p>{esc(item.get("text", ""))}</p></div></div>'
         for index, item in enumerate(decisions, start=1)
     ) or f'<p class="pending">{PLACEHOLDER}</p>'
-    priority_rows = "".join(
-        f"<li>{esc(item)}</li>" for item in priorities
-    ) or f'<li class="pending">{PLACEHOLDER}</li>'
     bottom_block = (
         f'<div class="bottomline"><span class="viz-title">Bottom line</span>'
         f"<p>{esc(bottom)}</p></div>"
@@ -1085,11 +1181,8 @@ def exec_sheet(digest: dict, narrative: dict) -> str:
   {indicator_tiles(digest)}
   <div class="viz-title big">Findings</div>
   <ol class="findings split">{finding_rows}</ol>
-  <div class="exec-cols">
-    <div><div class="viz-title big">Coaching decisions</div>{decision_rows}</div>
-    <div><div class="viz-title big">Preseason priorities</div>
-      <ul class="plain">{priority_rows}</ul></div>
-  </div>
+  <div class="viz-title big">Decisions</div>
+  <div class="decision-row">{decision_rows}</div>
 </section>"""
 
 
@@ -1176,33 +1269,28 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
 
     programme_stories = narrative.get("programmes") or {}
     ordered = _schedule_order(digest)
-    priority = [slug for slug in ordered if (programme_stories.get(slug) or {}).get("priority")]
-    if not priority:
-        priority = ordered[:3]
-    rest = [slug for slug in ordered if slug not in priority]
 
-    priority_sheets = "".join(
-        '<section class="sheet opponent">'
-        + (
-            '<h2 class="section-head">Priority opponents</h2>'
-            if index == 0
-            else '<h2 class="section-head">Priority opponents, continued</h2>'
-        )
-        + "".join(
-            opponent_half_card(digest, slug, narrative, names)
-            for slug in priority[index : index + 2]
-        )
-        + "</section>"
-        for index in range(0, len(priority), 2)
-    )
-    compact_cards = "".join(compact_card(digest, slug, narrative, names) for slug in rest)
+    def tier_of(slug: str) -> str | None:
+        story = programme_stories.get(slug) or {}
+        tier = str(story.get("tier") or "").strip().lower()
+        if tier in ("benchmark", "swing", "update"):
+            return tier
+        if story.get("priority"):
+            return "benchmark"
+        return None
 
-    dossier_sheets = "".join(
-        dossier_sheet(digest, entry) for entry in narrative.get("dossiers") or []
-    )
+    benchmark = [slug for slug in ordered if tier_of(slug) == "benchmark"]
+    swing = [slug for slug in ordered if tier_of(slug) == "swing"]
+    update = [slug for slug in ordered if tier_of(slug) == "update"]
+    untiered = [slug for slug in ordered if tier_of(slug) is None]
+
+    exec_block = narrative.get("exec") or {}
     questions = "".join(
-        f"<li>{esc(item)}</li>" for item in narrative.get("questions") or []
+        f'<li class="check">{esc(item)}</li>' for item in narrative.get("questions") or []
     ) or f'<li class="pending">{PLACEHOLDER}</li>'
+    priorities = "".join(
+        f"<li>{esc(item)}</li>" for item in exec_block.get("priorities") or []
+    )
     extrapolated = (
         '<p class="caveat">Conference membership for this season is carried forward from the '
         "last authored year and not yet confirmed.</p>"
@@ -1210,17 +1298,9 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
         else ""
     )
 
-    return f"""<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{esc(digest.get("conference", ""))} {esc(digest.get("gender", ""))} {esc(digest.get("season", ""))} — Preseason Briefing · {esc(focus_name)}</title>
-<style>{CSS}</style>
-</head>
-<body>
+    sheets: list[str] = []
 
-<section class="sheet cover">
+    sheets.append(f"""<section class="sheet cover">
   <div class="cover-eyebrow">Prepared for {esc(focus_name)} {gender_word} Soccer</div>
   <h1>{esc(digest.get("conference", ""))} {gender_word} Soccer<br><span class="cover-season num">{esc(digest.get("season", ""))} Preseason Intelligence</span></h1>
   <div class="cover-rule"></div>
@@ -1233,60 +1313,136 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
   {extrapolated}
   <div class="cover-foot">Independent analysis · prepared by EDInsights from public, published data ·
   not issued by or affiliated with {esc(focus_name)} University Athletics</div>
-</section>
+</section>""")
 
-{exec_sheet(digest, narrative)}
+    sheets.append(exec_sheet(digest, narrative))
 
-<section class="sheet">
+    sheets.append(f"""<section class="sheet">
   <h2 class="section-head">{esc(focus_name)} — the view from outside</h2>
   <p class="section-sub">What the public record shows about {esc(focus_name)}: the same numbers
-  and patterns every opposing staff can read. The roster itself needs no introduction here; what
-  it looks like from the other bench does.</p>
+  and patterns every opposing staff can read.</p>
   {stat_grid(focus_last)}
   <div class="two-col">
     <div>{minute_chart(focus_last.get("patterns"))}</div>
     <div>{turnover_block(focus.get("turnover"), digest.get("season", ""))}{keeper_line(focus_last, focus.get("turnover"))}</div>
   </div>
-  {availability_block(focus_last)}
-  {usage_block(focus)}
   <div class="story">{prose(focus_story.get("overview"))}</div>
   {news_cards(focus_story.get("news"))}
   {offseason_ledger(focus_story.get("offseason"))}
-  {takeaway_list(focus_story.get("takeaways"))}
-</section>
+</section>""")
 
-<section class="sheet">
+    sheets.append(f"""<section class="sheet">
+  <h2 class="section-head">{esc(focus_name)} — roster decisions and preseason scorecard</h2>
+  <p class="section-sub">The squad as published, line by line, joined to last season's minutes.
+  The reads below tie last year's problems to this year's makeup.</p>
+  {shape_strip(focus)}
+  <div class="story">{prose(focus_story.get("roster"))}</div>
+  {availability_block(focus_last)}
+  {usage_block(focus)}
+  {f'<div class="viz-title big">Preseason priorities</div><ul class="plain">{priorities}</ul>' if priorities else ""}
+  <div class="viz-title big">Preseason scorecard</div>
+  <ul class="plain checks">{questions}</ul>
+</section>""")
+
+    sheets.append(f"""<section class="sheet">
   <h2 class="section-head">The landscape — and where {esc(focus_name)} gains ground</h2>
   {landscape_table(digest)}
   <p class="section-sub">Observed per-match rates against the conference median. These gaps are
   the controllable ones.</p>
   {dumbbell_chart(digest)}
   <div class="story">{prose(narrative.get("landscape"))}</div>
-</section>
+</section>""")
 
-<section class="sheet">
-  <h2 class="section-head">Preseason validation and the conference schedule</h2>
-  <p class="section-sub">The bridge from analysis to the training ground: what to test before
-  the opener, then the conference slate as a planning surface.</p>
-  <div class="viz-title big">To validate in preseason</div>
-  <ol class="findings">{questions}</ol>
-  <div class="viz-title big">Schedule and matchup matrix</div>
+    sheets.append(f"""<section class="sheet">
+  <h2 class="section-head">Schedule and workload</h2>
   {schedule_matrix(digest, names, narrative)}
-</section>
+</section>""")
 
-{priority_sheets}
+    for index in range(0, len(benchmark), 2):
+        head = "Benchmark opponents" if index == 0 else "Benchmark opponents, continued"
+        cards = "".join(
+            opponent_half_card(digest, slug, narrative, names)
+            for slug in benchmark[index : index + 2]
+        )
+        sheets.append(
+            f'<section class="sheet opponent"><h2 class="section-head">{head}</h2>'
+            '<p class="section-sub">The sides that set the standard this season.</p>'
+            f"{cards}</section>"
+        )
 
-<section class="sheet">
-  <h2 class="section-head">The rest of the conference — and the watchlist</h2>
-  <p class="section-sub">Compact cards; full treatment is reserved for the priority opponents above.</p>
-  {compact_cards}
-  <div class="viz-title big">Conference watchlist</div>
+    update_cards = "".join(
+        f'<div class="update-card"><b>{esc(digest["programmes"][slug].get("name", slug))}</b> '
+        f'<span class="tag tag-away">update required</span>'
+        f"<p>{esc((programme_stories.get(slug) or {}).get('roster_note', ''))} "
+        f"{esc((programme_stories.get(slug) or {}).get('implication', ''))}</p></div>"
+        for slug in update
+    )
+    for index in range(0, len(swing), 3):
+        head = "Swing matches" if index == 0 else "Swing matches, continued"
+        cards = "".join(
+            opponent_half_card(digest, slug, narrative, names, condensed=True)
+            for slug in swing[index : index + 3]
+        )
+        tail = update_cards if index + 3 >= len(swing) else ""
+        sheets.append(
+            f'<section class="sheet opponent"><h2 class="section-head">{head}</h2>'
+            '<p class="section-sub">The winnable fixtures that will decide the season.</p>'
+            f"{cards}{tail}</section>"
+        )
+    if update and not swing:
+        sheets.append(
+            '<section class="sheet"><h2 class="section-head">Awaiting data</h2>'
+            f"{update_cards}</section>"
+        )
+
+    if untiered:
+        compact_cards = "".join(
+            compact_card(digest, slug, narrative, names) for slug in untiered
+        )
+        sheets.append(
+            '<section class="sheet"><h2 class="section-head">The rest of the conference</h2>'
+            f"{compact_cards}</section>"
+        )
+
+    sheets.append(f"""<section class="sheet">
+  <h2 class="section-head">Watchlist — the conference and {esc(focus_name)}</h2>
+  <p class="section-sub">Players whose held record or verified offseason deserves tracking.
+  One line each; the samples do not support more.</p>
   {watchlist_table(narrative.get("watchlist"))}
-</section>
+</section>""")
 
-{dossier_sheets}
+    for entry in narrative.get("dossiers") or []:
+        sheets.append(dossier_sheet(digest, entry))
 
-{sources_sheet(digest, focus_name)}
+    sheets.append(sources_sheet(digest, focus_name))
+
+    brand = (
+        f"EDInsights · {esc(digest.get('season', ''))} {esc(digest.get('conference', ''))} "
+        "Preseason Intelligence"
+    )
+    total = len(sheets)
+    numbered = [
+        sheet.replace(
+            "</section>",
+            f'<footer class="sheet-foot"><span>{brand}</span>'
+            f'<span class="num">{page} / {total}</span></footer></section>',
+            1,
+        )
+        for page, sheet in enumerate(sheets, start=1)
+    ]
+
+    body = "\n\n".join(numbered)
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{esc(digest.get("conference", ""))} {esc(digest.get("gender", ""))} {esc(digest.get("season", ""))} — Preseason Briefing · {esc(focus_name)}</title>
+<style>{CSS}</style>
+</head>
+<body>
+
+{body}
 
 </body>
 </html>"""
@@ -1540,6 +1696,20 @@ letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
 .verdict{margin-top:18px;border:2px solid var(--gold-fill);padding:12px 16px;font-size:14px}
 .verdict .viz-title{display:block;color:var(--gold)}
 
+.sheet-foot{display:flex;justify-content:space-between;margin-top:34px;
+border-top:1px solid var(--rule);padding-top:8px;
+font:700 9.5px/1 "Avenir Next Condensed","Arial Narrow",sans-serif;
+letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.decision-row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:4px}
+@media(max-width:700px){.decision-row{grid-template-columns:1fr}}
+.half-opp.condensed{padding:12px 0 6px}
+.half-opp.condensed .opp-field{margin:6px 0}
+.half-opp.condensed h3{font-size:18px}
+.update-card{border:1px dashed var(--rule2);padding:10px 14px;margin:14px 0 4px}
+.update-card b{font:700 15px/1.1 "Avenir Next Condensed","Arial Narrow",sans-serif;
+text-transform:uppercase;margin-right:8px}
+.update-card p{font-size:12.5px;color:var(--ink2);margin-top:4px;max-width:76ch}
+.grid.shape{max-width:520px}
 .caveat{color:var(--draw);margin:10px 0;font-size:12.5px}
 .foot-note{margin-top:26px;border-top:1px solid var(--rule2);padding-top:12px;
 font-size:11.5px;color:var(--faint)}

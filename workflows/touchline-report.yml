@@ -251,38 +251,59 @@ nodes:
       Write data/reports/narrative-$inputs.season-$inputs.gender.json
       conforming to the touchline.report-narrative/3 contract documented at
       the top of <pipeline>/src/report.py (read it). Requirements:
-      - exec: a bottom_line paragraph; 3-4 findings, EACH split into
+      - THE STRUCTURE IS A TOOLKIT, NOT A TEMPLATE. Which decisions get
+        made, which players get dossiers, which opponents land in which
+        tier, and which position groups get attention all come from THIS
+        team's digest and findings at this moment — never from a prior
+        report's topics. Do not assume any fixed decision (a goalkeeper
+        battle, a scoring gap) exists; find what the data says and write
+        that.
+      - exec: a bottom_line paragraph; EXACTLY 3 findings, each split into
         evidence (the fact), meaning (the interpretation), and implication
         (what the staff does with it) — never blend fact and judgment in
-        one sentence; at most 3 decisions; a priorities list of concrete
-        preseason work
+        one sentence; at most 3 decisions; a short priorities list (it
+        renders on the roster page, so do not repeat the decisions)
+      - focus.roster: read the digest's roster_shape and tie last season's
+        problems to this season's makeup, line by line — where the squad
+        is experienced, where it is new, which position groups return
+        their minutes and which reset. Ground every claim in the shape
+        numbers. This is where "the defense that conceded X returns only
+        Y% of its minutes" lives.
       - one landscape prose section covering BOTH conference positioning
         and where the focus side gains ground (they share a page)
-      - focus overview/takeaways/news/offseason. The offseason ledger holds
-        AT MOST 3 consolidated signals — one item per player with every
-        supporting citation in its sources array, never one item per source
+      - focus overview/news/offseason. The offseason ledger holds AT MOST
+        3 consolidated signals — one item per player with every supporting
+        citation in its sources array, never one item per source
       - per-programme sections: threat, vulnerability, roster_note,
-        implication (a half-page card renders these five fields), with
-        priority: true for the 3-4 opponents that most affect the focus
-        side. If a field has nothing verified, leave it empty — the
-        renderer says "Nothing verified to report."
-      - watchlist (not breakouts): one-line monitoring notes for
-        small-sample risers; a player with a dossier never repeats on the
-        watchlist; 2 dossiers; preseason questions
-      - apply the insight filter in the style contract before including
-        anything: score each candidate insight and cut what scores below
-        the bar. Fewer, stronger items beat coverage.
+        implication, and a tier: "benchmark" (sets the standard), "swing"
+        (winnable fixture that decides the season), or "update" (too
+        little data — say what to re-check and when). Tier from the
+        findings, not from last season's table position alone. Use each
+        opponent's roster_shape the same way as the focus side's. If a
+        field has nothing verified, leave it empty — the renderer says
+        "Nothing verified to report."
+      - watchlist: one-line monitoring notes; a player with a dossier
+        never repeats on the watchlist; dossier subjects are wherever the
+        findings point (a position battle page is a dossier framed on the
+        battle, not the individual); preseason questions become the
+        scorecard — write them as testable checks
+      - LENGTH: 2,800-3,200 words of prose across the whole narrative.
+        Apply the insight filter in the style contract; state each
+        conclusion once and stop. Repetition, not facts, is what makes a
+        report long.
       - credibility rules (absolute): records are written W-L-T; the
         digest's availability_flags and usage_shifts are unverified
-        signals — observed gaps with unknown causes, labeled "signal",
-        never conclusions; head-to-head is a held record since the first
-        archived season, never "all-time"; never draw a conclusion from
-        absence of evidence; never claim possession, set-piece quality,
-        or any tactical trait the data does not measure — corner counts
-        show territorial exposure, not marking quality
-      - voice per the style contract: plain soccer language a coach uses
-        (say "reset expectations", not "re-price the season"), direct,
-        no hype, every claim anchored to a cited number or source
+        signals — observed gaps with unknown causes, never conclusions;
+        head-to-head is a held record since the first archived season,
+        never "all-time"; never draw a conclusion from absence of
+        evidence; never claim possession, set-piece quality, fitness, or
+        any trait the data does not measure — corner counts show
+        territorial exposure, and late goals show "performance after 60
+        minutes", not fitness; name the measure when ranking players
+        (shot-on-target rate, conversion), never bare "efficiency"
+      - voice per the style contract: the vocabulary of a beat writer or
+        an assistant coach, direct, no hype, every claim anchored to a
+        cited number or source
 
       Reply with one line per top-level section you wrote and its item count.
 
@@ -305,9 +326,9 @@ nodes:
       DECISIONS=$(jq '.exec.decisions | length' "$F")
       PROGS=$(jq '.programmes | length' "$F")
       BOTTOM=$(jq -r '.exec.bottom_line // empty | length' "$F")
-      if [ "$FINDINGS" -lt 1 ] || [ "$FINDINGS" -gt 4 ] || [ "$DECISIONS" -lt 1 ] \
+      if [ "$FINDINGS" -lt 1 ] || [ "$FINDINGS" -gt 3 ] || [ "$DECISIONS" -lt 1 ] \
         || [ "$DECISIONS" -gt 3 ] || [ "$PROGS" -lt 1 ] || [ "${BOTTOM:-0}" -lt 1 ]; then
-        printf 'ALARM: narrative out of contract (findings=%s max 4, decisions=%s max 3, programmes=%s, bottom_line len=%s).\n' \
+        printf 'ALARM: narrative out of contract (findings=%s max 3, decisions=%s max 3, programmes=%s, bottom_line len=%s).\n' \
           "$FINDINGS" "$DECISIONS" "$PROGS" "${BOTTOM:-0}"
         exit 1
       fi

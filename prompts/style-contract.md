@@ -50,6 +50,36 @@ answer; this file says *how it must read and look*. Tune the product here.
   any claim built on it.
 - **Held records are not all-time records.** Head-to-head and historical
   claims say "since <first archived season>" or "held record".
+- **"Fitness" is never established by goal timing.** Late concessions can
+  reflect substitutions, tactics, score effects, or concentration. Write
+  "performance after 60 minutes" until film isolates the cause.
+- **Name the measure when ranking a player.** "Shot-on-target rate" or
+  "conversion", never bare "efficiency".
+- **Small-sample reads get humble headers.** A weakness inferred from a
+  goal-timing sample is a "potential opening", not a vulnerability or a
+  conclusion.
+- **More diction swaps** (the left column is banned): "for the focus
+  side" → "for <team name>"; "inflection date" → "first competitive
+  checkpoint"; "shapes everything downstream" → "must be decided early";
+  "tempo disruption" → what to actually do ("keep the match level", "slow
+  their restarts"); "planning surface" → "the schedule".
+
+## The toolkit rule (absolute)
+
+The page structure is a toolkit, not a template. Which decisions surface,
+which players get profile pages, which opponents land in which tier, and
+which position groups get attention all come from the current team's
+digest and verified findings at generation time. Never carry a previous
+report's topics forward: no report assumes a goalkeeper battle, a scoring
+gap, or any other specific storyline exists until the data for THIS team
+shows it.
+
+## Length
+
+2,800–3,200 words of prose for the whole report. Each page is a complete
+story with one conclusion, stated once. Repetition, not facts, is what
+makes a report long: if a point appears in the executive brief, it does
+not reappear as a takeaway elsewhere.
 
 ## The insight filter
 
