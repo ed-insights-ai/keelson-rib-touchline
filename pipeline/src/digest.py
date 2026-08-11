@@ -360,15 +360,24 @@ def roster_shape(
         cls = _class_bucket(player.get("class_year"))
         row = by_position.setdefault(
             pos,
-            {"returning": 0, "newcomers": 0, "newcomer_freshmen": 0, "returning_minutes": 0},
+            {
+                "returning": 0,
+                "newcomers": 0,
+                "newcomer_freshmen": 0,
+                "returning_minutes": 0,
+                "classes": {"returning": {}, "newcomers": {}},
+            },
         )
         if previous_names and key in previous_names:
             row["returning"] += 1
             row["returning_minutes"] += minutes_by_name.get(key, 0)
+            group = row["classes"]["returning"]
         else:
             row["newcomers"] += 1
             if cls == "Fr":
                 row["newcomer_freshmen"] += 1
+            group = row["classes"]["newcomers"]
+        group[cls] = group.get(cls, 0) + 1
         by_class[cls] = by_class.get(cls, 0) + 1
 
     if minutes_by_name and prev_position:

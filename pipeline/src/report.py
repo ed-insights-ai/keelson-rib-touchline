@@ -728,16 +728,34 @@ POSITION_ORDER = ("GK", "D", "M", "F", "?")
 
 
 def shape_strip(section: dict) -> str:
-    """The squad's makeup by line: who returns, who is new, and how much of
-    last season's playing time comes back at each position.  All observed."""
+    """The squad map: one row per line, one unit per player, colored by
+    class year (light freshman to dark senior).  Returners sit left of the
+    divider, newcomers right; the bar is last season's minutes returning.
+    All observed."""
     shape = section.get("roster_shape")
     if not shape:
         return ""
+    known = shape.get("turnover_known")
+    cls_order = ("Sr", "Jr", "So", "Fr", "?")
+    cls_words = {"Sr": "senior", "Jr": "junior", "So": "sophomore", "Fr": "freshman", "?": "class unlisted"}
+
+    def units(group: dict, status: str) -> str:
+        return "".join(
+            f'<i class="unit u-{cls.lower().replace("?", "x")}" '
+            f'title="{count} {cls_words[cls]} {status}"></i>' * count
+            for cls in cls_order
+            if (count := int(group.get(cls) or 0))
+        )
+
     rows = []
     for pos in POSITION_ORDER:
         row = (shape.get("by_position") or {}).get(pos)
         if not row:
             continue
+        classes = row.get("classes") or {}
+        returning_units = units(classes.get("returning") or {}, "returning")
+        newcomer_units = units(classes.get("newcomers") or {}, "new")
+        divider = '<i class="sq-div"></i>' if known and (returning_units or newcomer_units) else ""
         share = row.get("minutes_share")
         share_cell = (
             f'<span class="mini-track"><span class="mini-fill" style="width:{round(share * 100)}%"></span></span>'
@@ -745,46 +763,30 @@ def shape_strip(section: dict) -> str:
             if share is not None
             else '<span class="dim">–</span>'
         )
-        freshmen = row.get("newcomer_freshmen") or 0
-        new_cell = f"{row.get('newcomers', 0)}"
-        if freshmen:
-            new_cell += f" ({freshmen} Fr)"
+        counts = f"{row.get('returning', 0)} return · {row.get('newcomers', 0)} new" if known else f"{row.get('newcomers', 0)} listed"
         rows.append(
-            f"<tr><td>{esc(POSITION_LABELS.get(pos, pos))}</td>"
-            f'<td class="num">{row.get("returning", 0)}</td>'
-            f'<td class="num">{esc(new_cell)}</td>'
-            f'<td class="share-cell">{share_cell}</td></tr>'
+            f'<div class="sq-row"><span class="sq-label">{esc(POSITION_LABELS.get(pos, pos))}'
+            f"<em>{esc(counts)}</em></span>"
+            f'<span class="sq-units">{returning_units}{divider}{newcomer_units}</span>'
+            f'<span class="sq-share">{share_cell}</span></div>'
         )
     if not rows:
         return ""
-    classes = shape.get("by_class") or {}
-    class_names = {"Fr": "Freshmen", "So": "Sophomores", "Jr": "Juniors", "Sr": "Seniors", "?": "Unlisted"}
-    total = sum(classes.values()) or 1
-    segments = "".join(
-        f'<span class="cseg cseg-{key.lower().replace("?", "x")}" style="flex:{classes[key]}">'
-        f'<b class="num">{classes[key]}</b> {esc(class_names[key])}</span>'
-        for key in ("Fr", "So", "Jr", "Sr", "?")
-        if classes.get(key)
+    legend_classes = "".join(
+        f'<span class="lg"><i class="unit u-{cls.lower()}"></i>{cls}</span>'
+        for cls in ("Fr", "So", "Jr", "Sr")
     )
-    class_bar = (
-        f'<div class="viz-title">Experience mix — {total} players</div>'
-        f'<div class="classbar">{segments}</div>'
-        if segments
-        else ""
+    legend = (
+        f'<div class="sq-legend">{legend_classes}'
+        + (
+            '<span class="lg-note">left of the divider returning · right new · '
+            "bar = share of last season's minutes returning</span>"
+            if known
+            else '<span class="lg-note">previous roster not held, so every player counts as new</span>'
+        )
+        + "</div>"
     )
-    note = (
-        "Observed · positions and class years as published on the roster; minutes-back "
-        "joins last season's statistics by player."
-        if shape.get("turnover_known")
-        else "Observed · previous roster not held, so every player counts as new here."
-    )
-    return (
-        '<table class="grid slim shape"><thead><tr><th>Line</th>'
-        '<th class="num">Return</th><th class="num">New</th>'
-        "<th>Minutes back</th></tr></thead><tbody>" + "".join(rows) + "</tbody></table>"
-        + class_bar
-        + f'<div class="viz-note">{note}</div>'
-    )
+    return f'<div class="squadmap">{"".join(rows)}{legend}</div>'
 
 
 def roster_read(value) -> str:
@@ -1744,16 +1746,24 @@ letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
 .update-card b{font:700 15px/1.1 "Avenir Next Condensed","Arial Narrow",sans-serif;
 text-transform:uppercase;margin-right:8px}
 .update-card p{font-size:12.5px;color:var(--ink2);margin-top:4px;max-width:76ch}
-.grid.shape{max-width:520px}
-.classbar{display:flex;gap:2px;margin:2px 0 4px;max-width:520px}
-.cseg{padding:7px 0 6px;text-align:center;font-size:10.5px;min-width:0;
-overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.cseg b{font-size:13px;margin-right:3px}
-.cseg-fr{background:#dde7f0;color:var(--ink2)}
-.cseg-so{background:#b5cadd;color:var(--ink2)}
-.cseg-jr{background:#6d94b8;color:#fff}
-.cseg-sr{background:#2f5d8a;color:#fff}
-.cseg-x{background:var(--rule);color:var(--muted)}
+.squadmap{margin:4px 0 10px;max-width:640px}
+.sq-row{display:flex;align-items:center;gap:14px;padding:7px 0;border-bottom:1px solid var(--rule)}
+.sq-row:last-of-type{border-bottom:none}
+.sq-label{flex:none;width:118px;font-size:13px}
+.sq-label em{display:block;font-style:normal;font-size:10.5px;color:var(--faint)}
+.sq-units{flex:1;display:flex;align-items:center;gap:3px;flex-wrap:wrap}
+.unit{display:inline-block;width:13px;height:19px;border-radius:2px}
+.u-fr{background:#dde7f0;box-shadow:inset 0 0 0 1px #b5cadd}
+.u-so{background:#b5cadd}
+.u-jr{background:#6d94b8}
+.u-sr{background:#2f5d8a}
+.u-x{background:var(--rule);box-shadow:inset 0 0 0 1px var(--rule2)}
+.sq-div{width:1.5px;height:24px;background:var(--ink2);margin:0 5px;flex:none}
+.sq-share{flex:none;width:130px;text-align:right;font-size:11.5px;white-space:nowrap}
+.sq-legend{display:flex;align-items:center;gap:12px;margin-top:8px;flex-wrap:wrap}
+.lg{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;color:var(--muted)}
+.lg .unit{width:10px;height:14px}
+.lg-note{font-size:10.5px;color:var(--faint)}
 .roster-grid{margin:6px 0 14px;max-width:76ch}
 .roster-grid .f-label{padding-top:1px}
 .caveat{color:var(--draw);margin:10px 0;font-size:12.5px}
