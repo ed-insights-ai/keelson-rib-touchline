@@ -543,6 +543,17 @@ def landscape_table(digest: dict) -> str:
             f'<td class="share-cell">{share_cell}</td></tr>'
         )
     season = digest.get("previous_season")
+    missing = [
+        str(section.get("name", slug))
+        for slug, section in digest["programmes"].items()
+        if not section.get("roster_shape")
+    ]
+    gap_note = (
+        f" {esc(', '.join(missing))} has not published a {esc(str(digest.get('season', '')))} "
+        "roster, so the returning column is blank there."
+        if missing
+        else ""
+    )
     return (
         '<table class="grid"><thead><tr>'
         f'<th>{esc(digest.get("conference", ""))} programme</th>'
@@ -551,7 +562,7 @@ def landscape_table(digest: dict) -> str:
         '<th class="num">CS</th><th>Returning goals</th>'
         "</tr></thead><tbody>" + "".join(rows) + "</tbody></table>"
         '<div class="viz-note">Returning goals: the share of last season\'s goals scored by '
-        "players on the new roster.</div>"
+        f"players on the new roster.{gap_note}</div>"
     )
 
 
@@ -1321,6 +1332,17 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
         if digest.get("membership_extrapolated")
         else ""
     )
+    unpublished = [
+        str(section.get("name", slug))
+        for slug, section in digest["programmes"].items()
+        if not section.get("roster_shape")
+    ]
+    roster_gap = (
+        f'<p class="caveat">{esc(str(digest.get("season", "")))} roster not yet published: '
+        f"{esc(', '.join(unpublished))} — that programme's pages read last season's record only.</p>"
+        if unpublished
+        else ""
+    )
 
     sheets: list[str] = []
 
@@ -1330,6 +1352,7 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
   <div class="cover-rule"></div>
   {f'<p class="headline">{esc(narrative.get("headline", ""))}</p>' if narrative.get("headline") else ""}
   {extrapolated}
+  {roster_gap}
   <div class="viz-note">Records are W-L-T throughout. Labels: {label_chip("observed")} computed
   from published data · {label_chip("signal")} observed pattern, cause unconfirmed ·
   {label_chip("judgment")} interpretation that needs film to validate.</div>
