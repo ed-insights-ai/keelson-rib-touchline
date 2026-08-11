@@ -121,7 +121,7 @@ nodes:
       until_bash: |
         set -u
         D="data/reports/research/${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}"
-        DG="data/reports/digest-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}.json"
+        DG="data/reports/digest-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
         N=$(jq '.programmes | length' "$DG" 2>/dev/null || echo 99)
         C=$(ls "$D"/research-*.json 2>/dev/null | wc -l | tr -d ' ')
         [ "$C" -ge "$N" ]
@@ -130,7 +130,7 @@ nodes:
         $inputs.season $inputs.gender season, prepared for '$inputs.focus'. Each
         iteration researches EXACTLY ONE programme, then stops.
 
-        1. Read data/reports/digest-$inputs.season-$inputs.gender.json — the
+        1. Read data/reports/digest-$inputs.season-$inputs.gender-$inputs.focus.json — the
            programme list, and each programme's availability_flags and
            usage_shifts (your special-interest players).
         2. List data/reports/research/$inputs.season-$inputs.gender/ — pick the
@@ -238,7 +238,7 @@ nodes:
         <pipeline-parent>/prompts/style-contract.md          (how it must read)
 
       Your inputs, in this data home (the current directory):
-        data/reports/digest-$inputs.season-$inputs.gender.json  — every figure
+        data/reports/digest-$inputs.season-$inputs.gender-$inputs.focus.json  — every figure
           you may cite. THE ONLY SOURCE OF NUMBERS. If a figure is not in the
           digest, it does not appear in your prose.
         data/reports/research/$inputs.season-$inputs.gender/verified.json —
@@ -248,7 +248,7 @@ nodes:
           approval gate. If it isn't discoverable, it isn't in the report.
           An undated source cannot date a claim.
 
-      Write data/reports/narrative-$inputs.season-$inputs.gender.json
+      Write data/reports/narrative-$inputs.season-$inputs.gender-$inputs.focus.json
       conforming to the touchline.report-narrative/3 contract documented at
       the top of <pipeline>/src/report.py (read it). Requirements:
       - THE STRUCTURE IS A TOOLKIT, NOT A TEMPLATE. Which decisions get
@@ -315,7 +315,7 @@ nodes:
     timeout: 60000
     bash: |
       set -uo pipefail
-      F="data/reports/narrative-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}.json"
+      F="data/reports/narrative-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
       if [ ! -f "$F" ]; then
         printf 'ALARM: narrative node reported success but %s does not exist.\n' "$F"
         exit 1
@@ -356,14 +356,15 @@ nodes:
       PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
       TOUCHLINE_DATA_DIR="$PWD" uv run --project "$PIPELINE_DIR" render-report \
         --season "$KEELSON_INPUTS_season" \
-        --gender "$KEELSON_INPUTS_gender"
+        --gender "$KEELSON_INPUTS_gender" \
+        --focus "$KEELSON_INPUTS_focus"
 
   - id: approve
     depends_on: [render]
     approval:
       message: |
         The preseason briefing is rendered. Review it before it goes anywhere:
-        open data/reports/preseason-$inputs.season-$inputs.gender.html in a
+        open data/reports/preseason-$inputs.season-$inputs.gender-$inputs.focus.html in a
         browser (print preview shows the paginated report). The verification
         pass reported: $verify.output — anything attested-but-uncaptured needs
         a human-supplied link before it can become a report fact. Approve to
@@ -382,6 +383,6 @@ nodes:
       - the render line: $render.output
       - the reviewer's response: $approve.output
       Name what was dropped or left unswept exactly as reported — never soften
-      it. The report file is data/reports/preseason-$inputs.season-$inputs.gender.html;
+      it. The report file is data/reports/preseason-$inputs.season-$inputs.gender-$inputs.focus.html;
       research artifacts live under data/reports/research/. Do not invent
       numbers: every figure must appear in the text above.

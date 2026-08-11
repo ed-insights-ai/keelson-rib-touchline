@@ -52,7 +52,7 @@ def main() -> int:
         print(str(exc), file=sys.stderr)
         return 2
 
-    out = root / "data" / "reports" / f"digest-{args.season}-{args.gender}.json"
+    out = root / "data" / "reports" / f"digest-{args.season}-{args.gender}-{args.focus}.json"
     _atomic_json(out, digest)
 
     sections = digest["programmes"]
