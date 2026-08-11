@@ -680,11 +680,13 @@ POSITION_LABELS = {
 POSITION_ORDER = ("GK", "D", "M", "F", "?")
 
 
-def shape_strip(section: dict) -> str:
+def shape_strip(section: dict, compact: bool = False) -> str:
     """The squad map: one row per line, one unit per player, colored by
     class year (light freshman to dark senior).  Returners sit left of the
-    divider, newcomers right; the bar is last season's minutes returning.
-    All observed."""
+    divider, newcomers right; the bar is last season's minutes returning;
+    a small dot under a unit marks an international player (published
+    hometown).  All observed.  Compact mode (opponent cards) drops the
+    international-lens note paragraph, which belongs to the focus page."""
     shape = section.get("roster_shape")
     if not shape:
         return ""
@@ -692,13 +694,21 @@ def shape_strip(section: dict) -> str:
     cls_order = ("Sr", "Jr", "So", "Fr", "?")
     cls_words = {"Sr": "senior", "Jr": "junior", "So": "sophomore", "Fr": "freshman", "?": "class unlisted"}
 
-    def units(group: dict, status: str) -> str:
-        return "".join(
-            f'<i class="unit u-{cls.lower().replace("?", "x")}" '
-            f'title="{count} {cls_words[cls]} {status}"></i>' * count
-            for cls in cls_order
-            if (count := int(group.get(cls) or 0))
-        )
+    def units(group: dict, intl_group: dict, status: str) -> str:
+        out = []
+        for cls in cls_order:
+            count = int(group.get(cls) or 0)
+            if not count:
+                continue
+            marked = min(int(intl_group.get(cls) or 0), count)
+            for slot in range(count):
+                intl = slot >= count - marked
+                tip = f"{cls_words[cls]} {status}" + (" · international" if intl else "")
+                out.append(
+                    f'<i class="unit u-{cls.lower().replace("?", "x")}'
+                    f'{" intl" if intl else ""}" title="{tip}"></i>'
+                )
+        return "".join(out)
 
     rows = []
     for pos in POSITION_ORDER:
@@ -706,8 +716,13 @@ def shape_strip(section: dict) -> str:
         if not row:
             continue
         classes = row.get("classes") or {}
-        returning_units = units(classes.get("returning") or {}, "returning")
-        newcomer_units = units(classes.get("newcomers") or {}, "new")
+        intl_classes = row.get("intl_classes") or {}
+        returning_units = units(
+            classes.get("returning") or {}, intl_classes.get("returning") or {}, "returning"
+        )
+        newcomer_units = units(
+            classes.get("newcomers") or {}, intl_classes.get("newcomers") or {}, "new"
+        )
         divider = '<i class="sq-div"></i>' if known and (returning_units or newcomer_units) else ""
         share = row.get("minutes_share")
         share_cell = (
@@ -729,19 +744,20 @@ def shape_strip(section: dict) -> str:
         f'<span class="lg"><i class="unit u-{cls.lower()}"></i>{cls}</span>'
         for cls in ("Fr", "So", "Jr", "Sr")
     )
+    intl = shape.get("international") or {}
+    intl_legend = " · dot = international" if intl.get("total") else ""
     legend = (
         f'<div class="sq-legend">{legend_classes}'
         + (
             '<span class="lg-note">left of the divider returning · right new · '
-            "bar = share of last season's minutes returning</span>"
+            f"bar = share of last season's minutes returning{intl_legend}</span>"
             if known
-            else '<span class="lg-note">previous roster not held, so every player counts as new</span>'
+            else f'<span class="lg-note">previous roster not held, so every player counts as new{intl_legend}</span>'
         )
         + "</div>"
     )
-    intl = shape.get("international") or {}
     intl_note = ""
-    if intl.get("total"):
+    if intl.get("total") and not compact:
         unknown = f' · {intl["unknown"]} hometowns unpublished' if intl.get("unknown") else ""
         intl_note = (
             f'<div class="viz-note">International players: {intl["total"]}'
@@ -750,7 +766,10 @@ def shape_strip(section: dict) -> str:
             " freshmen — a newcomer class heavy on internationals is usually more"
             " experienced than its class years suggest.</div>"
         )
-    return f'<div class="squadmap">{"".join(rows)}{legend}{intl_note}</div>'
+    return (
+        f'<div class="squadmap{" sq-compact" if compact else ""}">'
+        f'{"".join(rows)}{legend}{intl_note}</div>'
+    )
 
 
 def roster_read(value) -> str:
@@ -929,24 +948,17 @@ def watchlist_sheets(digest: dict, narrative: dict, names: dict[str, str], order
         else:
             stray.append(entry)
     sheets = []
-    first = True
     for slug in ordered:
         picks = grouped.get(slug)
         if not picks:
             continue
-        head = (
-            '<h2 class="section-head">Watchlist</h2>'
-            '<p class="section-sub">The names, up to two per opponent, whose held record or verified '
-            "offseason will move first. Monitoring candidates, not conclusions — re-evaluate "
-            "after the first two matchdays.</p>"
-            if first
-            else '<div class="sheet-eyebrow">Watchlist · continued</div>'
-        )
-        first = False
+        # No section header: the pill carries the label, per-sheet, the same
+        # way the tier pill does on opponent cards.
         profiles = "".join(watch_profile(digest, slug, entry) for entry in picks[:2])
         sheets.append(
-            f'<section class="sheet">{head}'
-            f'<h3 class="watch-team">{esc(names.get(slug, slug))}</h3>{profiles}</section>'
+            f'<section class="sheet"><header class="watch-sheet-head">'
+            f'<h3 class="watch-team">{esc(names.get(slug, slug))}</h3>'
+            f'<span class="prio">Watchlist</span></header>{profiles}</section>'
         )
     if stray:
         rows = "".join(
@@ -1018,6 +1030,10 @@ def opponent_half_card(
 
     focus_name = names.get(digest["focus"], digest["focus"])
     tier_word = esc(str(story.get("tier", "priority")).capitalize())
+    benchmark = story.get("tier") == "benchmark"
+    # The benchmark card carries the full squad map, which already shows the
+    # return/new counts and minute shares — the bracketed line would repeat it.
+    roster_tail = "" if benchmark else f'<span class="dim"> [{esc(roster_line)}]</span>'
     return f"""
 <div class="half-opp{" condensed" if condensed else ""}">
   <header class="opp-head">
@@ -1030,8 +1046,8 @@ def opponent_half_card(
     <span class="prio">{tier_word}</span>
   </header>
   {field("Bench", esc(story.get("coach", ""))) if story.get("coach") else ""}
-  {field("Roster change", esc(story.get("roster_note", "")) + f'<span class="dim"> [{esc(roster_line)}]</span>')}
-  {shape_line(section)}
+  {field("Roster change", esc(story.get("roster_note", "")) + roster_tail)}
+  {shape_strip(section, compact=True) if benchmark else shape_line(section)}
   {field("Key threat", top_line + esc(story.get("threat", "")))}
   {field("Potential opening", esc(story.get("vulnerability", "")), "riskfield")}
   {field(f"Implication for {esc(focus_name)}", esc(story.get("implication", "")), "goldfield")}
@@ -1183,7 +1199,7 @@ def exec_people_sheet(digest: dict, narrative: dict, names: dict[str, str]) -> s
         for last in [((profile.get("career") or []) or [{}])[-1]]
     )
     returners = (
-        '<table class="grid slim"><thead><tr><th>Returning player</th>'
+        '<table class="grid slim tight"><thead><tr><th>Returning player</th>'
         '<th class="num">Szns</th><th class="num">GP-GS</th><th class="num">Min</th>'
         '<th class="num">G</th><th class="num">A</th><th class="num">Pts</th>'
         '<th class="num">Sh</th><th class="num">SOG</th></tr></thead>'
@@ -1208,7 +1224,7 @@ def exec_people_sheet(digest: dict, narrative: dict, names: dict[str, str]) -> s
         )
     keepers = (
         '<div class="viz-title">In goal last season</div>'
-        '<table class="grid slim"><thead><tr><th>Keeper</th><th class="num">GP</th>'
+        '<table class="grid slim tight"><thead><tr><th>Keeper</th><th class="num">GP</th>'
         '<th class="num">Min</th><th class="num">Saves</th><th class="num">GA</th>'
         '<th class="num">Save pct</th><th class="num">CS</th></tr></thead>'
         f"<tbody>{keeper_rows}</tbody></table>"
@@ -1216,7 +1232,7 @@ def exec_people_sheet(digest: dict, narrative: dict, names: dict[str, str]) -> s
         else ""
     )
     return f"""
-<section class="sheet">
+<section class="sheet people">
   <div class="sheet-eyebrow">Executive brief — the view from outside · continued</div>
   <div class="viz-title big">The names an opposing staff circles</div>
   <p class="section-sub">{esc(focus_name)} returners with a held record, ranked by
@@ -1347,10 +1363,6 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
   <div class="story">{prose(narrative.get("landscape"))}</div>
 </section>""")
 
-    tier_heads = {
-        "benchmark": ("Benchmark opponents", "The sides that set the standard this season."),
-        "swing": ("Swing matches", "The winnable fixtures that will decide the season."),
-    }
     update_cards = "".join(
         f'<div class="update-card"><b>{esc(digest["programmes"][slug].get("name", slug))}</b> '
         f'<span class="tag tag-away">update required</span>'
@@ -1360,16 +1372,11 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
     )
     carded = [("benchmark", slug) for slug in benchmark] + [("swing", slug) for slug in swing]
     for index, (tier, slug) in enumerate(carded):
-        title, sub = tier_heads[tier]
-        first_of_tier = index == 0 or carded[index - 1][0] != tier
-        head = (
-            f'<h2 class="section-head">{title}</h2><p class="section-sub">{sub}</p>'
-            if first_of_tier
-            else f'<div class="sheet-eyebrow">{title} · continued</div>'
-        )
+        # No tier headers: the card's own tier pill carries the label, and
+        # a header risks orphaning onto its own page when the card runs tall.
         tail = update_cards if index == len(carded) - 1 else ""
         sheets.append(
-            f'<section class="sheet opponent">{head}'
+            f'<section class="sheet opponent">'
             f"{opponent_half_card(digest, slug, narrative, names)}{tail}</section>"
         )
     if update and not carded:
@@ -1521,6 +1528,7 @@ font:700 14px/1 "Avenir Next Condensed","Arial Narrow",sans-serif}
 letter-spacing:.09em;text-transform:uppercase;color:var(--muted);text-align:left;
 padding:7px 9px;border-bottom:2px solid var(--rule2)}
 .grid td{padding:7px 9px;border-bottom:1px solid var(--rule)}
+.grid.tight td,.grid.tight th{padding-top:4px;padding-bottom:4px}
 .grid th.num,.grid td.num{text-align:right}
 .grid tr.is-focus td{background:var(--gold-wash)}
 .grid tr.is-focus td:first-child{box-shadow:inset 3px 0 0 var(--gold-fill)}
@@ -1536,10 +1544,18 @@ border-radius:4px;overflow:hidden;vertical-align:2px;margin-right:8px}
 
 .opponent{padding-top:44px}
 .half-opp{border-top:2px solid var(--rule2);padding:16px 0 8px;margin-top:14px}
+.sheet.opponent .half-opp{border-top:none;padding-top:0;margin-top:0}
+.sheet.opponent{padding-top:30px;padding-bottom:30px}
+.sheet.opponent .half-opp{padding-bottom:0}
+.sheet.opponent .opp-field p,.sheet.opponent .news p{line-height:1.42}
+.sheet.opponent .sheet-foot{margin-top:4px}
+.sheet.opponent .opp-head{margin-bottom:10px}
+.sheet.people{padding-bottom:40px}
+.sheet.opponent .news{margin:5px 0;padding:6px 10px}
 .half-opp:first-of-type{border-top:none;margin-top:0}
 .half-opp h3{font:700 21px/1.05 "Avenir Next Condensed","Arial Narrow",sans-serif;
 text-transform:uppercase;letter-spacing:.02em}
-.opp-field{margin:9px 0}
+.opp-field{margin:7px 0}
 .opp-field .viz-title{margin:0 0 2px}
 .opp-field p{font-size:13px;color:var(--ink2);max-width:76ch}
 .riskfield .viz-title{color:var(--rose)}
@@ -1549,7 +1565,7 @@ text-transform:uppercase;letter-spacing:.02em}
 letter-spacing:.1em;text-transform:uppercase;color:var(--gold);
 border:1px solid var(--gold-fill);padding:2px 5px;margin-left:6px;vertical-align:1px}
 .tight{color:var(--rose);font-weight:700}
-.opp-head{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.opp-head{display:flex;align-items:center;gap:16px;margin-bottom:12px}
 .opp-abbr{display:inline-flex;align-items:center;justify-content:center;
 min-width:54px;height:54px;padding:0 8px;background:var(--gold-wash);border:1px solid var(--gold-fill);
 font:700 18px/1 "Avenir Next Condensed","Arial Narrow",sans-serif;color:var(--gold)}
@@ -1630,7 +1646,7 @@ text-transform:uppercase;padding:3px 6px;border-radius:2px;vertical-align:1px}
 .tag-home{background:var(--gold-wash);color:var(--gold);border:1px solid var(--gold-fill)}
 .tag-away{background:#eeece5;color:var(--muted);border:1px solid var(--rule2)}
 
-.h2h{margin:14px 0 4px}
+.h2h{margin:8px 0 2px}
 .h2h-rec{font-weight:700}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{display:inline-flex;align-items:center;gap:5px;background:var(--sheet);
@@ -1647,12 +1663,12 @@ border:1px solid var(--rule2);padding:4px 8px;font-size:11px;color:var(--ink2)}
 .story{margin:12px 0 4px;max-width:70ch}
 .story p{margin:8px 0;color:var(--ink2);font-size:13.5px}
 .pending{color:var(--faint);font-style:italic}
-.news{background:var(--gold-wash);border-left:3px solid var(--gold-fill);padding:10px 14px;margin:10px 0}
+.news{background:var(--gold-wash);border-left:3px solid var(--gold-fill);padding:8px 12px;margin:7px 0}
 .news-tag{font:700 9px/1 "Avenir Next Condensed","Arial Narrow",sans-serif;
 letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
-.news p{margin:5px 0 4px;font-size:13px}
+.news p{margin:4px 0 3px;font-size:13px}
 .news-cite{font-size:11px;color:var(--faint)}
-.ledger{margin:14px 0 4px}
+.ledger{margin:8px 0 2px}
 .ledger-row{display:grid;grid-template-columns:150px 1fr;gap:2px 14px;
 padding:8px 0;border-bottom:1px solid var(--rule);font-size:12.5px}
 .ledger-row span{color:var(--ink2)}
@@ -1695,6 +1711,8 @@ letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
 .half-opp.condensed{padding:12px 0 6px}
 .half-opp.condensed .opp-field{margin:6px 0}
 .half-opp.condensed h3{font-size:18px}
+.watch-sheet-head{display:flex;align-items:center;gap:12px;margin:0 0 14px}
+.watch-sheet-head .watch-team{margin:0}
 .watch-team{font:700 24px/1.1 "Avenir Next Condensed","Arial Narrow",sans-serif;
 text-transform:uppercase;margin:18px 0 4px}
 .watch-profile{border-top:1px solid var(--rule2);padding:16px 0 10px;margin-top:14px;
@@ -1709,11 +1727,17 @@ text-transform:uppercase;margin-right:8px}
 .update-card p{font-size:12.5px;color:var(--ink2);margin-top:4px;max-width:76ch}
 .squadmap{margin:4px 0 10px;max-width:640px}
 .sq-row{display:flex;align-items:center;gap:14px;padding:7px 0;border-bottom:1px solid var(--rule)}
+.sq-compact .sq-row{padding:3px 0}
+.sq-compact .unit{height:15px}
+.sq-compact .sq-legend{margin-top:5px}
+.sheet.opponent .squadmap{margin-bottom:6px}
 .sq-row:last-of-type{border-bottom:none}
 .sq-label{flex:none;width:118px;font-size:13px}
 .sq-label em{display:block;font-style:normal;font-size:10.5px;color:var(--faint)}
 .sq-units{flex:1;display:flex;align-items:center;gap:3px;flex-wrap:wrap}
-.unit{display:inline-block;width:13px;height:19px;border-radius:2px}
+.unit{display:inline-block;width:13px;height:19px;border-radius:2px;position:relative}
+.unit.intl::after{content:"";position:absolute;left:50%;bottom:-5px;width:3px;height:3px;
+margin-left:-1.5px;border-radius:50%;background:var(--gold)}
 .u-fr{background:#dde7f0;box-shadow:inset 0 0 0 1px #b5cadd}
 .u-so{background:#b5cadd}
 .u-jr{background:#6d94b8}
@@ -1743,7 +1767,7 @@ body{background:#fff}
 a{color:var(--ink);text-decoration:none}
 p{orphans:3;widows:3}
 table,.keep,.story,.watch-profile{break-inside:avoid}
-.sheet-foot{margin-top:16px;break-before:avoid}
+.sheet-foot{margin-top:10px;break-before:avoid}
 .findings li{margin:6px 0}
 .bottomline{margin-bottom:14px}
 .keep{display:table;width:100%}
