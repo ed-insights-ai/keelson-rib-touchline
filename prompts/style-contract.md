@@ -159,7 +159,7 @@ limits what the analysis is allowed to conclude.
 
 ## Length
 
-2,800–3,200 words of prose for the whole report. Each page is a complete
+2,400–2,900 words of prose for the whole report. Each page is a complete
 story with one conclusion, stated once. Repetition, not facts, is what
 makes a report long: if a point appears in the executive brief, it does
 not reappear as a takeaway elsewhere.
@@ -181,14 +181,14 @@ included, what the analysis system can or cannot see, how sections relate
 to each other, or who the intended reader is. Lines like "that is why
 they belong in this report" or "this page is about the battle" are
 editorial scaffolding — delete them and let the content stand. Provenance
-lives in exactly two places: the cover's data line and the sources page.
+lives in exactly two places: the cover's data line and the technical appendix.
 
 ## Captions
 
 A visual's caption exists only for a legend the reader needs or a caveat
 that changes interpretation (coverage, sample, carried-forward data).
 Pure provenance ("observed, computed from published rosters") is never a
-caption: the evidence chips and the sources page already carry it.
+caption: the evidence chips and the cover legend already carry it.
 
 ## Punctuation and cadence
 
@@ -238,26 +238,31 @@ caption: the evidence chips and the sources page already carry it.
 
 ## Structure
 
-Ten to twelve finished US Letter pages. Prioritization is the product:
+Page budgets are hard print boundaries. Prioritization is the product:
 fewer, stronger items beat coverage.
 
-1. Cover: competition, season, focus programme, "prepared" date, data
-   provenance line (seasons held, collection date).
-2. Executive brief: bottom line, 3-4 split findings, at most 3 decisions,
-   preseason priorities.
-3. The focus programme from outside — what the public record shows;
-   availability signals, usage shifts, offseason ledger (max 3
-   consolidated signals, footnoted sources).
-4. Conference landscape and where the focus side gains ground — one page.
-5. Preseason validation questions + the schedule as a planning matrix
-   (turnaround, venue, opponent continuity, priority — not history).
-6. Priority opponents as half-page cards, two per page: identity, roster
-   change, key threat, vulnerability, implication.
-7. Rest of the conference compact + watchlist (one line per monitoring
-   candidate).
-8. Two player dossiers.
-9. Sources, definitions, evidence labels. The collection file ledger goes
-   to a separate technical appendix, not the main report.
+1. Cover: competition, season, focus programme, headline, "prepared"
+   date, data provenance line, and the evidence-label legend.
+2. Executive brief — exactly two pages. Page one: bottom line (≤70
+   words), season indicators, 3 split findings. Page two: at most 3
+   decisions, then the view from outside — the published numbers,
+   goal-timing chart, overview (≤110 words), verified news, offseason
+   ledger (max 3 consolidated signals, footnoted sources).
+3. Roster decisions and preseason scorecard — at most two pages: squad
+   map, line-by-line read, availability and usage signals, priorities,
+   scorecard.
+4. Conference landscape and where the focus side gains ground — one
+   page: standings table, gap chart, prose ≤100 words.
+5. Opponent cards, one per sheet at about three-quarters of a page:
+   identity, roster change, key threat, potential opening, implication,
+   at most 2 news items, head-to-head strip. Benchmark tier first.
+6. Watchlist — one sheet per opponent: exactly two half-page player
+   profiles (held career line, why watch ≤90 words, what preseason
+   verifies). No focus-side entries, no separate dossier section.
+
+There is no schedule sheet and no sources page. The collection file
+ledger lives in the technical appendix; definitions travel with the
+evidence chips and the cover legend.
 
 ## Look
 

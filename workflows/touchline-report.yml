@@ -273,15 +273,20 @@ nodes:
           An undated source cannot date a claim.
 
       Write data/reports/narrative-$inputs.season-$inputs.gender-$inputs.focus.json
-      conforming to the touchline.report-narrative/3 contract documented at
+      conforming to the touchline.report-narrative/4 contract documented at
       the top of <pipeline>/src/report.py (read it). Requirements:
       - THE STRUCTURE IS A TOOLKIT, NOT A TEMPLATE. Which decisions get
-        made, which players get dossiers, which opponents land in which
-        tier, and which position groups get attention all come from THIS
-        team's digest and findings at this moment — never from a prior
+        made, which players get watchlist profiles, which opponents land in
+        which tier, and which position groups get attention all come from
+        THIS team's digest and findings at this moment — never from a prior
         report's topics. Do not assume any fixed decision (a goalkeeper
         battle, a scoring gap) exists; find what the data says and write
         that.
+      - PAGE BUDGETS are hard print boundaries the renderer cannot fix for
+        you: bottom_line at most 70 words; focus.overview at most 110
+        words; landscape at most 100 words; each opponent news array at
+        most 2 items; each watchlist "why" at most 90 words. Prose past a
+        budget spills onto a broken page.
       - exec: a bottom_line paragraph; EXACTLY 3 findings, each split into
         evidence (the fact), meaning (the interpretation), and implication
         (what the staff does with it) — never blend fact and judgment in
@@ -313,7 +318,8 @@ nodes:
         and write shares as people ("the keepers who played 85% of the
         minutes are gone"), never as portfolios.
       - one landscape prose section covering BOTH conference positioning
-        and where the focus side gains ground (they share a page)
+        and where the focus side gains ground; it shares one page with the
+        standings table and the gap chart, hence the 100-word budget
       - focus overview/news/offseason. The offseason ledger holds AT MOST
         3 consolidated signals — one item per player with every supporting
         citation in its sources array, never one item per source
@@ -328,16 +334,20 @@ nodes:
         opponent's roster_shape the same way as the focus side's. If a
         field has nothing verified, leave it empty — the renderer says
         "Nothing verified to report."
-      - watchlist: one-line monitoring notes drawn from DIFFERENT
-        evidence classes where the record offers them (a verified
-        offseason move, a small-sample riser, an availability or usage
-        signal, a top returner) — never five entries of one class; vary
-        the sentence scaffold across notes; a player with a dossier
-        never repeats on the watchlist; dossier subjects are wherever the
-        findings point (a position battle page is a dossier framed on the
-        battle, not the individual); preseason questions become the
-        scorecard — write them as testable checks
-      - LENGTH: 2,800-3,200 words of prose across the whole narrative.
+      - watchlist: EXACTLY 2 players per rostered opponent, none from the
+        focus side (its players live in the roster section). Each entry is
+        a half-page profile: player, programme (slug), label, why (at most
+        90 words: what the held record or verified offseason says), verify
+        (one line: what preseason play confirms or kills the signal), and
+        role/class when known. Pick each pair from DIFFERENT evidence
+        classes where the record offers them (a verified move, a
+        small-sample riser, an availability or usage signal, a top
+        returner) — never two of one class, and vary the sentence scaffold
+        across profiles. An opponent whose roster is unpublished (update
+        tier) gets no profiles. There is no dossier section — the
+        watchlist profiles carry the per-player depth; preseason questions
+        become the scorecard — write them as testable checks
+      - LENGTH: 2,400-2,900 words of prose across the whole narrative.
         Apply the insight filter in the style contract; state each
         conclusion once and stop. Repetition, not facts, is what makes a
         report long.
@@ -395,8 +405,8 @@ nodes:
         exit 1
       fi
       SCHEMA=$(jq -r '.schema // empty' "$F" 2>/dev/null)
-      if [ "$SCHEMA" != "touchline.report-narrative/3" ]; then
-        printf 'ALARM: %s schema is %s, expected touchline.report-narrative/3.\n' "$F" "${SCHEMA:-unparseable}"
+      if [ "$SCHEMA" != "touchline.report-narrative/4" ]; then
+        printf 'ALARM: %s schema is %s, expected touchline.report-narrative/4.\n' "$F" "${SCHEMA:-unparseable}"
         exit 1
       fi
       FINDINGS=$(jq '.exec.findings | length' "$F")
@@ -424,8 +434,28 @@ nodes:
         printf 'ALARM: narrative prose names report machinery %s time(s) ("digest"/"roster shape"/"verified pool") — banned by the style contract. Rewrite those sentences in plain language.\n' "$MACHINERY"
         exit 1
       fi
-      printf 'narrative OK: %s findings, %s decisions, %s programme sections, ledger %s\n' \
-        "$FINDINGS" "$DECISIONS" "$PROGS" "$LEDGER"
+      BOTTOM_W=$(jq -r '.exec.bottom_line // ""' "$F" | wc -w | tr -d ' ')
+      LAND_W=$(jq -r '.landscape // ""' "$F" | wc -w | tr -d ' ')
+      OVER_W=$(jq -r '.focus.overview // ""' "$F" | wc -w | tr -d ' ')
+      if [ "$BOTTOM_W" -gt 80 ] || [ "$LAND_W" -gt 115 ] || [ "$OVER_W" -gt 125 ]; then
+        printf 'ALARM: page budgets exceeded (bottom_line %sw max 80, landscape %sw max 115, overview %sw max 125) — prose past budget breaks the print layout.\n' \
+          "$BOTTOM_W" "$LAND_W" "$OVER_W"
+        exit 1
+      fi
+      if jq -e '(.dossiers // []) | length > 0' "$F" >/dev/null; then
+        printf 'ALARM: narrative/4 has no dossier section — per-player depth lives in the watchlist profiles.\n'
+        exit 1
+      fi
+      WATCH_BAD=$(jq -r --arg focus "$KEELSON_INPUTS_focus" '
+        [.watchlist // [] | group_by(.programme)[]
+         | select((length != 2) or (.[0].programme == $focus))
+         | .[0].programme] | join(", ")' "$F")
+      if [ -n "$WATCH_BAD" ]; then
+        printf 'ALARM: watchlist must hold exactly 2 profiles per opponent, none for the focus side. Off-contract programmes: %s\n' "$WATCH_BAD"
+        exit 1
+      fi
+      printf 'narrative OK: %s findings, %s decisions, %s programme sections, ledger %s, watchlist %s\n' \
+        "$FINDINGS" "$DECISIONS" "$PROGS" "$LEDGER" "$(jq '[.watchlist // []] | first | length' "$F")"
 
   - id: render
     depends_on: [validate-narrative]
