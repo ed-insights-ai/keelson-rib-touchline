@@ -90,6 +90,19 @@ high in both directions. This is a structural recruiting pattern to note
 when sizing a roster — never a judgment about a named individual, whose
 record and film speak for themselves.
 
+The same lens extends to every incoming player: class year is the
+weakest experience signal, and verified pedigree calibrates it. As a
+rough ladder — pro or federation academies and senior international
+club football sit at the top; MLS Next and ECNL club backgrounds mark a
+freshman proven at a higher level than standard high-school play, often
+comparable to a JUCO transfer; JUCO and lower-division college transfers
+carry real minutes but against variable competition. A freshman from an
+MLS Next academy and a freshman from an ordinary high school are not the
+same "unproven newcomer", and a JUCO All-American is not automatically
+more ready than either. Use the ladder to set expectations when the
+research holds verified pedigree; where it holds nothing, say the
+newcomer is unscouted rather than guessing a tier.
+
 ## Major news travels to every report
 
 A verified head-coach change, intra-conference transfer, or decorated

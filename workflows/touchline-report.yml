@@ -276,8 +276,14 @@ nodes:
         published hometowns. Where the share is notable — especially in a
         newcomer class — say so and read experience accordingly: D2
         eligibility rules mean internationals often arrive older than
-        domestic freshmen, so class year understates experience. A
-        structural note about the squad, never a verdict on a named
+        domestic freshmen, so class year understates experience. The same
+        goes for verified pedigree in the research: MLS Next / ECNL /
+        academy backgrounds mark a freshman proven above high-school
+        level (roughly JUCO-transfer equivalent); JUCO and
+        lower-division transfers are real minutes against variable
+        competition. Use the ladder to calibrate newcomer expectations
+        where pedigree is verified; otherwise the newcomer is unscouted.
+        A structural note about the squad, never a verdict on a named
         player.
       - focus.roster: an ARRAY of {title, text} rows, one per line of the
         team (In goal, Back line, Midfield, Front line, Squad age — use
