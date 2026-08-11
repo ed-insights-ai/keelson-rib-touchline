@@ -1030,10 +1030,13 @@ def opponent_half_card(
 
     focus_name = names.get(digest["focus"], digest["focus"])
     tier_word = esc(str(story.get("tier", "priority")).capitalize())
-    benchmark = story.get("tier") == "benchmark"
-    # The benchmark card carries the full squad map, which already shows the
-    # return/new counts and minute shares — the bracketed line would repeat it.
-    roster_tail = "" if benchmark else f'<span class="dim"> [{esc(roster_line)}]</span>'
+    # Every full card carries the squad map, which already shows the
+    # return/new counts and minute shares — the bracketed line would repeat
+    # it. Condensed cards keep the one-line summary instead.
+    squad_block = shape_line(section) if condensed else shape_strip(section, compact=True)
+    roster_tail = (
+        f'<span class="dim"> [{esc(roster_line)}]</span>' if condensed or not squad_block else ""
+    )
     return f"""
 <div class="half-opp{" condensed" if condensed else ""}">
   <header class="opp-head">
@@ -1047,7 +1050,7 @@ def opponent_half_card(
   </header>
   {field("Bench", esc(story.get("coach", ""))) if story.get("coach") else ""}
   {field("Roster change", esc(story.get("roster_note", "")) + roster_tail)}
-  {shape_strip(section, compact=True) if benchmark else shape_line(section)}
+  {squad_block}
   {field("Key threat", top_line + esc(story.get("threat", "")))}
   {field("Potential opening", esc(story.get("vulnerability", "")), "riskfield")}
   {field(f"Implication for {esc(focus_name)}", esc(story.get("implication", "")), "goldfield")}
