@@ -1152,15 +1152,16 @@ def exec_sheet(digest: dict, narrative: dict) -> str:
     decisions = (exec_block.get("decisions") or [])[:3]
     bottom = exec_block.get("bottom_line")
     finding_rows = "".join(
-        f'<li><span class="ev">{esc(item.get("evidence", ""))}</span> '
-        f"{label_chip(item.get('label'))}{confidence_dot(item.get('confidence'))}"
-        f'<span class="fm"><b>Meaning</b> {esc(item.get("meaning", ""))}</span>'
+        f'<li><div class="ev-row"><span class="ev">{esc(item.get("evidence", ""))}</span>'
+        f'<span class="ev-tags">{label_chip(item.get("label"))}{confidence_dot(item.get("confidence"))}</span></div>'
+        f'<div class="f-grid"><span class="f-label">Meaning</span>'
+        f'<span>{esc(item.get("meaning", ""))}</span>'
         + (
-            f'<span class="fm"><b>For the staff</b> {esc(item["implication"])}</span>'
+            f'<span class="f-label">For the staff</span><span>{esc(item["implication"])}</span>'
             if item.get("implication")
             else ""
         )
-        + "</li>"
+        + "</div></li>"
         for item in findings
     ) or f'<li class="pending">{PLACEHOLDER}</li>'
     decision_rows = "".join(
@@ -1515,11 +1516,15 @@ letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);margin-top:6px}
 padding:12px 16px;margin:4px 0 16px}
 .bottomline .viz-title{margin:0 0 4px;color:var(--gold)}
 .bottomline p{font-size:15px;line-height:1.5;color:var(--ink);max-width:68ch}
-.findings.split li{margin:13px 0}
-.findings.split .ev{font-weight:600}
-.findings.split .fm{display:block;font-size:12.5px;color:var(--ink2);margin-top:3px}
-.findings.split .fm b{font:700 9.5px/1 "Avenir Next Condensed","Arial Narrow",sans-serif;
-letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:5px}
+.findings.split li{margin:0;padding:15px 0;border-bottom:1px solid var(--rule)}
+.findings.split li:last-child{border-bottom:none}
+.ev-row{display:flex;gap:16px;align-items:baseline;justify-content:space-between}
+.findings.split .ev{font-weight:600;font-size:14px;max-width:64ch}
+.ev-tags{white-space:nowrap;flex:none}
+.f-grid{display:grid;grid-template-columns:92px minmax(0,1fr);gap:7px 14px;margin-top:9px}
+.f-label{font:700 9.5px/1.7 "Avenir Next Condensed","Arial Narrow",sans-serif;
+letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.f-grid > span:not(.f-label){font-size:13px;line-height:1.55;color:var(--ink2);max-width:68ch}
 .exec-cols{display:grid;grid-template-columns:1.4fr 1fr;gap:26px}
 @media(max-width:700px){.exec-cols{grid-template-columns:1fr}}
 .decision{display:flex;gap:12px;margin:12px 0}
