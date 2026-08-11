@@ -98,6 +98,15 @@ watchlist or appendix; below 5 → cut. Every major block must be able to
 populate Evidence, Meaning, Action, and Caveat — if there is no Action a
 coach could take, it does not belong in the coach-facing report.
 
+## No self-reference (absolute)
+
+The report never talks about itself. It does not explain why content was
+included, what the analysis system can or cannot see, how sections relate
+to each other, or who the intended reader is. Lines like "that is why
+they belong in this report" or "this page is about the battle" are
+editorial scaffolding — delete them and let the content stand. Provenance
+lives in exactly two places: the cover's data line and the sources page.
+
 ## Punctuation and cadence
 
 - **The em-dash is a once-per-paragraph tool at most**, used only where a
@@ -172,10 +181,12 @@ fewer, stronger items beat coverage.
 - Professional sports broadcast, not office memo: condensed display type,
   tabular numerals, disciplined color. It should feel like a team's own
   scouting department produced it.
-- Cohesive with the Touchline board: Avenir Next Condensed display over a
-  system text face; the board's palette families (ink/muted/faint text,
-  one accent, semantic green/red for W/L) on a committed dark or light
-  ground.
+- Print-neutral palette, always: near-black ink on white paper, one
+  restrained accent for structure, semantic green/red for W/L, muted rose
+  for risk. Never a school's colors — the report is independent analysis
+  and school-agnostic by design, and the same palette must serve every
+  programme and conference without retheming. Avenir Next Condensed
+  display over a system text face.
 - Every visual is drawn from digest values only: W/D/L form strips,
   goals-by-minute band bars, returning-share bars, head-to-head timelines.
   Inline SVG, no chart libraries, no external assets.

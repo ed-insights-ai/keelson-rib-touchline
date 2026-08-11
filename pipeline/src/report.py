@@ -1320,8 +1320,8 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
 
     sheets.append(f"""<section class="sheet">
   <h2 class="section-head">{esc(focus_name)} — the view from outside</h2>
-  <p class="section-sub">What the public record shows about {esc(focus_name)}: the same numbers
-  and patterns every opposing staff can read.</p>
+  <p class="section-sub">The numbers and patterns an opposing staff preparing for
+  {esc(focus_name)} will read.</p>
   {stat_grid(focus_last)}
   <div class="two-col">
     <div>{minute_chart(focus_last.get("patterns"))}</div>
@@ -1334,8 +1334,8 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
 
     sheets.append(f"""<section class="sheet">
   <h2 class="section-head">{esc(focus_name)} — roster decisions and preseason scorecard</h2>
-  <p class="section-sub">The squad as published, line by line, joined to last season's minutes.
-  The reads below tie last year's problems to this year's makeup.</p>
+  <p class="section-sub">The squad as published, line by line, joined to last season's
+  minutes.</p>
   {shape_strip(focus)}
   <div class="story">{prose(focus_story.get("roster"))}</div>
   {availability_block(focus_last)}
@@ -1407,8 +1407,7 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
 
     sheets.append(f"""<section class="sheet">
   <h2 class="section-head">Watchlist — the conference and {esc(focus_name)}</h2>
-  <p class="section-sub">Players whose held record or verified offseason deserves tracking.
-  One line each; the samples do not support more.</p>
+  <p class="section-sub">Players whose held record or verified offseason deserves tracking.</p>
   {watchlist_table(narrative.get("watchlist"))}
 </section>""")
 
@@ -1451,11 +1450,11 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
 
 CSS = """
 :root{
---paper:#efeadf;--sheet:#fffdf8;--ink:#211c12;--ink2:#453e2f;
---muted:#6e6759;--faint:#99917f;--rule:#e5dfd0;--rule2:#cdc4ab;
---gold:#8a6d24;--gold-fill:#b4975a;--gold-wash:#f4eeda;
---rose:#a03a4e;--rose-wash:#f6e9ec;--bench:#8d8779;
---win:#2e7d4f;--loss:#a03a4e;--draw:#9a7b23;
+--paper:#ececea;--sheet:#ffffff;--ink:#1c1c1c;--ink2:#3d3d3d;
+--muted:#686868;--faint:#979792;--rule:#e4e4e0;--rule2:#c9c9c3;
+--gold:#2f5d8a;--gold-fill:#6d94b8;--gold-wash:#eef3f8;
+--rose:#a03a4e;--rose-wash:#f6e9ec;--bench:#8b8b85;
+--win:#2e7d4f;--loss:#a03a4e;--draw:#8a7a2a;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--paper);color:var(--ink);
@@ -1609,7 +1608,7 @@ letter-spacing:.12em;fill:var(--faint)}
 letter-spacing:.08em;fill:var(--muted);text-anchor:middle}
 .band-label{font-size:9.5px;fill:var(--faint);text-anchor:middle}
 .bar-for{fill:var(--gold-fill)}
-.bar-against{fill:#c4677a}
+.bar-against{fill:#c06a7c}
 .bar-num{font-size:10px;fill:var(--ink2);text-anchor:middle}
 
 .db-label{font-size:11.5px;fill:var(--ink2)}
