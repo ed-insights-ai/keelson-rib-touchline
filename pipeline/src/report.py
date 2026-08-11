@@ -307,7 +307,13 @@ def minute_chart(patterns: dict | None) -> str:
 
 
 def dumbbell_chart(digest: dict) -> str:
-    """Focus vs conference median on observed per-match rates."""
+    """Focus vs conference median, one row per observed per-match rate.
+
+    Each row is scaled to its own maximum — units differ between rows, so
+    only the within-row comparison means anything.  The focus dot turns
+    rose when it sits on the wrong side of the median for that metric, and
+    the values live in fixed columns so labels never collide.
+    """
     focus_rates = _programme_rates(digest["programmes"][digest["focus"]])
     if not focus_rates:
         return ""
@@ -317,49 +323,59 @@ def dumbbell_chart(digest: dict) -> str:
         if (rates := _programme_rates(section)) is not None
     ]
     metrics = (
-        ("shots_for", "Shots taken /match", "higher is better"),
-        ("shots_against", "Shots faced /match", "lower is better"),
-        ("corners_for", "Corners won /match", "higher is better"),
-        ("corners_against", "Corners conceded /match", "lower is better"),
-        ("second_half_ga_pct", "Share of GA after halftime, %", "lower is better"),
-        ("late_ga_pct", "Share of GA from 75′ on, %", "lower is better"),
+        ("shots_for", "Shots taken /match", "higher"),
+        ("shots_against", "Shots faced /match", "lower"),
+        ("corners_for", "Corners won /match", "higher"),
+        ("corners_against", "Corners conceded /match", "lower"),
+        ("second_half_ga_pct", "Share of GA after halftime, %", "lower"),
+        ("late_ga_pct", "Share of GA from 75′ on, %", "lower"),
     )
     rows = []
-    for key, label, direction in metrics:
+    for key, label, better in metrics:
         own = focus_rates.get(key)
         pool = [rates[key] for rates in all_rates if rates.get(key) is not None]
         if own is None or not pool:
             continue
-        rows.append((label, direction, own, round(median(pool), 1)))
+        rows.append((label, better, own, round(median(pool), 1)))
     if not rows:
         return ""
 
-    width, row_h, left = 660, 34, 232
-    span = width - left - 60
-    peak = max(max(own, med) for _, _, own, med in rows) or 1
+    width, row_h, left = 660, 40, 208
+    span = 330
+    own_col, med_col = width - 64, width - 8
     parts = [
-        f'<svg viewBox="0 0 {width} {len(rows) * row_h + 30}" role="img" '
+        f'<svg viewBox="0 0 {width} {len(rows) * row_h + 26}" role="img" '
         f'aria-label="Focus programme versus conference median on observed rates">'
     ]
-    for index, (label, direction, own, med) in enumerate(rows):
-        y = index * row_h + 22
-        x_own = left + own / peak * span
-        x_med = left + med / peak * span
+    parts.append(
+        f'<text x="{own_col}" y="12" class="db-colhead" text-anchor="end">'
+        f"{esc(digest['programmes'][digest['focus']].get('abbr') or 'own')}</text>"
+        f'<text x="{med_col}" y="12" class="db-colhead" text-anchor="end">med</text>'
+    )
+    for index, (label, better, own, med) in enumerate(rows):
+        y = index * row_h + 34
+        row_max = max(own, med) * 1.15 or 1
+        x_own = left + own / row_max * span
+        x_med = left + med / row_max * span
+        worse = own < med if better == "higher" else own > med
+        own_cls = "db-own-bad" if worse else "db-own"
         parts.append(
             f'<text x="0" y="{y + 4}" class="db-label">{esc(label)}</text>'
             f'<line x1="{left}" y1="{y}" x2="{left + span}" y2="{y}" class="db-track"/>'
             f'<line x1="{x_med:.0f}" y1="{y}" x2="{x_own:.0f}" y2="{y}" class="db-join"/>'
             f'<circle cx="{x_med:.0f}" cy="{y}" r="5" class="db-med"/>'
-            f'<circle cx="{x_own:.0f}" cy="{y}" r="6" class="db-own"/>'
-            f'<text x="{x_own:.0f}" y="{y - 10}" class="db-num num">{own}</text>'
-            f'<text x="{x_med:.0f}" y="{y + 18}" class="db-mednum num">{med}</text>'
+            f'<circle cx="{x_own:.0f}" cy="{y}" r="6" class="{own_cls}"/>'
+            f'<text x="{own_col}" y="{y + 4}" class="db-num num {own_cls}-t" text-anchor="end">{own:g}</text>'
+            f'<text x="{med_col}" y="{y + 4}" class="db-mednum num" text-anchor="end">{med:g}</text>'
         )
     parts.append("</svg>")
+    focus_name = digest["programmes"][digest["focus"]].get("name", digest["focus"])
     legend = (
         '<div class="viz-note"><span class="dot dot-own"></span> '
-        f"{esc(digest['programmes'][digest['focus']].get('name', digest['focus']))}"
-        ' &nbsp; <span class="dot dot-med"></span> conference median · '
-        f"{digest.get('previous_season')} season</div>"
+        f"{esc(focus_name)} better than the median &nbsp; "
+        '<span class="dot dot-bad"></span> worse &nbsp; '
+        '<span class="dot dot-med"></span> conference median · '
+        f"{digest.get('previous_season')} season · each row on its own scale</div>"
     )
     return f'<div class="dumbbell">{"".join(parts)}{legend}</div>'
 
@@ -1640,10 +1656,16 @@ letter-spacing:.08em;fill:var(--muted);text-anchor:middle}
 .db-join{stroke:var(--rule2);stroke-width:2}
 .db-med{fill:var(--bench)}
 .db-own{fill:var(--gold-fill)}
-.db-num{font-size:10.5px;fill:var(--gold);text-anchor:middle;font-weight:700}
-.db-mednum{font-size:9.5px;fill:var(--bench);text-anchor:middle}
+.db-own-bad{fill:var(--rose)}
+.db-colhead{font:700 9px "Avenir Next Condensed","Arial Narrow",sans-serif;
+letter-spacing:.1em;text-transform:uppercase;fill:var(--faint)}
+.db-num{font-size:11.5px;font-weight:700}
+.db-own-t{fill:var(--gold)}
+.db-own-bad-t{fill:var(--rose)}
+.db-mednum{font-size:10.5px;fill:var(--bench)}
 .dot{display:inline-block;width:9px;height:9px;border-radius:50%;vertical-align:-1px}
 .dot-own{background:var(--gold-fill)}
+.dot-bad{background:var(--rose)}
 .dot-med{background:var(--bench)}
 
 .sc-pt{fill:var(--bench)}
