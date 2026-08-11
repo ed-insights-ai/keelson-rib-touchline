@@ -78,6 +78,16 @@ match: a selection, a role, a training investment. A fixture to circle, a
 checkpoint, or a mid-season milestone is not a decision — if it matters,
 it belongs in the opponent card or the schedule, once.
 
+## Major news travels to every report
+
+A verified head-coach change, intra-conference transfer, or decorated
+arrival appears in that programme's card in every report that covers it,
+not only the programme's own. The lens shifts with the reader: a new
+coach means the opponent's film library just expired and last season's
+patterns are provisional; a transfer moves a known threat between cards;
+an arrival changes a depth chart. Length cuts never remove this class of
+news.
+
 ## The toolkit rule (absolute)
 
 The page structure is a toolkit, not a template. Which decisions surface,
