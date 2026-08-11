@@ -1508,7 +1508,8 @@ CSS = """
 --rose:#a03a4e;--rose-wash:#f6e9ec;--bench:#8b8b85;
 --win:#2e7d4f;--loss:#a03a4e;--draw:#8a7a2a;
 }
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box;margin:0;padding:0;
+-webkit-print-color-adjust:exact;print-color-adjust:exact}
 body{background:var(--paper);color:var(--ink);
 font:14.5px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
 -webkit-font-smoothing:antialiased}
@@ -1804,10 +1805,16 @@ font-size:11.5px;color:var(--faint)}
 .def-grid .d-term{padding-top:1px}
 .def-grid > span:not(.f-label):not(.d-term){font-size:13px;color:var(--ink2)}
 
-@page{size:letter;margin:0.5in}
+@page{size:850px 1100px;margin:0}
 @media print{
 body{background:#fff}
-.sheet{box-shadow:none;margin:0;max-width:none;padding:0.1in 0.2in}
+.sheet{box-shadow:none;margin:0 auto;max-width:none;width:850px}
+.cover{min-height:996px}
 a{color:var(--ink);text-decoration:none}
+h2,.section-head,.viz-title,.sheet-eyebrow{break-after:avoid}
+.half-opp,.compact,.update-card,.decision-row,.ledger-row,.ev-row,
+.f-grid:not(.def-grid),.bottomline,.tiles,.fixture,.keeper,.sq-row,
+.squadmap,.turnover,.news,.gap,.share-row,.h2h,.takeaways,.dumbbell,
+.scatter,.foot-note{break-inside:avoid}
 }
 """

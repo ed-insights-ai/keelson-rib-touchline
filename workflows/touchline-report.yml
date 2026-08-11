@@ -442,6 +442,7 @@ nodes:
       - the render line: $render.output
       Name what was dropped, attested-but-uncaptured, or left unswept exactly
       as reported — never soften it: with no approval gate, this summary is
-      where a human learns what needs their eyes. The report file is data/reports/preseason-$inputs.season-$inputs.gender-$inputs.focus.html;
+      where a human learns what needs their eyes. The report is data/reports/preseason-$inputs.season-$inputs.gender-$inputs.focus.pdf
+      (same name .html alongside it);
       research artifacts live under data/reports/research/. Do not invent
       numbers: every figure must appear in the text above.
