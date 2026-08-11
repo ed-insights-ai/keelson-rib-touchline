@@ -16,7 +16,7 @@ answer; this file says *how it must read and look*. Tune the product here.
   transfer's published stat line) come verbatim from the cited page
   instead of the digest, and from nowhere else.
 - **If it isn't discoverable, it isn't in the report.** Attested-but-
-  uncaptured claims never appear in report content — not as fact, not as a
+  uncaptured claims never appear in report content: not as fact, not as a
   hedge, not in an uncertainty. They live only in the research artifacts,
   surfaced in the run summary for a human to capture or discard. An
   undated source cannot date a claim: a name-only squad listing with no
@@ -43,7 +43,7 @@ answer; this file says *how it must read and look*. Tune the product here.
   finding splits into evidence (the fact), meaning (the interpretation),
   and implication (what the staff does with it). "Roster returns 19
   players" is observed; "continuity makes them the better pick" is
-  judgment — the split keeps both honest.
+  judgment. The split keeps both honest.
 - **A gap is a signal, not a diagnosis.** Participation gaps and minutes
   collapses are labeled *Unverified signal — requires confirmation*, never
   "projected injury". The gap is observed; the cause is not.
@@ -73,22 +73,23 @@ answer; this file says *how it must read and look*. Tune the product here.
   back", "their goalkeeper returns after playing every minute". If a
   returning-share number cannot be attached to people in the sentence,
   rewrite the sentence. Tables may carry the raw percentages; prose
-  carries the people. Translating a table figure into people-language
-  ("74.3%" becoming "roughly three-quarters") is presentation, not new
-  arithmetic: it is allowed exactly when the precise figure sits in a
-  table or tile on the same page.
+  carries the people. Translating a table figure into people-language is
+  presentation, not new arithmetic, and is allowed exactly when the
+  precise figure sits in a table or tile on the same page. Prefer the
+  verbatim-count form, which needs no translation at all: "the scorers
+  of 34 of their 41 goals are gone".
 - **More diction swaps** (the left column is banned): "for the focus
   side" → "for <team name>"; "inflection date" → "first competitive
   checkpoint"; "shapes everything downstream" → "must be decided early";
   "tempo disruption" → what to actually do ("keep the match level", "slow
-  their restarts"); "planning surface" → "the schedule".
+  their restarts"); "planning surface" → "the fixture list".
 
 ## Decisions are preseason calls
 
 An executive "decision" is something the staff settles before the first
 match: a selection, a role, a training investment. A fixture to circle, a
 checkpoint, or a mid-season milestone is not a decision — if it matters,
-it belongs in the opponent card or the schedule, once.
+it belongs in the opponent card, once.
 
 ## The international lens (D2 recruiting)
 
@@ -111,9 +112,11 @@ weakest experience signal, and verified pedigree calibrates it. The
 ladder below is a scouting heuristic — a judgment about typical
 competition level, not an established equivalence — and claims built on
 it carry the judgment label. This is the canonical ladder; other files
-reference it rather than restating it. The rungs: pro, federation, and
-USL academies alongside senior international club football sit at the
-top; MLS Next and ECNL club backgrounds mark a freshman proven at a
+reference it rather than restating it. The rungs: pro and federation
+academies alongside senior international club football sit at the top,
+while USL academy programmes vary too widely to place as a group, so
+the specific programme decides the rung; MLS Next and ECNL club
+backgrounds mark a freshman proven at a
 higher level than standard high-school play, often comparable to a JUCO
 transfer; JUCO, NAIA, and lower-division college transfers carry real
 minutes but against variable competition. A freshman from an
@@ -131,7 +134,11 @@ not only the programme's own. The lens shifts with the reader: a new
 coach means the opponent's film library just expired and last season's
 patterns are provisional; a transfer moves a known threat between cards;
 an arrival changes a depth chart. Length cuts never remove this class of
-news, and it bypasses the insight filter — it is never scored out.
+news, and it bypasses the insight filter — it is never scored out. The
+card's two-item news cap applies to ordinary news only: when this class
+alone exceeds two, every item still runs and the card grows, ordered
+coach change first, then intra-conference transfers, then decorated
+arrivals.
 
 ## The generic-decision test
 
@@ -142,7 +149,7 @@ to no one else: not "find a second scorer" but "replace Ovelar's 15
 goals" for one team and "decide who plays off Grudis" for another. The
 same underlying concern, told through different facts, produces
 different decisions. Apply the same test to findings, priorities, and
-dossier verdicts.
+watchlist picks.
 
 ## Anti-formula rules
 
@@ -182,12 +189,17 @@ limits what the analysis is allowed to conclude.
 
 ## Length
 
-2,400–2,900 words of prose for the whole report — deliberately sparse,
-roughly 150–200 words of prose per page, because the tables, charts, and
-career lines carry the rest. Do not over-write to fill pages. Each page
-is a complete story with one conclusion, stated once. Repetition, not facts, is what
-makes a report long: if a point appears in the executive brief, it does
-not reappear as a takeaway elsewhere.
+Sparse by design: roughly 150–200 words of prose per rendered page,
+because the tables, charts, and career lines carry the rest. The page
+count scales with the conference — seven fixed pages (cover, brief,
+roster, landscape) plus one per carded opponent plus each watchlist
+sheet actually produced — and the word budget scales with it: a
+seven-team conference lands near 2,400–2,900 words, and a larger slate
+earns proportionally more rather than compressing. Do not over-write to
+fill pages. Each page is a complete story with one conclusion, stated
+once. Repetition, not facts, is what makes a report long: if a point
+appears in the executive brief, it does not reappear as a takeaway
+elsewhere.
 
 ## The insight filter
 
@@ -195,7 +207,9 @@ Before an insight enters the report, score it: focus-side relevance
 (0-2), changes a coaching decision (0-2), evidence strength (0-2),
 non-duplicative (0-1), current for this season (0-1), adequate sample
 (0-1), explainable in one sentence (0-1). Score 7-10 → main report; 5-6 →
-watchlist or appendix; below 5 → cut. Every major block must be able to
+a compact line on the card it concerns, or a watchlist profile when it
+is player-shaped; below 5 → cut. There is no overflow bin: an insight
+that earns no slot is dropped, not deferred to an appendix. Every major block must be able to
 populate Evidence, Meaning, Implication, and Caveat — if the implication
 names no action a coach could take, it does not belong in the coach-facing
 report. The major-news class (coach changes, intra-conference transfers,
@@ -281,11 +295,15 @@ fewer, stronger items beat coverage.
 
 1. Cover: competition, season, focus programme, headline, "prepared"
    date, data provenance line, and the evidence-label legend.
-2. Executive brief — exactly two pages. Page one: bottom line (≤70
+2. Executive brief — exactly three pages. Page one: bottom line (≤70
    words), season indicators, 3 split findings. Page two: at most 3
-   decisions, then the view from outside — the published numbers,
-   goal-timing chart, overview (≤110 words), verified news, offseason
-   ledger (max 3 consolidated signals, footnoted sources).
+   decisions, then the view from outside in numbers — the published
+   stat row, goal-timing chart, overview (≤110 words). Page three: the
+   view from outside in people and news — the returners an opposing
+   staff circles with their held lines, the keeper picture, verified
+   news, offseason ledger (max 3 consolidated signals, sources inline).
+   Page three is digest data and the news layer, never a restatement of
+   page two's numbers or the roster pages' prose.
 3. Roster decisions and preseason scorecard — at most two pages: squad
    map, line-by-line read, availability and usage signals, priorities,
    scorecard.
@@ -293,20 +311,28 @@ fewer, stronger items beat coverage.
    page: standings table, gap chart, prose ≤100 words.
 5. Opponent cards, one per sheet at about three-quarters of a page:
    identity, roster change, key threat, potential opening, implication,
-   at most 2 news items, head-to-head strip. Benchmark tier first.
-   The tiers: "benchmark" is a side that sets the standard the season is
-   measured against; "swing" is a winnable fixture likely to decide the
-   finish; "update" has too little published data to card — say what to
-   re-check and when. Tier counts are not fixed; assignment comes from
-   the findings, not from last season's table position alone, and the
-   tier words never appear in prose.
-6. Watchlist — one sheet per opponent: exactly two half-page player
-   profiles (held career line, why watch ≤90 words, what preseason
-   verifies). No focus-side entries, no separate dossier section.
+   at most 2 ordinary news items (major news is never cut — see above),
+   head-to-head strip. The tiers: "benchmark" is a side that sets the
+   standard the season is measured against; "swing" is a winnable
+   fixture likely to decide the finish; "update" has too little
+   published data for a full card and renders as a compact entry after
+   the carded tiers, saying what to re-check and when. Cards run
+   benchmark first, then swing, then the update entries. Tier counts
+   are not fixed; assignment comes from the findings, not from last
+   season's table position alone, and the tier words never appear in
+   prose.
+6. Watchlist — up to two half-page player profiles per opponent (held
+   career line, why watch ≤90 words, what preseason verifies), each
+   admitted by the insight filter, never by quota. An opponent whose
+   record supports no pick contributes none; each opponent with picks
+   gets its own sheet. No focus-side entries, no separate dossier
+   section.
 
-There is no schedule sheet and no sources page. The collection file
-ledger lives in the technical appendix; definitions travel with the
-evidence labels (rendered as chips) and the cover legend.
+There is no schedule sheet and no sources page. Citations are inline: a
+news or ledger claim carries its source and date on its own line,
+because there is no footnote target for anything else. The collection
+file ledger lives in the technical appendix; definitions travel with
+the evidence labels (rendered as chips) and the cover legend.
 
 ## Look
 

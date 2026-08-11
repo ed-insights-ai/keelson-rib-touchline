@@ -291,8 +291,11 @@ nodes:
       - PAGE BUDGETS are hard print boundaries the renderer cannot fix for
         you: bottom_line at most 70 words; focus.overview at most 110
         words; landscape at most 100 words; each opponent news array at
-        most 2 items; each watchlist "why" at most 90 words. Prose past a
-        budget spills onto a broken page.
+        most 2 ordinary items (verified major news — coach changes,
+        intra-conference transfers, decorated arrivals — is exempt and
+        never cut; when majors alone exceed two, list them all, coach
+        change first); each watchlist "why" at most 90 words. Prose past
+        a budget spills onto a broken page.
       - exec: a bottom_line paragraph; EXACTLY 3 findings, each split into
         evidence (the fact), meaning (the interpretation), and implication
         (what the staff does with it) — never blend fact and judgment in
@@ -340,23 +343,30 @@ nodes:
         opponent's roster_shape the same way as the focus side's. If a
         field has nothing verified, leave it empty — the renderer says
         "Nothing verified to report."
-      - watchlist: EXACTLY 2 players per rostered opponent, none from the
-        focus side (its players live in the roster section). Each entry is
-        a half-page profile: player, programme (slug), label, why (at most
-        90 words: what the held record or verified offseason says), verify
-        (one line: what preseason play confirms or kills the signal), and
-        role/class when known. Pick each pair from DIFFERENT evidence
-        classes where the record offers them (a verified move, a
-        small-sample riser, an availability or usage signal, a top
-        returner) — never two of one class, and vary the sentence scaffold
-        across profiles. An opponent whose roster is unpublished (update
-        tier) gets no profiles. There is no dossier section — the
-        watchlist profiles carry the per-player depth; preseason questions
-        become the scorecard — write them as testable checks
-      - LENGTH: 2,400-2,900 words of prose across the whole narrative.
-        Apply the insight filter in the style contract; state each
-        conclusion once and stop. Repetition, not facts, is what makes a
-        report long.
+      - watchlist: UP TO 2 players per opponent, each admitted by the
+        insight filter, never by quota; none from the focus side (its
+        players live in the roster section). An opponent whose record
+        supports no pick contributes none, and an unpublished roster
+        forces nothing. Each entry is a half-page profile: player,
+        programme (slug), label, why (at most 90 words: what the held
+        record or verified offseason says), verify (one line: what
+        preseason play confirms or kills the signal), and role/class
+        when known. Where the record offers different evidence classes
+        (a verified move, a small-sample riser, an availability or usage
+        signal, a top returner), draw the pair from two of them; where
+        it offers only one class, one strong pick beats a manufactured
+        pair. Vary the sentence scaffold across profiles. There is no
+        dossier section — the watchlist profiles carry the per-player
+        depth; preseason questions become the scorecard — write them as
+        testable checks
+      - LENGTH: roughly 150-200 words of prose per rendered page — seven
+        fixed pages (cover, three brief pages, two roster pages, the
+        landscape) plus one per carded opponent plus each watchlist
+        sheet you produce. A seven-team conference lands near
+        2,400-2,900 words; a larger slate earns proportionally more,
+        never compression. Apply the insight filter in the style
+        contract; state each conclusion once and stop. Repetition, not
+        facts, is what makes a report long.
       - credibility rules (absolute): records are written W-L-T; the
         digest's availability_flags and usage_shifts are unverified
         signals — observed gaps with unknown causes, never conclusions;
@@ -458,16 +468,14 @@ nodes:
         exit 1
       fi
       WATCH_BAD=$(jq -r --arg focus "$KEELSON_INPUTS_focus" '
-        ([.programmes | to_entries[]
-          | select(((.value.tier // "") == "benchmark") or ((.value.tier // "") == "swing"))
-          | .key | select(. != $focus)]) as $expected
+        ([.programmes | keys[]]) as $known
         | ((.watchlist // []) | group_by(.programme) | map({k: .[0].programme, n: length})) as $groups
-        | (($expected - ($groups | map(.k))) | map("missing " + .))
-          + ($groups | map(select(.k as $k | ($expected | index($k)) == null)) | map("forbidden " + .k))
-          + ($groups | map(select(.k as $k | (($expected | index($k)) != null) and (.n != 2))) | map(.k + " has " + (.n | tostring)))
+        | ($groups | map(select(.k == $focus)) | map("focus-side " + .k))
+          + ($groups | map(select(.k as $k | ($k != $focus) and (($known | index($k)) == null))) | map("unknown " + .k))
+          + ($groups | map(select(.n > 2)) | map(.k + " has " + (.n | tostring)))
         | join(", ")' "$F")
       if [ -n "$WATCH_BAD" ]; then
-        printf 'ALARM: watchlist must hold exactly 2 profiles for every benchmark/swing opponent and none for update-tier, unknown, or focus programmes. Violations: %s\n' "$WATCH_BAD"
+        printf 'ALARM: watchlist holds at most 2 profiles per opponent, none for the focus side, and only known programme slugs. Violations: %s\n' "$WATCH_BAD"
         exit 1
       fi
       printf 'narrative OK: %s findings, %s decisions, %s programme sections, ledger %s, watchlist %s\n' \

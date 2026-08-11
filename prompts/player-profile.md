@@ -26,10 +26,9 @@ techniques live in `research-protocol.md` and apply throughout.
    international players) federation records — crowd-sourced databases
    are lead generation only, per the protocol. Name the COMPETITION TIER
    of what you find and place it on the style contract's experience
-   ladder (pro/federation/USL academies and senior international club
-   football; MLS Next and ECNL; JUCO, NAIA, and lower NCAA divisions). A
-   club name without its tier is half a finding. Stop the trail when two
-   consecutive query variants add nothing new.
+   ladder — the contract is canonical, so read the rungs there rather
+   than from memory. A club name without its tier is half a finding.
+   The protocol's stopping rules decide when the trail ends.
 3. **Sweep adjacent competition.** Summer and offseason leagues from the
    protocol's gender-correct list, plus all-star or selection events and
    national-team / dual-citizenship angles. Work club-first from
