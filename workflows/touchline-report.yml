@@ -166,14 +166,20 @@ nodes:
            into this programme's findings as-is (same text, source, url,
            date), and let their unswept notes save you repeat work. Probed
            players still get a fresh focus-year check for anything newer.
-        4. Research the roster with THIS recipe, in order:
+        4. Research the roster with THIS recipe, in order. First read
+           <pipeline-parent>/prompts/research-protocol.md — its identity
+           binding, stopping rules, source precedence, and dating rules
+           govern every step below:
            a. CLUB-FIRST: from the hometowns, list plausible summer clubs
-              (USL League Two, NPSL, UPSL, The League for Clubs) near campus
-              and near player-cluster geographies; fetch each club's roster or
-              squad page; cross-reference names.
+              in the gender-correct competitions ($inputs.gender: men —
+              USL League Two, NPSL, UPSL; women — USL W League, WPSL,
+              UPSL) near campus and near player-cluster geographies;
+              fetch each club's roster or squad page; cross-reference
+              names.
            b. BARE-NAME: for each distinctive name, search the plain name
               alone — league award and social posts surface there when
-              structured queries miss.
+              structured queries miss. Every hit passes identity binding
+              before it becomes a finding.
            c. HONORS FOLLOW-UP: any membership hit triggers an immediate
               player+league honors search (all-conference, Team of the
               Season, Best XI, weekly awards).

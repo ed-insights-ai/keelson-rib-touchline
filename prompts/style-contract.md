@@ -110,11 +110,13 @@ The same lens extends to every incoming player: class year is the
 weakest experience signal, and verified pedigree calibrates it. The
 ladder below is a scouting heuristic — a judgment about typical
 competition level, not an established equivalence — and claims built on
-it carry the judgment label. As a rough ladder — pro or federation academies and senior international
-club football sit at the top; MLS Next and ECNL club backgrounds mark a
-freshman proven at a higher level than standard high-school play, often
-comparable to a JUCO transfer; JUCO and lower-division college transfers
-carry real minutes but against variable competition. A freshman from an
+it carry the judgment label. This is the canonical ladder; other files
+reference it rather than restating it. The rungs: pro, federation, and
+USL academies alongside senior international club football sit at the
+top; MLS Next and ECNL club backgrounds mark a freshman proven at a
+higher level than standard high-school play, often comparable to a JUCO
+transfer; JUCO, NAIA, and lower-division college transfers carry real
+minutes but against variable competition. A freshman from an
 MLS Next academy and a freshman from an ordinary high school are not the
 same "unproven newcomer", and a JUCO All-American is not automatically
 more ready than either. Use the ladder to set expectations when the
