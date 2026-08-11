@@ -419,9 +419,9 @@ nodes:
       DECISIONS=$(jq '.exec.decisions | length' "$F")
       PROGS=$(jq '.programmes | length' "$F")
       BOTTOM=$(jq -r '.exec.bottom_line // empty | length' "$F")
-      if [ "$FINDINGS" -lt 1 ] || [ "$FINDINGS" -gt 3 ] || [ "$DECISIONS" -lt 1 ] \
+      if [ "$FINDINGS" -ne 3 ] || [ "$DECISIONS" -lt 1 ] \
         || [ "$DECISIONS" -gt 3 ] || [ "$PROGS" -lt 1 ] || [ "${BOTTOM:-0}" -lt 1 ]; then
-        printf 'ALARM: narrative out of contract (findings=%s max 3, decisions=%s max 3, programmes=%s, bottom_line len=%s).\n' \
+        printf 'ALARM: narrative out of contract (findings=%s, exactly 3 required; decisions=%s max 3, programmes=%s, bottom_line len=%s).\n' \
           "$FINDINGS" "$DECISIONS" "$PROGS" "${BOTTOM:-0}"
         exit 1
       fi
@@ -432,7 +432,7 @@ nodes:
       fi
       SPLIT=$(jq '[.exec.findings[] | select((.evidence // "") == "" or (.meaning // "") == "")] | length' "$F")
       if [ "$SPLIT" -gt 0 ]; then
-        printf 'ALARM: %s finding(s) missing the evidence/meaning split required by narrative/3.\n' "$SPLIT"
+        printf 'ALARM: %s finding(s) missing the evidence/meaning split required by narrative/4.\n' "$SPLIT"
         exit 1
       fi
       MACHINERY=$(jq -r '.. | strings' "$F" | grep -ci 'digest\|roster shape\|roster_shape\|verified pool' || true)
@@ -443,9 +443,14 @@ nodes:
       BOTTOM_W=$(jq -r '.exec.bottom_line // ""' "$F" | wc -w | tr -d ' ')
       LAND_W=$(jq -r '.landscape // ""' "$F" | wc -w | tr -d ' ')
       OVER_W=$(jq -r '.focus.overview // ""' "$F" | wc -w | tr -d ' ')
-      if [ "$BOTTOM_W" -gt 80 ] || [ "$LAND_W" -gt 115 ] || [ "$OVER_W" -gt 125 ]; then
-        printf 'ALARM: page budgets exceeded (bottom_line %sw max 80, landscape %sw max 115, overview %sw max 125) — prose past budget breaks the print layout.\n' \
+      if [ "$BOTTOM_W" -gt 70 ] || [ "$LAND_W" -gt 100 ] || [ "$OVER_W" -gt 110 ]; then
+        printf 'ALARM: page budgets exceeded (bottom_line %sw max 70, landscape %sw max 100, overview %sw max 110) — prose past budget breaks the print layout.\n' \
           "$BOTTOM_W" "$LAND_W" "$OVER_W"
+        exit 1
+      fi
+      WHY_BAD=$(jq -r '[.watchlist // [] | .[] | select(((.why // "") | split(" ") | length) > 90) | .player] | join(", ")' "$F")
+      if [ -n "$WHY_BAD" ]; then
+        printf 'ALARM: watchlist "why" over the 90-word budget for: %s\n' "$WHY_BAD"
         exit 1
       fi
       if jq -e '(.dossiers // []) | length > 0' "$F" >/dev/null; then
@@ -453,11 +458,16 @@ nodes:
         exit 1
       fi
       WATCH_BAD=$(jq -r --arg focus "$KEELSON_INPUTS_focus" '
-        [.watchlist // [] | group_by(.programme)[]
-         | select((length != 2) or (.[0].programme == $focus))
-         | .[0].programme] | join(", ")' "$F")
+        ([.programmes | to_entries[]
+          | select(((.value.tier // "") == "benchmark") or ((.value.tier // "") == "swing"))
+          | .key | select(. != $focus)]) as $expected
+        | ((.watchlist // []) | group_by(.programme) | map({k: .[0].programme, n: length})) as $groups
+        | (($expected - ($groups | map(.k))) | map("missing " + .))
+          + ($groups | map(select(.k as $k | ($expected | index($k)) == null)) | map("forbidden " + .k))
+          + ($groups | map(select(.k as $k | (($expected | index($k)) != null) and (.n != 2))) | map(.k + " has " + (.n | tostring)))
+        | join(", ")' "$F")
       if [ -n "$WATCH_BAD" ]; then
-        printf 'ALARM: watchlist must hold exactly 2 profiles per opponent, none for the focus side. Off-contract programmes: %s\n' "$WATCH_BAD"
+        printf 'ALARM: watchlist must hold exactly 2 profiles for every benchmark/swing opponent and none for update-tier, unknown, or focus programmes. Violations: %s\n' "$WATCH_BAD"
         exit 1
       fi
       printf 'narrative OK: %s findings, %s decisions, %s programme sections, ledger %s, watchlist %s\n' \

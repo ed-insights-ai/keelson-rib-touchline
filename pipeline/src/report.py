@@ -73,7 +73,7 @@ pages (page one: bottom line, indicators, findings; page two: decisions and
 the view from outside); roster decisions at most two pages; the landscape
 one page; one opponent card per sheet at ~three-quarters of a page; one
 watchlist sheet per opponent. There is no schedule sheet, no dossier
-section, and no sources page — the label legend lives on brief page one and
+section, and no sources page — the label legend lives on the cover and
 the collection record in the technical appendix.
 
 ``signal`` marks an observed pattern whose cause is unverified (participation
@@ -862,12 +862,22 @@ def _programme_profile(digest: dict, slug: str, player: str) -> dict | None:
 
 
 def watch_profile(digest: dict, slug: str, entry: dict) -> str:
-    """A half-page watchlist profile: who the player is, the held career
-    line when the digest holds one, why the record says to watch them, and
-    what preseason should verify."""
+    """A half-page watchlist profile: who the player is, the held record
+    when the digest holds one (a career table for field players, a keeper
+    stat line for goalkeepers), why the record says to watch them, and
+    what preseason should verify.  A newcomer with no held line renders
+    without one — the absence is honest."""
     player = entry.get("player", "")
     profile = _programme_profile(digest, slug, player)
     career = career_table(profile) if profile else ""
+    if not career and profile and profile.get("save_pct") is not None:
+        pct = f"{profile['save_pct']:.3f}".lstrip("0")
+        career = (
+            f'<div class="compact-line num">{profile.get("minutes", 0)}′ · '
+            f"{profile.get('saves', 0)} saves · {profile.get('goals_against', 0)} GA · "
+            f"{pct} save pct · {profile.get('shutouts', 0)} CS "
+            f"<span class=\"dim\">(last season, in goal)</span></div>"
+        )
     why = entry.get("why") or entry.get("note") or ""
     verify = entry.get("verify") or ""
     meta_bits = [
@@ -1604,7 +1614,7 @@ letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
 .watch-team{font:700 24px/1.1 "Avenir Next Condensed","Arial Narrow",sans-serif;
 text-transform:uppercase;margin:18px 0 4px}
 .watch-profile{border-top:1px solid var(--rule2);padding:16px 0 10px;margin-top:14px;
-min-height:430px}
+min-height:380px}
 .watch-profile:first-of-type{margin-top:8px}
 .watch-head{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
 .watch-head b{font-size:17px}
