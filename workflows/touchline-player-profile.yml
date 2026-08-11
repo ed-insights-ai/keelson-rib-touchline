@@ -94,6 +94,8 @@ nodes:
   - id: research
     depends_on: [assemble]
     context: fresh
+    model: gpt-5.6-terra
+    effort: medium
     timeout: 900000
     prompt: |
       You are the research stage of a Touchline player profile. ONE player:
@@ -143,6 +145,7 @@ nodes:
   - id: verify
     depends_on: [research]
     context: fresh
+    model: gpt-5.6-luna
     timeout: 600000
     prompt: |
       You are the verification pass — the adversary of the research stage.
@@ -200,6 +203,7 @@ nodes:
 
   - id: summary
     depends_on: [merge]
+    model: gpt-5.6-luna
     timeout: 120000
     prompt: |
       A player profile build just finished for $inputs.player

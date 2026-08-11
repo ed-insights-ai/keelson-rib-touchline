@@ -11,10 +11,12 @@ requiresProject: false
 mutates_checkout: true
 # The research stage lives on the open web.
 webSearchMode: live
-# Loop iterations take the WORKFLOW-level model, so the deep pin must live
-# here for the research loop to get it. This workflow runs rarely and its
-# output faces a coach — every agent node earns the deep tier.
-model: deep
+# Loop iterations take the WORKFLOW-level model and effort, so the research
+# loop's tier lives here: terra balances the fetch-heavy research work.
+# NOTE: model *classes* (deep/balanced/fast) all map to `auto` on this
+# provider, which silently resolves to the smallest tier — pin literal ids.
+model: gpt-5.6-terra
+modelReasoningEffort: medium
 tags: [soccer, touchline, report, scouting]
 
 inputs:
@@ -195,7 +197,9 @@ nodes:
   - id: verify
     depends_on: [research]
     context: fresh
-    model: deep
+    # Mechanical refutation: fetch each URL, keep or drop. The small tier
+    # is enough.
+    model: gpt-5.6-luna
     timeout: 900000
     prompt: |
       You are the verification pass of the Touchline report workflow — the
@@ -225,8 +229,10 @@ nodes:
   - id: narrative
     depends_on: [verify]
     context: fresh
-    # The narrative is the report's judgment core — always the deep tier.
-    model: deep
+    # The narrative is the report's judgment core: the top tier, thinking
+    # hard. This node is where the report is actually written.
+    model: gpt-5.6-sol
+    effort: xhigh
     timeout: 900000
     prompt: |
       You are the narrative writer of the Touchline report workflow. The
@@ -372,6 +378,7 @@ nodes:
       capture_response: true
 
   - id: summary
+    model: gpt-5.6-luna
     depends_on: [approve]
     timeout: 120000
     prompt: |
