@@ -263,12 +263,12 @@ nodes:
         (what the staff does with it) — never blend fact and judgment in
         one sentence; at most 3 decisions; a short priorities list (it
         renders on the roster page, so do not repeat the decisions)
-      - focus.roster: read the digest's roster_shape and tie last season's
-        problems to this season's makeup, line by line — where the squad
-        is experienced, where it is new, which position groups return
-        their minutes and which reset. Ground every claim in the shape
-        numbers. This is where "the defense that conceded X returns only
-        Y% of its minutes" lives.
+      - focus.roster: an ARRAY of {title, text} rows, one per line of the
+        team (In goal, Back line, Midfield, Front line, Squad age — use
+        the digest's roster_shape groups), tying last season's problems
+        to this season's makeup. Ground every claim in the shape numbers
+        and write shares as people ("the keepers who played 85% of the
+        minutes are gone"), never as portfolios.
       - one landscape prose section covering BOTH conference positioning
         and where the focus side gains ground (they share a page)
       - focus overview/news/offseason. The offseason ledger holds AT MOST

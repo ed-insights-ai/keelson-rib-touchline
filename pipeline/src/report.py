@@ -36,10 +36,13 @@ Narrative contract (``touchline.report-narrative/3``)::
         "priorities": [str]   # renders on the roster-decisions page
       },
       "landscape": str,   # positioning AND where the focus side gains ground
-      "focus": {"overview": str, "roster": str, "takeaways": [str],
+      "focus": {"overview": str,
+                 "roster": [{"title": str, "text": str}],
                  "news": [NEWS], "offseason": [LEDGER]},
-                 # roster: reads the digest's roster_shape — ties last
-                 # season's problems to this season's makeup, line by line.
+                 # roster: reads the digest's roster_shape — one row per
+                 # line of the team (In goal, Back line, Midfield, Front
+                 # line, Squad age), tying last season's problems to this
+                 # season's makeup. A plain string renders as prose.
                  # offseason: at most 3 consolidated signals.
       "programmes": {slug: {"threat": str, "vulnerability": str,
                              "roster_note": str, "implication": str,
@@ -755,11 +758,20 @@ def shape_strip(section: dict) -> str:
     if not rows:
         return ""
     classes = shape.get("by_class") or {}
-    class_bits = " · ".join(
-        f"{classes[key]} {key}"
+    class_names = {"Fr": "Freshmen", "So": "Sophomores", "Jr": "Juniors", "Sr": "Seniors", "?": "Unlisted"}
+    total = sum(classes.values()) or 1
+    segments = "".join(
+        f'<span class="cseg cseg-{key.lower().replace("?", "x")}" style="flex:{classes[key]}">'
+        f'<b class="num">{classes[key]}</b> {esc(class_names[key])}</span>'
         for key in ("Fr", "So", "Jr", "Sr", "?")
         if classes.get(key)
-    ).replace("?", "unlisted")
+    )
+    class_bar = (
+        f'<div class="viz-title">Experience mix — {total} players</div>'
+        f'<div class="classbar">{segments}</div>'
+        if segments
+        else ""
+    )
     note = (
         "Observed · positions and class years as published on the roster; minutes-back "
         "joins last season's statistics by player."
@@ -770,9 +782,24 @@ def shape_strip(section: dict) -> str:
         '<table class="grid slim shape"><thead><tr><th>Line</th>'
         '<th class="num">Return</th><th class="num">New</th>'
         "<th>Minutes back</th></tr></thead><tbody>" + "".join(rows) + "</tbody></table>"
-        + (f'<div class="viz-note">Squad: {esc(class_bits)}</div>' if class_bits else "")
+        + class_bar
         + f'<div class="viz-note">{note}</div>'
     )
+
+
+def roster_read(value) -> str:
+    """The narrative's line-by-line roster read.  A list of {title, text}
+    renders as labeled rows; a plain string falls back to prose."""
+    if not value:
+        return f'<p class="pending">{PLACEHOLDER}</p>'
+    if isinstance(value, str):
+        return f'<div class="story">{prose(value)}</div>'
+    rows = "".join(
+        f'<span class="f-label">{esc(item.get("title", ""))}</span>'
+        f"<span>{esc(item.get('text', ''))}</span>"
+        for item in value
+    )
+    return f'<div class="f-grid roster-grid">{rows}</div>'
 
 
 def shape_line(section: dict) -> str:
@@ -1337,7 +1364,8 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
   <p class="section-sub">The squad as published, line by line, joined to last season's
   minutes.</p>
   {shape_strip(focus)}
-  <div class="story">{prose(focus_story.get("roster"))}</div>
+  <div class="viz-title big">The read, line by line</div>
+  {roster_read(focus_story.get("roster"))}
   {availability_block(focus_last)}
   {usage_block(focus)}
   {f'<div class="viz-title big">Preseason priorities</div><ul class="plain">{priorities}</ul>' if priorities else ""}
@@ -1717,6 +1745,17 @@ letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
 text-transform:uppercase;margin-right:8px}
 .update-card p{font-size:12.5px;color:var(--ink2);margin-top:4px;max-width:76ch}
 .grid.shape{max-width:520px}
+.classbar{display:flex;gap:2px;margin:2px 0 4px;max-width:520px}
+.cseg{padding:7px 0 6px;text-align:center;font-size:10.5px;min-width:0;
+overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.cseg b{font-size:13px;margin-right:3px}
+.cseg-fr{background:#dde7f0;color:var(--ink2)}
+.cseg-so{background:#b5cadd;color:var(--ink2)}
+.cseg-jr{background:#6d94b8;color:#fff}
+.cseg-sr{background:#2f5d8a;color:#fff}
+.cseg-x{background:var(--rule);color:var(--muted)}
+.roster-grid{margin:6px 0 14px;max-width:76ch}
+.roster-grid .f-label{padding-top:1px}
 .caveat{color:var(--draw);margin:10px 0;font-size:12.5px}
 .foot-note{margin-top:26px;border-top:1px solid var(--rule2);padding-top:12px;
 font-size:11.5px;color:var(--faint)}
