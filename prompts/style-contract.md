@@ -151,7 +151,11 @@ which position groups get attention all come from the current team's
 digest and verified findings at generation time. Never carry a previous
 report's topics forward: no report assumes a goalkeeper battle, a scoring
 gap, or any other specific storyline exists until the data for THIS team
-shows it.
+shows it. The freedom runs the other way too: when the findings support
+an angle no prior report has used — a new kind of decision, an unusual
+dossier subject, a watchlist built on something unexpected — take it.
+The toolkit shows how to lay out and communicate efficiently; it never
+limits what the analysis is allowed to conclude.
 
 ## Length
 
