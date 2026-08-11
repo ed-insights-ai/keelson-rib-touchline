@@ -71,6 +71,13 @@ answer; this file says *how it must read and look*. Tune the product here.
   "tempo disruption" → what to actually do ("keep the match level", "slow
   their restarts"); "planning surface" → "the schedule".
 
+## Decisions are preseason calls
+
+An executive "decision" is something the staff settles before the first
+match: a selection, a role, a training investment. A fixture to circle, a
+checkpoint, or a mid-season milestone is not a decision — if it matters,
+it belongs in the opponent card or the schedule, once.
+
 ## The toolkit rule (absolute)
 
 The page structure is a toolkit, not a template. Which decisions surface,

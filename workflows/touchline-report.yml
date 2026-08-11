@@ -261,8 +261,11 @@ nodes:
       - exec: a bottom_line paragraph; EXACTLY 3 findings, each split into
         evidence (the fact), meaning (the interpretation), and implication
         (what the staff does with it) — never blend fact and judgment in
-        one sentence; at most 3 decisions; a short priorities list (it
-        renders on the roster page, so do not repeat the decisions)
+        one sentence; at most 3 decisions — a decision is a call the
+        staff settles in preseason, before the first match; a fixture,
+        checkpoint, or anything on the season calendar is never a
+        decision; a short priorities list (it renders on the roster page,
+        so do not repeat the decisions)
       - focus.roster: an ARRAY of {title, text} rows, one per line of the
         team (In goal, Back line, Midfield, Front line, Squad age — use
         the digest's roster_shape groups), tying last season's problems
