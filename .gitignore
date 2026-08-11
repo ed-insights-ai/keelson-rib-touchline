@@ -12,5 +12,9 @@ coverage/
 .beads-credential-key
 .beads/
 __pycache__/
+
+# Local Keelson runtime plumbing and browser-session artifacts — never repo source.
+.keelson/
+.playwright-mcp/
 *.pyc
 .venv/
