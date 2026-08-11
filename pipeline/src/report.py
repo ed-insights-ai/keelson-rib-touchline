@@ -814,7 +814,7 @@ def keeper_line(last: dict | None, turnover: dict | None) -> str:
         if keeper.get("shutouts") is not None:
             bits.append(f"{keeper['shutouts']} CS")
         parts.append(
-            f'<span class="keeper"><b>{esc(name)}</b> <span class="num">({" · ".join(bits)})</span>{status}</span>'
+            f'<span class="keeper"><b>{esc(name)}</b>{status} <span class="num">({" · ".join(bits)})</span></span>'
         )
     return (
         '<div class="keepers"><div class="viz-title">In goal</div>'
@@ -1580,12 +1580,15 @@ text-transform:uppercase;letter-spacing:.02em}
 letter-spacing:.12em;text-transform:uppercase;color:var(--gold);
 border:1px solid var(--gold-fill);padding:5px 8px}
 
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(99px,1fr));gap:8px;margin:0 0 16px}
-.stat{background:var(--gold-wash);padding:9px 11px;border:1px solid var(--rule2)}
-.stat-label{display:block;font:700 9.5px/1.3 "Avenir Next Condensed","Arial Narrow",sans-serif;
-letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-.stat-val{display:block;font-size:19px;font-weight:700;margin-top:2px}
-.stat-sub{display:block;font-size:11px;color:var(--faint)}
+.stats{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:7px;margin:0 0 16px}
+@media(max-width:700px){.stats{grid-auto-flow:row;grid-template-columns:repeat(3,1fr)}}
+.stat{background:var(--gold-wash);padding:8px 9px;border:1px solid var(--rule2);min-width:0}
+.stat-label{display:block;font:700 9px/1.3 "Avenir Next Condensed","Arial Narrow",sans-serif;
+letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap;
+overflow:hidden;text-overflow:ellipsis}
+.stat-val{display:block;font-size:17px;font-weight:700;margin-top:2px;white-space:nowrap}
+.stat-sub{display:block;font-size:10.5px;color:var(--faint);white-space:nowrap;
+overflow:hidden;text-overflow:ellipsis}
 
 .two-col{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:20px;margin:2px 0 14px}
 @media(max-width:700px){.two-col{grid-template-columns:1fr}}
