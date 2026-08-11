@@ -100,6 +100,8 @@ def main() -> int:
     appendix.write_text(render_appendix(digest), encoding="utf-8")
     print(f"wrote {appendix}")
 
+    for html in (out, appendix):
+        html.with_suffix(".pdf").unlink(missing_ok=True)
     chrome = _chrome()
     if chrome is None:
         print("no Chrome/Chromium found — PDF skipped, HTML only", file=sys.stderr)
@@ -108,7 +110,10 @@ def main() -> int:
         try:
             print(f"wrote {_to_pdf(chrome, html)}")
         except (subprocess.SubprocessError, OSError) as exc:
-            print(f"PDF failed for {html.name}: {exc}", file=sys.stderr)
+            detail = ""
+            if isinstance(exc, subprocess.CalledProcessError) and exc.stderr:
+                detail = f"\n{exc.stderr.decode(errors='replace').strip()}"
+            print(f"PDF failed for {html.name}: {exc}{detail}", file=sys.stderr)
             return 3
     return 0
 
