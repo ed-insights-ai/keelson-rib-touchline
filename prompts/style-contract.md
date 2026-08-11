@@ -6,7 +6,7 @@ answer; this file says *how it must read and look*. Tune the product here.
 ## The figures rule (absolute)
 
 - Every number in the report comes from the digest
-  (`data/reports/digest-<season>-<gender>.json`), verbatim. A figure that is
+  (`data/scratch/digest-<season>-<gender>-<focus>.json`), verbatim. A figure that is
   not in the digest does not appear — no arithmetic beyond what the digest
   already computed, no estimates, no "roughly".
 - News-layer claims (coaching changes, arrivals, polls) carry a source and

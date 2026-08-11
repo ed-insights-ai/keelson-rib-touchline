@@ -6,7 +6,7 @@ description: |
   NOT for: whole-roster sweeps (touchline-report's research stage) or collecting season data (touchline-collect).
 
 requiresProject: false
-# Writes only per-player files (data/players/..., data/reports/research/
+# Writes only per-player files (data/players/..., data/research/
 # players/...), which are disjoint between runs — so profile runs can fan out
 # in PARALLEL against one data home. `shared` keeps them mutually exclusive
 # with a mutating run (a collect rewriting season files) without serializing
@@ -125,7 +125,7 @@ nodes:
       Write the findings file INSIDE THE DATA HOME — the absolute directory
       on the 'data home:' line of:
       $preflight.output
-      at <data-home>/data/reports/research/players/
+      at <data-home>/data/research/players/
       $inputs.programme-<player-key>.json (player-key: the lowercase
       hyphenated name). Reading the method contract takes you into the
       pipeline package directory — the findings file still goes under the
@@ -178,7 +178,7 @@ nodes:
         | tr '[:upper:]' '[:lower:]' \
         | iconv -f utf-8 -t ascii//TRANSLIT 2>/dev/null || printf '%s' "$KEELSON_INPUTS_player" | tr '[:upper:]' '[:lower:]')
       KEY=$(printf '%s' "$KEY" | sed 's/[^a-z0-9]\{1,\}/-/g; s/^-//; s/-$//')
-      F="data/reports/research/players/${KEELSON_INPUTS_programme}-${KEY}.json"
+      F="data/research/players/${KEELSON_INPUTS_programme}-${KEY}.json"
       if [ ! -f "$F" ]; then
         # Rescue a findings file an agent wrote relative to the rib repo
         # instead of the data home — the one misdirection prompts cannot

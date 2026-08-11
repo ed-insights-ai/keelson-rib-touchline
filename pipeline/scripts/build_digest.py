@@ -1,8 +1,11 @@
 """Build the deterministic scouting digest for one (season, gender) unit.
 
-Reads the data home's season files and writes ``data/reports/digest-<season>-
-<gender>.json`` — the only source of figures a generated scouting report may
-cite.  Run after a collect; this command never touches the network.
+Reads the data home's season files and writes ``data/scratch/digest-<season>-
+<gender>-<focus>.json`` — the only source of figures a generated scouting
+report may cite.  The digest is a regenerable intermediate, so it lives in
+the data home's scratch space, never beside the durable data or the
+delivered reports.  Run after a collect; this command never touches the
+network.
 """
 
 from __future__ import annotations
@@ -52,7 +55,7 @@ def main() -> int:
         print(str(exc), file=sys.stderr)
         return 2
 
-    out = root / "data" / "reports" / f"digest-{args.season}-{args.gender}-{args.focus}.json"
+    out = root / "data" / "scratch" / f"digest-{args.season}-{args.gender}-{args.focus}.json"
     _atomic_json(out, digest)
 
     sections = digest["programmes"]
