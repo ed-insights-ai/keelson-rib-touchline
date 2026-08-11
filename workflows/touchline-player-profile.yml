@@ -103,7 +103,10 @@ nodes:
 
       The pipeline directory is:
       $resolve-pipeline.output
-      Read <pipeline-parent>/prompts/player-profile.md FIRST and follow it
+      Read <pipeline-parent>/prompts/player-profile.md FIRST, then
+      <pipeline-parent>/prompts/research-protocol.md which it builds on
+      (identity binding, gender-correct league lists, stopping rules,
+      source confidence), and follow them
       exactly — it is the research method contract: disambiguate before
       anything else, anchor on official pages, build the timeline backward,
       sweep adjacent competition (summer leagues, honors follow-up), chase
