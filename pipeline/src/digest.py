@@ -414,21 +414,26 @@ def roster_shape(
             },
         )
         if previous_names and key in previous_names:
+            status = "returning"
             row["returning"] += 1
             row["returning_minutes"] += minutes_by_name.get(key, 0)
-            group = row["classes"]["returning"]
         else:
+            status = "newcomers"
             row["newcomers"] += 1
             if cls == "Fr":
                 row["newcomer_freshmen"] += 1
-            group = row["classes"]["newcomers"]
+        group = row["classes"][status]
         group[cls] = group.get(cls, 0) + 1
         by_class[cls] = by_class.get(cls, 0) + 1
         intl = _is_international(player.get("hometown"))
         if intl is True:
             international["total"] += 1
             row["international"] = row.get("international", 0) + 1
-            if not (previous_names and key in previous_names):
+            intl_bucket = row.setdefault(
+                "intl_classes", {"returning": {}, "newcomers": {}}
+            )[status]
+            intl_bucket[cls] = intl_bucket.get(cls, 0) + 1
+            if status == "newcomers":
                 international["newcomers"] += 1
         elif intl is None:
             international["unknown"] += 1
