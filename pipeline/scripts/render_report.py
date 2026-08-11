@@ -115,6 +115,10 @@ def main() -> int:
                 detail = f"\n{exc.stderr.decode(errors='replace').strip()}"
             print(f"PDF failed for {html.name}: {exc}{detail}", file=sys.stderr)
             return 3
+        # The PDF is the deliverable; the HTML intermediate survives only
+        # when PDF generation cannot happen (no Chrome, or a failure above).
+        html.unlink()
+        print(f"removed intermediate {html.name}")
     return 0
 
 
