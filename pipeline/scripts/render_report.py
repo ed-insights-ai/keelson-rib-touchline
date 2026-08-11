@@ -72,7 +72,7 @@ def main() -> int:
     args = parser.parse_args()
 
     root = paths.data_root()
-    digest_path = root / "data" / "reports" / f"digest-{args.season}-{args.gender}-{args.focus}.json"
+    digest_path = root / "data" / "scratch" / f"digest-{args.season}-{args.gender}-{args.focus}.json"
     try:
         digest = json.loads(digest_path.read_text(encoding="utf-8"))
     except OSError:
