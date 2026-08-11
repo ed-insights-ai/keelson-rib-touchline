@@ -58,6 +58,13 @@ answer; this file says *how it must read and look*. Tune the product here.
 - **Small-sample reads get humble headers.** A weakness inferred from a
   goal-timing sample is a "potential opening", not a vulnerability or a
   conclusion.
+- **Shares are people, not portfolios.** A team never "returns 26% of its
+  goals" — players return. Write "the players who scored three-quarters
+  of their goals are gone", "no midfielder who played last season is
+  back", "their goalkeeper returns after playing every minute". If a
+  returning-share number cannot be attached to people in the sentence,
+  rewrite the sentence. Tables may carry the raw percentages; prose
+  carries the people.
 - **More diction swaps** (the left column is banned): "for the focus
   side" → "for <team name>"; "inflection date" → "first competitive
   checkpoint"; "shapes everything downstream" → "must be decided early";
