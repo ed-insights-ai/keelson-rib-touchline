@@ -757,8 +757,12 @@ def shape_strip(section: dict, compact: bool = False) -> str:
     )
     intl = shape.get("international") or {}
     intl_legend = " · dot = international" if intl.get("total") else ""
+    # Compact maps (opponent cards) drop the legend: the roster page states
+    # it once, and five repeats of it cost the tallest card its page.
     legend = (
-        f'<div class="sq-legend">{legend_classes}'
+        ""
+        if compact
+        else f'<div class="sq-legend">{legend_classes}'
         + (
             '<span class="lg-note">left of the divider returning · right new · '
             f"bar = share of last season's minutes returning{intl_legend}</span>"
