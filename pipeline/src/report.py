@@ -1229,38 +1229,40 @@ def exec_sheet(digest: dict, narrative: dict) -> str:
 
 def sources_sheet(digest: dict, focus_name: str) -> str:
     file_count = len(digest.get("sources") or {})
+    seasons = digest.get("seasons_held") or ["–"]
+    labels = (
+        (label_chip("observed"), "Computed directly from published schedules, rosters, statistics, and play-by-play."),
+        (label_chip("projected"), "A model estimate with stated assumptions."),
+        (label_chip("signal"), "An observed pattern whose cause is unverified and needs confirmation."),
+        (label_chip("judgment"), "Interpretation that needs film or coaching context to validate."),
+    )
+    label_rows = "".join(
+        f'<span class="d-term">{chip}</span><span>{esc(text)}</span>' for chip, text in labels
+    )
+    definitions = (
+        ("Records", "Wins-losses-ties (W-L-T) throughout."),
+        ("Statistics", "As published by each programme's official statistics page."),
+        ("Save percentage", "Saves ÷ (saves + goals against)."),
+        ("Returning share", "Last season's production from players on the new roster, joined by name."),
+        ("Goal timing", "Published play-by-play; charts state their match sample."),
+        ("Head-to-head", f"Seasons held in the archive ({seasons[0]}–{seasons[-1]}) only; a held record, not an all-time one."),
+        ("xG", "Not reported; shot locations are not collected."),
+        ("Collection record", f"{file_count} season files with collection dates, published separately as the technical appendix."),
+    )
+    definition_rows = "".join(
+        f'<span class="f-label">{esc(term)}</span><span>{esc(text)}</span>'
+        for term, text in definitions
+    )
     return f"""
 <section class="sheet">
   <h2 class="section-head">Sources, definitions, and method</h2>
   <div class="viz-title big">Evidence labels</div>
-  <div class="story">
-    <p>{label_chip("observed")} Computed directly from published schedules, results, rosters,
-    statistics pages, and box-score play-by-play. Every observed figure in this report traces to
-    the collection record.</p>
-    <p>{label_chip("projected")} A model-based estimate with stated assumptions. This report
-    contains no projected figures unless labeled.</p>
-    <p>{label_chip("signal")} An observed pattern whose cause is unverified — a participation
-    gap or a minutes collapse. The pattern is fact; the reason requires confirmation.</p>
-    <p>{label_chip("judgment")} Interpretation that requires film or coaching context to
-    validate. Player strengths and limitations are judgments, not measurements.</p>
-  </div>
+  <div class="f-grid def-grid">{label_rows}</div>
   <div class="viz-title big">Definitions</div>
-  <div class="story">
-    <p>Records read wins-losses-ties (W-L-T) throughout. Minutes, goals, assists, points, shots,
-    and cards are as published by each programme's official statistics page. Save percentage =
-    saves ÷ (saves + goals against). Returning share joins consecutive published rosters by
-    normalized player name and weights last season's production. Goal timing comes from published
-    play-by-play; band charts state their match sample. Head-to-head covers only seasons held in
-    the archive ({esc(digest.get("seasons_held", ["–"])[0])}–{esc(digest.get("seasons_held", ["–"])[-1])}) —
-    it is a held record, not an all-time one. Shot locations are not collected, so xG is not
-    reported anywhere in this document.</p>
-    <p>The full collection record ({file_count} season files with collection dates) is
-    published separately as the technical appendix accompanying this report.</p>
-  </div>
+  <div class="f-grid def-grid">{definition_rows}</div>
   <div class="foot-note">
-    <p>Independent analysis prepared by EDInsights from public, published data. Not issued by or
-    affiliated with {esc(focus_name)} University Athletics; no institutional marks are used.</p>
-    <p class="mark">EDInsights · Empowered Data. Artificial Intelligence. Real Results.</p>
+    <p>Independent analysis by <b>EDInsights</b> from public, published data · not issued by or
+    affiliated with {esc(focus_name)} University Athletics · no institutional marks are used</p>
   </div>
 </section>"""
 
@@ -1783,10 +1785,12 @@ text-transform:uppercase;margin-right:8px}
 .roster-grid{margin:6px 0 14px;max-width:76ch}
 .roster-grid .f-label{padding-top:1px}
 .caveat{color:var(--draw);margin:10px 0;font-size:12.5px}
-.foot-note{margin-top:26px;border-top:1px solid var(--rule2);padding-top:12px;
+.foot-note{margin-top:30px;border-top:1px solid var(--rule2);padding-top:12px;
 font-size:11.5px;color:var(--faint)}
-.foot-note .mark{margin-top:8px;font:700 10px/1 "Avenir Next Condensed","Arial Narrow",sans-serif;
-letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.foot-note b{color:var(--muted)}
+.def-grid{grid-template-columns:130px minmax(0,1fr);gap:9px 16px;max-width:78ch;margin:4px 0 10px}
+.def-grid .d-term{padding-top:1px}
+.def-grid > span:not(.f-label):not(.d-term){font-size:13px;color:var(--ink2)}
 
 @page{size:letter;margin:0.5in}
 @media print{
