@@ -26,8 +26,13 @@ State it once here; the other files reference it.
 4. **Special interest.** Players carrying availability or usage signals
    get bare name + hometown; summer activity for a player with a
    participation hole is the highest-value finding.
-5. **Programme-level news.** Head-coach status (mandatory, recorded
-   either way), preseason polls, signing-class announcements.
+5. **Programme-level news.** Head-coach status is mandatory and
+   structured, recorded either way: name, new or returning, and tenure
+   (`since_season`) when a fetched page states it — staff directories
+   and coach bios ("entering his ninth season") are the anchor pages. A
+   coach who cannot be verified is status "unknown" with the surface in
+   `unswept`, never a guess. Also: preseason polls, signing-class
+   announcements.
 
 ## Stopping rules
 

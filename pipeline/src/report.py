@@ -46,6 +46,11 @@ Narrative contract (``touchline.report-narrative/4``)::
                  # offseason: at most 3 consolidated signals.
       "programmes": {slug: {"threat": str, "vulnerability": str,
                              "roster_note": str, "implication": str,
+                             "coach"?: str,    # one bench line: who runs the
+                                               # programme, verified tenure or
+                                               # change, and what it does to
+                                               # pattern reliability; omitted
+                                               # when nothing is verified
                              "news": [NEWS],   # <=2 ordinary; majors never cut
                              "tier": "benchmark"|"swing"|"update"}},
                              # every tiered opponent renders as one
@@ -1024,6 +1029,7 @@ def opponent_half_card(
     </div>
     <span class="prio">{tier_word}</span>
   </header>
+  {field("Bench", esc(story.get("coach", ""))) if story.get("coach") else ""}
   {field("Roster change", esc(story.get("roster_note", "")) + f'<span class="dim"> [{esc(roster_line)}]</span>')}
   {shape_line(section)}
   {field("Key threat", top_line + esc(story.get("threat", "")))}

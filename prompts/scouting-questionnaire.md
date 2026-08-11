@@ -96,12 +96,17 @@ the position, and the card header carries that date.
 - O11. **The implication**: ONE match-preparation read that follows from
   the cited numbers above, phrased as a testable preparation point, never
   a certainty. The card's implication field holds exactly one.
+- O12. **The bench**: who runs the programme and for how long, from the
+  research's verified coach record, read through the style contract's
+  bench lens — tenure says how far the held patterns can be trusted, a
+  change says they are provisional. One line; omitted when unverified
+  unless the gap itself changes preparation.
 
-**Card mapping.** The card fields — identity, roster change, key threat,
-potential opening, implication, up to two news items, head-to-head strip —
-absorb O1 (header), O2/O3 (threat and opening evidence), O6 (roster
-change), O7 (key threat), O8 (strip), O9 (header), O10 (news), O11
-(implication). O4 and O5 have no dedicated home and survive only through
+**Card mapping.** The card fields — identity, bench line, roster change,
+key threat, potential opening, implication, up to two news items,
+head-to-head strip — absorb O1 (header), O2/O3 (threat and opening
+evidence), O6 (roster change), O7 (key threat), O8 (strip), O9 (header),
+O10 (news), O11 (implication), O12 (bench line). O4 and O5 have no dedicated home and survive only through
 the filter. The caveat the insight filter requires is carried by the
 evidence itself — O2 and O3's stated samples and coverage lines serve as
 the card's caveat; there is no separate caveat field.
