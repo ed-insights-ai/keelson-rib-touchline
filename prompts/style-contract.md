@@ -61,6 +61,22 @@ watchlist or appendix; below 5 → cut. Every major block must be able to
 populate Evidence, Meaning, Action, and Caveat — if there is no Action a
 coach could take, it does not belong in the coach-facing report.
 
+## Punctuation and cadence
+
+- **The em-dash is a once-per-paragraph tool at most**, used only where a
+  comma, colon, period, or parentheses cannot carry the break. Two
+  em-dash sentences in a row read as generated text. Numeric ranges keep
+  the en-dash (75'–90'); this rule is about prose.
+- Banned reflexes: the "claim — elaboration" pivot as a default sentence
+  shape; "not just X — Y"; "X isn't A; it's B" antithesis mirrored across
+  consecutive sentences; aphoristic fragments as paragraph closers;
+  three-item rhythm as the automatic list shape.
+- Default cadence: short declarative sentences, plain connectors, varied
+  sentence length. A colon introduces. Parentheses hold asides. The
+  period is the workhorse.
+- Test: read the paragraph aloud. If it sounds like a keynote or an ad,
+  rewrite it as a memo from one coach to another.
+
 ## Voice
 
 - Written by a scouting department for a coaching staff. Direct, specific,
@@ -70,6 +86,15 @@ coach could take, it does not belong in the coach-facing report.
   not "re-price the season"; "controllable gaps", not "coaching surface
   area"; "early roster integration", not "chemistry curve". If a coach
   would not say the phrase at training, rewrite it.
+- **Word choice is the loudest tell.** Write with the vocabulary of a
+  beat writer or an assistant coach, not an analyst deck: "the league
+  order is wide open", not "the conference hierarchy is unusually
+  fluid"; "the two biggest calls of preseason", not "the two
+  highest-leverage decisions"; "a second goal scorer", not "a second
+  source of attacking production"; "they spent the year pinned in their
+  own end", not "sustained territorial exposure". If a word belongs in a
+  quarterly business review (leverage, hierarchy, fluidity, structural,
+  optimize, capability), swap it for the word the locker room uses.
 - Insight is a hypothesis anchored to a cited number: "They conceded 9 of
   14 goals after the 60th minute — sustained second-half pressure is the
   percentage play." Not: "They tend to tire late."

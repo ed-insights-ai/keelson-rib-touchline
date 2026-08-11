@@ -213,7 +213,7 @@ def indicator_tiles(digest: dict) -> str:
         tile(record_line(conf), f"{last.get('season')} conference (W-L-T)", f"{conf.get('gf')}:{conf.get('ga')} goals")
     return (
         f'<div class="tiles">{"".join(tiles)}</div>'
-        '<div class="viz-note">All four indicators observed — computed from published '
+        '<div class="viz-note">All four indicators observed: computed from published '
         "rosters, statistics, and results.</div>"
     )
 
@@ -468,7 +468,7 @@ def offseason_ledger(items: list[dict] | None) -> str:
             f"<span>{esc(item.get('text', ''))}</span>{cite_row}</div>"
         )
     return (
-        '<div class="ledger"><div class="viz-title">The offseason ledger — '
+        '<div class="ledger"><div class="viz-title">The offseason ledger · '
         "verified activity between seasons</div>" + "".join(rows) + "</div>"
     )
 
@@ -583,7 +583,7 @@ def schedule_matrix(digest: dict, names: dict[str, str], narrative: dict | None 
         f'<th class="num">Opp. continuity</th><th class="num">{h2h_head}</th>'
         "</tr></thead><tbody>" + "".join(rows) + "</tbody></table>"
         '<div class="viz-note">Observed · turnaround counts days since the previous conference '
-        "fixture only — non-conference matches in between are not shown, so true rest may be "
+        "fixture only. Non-conference matches in between are not shown, so true rest may be "
         "shorter, never longer. Opponent continuity is the share of last season's minutes "
         "returning on the opponent's published roster. H2H is W-L-T from the focus side over "
         "held seasons.</div>"
@@ -668,7 +668,7 @@ def availability_block(last: dict | None) -> str:
         '<th class="num">Min</th><th>Pattern</th>'
         "<th></th></tr></thead><tbody>" + "".join(rows) + "</tbody></table>"
         '<div class="viz-note">The participation gaps are observed in held box scores; their '
-        "causes are not — injury, discipline, and redshirt look identical here. Anyone reading "
+        "causes are not. Injury, discipline, and redshirt look identical here. Anyone reading "
         "the public record sees the same pattern, so treat each row as a question to resolve "
         "before opponents answer it for themselves. Resolved departures are omitted.</div>"
     )
@@ -697,7 +697,7 @@ def usage_block(section: dict) -> str:
         + "".join(rows)
         + "</tbody></table>"
         '<div class="viz-note">Players still on the new roster whose minutes collapsed between '
-        "the last two seasons. The collapse is observed; the cause is not — an injury year, a "
+        "the last two seasons. The collapse is observed; the cause is not. An injury year, a "
         "lost position battle, and a redshirt look identical in this data. A returner whose "
         "heavy season was two years ago may be better than last season's film suggests.</div>"
     )
@@ -924,7 +924,7 @@ def watchlist_table(entries: list[dict] | None) -> str:
     return (
         '<table class="grid slim"><thead><tr><th>Player</th><th>Programme</th>'
         "<th>Why watch</th></tr></thead><tbody>" + rows + "</tbody></table>"
-        '<div class="viz-note">Monitoring candidates, not conclusions — the samples behind these '
+        '<div class="viz-note">Monitoring candidates, not conclusions. The samples behind these '
         "rows are too small to carry a projection. Re-evaluate after the first two matchdays.</div>"
     )
 
@@ -1120,7 +1120,7 @@ def sources_sheet(digest: dict, focus_name: str) -> str:
     the archive ({esc(digest.get("seasons_held", ["–"])[0])}–{esc(digest.get("seasons_held", ["–"])[-1])}) —
     it is a held record, not an all-time one. Shot locations are not collected, so xG is not
     reported anywhere in this document.</p>
-    <p>The full collection record — {file_count} season files with collection dates — is
+    <p>The full collection record ({file_count} season files with collection dates) is
     published separately as the technical appendix accompanying this report.</p>
   </div>
   <div class="foot-note">
@@ -1239,7 +1239,7 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
 
 <section class="sheet">
   <h2 class="section-head">{esc(focus_name)} — the view from outside</h2>
-  <p class="section-sub">What the public record shows about {esc(focus_name)} — the same numbers
+  <p class="section-sub">What the public record shows about {esc(focus_name)}: the same numbers
   and patterns every opposing staff can read. The roster itself needs no introduction here; what
   it looks like from the other bench does.</p>
   {stat_grid(focus_last)}
@@ -1258,7 +1258,7 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
 <section class="sheet">
   <h2 class="section-head">The landscape — and where {esc(focus_name)} gains ground</h2>
   {landscape_table(digest)}
-  <p class="section-sub">Observed per-match rates against the conference median — these gaps are
+  <p class="section-sub">Observed per-match rates against the conference median. These gaps are
   the controllable ones.</p>
   {dumbbell_chart(digest)}
   <div class="story">{prose(narrative.get("landscape"))}</div>
@@ -1266,7 +1266,7 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
 
 <section class="sheet">
   <h2 class="section-head">Preseason validation and the conference schedule</h2>
-  <p class="section-sub">The bridge from analysis to the training ground — what to test before
+  <p class="section-sub">The bridge from analysis to the training ground: what to test before
   the opener, then the conference slate as a planning surface.</p>
   <div class="viz-title big">To validate in preseason</div>
   <ol class="findings">{questions}</ol>
@@ -1278,7 +1278,7 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
 
 <section class="sheet">
   <h2 class="section-head">The rest of the conference — and the watchlist</h2>
-  <p class="section-sub">Compact cards — full treatment reserved for the priority opponents above.</p>
+  <p class="section-sub">Compact cards; full treatment is reserved for the priority opponents above.</p>
   {compact_cards}
   <div class="viz-title big">Conference watchlist</div>
   {watchlist_table(narrative.get("watchlist"))}
