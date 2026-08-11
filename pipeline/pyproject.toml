@@ -29,6 +29,7 @@ collect-board = "scripts.collect_board:main"
 build-digest = "scripts.build_digest:main"
 render-report = "scripts.render_report:main"
 build-profile = "scripts.build_profile:main"
+normalize-research = "scripts.normalize_research:main"
 
 [build-system]
 requires = ["hatchling"]

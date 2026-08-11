@@ -203,6 +203,7 @@ nodes:
         --gender "$KEELSON_INPUTS_gender" \
         --player "$KEELSON_INPUTS_player" \
         --findings "$F"
+      TOUCHLINE_DATA_DIR="$PWD" uv run --project "$PIPELINE_DIR" normalize-research
 
   - id: summary
     depends_on: [merge]

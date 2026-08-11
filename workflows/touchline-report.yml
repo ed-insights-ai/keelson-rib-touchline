@@ -274,8 +274,18 @@ nodes:
       Reply with one line: surviving count, dropped count, attested count,
       unswept count.
 
-  - id: narrative
+  - id: normalize
     depends_on: [verify]
+    # Agents write research JSON free-hand, so formatting drifts per run;
+    # this rewrites every file into the canonical line-per-fact shape.
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
+      TOUCHLINE_DATA_DIR="$PWD" uv run --project "$PIPELINE_DIR" normalize-research
+
+  - id: narrative
+    depends_on: [normalize]
     context: fresh
     # The narrative is the report's judgment core: the top tier, thinking
     # hard. This node is where the report is actually written.
