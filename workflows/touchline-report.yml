@@ -132,6 +132,15 @@ nodes:
         $inputs.season $inputs.gender season, prepared for '$inputs.focus'. Each
         iteration researches EXACTLY ONE programme, then stops.
 
+        MANDATORY FIRST CHECK, every programme, no exceptions: who is the
+        head coach for the $inputs.season season, and did that change since
+        last season? Fetch the programme's staff directory or athletics news
+        page and record the answer as a finding either way — a verified
+        coaching change is among the most important facts a scouting report
+        can carry (it voids the opponent's film library), and a confirmed
+        unchanged coach is also a finding. A research file without a
+        coaching answer is incomplete.
+
         1. Read data/reports/digest-$inputs.season-$inputs.gender-$inputs.focus.json — the
            programme list, and each programme's availability_flags and
            usage_shifts (your special-interest players).
