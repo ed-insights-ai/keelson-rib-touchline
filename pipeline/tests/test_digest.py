@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import src.digest as digest_module
 from src.digest import (
     roster_shape,
     build_digest,
@@ -637,3 +638,25 @@ def test_roster_shape_without_previous_roster_counts_everyone_new():
     shape = roster_shape(None, current, None, "alpha")
     assert shape["turnover_known"] is False
     assert shape["by_position"]["F"]["newcomers"] == 1
+
+
+def test_international_hometown_read():
+    assert digest_module._is_international("Orleans, France") is True
+    assert digest_module._is_international("Searcy, Ark.") is False
+    assert digest_module._is_international("Dallas, TX") is False
+    assert digest_module._is_international("London, England") is True
+    assert digest_module._is_international("") is None
+    assert digest_module._is_international("Unknown") is None
+
+
+def test_roster_shape_counts_internationals():
+    current = _shape_roster(
+        [
+            {"name": "Local Kid", "position": "F", "class_year": "Fr.", "hometown": "Searcy, Ark."},
+            {"name": "Euro Vet", "position": "D", "class_year": "Sr.", "hometown": "Lyon, France"},
+            {"name": "No Home", "position": "M", "class_year": "So."},
+        ]
+    )
+    shape = digest_module.roster_shape(None, current, None, "alpha")
+    assert shape["international"] == {"total": 1, "newcomers": 1, "unknown": 1}
+    assert shape["by_position"]["D"]["international"] == 1

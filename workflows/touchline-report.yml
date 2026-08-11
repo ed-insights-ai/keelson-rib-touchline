@@ -272,6 +272,13 @@ nodes:
         checkpoint, or anything on the season calendar is never a
         decision; a short priorities list (it renders on the roster page,
         so do not repeat the decisions)
+      - the roster shape counts each squad's international players from
+        published hometowns. Where the share is notable — especially in a
+        newcomer class — say so and read experience accordingly: D2
+        eligibility rules mean internationals often arrive older than
+        domestic freshmen, so class year understates experience. A
+        structural note about the squad, never a verdict on a named
+        player.
       - focus.roster: an ARRAY of {title, text} rows, one per line of the
         team (In goal, Back line, Midfield, Front line, Squad age — use
         the digest's roster_shape groups), tying last season's problems

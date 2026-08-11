@@ -798,7 +798,18 @@ def shape_strip(section: dict) -> str:
         )
         + "</div>"
     )
-    return f'<div class="squadmap">{"".join(rows)}{legend}</div>'
+    intl = shape.get("international") or {}
+    intl_note = ""
+    if intl.get("total"):
+        unknown = f' · {intl["unknown"]} hometowns unpublished' if intl.get("unknown") else ""
+        intl_note = (
+            f'<div class="viz-note">International players: {intl["total"]}'
+            f' ({intl.get("newcomers", 0)} among the newcomers), from published hometowns{unknown}.'
+            " D2 eligibility rules let international recruits arrive older than domestic"
+            " freshmen — a newcomer class heavy on internationals is usually more"
+            " experienced than its class years suggest.</div>"
+        )
+    return f'<div class="squadmap">{"".join(rows)}{legend}{intl_note}</div>'
 
 
 def roster_read(value) -> str:
@@ -829,8 +840,10 @@ def shape_line(section: dict) -> str:
             bits.append(f"{pos} {round(share * 100)}%")
     if not bits:
         return ""
+    intl = (shape.get("international") or {}).get("total")
+    intl_bit = f' · {intl} international' if intl else ""
     return (
-        f'<div class="viz-note">Minutes back by line: <span class="num">{esc(" · ".join(bits))}</span></div>'
+        f'<div class="viz-note">Minutes back by line: <span class="num">{esc(" · ".join(bits))}</span>{esc(intl_bit)}</div>'
     )
 
 

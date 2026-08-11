@@ -313,6 +313,50 @@ def _position_bucket(raw: str | None) -> str:
     return "?"
 
 
+#: US state names and AP/postal abbreviations, folded, for hometown reads.
+_US_MARKERS = {
+    marker.replace(".", "").casefold()
+    for marker in (
+        "Ala", "Alaska", "Ariz", "Ark", "Calif", "Colo", "Conn", "Del", "Fla",
+        "Ga", "Hawaii", "Idaho", "Ill", "Ind", "Iowa", "Kan", "Ky", "La",
+        "Maine", "Md", "Mass", "Mich", "Minn", "Miss", "Mo", "Mont", "Neb",
+        "Nev", "NH", "NJ", "NM", "NY", "NC", "ND", "Ohio", "Okla", "Ore",
+        "Pa", "RI", "SC", "SD", "Tenn", "Texas", "Utah", "Vt", "Va", "Wash",
+        "WVa", "Wis", "Wyo", "DC",
+        "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI",
+        "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI",
+        "MN", "MS", "MO", "MT", "NE", "NV", "OK", "OR", "PA", "TN", "TX",
+        "UT", "VT", "VA", "WA", "WV", "WI", "WY",
+        "Alabama", "Arizona", "Arkansas", "California", "Colorado",
+        "Connecticut", "Delaware", "Florida", "Georgia", "Illinois",
+        "Indiana", "Kansas", "Kentucky", "Louisiana", "Maryland",
+        "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri",
+        "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
+        "New Mexico", "New York", "North Carolina", "North Dakota",
+        "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island",
+        "South Carolina", "South Dakota", "Tennessee", "Texas", "Vermont",
+        "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming",
+        "USA", "US",
+    )
+}
+
+
+def _is_international(hometown: str | None) -> bool | None:
+    """Read a published hometown as domestic or international.
+
+    ``"Orleans, France"`` → True; ``"Searcy, Ark."`` → False; an empty or
+    single-token hometown → None (unknown, counted separately — a missing
+    hometown is not evidence of anything).
+    """
+    text = str(hometown or "").strip()
+    if "," not in text:
+        return None
+    tail = text.rsplit(",", 1)[1].strip().replace(".", "")
+    if not tail:
+        return None
+    return tail.casefold() not in _US_MARKERS
+
+
 def _class_bucket(raw: str | None) -> str:
     text = str(raw or "").strip().lower().rstrip(".")
     for bucket, words in CLASS_BUCKETS:
@@ -354,6 +398,7 @@ def roster_shape(
 
     by_position: dict[str, dict] = {}
     by_class: dict[str, int] = {}
+    international = {"total": 0, "newcomers": 0, "unknown": 0}
     for player in players:
         key = normalize_name(str(player.get("name") or ""))
         pos = _position_bucket(player.get("position"))
@@ -379,6 +424,14 @@ def roster_shape(
             group = row["classes"]["newcomers"]
         group[cls] = group.get(cls, 0) + 1
         by_class[cls] = by_class.get(cls, 0) + 1
+        intl = _is_international(player.get("hometown"))
+        if intl is True:
+            international["total"] += 1
+            row["international"] = row.get("international", 0) + 1
+            if not (previous_names and key in previous_names):
+                international["newcomers"] += 1
+        elif intl is None:
+            international["unknown"] += 1
 
     if minutes_by_name and prev_position:
         prev_minutes: dict[str, int] = {}
@@ -394,6 +447,7 @@ def roster_shape(
     return {
         "by_position": by_position,
         "by_class": by_class,
+        "international": international,
         "turnover_known": bool(previous_names),
     }
 

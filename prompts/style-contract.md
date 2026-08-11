@@ -78,6 +78,18 @@ match: a selection, a role, a training investment. A fixture to circle, a
 checkpoint, or a mid-season milestone is not a decision — if it matters,
 it belongs in the opponent card or the schedule, once.
 
+## The international lens (D2 recruiting)
+
+Division II eligibility rules let international players arrive older and
+more experienced than domestic freshmen, and some programmes recruit
+internationally at volume to buy experience wholesale. The digest counts
+each squad's international share from published hometowns. Read a
+heavily-international newcomer class differently from a domestic freshman
+class: class year understates experience, and the impact variance runs
+high in both directions. This is a structural recruiting pattern to note
+when sizing a roster — never a judgment about a named individual, whose
+record and film speak for themselves.
+
 ## Major news travels to every report
 
 A verified head-coach change, intra-conference transfer, or decorated
