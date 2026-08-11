@@ -689,6 +689,7 @@ def availability_block(last: dict | None) -> str:
             f"<td>{status}</td></tr>"
         )
     return (
+        '<div class="keep">'
         f'<div class="viz-title">Availability — requires confirmation {label_chip("signal")}</div>'
         '<table class="grid slim"><thead><tr><th>Player</th><th class="num">Apps</th>'
         '<th class="num">Min</th><th>Pattern</th>'
@@ -697,6 +698,7 @@ def availability_block(last: dict | None) -> str:
         "causes are not. Injury, discipline, and redshirt look identical here. Anyone reading "
         "the public record sees the same pattern, so treat each row as a question to resolve "
         "before opponents answer it for themselves. Resolved departures are omitted.</div>"
+        "</div>"
     )
 
 
@@ -1811,7 +1813,11 @@ body{background:#fff}
 .sheet{box-shadow:none;margin:0 auto;max-width:none;width:850px}
 .cover{min-height:996px}
 a{color:var(--ink);text-decoration:none}
-h2,.section-head,.viz-title,.sheet-eyebrow{break-after:avoid}
+p{orphans:3;widows:3}
+table,.keep,.story{break-inside:avoid}
+.keep{display:table;width:100%}
+.lbl{vertical-align:baseline}
+h2,.section-head,.sheet-eyebrow{break-after:avoid}
 .half-opp,.compact,.update-card,.decision-row,.ledger-row,.ev-row,
 .f-grid:not(.def-grid),.bottomline,.tiles,.fixture,.keeper,.sq-row,
 .squadmap,.turnover,.news,.gap,.share-row,.h2h,.takeaways,.dumbbell,
