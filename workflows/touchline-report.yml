@@ -141,6 +141,15 @@ nodes:
         unchanged coach is also a finding. A research file without a
         coaching answer is incomplete.
 
+        ONE FINDING, ONE PAGE: never write a finding whose truth needs two
+        pages to check — the verifier fetches each finding's single url and
+        drops any claim that page alone cannot support. Split compound
+        claims: a coaching change becomes one finding per page (the current
+        directory names the new coach; the bio states the appointment date;
+        the prior year's directory names the predecessor), each carrying its
+        own url. When a single page states the whole fact (a bio saying
+        "named head coach in January $inputs.season"), prefer that page.
+
         1. Read data/reports/digest-$inputs.season-$inputs.gender-$inputs.focus.json — the
            programme list, and each programme's availability_flags and
            usage_shifts (your special-interest players).
