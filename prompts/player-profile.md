@@ -69,7 +69,7 @@ Further rules:
 - "Nothing found" per source is a normal result. Report it plainly.
 - **Direct public social post URLs are usually fetchable even when search
   cannot find them** — the wall is discovery, not access. A post URL that is
-  supplied (by a human at the approval gate) or discovered (on a profile
+  supplied (by a human) or discovered (on a profile
   page, in a Google snippet, via a site: query) should always be fetched:
   one fetch can upgrade an attested claim to confirmed with a date.
 - **When a club publishes no names, read its opponents.** Rival clubs' match

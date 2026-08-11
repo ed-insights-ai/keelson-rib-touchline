@@ -2,7 +2,7 @@ name: touchline-report
 description: |
   Use when: someone wants the preseason scouting briefing for a collected season — opponent analysis, roster turnover, availability leads, verified offseason research, rendered as the print-first report.
   Triggers: "build the preseason report", "generate the scouting briefing", "preseason intelligence for Harding".
-  Does: computes the deterministic digest, fans research out one programme at a time (summer leagues, honors, coaching changes — verified at sources), writes the narrative under the style contract, renders the briefing, and pauses for human approval.
+  Does: computes the deterministic digest, fans research out one programme at a time (summer leagues, honors, coaching changes — verified at sources), writes the narrative under the style contract, renders the briefing, and reports what was verified, dropped, and unswept.
   NOT for: collecting season data (run touchline-collect first), or repairing data (data-integrity).
 
 # A Touchline home is an ordinary registered directory, not a git repo.
@@ -36,7 +36,7 @@ inputs:
 #   iteration, findings verified at URLs) → verify (re-fetch every claimed
 #   source; unsupported claims are dropped, not softened) → narrative (prose
 #   under the style contract, figures from the digest only) → render
-#   (deterministic HTML) → human approval.
+#   (deterministic HTML) → summary.
 #
 # A bash body is NOT template-substituted — inputs arrive as
 # KEELSON_INPUTS_<key>, upstream output as KEELSON_NODE_<id>_OUTPUT.
@@ -251,7 +251,7 @@ nodes:
           the only admissible news and offseason findings, each with source,
           url, and date. attested_uncaptured items NEVER appear in the
           report in any form — they stay in the research artifacts for the
-          approval gate. If it isn't discoverable, it isn't in the report.
+          run summary. If it isn't discoverable, it isn't in the report.
           An undated source cannot date a claim.
 
       Write data/reports/narrative-$inputs.season-$inputs.gender-$inputs.focus.json
@@ -410,21 +410,9 @@ nodes:
         --gender "$KEELSON_INPUTS_gender" \
         --focus "$KEELSON_INPUTS_focus"
 
-  - id: approve
-    depends_on: [render]
-    approval:
-      message: |
-        The preseason briefing is rendered. Review it before it goes anywhere:
-        open data/reports/preseason-$inputs.season-$inputs.gender-$inputs.focus.html in a
-        browser (print preview shows the paginated report). The verification
-        pass reported: $verify.output — anything attested-but-uncaptured needs
-        a human-supplied link before it can become a report fact. Approve to
-        finish, or reject with feedback.
-      capture_response: true
-
   - id: summary
     model: gpt-5.6-luna
-    depends_on: [approve]
+    depends_on: [render]
     timeout: 120000
     prompt: |
       The Touchline preseason report run finished. Write a SHORT completion
@@ -433,8 +421,8 @@ nodes:
       - the research verification line: $verify.output
       - the narrative sections: $narrative.output
       - the render line: $render.output
-      - the reviewer's response: $approve.output
-      Name what was dropped or left unswept exactly as reported — never soften
-      it. The report file is data/reports/preseason-$inputs.season-$inputs.gender-$inputs.focus.html;
+      Name what was dropped, attested-but-uncaptured, or left unswept exactly
+      as reported — never soften it: with no approval gate, this summary is
+      where a human learns what needs their eyes. The report file is data/reports/preseason-$inputs.season-$inputs.gender-$inputs.focus.html;
       research artifacts live under data/reports/research/. Do not invent
       numbers: every figure must appear in the text above.
