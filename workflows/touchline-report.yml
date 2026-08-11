@@ -165,9 +165,16 @@ nodes:
            with no research-<slug>.json yet, or whose file lacks a
            top-level "coach" object. For a coach-only top-up, do ONLY the
            mandatory coach check and any change findings it produces, add
-           the coach object, and leave the existing findings untouched. If
-           every programme has a file with a coach object, reply exactly:
-           ALL RESEARCHED
+           the coach object, and leave the existing findings untouched.
+           Replying ALL RESEARCHED ends the whole research stage
+           immediately, so it must be MECHANICALLY CHECKED first, never
+           eyeballed: run
+             jq -r 'select((.coach // null) == null) | input_filename' \
+               data/research/<season>-<gender>/research-*.json
+           and reply ALL RESEARCHED only when that prints nothing AND
+           every digest programme has a file. Any filename it prints is
+           your target this iteration. A validation gate after this
+           stage fails the run if a file is missing its coach object.
         3. Read that programme's roster from
            data/rosters/$inputs.season-$inputs.gender.json (names, hometowns).
            If the roster is missing, write a file recording exactly that as the
@@ -235,8 +242,34 @@ nodes:
            unswept count. Do NOT reply ALL RESEARCHED unless step 2 found no
            remaining programme.
 
-  - id: verify
+  - id: validate-research
     depends_on: [research]
+    # The research loop's text exit ("ALL RESEARCHED") can fire on a
+    # model's say-so; this gate makes an incomplete coach layer fail the
+    # run instead of shipping silently.
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      D="data/research/${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}"
+      DG="data/scratch/digest-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
+      N=$(jq '.programmes | length' "$DG")
+      MISSING=""
+      for slug in $(jq -r '.programmes | keys[]' "$DG"); do
+        F="$D/research-$slug.json"
+        if [ ! -f "$F" ]; then
+          MISSING="$MISSING $slug(no-file)"
+        elif ! jq -e '(.coach.name // "") != "" and ((.coach.status // "") | IN("new","returning","unknown"))' "$F" >/dev/null 2>&1; then
+          MISSING="$MISSING $slug(no-coach)"
+        fi
+      done
+      if [ -n "$MISSING" ]; then
+        printf 'ALARM: research stage ended incomplete — every programme needs a research file with a coach object (name + status new/returning/unknown). Missing:%s\n' "$MISSING"
+        exit 1
+      fi
+      printf 'research OK: %s programmes, every file carries a coach object\n' "$N"
+
+  - id: verify
+    depends_on: [validate-research]
     context: fresh
     # Mechanical refutation: fetch each URL, keep or drop. The small tier
     # is enough.
@@ -257,7 +290,12 @@ nodes:
       re-fetch its url and confirm the page names the coach (and states
       the tenure when since_season is set). A coach object whose page
       does not support it is downgraded to status "unknown" with
-      since_season null, and the failure recorded in dropped.
+      since_season null, and the failure recorded in dropped — but it
+      STAYS in the coaches map either way: the map must hold exactly one
+      entry per research file that carries a coach object, and a
+      validation gate fails the run when entries are missing. The output
+      file must contain ALL of these keys: schema, findings, coaches,
+      dropped, attested_uncaptured, unswept.
 
       Write — under the data home named on the 'data home:' line of
       $preflight.output, never relative to another directory —
@@ -274,8 +312,33 @@ nodes:
       Reply with one line: surviving count, dropped count, attested count,
       unswept count.
 
-  - id: normalize
+  - id: validate-verified
     depends_on: [verify]
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      D="data/research/${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}"
+      V="$D/verified.json"
+      if [ ! -f "$V" ]; then
+        printf 'ALARM: verify reported success but %s does not exist.\n' "$V"
+        exit 1
+      fi
+      for key in findings coaches dropped attested_uncaptured unswept; do
+        if ! jq -e --arg k "$key" 'has($k)' "$V" >/dev/null; then
+          printf 'ALARM: verified.json missing required key "%s".\n' "$key"
+          exit 1
+        fi
+      done
+      WANT=$(jq -s '[.[] | select((.coach // null) != null)] | length' "$D"/research-*.json)
+      HAVE=$(jq '.coaches | length' "$V")
+      if [ "$HAVE" -lt "$WANT" ]; then
+        printf 'ALARM: verified.json coaches map holds %s entries but %s research files carry coach objects — verify carries every one (downgraded to "unknown" when unsupported, never dropped from the map).\n' "$HAVE" "$WANT"
+        exit 1
+      fi
+      printf 'verified OK: %s coach entries carried\n' "$HAVE"
+
+  - id: normalize
+    depends_on: [validate-verified]
     # Agents write research JSON free-hand, so formatting drifts per run;
     # this rewrites every file into the canonical line-per-fact shape.
     timeout: 60000
