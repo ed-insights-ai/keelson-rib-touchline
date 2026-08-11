@@ -1353,9 +1353,12 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
   {f'<p class="headline">{esc(narrative.get("headline", ""))}</p>' if narrative.get("headline") else ""}
   {extrapolated}
   {roster_gap}
-  <div class="viz-note">Records are W-L-T throughout. Labels: {label_chip("observed")} computed
-  from published data · {label_chip("signal")} observed pattern, cause unconfirmed ·
-  {label_chip("judgment")} interpretation that needs film to validate.</div>
+  <div class="cover-key">
+    <div class="key-note">How to read this report · records are W-L-T throughout</div>
+    <div class="key-row">{label_chip("observed")}<span>computed from published data</span></div>
+    <div class="key-row">{label_chip("signal")}<span>an observed pattern whose cause is unconfirmed</span></div>
+    <div class="key-row">{label_chip("judgment")}<span>an interpretation that needs film to validate</span></div>
+  </div>
   <div class="cover-bottom">
     <div class="cover-meta num">Prepared {esc(_long_date(generated))} · seasons {esc(span)} · published data only</div>
     <div class="cover-mark">EDInsights <span>Independent analysis</span></div>
@@ -1481,9 +1484,15 @@ letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:22
 text-transform:uppercase;letter-spacing:.005em}
 .cover-season{color:var(--ink2)}
 .cover-rule{height:3px;background:var(--gold-fill);margin:30px 0;width:180px}
-.headline{font-size:17.5px;line-height:1.6;max-width:56ch;color:var(--ink2);
-border-left:3px solid var(--gold-fill);padding-left:18px;margin:20px 0}
-.cover .viz-note{margin-top:auto;margin-bottom:12px;max-width:70ch}
+.headline{font:600 26px/1.3 "Avenir Next Condensed","Arial Narrow",sans-serif;
+max-width:44ch;color:var(--ink);letter-spacing:.2px;
+border-left:4px solid var(--gold-fill);padding-left:18px;margin:26px 0}
+.cover-key{margin-top:auto;margin-bottom:14px}
+.key-note{font-size:11px;color:var(--faint);text-transform:uppercase;
+letter-spacing:.6px;font-weight:600;margin-bottom:8px}
+.key-row{display:flex;align-items:center;gap:12px;margin:6px 0;
+font-size:12.5px;color:var(--ink2)}
+.key-row .lbl{flex:none;min-width:150px;text-align:center}
 .cover-bottom{display:flex;justify-content:space-between;align-items:baseline;
 border-top:1px solid var(--rule);padding-top:14px}
 .cover-meta{font-size:12px;color:var(--muted)}
