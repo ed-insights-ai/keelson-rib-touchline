@@ -46,7 +46,7 @@ Narrative contract (``touchline.report-narrative/4``)::
                  # offseason: at most 3 consolidated signals.
       "programmes": {slug: {"threat": str, "vulnerability": str,
                              "roster_note": str, "implication": str,
-                             "news": [NEWS],   # at most 2 per opponent
+                             "news": [NEWS],   # <=2 ordinary; majors never cut
                              "tier": "benchmark"|"swing"|"update"}},
                              # every tiered opponent renders as one
                              # three-quarter-page card on its own sheet,
@@ -58,9 +58,10 @@ Narrative contract (``touchline.report-narrative/4``)::
                       "why": str,      # <= 90 words
                       "verify": str,   # one line: what preseason confirms
                       "role"?: str, "class"?: str}],
-                      # exactly 2 per rostered opponent; each renders as a
-                      # half-page profile joined to the player's held career
-                      # line, one sheet per opponent. No focus-team entries.
+                      # up to 2 per opponent, filter-admitted; each renders
+                      # as a half-page profile joined to the player's held
+                      # career line, one sheet per opponent with entries.
+                      # No focus-team entries.
       "questions": [str]
     }
     LABEL = "observed" | "projected" | "signal" | "judgment"
@@ -68,11 +69,13 @@ Narrative contract (``touchline.report-narrative/4``)::
     NEWS   = {"text", "source", "url", "date"}
     LEDGER = {"player", "text", "sources"?: [{"source", "url"?, "date"?}]}
 
-Page budgets (user-set print boundaries): executive brief exactly two
+Page budgets (user-set print boundaries): executive brief exactly three
 pages (page one: bottom line, indicators, findings; page two: decisions and
-the view from outside); roster decisions at most two pages; the landscape
-one page; one opponent card per sheet at ~three-quarters of a page; one
-watchlist sheet per opponent. There is no schedule sheet, no dossier
+the view from outside in numbers; page three: the returners an opposing
+staff circles, the keeper picture, verified news, and the offseason
+ledger); roster decisions at most two pages; the landscape one page; one
+opponent card per sheet at ~three-quarters of a page; one watchlist sheet
+per opponent with entries. There is no schedule sheet, no dossier
 section, and no sources page — the label legend lives on the cover and
 the collection record in the technical appendix.
 
@@ -900,9 +903,10 @@ def watch_profile(digest: dict, slug: str, entry: dict) -> str:
 
 
 def watchlist_sheets(digest: dict, narrative: dict, names: dict[str, str], ordered: list[str]) -> list[str]:
-    """One sheet per opponent carrying that team's watchlist profiles (two
-    per team under narrative/4).  Entries naming an unknown programme render
-    together on a trailing sheet rather than being dropped."""
+    """One sheet per opponent carrying that team's watchlist profiles (up
+    to two per team under narrative/4; an opponent with none gets no
+    sheet).  Entries naming an unknown programme render together on a
+    trailing sheet rather than being dropped."""
     entries = narrative.get("watchlist") or []
     if not entries:
         return []
@@ -927,7 +931,7 @@ def watchlist_sheets(digest: dict, narrative: dict, names: dict[str, str], order
             continue
         head = (
             '<h2 class="section-head">Watchlist</h2>'
-            '<p class="section-sub">The names, two per opponent, whose held record or verified '
+            '<p class="section-sub">The names, up to two per opponent, whose held record or verified '
             "offseason will move first. Monitoring candidates, not conclusions — re-evaluate "
             "after the first two matchdays.</p>"
             if first
@@ -1025,7 +1029,7 @@ def opponent_half_card(
   {field("Key threat", top_line + esc(story.get("threat", "")))}
   {field("Potential opening", esc(story.get("vulnerability", "")), "riskfield")}
   {field(f"Implication for {esc(focus_name)}", esc(story.get("implication", "")), "goldfield")}
-  {news_cards((story.get("news") or [])[:2]) if not condensed else ""}
+  {news_cards(story.get("news")) if not condensed else ""}
   {h2h_strip(section.get("head_to_head"), names, digest["focus"], limit=4 if condensed else 6)}
 </div>"""
 
@@ -1117,9 +1121,9 @@ def exec_sheet(digest: dict, narrative: dict) -> str:
 
 
 def exec_outside_sheet(digest: dict, narrative: dict, names: dict[str, str]) -> str:
-    """Executive brief, page two: the decisions, then the view from outside —
-    the published numbers and verified offseason news an opposing staff
-    preparing for the focus side will read."""
+    """Executive brief, page two: the decisions, then the view from outside
+    in numbers — the published stat row, goal-timing chart, and overview an
+    opposing staff preparing for the focus side will read."""
     exec_block = narrative.get("exec") or {}
     decisions = (exec_block.get("decisions") or [])[:3]
     focus = digest["programmes"][digest["focus"]]
@@ -1141,6 +1145,79 @@ def exec_outside_sheet(digest: dict, narrative: dict, names: dict[str, str]) -> 
   {stat_grid(focus_last)}
   {minute_chart(focus_last.get("patterns"))}
   <div class="story">{prose(focus_story.get("overview"))}</div>
+</section>"""
+
+
+def exec_people_sheet(digest: dict, narrative: dict, names: dict[str, str]) -> str:
+    """Executive brief, page three: the view from outside in people and
+    news — the returners an opposing staff circles with their held lines,
+    the keeper picture, then the verified news and offseason ledger.
+    Digest data and the news layer only; the numbers page and the roster
+    prose are never restated here."""
+    focus = digest["programmes"][digest["focus"]]
+    focus_last = focus.get("last_season") or {}
+    focus_story = narrative.get("focus") or {}
+    focus_name = names.get(digest["focus"], digest["focus"])
+    returning = {
+        str(name).strip().casefold()
+        for name in (focus.get("turnover") or {}).get("returning") or []
+    }
+    returner_rows = "".join(
+        f'<tr><td><b>{esc(profile.get("name", ""))}</b> '
+        f'<span class="dim">{esc(profile.get("position", ""))} · {esc(profile.get("class_year", ""))}</span></td>'
+        f'<td class="num">{len(profile.get("career") or [])}</td>'
+        f'<td class="num">{last.get("gp", "–")}-{last.get("gs", "–")}</td>'
+        f'<td class="num">{last.get("minutes", "–")}</td>'
+        f'<td class="num">{last.get("goals", "–")}</td>'
+        f'<td class="num">{last.get("assists", "–")}</td>'
+        f'<td class="num">{last.get("points", "–")}</td>'
+        f'<td class="num">{last.get("shots", "–")}</td>'
+        f'<td class="num">{last.get("sog", "–")}</td></tr>'
+        for profile in focus.get("top_returning") or []
+        for last in [((profile.get("career") or []) or [{}])[-1]]
+    )
+    returners = (
+        '<table class="grid slim"><thead><tr><th>Returning player</th>'
+        '<th class="num">Szns</th><th class="num">GP-GS</th><th class="num">Min</th>'
+        '<th class="num">G</th><th class="num">A</th><th class="num">Pts</th>'
+        '<th class="num">Sh</th><th class="num">SOG</th></tr></thead>'
+        f"<tbody>{returner_rows}</tbody></table>"
+        if returner_rows
+        else f'<p class="pending">{PLACEHOLDER}</p>'
+    )
+    keeper_rows = ""
+    for keeper in focus_last.get("keepers") or []:
+        pct = keeper.get("save_pct")
+        pct_txt = f"{pct:.3f}".lstrip("0") if pct is not None else "–"
+        name = str(keeper.get("name", ""))
+        status = "returns" if name.strip().casefold() in returning else "departed"
+        keeper_rows += (
+            f'<tr><td><b>{esc(name)}</b> <span class="dim">{status}</span></td>'
+            f'<td class="num">{keeper.get("gp", "–")}</td>'
+            f'<td class="num">{keeper.get("minutes", "–")}</td>'
+            f'<td class="num">{keeper.get("saves", "–")}</td>'
+            f'<td class="num">{keeper.get("goals_against", "–")}</td>'
+            f'<td class="num">{pct_txt}</td>'
+            f'<td class="num">{keeper.get("shutouts", "–")}</td></tr>'
+        )
+    keepers = (
+        '<div class="viz-title">In goal last season</div>'
+        '<table class="grid slim"><thead><tr><th>Keeper</th><th class="num">GP</th>'
+        '<th class="num">Min</th><th class="num">Saves</th><th class="num">GA</th>'
+        '<th class="num">Save pct</th><th class="num">CS</th></tr></thead>'
+        f"<tbody>{keeper_rows}</tbody></table>"
+        if keeper_rows
+        else ""
+    )
+    return f"""
+<section class="sheet">
+  <div class="sheet-eyebrow">Executive brief — the view from outside · continued</div>
+  <div class="viz-title big">The names an opposing staff circles</div>
+  <p class="section-sub">{esc(focus_name)} returners with a held record, ranked by
+  last-season points, with seasons held in the Szns column. Stat lines are last
+  season's.</p>
+  {returners}
+  {keepers}
   {news_cards(focus_story.get("news"))}
   {offseason_ledger(focus_story.get("offseason"))}
 </section>"""
@@ -1239,6 +1316,7 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
 
     sheets.append(exec_sheet(digest, narrative))
     sheets.append(exec_outside_sheet(digest, narrative, names))
+    sheets.append(exec_people_sheet(digest, narrative, names))
 
     sheets.append(f"""<section class="sheet">
   <h2 class="section-head">{esc(focus_name)} — roster decisions and preseason scorecard</h2>

@@ -21,7 +21,9 @@ document does not have.
 ## The executive brief (once)
 
 - E1. **The bottom line**: in at most 70 words, what kind of season does
-  the published record set up, and what must preseason settle?
+  the published record set up, and what must preseason settle? The cover
+  headline is this answer compressed to a few words — derived from the
+  bottom line, never a separate claim.
 - E2. **The three findings** that matter most, each split evidence /
   meaning / implication, chosen through the insight filter.
 - E3. **At most three preseason decisions** — calls the staff settles
@@ -29,6 +31,9 @@ document does not have.
   named players and this team's numbers).
 - E4. **The preseason scorecard**: testable checks a coach can run during
   preseason matches. These render on the roster page.
+- E5. **Season indicators**: the handful of digest figures that frame the
+  season at a glance (record, goal difference, returning shares); they
+  render as tiles on brief page one.
 
 ## The conference landscape (once)
 
@@ -58,8 +63,11 @@ the position, and the card header carries that date.
 - O2. **Goal timing**: goals for and against by half and by 15-minute
   band, with the sample stated ("18 of 18 matches held"). NCAA
   regular-season matches have ended in ties since 2022 — no overtime — so
-  timing reads describe the 90 minutes. A concession pattern is a
-  "potential opening" to test, never a fitness inference.
+  timing reads describe the 90 minutes. Conference and NCAA tournament
+  matches still play overtime, and pre-2022 seasons did too: when the
+  held minute bands include such matches, state the coverage rather
+  than assuming 90. A concession pattern is a "potential opening" to
+  test, never a fitness inference.
 - O3. **Shot volume**: shots and shots-on-goal for and against, corners
   for and against. The record measures volume and territorial exposure —
   never write "chances" or possession, which it does not hold.
@@ -94,7 +102,20 @@ potential opening, implication, up to two news items, head-to-head strip —
 absorb O1 (header), O2/O3 (threat and opening evidence), O6 (roster
 change), O7 (key threat), O8 (strip), O9 (header), O10 (news), O11
 (implication). O4 and O5 have no dedicated home and survive only through
-the filter.
+the filter. The caveat the insight filter requires is carried by the
+evidence itself — O2 and O3's stated samples and coverage lines serve as
+the card's caveat; there is no separate caveat field.
+
+## The roster pages (once)
+
+- R1. **The squad map**: who returns, who departed, and who arrives, by
+  line of the team, drawn from the digest's roster shape — counts and
+  minute shares in the map itself, people named in the surrounding
+  prose per the shares rule.
+- R2. **The line-by-line read**: one row per line of the team (in goal,
+  back line, midfield, front line, squad age) tying last season's
+  problems to this season's makeup, each row splitting the shape
+  figures from the judgment built on them.
 
 ## The focus programme (once, outside-in)
 
@@ -105,16 +126,21 @@ the filter.
   brief's findings.
 - F2. **The summer ledger**: the verified offseason footprints of rostered
   players — summer-league minutes, national or youth-national call-ups,
-  honors, notable club activity — consolidated to at most three footnoted
-  signals. What counts as verified, how identity is bound, and where to
-  search live in `research-protocol.md`.
+  honors, notable club activity — consolidated to at most three signals,
+  each carrying its sources inline (there is no sources page). What
+  counts as verified, how identity is bound, and where to search live in
+  `research-protocol.md`.
 
-## The watchlist (two per opponent)
+## The watchlist (up to two per opponent)
 
-- W1. For each rostered opponent, the two players whose held record or
-  verified offseason will move first — drawn from DIFFERENT evidence
-  classes (a verified offseason move, a small-sample riser, an
-  availability or usage signal, a top returner). Two top scorers is a
-  formula, not a pick. Each profile answers two questions: why the cited
-  record says to watch them, and what preseason play would verify or kill
-  the signal.
+- W1. For each opponent, up to two players whose held record or verified
+  offseason will move first — each pick admitted by the insight filter,
+  never by quota. An opponent whose record supports no pick contributes
+  none, and an unpublished roster is a named gap, not a forced pick.
+  Draw a pair from DIFFERENT evidence classes where the record offers
+  them (a verified offseason move, a small-sample riser, an availability
+  or usage signal, a top returner); where it offers only one class, one
+  strong pick beats a manufactured pair. Two top scorers is a formula,
+  not a pick. Each profile answers two questions: why the cited record
+  says to watch them, and what preseason play would verify or kill the
+  signal.

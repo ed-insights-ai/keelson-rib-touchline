@@ -67,6 +67,11 @@ stretched.
   can raise a claim to *confirmed at medium confidence* — the fetch
   settles that the source says it; the tier still says what kind of
   source it is, and never rises by being fetched.
+- **Report entry.** A confirmed claim at high confidence may appear in
+  report prose freely. A confirmed-at-medium claim enters only with its
+  source kind named in the sentence ("per the player's own
+  announcement") and never stands as the sole support for a decision or
+  a major-news item.
 
 ## Conflicting sources
 
@@ -103,7 +108,7 @@ directory), and when a single page states the whole fact, prefer it.
 ## The dead-end bucket
 
 `attested_uncaptured` is a dead end for report content: claims there
-never reach the report in any form — not as fact, not as a hedge, not
+never reach the report in any form, not as fact, not as a hedge, not
 as an uncertainty. They surface only in the run summary, for a human to
 capture or discard. Downstream stages must not treat the bucket as soft
 evidence.
