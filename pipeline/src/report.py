@@ -1335,14 +1335,11 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
   <h1>{esc(digest.get("conference", ""))} {gender_word} Soccer<br><span class="cover-season num">{esc(digest.get("season", ""))} Preseason Intelligence</span></h1>
   <div class="cover-rule"></div>
   {f'<p class="headline">{esc(narrative.get("headline", ""))}</p>' if narrative.get("headline") else ""}
-  <div class="cover-meta">
-    <div><span class="viz-title">Prepared</span> {esc(_long_date(generated))}</div>
-    <div><span class="viz-title">Record</span> seasons {esc(span)}, published data only</div>
-    <div><span class="viz-title">Standard</span> every figure traces to the collection record; gaps are named, never guessed</div>
-  </div>
   {extrapolated}
-  <div class="cover-foot">Independent analysis · prepared by EDInsights from public, published data ·
-  not issued by or affiliated with {esc(focus_name)} University Athletics</div>
+  <div class="cover-bottom">
+    <div class="cover-meta num">Prepared {esc(_long_date(generated))} · seasons {esc(span)} · published data only</div>
+    <div class="cover-mark">EDInsights <span>Independent analysis</span></div>
+  </div>
 </section>""")
 
     sheets.append(exec_sheet(digest, narrative))
@@ -1497,19 +1494,21 @@ a{color:var(--gold)}
 box-shadow:0 1px 4px rgba(60,50,20,.14),0 8px 28px rgba(60,50,20,.08);
 page-break-after:always}
 
-.cover{padding-top:110px;min-height:600px}
+.cover{display:flex;flex-direction:column;padding-top:150px;min-height:920px}
 .cover-eyebrow{font:700 12px/1 "Avenir Next Condensed","Arial Narrow",sans-serif;
-letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
-.cover h1{font:700 52px/1.04 "Avenir Next Condensed","Arial Narrow",sans-serif;
+letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
+.cover h1{font:700 54px/1.04 "Avenir Next Condensed","Arial Narrow",sans-serif;
 text-transform:uppercase;letter-spacing:.005em}
 .cover-season{color:var(--ink2)}
-.cover-rule{height:3px;background:var(--gold-fill);margin:26px 0;width:180px}
-.headline{font-size:17px;line-height:1.55;max-width:60ch;color:var(--ink2);
-border-left:3px solid var(--gold-fill);padding-left:16px;margin:18px 0 26px}
-.cover-meta{margin-top:26px;display:grid;gap:8px;font-size:13px;color:var(--ink2)}
-.cover-meta .viz-title{display:inline-block;width:84px;margin:0}
-.cover-foot{margin-top:56px;font-size:11.5px;color:var(--faint);border-top:1px solid var(--rule);
-padding-top:12px}
+.cover-rule{height:3px;background:var(--gold-fill);margin:30px 0;width:180px}
+.headline{font-size:17.5px;line-height:1.6;max-width:56ch;color:var(--ink2);
+border-left:3px solid var(--gold-fill);padding-left:18px;margin:20px 0}
+.cover-bottom{margin-top:auto;display:flex;justify-content:space-between;align-items:baseline;
+border-top:1px solid var(--rule);padding-top:14px}
+.cover-meta{font-size:12px;color:var(--muted)}
+.cover-mark{font:700 13px/1 "Avenir Next Condensed","Arial Narrow",sans-serif;
+letter-spacing:.16em;text-transform:uppercase;color:var(--ink2)}
+.cover-mark span{color:var(--faint);font-size:10px;letter-spacing:.12em;margin-left:8px}
 
 .section-head{font:700 23px/1.1 "Avenir Next Condensed","Arial Narrow",sans-serif;
 text-transform:uppercase;letter-spacing:.04em;margin:0 0 16px;
