@@ -15,6 +15,7 @@ from src.sidearm_live import (
     assert_served_season,
     assert_untrapped_schedule,
     collect_programme,
+    conference_members,
     parse_roster_page,
     parse_schedule_page,
 )
@@ -690,6 +691,65 @@ def test_marker_less_theme_derives_conference_and_says_so() -> None:
         fixture["conference_game_source"] == "derived:membership"
         for fixture in fixtures
     )
+
+
+def _with_lsc() -> list[SchoolConfig]:
+    return _gac() + [
+        SchoolConfig(
+            name="Dallas Baptist",
+            abbreviation="DBU",
+            conference="LSC",
+            prefix="dbu",
+            base_url="https://example.test/sports/mens-soccer",
+            gender="men",
+        )
+    ]
+
+
+def test_conference_members_is_scoped_by_conference_and_by_gender() -> None:
+    """Identity spans every configured school; membership must not."""
+    schools = _with_lsc()
+    assert conference_members(schools, "men", "LSC") == {"dallas-baptist"}
+    assert "dallas-baptist" not in conference_members(schools, "men", "GAC")
+    # The women's programmes in the fixture are GAC too, and must not leak in.
+    assert conference_members(schools, "men", "GAC") == {
+        "harding",
+        "fort-hays-state",
+        "rogers-state",
+        "newman",
+        "northeastern-state",
+    }
+
+
+def test_membership_derivation_is_one_conference_not_every_school() -> None:
+    """A second conference must not turn a cross-conference game into one.
+
+    The derived flag tested both sides against the whole configured school list,
+    which is indistinguishable from "this conference" only while exactly one
+    conference is configured. With the Lone Star Conference alongside the GAC, a
+    Rogers State versus Dallas Baptist fixture is emphatically not a conference
+    game, and nothing would have caught it: the collect succeeds either way.
+    """
+    schools = _with_lsc()
+    rows = _dom_game(
+        game_id="1", opponent="Harding (Ark.)", date="Oct 1 (Thu)"
+    ) + _dom_game(game_id="2", opponent="Dallas Baptist", date="Sep 6 (Sun)")
+    fixtures = parse_schedule_page(
+        _dom_page(rows),
+        page_url="https://example.test/schedule/2026",
+        year=2026,
+        owner_slug="rogers-state",
+        aliases=identity_aliases(schools, "men"),
+        members=conference_members(schools, "men", "GAC"),
+    )
+    by_id = {str(fixture["id"]).rsplit(":", 1)[-1]: fixture for fixture in fixtures}
+    assert by_id["1"]["conference_game"] is True
+    assert by_id["2"]["conference_game"] is False
+    # Identity is NOT scoped, so the out-of-conference opponent still canonicalizes.
+    assert {by_id["2"]["home"], by_id["2"]["away"]} == {
+        "rogers-state",
+        "dallas-baptist",
+    }
 
 
 def test_marked_theme_publishes_the_conference_flag() -> None:

@@ -360,6 +360,28 @@ def identity_aliases(
     return aliases
 
 
+def conference_members(
+    schools: list[SchoolConfig], gender: str, conference: str
+) -> set[str]:
+    """Programme slugs belonging to ONE conference, for the conference-game test.
+
+    Deliberately a different set from ``identity_aliases``.  That map should span
+    every configured school, because an out-of-conference opponent still deserves
+    a canonical slug.  Membership must not: deriving it from the whole alias map
+    marks a cross-conference fixture as a conference game, which is correct only
+    while exactly one conference is configured.
+
+    Scoped to the conference rather than to the run's requested programmes, since
+    a fixture against a member we did not happen to collect is still a conference
+    game.
+    """
+    return {
+        programme_slug(school.name)
+        for school in schools
+        if school.gender == gender and school.conference == conference
+    }
+
+
 def opponent_slug(name: str, aliases: dict[str, str]) -> str:
     """Resolve a published opponent string to a stable identity, or record it.
 
@@ -483,6 +505,7 @@ def _parse_schedule_dom(
     year: int,
     owner_slug: str,
     aliases: dict[str, str],
+    members: set[str] | None = None,
 ) -> list[dict[str, object]]:
     """Read the server-rendered game list.
 
@@ -495,8 +518,10 @@ def _parse_schedule_dom(
     the flag is derived from configured membership — both sides configured for
     this collection and the game not an exhibition — and stamped
     ``conference_game_source: derived:membership`` so no derived value can
-    masquerade as a publisher's claim.  Membership means the school list this
-    run was configured with, never a conference named in code.
+    masquerade as a publisher's claim.  Membership means one conference's member
+    list, resolved from configuration, never a conference named in code — and
+    never the whole configured school list, which silently marks a GAC-versus-LSC
+    fixture as a conference game the moment a second conference is configured.
     """
     soup = BeautifulSoup(html, "lxml")
     rows = soup.select("li.sidearm-schedule-game")
@@ -513,7 +538,10 @@ def _parse_schedule_dom(
         return bool(marker.get_text(strip=True)) or marker.select_one("img") is not None
 
     theme_marks_conference = any(conference_marked(row) for row in rows)
-    member_slugs = set(aliases.values())
+    # Falling back to the whole alias map preserves single-conference behaviour
+    # for callers that have no member list to give, which is every test fixture
+    # and nothing on the collection path.
+    member_slugs = set(aliases.values()) if members is None else members
 
     fixtures: list[dict[str, object]] = []
     for row in rows:
@@ -621,6 +649,7 @@ def parse_schedule_page(
     year: int,
     owner_slug: str,
     aliases: dict[str, str],
+    members: set[str] | None = None,
 ) -> list[dict[str, object]]:
     events: dict[str, dict[str, object]] = {}
     for component in _component_objects(html):
@@ -706,7 +735,12 @@ def parse_schedule_page(
     # every game the JSON stub left out, under the same identifiers.
     json_ids = {str(fixture["id"]) for fixture in fixtures}
     for fixture in _parse_schedule_dom(
-        html, page_url=page_url, year=year, owner_slug=owner_slug, aliases=aliases
+        html,
+        page_url=page_url,
+        year=year,
+        owner_slug=owner_slug,
+        aliases=aliases,
+        members=members,
     ):
         if str(fixture["id"]) not in json_ids:
             fixtures.append(fixture)
@@ -1474,6 +1508,7 @@ def collect_programme(
     aliases: dict[str, str],
     session: requests.Session | None = None,
     layers: Sequence[str] = DEFAULT_LAYERS,
+    members: set[str] | None = None,
 ) -> ProgrammeCollection:
     """Collect the requested layers, each standing or falling on its own.
 
@@ -1525,6 +1560,7 @@ def collect_programme(
                 year=year,
                 owner_slug=slug,
                 aliases=aliases,
+                members=members,
             )
             assert_untrapped_schedule(
                 page.html, year, page.final_url, fixtures, slug
