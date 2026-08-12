@@ -138,6 +138,78 @@ def test_is_conference_member(membership_document):
     )
 
 
+def test_derivation_is_conference_agnostic():
+    document = {
+        "version": 1,
+        "seasons": {"from": 2016, "to": 2025},
+        "conferences": ["GAC", "MIAA", "independent", "non_member"],
+        "memberships": {
+            "harding": {
+                "men": [
+                    {
+                        "conference": "GAC",
+                        "from_season": 2016,
+                        "to_season": 2025,
+                        "source": "test",
+                    }
+                ]
+            },
+            "fort-hays-state": {
+                "men": [
+                    {
+                        "conference": "MIAA",
+                        "from_season": 2016,
+                        "to_season": 2025,
+                        "source": "test",
+                    }
+                ]
+            },
+        },
+    }
+
+    assert (
+        membership.conference_for("harding", "men", 2020, document=document)
+        == "GAC"
+    )
+    assert (
+        membership.conference_for(
+            "fort-hays-state",
+            "men",
+            2020,
+            document=document,
+        )
+        == "MIAA"
+    )
+    assert membership.is_conference_member(
+        "harding",
+        "men",
+        2020,
+        conference="GAC",
+        document=document,
+    )
+    assert membership.is_conference_member(
+        "fort-hays-state",
+        "men",
+        2020,
+        conference="MIAA",
+        document=document,
+    )
+    assert not membership.is_conference_member(
+        "harding",
+        "men",
+        2020,
+        conference="MIAA",
+        document=document,
+    )
+    assert not membership.is_conference_member(
+        "fort-hays-state",
+        "men",
+        2020,
+        conference="GAC",
+        document=document,
+    )
+
+
 def test_validation_rejects_contract_violations(membership_document):
     unknown_conference = copy.deepcopy(membership_document)
     unknown_conference["memberships"]["harding"]["men"][0]["conference"] = "other"
