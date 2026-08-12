@@ -47,14 +47,14 @@ import {
 } from "../src/season.ts";
 
 const base: FixturesFile = {
-  schema: "touchline.fixtures/1",
+  schema: "touchline.fixtures/2",
   season: 2026,
   gender: "men",
   conference: "GAC",
   collected_at: "2026-08-09T21:00:00Z",
   programmes: [
-    { slug: "harding", name: "Harding" },
-    { slug: "rogers-state", name: "Rogers State" },
+    { slug: "harding", name: "Harding", conference: "GAC" },
+    { slug: "rogers-state", name: "Rogers State", conference: "GAC" },
   ],
   fixtures: [],
 };
@@ -528,7 +528,7 @@ describe("the board markup", () => {
       projectName: "p",
       fixtures: {
         ...base,
-        programmes: [...base.programmes, { slug: "newman", name: "Newman" }],
+        programmes: [...base.programmes, { slug: "newman", name: "Newman", conference: "GAC" }],
         fixtures: [
           {
             id: "1",
@@ -717,7 +717,7 @@ describe("the board markup", () => {
         projectName: "p",
         fixtures: {
           ...base,
-          programmes: [...base.programmes, { slug: "newman", name: "Newman" }],
+          programmes: [...base.programmes, { slug: "newman", name: "Newman", conference: "GAC" }],
           fixtures: [
             {
               id: "1",
@@ -988,7 +988,7 @@ describe("the board markup", () => {
 
   test("a single-programme season keeps the ledger, not a one-row matrix", () => {
     const html = render({
-      programmes: [{ slug: "harding", name: "Harding" }],
+      programmes: [{ slug: "harding", name: "Harding", conference: "GAC" }],
       fixtures: [
         { id: "1", date: "2026-09-01", home: "harding", away: "delta-st", status: "scheduled" },
       ],
@@ -1011,8 +1011,8 @@ describe("the board markup", () => {
     const hostile = '<img src=x onerror="alert(1)">';
     const html = render({
       programmes: [
-        { slug: "x", name: hostile },
-        { slug: "rogers-state", name: "Rogers State" },
+        { slug: "x", name: hostile, conference: "GAC" },
+        { slug: "rogers-state", name: "Rogers State", conference: "GAC" },
       ],
       // A fixture is needed for the full name to reach a card and a table row.
       fixtures: [
@@ -1088,6 +1088,15 @@ describe("the fixtures schema", () => {
       fixturesFileSchema.parse({
         ...base,
         fixtures: [{ id: "1", date: "9/1/2026", home: "a", away: "b", status: "scheduled" }],
+      }),
+    ).toThrow();
+  });
+
+  test("requires a conference on every programme", () => {
+    expect(() =>
+      fixturesFileSchema.parse({
+        ...base,
+        programmes: [{ slug: "harding", name: "Harding" }],
       }),
     ).toThrow();
   });
