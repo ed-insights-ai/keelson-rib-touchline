@@ -193,6 +193,7 @@ def test_is_conference_member(membership_document):
         "harding",
         "women",
         2016,
+        conference="GAC",
         document=membership_document,
     )
     assert membership.is_conference_member(
@@ -206,14 +207,99 @@ def test_is_conference_member(membership_document):
         "fort-hays-state",
         "women",
         2025,
+        conference="GAC",
         document=membership_document,
     )
     assert not membership.is_conference_member(
         "unknown",
         "men",
         2025,
+        conference="GAC",
         document=membership_document,
     )
+
+
+def test_derivation_is_conference_agnostic():
+    document = {
+        "version": 1,
+        "seasons": {"from": 2016, "to": 2025},
+        "conferences": ["GAC", "MIAA", "independent", "non_member"],
+        "memberships": {
+            "harding": {
+                "men": [
+                    {
+                        "conference": "GAC",
+                        "from_season": 2016,
+                        "to_season": 2025,
+                        "source": "test",
+                    }
+                ]
+            },
+            "fort-hays-state": {
+                "men": [
+                    {
+                        "conference": "MIAA",
+                        "from_season": 2016,
+                        "to_season": 2025,
+                        "source": "test",
+                    }
+                ]
+            },
+        },
+    }
+
+    assert (
+        membership.conference_for("harding", "men", 2020, document=document)
+        == "GAC"
+    )
+    assert (
+        membership.conference_for(
+            "fort-hays-state",
+            "men",
+            2020,
+            document=document,
+        )
+        == "MIAA"
+    )
+    assert membership.is_conference_member(
+        "harding",
+        "men",
+        2020,
+        conference="GAC",
+        document=document,
+    )
+    assert membership.is_conference_member(
+        "fort-hays-state",
+        "men",
+        2020,
+        conference="MIAA",
+        document=document,
+    )
+    assert not membership.is_conference_member(
+        "harding",
+        "men",
+        2020,
+        conference="MIAA",
+        document=document,
+    )
+    assert not membership.is_conference_member(
+        "fort-hays-state",
+        "men",
+        2020,
+        conference="GAC",
+        document=document,
+    )
+
+
+def test_validation_accepts_declared_conference(membership_document):
+    # RMAC because the shipped document does not declare it yet — the point is
+    # that declaring a NEW conference in data is all it takes; LSC already
+    # graduated from this test into the real file.
+    document = copy.deepcopy(membership_document)
+    document["conferences"].append("RMAC")
+    document["memberships"]["harding"]["men"][0]["conference"] = "RMAC"
+
+    assert membership.validate(document) == []
 
 
 def test_validation_rejects_contract_violations(membership_document):

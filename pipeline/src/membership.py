@@ -66,7 +66,7 @@ def is_conference_member(
     slug: str,
     gender: str,
     season_year: int,
-    conference: str = "GAC",
+    conference: str,
     *,
     document: dict[str, Any] | None = None,
 ) -> bool:
