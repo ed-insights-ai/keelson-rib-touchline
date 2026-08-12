@@ -32,6 +32,7 @@ from src.sidearm_live import (
     LAYER_STATS,
     STATE_COMPLETE,
     STATE_EMPTY,
+    STATE_NO_COLLECTOR,
     STATE_UNAVAILABLE,
     LiveCollectionError,
     boxscore_links,
@@ -373,6 +374,14 @@ def collect(
                 errors.append(f"match {fixture_id}: {'; '.join(failures)}")
 
         for result in results:
+            if result.state(LAYER_SCHEDULE) == STATE_NO_COLLECTOR:
+                record(
+                    result.slug,
+                    LAYER_MATCHES,
+                    coverage.STATE_NO_COLLECTOR,
+                    reason=result.outcomes[LAYER_SCHEDULE].reason,
+                )
+                continue
             if result.state(LAYER_SCHEDULE) not in {STATE_COMPLETE, STATE_EMPTY}:
                 record(
                     result.slug,

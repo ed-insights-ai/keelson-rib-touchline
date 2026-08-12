@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 DEFAULT_CONFIG = Path(__file__).resolve().parent.parent / "config" / "schools.toml"
+DEFAULT_LIVE_COLLECTOR = "sidearm"
 
 
 @dataclass
@@ -34,6 +35,7 @@ class SchoolConfig:
     # different host, so Harding supplies this explicitly; SideArm sources can
     # use base_url directly.
     live_base_url: str = ""
+    live_scraper: str = ""
 
     def build_game_url(self, year: int, game_num: int) -> str:
         """Build a game URL from the template, substituting {year}, {prefix}, {num:02d}."""
@@ -46,6 +48,14 @@ class SchoolConfig:
         if "/sports/" in self.base_url and "{" not in self.base_url:
             return self.base_url.rstrip("/")
         return ""
+
+    def live_collector(self) -> str:
+        """Return the live-path platform, independently of historical ``scraper``.
+
+        ``scraper`` identifies the historical box-score platform. ``live_scraper``
+        overrides the live collector and defaults to SideArm-new.
+        """
+        return self.live_scraper or DEFAULT_LIVE_COLLECTOR
 
 
 def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
@@ -78,6 +88,7 @@ def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
             gender=entry.get("gender", "men"),
             scraper=entry.get("scraper", "statcrew"),
             live_base_url=entry.get("live_base_url", ""),
+            live_scraper=entry.get("live_scraper", ""),
         )
         if school.enabled and not school.base_url:
             raise ValueError(

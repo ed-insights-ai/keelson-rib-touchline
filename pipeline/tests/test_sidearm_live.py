@@ -7,8 +7,11 @@ from unittest.mock import MagicMock
 
 import pytest
 
+from src import coverage
+from src.config import SchoolConfig
 from src.sidearm_live import (
     LiveCollectionError,
+    STATE_NO_COLLECTOR,
     identity_aliases,
     opponent_slug,
     PublishedPage,
@@ -19,7 +22,6 @@ from src.sidearm_live import (
     parse_roster_page,
     parse_schedule_page,
 )
-from src.config import SchoolConfig
 
 
 def _schedule_html(
@@ -562,6 +564,28 @@ def test_a_programme_with_no_live_recipe_reports_every_layer_unavailable() -> No
     assert result.state("schedule") == "unavailable"
     assert result.state("roster") == "unavailable"
     assert "no live schedule/roster recipe" in (result.outcomes["roster"].reason or "")
+
+
+def test_an_unimplemented_live_collector_reports_no_collector_without_fetching() -> None:
+    school = _school()
+    school.live_scraper = "sidearm_legacy"
+    session = MagicMock()
+
+    result = collect_programme(
+        school,
+        2026,
+        {},
+        session=session,
+        layers=("schedule", "roster", "stats"),
+    )
+
+    assert STATE_NO_COLLECTOR == coverage.STATE_NO_COLLECTOR
+    assert all(
+        result.state(layer) == STATE_NO_COLLECTOR
+        for layer in ("schedule", "roster", "stats")
+    )
+    assert "sidearm_legacy" in (result.outcomes["schedule"].reason or "")
+    session.get.assert_not_called()
 
 
 def _dom_game(

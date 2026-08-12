@@ -54,10 +54,10 @@ from urllib.parse import urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup
-from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 from src.config import SchoolConfig
+from src.tls import TruststoreHTTPAdapter
 
 
 class LiveCollectionError(RuntimeError):
@@ -91,6 +91,8 @@ DEFAULT_LAYERS: tuple[str, ...] = (
 STATE_COMPLETE = "complete"  # served, proven, and holds rows
 STATE_EMPTY = "empty"  # served and proven, and genuinely holds nothing
 STATE_UNAVAILABLE = "unavailable"  # could not be collected; `reason` says why
+STATE_NO_COLLECTOR = "no-collector"
+LIVE_COLLECTORS: frozenset[str] = frozenset({"sidearm"})
 
 
 @dataclass(frozen=True)
@@ -131,7 +133,7 @@ def build_session() -> requests.Session:
         {"User-Agent": "Mozilla/5.0 (Touchline educational/research collector)"}
     )
     retry = Retry(total=3, backoff_factor=1, status_forcelist=[500, 502, 503, 504])
-    adapter = HTTPAdapter(max_retries=retry)
+    adapter = TruststoreHTTPAdapter(max_retries=retry)
     session.mount("https://", adapter)
     session.mount("http://", adapter)
     return session
@@ -1520,6 +1522,23 @@ def collect_programme(
     """
     slug = programme_slug(school.name)
     wanted = tuple(layers)
+    platform = school.live_collector()
+    if platform not in LIVE_COLLECTORS:
+        reason = (
+            f"{school.name} {school.gender}: no live collector for platform "
+            f"'{platform}' — the '{platform}' recipe is not implemented"
+        )
+        return ProgrammeCollection(
+            slug=slug,
+            name=school.name,
+            fixtures=[],
+            players=[],
+            outcomes={
+                layer: LayerOutcome(layer, STATE_NO_COLLECTOR, reason=reason)
+                for layer in wanted
+            },
+        )
+
     outcomes: dict[str, LayerOutcome] = {}
     fixtures: list[dict[str, object]] = []
     players: list[dict[str, str]] = []
