@@ -37,11 +37,15 @@ inputs:
 
 # ─────────────────────────────────────────────────────────────────────────────
 # The evidence chain, in order:
-#   digest (deterministic numbers) → research (fan-out, one programme per
-#   iteration, findings verified at URLs) → verify (re-fetch every claimed
-#   source; unsupported claims are dropped, not softened) → narrative (prose
-#   under the style contract, figures from the digest only) → render
-#   (deterministic HTML) → summary.
+#   digest (deterministic numbers) → research loop (one programme per
+#   iteration) → verification loop + deterministic merge → narrative core +
+#   opponent-card loop + deterministic assembly → render → summary.
+#
+# Keelson has no runtime-sized fan-out. Conference-scale stages use bounded
+# loops followed by deterministic merges. max_iterations and timeout are
+# load-time safety caps, not workload targets: early exit keeps small
+# conferences cheap, and larger supported conferences require raising the
+# constants rather than expecting them to scale from the digest count.
 #
 # A bash body is NOT template-substituted — inputs arrive as
 # KEELSON_INPUTS_<key>, upstream output as KEELSON_NODE_<id>_OUTPUT.
@@ -131,18 +135,40 @@ nodes:
         --conference "$KEELSON_INPUTS_conference" \
         --focus "$KEELSON_INPUTS_focus"
 
+  - id: programme-count
+    depends_on: [digest]
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      DG="data/scratch/digest-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
+      N=$(jq -e '.programmes | length' "$DG" 2>/dev/null) || {
+        printf 'ALARM: digest %s is missing or unparseable — cannot size the research sweep.\n' "$DG"
+        exit 1
+      }
+      if [ "$N" -lt 1 ]; then
+        printf 'ALARM: digest lists 0 programmes.\n'
+        exit 1
+      fi
+      printf '%s\n' "$N"
+
   - id: research
-    depends_on: [digest, conference-shard]
+    depends_on: [digest, conference-shard, programme-count]
     loop:
-      max_iterations: 12
+      # Keelson cannot derive scalar loop limits at runtime; early exit makes this a safety cap.
+      max_iterations: 24
       fresh_context: true
       until: ALL RESEARCHED
       until_bash: |
         set -u
         D="data/research/${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}"
         DG="data/scratch/digest-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
-        N=$(jq '.programmes | length' "$DG" 2>/dev/null || echo 99)
-        C=$(jq -s '[.[] | select((.coach // null) != null)] | length' "$D"/research-*.json 2>/dev/null || echo 0)
+        N=$(jq -e '.programmes | length' "$DG") || exit $?
+        FILES=("$D"/research-*.json)
+        if [ ! -e "${FILES[0]}" ]; then
+          C=0
+        else
+          C=$(jq -s '[.[] | select((.coach // null) != null)] | length' "${FILES[@]}") || exit $?
+        fi
         [ "$C" -ge "$N" ]
       prompt: |
         You are one iteration of the Touchline offseason research stage for the
@@ -267,7 +293,11 @@ nodes:
       set -uo pipefail
       D="data/research/${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}"
       DG="data/scratch/digest-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
-      N=$(jq '.programmes | length' "$DG")
+      N=$(jq -e '.programmes | length' "$DG")
+      if [ -z "${N:-}" ] || [ "$N" -lt 1 ]; then
+        printf 'ALARM: digest unreadable in validate-research.\n'
+        exit 1
+      fi
       MISSING=""
       for slug in $(jq -r '.programmes | keys[]' "$DG"); do
         F="$D/research-$slug.json"
@@ -285,50 +315,108 @@ nodes:
 
   - id: verify
     depends_on: [validate-research]
-    context: fresh
-    # Mechanical refutation: fetch each URL, keep or drop. The small tier
-    # is enough.
-    model: gpt-5.6-luna
+    # Loop nodes inherit the workflow model; Keelson drops per-loop model overrides.
     timeout: 900000
-    prompt: |
-      You are the verification pass of the Touchline report workflow — the
-      adversary of the research stage. Season $inputs.season $inputs.gender.
+    loop:
+      # Fixed safety cap: scalar loop limits cannot read the runtime programme count.
+      max_iterations: 24
+      fresh_context: true
+      until: ALL VERIFIED
+      until_bash: |
+        set -u
+        D="data/research/${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}"
+        DG="data/scratch/digest-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
+        SLUGS=$(jq -er '.programmes | keys[]' "$DG") || exit $?
+        for slug in $SLUGS; do
+          F="$D/verified-$slug.json"
+          [ -f "$F" ] && [ "$F" -nt "$DG" ] || exit 1
+        done
+      prompt: |
+        You are one iteration of the Touchline verification stage for the
+        $inputs.season $inputs.gender season. Verify EXACTLY ONE programme,
+        write its result, then stop.
 
-      Read every file in data/research/$inputs.season-$inputs.gender/.
-      For EACH finding, re-fetch its URL and check that the page actually
-      supports the claim as written (the name appears, the honor is named, the
-      date is plausible). You are trying to REFUTE each claim; keep only what
-      survives. A finding whose page cannot be fetched or does not support the
-      text is dropped — recorded, never softened into the report.
+        1. Read data/scratch/digest-$inputs.season-$inputs.gender-$inputs.focus.json.
+           Pick the FIRST programme whose
+           data/research/$inputs.season-$inputs.gender/verified-<slug>.json is
+           missing or is not newer than the digest. The digest is rebuilt for
+           every report run, so this timestamp check prevents stale verification
+           from being reused.
+        2. Read only that programme's
+           data/research/$inputs.season-$inputs.gender/research-<slug>.json.
+        3. For EACH finding, re-fetch its URL and check that the page supports
+           the claim as written: the name appears, the honor is named, and the
+           date is plausible. You are trying to REFUTE each claim. Keep only
+           what survives. A finding whose page cannot be fetched or does not
+           support the text is dropped — recorded, never softened.
+        4. Re-fetch the top-level coach object's URL and confirm that the page
+           names the coach, and states the tenure when since_season is set. If
+           the page does not support it, downgrade status to "unknown", set
+           since_season to null, and record the failure in dropped. The coach
+           STAYS in the coaches map either way.
+        5. Write — under the data home named on the 'data home:' line of
+           $preflight.output, never relative to another directory —
+           data/research/$inputs.season-$inputs.gender/verified-<slug>.json:
+           {
+             "schema": "touchline.research-verified/1",
+             "findings": [ ...this programme's surviving findings, unchanged... ],
+             "coaches": { "<slug>": ...this programme's coach object... },
+             "dropped": [ { "programme": str, "text": str, "reason": str } ],
+             "attested_uncaptured": [ ...from this research file... ],
+             "unswept": [ ...from this research file, deduplicated... ]
+           }
+           Include ALL six keys and exactly one coaches entry.
+        6. Reply with one line: programme slug, surviving count, dropped count,
+           attested count, and unswept count. Reply ALL VERIFIED only after a
+           mechanical check finds no missing or stale per-programme file.
 
-      Each file's top-level "coach" object gets the same treatment:
-      re-fetch its url and confirm the page names the coach (and states
-      the tenure when since_season is set). A coach object whose page
-      does not support it is downgraded to status "unknown" with
-      since_season null, and the failure recorded in dropped — but it
-      STAYS in the coaches map either way: the map must hold exactly one
-      entry per research file that carries a coach object, and a
-      validation gate fails the run when entries are missing. The output
-      file must contain ALL of these keys: schema, findings, coaches,
-      dropped, attested_uncaptured, unswept.
-
-      Write — under the data home named on the 'data home:' line of
-      $preflight.output, never relative to another directory —
-      data/research/$inputs.season-$inputs.gender/verified.json:
-      {
-        "schema": "touchline.research-verified/1",
-        "findings": [ ...surviving findings, unchanged... ],
-        "coaches": { "<slug>": ...each surviving coach object... },
-        "dropped": [ { "programme": str, "text": str, "reason": str } ],
-        "attested_uncaptured": [ ...merged from all research files... ],
-        "unswept": [ ...merged, deduplicated... ]
-      }
-
-      Reply with one line: surviving count, dropped count, attested count,
-      unswept count.
+  - id: merge-verified
+    depends_on: [verify]
+    timeout: 60000
+    bash: |
+      set -euo pipefail
+      D="data/research/${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}"
+      DG="data/scratch/digest-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
+      OUT="$D/verified.json"
+      TMP="$OUT.tmp"
+      trap 'rm -f "$TMP"' EXIT
+      FILES=()
+      SLUGS=$(jq -er '.programmes | keys[]' "$DG")
+      for slug in $SLUGS; do
+        F="$D/verified-$slug.json"
+        if [ ! -f "$F" ] || [ ! "$F" -nt "$DG" ]; then
+          printf 'ALARM: missing or stale per-programme verification %s.\n' "$F"
+          exit 1
+        fi
+        if ! jq -e --arg slug "$slug" '
+          .schema == "touchline.research-verified/1"
+          and ((.findings | type) == "array")
+          and ((.coaches | type) == "object")
+          and (.coaches | has($slug))
+          and ((.coaches | length) == 1)
+          and ((.dropped | type) == "array")
+          and ((.attested_uncaptured | type) == "array")
+          and ((.unswept | type) == "array")
+        ' "$F" >/dev/null; then
+          printf 'ALARM: invalid per-programme verification %s.\n' "$F"
+          exit 1
+        fi
+        FILES+=("$F")
+      done
+      jq -s '{
+        schema: "touchline.research-verified/1",
+        findings: [.[] | .findings[]?],
+        coaches: (map(.coaches) | add // {}),
+        dropped: [.[] | .dropped[]?],
+        attested_uncaptured: [.[] | .attested_uncaptured[]?],
+        unswept: ([.[] | .unswept[]?] | unique)
+      }' "${FILES[@]}" > "$TMP"
+      mv -f "$TMP" "$OUT"
+      trap - EXIT
+      jq -r '"verified merge: \(.coaches | length) coaches, \(.findings | length) findings, \(.dropped | length) dropped, \(.attested_uncaptured | length) attested, \(.unswept | length) unswept"' "$OUT"
 
   - id: validate-verified
-    depends_on: [verify]
+    depends_on: [merge-verified]
     timeout: 60000
     bash: |
       set -uo pipefail
@@ -362,52 +450,73 @@ nodes:
       PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
       TOUCHLINE_DATA_DIR="$PWD" uv run --project "$PIPELINE_DIR" normalize-research
 
-  - id: narrative
+  - id: narrative-core
     depends_on: [normalize]
     context: fresh
-    # The narrative is the report's judgment core: the top tier, thinking
-    # hard. This node is where the report is actually written.
     model: gpt-5.6-sol
     effort: xhigh
     timeout: 900000
     prompt: |
-      You are the narrative writer of the Touchline report workflow. The
-      pipeline directory is:
+      You are the core narrative writer of the Touchline report workflow.
+      Write only the executive, landscape, focus, and preseason-scorecard
+      material. Opponent cards and watchlist profiles are written separately.
+
+      The pipeline directory is:
       $resolve-pipeline.output
-      Its parent directory holds the report's content contracts — read BOTH
-      before writing anything:
+      Its parent directory holds the report's content contracts. Read BOTH
+      before writing:
         <pipeline-parent>/prompts/scouting-questionnaire.md  (what to answer)
         <pipeline-parent>/prompts/style-contract.md          (how it must read)
+      Also read the touchline.report-narrative/4 contract at the top of
+      <pipeline>/src/report.py.
 
       Your inputs, in this data home (the current directory):
-        data/scratch/digest-$inputs.season-$inputs.gender-$inputs.focus.json  — every figure
-          you may cite. THE ONLY SOURCE OF NUMBERS. If a figure is not in the
-          digest, it does not appear in your prose.
+        data/scratch/digest-$inputs.season-$inputs.gender-$inputs.focus.json
+          — THE ONLY SOURCE OF NUMBERS. If a figure is not there, it does not
+          appear in your prose.
         data/research/$inputs.season-$inputs.gender/verified.json —
           the only admissible news and offseason findings, each with source,
-          url, and date. attested_uncaptured items NEVER appear in the
-          report in any form — they stay in the research artifacts for the
-          run summary. If it isn't discoverable, it isn't in the report.
-          An undated source cannot date a claim.
+          URL, and date. attested_uncaptured items NEVER appear in report
+          prose. If it is not discoverable, it is not in the report. An
+          undated source cannot date a claim.
 
-      Write data/reports/narrative-$inputs.season-$inputs.gender-$inputs.focus.json
-      conforming to the touchline.report-narrative/4 contract documented at
-      the top of <pipeline>/src/report.py (read it). Requirements:
+      Create data/scratch/report-$inputs.season-$inputs.gender-$inputs.focus/
+      and write narrative-core.json there as plain JSON:
+      {
+        "schema": "touchline.report-narrative-core/1",
+        "headline": str,
+        "exec": {
+          "bottom_line": str,
+          "findings": [
+            {"evidence": str, "meaning": str, "implication": str,
+             "label": "observed"|"projected"|"signal"|"judgment",
+             "confidence": "high"|"medium"|"low"}
+          ],
+          "decisions": [{"title": str, "text": str}],
+          "priorities": [str]
+        },
+        "landscape": str,
+        "focus": {
+          "overview": str,
+          "roster": [{"title": str, "text": str}],
+          "news": [{"text": str, "source": str, "url": str, "date": str}],
+          "offseason": [
+            {"player": str, "text": str,
+             "sources": [{"source": str, "url": str, "date": str}]}
+          ]
+        },
+        "questions": [str]
+      }
+
+      Requirements:
       - THE STRUCTURE IS A TOOLKIT, NOT A TEMPLATE. Which decisions get
-        made, which players get watchlist profiles, which opponents land in
-        which tier, and which position groups get attention all come from
-        THIS team's digest and findings at this moment — never from a prior
-        report's topics. Do not assume any fixed decision (a goalkeeper
-        battle, a scoring gap) exists; find what the data says and write
-        that.
+        made and which position groups get attention come from THIS team's
+        current record and findings, never from a prior report's topics. Do
+        not assume a goalkeeper battle, scoring gap, or any other fixed story.
       - PAGE BUDGETS are hard print boundaries the renderer cannot fix for
         you: bottom_line at most 70 words; focus.overview at most 110
-        words; landscape at most 100 words; each opponent news array at
-        most 2 ordinary items (verified major news — coach changes,
-        intra-conference transfers, decorated arrivals — is exempt and
-        never cut; when majors alone exceed two, list them all, coach
-        change first); each watchlist "why" at most 90 words. Prose past
-        a budget spills onto a broken page.
+        words; landscape at most 100 words. Prose past a budget spills onto
+        a broken page.
       - exec: a bottom_line paragraph; EXACTLY 3 findings, each split into
         evidence (the fact), meaning (the interpretation), and implication
         (what the staff does with it) — never blend fact and judgment in
@@ -416,9 +525,9 @@ nodes:
         checkpoint, or anything on the season calendar is never a
         decision; apply the generic-decision test from the style
         contract: a decision title that would fit another team's report
-        unchanged is under-specified — rebind it to named players and
-        this team's numbers until it could belong to no one else; a short priorities list (it renders on the roster page,
-        so do not repeat the decisions)
+        unchanged is under-specified. Rebind it to named players and this
+        team's numbers until it could belong to no one else. Add a short
+        priorities list for the roster page without repeating the decisions.
       - the roster shape counts each squad's international players from
         published hometowns. Where the share is notable — especially in a
         newcomer class — say so and read experience accordingly: D2
@@ -444,55 +553,13 @@ nodes:
       - focus overview/news/offseason. The offseason ledger holds AT MOST
         3 consolidated signals — one item per player with every supporting
         citation in its sources array, never one item per source
-      - per-programme sections: threat, vulnerability, roster_note,
-        implication, an optional coach line, and a tier: "benchmark"
-        (sets the standard), "swing" (winnable fixture that decides the
-        season), or "update" (too little data — say what to re-check and
-        when). "update" is a DATA-COVERAGE tier only: a programme with
-        a held record and a published roster is NEVER update — a new
-        coach or an unknown system is expressed inside the full card
-        (the bench line, provisional-patterns framing), never by
-        dropping the card. The coach line applies the bench lens from the style
-        contract: when the verified pool's coaches section holds a
-        verified entry, write ONE line saying who runs the programme,
-        the verified tenure or change, and what that does to pattern
-        reliability (a long tenure makes the held record more
-        predictive; a new coach makes last season's patterns
-        provisional). Omit the line when the coach is unverified —
-        name the gap only where it changes preparation. Roster churn
-        under a new coach is a structural expectation, never a claim
-        that a named player was pushed out unless a source says so. Tier from the
-        findings, not from last season's table position alone. The tier
-        word itself never appears in prose — the card displays it; the
-        implication says what to DO, and consecutive cards must not
-        share a closing sentence shape. Use each
-        opponent's roster_shape the same way as the focus side's. If a
-        field has nothing verified, leave it empty — the renderer says
-        "Nothing verified to report."
-      - watchlist: UP TO 2 players per opponent, each admitted by the
-        insight filter, never by quota; none from the focus side (its
-        players live in the roster section). An opponent whose record
-        supports no pick contributes none, and an unpublished roster
-        forces nothing. Each entry is a half-page profile: player,
-        programme (slug), label, why (at most 90 words: what the held
-        record or verified offseason says), verify (one line: what
-        preseason play confirms or kills the signal), and role/class
-        when known. Where the record offers different evidence classes
-        (a verified move, a small-sample riser, an availability or usage
-        signal, a top returner), draw the pair from two of them; where
-        it offers only one class, one strong pick beats a manufactured
-        pair. Vary the sentence scaffold across profiles. There is no
-        dossier section — the watchlist profiles carry the per-player
-        depth; preseason questions become the scorecard — write them as
-        testable checks
-      - LENGTH: roughly 150-200 words of prose per rendered page — seven
-        fixed pages (cover, three brief pages, two roster pages, the
-        landscape) plus one per carded opponent plus each watchlist
-        sheet you produce. A seven-team conference lands near
-        2,400-2,900 words; a larger slate earns proportionally more,
-        never compression. Apply the insight filter in the style
-        contract; state each conclusion once and stop. Repetition, not
-        facts, is what makes a report long.
+      - questions are the preseason scorecard: testable checks, not generic
+        prompts, and they must not duplicate decisions
+      - LENGTH: roughly 150-200 words of prose per rendered fixed page.
+        These core sections own seven fixed pages: cover, three brief pages,
+        two roster pages, and the landscape. Apply the insight filter; state
+        each conclusion once and stop. Repetition, not facts, makes a report
+        long.
       - credibility rules (absolute): records are written W-L-T; the
         digest's availability_flags and usage_shifts are unverified
         signals — observed gaps with unknown causes, never conclusions;
@@ -506,19 +573,11 @@ nodes:
       - voice per the style contract: the vocabulary of a beat writer or
         an assistant coach, direct, no hype, every claim anchored to a
         cited number or source
-      - PER-PROGRAMME DATA FIDELITY: every record, count, and share you
-        write about a programme must be read directly from THAT
-        programme's section of the digest at the moment you write it —
-        never from a summary table you built earlier, never from memory
-        of another programme's row. Cross-programme scrambles (one team's
-        shots under another's name, a departed player listed as
-        returning) are the worst possible failure. AFTER drafting,
-        re-open the digest and re-verify, programme by programme: each
-        W-L-T record, each returning count, each named player's status
-        (the turnover section's returning/departed lists are
-        authoritative — a player in an opponent's departed list who
-        appears on the focus roster is a transfer, and a major story).
-        Fix every mismatch before writing the file.
+      - DATA FIDELITY: every record, count, and share must be read directly
+        from the relevant programme's section at the moment it is written,
+        never from memory or a summary built earlier. After drafting, re-open
+        the input and re-check every W-L-T record, returning count, and named
+        player's status. Cross-programme scrambles are the worst failure.
       - the report NEVER names its own machinery: the words "digest",
         "roster shape", "verified pool", or any reference to this system
         must not appear in narrative prose. Say "the published record",
@@ -526,18 +585,214 @@ nodes:
         verified" becomes "the 2026 roster has not been published".
       - major verified programme news is never omitted: a head-coach
         change, a verified transfer between conference programmes, or a
-        decorated arrival in the verified findings MUST appear in that
-        programme's news array or roster note IN EVERY REPORT — focus side
-        or opponent. From the opponent's side, frame it as what it means
-        for preparation: a new head coach voids last season's film
-        ("system unknown, treat 2025 patterns as provisional"), a transfer
-        moves a known threat, an arrival changes the depth chart. Cutting
-        for length never cuts a coaching change.
+        decorated arrival in the focus programme's findings MUST appear in
+        focus.news or focus.offseason. Cutting for length never cuts it.
 
-      Reply with one line per top-level section you wrote and its item count.
+      Reply with one line: core findings, decisions, focus-news, offseason,
+      and questions counts.
+
+  - id: narrative-cards
+    depends_on: [normalize]
+    # Loop nodes inherit the workflow model and effort; per-loop overrides are dropped.
+    timeout: 900000
+    loop:
+      # Fixed safety cap: scalar loop limits cannot read the runtime programme count.
+      max_iterations: 24
+      fresh_context: true
+      until: ALL CARDS WRITTEN
+      until_bash: |
+        set -u
+        DG="data/scratch/digest-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
+        D="data/scratch/report-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}"
+        SLUGS=$(jq -r --arg focus "$KEELSON_INPUTS_focus" '.programmes | keys[] | select(. != $focus)' "$DG") || exit $?
+        if [ -z "$SLUGS" ]; then
+          exit 0
+        fi
+        for slug in $SLUGS; do
+          F="$D/card-$slug.json"
+          [ -f "$F" ] && [ "$F" -nt "$DG" ] || exit 1
+        done
+      prompt: |
+        You are one iteration of the Touchline opponent-card stage for the
+        $inputs.season $inputs.gender season, prepared for '$inputs.focus'.
+        Write EXACTLY ONE opponent card and its zero-to-two watchlist profiles,
+        then stop.
+
+        The pipeline directory is:
+        $resolve-pipeline.output
+        Before writing, read:
+          <pipeline-parent>/prompts/scouting-questionnaire.md
+          <pipeline-parent>/prompts/style-contract.md
+          <pipeline>/src/report.py (the touchline.report-narrative/4 contract)
+
+        Inputs:
+          data/scratch/digest-$inputs.season-$inputs.gender-$inputs.focus.json
+            — THE ONLY SOURCE OF NUMBERS
+          data/research/$inputs.season-$inputs.gender/verified.json
+            — the only admissible news and offseason findings
+
+        1. In digest programme order excluding '$inputs.focus', choose the FIRST
+           opponent whose
+           data/scratch/report-$inputs.season-$inputs.gender-$inputs.focus/card-<slug>.json
+           is missing or is not newer than the digest.
+        2. Read THAT programme's section directly. Never work from a summary
+           table or memory of another programme. Read its verified findings and
+           coach entry. attested_uncaptured items never enter report prose.
+        3. Read already-written card-*.json files in the same scratch directory.
+           Vary this card's opening and implication sentence shape from the
+           preceding cards; fixed field anatomy does not require formulaic prose.
+        4. Create the scratch directory and write card-<slug>.json as plain JSON:
+           {
+             "schema": "touchline.report-narrative-card/1",
+             "programme": "<slug>",
+             "card": {
+               "threat": str,
+               "vulnerability": str,
+               "roster_note": str,
+               "implication": str,
+               "coach": str,
+               "news": [{"text": str, "source": str, "url": str, "date": str}],
+               "tier": "benchmark"|"swing"|"update"
+             },
+             "watchlist": [
+               {
+                 "player": str,
+                 "programme": "<slug>",
+                 "label": "observed"|"projected"|"signal"|"judgment",
+                 "why": str,
+                 "verify": str,
+                 "role": str,
+                 "class": str
+               }
+             ]
+           }
+           Omit the coach key when the coach is unverified.
+
+        Card rules:
+        - The structure is a toolkit, not a template. Threat, opening, tier, and
+          watchlist picks come from THIS opponent's current record and findings.
+        - A full card has threat, potential opening, roster note, exactly one
+          preparation implication, optional verified bench line, and news. If a
+          field has nothing verified, leave its string empty.
+        - Tier from the findings, not table position alone. "update" is only for
+          too little published data: a programme with a held record and a
+          published roster is NEVER update. A new coach makes old patterns
+          provisional but does not remove the full card. Tier words never appear
+          in prose.
+        - Apply the bench lens. A verified returning coach makes held patterns
+          more reliable; a new coach makes them provisional. Roster churn under
+          a new coach is a structural expectation, never a claim about a named
+          player unless a source says so.
+        - news has at most 2 ordinary items. A verified coaching change,
+          intra-conference transfer, or decorated arrival is major news and is
+          NEVER cut; when majors alone exceed two, include all, coach change
+          first.
+        - Watchlist has UP TO 2 players, admitted by the insight filter rather
+          than quota. Draw a pair from different evidence classes when possible;
+          one strong pick beats a manufactured pair. "why" is at most 90 words,
+          and "verify" is a testable preseason check. No dossier section.
+        - A benchmark or swing card earns roughly 150-200 words of prose; each
+          watchlist sheet earns the same range. An update entry is compact:
+          roster_note says what is missing and implication says what to re-check
+          and when. Larger conferences earn proportionally more pages, never
+          compressed full cards.
+        - Credibility is absolute: W-L-T order; availability and usage are
+          signals with unknown causes; held records are never "all-time"; no
+          conclusions from missing evidence; no possession, fitness, set-piece
+          quality, or unmeasured traits; name the measure behind any ranking.
+        - Voice is a beat writer or assistant coach: direct, no hype, every
+          claim anchored. The prose NEVER says "digest", "roster shape",
+          "verified pool", or names report machinery.
+        - After drafting, re-open THIS programme's section and re-check every
+          number, returning/departed status, and named player. Fix every mismatch.
+
+        Reply with one line: programme slug, tier, news count, and watchlist
+        count. Reply ALL CARDS WRITTEN only after a mechanical check finds no
+        missing or stale opponent card file.
+
+  - id: assemble-narrative
+    depends_on: [narrative-core, narrative-cards]
+    timeout: 60000
+    bash: |
+      set -euo pipefail
+      DG="data/scratch/digest-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
+      D="data/scratch/report-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}"
+      CORE="$D/narrative-core.json"
+      OUT="data/reports/narrative-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
+      TMP="$OUT.tmp"
+      trap 'rm -f "$TMP"' EXIT
+      if [ ! -f "$CORE" ] || [ ! "$CORE" -nt "$DG" ]; then
+        printf 'ALARM: missing or stale narrative core %s.\n' "$CORE"
+        exit 1
+      fi
+      if ! jq -e '
+        .schema == "touchline.report-narrative-core/1"
+        and ((.headline | type) == "string")
+        and ((.exec | type) == "object")
+        and ((.exec.bottom_line | type) == "string")
+        and ((.exec.findings | type) == "array")
+        and ((.exec.decisions | type) == "array")
+        and ((.exec.priorities | type) == "array")
+        and ((.landscape | type) == "string")
+        and ((.focus | type) == "object")
+        and ((.focus.overview | type) == "string")
+        and ((.focus.roster | type) == "array")
+        and ((.focus.news | type) == "array")
+        and ((.focus.offseason | type) == "array")
+        and ((.questions | type) == "array")
+      ' "$CORE" >/dev/null; then
+        printf 'ALARM: invalid narrative core %s.\n' "$CORE"
+        exit 1
+      fi
+      FILES=()
+      SLUGS=$(jq -r --arg focus "$KEELSON_INPUTS_focus" '.programmes | keys[] | select(. != $focus)' "$DG")
+      for slug in $SLUGS; do
+        F="$D/card-$slug.json"
+        if [ ! -f "$F" ] || [ ! "$F" -nt "$DG" ]; then
+          printf 'ALARM: missing or stale opponent card %s.\n' "$F"
+          exit 1
+        fi
+        if ! jq -e --arg slug "$slug" '
+          .schema == "touchline.report-narrative-card/1"
+          and (.programme == $slug)
+          and ((.card | type) == "object")
+          and ((.card.threat | type) == "string")
+          and ((.card.vulnerability | type) == "string")
+          and ((.card.roster_note | type) == "string")
+          and ((.card.implication | type) == "string")
+          and ((.card | has("coach") | not) or ((.card.coach | type) == "string"))
+          and ((.card.news | type) == "array")
+          and (.card.tier | IN("benchmark", "swing", "update"))
+          and ((.watchlist | type) == "array")
+          and ((.watchlist | length) <= 2)
+          and all(.watchlist[];
+            .programme == $slug
+            and ((.player | type) == "string")
+            and (.label | IN("observed", "projected", "signal", "judgment"))
+            and ((.why | type) == "string")
+            and ((.verify | type) == "string"))
+        ' "$F" >/dev/null; then
+          printf 'ALARM: invalid opponent card %s.\n' "$F"
+          exit 1
+        fi
+        FILES+=("$F")
+      done
+      mkdir -p data/reports
+      jq -s '
+        .[0] as $core
+        | .[1:] as $parts
+        | $core + {
+            schema: "touchline.report-narrative/4",
+            programmes: ($parts | map({key: .programme, value: .card}) | from_entries),
+            watchlist: [$parts[] | .watchlist[]?]
+          }
+      ' "$CORE" "${FILES[@]}" > "$TMP"
+      mv -f "$TMP" "$OUT"
+      trap - EXIT
+      jq -r '"narrative assembled: \(.programmes | length) programme cards, \(.watchlist | length) watchlist profiles, \(.exec.findings | length) findings"' "$OUT"
 
   - id: validate-narrative
-    depends_on: [narrative]
+    depends_on: [assemble-narrative]
     timeout: 60000
     bash: |
       set -uo pipefail
@@ -626,8 +881,8 @@ nodes:
       The Touchline preseason report run finished. Write a SHORT completion
       summary for the person who asked:
       - the digest line: $digest.output
-      - the research verification line: $verify.output
-      - the narrative sections: $narrative.output
+      - the research verification line: $merge-verified.output
+      - the narrative sections: $assemble-narrative.output
       - the render line: $render.output
       Name what was dropped, attested-but-uncaptured, or left unswept exactly
       as reported — never soften it: with no approval gate, this summary is
