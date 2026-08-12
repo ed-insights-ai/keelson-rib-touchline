@@ -6,6 +6,7 @@ import tomllib
 from pathlib import Path
 from unittest.mock import MagicMock
 
+from scripts import probe as probe_cli
 from src.probe import (
     LAYER_PRESENT,
     PLATFORM_SIDEARM,
@@ -154,3 +155,44 @@ def test_probe_report_renders_verdict_layers_seasons_and_stanza() -> None:
     assert "stats: absent" in rendered
     assert "Served seasons: 2026" in rendered
     assert "[[schools]]" in rendered
+
+
+def test_cli_prints_report_without_writing_to_data_home(
+    tmp_path: Path, monkeypatch, capsys
+) -> None:
+    base_url = "https://example.test/sports/mens-soccer"
+    year = 2026
+    session = MagicMock()
+    session.get.side_effect = [
+        _response(base_url, _schedule_html(year)),
+        _response(f"{base_url}/schedule/{year}", _schedule_html(year)),
+        _response(
+            f"{base_url}/roster/{year}",
+            f"<title>{year} Men's Soccer Roster - Example</title>",
+        ),
+        _response(
+            f"{base_url}/stats/{year}",
+            f"<title>{year} Men's Soccer Cumulative Statistics - Example</title>",
+        ),
+        _response(f"{base_url}/schedule/{year}", _schedule_html(year)),
+    ]
+    data_root = tmp_path / "touchline-data"
+    monkeypatch.setenv("TOUCHLINE_DATA_DIR", str(data_root))
+
+    exit_code = probe_cli.main(
+        [
+            "--url",
+            base_url,
+            "--conference",
+            "LSC",
+            "--seasons",
+            str(year),
+        ],
+        session=session,
+    )
+
+    output = capsys.readouterr().out
+    assert exit_code == 0
+    assert "Platform: sidearm" in output
+    assert "[[schools]]" in output
+    assert not data_root.exists()
