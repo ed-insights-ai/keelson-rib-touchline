@@ -26,10 +26,13 @@ def main() -> int:
         for genders in document["memberships"].values()
         for windows in genders.values()
     )
+    seasons = document.get("seasons", {})
     print(
         f"membership valid: "
         f"{len(membership.covered_programmes(document))} programmes, "
-        f"{window_count} windows"
+        f"{window_count} windows; "
+        f"seasons {seasons['from']}-{seasons['to']}; "
+        f"conferences {sorted(document.get('conferences', []))}"
     )
     return 0
 

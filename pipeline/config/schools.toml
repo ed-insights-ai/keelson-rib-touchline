@@ -229,3 +229,183 @@ years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
+
+# ============================================================
+# LSC MEN'S SOCCER — 13 programmes, backfill window 2022-2026
+# ============================================================
+# Source of truth: LSC per-season records (lonestarconference.org standings
+# and conference statistics), verified 2026-08-12. All 13 sites probed
+# 2026-08-12 (uv run probe): SideArm-new, seasons served as listed in years.
+# Season-aware membership lives in data/reference/membership.json — ENMU left
+# after 2024, UTPB after 2022, Saint Edwards / Sul Ross / UT Dallas joined
+# mid-window. No ordinals: the StatCrew legacy lineage never reads these.
+#
+# Names are chosen so programme_slug(name) matches the slug the fixed
+# identity rules derive from opponent text (official renderings noted where
+# they differ: St. Edward's, St. Mary's).
+
+[[schools]]
+name         = "Dallas Baptist"
+abbreviation = "DBU"
+conference   = "LSC"
+mascot       = "Patriots"
+gender       = "men"
+base_url     = "https://dbupatriots.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "verified"
+enabled      = true
+
+[[schools]]
+name         = "Lubbock Christian"
+abbreviation = "LCU"
+conference   = "LSC"
+mascot       = "Chaparrals"
+gender       = "men"
+base_url     = "https://lcuchaps.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "verified"
+enabled      = true
+
+[[schools]]
+name         = "Midwestern State"
+abbreviation = "MSU"
+conference   = "LSC"
+mascot       = "Mustangs"
+gender       = "men"
+base_url     = "https://msumustangs.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "verified"
+enabled      = true
+
+[[schools]]
+name         = "Oklahoma Christian"
+abbreviation = "OC"
+conference   = "LSC"
+mascot       = "Eagles"
+gender       = "men"
+base_url     = "https://oceagles.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "verified"
+enabled      = true
+
+# Officially "St. Edward's". Men's soccer cut April 2020, reinstated for
+# 2023 — the site serves no 2022 season and membership starts at 2023.
+[[schools]]
+name         = "Saint Edwards"
+abbreviation = "SEU"
+conference   = "LSC"
+mascot       = "Hilltoppers"
+gender       = "men"
+base_url     = "https://gohilltoppers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "verified"
+enabled      = true
+
+# Officially "St. Mary's" (San Antonio, Texas).
+[[schools]]
+name         = "Saint Marys"
+abbreviation = "STMU"
+conference   = "LSC"
+mascot       = "Rattlers"
+gender       = "men"
+base_url     = "https://rattlerathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "verified"
+enabled      = true
+
+# LSC member since 2024-07-01 (from Division III / ASC).
+[[schools]]
+name         = "Sul Ross State"
+abbreviation = "SRSU"
+conference   = "LSC"
+mascot       = "Lobos"
+gender       = "men"
+base_url     = "https://srlobos.com/sports/mens-soccer"
+years        = [2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "verified"
+enabled      = true
+
+[[schools]]
+name         = "Texas A&M International"
+abbreviation = "TAMIU"
+conference   = "LSC"
+mascot       = "Dustdevils"
+gender       = "men"
+base_url     = "https://godustdevils.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "verified"
+enabled      = true
+
+# LSC member since 2025-07-01 (from Division III / ASC; independent 2024).
+[[schools]]
+name         = "UT Dallas"
+abbreviation = "UTD"
+conference   = "LSC"
+mascot       = "Comets"
+gender       = "men"
+base_url     = "https://utdcomets.com/sports/mens-soccer"
+years        = [2025, 2026]
+scraper      = "sidearm"
+data_status  = "verified"
+enabled      = true
+
+[[schools]]
+name         = "UT Tyler"
+abbreviation = "UTT"
+conference   = "LSC"
+mascot       = "Patriots"
+gender       = "men"
+base_url     = "https://uttylerpatriots.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "verified"
+enabled      = true
+
+# Archive fixtures derived pre-config carry the alias slug
+# west-texas-a-and-m; the adjudicated alias pass reconciles them.
+[[schools]]
+name         = "West Texas A&M"
+abbreviation = "WT"
+conference   = "LSC"
+mascot       = "Buffaloes"
+gender       = "men"
+base_url     = "https://gobuffsgo.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "verified"
+enabled      = true
+
+# Men's soccer discontinued December 2024; historical member 2022-2024.
+[[schools]]
+name         = "Eastern New Mexico"
+abbreviation = "ENMU"
+conference   = "LSC"
+mascot       = "Greyhounds"
+gender       = "men"
+base_url     = "https://goeasternathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024]
+scraper      = "sidearm"
+data_status  = "verified"
+enabled      = true
+
+# Single-season LSC member (2022 only); site serves 2022 alone and the
+# layer parses are unproven until its first collect.
+[[schools]]
+name         = "UT Permian Basin"
+abbreviation = "UTPB"
+conference   = "LSC"
+mascot       = "Falcons"
+gender       = "men"
+base_url     = "https://utpbfalcons.com/sports/mens-soccer"
+years        = [2022]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true

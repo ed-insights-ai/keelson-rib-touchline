@@ -7,11 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from src import paths
-from src.canon import PROGRAMMES, REGISTRY
-
-SEASON_FROM = 2016
-SEASON_TO = 2025
-REQUIRED_CONFERENCES = {"independent", "non_member"}
+from src.config import SchoolConfig, load_schools
 
 
 def load_membership(
@@ -106,11 +102,59 @@ def _is_year(value: object) -> bool:
     return isinstance(value, int) and not isinstance(value, bool)
 
 
+def _season_span(
+    document: dict[str, Any],
+    errors: list[str],
+) -> tuple[int, int] | None:
+    seasons = document.get("seasons")
+    if not isinstance(seasons, dict):
+        errors.append("seasons must be an object with integer 'from' and 'to'")
+        return None
+
+    from_season = seasons.get("from")
+    to_season = seasons.get("to")
+    if not _is_year(from_season) or not _is_year(to_season):
+        errors.append("seasons 'from' and 'to' must be integers")
+        return None
+    if from_season > to_season:
+        errors.append(
+            "seasons 'from' must not exceed 'to' "
+            f"({from_season} > {to_season})"
+        )
+        return None
+    return from_season, to_season
+
+
+def _declared_conferences(
+    document: dict[str, Any],
+    errors: list[str],
+) -> set[str] | None:
+    conferences = document.get("conferences")
+    if not isinstance(conferences, list) or not all(
+        isinstance(conference, str) for conference in conferences
+    ):
+        errors.append("conferences must be a list of strings")
+        return None
+
+    declared = set(conferences)
+    if len(conferences) != len(declared):
+        errors.append("conferences must not contain duplicate codes")
+
+    missing_structural = sorted({"independent", "non_member"} - declared)
+    if missing_structural:
+        errors.append(
+            f"conferences must declare structural codes: {missing_structural}"
+        )
+    return declared
+
+
 def _validate_windows(
     programme: str,
     windows: list[object],
-    declared_conferences: set[str],
     errors: list[str],
+    *,
+    span: tuple[int, int] | None,
+    declared: set[str] | None,
 ) -> None:
     if not windows:
         errors.append(f"{programme} must declare at least one membership window")
@@ -124,7 +168,7 @@ def _validate_windows(
             continue
 
         conference = window.get("conference")
-        if conference not in declared_conferences:
+        if declared is not None and conference not in declared:
             errors.append(f"{label} has unknown conference code {conference!r}")
 
         source = window.get("source")
@@ -147,29 +191,56 @@ def _validate_windows(
             continue
 
         valid_ranges.append((from_season, to_season))
-        if from_season < SEASON_FROM or to_season > SEASON_TO:
+        if span is not None and (
+            from_season < span[0] or to_season > span[1]
+        ):
             errors.append(
-                f"{label} falls outside {SEASON_FROM}-{SEASON_TO}: "
+                f"{label} falls outside {span[0]}-{span[1]}: "
                 f"{from_season}-{to_season}"
             )
 
-    season_counts = {year: 0 for year in range(SEASON_FROM, SEASON_TO + 1)}
-    for from_season, to_season in valid_ranges:
-        for year in range(
-            max(from_season, SEASON_FROM),
-            min(to_season, SEASON_TO) + 1,
-        ):
-            season_counts[year] += 1
+    if valid_ranges:
+        authored_from = min(from_season for from_season, _ in valid_ranges)
+        authored_to = max(to_season for _, to_season in valid_ranges)
+        authored_counts = {
+            year: 0 for year in range(authored_from, authored_to + 1)
+        }
+        for from_season, to_season in valid_ranges:
+            for year in range(from_season, to_season + 1):
+                authored_counts[year] += 1
 
-    gaps = [year for year, count in season_counts.items() if count == 0]
-    overlaps = [year for year, count in season_counts.items() if count > 1]
-    if gaps:
-        errors.append(f"{programme} has membership gaps at seasons {gaps}")
-    if overlaps:
-        errors.append(f"{programme} has overlapping windows at seasons {overlaps}")
+        gaps = [
+            year for year, count in authored_counts.items() if count == 0
+        ]
+        if gaps:
+            errors.append(
+                f"{programme} has membership gaps at seasons {gaps}; "
+                "cover them explicitly with an independent or non_member window"
+            )
+
+    if span is not None:
+        season_counts = {year: 0 for year in range(span[0], span[1] + 1)}
+        for from_season, to_season in valid_ranges:
+            for year in range(
+                max(from_season, span[0]),
+                min(to_season, span[1]) + 1,
+            ):
+                season_counts[year] += 1
+
+        overlaps = [
+            year for year, count in season_counts.items() if count > 1
+        ]
+        if overlaps:
+            errors.append(
+                f"{programme} has overlapping windows at seasons {overlaps}"
+            )
 
 
-def validate(document: dict[str, Any]) -> list[str]:
+def validate(
+    document: dict[str, Any],
+    *,
+    schools: list[SchoolConfig] | None = None,
+) -> list[str]:
     """Return every membership contract violation in a document."""
     errors: list[str] = []
     if not isinstance(document, dict):
@@ -178,36 +249,22 @@ def validate(document: dict[str, Any]) -> list[str]:
     if document.get("version") != 1:
         errors.append("version must be 1")
 
-    seasons = document.get("seasons")
-    expected_seasons = {"from": SEASON_FROM, "to": SEASON_TO}
-    if seasons != expected_seasons:
-        errors.append(f"seasons must equal {expected_seasons}")
+    span = _season_span(document, errors)
+    declared = _declared_conferences(document, errors)
 
-    conferences = document.get("conferences")
-    declared_conferences: set[str] = set()
-    if not isinstance(conferences, list) or not all(
-        isinstance(conference, str) for conference in conferences
-    ):
-        errors.append("conferences must be a list of strings")
-    else:
-        declared_conferences = set(conferences)
-        missing_conferences = sorted(REQUIRED_CONFERENCES - declared_conferences)
-        if missing_conferences:
-            errors.append(
-                f"conferences omits required codes: {missing_conferences}"
-            )
-        if len(conferences) != len(declared_conferences):
-            errors.append("conferences must not contain duplicate codes")
+    if schools is None:
+        schools = load_schools()
+    from src.sidearm_live import programme_slug
 
-    memberships = document.get("memberships")
-    expected_programmes = {
-        (programme["institution_slug"], programme["gender"])
-        for programme in PROGRAMMES.values()
+    configured_programmes = {
+        (programme_slug(school.name), school.gender) for school in schools
     }
+    configured_slugs = {programme_slug(school.name) for school in schools}
+    memberships = document.get("memberships")
     if not isinstance(memberships, dict):
         errors.append("memberships must be a JSON object")
         errors.append(
-            f"missing canon programmes: {sorted(expected_programmes)}"
+            f"missing configured programmes: {sorted(configured_programmes)}"
         )
         return errors
 
@@ -215,7 +272,7 @@ def validate(document: dict[str, Any]) -> list[str]:
         if not isinstance(slug, str) or not slug:
             errors.append(f"invalid institution slug key: {slug!r}")
             continue
-        if slug not in REGISTRY:
+        if slug not in configured_slugs:
             errors.append(f"unknown institution slug: {slug!r}")
         if not isinstance(genders, dict):
             errors.append(f"{slug} memberships must be a JSON object")
@@ -232,16 +289,14 @@ def validate(document: dict[str, Any]) -> list[str]:
             _validate_windows(
                 programme,
                 windows,
-                declared_conferences,
                 errors,
+                span=span,
+                declared=declared,
             )
 
-    actual_programmes = covered_programmes(document)
-    missing_programmes = sorted(expected_programmes - actual_programmes)
-    extra_programmes = sorted(actual_programmes - expected_programmes)
-    if missing_programmes:
-        errors.append(f"missing canon programmes: {missing_programmes}")
-    if extra_programmes:
-        errors.append(f"undeclared canon programmes: {extra_programmes}")
+    covered = covered_programmes(document)
+    missing = sorted(configured_programmes - covered)
+    if missing:
+        errors.append(f"missing configured programmes: {missing}")
 
     return errors
