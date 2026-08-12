@@ -106,7 +106,10 @@ const lensPayload = z.object({ team: z.string().min(1).nullable().optional() });
 const seasonPayload = z.object({
   season: z.number().int(),
   gender: z.string().min(1),
-  conference: z.string().regex(/[a-z0-9]/i).optional(),
+  conference: z
+    .string()
+    .regex(/[a-z0-9]/i)
+    .optional(),
 });
 const playerPayload = z.object({ player: z.string().min(1).nullable().optional() });
 const fixturePayload = z.object({ fixture: z.string().min(1).nullable().optional() });
@@ -170,9 +173,7 @@ async function composeTouchlineBoardInner(): Promise<{ html: string; collectedAt
   const seasons = await listSeasons(root);
   if (!seasons.length) return { html: composeNoSeasons(project.name) };
 
-  const selectedShards = seasons.filter(
-    (s) => s.season === sel.season && s.gender === sel.gender,
-  );
+  const selectedShards = seasons.filter((s) => s.season === sel.season && s.gender === sel.gender);
   const selectedConference = sel.conference ? conferenceSlug(sel.conference) : undefined;
   const want =
     (selectedConference

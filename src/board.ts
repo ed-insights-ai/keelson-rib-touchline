@@ -2382,10 +2382,7 @@ export function composeBoard(input: BoardInput): string {
   // The masthead year steps through whatever the archive holds for this
   // gender: one collected season renders as plain text, more grow chevrons.
   const seasonOptions = (input.seasons ?? [])
-    .filter(
-      (s) =>
-        s.gender === file.gender && s.conference === conferenceSlug(file.conference),
-    )
+    .filter((s) => s.gender === file.gender && s.conference === conferenceSlug(file.conference))
     .sort((a, b) => a.season - b.season);
   const at = seasonOptions.findIndex((s) => s.season === file.season);
   const step = (

@@ -313,24 +313,33 @@ describe("first-contact commands", () => {
     if (!project) throw new Error("init registered no project");
     setScope(project.id);
 
-    const sole = await rib.onAction?.({
-      type: "select-season",
-      payload: { season: 2025, gender: "men" },
-    }, ctx);
+    const sole = await rib.onAction?.(
+      {
+        type: "select-season",
+        payload: { season: 2025, gender: "men" },
+      },
+      ctx,
+    );
     expect(sole).toEqual({ ok: true });
     expect(await composeTouchlineBoard()).toContain("2025");
 
-    const ambiguous = await rib.onAction?.({
-      type: "select-season",
-      payload: { season: 2026, gender: "men" },
-    }, ctx);
+    const ambiguous = await rib.onAction?.(
+      {
+        type: "select-season",
+        payload: { season: 2026, gender: "men" },
+      },
+      ctx,
+    );
     expect(ambiguous).toMatchObject({ ok: false });
     if (ambiguous && !ambiguous.ok) expect(ambiguous.error).toContain("must name conference");
 
-    const explicit = await rib.onAction?.({
-      type: "select-season",
-      payload: { season: 2026, gender: "men", conference: "lsc" },
-    }, ctx);
+    const explicit = await rib.onAction?.(
+      {
+        type: "select-season",
+        payload: { season: 2026, gender: "men", conference: "lsc" },
+      },
+      ctx,
+    );
     expect(explicit).toEqual({ ok: true });
     expect(await composeTouchlineBoard()).toContain("LSC");
   });

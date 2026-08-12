@@ -439,9 +439,7 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
           (args.season === undefined || s.season === args.season) &&
           (args.gender === undefined || s.gender === args.gender),
       );
-      const requestedConference = args.conference
-        ? conferenceSlug(args.conference)
-        : undefined;
+      const requestedConference = args.conference ? conferenceSlug(args.conference) : undefined;
       const want = requestedConference
         ? candidates.find((s) => s.conference === requestedConference)
         : candidates.length === 1 || (args.season === undefined && args.gender === undefined)
