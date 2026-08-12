@@ -165,6 +165,12 @@ export async function knownProgrammes(gender: string): Promise<string[]> {
     .sort();
 }
 
+/** Every conference the membership record advertises as collectable. */
+export async function knownConferences(): Promise<string[]> {
+  const file = await loadMembership();
+  return file.conferences.filter((c) => c !== "independent" && c !== "non_member");
+}
+
 /** Resolve free text ("the whole GAC", "Harding") to a target set. */
 export async function resolveTargets(
   subject: string,
@@ -222,7 +228,7 @@ export async function resolveTargets(
   return {
     kind: "unknown",
     subject,
-    knownConferences: file.conferences.filter((c) => c !== "independent" && c !== "non_member"),
+    knownConferences: await knownConferences(),
     suggestions: programmes,
   };
 }
