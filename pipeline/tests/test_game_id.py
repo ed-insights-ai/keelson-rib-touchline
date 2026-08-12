@@ -30,19 +30,24 @@ def test_game_id_no_collision_across_schools():
 def test_assigned_ordinals_are_explicit_and_unique():
     """Every school the StatCrew lineage reads carries an explicit unique ordinal.
 
-    Narrowed from "every school": an ordinal only namespaces the legacy game_id
-    space, and the live collector never reads it, so a SideArm-only school added
-    for a new conference may leave it unset. Every school in the file today is
-    StatCrew-era and does carry one, which this still asserts.
+    An ordinal only namespaces the legacy game_id space and the live collector
+    never reads it, so a SideArm-only school added for a new conference (the
+    LSC entries) leaves it unset. What must hold: assigned ordinals are unique,
+    and every StatCrew-scraper school carries one.
     """
     with open(SCHOOLS_TOML, "rb") as f:
         data = tomllib.load(f)
 
     ordinals = []
     for entry in data["schools"]:
-        assert "ordinal" in entry, f"Missing ordinal for {entry['abbreviation']}"
-        ordinals.append(entry["ordinal"])
+        if entry.get("scraper") == "statcrew":
+            assert "ordinal" in entry, (
+                f"Missing ordinal for StatCrew school {entry['abbreviation']}"
+            )
+        if "ordinal" in entry:
+            ordinals.append(entry["ordinal"])
 
+    assert ordinals, "No assigned ordinals found at all"
     assert len(ordinals) == len(set(ordinals)), "Duplicate ordinals found"
 
 

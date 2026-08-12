@@ -112,29 +112,36 @@ def test_document_is_valid(membership_document):
 
 
 def test_covers_every_canon_programme(membership_document):
-    assert membership.covered_programmes(membership_document) == CANON_PROGRAMMES
+    # Subset, not equality: the document now also covers programmes beyond the
+    # canon registry (the LSC additions). Canon-era coverage must never shrink.
+    assert CANON_PROGRAMMES <= membership.covered_programmes(membership_document)
 
 
 def test_every_season_resolves(membership_document):
-    seasons = membership_document["seasons"]
-    for slug, gender in CANON_PROGRAMMES:
-        for season_year in range(seasons["from"], seasons["to"] + 1):
-            assert (
-                membership.conference_for(
-                    slug,
-                    gender,
-                    season_year,
-                    document=membership_document,
-                )
-                is not None
-            )
+    # Every season a programme's own windows author must resolve to that
+    # window's conference. A programme is NOT required to span the document's
+    # global range — per-conference horizons differ (GAC 2025, LSC 2026).
+    for slug, genders in membership_document["memberships"].items():
+        for gender, windows in genders.items():
+            for window in windows:
+                for season_year in range(
+                    window["from_season"], window["to_season"] + 1
+                ):
+                    resolved = membership.conference_for(
+                        slug,
+                        gender,
+                        season_year,
+                        document=membership_document,
+                    )
+                    assert resolved == window["conference"], (
+                        f"{slug}:{gender}:{season_year}"
+                    )
 
 
 def test_windows_are_contiguous_and_non_overlapping(membership_document):
-    seasons = membership_document["seasons"]
-    expected_seasons = list(
-        range(seasons["from"], seasons["to"] + 1)
-    )
+    # Contiguity is judged within each programme's OWN authored span — a hole
+    # there means a forgotten season, while starting later or ending earlier
+    # than the document span is just a shorter membership.
     for slug, genders in membership_document["memberships"].items():
         for gender, windows in genders.items():
             covered_seasons = []
@@ -142,6 +149,9 @@ def test_windows_are_contiguous_and_non_overlapping(membership_document):
                 covered_seasons.extend(
                     range(window["from_season"], window["to_season"] + 1)
                 )
+            expected_seasons = list(
+                range(min(covered_seasons), max(covered_seasons) + 1)
+            )
             assert covered_seasons == expected_seasons, f"{slug}:{gender}"
 
 
