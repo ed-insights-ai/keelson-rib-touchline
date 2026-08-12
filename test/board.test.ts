@@ -29,7 +29,13 @@ import {
   readMarker,
   seasonFileName,
 } from "../src/datahome.ts";
-import { resolveConference, resolveTargets } from "../src/membership.ts";
+import {
+  _resetMembershipCache,
+  _setMembershipCache,
+  type MembershipFile,
+  resolveConference,
+  resolveTargets,
+} from "../src/membership.ts";
 import {
   computeTable,
   type FixturesFile,
@@ -463,11 +469,15 @@ describe("the board markup", () => {
       today: "2026-08-09",
       seasons,
     });
+    // Season chevrons stay within the conference; the separate rail offers the LSC jump.
     expect(mid).toContain('data-act="select-season"');
     expect(mid).toContain("&quot;season&quot;:2024");
     expect(mid).toContain("&quot;season&quot;:2026");
     expect(mid).toContain("&quot;conference&quot;:&quot;gac&quot;");
-    expect(mid).not.toContain("&quot;conference&quot;:&quot;lsc&quot;");
+    expect(mid).toContain("&quot;conference&quot;:&quot;lsc&quot;");
+    expect(mid).toContain(
+      "&quot;season&quot;:2025,&quot;gender&quot;:&quot;men&quot;,&quot;conference&quot;:&quot;lsc&quot;",
+    );
 
     // The newest season has no forward step; the oldest no backward step.
     const newest = composeBoard({
@@ -1292,6 +1302,55 @@ describe("understanding the ask", () => {
     if (t.kind === "programme") {
       expect(t.slugs).toEqual(["harding"]);
       expect(t.conference).toBe("GAC");
+    }
+  });
+
+  test("a programme reads its own conference horizon", async () => {
+    const membership: MembershipFile = {
+      conferences: ["GAC", "LSC", "independent", "non_member"],
+      memberships: {
+        harding: {
+          men: [
+            {
+              conference: "GAC",
+              from_season: 2016,
+              to_season: 2024,
+              source: "test",
+            },
+          ],
+        },
+        "ut-tyler": {
+          men: [
+            {
+              conference: "LSC",
+              from_season: 2019,
+              to_season: 2026,
+              source: "test",
+            },
+          ],
+        },
+      },
+    };
+
+    _setMembershipCache(membership);
+    try {
+      const lsc = await resolveTargets("ut-tyler", "men", 2026);
+      expect(lsc.kind).toBe("programme");
+      if (lsc.kind === "programme") {
+        expect(lsc.conference).toBe("LSC");
+        expect(lsc.extrapolated).toBe(false);
+        expect(lsc.authoredThrough).toBe(2026);
+      }
+
+      const gac = await resolveTargets("harding", "men", 2026);
+      expect(gac.kind).toBe("programme");
+      if (gac.kind === "programme") {
+        expect(gac.conference).toBe("GAC");
+        expect(gac.extrapolated).toBe(true);
+        expect(gac.authoredThrough).toBe(2024);
+      }
+    } finally {
+      _resetMembershipCache();
     }
   });
 

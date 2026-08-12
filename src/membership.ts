@@ -18,14 +18,14 @@ import { packageDir } from "./datahome.ts";
 // expand beyond the one we started with.
 // ─────────────────────────────────────────────────────────────────────────────
 
-interface Window {
+export interface Window {
   conference: string;
   from_season: number;
   to_season: number;
   source: string;
 }
 
-interface MembershipFile {
+export interface MembershipFile {
   conferences: string[];
   memberships: Record<string, Record<string, Window[]>>;
 }
@@ -48,6 +48,11 @@ export async function loadMembership(): Promise<MembershipFile> {
 /** Reset the cache — tests only. */
 export function _resetMembershipCache(): void {
   cached = undefined;
+}
+
+/** Set the cache — tests only. */
+export function _setMembershipCache(file: MembershipFile): void {
+  cached = file;
 }
 
 export interface Resolution {
@@ -196,14 +201,18 @@ export async function resolveTargets(
     });
 
   if (partial) {
-    const res = await resolveConference("GAC", gender, season);
-    // Report the programme's own conference for that season, whatever it is.
     const windows = file.memberships[partial]?.[gender] ?? [];
-    const effective = res.extrapolated ? res.authoredThrough : season;
+    const programmeThrough = windows.reduce((maximum, window) => {
+      return Math.max(maximum, window.to_season);
+    }, 0);
+    const effective = programmeThrough > 0 && season > programmeThrough ? programmeThrough : season;
     const hit = windows.find((w) => effective >= w.from_season && effective <= w.to_season);
+    const conference = (hit?.conference ?? "independent").toUpperCase();
+    // Read the authoring horizon from the programme's own conference, never a hardcoded one.
+    const res = await resolveConference(conference, gender, season);
     return {
       kind: "programme",
-      conference: (hit?.conference ?? "independent").toUpperCase(),
+      conference,
       slugs: [partial],
       extrapolated: res.extrapolated,
       authoredThrough: res.authoredThrough,
