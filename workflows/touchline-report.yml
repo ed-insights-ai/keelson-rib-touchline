@@ -181,7 +181,7 @@ nodes:
            your target this iteration. A validation gate after this
            stage fails the run if a file is missing its coach object.
         3. Read that programme's roster from
-           data/rosters/$inputs.season-$inputs.gender.json (names, hometowns).
+           data/rosters/$inputs.season-$inputs.gender-$inputs.conference.json (names, hometowns).
            If the roster is missing, write a file recording exactly that as the
            only finding and finish.
         3b. Check data/players/$inputs.gender/<slug>/ for existing player
