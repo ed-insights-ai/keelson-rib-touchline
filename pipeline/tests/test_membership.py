@@ -47,8 +47,9 @@ def test_covers_every_canon_programme(membership_document):
 
 
 def test_every_season_resolves(membership_document):
+    seasons = membership_document["seasons"]
     for slug, gender in CANON_PROGRAMMES:
-        for season_year in range(membership.SEASON_FROM, membership.SEASON_TO + 1):
+        for season_year in range(seasons["from"], seasons["to"] + 1):
             assert (
                 membership.conference_for(
                     slug,
@@ -61,8 +62,9 @@ def test_every_season_resolves(membership_document):
 
 
 def test_windows_are_contiguous_and_non_overlapping(membership_document):
+    seasons = membership_document["seasons"]
     expected_seasons = list(
-        range(membership.SEASON_FROM, membership.SEASON_TO + 1)
+        range(seasons["from"], seasons["to"] + 1)
     )
     for slug, genders in membership_document["memberships"].items():
         for gender, windows in genders.items():
@@ -144,8 +146,12 @@ def test_validation_rejects_contract_violations(membership_document):
     )
 
     gap = copy.deepcopy(membership_document)
-    gap["memberships"]["east-central"]["women"][0]["from_season"] = 2017
-    assert any("membership gaps" in error for error in membership.validate(gap))
+    gap["memberships"]["fort-hays-state"]["men"][1]["from_season"] = 2020
+    assert any(
+        "membership gaps" in error
+        and "independent or non_member" in error
+        for error in membership.validate(gap)
+    )
 
     overlap = copy.deepcopy(membership_document)
     overlap["memberships"]["fort-hays-state"]["men"][1]["from_season"] = 2018
@@ -158,6 +164,14 @@ def test_validation_rejects_contract_violations(membership_document):
     assert any(
         "non-empty source citation" in error
         for error in membership.validate(missing_citation)
+    )
+
+    out_of_span = copy.deepcopy(membership_document)
+    out_of_span["memberships"]["harding"]["men"][0]["to_season"] = (
+        membership_document["seasons"]["to"] + 1
+    )
+    assert any(
+        "falls outside" in error for error in membership.validate(out_of_span)
     )
 
     unknown_slug = copy.deepcopy(membership_document)
