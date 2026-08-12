@@ -4,9 +4,9 @@ The Touchline rib's board reads plain JSON from the consumer's own data
 directory — no database. This command is the writer for that contract:
 it projects the merged parquet archive into
 
-    data/fixtures/<season>-<gender>.json
+    data/fixtures/<season>-<gender>-<conference>.json
 
-matching ``touchline.fixtures/1``.
+matching ``touchline.fixtures/2``.
 
 Two things this deliberately does NOT do:
 
@@ -34,8 +34,9 @@ import pandas as pd
 
 from src import paths
 from src.config import DEFAULT_CONFIG, load_schools
+from src.sidearm_live import programme_slug
 
-FIXTURES_SCHEMA = "touchline.fixtures/1"
+FIXTURES_SCHEMA = "touchline.fixtures/2"
 
 
 def slugify(name: str) -> str:
@@ -206,7 +207,11 @@ def build(
                     display[slug] = text
 
     programmes = [
-        {"slug": slug, "name": display.get(slug, slug.replace("-", " ").title())}
+        {
+            "slug": slug,
+            "name": display.get(slug, slug.replace("-", " ").title()),
+            "conference": conference,
+        }
         for slug in sorted(wanted_set)
     ]
     missing = sorted(wanted_set - seen_slugs)
@@ -251,9 +256,14 @@ def main() -> int:
         args.season, args.gender, args.conference, wanted, Path(args.config)
     )
 
+    conference_slug = programme_slug(args.conference)
+    if not conference_slug:
+        print("--conference must contain at least one letter or number", file=sys.stderr)
+        return 2
+
     out_dir = paths.data_root() / "data" / "fixtures"
     out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / f"{args.season}-{args.gender}.json"
+    out_path = out_dir / f"{args.season}-{args.gender}-{conference_slug}.json"
     out_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
     played = len(payload["fixtures"])
