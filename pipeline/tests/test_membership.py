@@ -210,6 +210,14 @@ def test_derivation_is_conference_agnostic():
     )
 
 
+def test_validation_accepts_declared_conference(membership_document):
+    document = copy.deepcopy(membership_document)
+    document["conferences"].append("LSC")
+    document["memberships"]["harding"]["men"][0]["conference"] = "LSC"
+
+    assert membership.validate(document) == []
+
+
 def test_validation_rejects_contract_violations(membership_document):
     unknown_conference = copy.deepcopy(membership_document)
     unknown_conference["memberships"]["harding"]["men"][0]["conference"] = "other"

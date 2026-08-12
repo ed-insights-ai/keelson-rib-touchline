@@ -11,7 +11,7 @@ from src.canon import PROGRAMMES, REGISTRY
 
 SEASON_FROM = 2016
 SEASON_TO = 2025
-VALID_CONFERENCES = {"GAC", "MIAA", "independent", "non_member"}
+REQUIRED_CONFERENCES = {"independent", "non_member"}
 
 
 def load_membership(
@@ -109,6 +109,7 @@ def _is_year(value: object) -> bool:
 def _validate_windows(
     programme: str,
     windows: list[object],
+    declared_conferences: set[str],
     errors: list[str],
 ) -> None:
     if not windows:
@@ -123,7 +124,7 @@ def _validate_windows(
             continue
 
         conference = window.get("conference")
-        if conference not in VALID_CONFERENCES:
+        if conference not in declared_conferences:
             errors.append(f"{label} has unknown conference code {conference!r}")
 
         source = window.get("source")
@@ -183,21 +184,17 @@ def validate(document: dict[str, Any]) -> list[str]:
         errors.append(f"seasons must equal {expected_seasons}")
 
     conferences = document.get("conferences")
+    declared_conferences: set[str] = set()
     if not isinstance(conferences, list) or not all(
         isinstance(conference, str) for conference in conferences
     ):
         errors.append("conferences must be a list of strings")
     else:
         declared_conferences = set(conferences)
-        unknown_conferences = sorted(declared_conferences - VALID_CONFERENCES)
-        missing_conferences = sorted(VALID_CONFERENCES - declared_conferences)
-        if unknown_conferences:
-            errors.append(
-                f"conferences declares unknown codes: {unknown_conferences}"
-            )
+        missing_conferences = sorted(REQUIRED_CONFERENCES - declared_conferences)
         if missing_conferences:
             errors.append(
-                f"conferences omits allowed codes: {missing_conferences}"
+                f"conferences omits required codes: {missing_conferences}"
             )
         if len(conferences) != len(declared_conferences):
             errors.append("conferences must not contain duplicate codes")
@@ -232,7 +229,12 @@ def validate(document: dict[str, Any]) -> list[str]:
             if not isinstance(windows, list):
                 errors.append(f"{programme} windows must be a JSON array")
                 continue
-            _validate_windows(programme, windows, errors)
+            _validate_windows(
+                programme,
+                windows,
+                declared_conferences,
+                errors,
+            )
 
     actual_programmes = covered_programmes(document)
     missing_programmes = sorted(expected_programmes - actual_programmes)
