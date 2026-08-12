@@ -7,11 +7,11 @@ import re
 from urllib.parse import urlparse
 
 import requests
-from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 from src.errors import DiscoveryError
 from src.models import GameURL
+from src.tls import TruststoreHTTPAdapter
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +20,7 @@ def _build_session() -> requests.Session:
     session = requests.Session()
     session.headers.update({"User-Agent": "Mozilla/5.0 (Educational/Research Scraper)"})
     retry = Retry(total=3, backoff_factor=1, status_forcelist=[500, 502, 503, 504])
-    adapter = HTTPAdapter(max_retries=retry)
+    adapter = TruststoreHTTPAdapter(max_retries=retry)
     session.mount("https://", adapter)
     session.mount("http://", adapter)
     return session
