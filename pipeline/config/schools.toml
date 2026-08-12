@@ -10,6 +10,10 @@
 #   sidearm        — SideArm New (Nuxt3/Vue, SSR boxscore links)
 #   sidearm_legacy — SideArm Legacy (KnockoutJS SPA, NOT YET IMPLEMENTED)
 #
+# live_scraper overrides the live-path collector and defaults to sidearm. Set it
+# to sidearm_legacy/statcrew when the live site has no implemented collector;
+# collection then files no-collector rather than a fetch error.
+#
 # data_status values:
 #   verified   — URL confirmed live, sport confirmed present, scraper confirmed working
 #   unverified — config set but not tested end-to-end
@@ -73,6 +77,7 @@ ordinal      = 4
 prefix       = "nsu"
 base_url     = "https://nsuathletics.com/sports/mens-soccer"
 live_base_url = "https://goriverhawksgo.com/sports/mens-soccer"
+live_scraper = "sidearm_legacy"
 years        = [2019, 2020, 2021, 2022, 2023, 2024, 2025]
 scraper      = "sidearm_legacy"
 data_status  = "unverified"

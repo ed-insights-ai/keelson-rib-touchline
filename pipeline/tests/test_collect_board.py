@@ -10,7 +10,16 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from scripts import collect_board
 from scripts.collect_board import _dedupe_fixtures, widen_to_existing_scope
+from src.config import SchoolConfig
+from src.sidearm_live import (
+    LAYER_MATCHES,
+    LAYER_SCHEDULE,
+    STATE_NO_COLLECTOR,
+    LayerOutcome,
+    ProgrammeCollection,
+)
 
 
 def _write(path: Path, payload: dict) -> Path:
@@ -64,6 +73,49 @@ def test_equal_or_wider_ask_adds_nothing(tmp_path: Path) -> None:
     )
     assert wanted == ["harding", "rogers-state"]
     assert added == []
+
+
+def test_no_collector_schedule_propagates_to_matches(
+    tmp_path: Path, monkeypatch
+) -> None:
+    school = SchoolConfig(
+        name="Northeastern State",
+        abbreviation="NSU",
+        conference="GAC",
+        prefix="nsu",
+        base_url="https://example.test/sports/mens-soccer",
+        enabled=True,
+    )
+    reason = "no live collector for platform 'sidearm_legacy'"
+    result = ProgrammeCollection(
+        slug="northeastern-state",
+        name=school.name,
+        fixtures=[],
+        players=[],
+        outcomes={
+            LAYER_SCHEDULE: LayerOutcome(
+                LAYER_SCHEDULE, STATE_NO_COLLECTOR, reason=reason
+            )
+        },
+    )
+    monkeypatch.setattr(collect_board, "load_schools", lambda _path: [school])
+    monkeypatch.setattr(collect_board, "collect_programme", lambda *_args, **_kwargs: result)
+    monkeypatch.setattr(collect_board, "write_raw_pages", lambda *_args: None)
+    monkeypatch.setattr(collect_board.paths, "data_root", lambda: tmp_path)
+
+    cells = collect_board.collect(
+        season=2026,
+        gender="men",
+        conference="GAC",
+        wanted=["northeastern-state"],
+        layers=(LAYER_SCHEDULE, LAYER_MATCHES),
+        config_path=tmp_path / "schools.toml",
+        membership_extrapolated=False,
+    )[4]
+
+    match_cell = cells["2026/men/northeastern-state/matches"]
+    assert match_cell["state"] == STATE_NO_COLLECTOR
+    assert match_cell["reason"] == reason
 
 
 def test_a_malformed_file_is_ignored_rather_than_fatal(tmp_path: Path) -> None:

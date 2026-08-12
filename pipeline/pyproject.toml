@@ -30,6 +30,7 @@ build-digest = "scripts.build_digest:main"
 render-report = "scripts.render_report:main"
 build-profile = "scripts.build_profile:main"
 normalize-research = "scripts.normalize_research:main"
+probe = "scripts.probe:main"
 
 [build-system]
 requires = ["hatchling"]
