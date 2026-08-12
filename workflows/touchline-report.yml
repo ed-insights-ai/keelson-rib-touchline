@@ -311,50 +311,108 @@ nodes:
 
   - id: verify
     depends_on: [validate-research]
-    context: fresh
-    # Mechanical refutation: fetch each URL, keep or drop. The small tier
-    # is enough.
-    model: gpt-5.6-luna
+    # Loop nodes inherit the workflow model; Keelson drops per-loop model overrides.
     timeout: 900000
-    prompt: |
-      You are the verification pass of the Touchline report workflow — the
-      adversary of the research stage. Season $inputs.season $inputs.gender.
+    loop:
+      # Fixed safety cap: scalar loop limits cannot read the runtime programme count.
+      max_iterations: 24
+      fresh_context: true
+      until: ALL VERIFIED
+      until_bash: |
+        set -u
+        D="data/research/${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}"
+        DG="data/scratch/digest-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
+        SLUGS=$(jq -er '.programmes | keys[]' "$DG") || exit $?
+        for slug in $SLUGS; do
+          F="$D/verified-$slug.json"
+          [ -f "$F" ] && [ "$F" -nt "$DG" ] || exit 1
+        done
+      prompt: |
+        You are one iteration of the Touchline verification stage for the
+        $inputs.season $inputs.gender season. Verify EXACTLY ONE programme,
+        write its result, then stop.
 
-      Read every file in data/research/$inputs.season-$inputs.gender/.
-      For EACH finding, re-fetch its URL and check that the page actually
-      supports the claim as written (the name appears, the honor is named, the
-      date is plausible). You are trying to REFUTE each claim; keep only what
-      survives. A finding whose page cannot be fetched or does not support the
-      text is dropped — recorded, never softened into the report.
+        1. Read data/scratch/digest-$inputs.season-$inputs.gender-$inputs.focus.json.
+           Pick the FIRST programme whose
+           data/research/$inputs.season-$inputs.gender/verified-<slug>.json is
+           missing or is not newer than the digest. The digest is rebuilt for
+           every report run, so this timestamp check prevents stale verification
+           from being reused.
+        2. Read only that programme's
+           data/research/$inputs.season-$inputs.gender/research-<slug>.json.
+        3. For EACH finding, re-fetch its URL and check that the page supports
+           the claim as written: the name appears, the honor is named, and the
+           date is plausible. You are trying to REFUTE each claim. Keep only
+           what survives. A finding whose page cannot be fetched or does not
+           support the text is dropped — recorded, never softened.
+        4. Re-fetch the top-level coach object's URL and confirm that the page
+           names the coach, and states the tenure when since_season is set. If
+           the page does not support it, downgrade status to "unknown", set
+           since_season to null, and record the failure in dropped. The coach
+           STAYS in the coaches map either way.
+        5. Write — under the data home named on the 'data home:' line of
+           $preflight.output, never relative to another directory —
+           data/research/$inputs.season-$inputs.gender/verified-<slug>.json:
+           {
+             "schema": "touchline.research-verified/1",
+             "findings": [ ...this programme's surviving findings, unchanged... ],
+             "coaches": { "<slug>": ...this programme's coach object... },
+             "dropped": [ { "programme": str, "text": str, "reason": str } ],
+             "attested_uncaptured": [ ...from this research file... ],
+             "unswept": [ ...from this research file, deduplicated... ]
+           }
+           Include ALL six keys and exactly one coaches entry.
+        6. Reply with one line: programme slug, surviving count, dropped count,
+           attested count, and unswept count. Reply ALL VERIFIED only after a
+           mechanical check finds no missing or stale per-programme file.
 
-      Each file's top-level "coach" object gets the same treatment:
-      re-fetch its url and confirm the page names the coach (and states
-      the tenure when since_season is set). A coach object whose page
-      does not support it is downgraded to status "unknown" with
-      since_season null, and the failure recorded in dropped — but it
-      STAYS in the coaches map either way: the map must hold exactly one
-      entry per research file that carries a coach object, and a
-      validation gate fails the run when entries are missing. The output
-      file must contain ALL of these keys: schema, findings, coaches,
-      dropped, attested_uncaptured, unswept.
-
-      Write — under the data home named on the 'data home:' line of
-      $preflight.output, never relative to another directory —
-      data/research/$inputs.season-$inputs.gender/verified.json:
-      {
-        "schema": "touchline.research-verified/1",
-        "findings": [ ...surviving findings, unchanged... ],
-        "coaches": { "<slug>": ...each surviving coach object... },
-        "dropped": [ { "programme": str, "text": str, "reason": str } ],
-        "attested_uncaptured": [ ...merged from all research files... ],
-        "unswept": [ ...merged, deduplicated... ]
-      }
-
-      Reply with one line: surviving count, dropped count, attested count,
-      unswept count.
+  - id: merge-verified
+    depends_on: [verify]
+    timeout: 60000
+    bash: |
+      set -euo pipefail
+      D="data/research/${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}"
+      DG="data/scratch/digest-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
+      OUT="$D/verified.json"
+      TMP="$OUT.tmp"
+      trap 'rm -f "$TMP"' EXIT
+      FILES=()
+      SLUGS=$(jq -er '.programmes | keys[]' "$DG")
+      for slug in $SLUGS; do
+        F="$D/verified-$slug.json"
+        if [ ! -f "$F" ] || [ ! "$F" -nt "$DG" ]; then
+          printf 'ALARM: missing or stale per-programme verification %s.\n' "$F"
+          exit 1
+        fi
+        if ! jq -e --arg slug "$slug" '
+          .schema == "touchline.research-verified/1"
+          and ((.findings | type) == "array")
+          and ((.coaches | type) == "object")
+          and (.coaches | has($slug))
+          and ((.coaches | length) == 1)
+          and ((.dropped | type) == "array")
+          and ((.attested_uncaptured | type) == "array")
+          and ((.unswept | type) == "array")
+        ' "$F" >/dev/null; then
+          printf 'ALARM: invalid per-programme verification %s.\n' "$F"
+          exit 1
+        fi
+        FILES+=("$F")
+      done
+      jq -s '{
+        schema: "touchline.research-verified/1",
+        findings: [.[] | .findings[]?],
+        coaches: (map(.coaches) | add // {}),
+        dropped: [.[] | .dropped[]?],
+        attested_uncaptured: [.[] | .attested_uncaptured[]?],
+        unswept: ([.[] | .unswept[]?] | unique)
+      }' "${FILES[@]}" > "$TMP"
+      mv -f "$TMP" "$OUT"
+      trap - EXIT
+      jq -r '"verified merge: \(.coaches | length) coaches, \(.findings | length) findings, \(.dropped | length) dropped"' "$OUT"
 
   - id: validate-verified
-    depends_on: [verify]
+    depends_on: [merge-verified]
     timeout: 60000
     bash: |
       set -uo pipefail
