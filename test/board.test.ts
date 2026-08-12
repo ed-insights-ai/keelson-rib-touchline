@@ -33,6 +33,7 @@ import {
   _resetMembershipCache,
   _setMembershipCache,
   type MembershipFile,
+  knownConferences,
   resolveConference,
   resolveTargets,
 } from "../src/membership.ts";
@@ -71,6 +72,24 @@ async function tempHome(): Promise<string> {
 }
 
 describe("membership resolution", () => {
+  test("collectable conferences come from the shipped membership data", async () => {
+    expect(await knownConferences()).toEqual(["GAC", "MIAA"]);
+  });
+
+  test("adding a conference to membership data advertises it without code changes", async () => {
+    const membership: MembershipFile = {
+      conferences: ["GAC", "LSC", "independent", "non_member"],
+      memberships: {},
+    };
+
+    _setMembershipCache(membership);
+    try {
+      expect(await knownConferences()).toEqual(["GAC", "LSC"]);
+    } finally {
+      _resetMembershipCache();
+    }
+  });
+
   test("GAC men 2025 resolves to the authored member list", async () => {
     const res = await resolveConference("GAC", "men", 2025);
     expect(res.slugs).toEqual([
