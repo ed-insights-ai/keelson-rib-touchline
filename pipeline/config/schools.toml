@@ -396,8 +396,8 @@ scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
 
-# Single-season LSC member (2022 only); site serves 2022 alone and the
-# layer parses are unproven until its first collect.
+# Single-season LSC member (2022 only). First collect 2026-08-12: all four
+# layers complete.
 [[schools]]
 name         = "UT Permian Basin"
 abbreviation = "UTPB"
@@ -407,5 +407,5 @@ gender       = "men"
 base_url     = "https://utpbfalcons.com/sports/mens-soccer"
 years        = [2022]
 scraper      = "sidearm"
-data_status  = "unverified"
+data_status  = "verified"
 enabled      = true
