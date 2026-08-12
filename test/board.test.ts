@@ -32,8 +32,8 @@ import {
 import {
   _resetMembershipCache,
   _setMembershipCache,
-  type MembershipFile,
   knownConferences,
+  type MembershipFile,
   resolveConference,
   resolveTargets,
 } from "../src/membership.ts";
