@@ -1,16 +1,28 @@
-"""The season unit: a collect run's scope only ever widens.
+"""Conference shards: a collect run's scope only ever widens within its shard.
 
 The season files are rewritten wholesale by each run, so the guard under test
 is what stops "refresh Harding" from silently discarding the other six
-programmes of an already-collected conference.
+programmes of an already-collected conference without absorbing another
+conference's programmes.
 """
 
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
+from scripts import collect_board
 from scripts.collect_board import _dedupe_fixtures, widen_to_existing_scope
+from src.config import SchoolConfig
+from src.sidearm_live import (
+    DEFAULT_LAYERS,
+    LAYER_SCHEDULE,
+    STATE_EMPTY,
+    LayerOutcome,
+    ProgrammeCollection,
+    programme_slug,
+)
 
 
 def _write(path: Path, payload: dict) -> Path:
@@ -72,6 +84,182 @@ def test_a_malformed_file_is_ignored_rather_than_fatal(tmp_path: Path) -> None:
     wanted, added = widen_to_existing_scope(["harding"], bad, tmp_path / "ro.json")
     assert wanted == ["harding"]
     assert added == []
+
+
+def test_collect_emits_schema_v2_and_each_programmes_actual_conference(
+    monkeypatch,
+    tmp_path: Path,
+) -> None:
+    schools = [
+        SchoolConfig(
+            name="Harding",
+            abbreviation="HU",
+            conference="GAC",
+            prefix="",
+            base_url="https://harding.example",
+            enabled=True,
+        ),
+        SchoolConfig(
+            name="Lubbock Christian",
+            abbreviation="LCU",
+            conference="LSC",
+            prefix="",
+            base_url="https://lubbock.example",
+            enabled=True,
+        ),
+    ]
+
+    def fake_programme(school, season, aliases, *, layers, members):
+        del season, aliases, members
+        return ProgrammeCollection(
+            slug=programme_slug(school.name),
+            name=school.name,
+            fixtures=[],
+            players=[],
+            outcomes={
+                layer: LayerOutcome(layer=layer, state=STATE_EMPTY) for layer in layers
+            },
+        )
+
+    monkeypatch.setattr(collect_board, "load_schools", lambda path: schools)
+    monkeypatch.setattr(collect_board, "identity_aliases", lambda schools, gender: {})
+    monkeypatch.setattr(
+        collect_board, "conference_members", lambda schools, gender, conference: set()
+    )
+    monkeypatch.setattr(collect_board, "collect_programme", fake_programme)
+    monkeypatch.setattr(collect_board, "write_raw_pages", lambda *args: None)
+    monkeypatch.setattr(collect_board.paths, "data_root", lambda: tmp_path)
+
+    fixtures, *_ = collect_board.collect(
+        season=2026,
+        gender="men",
+        conference="GAC",
+        wanted=["harding", "lubbock-christian"],
+        layers=(LAYER_SCHEDULE,),
+        config_path=tmp_path / "schools.toml",
+        membership_extrapolated=False,
+    )
+
+    assert fixtures["schema"] == "touchline.fixtures/2"
+    assert fixtures["conference"] == "GAC"
+    assert fixtures["programmes"] == [
+        {"slug": "harding", "name": "Harding", "conference": "GAC", "abbr": "HU"},
+        {
+            "slug": "lubbock-christian",
+            "name": "Lubbock Christian",
+            "conference": "LSC",
+            "abbr": "LCU",
+        },
+    ]
+
+
+def test_main_keeps_conference_shards_independent(
+    monkeypatch,
+    tmp_path: Path,
+) -> None:
+    calls: list[dict[str, object]] = []
+
+    def fake_collect(**kwargs):
+        calls.append(kwargs)
+        season = kwargs["season"]
+        gender = kwargs["gender"]
+        conference = kwargs["conference"]
+        wanted = kwargs["wanted"]
+        fixture_payload = {
+            "schema": "touchline.fixtures/2",
+            "season": season,
+            "gender": gender,
+            "conference": conference,
+            "collected_at": "2026-08-12T12:00:00+00:00",
+            "programmes": [
+                {"slug": slug, "name": slug, "conference": conference}
+                for slug in wanted
+            ],
+            "fixtures": [],
+        }
+        roster_payload = {
+            "schema": "touchline.rosters/1",
+            "season": season,
+            "gender": gender,
+            "collected_at": "2026-08-12T12:00:00+00:00",
+            "rosters": {},
+        }
+        stats_payload = {
+            "schema": "touchline.stats/1",
+            "season": season,
+            "gender": gender,
+            "collected_at": "2026-08-12T12:00:00+00:00",
+            "teams": {},
+        }
+        matches_payload = {
+            "schema": "touchline.matches/1",
+            "season": season,
+            "gender": gender,
+            "collected_at": "2026-08-12T12:00:00+00:00",
+            "matches": {},
+        }
+        cells = {
+            f"{season}/{gender}/{wanted[0]}/schedule": {"state": "complete"}
+        }
+        return (
+            fixture_payload,
+            roster_payload,
+            stats_payload,
+            matches_payload,
+            cells,
+            ["named gap"],
+            0,
+        )
+
+    monkeypatch.setattr(collect_board, "collect", fake_collect)
+    monkeypatch.setattr(collect_board.paths, "data_root", lambda: tmp_path)
+
+    def run(conference: str, programme: str) -> None:
+        monkeypatch.setattr(
+            sys,
+            "argv",
+            [
+                "collect-board",
+                "--season",
+                "2026",
+                "--gender",
+                "men",
+                "--conference",
+                conference,
+                "--programmes",
+                programme,
+                "--layers",
+                ",".join(DEFAULT_LAYERS),
+            ],
+        )
+        assert collect_board.main() == 0
+
+    run("GAC", "harding")
+    gac_bytes = (
+        tmp_path / "data" / "fixtures" / "2026-men-gac.json"
+    ).read_bytes()
+    run("LSC", "lubbock-christian")
+
+    assert calls[0]["wanted"] == ["harding"]
+    assert calls[1]["wanted"] == ["lubbock-christian"]
+    assert (
+        tmp_path / "data" / "fixtures" / "2026-men-gac.json"
+    ).read_bytes() == gac_bytes
+    for layer in ("fixtures", "rosters", "stats", "matches"):
+        assert (tmp_path / "data" / layer / "2026-men-gac.json").is_file()
+        assert (tmp_path / "data" / layer / "2026-men-lsc.json").is_file()
+    assert (
+        tmp_path / "data" / "errors" / "collect-board-2026-men-gac.json"
+    ).is_file()
+    assert (
+        tmp_path / "data" / "errors" / "collect-board-2026-men-lsc.json"
+    ).is_file()
+
+    manifest = json.loads((tmp_path / "data" / "coverage.json").read_text())
+    assert set(manifest["cells"]) == {
+        "2026/men/harding/schedule",
+        "2026/men/lubbock-christian/schedule",
+    }
 
 
 def _fx(**over: object) -> dict[str, object]:
