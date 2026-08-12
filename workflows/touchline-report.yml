@@ -289,7 +289,11 @@ nodes:
       set -uo pipefail
       D="data/research/${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}"
       DG="data/scratch/digest-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
-      N=$(jq '.programmes | length' "$DG")
+      N=$(jq -e '.programmes | length' "$DG")
+      if [ -z "${N:-}" ] || [ "$N" -lt 1 ]; then
+        printf 'ALARM: digest unreadable in validate-research.\n'
+        exit 1
+      fi
       MISSING=""
       for slug in $(jq -r '.programmes | keys[]' "$DG"); do
         F="$D/research-$slug.json"
