@@ -3,7 +3,7 @@
 SideArm hosts such as dbupatriots.com serve an incomplete certificate chain
 (missing intermediate). certifi cannot fetch the missing cert, so requests fails
 with CERTIFICATE_VERIFY_FAILED; the OS verifier AIA-chases it exactly like the
-browsers the sites are built for. Verification stays ON - never use verify=False.
+browsers the sites are built for. Verification stays enabled.
 """
 
 from __future__ import annotations
