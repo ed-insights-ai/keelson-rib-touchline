@@ -23,6 +23,10 @@ class SchoolConfig:
     data_status: str = "unverified"
     notes: str = ""
     mascot: str = ""
+    # Namespaces the legacy game_id space (ordinal * 1_000_000 + year * 100 +
+    # game_num), so it must be globally unique among the schools that have one.
+    # Only the StatCrew lineage builds game_ids; the live collector never reads
+    # this field, so a SideArm-only school leaves it 0, meaning unassigned.
     ordinal: int = 0
     gender: str = "men"
     scraper: str = "statcrew"
@@ -58,7 +62,7 @@ def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
         data = tomllib.load(f)
 
     schools: list[SchoolConfig] = []
-    for idx, entry in enumerate(data.get("schools", []), start=1):
+    for entry in data.get("schools", []):
         school = SchoolConfig(
             name=entry["name"],
             abbreviation=entry["abbreviation"],
@@ -70,7 +74,7 @@ def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
             data_status=entry.get("data_status", "unverified"),
             notes=entry.get("notes", ""),
             mascot=entry.get("mascot", ""),
-            ordinal=entry.get("ordinal", idx),
+            ordinal=entry.get("ordinal", 0),
             gender=entry.get("gender", "men"),
             scraper=entry.get("scraper", "statcrew"),
             live_base_url=entry.get("live_base_url", ""),
@@ -82,13 +86,23 @@ def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
             )
         schools.append(school)
 
-    # Validate no duplicate ordinals
+    # Ordinal 0 means unassigned, and any number of schools may be unassigned:
+    # only the StatCrew lineage builds game_ids from it. Validating assigned
+    # ordinals alone is what lets a new conference of SideArm-only schools be
+    # added anywhere in the file. The previous default was the entry's file
+    # position, which silently manufactured a collision with an explicitly
+    # numbered school whenever an entry was inserted rather than appended.
     seen_ordinals: dict[int, str] = {}
     for s in schools:
+        if not s.ordinal:
+            continue
         if s.ordinal in seen_ordinals:
             raise ValueError(
                 f"Duplicate ordinal {s.ordinal}: '{s.abbreviation}' and "
-                f"'{seen_ordinals[s.ordinal]}'"
+                f"'{seen_ordinals[s.ordinal]}'. Ordinals namespace the legacy "
+                f"game_id space and must be unique; the next free value is "
+                f"{max(seen_ordinals) + 1}. Leave it unset for a school the "
+                f"StatCrew lineage never reads."
             )
         seen_ordinals[s.ordinal] = s.abbreviation
 

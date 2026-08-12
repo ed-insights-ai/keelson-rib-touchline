@@ -47,7 +47,19 @@ def _parse_archive_path(path: Path, raw_html_dir: Path) -> tuple[str, int, int]:
 
 
 def _build_game_id(school: SchoolConfig, year: int, game_num: int) -> int:
-    """Build the same stable game identifier used by the online scraper."""
+    """Build the same stable game identifier used by the online scraper.
+
+    Ordinal 0 means unassigned, which every SideArm-only school leaves it at.
+    Building an id from it would put that school in the same namespace as the
+    year alone, colliding with every other unassigned school, so refuse here
+    rather than at config load: this is the only lineage that needs the field.
+    """
+    if not school.ordinal:
+        raise ValueError(
+            f"School '{school.name}' ({school.abbreviation}) has no ordinal, so "
+            f"a stable game_id cannot be built for it. Assign a unique ordinal "
+            f"in schools.toml to collect it through the StatCrew lineage."
+        )
     return school.ordinal * 1_000_000 + year * 100 + game_num
 
 

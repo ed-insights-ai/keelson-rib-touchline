@@ -93,6 +93,30 @@ describe("membership resolution", () => {
     expect(res.authoredThrough).toBe(2025);
   });
 
+  test("the authoring horizon is per-conference, not the file's global maximum", async () => {
+    // non_member women are authored only through 2018, while GAC and MIAA women
+    // run to 2025. Taking the maximum across the whole file borrowed 2025, which
+    // stopped this from extrapolating, matched no window, and resolved to
+    // nothing. Adding a conference authored further ahead than the GAC would do
+    // exactly that to the GAC.
+    const res = await resolveConference("non_member", "women", 2020);
+    expect(res.authoredThrough).toBe(2018);
+    expect(res.extrapolated).toBe(true);
+    expect(res.slugs.length).toBeGreaterThan(0);
+  });
+
+  test("a conference with no windows for a gender borrows no horizon", async () => {
+    // The file declares MIAA but authors no MIAA men's windows at all, so the
+    // honest answer is that it authors nothing — not the GAC's 2025.
+    const miaaMen = await resolveConference("MIAA", "men", 2025);
+    expect(miaaMen.authoredThrough).toBe(0);
+    expect(miaaMen.slugs).toEqual([]);
+    // And the GAC's own horizon is unaffected by its neighbours.
+    const gac = await resolveConference("GAC", "men", 2026);
+    expect(gac.authoredThrough).toBe(2025);
+    expect(gac.slugs.length).toBe(7);
+  });
+
   test("an unknown conference resolves to nothing rather than guessing", async () => {
     const res = await resolveConference("NOT-A-CONFERENCE", "men", 2025);
     expect(res.slugs).toEqual([]);

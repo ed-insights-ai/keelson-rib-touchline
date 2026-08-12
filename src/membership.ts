@@ -59,7 +59,7 @@ export interface Resolution {
    *  membership had to be carried forward. The caller must surface this: a
    *  carried-forward roster is a well-founded guess, not a cited fact. */
   extrapolated: boolean;
-  /** The last season the file actually authors for this gender. */
+  /** The last season the file authors for THIS conference and gender. */
   authoredThrough: number;
   /** Every conference name the file knows, for a helpful error. */
   known: string[];
@@ -81,9 +81,15 @@ export async function resolveConference(
   const wanted = conference.trim().toUpperCase();
   const known = [...new Set(file.conferences.map((c) => c))];
 
+  // Scoped to the conference asked about, not the whole file. A global maximum
+  // reads one conference's authoring horizon off another's: with the GAC
+  // authored through 2025 and a second conference through 2026, a GAC 2026 ask
+  // would stop extrapolating, match no window, and resolve to nothing — adding
+  // a conference would break the conference already there.
   let authoredThrough = 0;
   for (const byGender of Object.values(file.memberships)) {
     for (const w of byGender[gender] ?? []) {
+      if (w.conference.toUpperCase() !== wanted) continue;
       if (w.to_season > authoredThrough) authoredThrough = w.to_season;
     }
   }

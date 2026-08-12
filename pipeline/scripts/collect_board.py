@@ -38,6 +38,7 @@ from src.sidearm_live import (
     build_session,
     collect_match,
     collect_programme,
+    conference_members,
     identity_aliases,
     programme_slug,
     write_raw_pages,
@@ -159,6 +160,11 @@ def collect(
     # gender, so an unscoped map resolves a men's fixture to a women's-only
     # programme.
     aliases = identity_aliases(schools, gender)
+    # Identity and membership are different questions and must use different
+    # sets. Aliases span every configured school so an out-of-conference
+    # opponent still gets a canonical slug; membership is one conference, so a
+    # cross-conference fixture is not derived into a conference game.
+    members = conference_members(schools, gender, conference)
     results = []
     errors: list[str] = []
     cells: dict[str, dict[str, object]] = {}
@@ -191,7 +197,9 @@ def collect(
                 record(slug, layer, coverage.STATE_NO_COLLECTOR, reason=reason)
             continue
 
-        result = collect_programme(school, season, aliases, layers=layers)
+        result = collect_programme(
+            school, season, aliases, layers=layers, members=members
+        )
         write_raw_pages(root, result, season, gender)
         results.append(result)
         for layer in layers:

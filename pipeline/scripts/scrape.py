@@ -43,6 +43,20 @@ def _scrape_season(
     progress: Progress,
 ) -> _ScrapeResult:
     """Scrape one school season and report whether every discovered game completed."""
+    # Refuse before discovery, which always hits the network. Ordinal 0 means
+    # unassigned; building a game_id from it would collide with every other
+    # unassigned school rather than namespacing this one.
+    if not school.ordinal:
+        return _ScrapeResult(
+            parsed=[],
+            discovered=0,
+            failed_game_ids=[],
+            rejection=(
+                f"School '{school.name}' ({school.abbreviation}) has no ordinal, "
+                f"so stable game_ids cannot be built for it; assign a unique "
+                f"ordinal in schools.toml to scrape it through this lineage"
+            ),
+        )
     try:
         if school.scraper == "sidearm":
             urls = discover_sidearm_season(year, base_url=school.base_url)
