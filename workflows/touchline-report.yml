@@ -131,8 +131,24 @@ nodes:
         --conference "$KEELSON_INPUTS_conference" \
         --focus "$KEELSON_INPUTS_focus"
 
+  - id: programme-count
+    depends_on: [digest]
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      DG="data/scratch/digest-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
+      N=$(jq -e '.programmes | length' "$DG" 2>/dev/null) || {
+        printf 'ALARM: digest %s is missing or unparseable — cannot size the research sweep.\n' "$DG"
+        exit 1
+      }
+      if [ "$N" -lt 1 ]; then
+        printf 'ALARM: digest lists 0 programmes.\n'
+        exit 1
+      fi
+      printf '%s\n' "$N"
+
   - id: research
-    depends_on: [digest, conference-shard]
+    depends_on: [digest, conference-shard, programme-count]
     loop:
       max_iterations: 12
       fresh_context: true
