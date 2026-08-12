@@ -27,6 +27,7 @@ import {
 } from "./board.ts";
 import { invokeTouchlineCommand, TOUCHLINE_COMMAND } from "./commands.ts";
 import {
+  conferenceSlug,
   dataHomeState,
   explainRefusal,
   type HomeState,
@@ -102,7 +103,14 @@ function refresh(): void {
 
 const selectProjectPayload = z.object({ scopeId: z.string().min(1).optional() });
 const lensPayload = z.object({ team: z.string().min(1).nullable().optional() });
-const seasonPayload = z.object({ season: z.number().int(), gender: z.string().min(1) });
+const seasonPayload = z.object({
+  season: z.number().int(),
+  gender: z.string().min(1),
+  conference: z
+    .string()
+    .regex(/[a-z0-9]/i)
+    .optional(),
+});
 const playerPayload = z.object({ player: z.string().min(1).nullable().optional() });
 const fixturePayload = z.object({ fixture: z.string().min(1).nullable().optional() });
 
@@ -165,11 +173,17 @@ async function composeTouchlineBoardInner(): Promise<{ html: string; collectedAt
   const seasons = await listSeasons(root);
   if (!seasons.length) return { html: composeNoSeasons(project.name) };
 
+  const selectedShards = seasons.filter((s) => s.season === sel.season && s.gender === sel.gender);
+  const selectedConference = sel.conference ? conferenceSlug(sel.conference) : undefined;
   const want =
-    seasons.find((s) => s.season === sel.season && s.gender === sel.gender) ?? seasons[0];
+    (selectedConference
+      ? selectedShards.find((s) => s.conference === selectedConference)
+      : selectedShards.length === 1
+        ? selectedShards[0]
+        : undefined) ?? seasons[0];
   if (!want) return { html: composeNoSeasons(project.name) };
 
-  const fx = await loadFixtures(root, want.season, want.gender);
+  const fx = await loadFixtures(root, want.season, want.gender, want.conference);
   if (!fx.ok) {
     return {
       html: composeUnreadable(
@@ -179,9 +193,9 @@ async function composeTouchlineBoardInner(): Promise<{ html: string; collectedAt
       ),
     };
   }
-  const rs = await loadRosters(root, want.season, want.gender);
-  const st = await loadStats(root, want.season, want.gender);
-  const mt = await loadMatches(root, want.season, want.gender);
+  const rs = await loadRosters(root, want.season, want.gender, want.conference);
+  const st = await loadStats(root, want.season, want.gender, want.conference);
+  const mt = await loadMatches(root, want.season, want.gender, want.conference);
   // The full roster archive feeds tenure lines — how many seasons a player
   // has been on the roster, and prior stints at other conference programmes.
   const history = await loadRosterHistory(root, want.gender);
@@ -202,7 +216,11 @@ async function composeTouchlineBoardInner(): Promise<{ html: string; collectedAt
     player: team ? sel.player : undefined,
     fixture: sel.fixture,
     today: todayIso(),
-    seasons: seasons.map((s) => ({ season: s.season, gender: s.gender })),
+    seasons: seasons.map((s) => ({
+      season: s.season,
+      gender: s.gender,
+      conference: s.conference,
+    })),
   });
   return { html, collectedAt: fx.value.collected_at };
 }
@@ -400,11 +418,36 @@ const rib: Rib = {
       if (!parsed.success) {
         return {
           ok: false as const,
-          error: "select-season payload must be { season: number, gender: string }",
+          error:
+            "select-season payload must be { season: number, gender: string, conference?: string }",
+        };
+      }
+      const candidates = (await currentScope()).seasons.filter(
+        (s) => s.season === parsed.data.season && s.gender === parsed.data.gender,
+      );
+      const conference = parsed.data.conference
+        ? conferenceSlug(parsed.data.conference)
+        : undefined;
+      const want = conference
+        ? candidates.find((s) => s.conference === conference)
+        : candidates.length === 1
+          ? candidates[0]
+          : undefined;
+      if (!want) {
+        return {
+          ok: false as const,
+          error:
+            candidates.length > 1 && !conference
+              ? `select-season must name conference; available shards: ${candidates
+                  .map((s) => s.conference)
+                  .join(", ")}`
+              : `No collected ${parsed.data.season} ${parsed.data.gender}${
+                  conference ? ` ${conference}` : ""
+                } season shard exists.`,
         };
       }
       const keptTeam = getSelection().team;
-      setSeason(parsed.data.season, parsed.data.gender);
+      setSeason(want.season, want.gender, want.conference);
       if (keptTeam) setTeam(keptTeam);
       refresh();
       return { ok: true as const };

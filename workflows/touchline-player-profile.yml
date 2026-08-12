@@ -26,6 +26,9 @@ inputs:
   - name: gender
     description: men or women.
     required: true
+  - name: conference
+    description: Conference name or shard slug, e.g. GAC.
+    required: true
 
 # ─────────────────────────────────────────────────────────────────────────────
 # assemble (deterministic record from season files — fails if the player has
@@ -44,7 +47,7 @@ nodes:
         printf 'REFUSED: %s is not a Touchline data home (no touchline-data.yaml marker).\n' "$PWD"
         exit 1
       fi
-      for v in KEELSON_INPUTS_player KEELSON_INPUTS_programme KEELSON_INPUTS_gender; do
+      for v in KEELSON_INPUTS_player KEELSON_INPUTS_programme KEELSON_INPUTS_gender KEELSON_INPUTS_conference; do
         eval "val=\${$v:-}"
         if [ -z "$val" ]; then
           printf 'REFUSED: required input %s is empty.\n' "$v"
@@ -89,6 +92,7 @@ nodes:
       TOUCHLINE_DATA_DIR="$PWD" uv run --project "$PIPELINE_DIR" build-profile \
         --programme "$KEELSON_INPUTS_programme" \
         --gender "$KEELSON_INPUTS_gender" \
+        --conference "$KEELSON_INPUTS_conference" \
         --player "$KEELSON_INPUTS_player"
 
   - id: research
@@ -201,6 +205,7 @@ nodes:
       TOUCHLINE_DATA_DIR="$PWD" uv run --project "$PIPELINE_DIR" build-profile \
         --programme "$KEELSON_INPUTS_programme" \
         --gender "$KEELSON_INPUTS_gender" \
+        --conference "$KEELSON_INPUTS_conference" \
         --player "$KEELSON_INPUTS_player" \
         --findings "$F"
       TOUCHLINE_DATA_DIR="$PWD" uv run --project "$PIPELINE_DIR" normalize-research

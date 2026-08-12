@@ -18,7 +18,7 @@ import { z } from "zod";
 // a half-understood file is worse than one that reports it cannot.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export const FIXTURES_SCHEMA = "touchline.fixtures/1";
+export const FIXTURES_SCHEMA = "touchline.fixtures/2";
 export const ROSTERS_SCHEMA = "touchline.rosters/1";
 export const STATS_SCHEMA = "touchline.stats/1";
 export const MATCHES_SCHEMA = "touchline.matches/1";
@@ -34,6 +34,7 @@ export const programmeSchema = z
   .object({
     slug: z.string().min(1),
     name: z.string().min(1),
+    conference: z.string().min(1),
     abbr: z.string().min(1).max(6).optional(),
   })
   .strict();

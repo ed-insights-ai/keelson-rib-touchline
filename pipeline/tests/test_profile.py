@@ -15,7 +15,13 @@ def test_player_key_folds_like_the_name_join():
 
 def test_assemble_record_gathers_identity_career_and_appearances(tmp_path):
     seed_home(tmp_path)
-    record = assemble_record(tmp_path, programme="alpha", gender="men", player="Star")
+    record = assemble_record(
+        tmp_path,
+        programme="alpha",
+        gender="men",
+        conference="TESTCONF",
+        player="Star",
+    )
     # Identity from the most recent roster listing him (2026).
     assert record["identity"]["name"] == "Star"
     assert record["identity"]["roster_season"] == 2026
@@ -32,18 +38,30 @@ def test_assemble_record_matches_multi_word_names(tmp_path):
     """Regression: the join key is the normalized name, not the file slug —
     a hyphenated key silently missed every multi-word player."""
     seed_home(tmp_path)
-    path = tmp_path / "data" / "rosters" / "2026-men.json"
+    path = tmp_path / "data" / "rosters" / "2026-men-testconf.json"
     payload = json.loads(path.read_text(encoding="utf-8"))
     payload["rosters"]["alpha"]["players"].append({"name": "Two Words"})
     path.write_text(json.dumps(payload), encoding="utf-8")
-    record = assemble_record(tmp_path, programme="alpha", gender="men", player="Two Words")
+    record = assemble_record(
+        tmp_path,
+        programme="alpha",
+        gender="men",
+        conference="TESTCONF",
+        player="Two Words",
+    )
     assert record["identity"]["roster_season"] == 2026
 
 
 def test_assemble_record_refuses_a_ghost(tmp_path):
     seed_home(tmp_path)
     try:
-        assemble_record(tmp_path, programme="alpha", gender="men", player="Nobody Real")
+        assemble_record(
+            tmp_path,
+            programme="alpha",
+            gender="men",
+            conference="TESTCONF",
+            player="Nobody Real",
+        )
     except ValueError as exc:
         assert "no trace" in str(exc)
     else:
@@ -66,6 +84,7 @@ def test_upsert_merges_findings_additively_and_refreshes_record(tmp_path):
         tmp_path,
         programme="alpha",
         gender="men",
+        conference="TESTCONF",
         player="Star",
         generated_at="2026-08-10T00:00:00+00:00",
         findings_file=findings_path,
@@ -85,6 +104,7 @@ def test_upsert_merges_findings_additively_and_refreshes_record(tmp_path):
         tmp_path,
         programme="alpha",
         gender="men",
+        conference="TESTCONF",
         player="Star",
         generated_at="2026-08-11T00:00:00+00:00",
         findings_file=findings_path,
@@ -106,6 +126,7 @@ def test_upsert_without_findings_is_a_pure_record_refresh(tmp_path):
         tmp_path,
         programme="alpha",
         gender="men",
+        conference="TESTCONF",
         player="Star",
         generated_at="2026-08-10T00:00:00+00:00",
     )

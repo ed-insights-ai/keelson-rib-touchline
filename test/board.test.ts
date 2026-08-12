@@ -27,6 +27,7 @@ import {
   loadFixtures,
   loadRosterHistory,
   readMarker,
+  seasonFileName,
 } from "../src/datahome.ts";
 import { resolveConference, resolveTargets } from "../src/membership.ts";
 import {
@@ -47,14 +48,14 @@ import {
 } from "../src/season.ts";
 
 const base: FixturesFile = {
-  schema: "touchline.fixtures/1",
+  schema: "touchline.fixtures/2",
   season: 2026,
   gender: "men",
   conference: "GAC",
   collected_at: "2026-08-09T21:00:00Z",
   programmes: [
-    { slug: "harding", name: "Harding" },
-    { slug: "rogers-state", name: "Rogers State" },
+    { slug: "harding", name: "Harding", conference: "GAC" },
+    { slug: "rogers-state", name: "Rogers State", conference: "GAC" },
   ],
   fixtures: [],
 };
@@ -311,7 +312,7 @@ describe("the data home", () => {
   test("an absent season file reports absent rather than throwing", async () => {
     const root = await tempHome();
     await bootstrapDataHome(root);
-    const res = await loadFixtures(root, 2026, "men");
+    const res = await loadFixtures(root, 2026, "men", "GAC");
     expect(res.ok).toBe(false);
     if (!res.ok) expect(res.reason).toBe("absent");
     expect(await listSeasons(root)).toEqual([]);
@@ -320,8 +321,8 @@ describe("the data home", () => {
   test("a malformed season file reports invalid, never renders as empty", async () => {
     const root = await tempHome();
     await bootstrapDataHome(root);
-    await writeFile(join(root, "data", "fixtures", "2026-men.json"), "{ not json", "utf8");
-    const res = await loadFixtures(root, 2026, "men");
+    await writeFile(join(root, "data", "fixtures", "2026-men-gac.json"), "{ not json", "utf8");
+    const res = await loadFixtures(root, 2026, "men", "GAC");
     expect(res.ok).toBe(false);
     if (!res.ok) expect(res.reason).toBe("invalid");
   });
@@ -330,24 +331,52 @@ describe("the data home", () => {
     const root = await tempHome();
     await bootstrapDataHome(root);
     await writeFile(
-      join(root, "data", "fixtures", "2026-men.json"),
+      join(root, "data", "fixtures", "2026-men-gac.json"),
       JSON.stringify({ schema: "touchline.fixtures/99", season: 2026 }),
       "utf8",
     );
-    const res = await loadFixtures(root, 2026, "men");
+    const res = await loadFixtures(root, 2026, "men", "GAC");
     expect(res.ok).toBe(false);
   });
 
-  test("a written season round-trips through the schema", async () => {
+  test("conference-sharded seasons round-trip without collapsing", async () => {
+    const root = await tempHome();
+    await bootstrapDataHome(root);
+    const lsc = {
+      ...base,
+      conference: "LSC",
+      programmes: [{ slug: "lubbock-christian", name: "Lubbock Christian", conference: "LSC" }],
+    };
+    await writeFile(
+      join(root, "data", "fixtures", "2026-men-gac.json"),
+      JSON.stringify(base),
+      "utf8",
+    );
+    await writeFile(
+      join(root, "data", "fixtures", "2026-men-lsc.json"),
+      JSON.stringify(lsc),
+      "utf8",
+    );
+    const res = await loadFixtures(root, 2026, "men", "GAC");
+    expect(res.ok).toBe(true);
+    expect(seasonFileName(2026, "men", " Lone Star Conference ")).toBe(
+      "2026-men-lone-star-conference.json",
+    );
+    const seasons = await listSeasons(root);
+    expect(seasons).toEqual([
+      { season: 2026, gender: "men", conference: "gac", hasFixtures: true, hasRosters: false },
+      { season: 2026, gender: "men", conference: "lsc", hasFixtures: true, hasRosters: false },
+    ]);
+  });
+
+  test("legacy filenames are ignored until the data home is migrated", async () => {
     const root = await tempHome();
     await bootstrapDataHome(root);
     await writeFile(join(root, "data", "fixtures", "2026-men.json"), JSON.stringify(base), "utf8");
-    const res = await loadFixtures(root, 2026, "men");
-    expect(res.ok).toBe(true);
-    const seasons = await listSeasons(root);
-    expect(seasons).toEqual([
-      { season: 2026, gender: "men", conference: "GAC", hasFixtures: true, hasRosters: false },
-    ]);
+    expect(await listSeasons(root)).toEqual([]);
+    const res = await loadFixtures(root, 2026, "men", "GAC");
+    expect(res.ok).toBe(false);
+    if (!res.ok) expect(res.reason).toBe("absent");
   });
 
   test("a roster-only past season is still listed", async () => {
@@ -357,9 +386,13 @@ describe("the data home", () => {
     // roster analysis needs.
     const root = await tempHome();
     await bootstrapDataHome(root);
-    await writeFile(join(root, "data", "fixtures", "2026-men.json"), JSON.stringify(base), "utf8");
     await writeFile(
-      join(root, "data", "rosters", "2019-men.json"),
+      join(root, "data", "fixtures", "2026-men-gac.json"),
+      JSON.stringify(base),
+      "utf8",
+    );
+    await writeFile(
+      join(root, "data", "rosters", "2019-men-gac.json"),
       JSON.stringify({
         schema: "touchline.rosters/1",
         season: 2019,
@@ -376,7 +409,7 @@ describe("the data home", () => {
     expect(past).toEqual({
       season: 2019,
       gender: "men",
-      conference: "unknown",
+      conference: "gac",
       hasFixtures: false,
       hasRosters: true,
     });
@@ -394,11 +427,11 @@ describe("the data home", () => {
         rosters: { harding: { programme: "harding", players: [{ name: "Aric McKinney" }] } },
       });
     const dir = join(root, "data", "rosters");
-    await writeFile(join(dir, "2026-men.json"), roster(2026, "men"), "utf8");
-    await writeFile(join(dir, "2024-men.json"), roster(2024, "men"), "utf8");
+    await writeFile(join(dir, "2026-men-gac.json"), roster(2026, "men"), "utf8");
+    await writeFile(join(dir, "2024-men-gac.json"), roster(2024, "men"), "utf8");
     // A corrupt archive season narrows visible history, never fails the load.
-    await writeFile(join(dir, "2025-men.json"), "{not json", "utf8");
-    await writeFile(join(dir, "2024-women.json"), roster(2024, "women"), "utf8");
+    await writeFile(join(dir, "2025-men-gac.json"), "{not json", "utf8");
+    await writeFile(join(dir, "2024-women-gac.json"), roster(2024, "women"), "utf8");
 
     const men = await loadRosterHistory(root, "men");
     expect(men.map((f) => f.season)).toEqual([2024, 2026]);
@@ -419,9 +452,10 @@ describe("the board markup", () => {
 
   test("the masthead grows chevrons only when the archive holds neighbours", () => {
     const seasons = [
-      { season: 2026, gender: "men" },
-      { season: 2025, gender: "men" },
-      { season: 2024, gender: "men" },
+      { season: 2026, gender: "men", conference: "gac" },
+      { season: 2025, gender: "men", conference: "gac" },
+      { season: 2025, gender: "men", conference: "lsc" },
+      { season: 2024, gender: "men", conference: "gac" },
     ];
     const mid = composeBoard({
       projectName: "p",
@@ -432,6 +466,8 @@ describe("the board markup", () => {
     expect(mid).toContain('data-act="select-season"');
     expect(mid).toContain("&quot;season&quot;:2024");
     expect(mid).toContain("&quot;season&quot;:2026");
+    expect(mid).toContain("&quot;conference&quot;:&quot;gac&quot;");
+    expect(mid).not.toContain("&quot;conference&quot;:&quot;lsc&quot;");
 
     // The newest season has no forward step; the oldest no backward step.
     const newest = composeBoard({
@@ -470,8 +506,8 @@ describe("the board markup", () => {
       team: "harding",
       today: "2026-08-09",
       seasons: [
-        { season: 2026, gender: "men" },
-        { season: 2025, gender: "men" },
+        { season: 2026, gender: "men", conference: "gac" },
+        { season: 2025, gender: "men", conference: "gac" },
       ],
     });
     expect(html).toContain("Final");
@@ -528,7 +564,7 @@ describe("the board markup", () => {
       projectName: "p",
       fixtures: {
         ...base,
-        programmes: [...base.programmes, { slug: "newman", name: "Newman" }],
+        programmes: [...base.programmes, { slug: "newman", name: "Newman", conference: "GAC" }],
         fixtures: [
           {
             id: "1",
@@ -717,7 +753,7 @@ describe("the board markup", () => {
         projectName: "p",
         fixtures: {
           ...base,
-          programmes: [...base.programmes, { slug: "newman", name: "Newman" }],
+          programmes: [...base.programmes, { slug: "newman", name: "Newman", conference: "GAC" }],
           fixtures: [
             {
               id: "1",
@@ -988,7 +1024,7 @@ describe("the board markup", () => {
 
   test("a single-programme season keeps the ledger, not a one-row matrix", () => {
     const html = render({
-      programmes: [{ slug: "harding", name: "Harding" }],
+      programmes: [{ slug: "harding", name: "Harding", conference: "GAC" }],
       fixtures: [
         { id: "1", date: "2026-09-01", home: "harding", away: "delta-st", status: "scheduled" },
       ],
@@ -1011,8 +1047,8 @@ describe("the board markup", () => {
     const hostile = '<img src=x onerror="alert(1)">';
     const html = render({
       programmes: [
-        { slug: "x", name: hostile },
-        { slug: "rogers-state", name: "Rogers State" },
+        { slug: "x", name: hostile, conference: "GAC" },
+        { slug: "rogers-state", name: "Rogers State", conference: "GAC" },
       ],
       // A fixture is needed for the full name to reach a card and a table row.
       fixtures: [
@@ -1088,6 +1124,15 @@ describe("the fixtures schema", () => {
       fixturesFileSchema.parse({
         ...base,
         fixtures: [{ id: "1", date: "9/1/2026", home: "a", away: "b", status: "scheduled" }],
+      }),
+    ).toThrow();
+  });
+
+  test("requires a conference on every programme", () => {
+    expect(() =>
+      fixturesFileSchema.parse({
+        ...base,
+        programmes: [{ slug: "harding", name: "Harding" }],
       }),
     ).toThrow();
   });

@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import json
+import sys
 from pathlib import Path
 
 import pandas as pd
 import pytest
 
-from scripts import reparse
+from scripts import export_board, reparse
 from src.models import Game
 
 
@@ -52,6 +54,63 @@ def _parsed_game(
         "events": [],
         "team_stats": [],
     }
+
+
+def test_export_board_writes_the_conference_sharded_v2_contract(
+    tmp_path,
+    monkeypatch,
+):
+    structured = tmp_path / "structured"
+    archive = structured / "all" / "games.parquet"
+    archive.parent.mkdir(parents=True)
+    archive.touch()
+    games = pd.DataFrame(
+        [
+            {
+                "game_id": 1_202_601,
+                "season_year": 2026,
+                "date": "09/01/2026",
+                "venue": "Stevens Soccer Complex",
+                "home_team": "Harding",
+                "away_team": "Rogers State",
+                "home_score": 2,
+                "away_score": 1,
+                "is_conference_game": None,
+                "source_url": "https://example.test/game",
+            }
+        ]
+    )
+    output = tmp_path / "output"
+    monkeypatch.setattr(export_board.paths, "structured_root", lambda: structured)
+    monkeypatch.setattr(export_board.paths, "data_root", lambda: output)
+    monkeypatch.setattr(export_board.pd, "read_parquet", lambda path: games.copy())
+    monkeypatch.setattr(export_board, "gender_of_ordinal", lambda config: {1: "men"})
+    monkeypatch.setattr(export_board, "load_identity_map", lambda: {})
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "export-board",
+            "--season",
+            "2026",
+            "--gender",
+            "men",
+            "--conference",
+            "GAC",
+            "--programmes",
+            "harding,rogers-state",
+        ],
+    )
+
+    assert export_board.main() == 0
+    path = output / "data" / "fixtures" / "2026-men-gac.json"
+    payload = json.loads(path.read_text())
+    assert payload["schema"] == "touchline.fixtures/2"
+    assert payload["conference"] == "GAC"
+    assert {programme["conference"] for programme in payload["programmes"]} == {
+        "GAC"
+    }
+    assert not (output / "data" / "fixtures" / "2026-men.json").exists()
 
 
 def test_parse_archive_path_and_game_id(tmp_path):

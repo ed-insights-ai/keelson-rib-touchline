@@ -1,4 +1,4 @@
-"""Build the deterministic scouting digest for one (season, gender) unit.
+"""Build the deterministic scouting digest for one conference season shard.
 
 Reads the data home's season files and writes ``data/scratch/digest-<season>-
 <gender>-<focus>.json`` — the only source of figures a generated scouting
@@ -34,6 +34,7 @@ def main() -> int:
     )
     parser.add_argument("--season", type=int, required=True)
     parser.add_argument("--gender", choices=["men", "women"], required=True)
+    parser.add_argument("--conference", required=True)
     parser.add_argument(
         "--focus",
         required=True,
@@ -48,6 +49,7 @@ def main() -> int:
             root,
             season=args.season,
             gender=args.gender,
+            conference=args.conference,
             focus=args.focus,
             generated_at=generated_at,
         )

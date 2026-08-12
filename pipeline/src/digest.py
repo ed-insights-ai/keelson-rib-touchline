@@ -8,9 +8,9 @@ produces one.  One wrong number in front of a coach ends the conversation, so
 the boundary is absolute: if a figure is not in the digest, the report cannot
 say it.
 
-Everything is parameterized by season, gender, and a focus programme.  The
-conference is whatever the season's fixtures file says it is — nothing here
-names one.
+Everything is parameterized by season, gender, conference, and a focus
+programme. The conference selects the storage shard; the fixtures file remains
+the authority for its display label.
 """
 
 from __future__ import annotations
@@ -19,6 +19,8 @@ import json
 import re
 import unicodedata
 from pathlib import Path
+
+from src.sidearm_live import programme_slug
 
 DIGEST_SCHEMA = "touchline.digest/1"
 
@@ -55,13 +57,22 @@ def normalize_name(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", " ", text.casefold()).strip()
 
 
-def _season_path(root: Path, kind: str, season: int, gender: str) -> Path:
-    return root / "data" / kind / f"{season}-{gender}.json"
+def _season_path(
+    root: Path, kind: str, season: int, gender: str, conference: str
+) -> Path:
+    return (
+        root
+        / "data"
+        / kind
+        / f"{season}-{gender}-{programme_slug(conference)}.json"
+    )
 
 
-def load_season(root: Path, kind: str, season: int, gender: str) -> dict | None:
+def load_season(
+    root: Path, kind: str, season: int, gender: str, conference: str
+) -> dict | None:
     """One season file as a dict, or None when the home does not hold it."""
-    path = _season_path(root, kind, season, gender)
+    path = _season_path(root, kind, season, gender, conference)
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
@@ -69,10 +80,13 @@ def load_season(root: Path, kind: str, season: int, gender: str) -> dict | None:
     return payload if isinstance(payload, dict) else None
 
 
-def seasons_held(root: Path, gender: str) -> list[int]:
-    """Every season the home holds a fixtures file for, ascending."""
+def seasons_held(root: Path, gender: str, conference: str) -> list[int]:
+    """Every season the home holds for one conference shard, ascending."""
     directory = root / "data" / "fixtures"
-    pattern = re.compile(rf"^(\d{{4}})-{re.escape(gender)}\.json$")
+    shard = programme_slug(conference)
+    pattern = re.compile(
+        rf"^(\d{{4}})-{re.escape(gender)}-{re.escape(shard)}\.json$"
+    )
     found = []
     if directory.is_dir():
         for entry in directory.iterdir():
@@ -848,19 +862,21 @@ def build_digest(
     *,
     season: int,
     gender: str,
+    conference: str,
     focus: str,
     generated_at: str,
 ) -> dict:
-    """Assemble the digest for one (season, gender) unit around a focus programme.
+    """Assemble one conference shard's digest around a focus programme.
 
     Raises ``ValueError`` when the home lacks the target season's fixtures or
     the focus is not one of its programmes — the caller should collect first,
     not guess.
     """
-    current_fixtures = load_season(root, "fixtures", season, gender)
+    current_fixtures = load_season(root, "fixtures", season, gender, conference)
     if current_fixtures is None:
         raise ValueError(
-            f"no fixtures for {season} {gender} in this data home — collect that season first"
+            f"no fixtures for {season} {gender} {conference} in this data home — "
+            "collect that season first"
         )
     programmes = {
         str(entry.get("slug")): entry
@@ -872,19 +888,20 @@ def build_digest(
             f"focus '{focus}' is not among this season's programmes ({known})"
         )
 
-    held = seasons_held(root, gender)
+    held = seasons_held(root, gender, conference)
     previous_candidates = [year for year in held if year < season]
     prev_season = max(previous_candidates) if previous_candidates else None
 
     fixtures_by_season = {
-        year: load_season(root, "fixtures", year, gender) for year in held
+        year: load_season(root, "fixtures", year, gender, conference)
+        for year in held
     }
     stats_by_season = {
-        year: load_season(root, "stats", year, gender) for year in held
+        year: load_season(root, "stats", year, gender, conference) for year in held
     }
-    current_rosters = load_season(root, "rosters", season, gender)
+    current_rosters = load_season(root, "rosters", season, gender, conference)
     prev_rosters = (
-        load_season(root, "rosters", prev_season, gender)
+        load_season(root, "rosters", prev_season, gender, conference)
         if prev_season is not None
         else None
     )
@@ -893,7 +910,7 @@ def build_digest(
         fixtures_by_season.get(prev_season) if prev_season is not None else None
     )
     prev_matches = (
-        load_season(root, "matches", prev_season, gender)
+        load_season(root, "matches", prev_season, gender, conference)
         if prev_season is not None
         else None
     )
@@ -956,9 +973,11 @@ def build_digest(
     sources = {}
     for kind in ("fixtures", "rosters", "stats", "matches"):
         for year in held:
-            payload = load_season(root, kind, year, gender)
+            payload = load_season(root, kind, year, gender, conference)
             if payload is not None and payload.get("collected_at"):
-                sources[f"{kind}/{year}-{gender}"] = payload["collected_at"]
+                sources[
+                    f"{kind}/{year}-{gender}-{programme_slug(conference)}"
+                ] = payload["collected_at"]
 
     return {
         "schema": DIGEST_SCHEMA,

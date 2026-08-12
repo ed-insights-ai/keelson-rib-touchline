@@ -45,7 +45,7 @@ from src.sidearm_live import (
     write_raw_pages,
 )
 
-FIXTURES_SCHEMA = "touchline.fixtures/1"
+FIXTURES_SCHEMA = "touchline.fixtures/2"
 ROSTERS_SCHEMA = "touchline.rosters/1"
 STATS_SCHEMA = "touchline.stats/1"
 MATCHES_SCHEMA = "touchline.matches/1"
@@ -245,6 +245,9 @@ def collect(
                 "name": candidates[slug].name
                 if slug in candidates
                 else slug.replace("-", " ").title(),
+                "conference": candidates[slug].conference
+                if slug in candidates
+                else conference,
                 **(
                     {"abbr": candidates[slug].abbreviation}
                     if slug in candidates and candidates[slug].abbreviation
@@ -502,11 +505,17 @@ def main() -> int:
         print("--programmes resolved to an empty list", file=sys.stderr)
         return 2
 
+    conference_slug = programme_slug(args.conference)
+    if not conference_slug:
+        print("--conference must contain at least one letter or number", file=sys.stderr)
+        return 2
+
     data_root = paths.data_root()
-    fixture_path = data_root / "data" / "fixtures" / f"{args.season}-{args.gender}.json"
-    roster_path = data_root / "data" / "rosters" / f"{args.season}-{args.gender}.json"
-    stats_path = data_root / "data" / "stats" / f"{args.season}-{args.gender}.json"
-    matches_path = data_root / "data" / "matches" / f"{args.season}-{args.gender}.json"
+    season_key = f"{args.season}-{args.gender}-{conference_slug}"
+    fixture_path = data_root / "data" / "fixtures" / f"{season_key}.json"
+    roster_path = data_root / "data" / "rosters" / f"{season_key}.json"
+    stats_path = data_root / "data" / "stats" / f"{season_key}.json"
+    matches_path = data_root / "data" / "matches" / f"{season_key}.json"
     wanted, widened = widen_to_existing_scope(
         wanted, fixture_path, roster_path, stats_path
     )
@@ -613,10 +622,16 @@ def main() -> int:
             data_root
             / "data"
             / "errors"
-            / f"collect-board-{args.season}-{args.gender}.json"
+            / f"collect-board-{season_key}.json"
         )
         _atomic_json(
-            error_path, {"season": args.season, "gender": args.gender, "errors": errors}
+            error_path,
+            {
+                "season": args.season,
+                "gender": args.gender,
+                "conference": args.conference,
+                "errors": errors,
+            },
         )
         print(
             f"\n{len(errors)} named gap(s) — recorded in the manifest, not discarded:"

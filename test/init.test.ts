@@ -235,14 +235,14 @@ describe("first-contact commands", () => {
     expect(made.ok).toBe(true);
     if (!made.ok) return;
     await writeFile(
-      join(made.rootPath, "data", "fixtures", "2025-men.json"),
+      join(made.rootPath, "data", "fixtures", "2025-men-gac.json"),
       JSON.stringify({
-        schema: "touchline.fixtures/1",
+        schema: "touchline.fixtures/2",
         season: 2025,
         gender: "men",
         conference: "GAC",
         collected_at: "2026-08-09T21:00:00Z",
-        programmes: [{ slug: "harding", name: "Harding" }],
+        programmes: [{ slug: "harding", name: "Harding", conference: "GAC" }],
         fixtures: [],
       }),
     );
@@ -274,6 +274,76 @@ describe("first-contact commands", () => {
     }
   });
 
+  test("season actions default only when one conference shard matches", async () => {
+    const workspace = await tempRoot("season-action-workspace");
+    const configRoot = await tempRoot("season-action-config");
+    process.env.KEELSON_WORKSPACE = workspace;
+    process.env.TOUCHLINE_CONFIG_PATH = join(configRoot, "config.json");
+    const projects: Project[] = [];
+    const ctx = fakeContext(projects);
+    const made = await initTouchlineHome("multi-conference", ctx);
+    expect(made.ok).toBe(true);
+    if (!made.ok) return;
+
+    const fixture = (season: number, conference: string) =>
+      JSON.stringify({
+        schema: "touchline.fixtures/2",
+        season,
+        gender: "men",
+        conference,
+        collected_at: "2026-08-12T12:00:00Z",
+        programmes: [{ slug: conference.toLowerCase(), name: conference, conference }],
+        fixtures: [],
+      });
+    await writeFile(
+      join(made.rootPath, "data", "fixtures", "2025-men-gac.json"),
+      fixture(2025, "GAC"),
+    );
+    await writeFile(
+      join(made.rootPath, "data", "fixtures", "2026-men-gac.json"),
+      fixture(2026, "GAC"),
+    );
+    await writeFile(
+      join(made.rootPath, "data", "fixtures", "2026-men-lsc.json"),
+      fixture(2026, "LSC"),
+    );
+
+    rib.registerTools?.(ctx);
+    const project = projects[0];
+    if (!project) throw new Error("init registered no project");
+    setScope(project.id);
+
+    const sole = await rib.onAction?.(
+      {
+        type: "select-season",
+        payload: { season: 2025, gender: "men" },
+      },
+      ctx,
+    );
+    expect(sole).toEqual({ ok: true });
+    expect(await composeTouchlineBoard()).toContain("2025");
+
+    const ambiguous = await rib.onAction?.(
+      {
+        type: "select-season",
+        payload: { season: 2026, gender: "men" },
+      },
+      ctx,
+    );
+    expect(ambiguous).toMatchObject({ ok: false });
+    if (ambiguous && !ambiguous.ok) expect(ambiguous.error).toContain("must name conference");
+
+    const explicit = await rib.onAction?.(
+      {
+        type: "select-season",
+        payload: { season: 2026, gender: "men", conference: "lsc" },
+      },
+      ctx,
+    );
+    expect(explicit).toEqual({ ok: true });
+    expect(await composeTouchlineBoard()).toContain("LSC");
+  });
+
   test("the init and remove tools are registered so MCP and chat can reach them", () => {
     const names = makeTouchlineTools({
       ctx: fakeContext([]),
@@ -299,7 +369,7 @@ describe("removing a data home", () => {
   test("the plan reports what would be lost before anything is removed", async () => {
     const { root, ctx } = await home("doomed");
     await writeFile(
-      join(root, "data", "rosters", "2019-men.json"),
+      join(root, "data", "rosters", "2019-men-gac.json"),
       JSON.stringify({
         schema: "touchline.rosters/1",
         season: 2019,

@@ -154,10 +154,10 @@ const README_BODY = [
   "",
   "| Path | What lives here |",
   "| --- | --- |",
-  "| `data/fixtures/` | Published schedules — one JSON file per season and gender. |",
-  "| `data/rosters/` | Published rosters — one JSON file per season and gender. |",
-  "| `data/stats/` | Published player season statistics — one JSON file per season and gender. |",
-  "| `data/matches/` | Published per-match box scores — one JSON file per season and gender. |",
+  "| `data/fixtures/` | Published schedules — one JSON file per season, gender, and conference. |",
+  "| `data/rosters/` | Published rosters — one JSON file per season, gender, and conference. |",
+  "| `data/stats/` | Published player season statistics — one JSON file per season, gender, and conference. |",
+  "| `data/matches/` | Published per-match box scores — one JSON file per season, gender, and conference. |",
   "| `data/raw_html/` | The pages exactly as fetched, so any parse can be redone offline. |",
   "| `data/errors/` | Anything a collection run could not parse, kept rather than dropped. |",
   "",
@@ -222,9 +222,20 @@ export async function bootstrapDataHome(
 // cannot read its data must say which file and why, never render as empty.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function seasonFileName(season: number, gender: string): string {
-  return `${season}-${gender}.json`;
+export function conferenceSlug(conference: string): string {
+  const slug = conference
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  if (!slug) throw new Error("Conference must contain at least one letter or number.");
+  return slug;
 }
+
+export function seasonFileName(season: number, gender: string, conference: string): string {
+  return `${season}-${gender}-${conferenceSlug(conference)}.json`;
+}
+
+const SEASON_FILE_NAME = /^(\d{4})-(men|women)-([a-z0-9-]+)\.json$/;
 
 export type LoadResult<T> =
   | { ok: true; value: T }
@@ -257,8 +268,9 @@ export function loadFixtures(
   root: string,
   season: number,
   gender: string,
+  conference: string,
 ): Promise<LoadResult<FixturesFile>> {
-  const path = join(dataHome(root).fixturesDir, seasonFileName(season, gender));
+  const path = join(dataHome(root).fixturesDir, seasonFileName(season, gender, conference));
   return loadJson(path, (raw) => fixturesFileSchema.parse(raw));
 }
 
@@ -266,8 +278,9 @@ export function loadRosters(
   root: string,
   season: number,
   gender: string,
+  conference: string,
 ): Promise<LoadResult<RostersFile>> {
-  const path = join(dataHome(root).rostersDir, seasonFileName(season, gender));
+  const path = join(dataHome(root).rostersDir, seasonFileName(season, gender, conference));
   return loadJson(path, (raw) => rostersFileSchema.parse(raw));
 }
 
@@ -275,8 +288,9 @@ export function loadStats(
   root: string,
   season: number,
   gender: string,
+  conference: string,
 ): Promise<LoadResult<StatsFile>> {
-  const path = join(dataHome(root).statsDir, seasonFileName(season, gender));
+  const path = join(dataHome(root).statsDir, seasonFileName(season, gender, conference));
   return loadJson(path, (raw) => statsFileSchema.parse(raw));
 }
 
@@ -284,8 +298,9 @@ export function loadMatches(
   root: string,
   season: number,
   gender: string,
+  conference: string,
 ): Promise<LoadResult<MatchesFile>> {
-  const path = join(dataHome(root).matchesDir, seasonFileName(season, gender));
+  const path = join(dataHome(root).matchesDir, seasonFileName(season, gender, conference));
   return loadJson(path, (raw) => matchesFileSchema.parse(raw));
 }
 
@@ -301,12 +316,11 @@ export async function loadRosterHistory(root: string, gender: string): Promise<R
   } catch {
     return [];
   }
-  const NAME = /^(\d{4})-(men|women)\.json$/;
   const out: RostersFile[] = [];
   for (const f of files) {
-    const m = NAME.exec(f);
+    const m = SEASON_FILE_NAME.exec(f);
     if (!m || m[2] !== gender) continue;
-    const loaded = await loadRosters(root, Number(m[1]), gender);
+    const loaded = await loadRosters(root, Number(m[1]), gender, m[3] as string);
     if (loaded.ok) out.push(loaded.value);
   }
   return out.sort((a, b) => a.season - b.season);
@@ -327,12 +341,11 @@ export interface SeasonRef {
  *  default selection and the "what do I have?" answer in chat. */
 export async function listSeasons(root: string): Promise<SeasonRef[]> {
   const home = dataHome(root);
-  const NAME = /^(\d{4})-(men|women)\.json$/;
 
   const scan = async (dir: string): Promise<Set<string>> => {
     try {
       const files = await readdir(dir);
-      return new Set(files.filter((f) => NAME.test(f)));
+      return new Set(files.filter((f) => SEASON_FILE_NAME.test(f)));
     } catch {
       return new Set();
     }
@@ -345,19 +358,24 @@ export async function listSeasons(root: string): Promise<SeasonRef[]> {
 
   const out: SeasonRef[] = [];
   for (const f of new Set([...fixtureFiles, ...rosterFiles])) {
-    const m = NAME.exec(f);
+    const m = SEASON_FILE_NAME.exec(f);
     if (!m) continue;
     const season = Number(m[1]);
     const gender = m[2] as string;
+    const conference = m[3] as string;
     const hasFixtures = fixtureFiles.has(f);
-    const loaded = hasFixtures ? await loadFixtures(root, season, gender) : undefined;
     out.push({
       season,
       gender,
-      conference: loaded?.ok ? loaded.value.conference : "unknown",
+      conference,
       hasFixtures,
       hasRosters: rosterFiles.has(f),
     });
   }
-  return out.sort((a, b) => b.season - a.season || a.gender.localeCompare(b.gender));
+  return out.sort(
+    (a, b) =>
+      b.season - a.season ||
+      a.gender.localeCompare(b.gender) ||
+      a.conference.localeCompare(b.conference),
+  );
 }
