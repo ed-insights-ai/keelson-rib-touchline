@@ -91,6 +91,8 @@ DEFAULT_LAYERS: tuple[str, ...] = (
 STATE_COMPLETE = "complete"  # served, proven, and holds rows
 STATE_EMPTY = "empty"  # served and proven, and genuinely holds nothing
 STATE_UNAVAILABLE = "unavailable"  # could not be collected; `reason` says why
+STATE_NO_COLLECTOR = "no-collector"
+LIVE_COLLECTORS: frozenset[str] = frozenset({"sidearm"})
 
 
 @dataclass(frozen=True)
@@ -1520,6 +1522,23 @@ def collect_programme(
     """
     slug = programme_slug(school.name)
     wanted = tuple(layers)
+    platform = school.live_collector()
+    if platform not in LIVE_COLLECTORS:
+        reason = (
+            f"{school.name} {school.gender}: no live collector for platform "
+            f"'{platform}' — the '{platform}' recipe is not implemented"
+        )
+        return ProgrammeCollection(
+            slug=slug,
+            name=school.name,
+            fixtures=[],
+            players=[],
+            outcomes={
+                layer: LayerOutcome(layer, STATE_NO_COLLECTOR, reason=reason)
+                for layer in wanted
+            },
+        )
+
     outcomes: dict[str, LayerOutcome] = {}
     fixtures: list[dict[str, object]] = []
     players: list[dict[str, str]] = []
