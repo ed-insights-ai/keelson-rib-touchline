@@ -41,7 +41,7 @@ import {
   type SeasonRef,
 } from "./datahome.ts";
 import { BOARD_KEY, TOUCHLINE_SURFACE_ID } from "./keys.ts";
-import { knownProgrammes, titleFromSlug } from "./membership.ts";
+import { knownConferences, knownProgrammes, titleFromSlug } from "./membership.ts";
 import {
   getSelection,
   resetSelection,
@@ -230,6 +230,7 @@ async function composeTouchlineBoardInner(): Promise<{ html: string; collectedAt
 async function buildSeed(openingPrompt?: string): Promise<OpenChatSeed> {
   const { project, home, seasons } = await currentScope();
   const programmes = await knownProgrammes("men").catch(() => [] as string[]);
+  const conferences = await knownConferences().catch(() => [] as string[]);
   return {
     name: "Touchline",
     systemPrompt: touchlineSystemPrompt({
@@ -237,7 +238,7 @@ async function buildSeed(openingPrompt?: string): Promise<OpenChatSeed> {
       projectRoot: project?.rootPath,
       homeState: home?.state,
       seasons: seasons.map((s) => `${s.season} ${s.gender} (${s.conference})`),
-      conferences: ["GAC", "MIAA"],
+      conferences,
       programmes,
     }),
     ...(openingPrompt ? { openingPrompt } : {}),
