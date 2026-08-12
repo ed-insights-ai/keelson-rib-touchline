@@ -7,6 +7,7 @@ from pathlib import Path
 import requests
 
 from src import paths
+from src.tls import TruststoreHTTPAdapter
 
 logger = logging.getLogger(__name__)
 
@@ -17,6 +18,9 @@ class GameFetcher:
     def __init__(self, cache_dir: str | Path | None = None) -> None:
         self.session = requests.Session()
         self.session.headers.update({"User-Agent": "Mozilla/5.0 (Educational/Research Scraper)"})
+        adapter = TruststoreHTTPAdapter()
+        self.session.mount("https://", adapter)
+        self.session.mount("http://", adapter)
         self.cache_dir = Path(cache_dir) if cache_dir is not None else paths.raw_html_dir()
 
     def __enter__(self) -> "GameFetcher":
