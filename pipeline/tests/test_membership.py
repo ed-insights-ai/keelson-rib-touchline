@@ -10,6 +10,7 @@ import pytest
 
 from src import membership, paths
 from src.canon import PROGRAMMES, REGISTRY
+from src.config import SchoolConfig
 
 CANON_PROGRAMMES = {
     (programme["institution_slug"], programme["gender"])
@@ -23,6 +24,74 @@ MEMBERSHIP_PATH = (
 @pytest.fixture(scope="module")
 def membership_document() -> dict:
     return membership.load_membership(MEMBERSHIP_PATH)
+
+
+def _school(name: str, conference: str) -> SchoolConfig:
+    return SchoolConfig(
+        name=name,
+        abbreviation=name,
+        conference=conference,
+        prefix="",
+        base_url="",
+        gender="men",
+    )
+
+
+def _multi_conference_case() -> tuple[dict, list[SchoolConfig]]:
+    schools = [
+        _school("Harding", "GAC"),
+        _school("East Central", "GAC"),
+        _school("West Texas A&M", "LSC"),
+        _school("Eastern New Mexico", "LSC"),
+    ]
+    document = {
+        "version": 1,
+        "seasons": {"from": 2019, "to": 2026},
+        "conferences": ["GAC", "LSC", "independent", "non_member"],
+        "memberships": {
+            "harding": {
+                "men": [
+                    {
+                        "conference": "GAC",
+                        "from_season": 2019,
+                        "to_season": 2025,
+                        "source": "test fixture",
+                    }
+                ]
+            },
+            "east-central": {
+                "men": [
+                    {
+                        "conference": "GAC",
+                        "from_season": 2022,
+                        "to_season": 2025,
+                        "source": "test fixture",
+                    }
+                ]
+            },
+            "west-texas-a-m": {
+                "men": [
+                    {
+                        "conference": "LSC",
+                        "from_season": 2022,
+                        "to_season": 2026,
+                        "source": "test fixture",
+                    }
+                ]
+            },
+            "eastern-new-mexico": {
+                "men": [
+                    {
+                        "conference": "LSC",
+                        "from_season": 2022,
+                        "to_season": 2024,
+                        "source": "test fixture",
+                    }
+                ]
+            },
+        },
+    }
+    return document, schools
 
 
 def test_default_load_uses_configured_data_root(monkeypatch, tmp_path):
@@ -47,8 +116,9 @@ def test_covers_every_canon_programme(membership_document):
 
 
 def test_every_season_resolves(membership_document):
+    seasons = membership_document["seasons"]
     for slug, gender in CANON_PROGRAMMES:
-        for season_year in range(membership.SEASON_FROM, membership.SEASON_TO + 1):
+        for season_year in range(seasons["from"], seasons["to"] + 1):
             assert (
                 membership.conference_for(
                     slug,
@@ -61,8 +131,9 @@ def test_every_season_resolves(membership_document):
 
 
 def test_windows_are_contiguous_and_non_overlapping(membership_document):
+    seasons = membership_document["seasons"]
     expected_seasons = list(
-        range(membership.SEASON_FROM, membership.SEASON_TO + 1)
+        range(seasons["from"], seasons["to"] + 1)
     )
     for slug, genders in membership_document["memberships"].items():
         for gender, windows in genders.items():
@@ -144,8 +215,12 @@ def test_validation_rejects_contract_violations(membership_document):
     )
 
     gap = copy.deepcopy(membership_document)
-    gap["memberships"]["east-central"]["women"][0]["from_season"] = 2017
-    assert any("membership gaps" in error for error in membership.validate(gap))
+    gap["memberships"]["fort-hays-state"]["men"][1]["from_season"] = 2020
+    assert any(
+        "membership gaps" in error
+        and "independent or non_member" in error
+        for error in membership.validate(gap)
+    )
 
     overlap = copy.deepcopy(membership_document)
     overlap["memberships"]["fort-hays-state"]["men"][1]["from_season"] = 2018
@@ -158,6 +233,14 @@ def test_validation_rejects_contract_violations(membership_document):
     assert any(
         "non-empty source citation" in error
         for error in membership.validate(missing_citation)
+    )
+
+    out_of_span = copy.deepcopy(membership_document)
+    out_of_span["memberships"]["harding"]["men"][0]["to_season"] = (
+        membership_document["seasons"]["to"] + 1
+    )
+    assert any(
+        "falls outside" in error for error in membership.validate(out_of_span)
     )
 
     unknown_slug = copy.deepcopy(membership_document)
@@ -176,6 +259,42 @@ def test_validation_rejects_contract_violations(membership_document):
     assert any(
         "memberships must be a JSON object" in error
         for error in membership.validate(malformed)
+    )
+
+
+def test_multi_conference_horizons_validate():
+    document, schools = _multi_conference_case()
+
+    assert membership.validate(document, schools=schools) == []
+
+
+def test_window_conference_absent_from_declared_fails():
+    document, schools = _multi_conference_case()
+    document["memberships"]["harding"]["men"][0]["conference"] = "PAC"
+
+    assert any(
+        "unknown conference code" in error
+        for error in membership.validate(document, schools=schools)
+    )
+
+
+def test_missing_structural_sentinel_fails():
+    document, schools = _multi_conference_case()
+    document["conferences"].remove("non_member")
+
+    assert any(
+        "structural codes" in error
+        for error in membership.validate(document, schools=schools)
+    )
+
+
+def test_missing_configured_programme_fails():
+    document, schools = _multi_conference_case()
+    schools.append(_school("Missing School", "LSC"))
+
+    assert any(
+        "missing configured programmes" in error
+        for error in membership.validate(document, schools=schools)
     )
 
 
