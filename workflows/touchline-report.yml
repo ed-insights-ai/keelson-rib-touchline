@@ -37,11 +37,15 @@ inputs:
 
 # ─────────────────────────────────────────────────────────────────────────────
 # The evidence chain, in order:
-#   digest (deterministic numbers) → research (fan-out, one programme per
-#   iteration, findings verified at URLs) → verify (re-fetch every claimed
-#   source; unsupported claims are dropped, not softened) → narrative (prose
-#   under the style contract, figures from the digest only) → render
-#   (deterministic HTML) → summary.
+#   digest (deterministic numbers) → research loop (one programme per
+#   iteration) → verification loop + deterministic merge → narrative core +
+#   opponent-card loop + deterministic assembly → render → summary.
+#
+# Keelson has no runtime-sized fan-out. Conference-scale stages use bounded
+# loops followed by deterministic merges. max_iterations and timeout are
+# load-time safety caps, not workload targets: early exit keeps small
+# conferences cheap, and larger supported conferences require raising the
+# constants rather than expecting them to scale from the digest count.
 #
 # A bash body is NOT template-substituted — inputs arrive as
 # KEELSON_INPUTS_<key>, upstream output as KEELSON_NODE_<id>_OUTPUT.
