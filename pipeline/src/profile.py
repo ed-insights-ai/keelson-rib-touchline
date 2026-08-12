@@ -56,10 +56,12 @@ def profile_path(root: Path, gender: str, programme: str, name: str) -> Path:
     return root / "data" / "players" / gender / programme / f"{player_key(name)}.json"
 
 
-def _identity(root: Path, programme: str, gender: str, key: str) -> dict:
+def _identity(
+    root: Path, programme: str, gender: str, conference: str, key: str
+) -> dict:
     """Roster bio from the most recent roster that lists the player."""
-    for season in reversed(seasons_held(root, gender)):
-        rosters = load_season(root, "rosters", season, gender)
+    for season in reversed(seasons_held(root, gender, conference)):
+        rosters = load_season(root, "rosters", season, gender, conference)
         roster = ((rosters or {}).get("rosters") or {}).get(programme) or {}
         for player in roster.get("players") or []:
             if normalize_name(str(player.get("name") or "")) != key:
@@ -76,11 +78,13 @@ def _identity(root: Path, programme: str, gender: str, key: str) -> dict:
     return {}
 
 
-def _career(root: Path, programme: str, gender: str, key: str) -> tuple[list, list]:
+def _career(
+    root: Path, programme: str, gender: str, conference: str, key: str
+) -> tuple[list, list]:
     """Statistic lines per season, split into field-player and keeper rows."""
     field_lines, keeper_lines = [], []
-    for season in seasons_held(root, gender):
-        stats = load_season(root, "stats", season, gender)
+    for season in seasons_held(root, gender, conference):
+        stats = load_season(root, "stats", season, gender, conference)
         team = ((stats or {}).get("teams") or {}).get(programme) or {}
         for row in team.get("players") or []:
             if normalize_name(str(row.get("name") or "")) == key:
@@ -106,12 +110,14 @@ def _career(root: Path, programme: str, gender: str, key: str) -> tuple[list, li
     return field_lines, keeper_lines
 
 
-def _appearances(root: Path, programme: str, gender: str, key: str) -> list:
+def _appearances(
+    root: Path, programme: str, gender: str, conference: str, key: str
+) -> list:
     """Per-match participation, season by season, from held box scores."""
     out = []
-    for season in seasons_held(root, gender):
-        fixtures = load_season(root, "fixtures", season, gender)
-        matches_payload = load_season(root, "matches", season, gender)
+    for season in seasons_held(root, gender, conference):
+        fixtures = load_season(root, "fixtures", season, gender, conference)
+        matches_payload = load_season(root, "matches", season, gender, conference)
         if fixtures is None or matches_payload is None:
             continue
         matches = matches_payload.get("matches") or {}
@@ -146,12 +152,14 @@ def _appearances(root: Path, programme: str, gender: str, key: str) -> list:
     return out
 
 
-def _availability(root: Path, programme: str, gender: str, key: str) -> list:
+def _availability(
+    root: Path, programme: str, gender: str, conference: str, key: str
+) -> list:
     """This player's participation-hole flags, one entry per flagged season."""
     flagged = []
-    for season in seasons_held(root, gender):
-        fixtures = load_season(root, "fixtures", season, gender)
-        matches = load_season(root, "matches", season, gender)
+    for season in seasons_held(root, gender, conference):
+        fixtures = load_season(root, "fixtures", season, gender, conference)
+        matches = load_season(root, "matches", season, gender, conference)
         if fixtures is None or matches is None:
             continue
         for flag in availability_flags(fixtures, matches, programme, None):
@@ -163,7 +171,14 @@ def _availability(root: Path, programme: str, gender: str, key: str) -> list:
     return flagged
 
 
-def assemble_record(root: Path, *, programme: str, gender: str, player: str) -> dict:
+def assemble_record(
+    root: Path,
+    *,
+    programme: str,
+    gender: str,
+    conference: str,
+    player: str,
+) -> dict:
     """The deterministic half of a profile, recomputed from the season files.
 
     Raises ``ValueError`` when the data home has no trace of the player at
@@ -173,9 +188,9 @@ def assemble_record(root: Path, *, programme: str, gender: str, player: str) -> 
     # The join key is the normalized name (spaces); player_key (hyphens) is
     # only ever a filename.
     key = normalize_name(player)
-    identity = _identity(root, programme, gender, key)
-    career, keeper_career = _career(root, programme, gender, key)
-    appearances = _appearances(root, programme, gender, key)
+    identity = _identity(root, programme, gender, conference, key)
+    career, keeper_career = _career(root, programme, gender, conference, key)
+    appearances = _appearances(root, programme, gender, conference, key)
     if not identity and not career and not keeper_career and not appearances:
         raise ValueError(
             f"no trace of '{player}' for programme '{programme}' ({gender}) in this "
@@ -185,8 +200,10 @@ def assemble_record(root: Path, *, programme: str, gender: str, player: str) -> 
         "identity": identity or {"name": player},
         "career": career,
         "appearances": appearances,
-        "availability_flags": _availability(root, programme, gender, key),
-        "seasons_searched": seasons_held(root, gender),
+        "availability_flags": _availability(
+            root, programme, gender, conference, key
+        ),
+        "seasons_searched": seasons_held(root, gender, conference),
     }
     if keeper_career:
         record["keeper_career"] = keeper_career
@@ -202,6 +219,7 @@ def upsert_profile(
     *,
     programme: str,
     gender: str,
+    conference: str,
     player: str,
     generated_at: str,
     findings_file: Path | None = None,
@@ -215,7 +233,13 @@ def upsert_profile(
         except (OSError, json.JSONDecodeError):
             existing = {}
 
-    record = assemble_record(root, programme=programme, gender=gender, player=player)
+    record = assemble_record(
+        root,
+        programme=programme,
+        gender=gender,
+        conference=conference,
+        player=player,
+    )
 
     findings = list(existing.get("findings") or [])
     attested = list(existing.get("attested_uncaptured") or [])

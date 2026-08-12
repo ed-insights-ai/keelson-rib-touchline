@@ -9,14 +9,16 @@ from pathlib import Path
 
 import src.digest as digest_module
 from src.digest import (
-    roster_shape,
     build_digest,
     discipline,
     head_to_head,
     keepers,
+    load_season,
     match_patterns,
     normalize_name,
+    roster_shape,
     season_form,
+    seasons_held,
     top_returning,
     turnover,
     upcoming_vs_focus,
@@ -30,15 +32,25 @@ from src.digest import (
 
 def fixtures_payload(season: int, fixtures: list[dict]) -> dict:
     return {
-        "schema": "touchline.fixtures/1",
+        "schema": "touchline.fixtures/2",
         "season": season,
         "gender": "men",
         "conference": "TESTCONF",
         "collected_at": f"{season}-08-01T00:00:00+00:00",
         "membership_extrapolated": False,
         "programmes": [
-            {"slug": "alpha", "name": "Alpha University", "abbr": "AU"},
-            {"slug": "beta", "name": "Beta State", "abbr": "BS"},
+            {
+                "slug": "alpha",
+                "name": "Alpha University",
+                "conference": "TESTCONF",
+                "abbr": "AU",
+            },
+            {
+                "slug": "beta",
+                "name": "Beta State",
+                "conference": "TESTCONF",
+                "abbr": "BS",
+            },
         ],
         "fixtures": fixtures,
     }
@@ -443,7 +455,7 @@ def test_upcoming_vs_focus_lists_only_unplayed_meetings():
 
 
 def write_season(root: Path, kind: str, season: int, payload: dict) -> None:
-    path = root / "data" / kind / f"{season}-men.json"
+    path = root / "data" / kind / f"{season}-men-testconf.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload), encoding="utf-8")
 
@@ -537,7 +549,12 @@ def seed_home(root: Path) -> None:
 def test_build_digest_assembles_the_unit(tmp_path):
     seed_home(tmp_path)
     digest = build_digest(
-        tmp_path, season=2026, gender="men", focus="alpha", generated_at="2026-08-10T00:00:00+00:00"
+        tmp_path,
+        season=2026,
+        gender="men",
+        conference="TESTCONF",
+        focus="alpha",
+        generated_at="2026-08-10T00:00:00+00:00",
     )
     assert digest["schema"] == "touchline.digest/1"
     assert digest["conference"] == "TESTCONF"
@@ -562,13 +579,31 @@ def test_build_digest_assembles_the_unit(tmp_path):
     assert beta["head_to_head"]["losses"] == 0
     assert beta["fixtures_vs_focus"][0]["date"] == "2026-10-10"
     assert "sources" in digest
-    assert digest["sources"]["stats/2025-men"] == "2025-11-20T00:00:00+00:00"
+    assert (
+        digest["sources"]["stats/2025-men-testconf"]
+        == "2025-11-20T00:00:00+00:00"
+    )
+
+
+def test_season_readers_resolve_only_the_requested_conference_shard(tmp_path):
+    seed_home(tmp_path)
+    assert seasons_held(tmp_path, "men", "TESTCONF") == [2025, 2026]
+    assert seasons_held(tmp_path, "men", "OTHER") == []
+    assert load_season(tmp_path, "fixtures", 2026, "men", "TESTCONF") is not None
+    assert load_season(tmp_path, "fixtures", 2026, "men", "OTHER") is None
 
 
 def test_build_digest_refuses_a_home_without_the_season(tmp_path):
     seed_home(tmp_path)
     try:
-        build_digest(tmp_path, season=2030, gender="men", focus="alpha", generated_at="now")
+        build_digest(
+            tmp_path,
+            season=2030,
+            gender="men",
+            conference="TESTCONF",
+            focus="alpha",
+            generated_at="now",
+        )
     except ValueError as exc:
         assert "collect that season first" in str(exc)
     else:
@@ -578,7 +613,14 @@ def test_build_digest_refuses_a_home_without_the_season(tmp_path):
 def test_build_digest_refuses_an_unknown_focus(tmp_path):
     seed_home(tmp_path)
     try:
-        build_digest(tmp_path, season=2026, gender="men", focus="gamma", generated_at="now")
+        build_digest(
+            tmp_path,
+            season=2026,
+            gender="men",
+            conference="TESTCONF",
+            focus="gamma",
+            generated_at="now",
+        )
     except ValueError as exc:
         assert "gamma" in str(exc)
         assert "alpha" in str(exc)

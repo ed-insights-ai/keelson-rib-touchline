@@ -28,6 +28,9 @@ inputs:
   - name: gender
     description: men or women.
     required: true
+  - name: conference
+    description: Conference name or shard slug, e.g. GAC.
+    required: true
   - name: focus
     description: Programme slug the report is prepared for, e.g. harding.
     required: true
@@ -60,7 +63,7 @@ nodes:
         exit 1
       fi
       printf 'data home: %s\n' "$PWD"
-      for v in KEELSON_INPUTS_season KEELSON_INPUTS_gender KEELSON_INPUTS_focus; do
+      for v in KEELSON_INPUTS_season KEELSON_INPUTS_gender KEELSON_INPUTS_conference KEELSON_INPUTS_focus; do
         eval "val=\${$v:-}"
         if [ -z "$val" ]; then
           printf 'REFUSED: required input %s is empty.\n' "$v"
@@ -75,14 +78,15 @@ nodes:
         men|women) ;;
         *) printf 'REFUSED: gender must be men or women, not %s.\n' "$KEELSON_INPUTS_gender"; exit 1 ;;
       esac
-      if [ ! -f "data/fixtures/${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}.json" ]; then
-        printf 'REFUSED: no collected fixtures for %s %s in this home — run touchline-collect first.\n' \
-          "$KEELSON_INPUTS_season" "$KEELSON_INPUTS_gender"
+      CONF=$(printf '%s' "$KEELSON_INPUTS_conference" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9][^a-z0-9]*/-/g; s/^-//; s/-$//')
+      if [ ! -f "data/fixtures/${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${CONF}.json" ]; then
+        printf 'REFUSED: no collected fixtures for %s %s %s in this home — run touchline-collect first.\n' \
+          "$KEELSON_INPUTS_season" "$KEELSON_INPUTS_gender" "$KEELSON_INPUTS_conference"
         exit 1
       fi
       printf 'data home OK: %s\n' "$PWD"
-      printf 'report target: %s %s, prepared for %s\n' \
-        "$KEELSON_INPUTS_season" "$KEELSON_INPUTS_gender" "$KEELSON_INPUTS_focus"
+      printf 'report target: %s %s %s, prepared for %s\n' \
+        "$KEELSON_INPUTS_season" "$KEELSON_INPUTS_gender" "$KEELSON_INPUTS_conference" "$KEELSON_INPUTS_focus"
 
   - id: resolve-pipeline
     depends_on: [preflight]
@@ -114,6 +118,7 @@ nodes:
       TOUCHLINE_DATA_DIR="$PWD" uv run --project "$PIPELINE_DIR" build-digest \
         --season "$KEELSON_INPUTS_season" \
         --gender "$KEELSON_INPUTS_gender" \
+        --conference "$KEELSON_INPUTS_conference" \
         --focus "$KEELSON_INPUTS_focus"
 
   - id: research

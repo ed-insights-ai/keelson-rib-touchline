@@ -25,6 +25,7 @@ def main() -> int:
     )
     parser.add_argument("--programme", required=True, help="Programme slug, e.g. harding.")
     parser.add_argument("--gender", choices=["men", "women"], required=True)
+    parser.add_argument("--conference", required=True)
     parser.add_argument("--player", required=True, help="Player name as published.")
     parser.add_argument(
         "--findings",
@@ -44,6 +45,7 @@ def main() -> int:
             root,
             programme=args.programme,
             gender=args.gender,
+            conference=args.conference,
             player=args.player,
             generated_at=generated_at,
             findings_file=findings_file,
