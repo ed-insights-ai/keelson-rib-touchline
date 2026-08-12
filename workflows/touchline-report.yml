@@ -150,15 +150,21 @@ nodes:
   - id: research
     depends_on: [digest, conference-shard, programme-count]
     loop:
-      max_iterations: 12
+      # Keelson cannot derive scalar loop limits at runtime; early exit makes this a safety cap.
+      max_iterations: 24
       fresh_context: true
       until: ALL RESEARCHED
       until_bash: |
         set -u
         D="data/research/${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}"
         DG="data/scratch/digest-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
-        N=$(jq '.programmes | length' "$DG" 2>/dev/null || echo 99)
-        C=$(jq -s '[.[] | select((.coach // null) != null)] | length' "$D"/research-*.json 2>/dev/null || echo 0)
+        N=$(jq -e '.programmes | length' "$DG") || exit $?
+        FILES=("$D"/research-*.json)
+        if [ ! -e "${FILES[0]}" ]; then
+          C=0
+        else
+          C=$(jq -s '[.[] | select((.coach // null) != null)] | length' "${FILES[@]}") || exit $?
+        fi
         [ "$C" -ge "$N" ]
       prompt: |
         You are one iteration of the Touchline offseason research stage for the
