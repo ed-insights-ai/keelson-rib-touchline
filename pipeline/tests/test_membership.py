@@ -112,6 +112,7 @@ def test_is_conference_member(membership_document):
         "harding",
         "women",
         2016,
+        conference="GAC",
         document=membership_document,
     )
     assert membership.is_conference_member(
@@ -125,12 +126,14 @@ def test_is_conference_member(membership_document):
         "fort-hays-state",
         "women",
         2025,
+        conference="GAC",
         document=membership_document,
     )
     assert not membership.is_conference_member(
         "unknown",
         "men",
         2025,
+        conference="GAC",
         document=membership_document,
     )
 
