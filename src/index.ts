@@ -169,7 +169,7 @@ async function composeTouchlineBoardInner(): Promise<{ html: string; collectedAt
     seasons.find((s) => s.season === sel.season && s.gender === sel.gender) ?? seasons[0];
   if (!want) return { html: composeNoSeasons(project.name) };
 
-  const fx = await loadFixtures(root, want.season, want.gender);
+  const fx = await loadFixtures(root, want.season, want.gender, want.conference);
   if (!fx.ok) {
     return {
       html: composeUnreadable(
@@ -179,9 +179,9 @@ async function composeTouchlineBoardInner(): Promise<{ html: string; collectedAt
       ),
     };
   }
-  const rs = await loadRosters(root, want.season, want.gender);
-  const st = await loadStats(root, want.season, want.gender);
-  const mt = await loadMatches(root, want.season, want.gender);
+  const rs = await loadRosters(root, want.season, want.gender, want.conference);
+  const st = await loadStats(root, want.season, want.gender, want.conference);
+  const mt = await loadMatches(root, want.season, want.gender, want.conference);
   // The full roster archive feeds tenure lines — how many seasons a player
   // has been on the roster, and prior stints at other conference programmes.
   const history = await loadRosterHistory(root, want.gender);

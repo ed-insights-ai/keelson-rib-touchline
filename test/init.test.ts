@@ -235,14 +235,14 @@ describe("first-contact commands", () => {
     expect(made.ok).toBe(true);
     if (!made.ok) return;
     await writeFile(
-      join(made.rootPath, "data", "fixtures", "2025-men.json"),
+      join(made.rootPath, "data", "fixtures", "2025-men-gac.json"),
       JSON.stringify({
-        schema: "touchline.fixtures/1",
+        schema: "touchline.fixtures/2",
         season: 2025,
         gender: "men",
         conference: "GAC",
         collected_at: "2026-08-09T21:00:00Z",
-        programmes: [{ slug: "harding", name: "Harding" }],
+        programmes: [{ slug: "harding", name: "Harding", conference: "GAC" }],
         fixtures: [],
       }),
     );
@@ -299,7 +299,7 @@ describe("removing a data home", () => {
   test("the plan reports what would be lost before anything is removed", async () => {
     const { root, ctx } = await home("doomed");
     await writeFile(
-      join(root, "data", "rosters", "2019-men.json"),
+      join(root, "data", "rosters", "2019-men-gac.json"),
       JSON.stringify({
         schema: "touchline.rosters/1",
         season: 2019,

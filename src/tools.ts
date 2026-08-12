@@ -125,8 +125,8 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
         `${picked.project.name} — ${seasons.length} season file(s) at ${root}`,
       ];
       for (const s of seasons) {
-        const fx = await loadFixtures(root, s.season, s.gender);
-        const rs = await loadRosters(root, s.season, s.gender);
+        const fx = await loadFixtures(root, s.season, s.gender, s.conference);
+        const rs = await loadRosters(root, s.season, s.gender, s.conference);
         if (!fx.ok) {
           lines.push(`  ${s.season} ${s.gender}: UNREADABLE (${fx.reason}) ${fx.path}`);
           continue;
@@ -437,7 +437,12 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
       }
       setSeason(want.season, want.gender);
       if (args.team) {
-        const fx = await loadFixtures(picked.project.rootPath, want.season, want.gender);
+        const fx = await loadFixtures(
+          picked.project.rootPath,
+          want.season,
+          want.gender,
+          want.conference,
+        );
         if (fx.ok && !fx.value.programmes.some((p) => p.slug === args.team)) {
           return emit(
             tctx,

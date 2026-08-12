@@ -243,8 +243,8 @@ export async function planTouchlineRemoval(
 
   const seasons = [];
   for (const ref of isDataHome ? await listSeasons(root) : []) {
-    const fx = await loadFixtures(root, ref.season, ref.gender);
-    const rs = await loadRosters(root, ref.season, ref.gender);
+    const fx = await loadFixtures(root, ref.season, ref.gender, ref.conference);
+    const rs = await loadRosters(root, ref.season, ref.gender, ref.conference);
     seasons.push({
       season: ref.season,
       gender: ref.gender,
