@@ -222,7 +222,7 @@ export async function bootstrapDataHome(
 // cannot read its data must say which file and why, never render as empty.
 // ─────────────────────────────────────────────────────────────────────────────
 
-function conferenceSlug(conference: string): string {
+export function conferenceSlug(conference: string): string {
   const slug = conference
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")

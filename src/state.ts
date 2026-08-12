@@ -22,6 +22,8 @@ export interface Selection {
   scopeId?: string;
   season?: number;
   gender?: string;
+  /** Conference shard slug, as encoded in the season filename. */
+  conference?: string;
   /** Programme slug for the team lens; undefined = conference lens. */
   team?: string;
   /** Player key for the drawer — SideArm player id when the roster has one,
@@ -46,14 +48,20 @@ export function setScope(scopeId: string | undefined): void {
   // another project's name.
   selection.season = undefined;
   selection.gender = undefined;
+  selection.conference = undefined;
   selection.team = undefined;
   selection.player = undefined;
   selection.fixture = undefined;
 }
 
-export function setSeason(season: number | undefined, gender: string | undefined): void {
+export function setSeason(
+  season: number | undefined,
+  gender: string | undefined,
+  conference: string | undefined,
+): void {
   selection.season = season;
   selection.gender = gender;
+  selection.conference = conference;
   selection.team = undefined;
   selection.player = undefined;
   selection.fixture = undefined;
@@ -81,6 +89,7 @@ export function resetSelection(): void {
   selection.scopeId = undefined;
   selection.season = undefined;
   selection.gender = undefined;
+  selection.conference = undefined;
   selection.team = undefined;
   selection.player = undefined;
   selection.fixture = undefined;

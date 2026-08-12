@@ -11,6 +11,7 @@ import { z } from "zod";
 import { initTouchlineHome, planTouchlineRemoval, removeTouchlineHome } from "./commands.ts";
 import {
   bootstrapDataHome,
+  conferenceSlug,
   dataHomeState,
   explainRefusal,
   listSeasons,
@@ -382,7 +383,7 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
 
       // 4. Point the board at what we just built and repaint.
       setScope(picked.project.id);
-      setSeason(season, args.gender);
+      setSeason(season, args.gender, conferenceSlug(target.conference));
       setTeam(target.kind === "programme" ? target.slugs[0] : undefined);
       refreshBoard();
       out.push(
@@ -402,6 +403,10 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
       project: z.string().optional().describe("Keelson project name."),
       season: z.number().int().optional().describe("Season year to show."),
       gender: z.enum(["men", "women"]).optional(),
+      conference: z
+        .string()
+        .optional()
+        .describe("Conference name or shard slug, required to disambiguate matching shards."),
       team: z
         .string()
         .optional()
@@ -411,7 +416,13 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
     }),
     state_changing: true,
     execute: guarded(async (input, tctx) => {
-      const args = input as { project?: string; season?: number; gender?: string; team?: string };
+      const args = input as {
+        project?: string;
+        season?: number;
+        gender?: string;
+        conference?: string;
+        team?: string;
+      };
       const picked = pickProject(projects(), args.project);
       if (!picked.ok) return emit(tctx, picked.message, true);
       setScope(picked.project.id);
@@ -423,19 +434,33 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
           true,
         );
       }
-      const want = seasons.find(
+      const candidates = seasons.filter(
         (s) =>
           (args.season === undefined || s.season === args.season) &&
           (args.gender === undefined || s.gender === args.gender),
       );
+      const requestedConference = args.conference
+        ? conferenceSlug(args.conference)
+        : undefined;
+      const want = requestedConference
+        ? candidates.find((s) => s.conference === requestedConference)
+        : candidates.length === 1 || (args.season === undefined && args.gender === undefined)
+          ? candidates[0]
+          : undefined;
       if (!want) {
         return emit(
           tctx,
-          `No season file matches. Available: ${seasons.map((s) => `${s.season} ${s.gender}`).join(", ")}`,
+          candidates.length > 1 && !requestedConference
+            ? `More than one conference shard matches; name one of: ${candidates
+                .map((s) => s.conference)
+                .join(", ")}`
+            : `No season file matches. Available: ${seasons
+                .map((s) => `${s.season} ${s.gender} ${s.conference}`)
+                .join(", ")}`,
           true,
         );
       }
-      setSeason(want.season, want.gender);
+      setSeason(want.season, want.gender, want.conference);
       if (args.team) {
         const fx = await loadFixtures(
           picked.project.rootPath,

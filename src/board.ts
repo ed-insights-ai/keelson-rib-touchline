@@ -6,6 +6,7 @@
 //
 //     http://www.apache.org/licenses/LICENSE-2.0
 
+import { conferenceSlug } from "./datahome.ts";
 import { monogram, titleFromSlug } from "./membership.ts";
 import {
   type Fixture,
@@ -786,7 +787,7 @@ export interface BoardInput {
   /** Today, as YYYY-MM-DD. Passed in so the composer stays deterministic. */
   today: string;
   /** Every season on disk, so the masthead can step through the archive. */
-  seasons?: ReadonlyArray<{ season: number; gender: string }>;
+  seasons?: ReadonlyArray<{ season: number; gender: string; conference: string }>;
 }
 
 const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
@@ -2380,19 +2381,25 @@ export function composeBoard(input: BoardInput): string {
 
   // The masthead year steps through whatever the archive holds for this
   // gender: one collected season renders as plain text, more grow chevrons.
-  const years = [
-    ...new Set((input.seasons ?? []).filter((s) => s.gender === file.gender).map((s) => s.season)),
-  ].sort((a, b) => a - b);
-  const at = years.indexOf(file.season);
-  const step = (target: number | undefined, glyph: string): string =>
+  const seasonOptions = (input.seasons ?? [])
+    .filter(
+      (s) =>
+        s.gender === file.gender && s.conference === conferenceSlug(file.conference),
+    )
+    .sort((a, b) => a.season - b.season);
+  const at = seasonOptions.findIndex((s) => s.season === file.season);
+  const step = (
+    target: { season: number; gender: string; conference: string } | undefined,
+    glyph: string,
+  ): string =>
     target === undefined
       ? ""
       : `<button class="yr" data-act="select-season" data-payload='${esc(
-          JSON.stringify({ season: target, gender: file.gender }),
-        )}' aria-label="View the ${target} season">${glyph}</button>`;
+          JSON.stringify(target),
+        )}' aria-label="View the ${target.season} season">${glyph}</button>`;
   const seasonCtl =
-    years.length > 1 && at >= 0
-      ? `<span class="seasons">${step(years[at - 1], "‹")}<span class="season num">${file.season}</span>${step(years[at + 1], "›")}</span>`
+    seasonOptions.length > 1 && at >= 0
+      ? `<span class="seasons">${step(seasonOptions[at - 1], "‹")}<span class="season num">${file.season}</span>${step(seasonOptions[at + 1], "›")}</span>`
       : `<span class="season num">${file.season}</span>`;
 
   // One header row carries everything the old dek line said better: the

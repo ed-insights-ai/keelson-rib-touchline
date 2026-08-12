@@ -452,9 +452,10 @@ describe("the board markup", () => {
 
   test("the masthead grows chevrons only when the archive holds neighbours", () => {
     const seasons = [
-      { season: 2026, gender: "men" },
-      { season: 2025, gender: "men" },
-      { season: 2024, gender: "men" },
+      { season: 2026, gender: "men", conference: "gac" },
+      { season: 2025, gender: "men", conference: "gac" },
+      { season: 2025, gender: "men", conference: "lsc" },
+      { season: 2024, gender: "men", conference: "gac" },
     ];
     const mid = composeBoard({
       projectName: "p",
@@ -465,6 +466,8 @@ describe("the board markup", () => {
     expect(mid).toContain('data-act="select-season"');
     expect(mid).toContain("&quot;season&quot;:2024");
     expect(mid).toContain("&quot;season&quot;:2026");
+    expect(mid).toContain("&quot;conference&quot;:&quot;gac&quot;");
+    expect(mid).not.toContain("&quot;conference&quot;:&quot;lsc&quot;");
 
     // The newest season has no forward step; the oldest no backward step.
     const newest = composeBoard({
@@ -503,8 +506,8 @@ describe("the board markup", () => {
       team: "harding",
       today: "2026-08-09",
       seasons: [
-        { season: 2026, gender: "men" },
-        { season: 2025, gender: "men" },
+        { season: 2026, gender: "men", conference: "gac" },
+        { season: 2025, gender: "men", conference: "gac" },
       ],
     });
     expect(html).toContain("Final");
