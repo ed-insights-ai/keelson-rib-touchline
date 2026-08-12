@@ -150,6 +150,14 @@ font-size:21px;line-height:1;color:var(--faint);font-family:"Avenir Next Condens
 .mast .gen{align-self:center;font:700 9.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;
 letter-spacing:.14em;text-transform:uppercase;color:var(--faint);border:1px solid var(--rule-firm);
 border-radius:4px;padding:3px 6px 2px}
+.mast .confs{display:inline-flex;align-self:center;gap:2px}
+.mast .confs [role="tab"]{border:1px solid var(--rule-firm);background:transparent;color:var(--muted);
+font:700 9.5px/1 "Avenir Next Condensed","Roboto Condensed","Arial Narrow",sans-serif;letter-spacing:.1em;
+text-transform:uppercase;padding:4px 7px 3px;border-radius:4px}
+.mast .confs button{appearance:none;cursor:pointer}
+.mast .confs button:hover{color:var(--ink);border-color:var(--muted)}
+.mast .confs [aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:var(--sheet)}
+.mast .confs button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 
 /* ── lens switch ──────────────────────────────────────────────────────── */
 .lens{display:flex;gap:2px;padding:0 18px 10px;flex-wrap:wrap}
@@ -2399,6 +2407,40 @@ export function composeBoard(input: BoardInput): string {
       ? `<span class="seasons">${step(seasonOptions[at - 1], "‹")}<span class="season num">${file.season}</span>${step(seasonOptions[at + 1], "›")}</span>`
       : `<span class="season num">${file.season}</span>`;
 
+  const conferences = [
+    ...new Set(
+      (input.seasons ?? []).filter((s) => s.gender === file.gender).map((s) => s.conference),
+    ),
+  ].sort();
+  const currentConference = conferenceSlug(file.conference);
+  const conferenceCtl =
+    conferences.length > 1
+      ? `<div class="confs" role="tablist" aria-label="Conference">${conferences
+          .map((conference) => {
+            if (conference === currentConference) {
+              return `<span role="tab" aria-selected="true">${esc(conference.toUpperCase())}</span>`;
+            }
+
+            const shards = (input.seasons ?? []).filter(
+              (s) => s.gender === file.gender && s.conference === conference,
+            );
+            const target =
+              shards.find((s) => s.season === file.season) ??
+              [...shards].sort((a, b) => b.season - a.season)[0];
+            if (!target) {
+              throw new Error(`Conference ${conference} has no season shard for ${file.gender}`);
+            }
+            return `<button role="tab" aria-selected="false" data-act="select-season" data-payload='${esc(
+              JSON.stringify({
+                season: target.season,
+                gender: file.gender,
+                conference,
+              }),
+            )}'>${esc(conference.toUpperCase())}</button>`;
+          })
+          .join("")}</div>`
+      : "";
+
   // One header row carries everything the old dek line said better: the
   // gender as a small tag beside the season — the programme count is
   // self-evident from the chips and matrix, and the collected stamp lives in
@@ -2407,6 +2449,7 @@ export function composeBoard(input: BoardInput): string {
     <div class="mast">
       <h1>${esc(subject)}</h1>
       ${seasonCtl}
+      ${conferenceCtl}
       <span class="gen">${file.gender === "men" ? "Men" : "Women"}</span>
       <span class="sp"></span>
       ${played === 0 ? '<span class="stamp">pre-season</span>' : ""}
