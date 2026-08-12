@@ -469,11 +469,15 @@ describe("the board markup", () => {
       today: "2026-08-09",
       seasons,
     });
+    // Season chevrons stay within the conference; the separate rail offers the LSC jump.
     expect(mid).toContain('data-act="select-season"');
     expect(mid).toContain("&quot;season&quot;:2024");
     expect(mid).toContain("&quot;season&quot;:2026");
     expect(mid).toContain("&quot;conference&quot;:&quot;gac&quot;");
-    expect(mid).not.toContain("&quot;conference&quot;:&quot;lsc&quot;");
+    expect(mid).toContain("&quot;conference&quot;:&quot;lsc&quot;");
+    expect(mid).toContain(
+      "&quot;season&quot;:2025,&quot;gender&quot;:&quot;men&quot;,&quot;conference&quot;:&quot;lsc&quot;",
+    );
 
     // The newest season has no forward step; the oldest no backward step.
     const newest = composeBoard({
