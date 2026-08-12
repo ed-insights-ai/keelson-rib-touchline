@@ -88,6 +88,16 @@ nodes:
       printf 'report target: %s %s %s, prepared for %s\n' \
         "$KEELSON_INPUTS_season" "$KEELSON_INPUTS_gender" "$KEELSON_INPUTS_conference" "$KEELSON_INPUTS_focus"
 
+  - id: conference-shard
+    depends_on: [preflight]
+    timeout: 60000
+    bash: |
+      set -euo pipefail
+      CONF=$(printf '%s' "$KEELSON_INPUTS_conference" \
+        | tr '[:upper:]' '[:lower:]' \
+        | sed 's/[^a-z0-9][^a-z0-9]*/-/g; s/^-//; s/-$//')
+      printf '%s' "$CONF"
+
   - id: resolve-pipeline
     depends_on: [preflight]
     timeout: 60000
@@ -122,7 +132,7 @@ nodes:
         --focus "$KEELSON_INPUTS_focus"
 
   - id: research
-    depends_on: [digest]
+    depends_on: [digest, conference-shard]
     loop:
       max_iterations: 12
       fresh_context: true
@@ -181,7 +191,7 @@ nodes:
            your target this iteration. A validation gate after this
            stage fails the run if a file is missing its coach object.
         3. Read that programme's roster from
-           data/rosters/$inputs.season-$inputs.gender-$inputs.conference.json (names, hometowns).
+           data/rosters/$inputs.season-$inputs.gender-$conference-shard.output.json (names, hometowns).
            If the roster is missing, write a file recording exactly that as the
            only finding and finish.
         3b. Check data/players/$inputs.gender/<slug>/ for existing player
