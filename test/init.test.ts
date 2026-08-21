@@ -473,3 +473,64 @@ describe("removing a data home", () => {
     await expect(stat(join(target, "touchline-data.yaml"))).rejects.toThrow();
   });
 });
+
+describe("status reporting", () => {
+  test("a final without a published score is reported as played", async () => {
+    // The collect summary and the status report must agree on what played
+    // means. This call site once kept an inline copy of the pre-#47
+    // predicate (final AND a numeric score) and reported the same shard as
+    // "0 played" that collection had just announced as "2 played" — the
+    // isPlayed unit test alone would not catch that revert.
+    const workspace = await tempRoot("status-workspace");
+    const configRoot = await tempRoot("status-config");
+    process.env.KEELSON_WORKSPACE = workspace;
+    process.env.TOUCHLINE_CONFIG_PATH = join(configRoot, "config.json");
+    const projects: Project[] = [];
+    const ctx = fakeContext(projects);
+    const home = await initTouchlineHome("status-home", ctx);
+    expect(home.ok).toBe(true);
+    if (!home.ok) return;
+
+    const fixturesDir = join(home.rootPath, "data", "fixtures");
+    await mkdir(fixturesDir, { recursive: true });
+    await writeFile(
+      join(fixturesDir, "2026-men-gac.json"),
+      JSON.stringify({
+        schema: "touchline.fixtures/2",
+        season: 2026,
+        gender: "men",
+        conference: "GAC",
+        collected_at: "2026-08-21T13:00:00+00:00",
+        programmes: [],
+        fixtures: [
+          {
+            id: "sidearm:rogers-state:7655",
+            date: "2026-08-13",
+            home: "rogers-state",
+            away: "oklahoma-wesleyan",
+            status: "final",
+            match_type: "exhibition",
+          },
+          {
+            id: "sidearm:rogers-state:7656",
+            date: "2026-08-18",
+            home: "rogers-state",
+            away: "southwestern-christian",
+            status: "scheduled",
+          },
+        ],
+      }),
+    );
+
+    const tools = makeTouchlineTools({ ctx, refreshBoard: () => undefined });
+    const status = tools.find((t) => t.name === "touchline_status");
+    expect(status).toBeDefined();
+    let report = "";
+    await status?.execute({ project: "status-home" }, {
+      emit: (chunk: { content?: string }) => {
+        report += chunk.content ?? "";
+      },
+    } as never);
+    expect(report).toContain("1 played");
+  });
+});
