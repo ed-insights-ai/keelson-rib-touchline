@@ -96,11 +96,26 @@ def seasons_held(root: Path, gender: str, conference: str) -> list[int]:
     return sorted(found)
 
 
+def _has_score(fixture: dict) -> bool:
+    return isinstance(fixture.get("home_score"), int) and isinstance(
+        fixture.get("away_score"), int
+    )
+
+
 def _finals(fixtures_payload: dict, slug: str) -> list[dict]:
+    """Result-bearing finals only.
+
+    A modern theme publishes completion without a score when no result was
+    ever entered (measured on exhibitions).  Such a final carries nothing to
+    aggregate — counting it would invent a 0-0 draw, a clean sheet, and a
+    shutout at once — so every result computation starts from finals that
+    actually have a score pair.
+    """
     return [
         fixture
         for fixture in fixtures_payload.get("fixtures") or []
         if fixture.get("status") == "final"
+        and _has_score(fixture)
         and slug in (fixture.get("home"), fixture.get("away"))
     ]
 
@@ -810,7 +825,7 @@ def head_to_head(
     for season in sorted(fixtures_by_season):
         payload = fixtures_by_season[season]
         for fixture in (payload or {}).get("fixtures") or []:
-            if fixture.get("status") != "final":
+            if fixture.get("status") != "final" or not _has_score(fixture):
                 continue
             pair = {fixture.get("home"), fixture.get("away")}
             if pair != {focus, slug}:

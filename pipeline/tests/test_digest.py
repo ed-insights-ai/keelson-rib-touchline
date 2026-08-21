@@ -702,3 +702,44 @@ def test_roster_shape_counts_internationals():
     shape = digest_module.roster_shape(None, current, None, "alpha")
     assert shape["international"] == {"total": 1, "newcomers": 1, "unknown": 1}
     assert shape["by_position"]["D"]["international"] == 1
+
+
+def scoreless_final(date: str, home: str, away: str) -> dict:
+    """A modern theme's played-without-score shape: completion published,
+    no result ever entered (measured on exhibitions, 2026-08-21)."""
+    return {
+        "id": f"sidearm:{home}:{date}",
+        "date": date,
+        "home": home,
+        "away": away,
+        "status": "final",
+        "conference_game": False,
+        "match_type": "exhibition",
+    }
+
+
+def test_a_scoreless_final_carries_no_result_to_aggregate():
+    # Counting it would invent a 0-0 draw, a clean sheet, and a shutout
+    # in one stroke.
+    payload = fixtures_payload(
+        2026,
+        [
+            final("2026-09-01", "alpha", "beta", 2, 1, conference_game=True),
+            scoreless_final("2026-08-13", "alpha", "outsider"),
+        ],
+    )
+    form = season_form(payload, "alpha")
+    assert form["overall"]["played"] == 1
+    assert form["overall"]["draws"] == 0
+    assert form["clean_sheets"] == 0
+    assert form["times_shut_out"] == 0
+
+
+def test_head_to_head_skips_a_final_without_a_score():
+    by_season = {
+        2025: fixtures_payload(2025, [final("2025-10-01", "alpha", "beta", 3, 1)]),
+        2026: fixtures_payload(2026, [scoreless_final("2026-08-13", "alpha", "beta")]),
+    }
+    versus = head_to_head(by_season, "alpha", "beta")
+    assert (versus["wins"], versus["draws"], versus["losses"]) == (1, 0, 0)
+    assert versus["last_meeting"]["season"] == 2025

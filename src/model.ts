@@ -57,6 +57,10 @@ export const fixtureSchema = z
     /** Scores are null until played — never 0, which is a real scoreline. */
     home_score: z.number().int().nullable().optional(),
     away_score: z.number().int().nullable().optional(),
+    /** Present only when the site itself marks the game as one the teams do
+     *  not count — "(Exhibition)" in the opponent's published title. Absence
+     *  means a countable game. */
+    match_type: z.enum(["exhibition"]).optional(),
     /** Whether the result counts in the conference table. */
     conference_game: z.boolean().optional(),
     /** Present only when the flag was NOT published by a schedule page —
@@ -430,8 +434,10 @@ export function groupByDate(fixtures: readonly Fixture[]): { date: string; fixtu
     }));
 }
 
+/** Played means the site says the game finished — status final. A played
+ *  game may still carry no score: at least one modern theme publishes
+ *  completion without a result when no score was entered, so anything
+ *  score-dependent guards on the numbers, never on played-ness alone. */
 export function isPlayed(f: Fixture): boolean {
-  return (
-    f.status === "final" && typeof f.home_score === "number" && typeof f.away_score === "number"
-  );
+  return f.status === "final";
 }

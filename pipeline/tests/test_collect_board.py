@@ -386,3 +386,21 @@ def test_dedupe_an_exhibition_marking_survives_the_merge() -> None:
     merged, _ = _dedupe_fixtures([marked, fuller])
     assert merged[0]["status"] == "final"
     assert merged[0]["match_type"] == "exhibition"
+
+
+def test_dedupe_never_discards_a_published_score_pair() -> None:
+    # Both rows are finals — same lifecycle rank — but only one side's site
+    # published the score; the other published completion plus enough extras
+    # to win the detail comparison. The pair must survive whichever wins.
+    scoreless = _fx(
+        id="sidearm:rogers-state:1",
+        status="final",
+        match_type="exhibition",
+        time="19:00",
+        venue="Soldier Field",
+    )
+    scored = _fx(id="sidearm:okwu:9", status="final", home_score=2, away_score=1)
+    merged, _ = _dedupe_fixtures([scored, scoreless])
+    assert merged[0]["home_score"] == 2
+    assert merged[0]["away_score"] == 1
+    assert merged[0]["match_type"] == "exhibition"

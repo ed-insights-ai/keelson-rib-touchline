@@ -118,6 +118,17 @@ def _dedupe_fixtures(
         for field in ("time", "venue", "match_type"):
             if field not in winner and field in loser:
                 winner[field] = loser[field]
+        # Two finals can tie on lifecycle rank when one side published a
+        # score and the other published only completion; the detail count
+        # must never decide a published score pair away.  The pair moves
+        # together — a lone half would invent an orientation.
+        if (
+            "home_score" not in winner
+            and "home_score" in loser
+            and "away_score" in loser
+        ):
+            winner["home_score"] = loser["home_score"]
+            winner["away_score"] = loser["away_score"]
         _merge_conference_claim(winner, loser)
         by_match[key] = winner
     values = sorted(
