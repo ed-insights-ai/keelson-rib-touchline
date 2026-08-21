@@ -1,0 +1,150 @@
+---
+title: The system in one view
+description: "The five-layer map of the rib: four deterministic layers, one generative, and a validating gate after every generative step."
+sidebar:
+  order: 1
+---
+
+import { Image } from "astro:assets";
+import fiveLayers from "../../../assets/five-layers.svg";
+
+Touchline is a data pipeline with a language model employed at exactly one
+stage. The system is five layers: **collect**, **curate**, **analyze**,
+**interpret**, **render**. Four are ordinary software, deterministic and
+testable, boring the way data infrastructure should be. One is generative, and
+every generative step inside it is followed by a mechanical gate that can stop
+the run. If you keep one picture of the rib in your head, keep this one; every
+other page on this site is a close-up of some part of it.
+
+The whole system fits in one row.
+
+<figure>
+  <Image src={fiveLayers} alt="Five stages in a row: collect, curate, and analyze in navy, interpret in amber, render in navy, with three gate ticks labeled validate gates between interpret and render." />
+  <figcaption>Figure 1. The five layers. Navy stages are deterministic code; the amber stage is the one place a model writes, and validate gates stand between its output and the render.</figcaption>
+</figure>
+
+## Collect: archive first, parse later
+
+The collectors read only what schools already publish, and they write every
+fetched page into the archive verbatim before anything parses it
+(`write_raw_pages` in `pipeline/src/sidearm_live.py`). Two entry points share
+the layer. `pipeline/scripts/collect_board.py` is the live collector: for each
+programme it gathers schedule, roster, statistics, and box scores, proves
+which season the site actually served (`assert_served_season`), and writes
+conference-sharded season files under the schema tags `touchline.fixtures/2`,
+`touchline.rosters/1`, `touchline.stats/1`, and `touchline.matches/1`. Every
+run also merges its outcome cells into `data/coverage.json`, because a named
+gap is data, not a failure. `pipeline/scripts/scrape.py` is the historical
+box-score scraper, with the opposite temperament: discover, fetch, parse,
+save, and exit zero only when every discovered game completed.
+
+Deep pages: [Archive first](../archive-first/),
+[Proof before parse](../proof-before-parse/), and
+[Reading hostile HTML](../reading-hostile-html/).
+
+## Curate: canonical records from published strings
+
+Sites publish the same institution under several strings and the same player
+under two spellings, so curation reconciles parses into canonical records.
+`pipeline/src/canon.py` holds the identity registry and the adjudication
+ledger (`ADJUDICATIONS`); its `resolve` classifies every team string as an
+institution, a non-member, or an artifact. `pipeline/src/membership.py`
+answers a different question, season by season: which conference a programme
+belonged to (`conference_for` reads the season-windowed `membership.json`).
+And because everything durable derives from the archive, curation is
+re-runnable: `uv run reparse` (`pipeline/scripts/reparse.py`) rebuilds every
+parquet from the committed HTML with no network access.
+
+Deep pages: [Identity](../identity/) and
+[Season is a dimension](../season-and-membership/).
+
+## Analyze: one digest, every number
+
+`pipeline/src/digest.py` computes the digest (`build_digest`, schema
+`touchline.digest/1`): season form, box-score patterns, roster turnover,
+career lines, and head-to-head history. Its docstring states the boundary
+plainly: "if a figure is not in the digest, the report cannot say it."
+`pipeline/scripts/build_digest.py` writes it to
+`data/scratch/digest-{season}-{gender}-{focus}.json`, a regenerable
+intermediate rebuilt for every report run. It is the only numeric source the
+next layer may quote.
+
+Deep page: [The determinism boundary](../the-determinism-boundary/).
+
+## Interpret: the one generative layer
+
+Interpretation lives in `workflows/touchline-report.yml`, as three generative
+stages with a gate after each:
+
+| Stage | Nodes | What the model does | The gate after it |
+|---|---|---|---|
+| Research | `research` loop | Reads the digest and the open web; files graded findings per programme as `touchline.research/1` | `validate-research` fails the run if any programme lacks a research file or its coach object |
+| Verify | `verify` loop | Re-fetches every finding's URL and tries to refute it; drops what does not survive, with reasons | `merge-verified` schema-checks each per-programme file, then `validate-verified` enforces the coach-count invariant |
+| Narrative | `narrative-core`, `narrative-cards` | Writes the prose, words only: a core file plus one card per opponent | `assemble-narrative` schema-checks the core and every card and merges them into the `touchline.report-narrative/4` file; `validate-narrative` then checks that schema tag, finding and decision counts, word budgets, and banned machinery words |
+
+The gates are bash and `jq`, never the model's own say-so; even the loops end
+on an `until_bash` check of the files on disk rather than trusting a model's
+"done" reply. The method is a contract too: the research stage reads
+`prompts/research-protocol.md` at runtime, so identity binding, stopping
+rules, and source confidence are tuned in a prompt file, not in code.
+
+Deep pages: [Evidence, not recall](../evidence-not-recall/),
+[Gates](../gates/), and the founding incident in
+[A gate after every generative step](../../design/gate-after-every-generative-step/).
+
+## Render: deterministic again
+
+The last layer takes the model's words and puts them back under code's
+control. `pipeline/src/report.py` merges the digest and the narrative file
+into the printable briefing: `render_report` draws every figure from the
+digest and nowhere else, and missing narrative sections render as explicit
+placeholders, so the deterministic skeleton always ships.
+`pipeline/scripts/render_report.py` is the offline entry point; collection and
+research happen upstream. The live surface is the season board: `composeBoard`
+in `src/board.ts` renders the season rail and fixture ledger straight from the
+season files, and the rib publishes it at the snapshot key
+`rib:touchline:board`.
+
+Deep pages: [Run a scouting report](../../guides/run-a-report/) and
+[Work the board](../../guides/work-the-board/).
+
+## Two data planes, one philosophy
+
+Two record systems implement these layers, and they never share code. The
+TypeScript rib (`src/`) is the surface: the board, the chat tools, and the
+conference-sharded season JSON files validated by the zod schemas in
+`src/model.ts`. The Python pipeline (`pipeline/src/` and `pipeline/scripts/`)
+is the machinery: collection, curation, the digest, and the report, with
+Postgres kept strictly as a derived index that `pipeline/src/paths.py` labels
+"never the system of record". What the two planes share is a philosophy:
+everything durable derives from the verbatim archive under `data/raw_html/`.
+Lose any downstream store and you rebuild it; lose the archive and you have
+lost the evidence.
+
+## Why the seam sits where it does
+
+The decomposition is a division of labor. Code computes everything countable,
+because one wrong number in front of a coach ends the conversation. The model
+interprets everything that needs reading, because no amount of code reads a
+coach bio. Validators referee the boundary, because the model's output is a
+file that code can check before anything downstream consumes it. Gate
+placement follows from that rule: wherever generative output re-enters the
+deterministic world, a gate stands. The measured shape of one full run, with
+its dated counts, lives in [the system narrative](../../design/system-narrative/).
+
+Lab: [Stand up a season](../../tutorials/first-season-board/) makes the
+collect and render layers physical: collect one season into a data home and
+watch the board show what landed.
+
+## Related
+
+**Run it**
+
+- [Run a collection](../../guides/run-a-collection/): drive the collect layer against a real conference.
+- [Run a scouting report](../../guides/run-a-report/): drive analyze, interpret, and render end to end.
+
+**Understand it**
+
+- [Archive first](../archive-first/): why the verbatim page, not the parse, is the system of record.
+- [The determinism boundary](../the-determinism-boundary/): the digest as the numeric wall between code and model.
+- [The system narrative](../../design/system-narrative/): the design record this page inherits, with the measured run.

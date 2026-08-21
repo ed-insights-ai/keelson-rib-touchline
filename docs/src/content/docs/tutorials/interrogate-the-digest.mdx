@@ -1,0 +1,301 @@
+---
+title: Interrogate the digest
+description: "Build the digest for a real focus programme, recompute three of its figures by hand to the digit, read its coverage denominators, then lower an availability threshold and meet the noise it holds back."
+sidebar:
+  order: 5
+---
+
+import { Image } from "astro:assets";
+import excerptSquadmap from "../../../assets/excerpt-squadmap.png";
+
+The digest is the only place a Touchline briefing's numbers may come from,
+and [The determinism boundary](../../concepts/the-determinism-boundary/)
+explains why that line exists. This lab audits the machine on its own
+terms: build a digest for a real focus programme, recompute three of its
+figures from the season files by hand, read the denominators it ships
+beside its patterns, then lower one of its thresholds on a scratch copy
+and watch what it was quietly holding back.
+
+By the end you can:
+
+- build a digest and prove its schema tag and previous season
+- recompute a clean-sheet count, a save percentage, and a returning share
+  that match the digest to the digit
+- read `matches_counted` against `played_total` and write the caveat those
+  two denominators demand
+- name the two fixture shapes that never count, and what counting each
+  would invent
+- demonstrate what `AVAILABILITY_MIN_MISSED` rejects by lowering it
+
+## What you need
+
+- A data home holding the `{season}` and `{previous-season}` GAC
+  `{gender}` season files, all four layers. One collect fills one season,
+  so run
+  [Stand up a season](../first-season-board/)'s collect step once per
+  season if you have only one.
+- `jq` and `uv`. Nothing in this lab touches the network.
+
+Work from the home, and name the digest once:
+
+```sh
+cd {data-home}
+G=data/scratch/digest-{season}-{gender}-{focus}.json
+```
+
+## 1. Try it: build it
+
+```sh
+uv run --project {package-dir}/pipeline build-digest \
+  --season {season} --gender {gender} --conference GAC --focus {focus}
+```
+
+```
+wrote {data-home}/data/scratch/digest-{season}-{gender}-{focus}.json
+digest: {programmes} programmes (GAC {gender} {season}, focus {focus}), previous season {previous-season}, seasons held {first}-{last}
+turnover computed for {n}/{programmes} programmes; head-to-head held for {n}/{opponents} opponents
+```
+
+The write is atomic, and it lands in `data/scratch/` because a digest is a
+regenerable intermediate, never durable data. The command is offline by
+design, and it refuses rather than guesses: missing fixtures for the
+season exit 2 telling you to collect first, and an unknown focus slug
+exits 2 naming the programmes the season holds (`build_digest` in
+`pipeline/src/digest.py` raises `ValueError` for both).
+
+Check yourself: the schema tag and the previous season the next exercises
+lean on; verify with this command:
+
+```sh
+jq -r '.schema, .previous_season' "$G"
+```
+
+The first line is `touchline.digest/1`; the second is the season your
+recomputations must read from, `{previous-season}` below.
+
+## 2. Try it: recompute the clean sheets
+
+The digest's `last_season` record comes from the previous season's
+fixtures shard: `season_form` in `pipeline/src/digest.py` computes it from
+fixtures rather than box scores because fixtures cover the whole season,
+collected or not. A clean sheet is a countable final in which the
+programme conceded zero. Recount it yourself:
+
+```sh
+jq -r '.programmes["{focus}"].last_season.clean_sheets' "$G"
+jq --arg s {focus} '[.fixtures[]
+  | select(.status == "final" and .match_type != "exhibition"
+      and (.home_score | type == "number") and (.away_score | type == "number"))
+  | select(.home == $s or .away == $s)
+  | (if .home == $s then .away_score else .home_score end)
+  | select(. == 0)] | length' data/fixtures/{previous-season}-{gender}-gac.json
+```
+
+The second command's filter is `_counts` from `pipeline/src/digest.py`,
+transcribed into jq, with the conceded side selected by which slot the
+focus occupies.
+
+Check yourself: the two numbers are equal; verify with the two commands
+above.
+
+## 3. Try it: recompute a save percentage
+
+`keepers` in `pipeline/src/digest.py` copies each goalkeeper's season line
+from the statistics shard and derives one field:
+`save_pct = saves / (saves + goals_against)`, rounded to three places,
+and only when the keeper actually faced a shot. Read the digest's first
+keeper line (most minutes first):
+
+```sh
+jq '.programmes["{focus}"].last_season.keepers[0]' "$G"
+```
+
+Recompute the derived field from that line's own inputs, with the same
+rounding the code uses:
+
+```sh
+uv run --project {package-dir}/pipeline python -c \
+  "print(round({saves} / ({saves} + {goals-against}), 3))"
+```
+
+Then confirm the inputs are the stats page's, carried verbatim:
+
+```sh
+jq --arg s {focus} '.teams[$s].keepers[]
+  | {name, saves, goals_against}' data/stats/{previous-season}-{gender}-gac.json
+```
+
+Check yourself: your recomputation equals the line's `save_pct`, and the
+line's `saves` and `goals_against` appear unchanged in the stats shard;
+verify with the two jq reads above.
+
+## 4. Try it: recompute the returning share
+
+`turnover` joins two published rosters on `normalize_name` (NFKD, strip
+the combining marks, flip "Last, First", casefold, collapse the rest),
+then weights last season's production by whether its author is on the new
+roster. Re-derive the intersection and the minutes share independently:
+
+```sh
+uv run --project {package-dir}/pipeline python - <<'PY'
+import json
+from src.digest import normalize_name
+
+def names(path, slug):
+    payload = json.load(open(path))
+    return {normalize_name(p["name"])
+            for p in payload["rosters"][slug]["players"] if p.get("name")}
+
+slug = "{focus}"
+prev = names("data/rosters/{previous-season}-{gender}-gac.json", slug)
+cur = names("data/rosters/{season}-{gender}-gac.json", slug)
+returning = prev & cur
+
+stats = json.load(open("data/stats/{previous-season}-{gender}-gac.json"))
+players = stats["teams"][slug]["players"]
+total = sum(int(p.get("minutes") or 0) for p in players)
+kept = sum(int(p.get("minutes") or 0) for p in players
+           if normalize_name(str(p.get("name") or "")) in returning)
+print("returning:", len(returning), "departed:", len(prev - cur),
+      "newcomers:", len(cur - prev))
+print("minutes share:", round(kept / total, 3) if total else None)
+PY
+```
+
+```sh
+jq '.programmes["{focus}"].turnover
+  | {counts, minutes: .returning_share.minutes}' "$G"
+```
+
+Check yourself: all three counts and the share match to the digit; verify
+with the two commands above.
+
+This same roster arithmetic is what a delivered briefing prints as its
+squad map, one unit per player, straight from the digest's `roster_shape`
+section:
+
+<figure>
+  <Image src={excerptSquadmap} alt="The squad map of a shipped briefing: four position rows labeled in goal, back line, midfield, and front line, each a strip of per-player units shaded by class year with returners left of a divider and newcomers right, small dots marking international players, and a bar with a percentage showing the share of last season's minutes returning at that position." />
+  <figcaption>Figure 1. What the digest becomes on a printed page. Every unit, divider, dot, and percentage in the squad map is a digest figure, drawn by <code>shape_strip</code> in <code>pipeline/src/report.py</code> without a model in the loop.</figcaption>
+</figure>
+
+## 5. Try it: the denominators, and what never counts
+
+Box-score coverage can trail the fixture list, so `match_patterns` ships
+its coverage with its numbers:
+
+```sh
+jq '.programmes["{focus}"].last_season.patterns
+  | {matches_counted, played_total}' "$G"
+```
+
+Write the caveat those two demand, in one sentence: every shot, corner,
+save, and minute-band figure in the block covers `matches_counted` of the
+`played_total` matches played. The report writes the same sentence under
+its goal-timing chart, as `minute_chart` in `pipeline/src/report.py`
+renders it: `{n} of {m} matches with a held box score`.
+
+The denominator itself is filtered. `_counts` in `pipeline/src/digest.py`
+refuses two fixture shapes whatever the coverage: a final without a score,
+because counting it "would invent a 0-0 draw, a clean sheet, and a shutout
+at once", and an exhibition whatever its score, because the teams' "own
+published record stays 0-0 while they play them, so the digest's record
+must too". Recount the denominator under those rules:
+
+```sh
+jq --arg s {focus} '[.fixtures[]
+  | select(.status == "final" and .match_type != "exhibition"
+      and (.home_score | type == "number") and (.away_score | type == "number"))
+  | select(.home == $s or .away == $s)] | length' \
+  data/fixtures/{previous-season}-{gender}-gac.json
+```
+
+Check yourself: your recount equals `played_total`, and `matches_counted`
+never exceeds it; verify with this command:
+
+```sh
+jq '.programmes["{focus}"].last_season.patterns
+  | .matches_counted <= .played_total' "$G"
+```
+
+## 6. Try it: lower the threshold, meet the noise
+
+`availability_flags` in `pipeline/src/digest.py` is marked inferred: it
+finds regulars with large unexplained holes in their participation, in two
+shapes, `stopped` (never came back) and `gap` (a run of missed matches
+between appearances), and reports only the pattern and its dates, because
+the record cannot distinguish injury from transfer, discipline, or
+redshirt. Three thresholds keep it honest: `AVAILABILITY_MIN_APPS`,
+`AVAILABILITY_MIN_MINUTES`, and `AVAILABILITY_MIN_MISSED`, the last
+requiring the hole to span at least three held matches. The comment above
+them names what they reject: "rotation noise, not an availability signal".
+
+Meet that noise on a scratch copy of the pipeline. Save the stock digest,
+copy the project, drop its environment:
+
+```sh
+cp "$G" {scratch}/digest.stock.json
+cp -R {package-dir}/pipeline {scratch}/pipeline
+rm -rf {scratch}/pipeline/.venv
+```
+
+Open `{scratch}/pipeline/src/digest.py` and set `AVAILABILITY_MIN_MISSED`
+to `1`, then rebuild with the altered code (the first run re-syncs the
+copy's environment from uv's cache):
+
+```sh
+grep "^AVAILABILITY_MIN_MISSED" {scratch}/pipeline/src/digest.py
+uv run --project {scratch}/pipeline build-digest \
+  --season {season} --gender {gender} --conference GAC --focus {focus}
+```
+
+Now compare the flag volume, stock against flooded, and look at what
+arrived: one-match holes, the ordinary churn of substitution patterns and
+midweek rotation, now dressed up as availability signals.
+
+```sh
+jq '[.programmes[].last_season.availability_flags // [] | length] | add' \
+  {scratch}/digest.stock.json "$G"
+jq '[.programmes[].last_season.availability_flags // [] | .[]
+  | select((.missed_after // .missed) < 3)
+  | {name, kind, hole: (.missed_after // .missed)}]' "$G"
+```
+
+Restore by rebuilding with the real code. The digest is deterministic, so
+the restore is provable, not hopeful:
+
+```sh
+uv run --project {package-dir}/pipeline build-digest \
+  --season {season} --gender {gender} --conference GAC --focus {focus}
+diff <(jq 'del(.generated_at)' {scratch}/digest.stock.json) \
+     <(jq 'del(.generated_at)' "$G") && echo "restored, to the digit"
+```
+
+Check yourself: the flooded digest's flag total is at least the stock
+total, every below-threshold flag names a hole of one or two matches, and
+the final diff prints `restored, to the digit`; verify with the three
+commands above.
+
+## Next stop
+
+You have now audited the deterministic side of the boundary by hand. The
+other side is generative, and it is never trusted this politely: read
+[Gates](../../concepts/gates/) on the way, then take the validators apart
+yourself. Next stop: [Break a gate](../break-a-gate/).
+
+## Related
+
+**Run it**
+
+- [Run a scouting report](../../guides/run-a-report/): the workflow that
+  rebuilds this digest at the start of every run and writes prose around
+  it.
+- [Pipeline CLI](../../reference/pipeline-cli/): `build-digest`'s terse
+  contract, beside every other command this lab used.
+
+**Understand it**
+
+- [The determinism boundary](../../concepts/the-determinism-boundary/):
+  why every number in a briefing must come from this one file.
+- [Absence is data](../../concepts/absence-is-data/): the missing-coverage
+  discipline behind `matches_counted` and its caveat.

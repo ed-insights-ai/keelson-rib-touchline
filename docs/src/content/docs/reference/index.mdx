@@ -1,0 +1,68 @@
+---
+title: Reference
+description: "The contract tier: the rib surface and tools, the four workflows, data on disk, versioned file contracts, gates and exit codes, the pipeline CLI, prompt contracts, and the glossary."
+sidebar:
+  label: Overview
+  order: 0
+---
+
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+The exact contract, terse and register-neutral. Operators look up a flag or an
+exit code; students look up a schema field or a gate assertion; both get the
+same page. Nothing here argues: the reasons live in [Concepts](../concepts/)
+and the [design records](../design/).
+
+<CardGrid>
+  <LinkCard
+    title="Surface, tools, and keys"
+    href="rib-surface/"
+    description="The board surface, the five chat tools, the /touchline commands, and the snapshot key."
+  />
+  <LinkCard
+    title="Workflows"
+    href="workflows/"
+    description="The four workflows as contracts: nodes, gates, locking, inputs, and exit semantics."
+  />
+  <LinkCard
+    title="Data on disk"
+    href="data-on-disk/"
+    description="The data home tier by tier, plus the derived parquet tree and database schema."
+  />
+  <LinkCard
+    title="File contracts"
+    href="file-contracts/"
+    description="Every versioned schema tag with the field semantics that carry the honesty rules."
+  />
+  <LinkCard
+    title="Gates and exit codes"
+    href="gates-and-exit-codes/"
+    description="The enumerable control surface: every gate's assertions, every script's exit contract."
+  />
+  <LinkCard
+    title="Pipeline CLI"
+    href="pipeline-cli/"
+    description="One terse entry per console script: purpose, inputs, outputs, online or offline."
+  />
+  <LinkCard
+    title="Prompt contracts"
+    href="prompts-and-protocols/"
+    description="The four runtime-read markdown contracts and which of their rules a validator enforces."
+  />
+  <LinkCard
+    title="Glossary"
+    href="glossary/"
+    description="Every house term in one sentence, each linking to the page that owns it."
+  />
+</CardGrid>
+
+## Related
+
+**Run it**
+
+- [Guides](../guides/): the tasks these contracts govern.
+
+**Understand it**
+
+- [Concepts](../concepts/): why the contracts are shaped this way.
+- [Design](../design/): what deciding them settled.

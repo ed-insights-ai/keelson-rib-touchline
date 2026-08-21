@@ -29,3 +29,21 @@ does not fall back to legacy filenames.
 
 The original product and implementation contract lives in the
 [Touchline rib specification](https://github.com/ed-insights-ai/ed-insights-platform/blob/main/docs/specs/touchline-rib.md).
+
+## Documentation
+
+The documentation site lives under [`docs/`](docs/) (Astro Starlight, the
+keelson rib family shape). Build it locally with
+`cd docs && bun install && bun run build`, or browse with `bun run dev`.
+[`docs/STYLE.md`](docs/STYLE.md) is the style law for every page.
+
+## License
+
+Licensed under the Apache License 2.0 — see [LICENSE](LICENSE).
+
+## Acknowledgments
+
+The Python collection pipeline under `pipeline/` was extracted from
+[ed-insights-ai/ed-insights-platform](https://github.com/ed-insights-ai/ed-insights-platform)
+(`packages/pipeline`), where its development history remains. See
+[NOTICE](NOTICE) for attribution.
