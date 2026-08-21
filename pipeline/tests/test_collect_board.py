@@ -371,3 +371,18 @@ def test_dedupe_two_derived_claims_or_together() -> None:
     merged, _ = _dedupe_fixtures([other, one])
     assert merged[0]["conference_game"] is True
     assert merged[0]["conference_game_source"] == "derived:membership"
+
+
+def test_dedupe_an_exhibition_marking_survives_the_merge() -> None:
+    # Only one side's page may say "(Exhibition)"; the marking must not be
+    # lost when the other side's fuller record wins the merge.
+    marked = _fx(id="sidearm:rogers-state:1", match_type="exhibition")
+    fuller = _fx(
+        id="sidearm:midwestern-state:9",
+        status="final",
+        time="19:00",
+        venue="Soldier Field",
+    )
+    merged, _ = _dedupe_fixtures([marked, fuller])
+    assert merged[0]["status"] == "final"
+    assert merged[0]["match_type"] == "exhibition"

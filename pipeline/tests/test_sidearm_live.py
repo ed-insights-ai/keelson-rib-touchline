@@ -754,17 +754,32 @@ def _dom_game(
     conference: str = "",
     result: str = "",
     facility: str = "",
+    completed: bool = False,
 ) -> str:
     side_class = f"sidearm-schedule-{side}-game"
+    if completed:
+        side_class += " sidearm-schedule-game-completed"
     indicator = "at" if side == "away" else "vs"
     time_html = (
         f'<div class="sidearm-schedule-game-time"><span>{time}</span></div>'
         if time
         else ""
     )
-    result_html = (
-        f'<div class="sidearm-schedule-game-result">{result}</div>' if result else ""
-    )
+    # The measured played-without-score shape: the modern theme fills scores
+    # client-side, so the served result element holds only empty spans while
+    # a Final span (whose class the result selector does not match) rides the
+    # date line.
+    if completed and not result:
+        result_html = (
+            '<span class="sidearm-schedule-game-result-final">Final</span>'
+            '<div class="sidearm-schedule-game-result "><span></span><span></span></div>'
+        )
+    else:
+        result_html = (
+            f'<div class="sidearm-schedule-game-result">{result}</div>'
+            if result
+            else ""
+        )
     facility_html = (
         f'<div class="sidearm-schedule-game-location"><span>Somewhere, OK</span>'
         f'<span><a href="/facilities/?id=1">{facility}</a></span></div>'
@@ -1582,3 +1597,67 @@ def test_a_boxscore_with_one_team_is_refused_not_persisted(
     )
     with pytest.raises(LiveCollectionError, match="rendered 1 team"):
         sidearm_live.collect_match(session, response.url, 2025, dict(_OT_FIXTURE))
+
+
+def test_a_completed_game_without_a_published_score_is_final() -> None:
+    """Measured on rsuhillcats.com, 2026-08-21: the modern theme fills scores
+    client-side, so a played game's served DOM carries a completed class and a
+    Final span but empty result spans.  Played is final, not scheduled — the
+    board must not show a finished game as upcoming."""
+    html = _dom_page(
+        _dom_game(
+            game_id="7655",
+            opponent="Oklahoma Wesleyan (Exhibition)",
+            date="Aug 13 (Thu)",
+            completed=True,
+        )
+    )
+    [fixture] = parse_schedule_page(
+        html,
+        page_url="https://example.test/schedule/2026",
+        year=2026,
+        owner_slug="rogers-state",
+        aliases={"oklahoma wesleyan": "oklahoma-wesleyan"},
+    )
+    assert fixture["status"] == "final"
+    assert "home_score" not in fixture
+    assert fixture["match_type"] == "exhibition"
+    assert fixture["conference_game"] is False
+
+
+def test_the_payload_marks_an_exhibition_and_a_scoreless_final() -> None:
+    event = {
+        "id": 77,
+        "date": "2026-08-13T19:00:00",
+        "location_indicator": "H",
+        "is_conference": False,
+        "type": "completed",
+        "schedule": {"title": "2026 Men's Soccer Schedule"},
+        "opponent": {"title": "Oklahoma Wesleyan (Exhibition)"},
+        "result": {"team_score": None, "opponent_score": None, "status": "Final"},
+    }
+    [fixture] = parse_schedule_page(
+        _schedule_html(event),
+        page_url="https://example.test/schedule/2026",
+        year=2026,
+        owner_slug="rogers-state",
+        aliases={"oklahoma wesleyan": "oklahoma-wesleyan"},
+    )
+    assert fixture["status"] == "final"
+    assert "home_score" not in fixture
+    assert fixture["match_type"] == "exhibition"
+
+
+def test_a_league_game_carries_no_match_type() -> None:
+    html = _dom_page(
+        _dom_game(game_id="8", opponent="Harding", date="Sep 17 (Thu)")
+    )
+    [fixture] = parse_schedule_page(
+        html,
+        page_url="https://example.test/schedule/2026",
+        year=2026,
+        owner_slug="rogers-state",
+        aliases={"harding": "harding"},
+    )
+    assert fixture["status"] == "scheduled"
+    assert "match_type" not in fixture

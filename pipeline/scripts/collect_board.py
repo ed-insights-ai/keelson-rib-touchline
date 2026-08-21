@@ -105,7 +105,8 @@ def _dedupe_fixtures(
         # Prefer the source that has reached the later lifecycle stage, then
         # retain whichever published more detail — but never lose detail the
         # other side published: each site is authoritative for its own extras
-        # (kickoff time, facility), and the conference claim resolves by rank.
+        # (kickoff time, facility, an exhibition marking), and the conference
+        # claim resolves by rank.
         rank = {"scheduled": 0, "postponed": 1, "cancelled": 1, "live": 2, "final": 3}
         existing_score = rank.get(str(existing["status"]), 0) * 10 + len(existing)
         candidate_score = rank.get(str(fixture["status"]), 0) * 10 + len(fixture)
@@ -114,7 +115,7 @@ def _dedupe_fixtures(
             if candidate_score > existing_score
             else (existing, dict(fixture))
         )
-        for field in ("time", "venue"):
+        for field in ("time", "venue", "match_type"):
             if field not in winner and field in loser:
                 winner[field] = loser[field]
         _merge_conference_claim(winner, loser)
