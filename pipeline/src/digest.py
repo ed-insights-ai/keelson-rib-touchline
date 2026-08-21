@@ -102,21 +102,30 @@ def _has_score(fixture: dict) -> bool:
     )
 
 
-def _finals(fixtures_payload: dict, slug: str) -> list[dict]:
-    """Result-bearing finals only.
+def _counts(fixture: dict) -> bool:
+    """A final the teams themselves count: result-bearing and not an
+    exhibition.
 
     A modern theme publishes completion without a score when no result was
-    ever entered (measured on exhibitions).  Such a final carries nothing to
-    aggregate — counting it would invent a 0-0 draw, a clean sheet, and a
-    shutout at once — so every result computation starts from finals that
-    actually have a score pair.
+    ever entered — such a final carries nothing to aggregate, and counting
+    it would invent a 0-0 draw, a clean sheet, and a shutout at once.  And
+    a fixture the site marks "(Exhibition)" is a game the teams do not
+    count whatever its score: their own published record stays 0-0 while
+    they play them, so the digest's record must too.
     """
+    return (
+        fixture.get("status") == "final"
+        and _has_score(fixture)
+        and fixture.get("match_type") != "exhibition"
+    )
+
+
+def _finals(fixtures_payload: dict, slug: str) -> list[dict]:
+    """The countable finals every result computation starts from."""
     return [
         fixture
         for fixture in fixtures_payload.get("fixtures") or []
-        if fixture.get("status") == "final"
-        and _has_score(fixture)
-        and slug in (fixture.get("home"), fixture.get("away"))
+        if _counts(fixture) and slug in (fixture.get("home"), fixture.get("away"))
     ]
 
 
@@ -825,7 +834,7 @@ def head_to_head(
     for season in sorted(fixtures_by_season):
         payload = fixtures_by_season[season]
         for fixture in (payload or {}).get("fixtures") or []:
-            if fixture.get("status") != "final" or not _has_score(fixture):
+            if not _counts(fixture):
                 continue
             pair = {fixture.get("home"), fixture.get("away")}
             if pair != {focus, slug}:

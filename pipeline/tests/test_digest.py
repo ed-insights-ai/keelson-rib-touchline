@@ -743,3 +743,41 @@ def test_head_to_head_skips_a_final_without_a_score():
     versus = head_to_head(by_season, "alpha", "beta")
     assert (versus["wins"], versus["draws"], versus["losses"]) == (1, 0, 0)
     assert versus["last_meeting"]["season"] == 2025
+
+
+def test_a_scored_exhibition_never_alters_the_record():
+    # Some sites do publish a score for an exhibition; the teams still do
+    # not count it, and their own published record stays 0-0 — so must ours.
+    payload = fixtures_payload(
+        2026,
+        [
+            final("2026-09-01", "alpha", "beta", 2, 1, conference_game=True),
+            {
+                **final("2026-08-13", "alpha", "outsider", 4, 0),
+                "match_type": "exhibition",
+            },
+        ],
+    )
+    form = season_form(payload, "alpha")
+    assert form["overall"] == {
+        "wins": 1,
+        "draws": 0,
+        "losses": 0,
+        "gf": 2,
+        "ga": 1,
+        "played": 1,
+    }
+    assert form["clean_sheets"] == 0
+
+
+def test_head_to_head_skips_an_exhibition_meeting():
+    by_season = {
+        2025: fixtures_payload(2025, [final("2025-10-01", "alpha", "beta", 3, 1)]),
+        2026: fixtures_payload(
+            2026,
+            [{**final("2026-08-13", "beta", "alpha", 2, 0), "match_type": "exhibition"}],
+        ),
+    }
+    versus = head_to_head(by_season, "alpha", "beta")
+    assert (versus["wins"], versus["draws"], versus["losses"]) == (1, 0, 0)
+    assert versus["last_meeting"]["season"] == 2025
