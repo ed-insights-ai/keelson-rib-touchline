@@ -1932,6 +1932,21 @@ describe("the surface states what the sites publish", () => {
     expect(html).toContain("Exhibition · Cancelled");
   });
 
+  test("the team-lens ledger marks the exhibition in its status cell", () => {
+    const html = composeBoard({
+      projectName: "p",
+      fixtures: file,
+      team: "rogers-state",
+      today: "2026-08-21",
+    });
+    expect(html).toContain("Exh · Final");
+  });
+
+  test("the matrix cell's accessible label names the exhibition", () => {
+    const html = composeBoard({ projectName: "p", fixtures: file, today: "2026-08-21" });
+    expect(html).toContain("(exhibition)");
+  });
+
   test("a past-dated fixture counts as unpublished, never as played-and-missed", () => {
     const html = composeBoard({ projectName: "p", fixtures: file, today: "2026-08-21" });
     expect(html).toContain("1 past date, no result published");

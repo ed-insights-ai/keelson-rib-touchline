@@ -1086,16 +1086,26 @@ function ledgerRow(
     )}"></i>${esc(displayName(f.away, names))}</span>`;
   }
 
+  // The compact row marks an exhibition in its status cell — "Exh" — the
+  // same fact the card and drawer spell out in full.
+  const exh = f.match_type === "exhibition" ? "Exh" : undefined;
   let right: string;
   if (off) {
-    right = `<span class="st">${f.status === "postponed" ? "Postponed" : "Cancelled"}</span>`;
+    right = `<span class="st">${[exh, f.status === "postponed" ? "Postponed" : "Cancelled"]
+      .filter(Boolean)
+      .join(" · ")}</span>`;
   } else if (played) {
     const a = f.home_score ?? "–";
     const b = f.away_score ?? "–";
     const score = perspective ? (f.home === perspective ? `${a}–${b}` : `${b}–${a}`) : `${a}–${b}`;
-    right = `<span class="sc">${esc(score)}</span><span class="st">${f.status === "live" ? esc(f.clock ?? "Live") : "Final"}</span>`;
+    right = `<span class="sc">${esc(score)}</span><span class="st">${[
+      exh,
+      f.status === "live" ? esc(f.clock ?? "Live") : "Final",
+    ]
+      .filter(Boolean)
+      .join(" · ")}</span>`;
   } else {
-    right = `<span class="tm">${f.time ? esc(fmtTime(f.time)) : "TBA"}</span>`;
+    right = `${exh ? `<span class="st">${exh}</span>` : ""}<span class="tm">${f.time ? esc(fmtTime(f.time)) : "TBA"}</span>`;
   }
 
   const payload = esc(JSON.stringify({ fixture: f.id }));
