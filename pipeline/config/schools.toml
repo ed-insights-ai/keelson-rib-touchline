@@ -409,3 +409,196 @@ years        = [2022]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
+
+# ============================================================
+# GSC MEN'S SOCCER — 13 programmes, backfill window 2016-2026
+# ============================================================
+# Source of truth: GSC per-season records (gscsports.org conference
+# statistics per year, plus the live standings for 2026), verified
+# 2026-08-20. Twelve of the 13 sites probed 2026-08-20 (uv run probe):
+# SideArm-new, schedule and roster present on every one; Lee is
+# WAF-blocked and unprobed. No collect has run yet, so every stanza is
+# data_status = unverified — promote to verified once a collect confirms
+# the layers end to end. No ordinals: the StatCrew legacy lineage never
+# reads these.
+#
+# Season-aware membership lives in data/reference/membership.json —
+# Montevallo joined 2017, Spring Hill 2018, AUM 2019 and Trevecca 2024;
+# Shorter left after 2023 and West Florida after 2025. Every year-list
+# here equals that window.
+#
+# Names are chosen so programme_slug(name) matches the slug the fixed
+# identity rules derive from opponent text (official renderings differ:
+# Alabama in Huntsville, Auburn University at Montgomery, University of
+# West Alabama).
+
+[[schools]]
+name         = "UAH"
+abbreviation = "UAH"
+conference   = "GSC"
+mascot       = "Chargers"
+gender       = "men"
+base_url     = "https://uahchargers.com/sports/mens-soccer"
+years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+
+[[schools]]
+name         = "West Alabama"
+abbreviation = "UWA"
+conference   = "GSC"
+mascot       = "Tigers"
+gender       = "men"
+base_url     = "https://uwaathletics.com/sports/mens-soccer"
+years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+
+[[schools]]
+name         = "Mississippi College"
+abbreviation = "MC"
+conference   = "GSC"
+mascot       = "Choctaws"
+gender       = "men"
+base_url     = "https://gochoctaws.com/sports/mens-soccer"
+years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+
+# leeflames.com answers 403 to every automated request (WAF/bot filter),
+# so the probe could not confirm the layers. Platform assumed SideArm-new
+# from the URL shape; collection will file a named gap until the block is
+# resolved.
+[[schools]]
+name         = "Lee"
+abbreviation = "LEE"
+conference   = "GSC"
+mascot       = "Flames"
+gender       = "men"
+base_url     = "https://leeflames.com/sports/mens-soccer"
+years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+
+[[schools]]
+name         = "Christian Brothers"
+abbreviation = "CBU"
+conference   = "GSC"
+mascot       = "Buccaneers"
+gender       = "men"
+base_url     = "https://cbubucs.com/sports/mens-soccer"
+years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+
+# The GAC's recurring non-conference opponent: Harding or Ouachita Baptist
+# has played Union in every collected season except 2018-2020.
+[[schools]]
+name         = "Union"
+abbreviation = "UU"
+conference   = "GSC"
+mascot       = "Bulldogs"
+gender       = "men"
+base_url     = "https://uuathletics.com/sports/mens-soccer"
+years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+
+[[schools]]
+name         = "Delta State"
+abbreviation = "DSU"
+conference   = "GSC"
+mascot       = "Statesmen"
+gender       = "men"
+base_url     = "https://gostatesmen.com/sports/mens-soccer"
+years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+
+[[schools]]
+name         = "Montevallo"
+abbreviation = "UM"
+conference   = "GSC"
+mascot       = "Falcons"
+gender       = "men"
+base_url     = "https://montevallofalcons.com/sports/mens-soccer"
+years        = [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+
+# Absent from the 2020 conference statistics and the site serves no 2020
+# season: the GSC postponed fall 2020 soccer to spring 2021 and Spring
+# Hill did not play. Membership was continuous, so 2020 stays in the
+# window and collection names the gap.
+[[schools]]
+name         = "Spring Hill"
+abbreviation = "SHC"
+conference   = "GSC"
+mascot       = "Badgers"
+gender       = "men"
+base_url     = "https://shcbadgers.com/sports/mens-soccer"
+years        = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+
+[[schools]]
+name         = "AUM"
+abbreviation = "AUM"
+conference   = "GSC"
+mascot       = "Warhawks"
+gender       = "men"
+base_url     = "https://aumathletics.com/sports/mens-soccer"
+years        = [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+
+[[schools]]
+name         = "Trevecca"
+abbreviation = "TNU"
+conference   = "GSC"
+mascot       = "Trojans"
+gender       = "men"
+base_url     = "https://tnutrojans.com/sports/mens-soccer"
+years        = [2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+
+# Left GSC men's soccer after 2025 (absent from the 2026 standings). Also
+# absent from the 2020 statistics: the conference postponed fall 2020
+# soccer to spring 2021 and West Florida opted out of that spring season.
+[[schools]]
+name         = "West Florida"
+abbreviation = "UWF"
+conference   = "GSC"
+mascot       = "Argonauts"
+gender       = "men"
+base_url     = "https://goargos.com/sports/mens-soccer"
+years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+
+# Left GSC men's soccer after 2023 (absent from the 2024 statistics);
+# Shorter now competes in Conference Carolinas.
+[[schools]]
+name         = "Shorter"
+abbreviation = "SU"
+conference   = "GSC"
+mascot       = "Hawks"
+gender       = "men"
+base_url     = "https://goshorterhawks.com/sports/mens-soccer"
+years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
