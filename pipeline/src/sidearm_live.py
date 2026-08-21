@@ -310,14 +310,17 @@ def assert_untrapped_schedule(
 # stops the bare-number form from eating a name that starts with a numeral.
 #
 # "RV" is receiving-votes — a team just outside the poll. It carries no digits,
-# so the numeric forms never matched it and it minted rv-lee beside lee.
+# so the numeric forms never matched it and it minted rv-lee beside lee. The
+# "#" marker is published in front of RV as readily as in front of a number
+# ("#RV University of Southern Indiana"), so it is a separate optional part
+# rather than something welded to the digits.
 #
 # A school can also be ranked in two polls at once, published joined by a slash
 # ("RV/#11 Palm Beach Atlantic University"), so the prefix repeats rather than
 # matching a single token. The trailing whitespace requirement is what keeps
 # the bare "rv" alternative from biting a name that merely starts with those
 # letters.
-_RANK_TOKEN = r"(?:#\s*\d{1,2}|no\.?\s*\d{1,2}|rv|\d{1,2})"
+_RANK_TOKEN = r"(?:(?:#|no\.?)\s*)?(?:rv|\d{1,2})"
 _RANK_PREFIX = re.compile(
     rf"^{_RANK_TOKEN}(?:\s*/\s*{_RANK_TOKEN})*\s+", re.IGNORECASE
 )

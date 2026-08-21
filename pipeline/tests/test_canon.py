@@ -49,7 +49,8 @@ def test_normalize_strips_every_published_rank_form():
     minted an identity that drifted with the poll.
     """
     for published in ("#4 Harding", "No. 4 Harding", "no 4 Harding", "4 Harding",
-                      "RV Harding", "rv Harding", "RV/#11 Harding", "#11/RV Harding"):
+                      "RV Harding", "rv Harding", "#RV Harding",
+                      "RV/#11 Harding", "#11/RV Harding"):
         assert normalize(published) == normalize("Harding") == "harding"
 
 

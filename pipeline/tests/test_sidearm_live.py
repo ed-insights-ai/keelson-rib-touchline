@@ -592,6 +592,9 @@ def test_receiving_votes_is_a_rank_not_an_identity() -> None:
     assert (
         opponent_slug("RV Rollins", aliases)
         == opponent_slug("rv Rollins", aliases)
+        # The "#" marker fronts RV as readily as it fronts a number; this is the
+        # form Union published, and it survived the first pass at this fix.
+        == opponent_slug("#RV Rollins", aliases)
         == opponent_slug("Rollins", aliases)
         == "rollins"
     )
