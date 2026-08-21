@@ -20,6 +20,7 @@ import {
   packageDir,
 } from "./datahome.ts";
 import { collectFleetSize, resolveTargets, titleFromSlug } from "./membership.ts";
+import { isPlayed } from "./model.ts";
 import {
   collectTimeoutMs,
   planForSeason,
@@ -133,9 +134,9 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
           lines.push(`  ${s.season} ${s.gender}: UNREADABLE (${fx.reason}) ${fx.path}`);
           continue;
         }
-        const played = fx.value.fixtures.filter(
-          (f) => f.status === "final" && typeof f.home_score === "number",
-        ).length;
+        // The shared definition, not an inline copy: a final without a
+        // published score is still a played game.
+        const played = fx.value.fixtures.filter(isPlayed).length;
         const players = rs.ok
           ? Object.values(rs.value.rosters).reduce((n, r) => n + r.players.length, 0)
           : 0;
