@@ -1135,9 +1135,7 @@ function cardBits(
   } else {
     tt = `${away} at ${home}`;
     nt = off
-      ? f.status === "postponed"
-        ? "Postponed"
-        : "Cancelled"
+      ? [exh, f.status === "postponed" ? "Postponed" : "Cancelled"].filter(Boolean).join(" · ")
       : [exh, WDAYS[wd], f.time ? fmtTime(f.time) : undefined, f.venue].filter(Boolean).join(" · ");
   }
   return { mo: MONS[m - 1] ?? "", dy: String(d), tt, nt };
@@ -2105,6 +2103,15 @@ function matchDrawer(
 
   const sections: string[] = [];
 
+  // The schedule page's silence is its own fact, independent of whether a
+  // box score was collected: with one, the header's dashes sit above real
+  // period scores, and this line is what reconciles them.
+  if (played && typeof f.home_score !== "number") {
+    sections.push(
+      `<p class="dr-note">Final without a published score — the site's schedule marked the game finished but never entered a result.</p>`,
+    );
+  }
+
   if (detail && sides.length === 2) {
     const periodCount = Math.max(...sides.map((s) => s.team.periods.length));
     if (periodCount > 0) {
@@ -2249,13 +2256,6 @@ function matchDrawer(
       sections.push(`<p class="dr-note dim">No play-by-play collected for this match.</p>`);
     }
   } else if (played) {
-    // Two different absences, stated separately: the score is schedule-page
-    // data the site never entered; the box score is a match page we fetch.
-    if (typeof f.home_score !== "number") {
-      sections.push(
-        `<p class="dr-note">Final without a published score — the site marked the game finished but never entered a result.</p>`,
-      );
-    }
     const reason = matches?.missing?.[fixtureId];
     sections.push(
       `<p class="dr-note">${

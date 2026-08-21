@@ -1882,6 +1882,56 @@ describe("the surface states what the sites publish", () => {
     expect(html).toContain("Exhibition · Final");
   });
 
+  test("a scoreless final with a collected box score still carries the disclosure", () => {
+    // The header shows dashes (schedule score) above a period table with real
+    // numbers (box score); the disclosure is what reconciles them.
+    const withDetail: MatchesFile = {
+      schema: "touchline.matches/1",
+      season: 2026,
+      gender: "men",
+      collected_at: "2026-08-21T13:00:00Z",
+      matches: {
+        "sidearm:rogers-state:7655": {
+          source_url: "https://example.test/boxscore/7655",
+          home_index: 0,
+          teams: [
+            { name: "Rogers State", periods: [1, 0], score: 1 },
+            { name: "Oklahoma Wesleyan", periods: [0, 0], score: 0 },
+          ],
+        },
+      },
+    };
+    const html = composeBoard({
+      projectName: "p",
+      fixtures: file,
+      matches: withDetail,
+      fixture: "sidearm:rogers-state:7655",
+      today: "2026-08-21",
+    });
+    const drawer = html.split('class="drawer"')[1] ?? "";
+    expect(drawer).toContain("Final without a published score");
+    expect(drawer).toContain("Score by period");
+  });
+
+  test("a cancelled exhibition keeps its marking on the card byline", () => {
+    const cancelled: FixturesFile = {
+      ...base,
+      fixtures: [
+        {
+          id: "sidearm:rogers-state:7656",
+          date: "2026-08-18",
+          home: "rogers-state",
+          away: "harding",
+          status: "cancelled",
+          match_type: "exhibition",
+          conference_game: false,
+        },
+      ],
+    };
+    const html = composeBoard({ projectName: "p", fixtures: cancelled, today: "2026-08-21" });
+    expect(html).toContain("Exhibition · Cancelled");
+  });
+
   test("a past-dated fixture counts as unpublished, never as played-and-missed", () => {
     const html = composeBoard({ projectName: "p", fixtures: file, today: "2026-08-21" });
     expect(html).toContain("1 past date, no result published");
