@@ -52,6 +52,8 @@ def test_normalize_strips_every_published_rank_form():
                       "No.4 Harding", "RV Harding", "rv Harding", "#RV Harding",
                       "(4) Harding", "(RV) Harding", "(1) #3 Harding",
                       "(5) RV Harding", "#10 (4) Harding",
+                      "[4] Harding", "#17 [7] Harding",
+                      "3-seed Harding", "#4-seed Harding", "5th-Seed Harding",
                       "RV/#11 Harding", "#11/RV Harding"):
         assert normalize(published) == normalize("Harding") == "harding"
 
@@ -60,8 +62,9 @@ def test_normalize_leaves_a_name_that_merely_starts_with_rv():
     """The trailing-whitespace requirement is what makes a bare "rv" safe."""
     assert normalize("Rverside") == "rverside"
     assert normalize("RVing Club") == "rving club"
-    # "5th-Seed" has no whitespace after the digit, which is what saves it.
-    assert normalize("5th-Seed Oklahoma Christian") == "5th-seed oklahoma christian"
+    # An all-caps abbreviation leads far more often than a rank does.
+    for abbr in ("UT Tyler", "MSU Denver", "CSU Pueblo", "USC Aiken"):
+        assert normalize(abbr) == abbr.lower()
 
 
 def test_normalize_preserves_distinguishing_parenthetical():

@@ -303,24 +303,39 @@ def assert_untrapped_schedule(
         )
 
 
-# A poll rank is published four ways and moves week to week, so leaving it in
-# the name mints a new identity every time it changes: the archive holds
-# no-4-csu-pueblo beside no-15-csu-pueblo, and three separate slugs for
-# Midwestern State. Two digits is the whole range a poll uses, which is what
-# stops the bare-number form from eating a name that starts with a numeral.
+# A poll or tournament rank moves week to week, so leaving it in the name mints
+# a new identity every time it changes: the archive holds no-4-csu-pueblo
+# beside no-15-csu-pueblo, and three separate slugs for Midwestern State.
 #
-# "RV" is receiving-votes — a team just outside the poll. It carries no digits,
-# so the numeric forms never matched it and it minted rv-lee beside lee. The
-# "#" marker is published in front of RV as readily as in front of a number
-# ("#RV University of Southern Indiana"), so it is a separate optional part
-# rather than something welded to the digits.
+# Scanning 231 archived schedule pages for any leading run that is not a plain
+# capitalised word, these are the forms published:
 #
-# A school can also be ranked in two polls at once, published joined by a slash
-# ("RV/#11 Palm Beach Atlantic University"), so the prefix repeats rather than
-# matching a single token. The trailing whitespace requirement is what keeps
-# the bare "rv" alternative from biting a name that merely starts with those
-# letters.
-_RANK_TOKEN = r"(?:\(\s*(?:rv|\d{1,2})\s*\)|(?:#|no\.?)?\s*(?:rv|\d{1,2}))"
+#   #9  No. 23  No.11  9        a poll rank, with or without a marker
+#   RV  #RV                     receiving votes: a rank carrying no digits at
+#                               all, which every numeric form missed
+#   (3)  [7]                    a seed, bracketed either way
+#   3-seed  #4-seed  5th-Seed   a seed spelled as a word
+#   RV/#11  #4/#5               ranked in two polls at once, slash-joined
+#   (1) #3   #17 [7]   (5) RV   a bracketed seed in front of a second rank
+#
+# So a token is a value carrying an optional marker or bracket, tokens may be
+# slash-joined, and the whole prefix repeats.
+#
+# Two limits stop it eating real names. Two digits is the whole range a poll
+# uses, and every token must be followed by whitespace — which is why
+# "5th-Seed Oklahoma Christian" loses the seed and keeps the school, and why
+# the bare "rv" alternative does not bite Rverside. What leads an opponent
+# string far more often than a rank is an all-caps abbreviation: UT Tyler at
+# 127 rows, MSU Denver at 17, CSU Pueblo and USC Aiken behind them. None of
+# those match.
+_RANK_VALUE = r"(?:rv|\d{1,2})"
+_RANK_TOKEN = (
+    r"(?:"
+    rf"\(\s*{_RANK_VALUE}\s*\)|\[\s*{_RANK_VALUE}\s*\]"
+    r"|(?:#|no\.?)?\s*\d{1,2}(?:st|nd|rd|th)?-seed"
+    rf"|(?:#|no\.?)?\s*{_RANK_VALUE}"
+    r")"
+)
 _RANK_PREFIX = re.compile(
     rf"^(?:{_RANK_TOKEN}(?:\s*/\s*{_RANK_TOKEN})*\s+)+", re.IGNORECASE
 )
