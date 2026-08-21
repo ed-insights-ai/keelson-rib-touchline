@@ -6,9 +6,9 @@
       "men": [
         {
           "conference": "GSC",
-          "from_season": 2019,
+          "from_season": 2017,
           "to_season": 2026,
-          "source": "Gulf South Conference, 2019 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2019&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both. Absent from the 2018 records (https://gscsports.org/stats.aspx?path=msoc&year=2018&conf=true); first listed 2019."
+          "source": "Auburn Montgomery Warhawks, https://en.wikipedia.org/wiki/Auburn_Montgomery_Warhawks (accessed 2026-08-20): AUM was approved for the NCAA Division II membership process on 2015-07-17 and \"began the transition with the 2015-16 season, while joining the Gulf South Conference for all sports effective in the 2017-18 season.\" The window therefore opens at 2017. This corrects an earlier reading of the conference statistics pages (https://gscsports.org/stats.aspx?path=msoc&year=2018&conf=true), which appeared to show AUM first joining in 2019: those pages omit schools still inside the D2 provisional period, which compete on a full conference schedule without counting toward conference statistics. Nine distinct GSC member sites independently published AUM as a conference opponent in each of 2017 and 2018 — a full round-robin slate in both seasons."
         }
       ]
     },
@@ -362,9 +362,9 @@
       "men": [
         {
           "conference": "GSC",
-          "from_season": 2018,
+          "from_season": 2016,
           "to_season": 2026,
-          "source": "Gulf South Conference, 2018 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2018&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both. Absent from the 2016-2017 records; first listed 2018. Absent from the 2020 conference statistics: the GSC postponed fall 2020 soccer to spring 2021 (https://goargos.com/news/2020/8/12/general-gsc-statement-on-the-fall-2020-season.aspx). Non-participation, not a membership lapse, so the window stays continuous."
+          "source": "Gulf South Conference, \"Gulf South Conference Adds Spring Hill College for 2027-28 Season\", https://gscsports.org/news/2026/3/24/gsc-adds-shc-2027-28.aspx (accessed 2026-08-20): \"The Badgers have competed as a GSC affiliate member in men's and women's soccer and women's golf since the 2014-15 academic year.\" Affiliate membership predates this document's 2016 floor, so the window opens at 2016; full membership begins 2027-28, past this document's ceiling. This corrects an earlier reading of the conference statistics pages (https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true), which list only full members and so appeared to show Spring Hill first joining in 2018. Seven member schools' 2016 schedule pages independently flag their Spring Hill fixtures as conference games, while correctly leaving Montevallo, AUM and Trevecca unflagged in the same season. Absent from the 2020 conference statistics: the GSC postponed fall 2020 soccer to spring 2021 (https://goargos.com/news/2020/8/12/general-gsc-statement-on-the-fall-2020-season.aspx). Non-participation, not a membership lapse, so the window stays continuous."
         }
       ]
     },
