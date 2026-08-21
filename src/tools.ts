@@ -21,6 +21,7 @@ import {
 } from "./datahome.ts";
 import { resolveTargets, titleFromSlug } from "./membership.ts";
 import {
+  collectTimeoutMs,
   planForSeason,
   planSummary,
   TOUCHLINE_V1_SEASON,
@@ -255,7 +256,7 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
   const collectTool: ToolDefinition = {
     name: "touchline_collect",
     description:
-      "The front door: collect published college-soccer data for a conference or one programme into the project, and light up the Touchline board. Any season back to 2016 serves its schedule (results included), its roster, its player season statistics, and a box score for every played match from each site's published archive; the rare (site, season) refusal comes back as a named gap. Use when the user asks to get, retrieve, pull down or scrape a schedule, roster, past results, player stats or match statistics.",
+      "The front door: collect published college-soccer data for a conference or one programme into the project, and light up the Touchline board. Any season back to 2016 serves its schedule (results included), its roster, its player season statistics, and a box score for every played match from each site's published archive; the rare (site, season) refusal comes back as a named gap. Use when the user asks to get, retrieve, pull down or scrape a schedule, roster, past results, player stats or match statistics. One season per call, and an archive season is a long call — for a multi-season backfill prefer the touchline-collect workflow (workflow_run), which runs each season durably outside any client deadline.",
     inputSchema: z.object({
       target: z
         .string()
@@ -362,7 +363,7 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
       if (target.extrapolated) command.push("--membership-extrapolated");
       const run = await exec.runText("uv", command, {
         cwd: root,
-        timeoutMs: 300_000,
+        timeoutMs: collectTimeoutMs(target.slugs.length),
         acceptNonZeroExit: true,
         env: { TOUCHLINE_DATA_DIR: root },
       });
@@ -376,6 +377,15 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
             ? `Collection FAILED: ${run.error}`
             : `Collection FAILED (exit ${run.exitCode}): ${run.data.trim()}`,
         );
+        // A killed run is not a total loss: the collector caches every page
+        // it fetched, so the same collect re-run resumes where this one
+        // stopped instead of starting over. Say so — a caller who reads
+        // this as unrecoverable abandons the tool for no reason.
+        if (!run.ok) {
+          out.push(
+            "Pages fetched before the failure are cached in the data home — running the same collect again resumes from there.",
+          );
+        }
         emit(tctx, out.join("\n"), true);
         return;
       }
