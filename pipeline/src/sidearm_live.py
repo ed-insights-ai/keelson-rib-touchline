@@ -303,12 +303,27 @@ def assert_untrapped_schedule(
         )
 
 
-# A poll rank is published three ways and moves week to week, so leaving it in
+# A poll rank is published four ways and moves week to week, so leaving it in
 # the name mints a new identity every time it changes: the archive holds
 # no-4-csu-pueblo beside no-15-csu-pueblo, and three separate slugs for
 # Midwestern State. Two digits is the whole range a poll uses, which is what
 # stops the bare-number form from eating a name that starts with a numeral.
-_RANK_PREFIX = re.compile(r"^(?:#\s*\d{1,2}|no\.?\s*\d{1,2}|\d{1,2})\s+", re.IGNORECASE)
+#
+# "RV" is receiving-votes — a team just outside the poll. It carries no digits,
+# so the numeric forms never matched it and it minted rv-lee beside lee. The
+# "#" marker is published in front of RV as readily as in front of a number
+# ("#RV University of Southern Indiana"), so it is a separate optional part
+# rather than something welded to the digits.
+#
+# A school can also be ranked in two polls at once, published joined by a slash
+# ("RV/#11 Palm Beach Atlantic University"), so the prefix repeats rather than
+# matching a single token. The trailing whitespace requirement is what keeps
+# the bare "rv" alternative from biting a name that merely starts with those
+# letters.
+_RANK_TOKEN = r"(?:(?:#|no\.?)\s*)?(?:rv|\d{1,2})"
+_RANK_PREFIX = re.compile(
+    rf"^{_RANK_TOKEN}(?:\s*/\s*{_RANK_TOKEN})*\s+", re.IGNORECASE
+)
 
 
 def _clean_team_name(name: object) -> str:
