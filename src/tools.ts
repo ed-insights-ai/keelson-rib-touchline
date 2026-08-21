@@ -20,6 +20,7 @@ import {
   packageDir,
 } from "./datahome.ts";
 import { collectFleetSize, resolveTargets, titleFromSlug } from "./membership.ts";
+import { isPlayed } from "./model.ts";
 import {
   collectTimeoutMs,
   planForSeason,
@@ -27,7 +28,6 @@ import {
   TOUCHLINE_V1_SEASON,
   unsupportedSeasonMessage,
 } from "./season.ts";
-import { isPlayed } from "./model.ts";
 import { findProject, getSelection, setScope, setSeason, setTeam } from "./state.ts";
 
 // ─────────────────────────────────────────────────────────────────────────────
