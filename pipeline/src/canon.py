@@ -186,12 +186,13 @@ PROGRAMMES = {
     },
 }
 
-# Mirrors the live collector's rank handling (sidearm_live._RANK_PREFIX).
-# A poll rank is published as "#4", "No. 4", bare "4", or "RV"
-# (receiving votes, which carries no digits at all, and takes a "#" as
-# readily as a number does — "#RV ..."), and a school ranked
-# in two polls at once publishes both joined by a slash — "RV/#11 Palm
-# Beach Atlantic". Leaving any of them in mints one identity per week.
+# Mirrors the live collector's rank handling, and must stay in step with it:
+# see sidearm_live._RANK_PREFIX for the enumeration of published forms this
+# grammar is built from. In short, a poll or tournament rank arrives as "#9",
+# "No. 23", a bare "9", "RV" for receiving-votes, a bracketed seed "(3)" or
+# "[7]", a seed spelled as a word "3-seed", any of these slash-joined, and any
+# of these stacked in front of another. Leaving one in mints an identity that
+# drifts with the poll.
 _RANK_VALUE = r"(?:rv|\d{1,2})"
 _RANK_TOKEN = (
     r"(?:"
