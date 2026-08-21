@@ -479,6 +479,63 @@ def test_configured_members_still_fold_across_published_spellings() -> None:
     assert opponent_slug("Northeastern St.", aliases) == "northeastern-state"
 
 
+def test_configured_aliases_fold_formal_names_onto_the_school() -> None:
+    """A formal published name can share no token with the configured one.
+
+    "AUM" and "Auburn University at Montgomery" are the same school, but the
+    token-matching fallback cannot connect them: no token of "AUM" appears in
+    the formal string. Without a stated alias the fixture fragments across two
+    slugs, and a conference opponent stops being recognized as one.
+    """
+    schools = [
+        SchoolConfig(
+            name="AUM",
+            abbreviation="AUM",
+            conference="GSC",
+            prefix="aum",
+            base_url="https://example.test/sports/mens-soccer",
+            gender="men",
+            aliases=["Auburn University at Montgomery", "Auburn University Montgomery"],
+        ),
+        SchoolConfig(
+            name="Trevecca",
+            abbreviation="TNU",
+            conference="GSC",
+            prefix="tnu",
+            base_url="https://example.test/sports/mens-soccer",
+            gender="men",
+            aliases=["Trevecca Nazarene"],
+        ),
+    ]
+    aliases = identity_aliases(schools, "men")
+    for published in (
+        "Auburn University at Montgomery",
+        "Auburn University Montgomery (Ala.)",
+        "AUM",
+    ):
+        assert opponent_slug(published, aliases) == "aum"
+    for published in ("Trevecca Nazarene University", "Trevecca"):
+        assert opponent_slug(published, aliases) == "trevecca"
+
+
+def test_aliases_stay_scoped_to_their_own_gender() -> None:
+    """An alias is a per-stanza fact, so it must not leak across genders."""
+    womens_only = [
+        SchoolConfig(
+            name="Montevallo",
+            abbreviation="UM",
+            conference="GSC",
+            prefix="um",
+            base_url="https://example.test/sports/womens-soccer",
+            gender="women",
+            aliases=["University of Montevallo"],
+        )
+    ]
+    mens = identity_aliases(womens_only, "men")
+    assert mens == {}
+    assert opponent_slug("University of Montevallo", mens) == "of-montevallo"
+
+
 def test_unconfigured_opponents_fold_on_the_normalized_key() -> None:
     aliases = identity_aliases(_gac(), "men")
     assert (
