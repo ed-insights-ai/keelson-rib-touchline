@@ -19,8 +19,9 @@ import {
   loadRosters,
   packageDir,
 } from "./datahome.ts";
-import { resolveTargets, titleFromSlug } from "./membership.ts";
+import { collectFleetSize, resolveTargets, titleFromSlug } from "./membership.ts";
 import {
+  collectTimeoutMs,
   planForSeason,
   planSummary,
   TOUCHLINE_V1_SEASON,
@@ -255,7 +256,7 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
   const collectTool: ToolDefinition = {
     name: "touchline_collect",
     description:
-      "The front door: collect published college-soccer data for a conference or one programme into the project, and light up the Touchline board. Any season back to 2016 serves its schedule (results included), its roster, its player season statistics, and a box score for every played match from each site's published archive; the rare (site, season) refusal comes back as a named gap. Use when the user asks to get, retrieve, pull down or scrape a schedule, roster, past results, player stats or match statistics.",
+      "The front door: collect published college-soccer data for a conference or one programme into the project, and light up the Touchline board. Any season back to 2016 serves its schedule (results included), its roster, its player season statistics, and a box score for every played match from each site's published archive; the rare (site, season) refusal comes back as a named gap. Use when the user asks to get, retrieve, pull down or scrape a schedule, roster, past results, player stats or match statistics. One season per call, and an archive season is a long call — for a multi-season backfill prefer the touchline-collect workflow (workflow_run), which runs each season durably outside any client deadline.",
     inputSchema: z.object({
       target: z
         .string()
@@ -360,9 +361,12 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
       ];
       command.push("--layers", plan.attempted.join(","));
       if (target.extrapolated) command.push("--membership-extrapolated");
+      // Budgeted for the fleet the run can BECOME, not the fleet requested:
+      // a one-programme ask against a home already holding this conference-
+      // season widens to refresh the whole unit.
       const run = await exec.runText("uv", command, {
         cwd: root,
-        timeoutMs: 300_000,
+        timeoutMs: collectTimeoutMs(await collectFleetSize(target, args.gender, season)),
         acceptNonZeroExit: true,
         env: { TOUCHLINE_DATA_DIR: root },
       });

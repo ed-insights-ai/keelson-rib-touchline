@@ -138,3 +138,31 @@ export function planSummary(plan: CollectionPlan): string {
     : `Nothing can be collected for ${plan.season}.`;
   return no.length ? `${head} ${no.map((p) => p.reason).join(" ")}` : head;
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// The collect subprocess budget. A timeout here exists to catch a hung
+// process, not to police a slow fleet — so it scales with the work rather
+// than sitting at a flat number. A season's collect fetches three pages per
+// programme plus a box score for every played match, politely rate-limited,
+// which makes runtime proportional to fleet size. Every run refetches — the
+// raw_html archive exists for offline re-parsing, not as a fetch cache — so
+// the spread is site latency and match count: measured whole-conference
+// archive seasons ran 50–220s, and one nine-programme season ran past 300s,
+// where the previous flat five-minute budget killed the subprocess with the
+// shard unwritten (the shard write lands at the end). A re-run after such a
+// kill starts its network work over, which is exactly why the budget must
+// fit the first attempt. So a single programme keeps that proven budget,
+// every further programme adds a minute, and the ceiling sits far above any
+// fleet the membership record can produce. For scale: the touchline-collect
+// workflow gives the identical CLI a 900s node budget.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const COLLECT_BASE_MS = 240_000;
+const COLLECT_PER_PROGRAMME_MS = 60_000;
+const COLLECT_CEILING_MS = 1_800_000;
+
+/** How long the collect subprocess may run for a fleet of this size. */
+export function collectTimeoutMs(programmeCount: number): number {
+  const fleet = Math.max(1, programmeCount);
+  return Math.min(COLLECT_BASE_MS + fleet * COLLECT_PER_PROGRAMME_MS, COLLECT_CEILING_MS);
+}

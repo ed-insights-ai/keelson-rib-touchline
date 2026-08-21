@@ -233,6 +233,24 @@ export async function resolveTargets(
   };
 }
 
+/** The fleet a collect run can grow to, which is what its budget must fit.
+ *
+ *  collect-board only ever widens a season file's scope: a one-programme ask
+ *  against a data home that already holds this conference-season absorbs the
+ *  existing programmes rather than discarding their data. So a programme
+ *  request may refresh its whole conference, and budgeting for the requested
+ *  fleet alone re-creates the killed-mid-run failure this sizing exists to
+ *  prevent. The conference's membership is the widening's upper bound. */
+export async function collectFleetSize(
+  target: Exclude<Target, { kind: "unknown" }>,
+  gender: string,
+  season: number,
+): Promise<number> {
+  if (target.kind !== "programme") return target.slugs.length;
+  const conference = await resolveConference(target.conference, gender, season);
+  return Math.max(target.slugs.length, conference.slugs.length);
+}
+
 /** Turn a slug into a display name: `oklahoma-baptist` → `Oklahoma Baptist`.
  *  Collection overwrites this with the programme's own published name; it is
  *  only the honest placeholder for a programme we have not fetched yet. */
