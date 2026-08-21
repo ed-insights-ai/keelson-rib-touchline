@@ -1,9 +1,5 @@
 import { afterEach, describe, expect, test } from "bun:test";
-import {
-  _resetMembershipCache,
-  _setMembershipCache,
-  collectFleetSize,
-} from "../src/membership";
+import { _resetMembershipCache, _setMembershipCache, collectFleetSize } from "../src/membership";
 import { collectTimeoutMs } from "../src/season";
 
 // The flat five-minute exec budget killed the first cold nine-programme
