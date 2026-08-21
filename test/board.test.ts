@@ -1835,3 +1835,135 @@ describe("roster tenure", () => {
     expect(html).not.toContain("2nd season");
   });
 });
+
+describe("the surface states what the sites publish", () => {
+  // Measured 2026-08-21: preseason exhibitions arrive as finals without a
+  // score, and past-dated games the sites still list as upcoming carry no
+  // result at all. The board must say each of those precisely — not imply
+  // an upcoming game, an uncollected result, or an invented score.
+  const file: FixturesFile = {
+    ...base,
+    fixtures: [
+      {
+        id: "sidearm:rogers-state:7655",
+        date: "2026-08-13",
+        home: "rogers-state",
+        away: "oklahoma-wesleyan",
+        status: "final",
+        match_type: "exhibition",
+        conference_game: false,
+        venue: "Soldier Field",
+      },
+      {
+        id: "sidearm:rogers-state:7656",
+        date: "2026-08-18",
+        home: "rogers-state",
+        away: "harding",
+        status: "scheduled",
+        conference_game: true,
+      },
+    ],
+  };
+
+  test("an exhibition final's drawer names both truths: exhibition, and no published score", () => {
+    const html = composeBoard({
+      projectName: "p",
+      fixtures: file,
+      fixture: "sidearm:rogers-state:7655",
+      today: "2026-08-21",
+    });
+    const drawer = html.split('class="drawer"')[1] ?? "";
+    expect(drawer).toContain("Exhibition");
+    expect(drawer).toContain("Final without a published score");
+  });
+
+  test("the exhibition marking rides the matchday card byline", () => {
+    const html = composeBoard({ projectName: "p", fixtures: file, today: "2026-08-21" });
+    expect(html).toContain("Exhibition · Final");
+  });
+
+  test("a scoreless final with a collected box score still carries the disclosure", () => {
+    // The header shows dashes (schedule score) above a period table with real
+    // numbers (box score); the disclosure is what reconciles them.
+    const withDetail: MatchesFile = {
+      schema: "touchline.matches/1",
+      season: 2026,
+      gender: "men",
+      collected_at: "2026-08-21T13:00:00Z",
+      matches: {
+        "sidearm:rogers-state:7655": {
+          source_url: "https://example.test/boxscore/7655",
+          home_index: 0,
+          teams: [
+            { name: "Rogers State", periods: [1, 0], score: 1 },
+            { name: "Oklahoma Wesleyan", periods: [0, 0], score: 0 },
+          ],
+        },
+      },
+    };
+    const html = composeBoard({
+      projectName: "p",
+      fixtures: file,
+      matches: withDetail,
+      fixture: "sidearm:rogers-state:7655",
+      today: "2026-08-21",
+    });
+    const drawer = html.split('class="drawer"')[1] ?? "";
+    expect(drawer).toContain("Final without a published score");
+    expect(drawer).toContain("Score by period");
+  });
+
+  test("a cancelled exhibition keeps its marking on the card byline", () => {
+    const cancelled: FixturesFile = {
+      ...base,
+      fixtures: [
+        {
+          id: "sidearm:rogers-state:7656",
+          date: "2026-08-18",
+          home: "rogers-state",
+          away: "harding",
+          status: "cancelled",
+          match_type: "exhibition",
+          conference_game: false,
+        },
+      ],
+    };
+    const html = composeBoard({ projectName: "p", fixtures: cancelled, today: "2026-08-21" });
+    expect(html).toContain("Exhibition · Cancelled");
+  });
+
+  test("the team-lens ledger marks the exhibition in its status cell", () => {
+    const html = composeBoard({
+      projectName: "p",
+      fixtures: file,
+      team: "rogers-state",
+      today: "2026-08-21",
+    });
+    expect(html).toContain("Exh · Final");
+  });
+
+  test("the matrix cell's accessible label names the exhibition, exactly", () => {
+    // The aria-label is the only exhibition cue a screen reader gets from
+    // the cell, so it is pinned verbatim, not by a floating substring.
+    const html = composeBoard({ projectName: "p", fixtures: file, today: "2026-08-21" });
+    expect(html).toContain(
+      'aria-label="Rogers State hosts Oklahoma Wesleyan on THU AUG 13 (exhibition)"',
+    );
+  });
+
+  test("a past-dated fixture counts as unpublished, never as played-and-missed", () => {
+    // Two separate counters render the late set — the conference matrix
+    // foot and the team rail foot — and both must make the honest claim.
+    const conference = composeBoard({ projectName: "p", fixtures: file, today: "2026-08-21" });
+    expect(conference).toContain("1 past date, no result published");
+    expect(conference).not.toContain("played, not collected");
+    const team = composeBoard({
+      projectName: "p",
+      fixtures: file,
+      team: "rogers-state",
+      today: "2026-08-21",
+    });
+    expect(team).toContain("1 past date, no result published");
+    expect(team).not.toContain("played, not collected");
+  });
+});

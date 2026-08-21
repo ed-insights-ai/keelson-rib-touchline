@@ -850,8 +850,10 @@ function displayName(slug: string, names: Map<string, string>): string {
  *
  * One tick per fixture, laid out by week across the whole season, so the shape
  * of the campaign is visible at a glance: dense weeks, bye weeks, and how far
- * the results have filled from the left. It doubles as a collection check — a
- * hollow tick BEHIND today is a match that has been played and never collected.
+ * the results have filled from the left. It doubles as an honesty check — a
+ * hollow tick BEHIND today is a match past its date whose site still
+ * publishes no result: the collector reads completion marks now, so an
+ * uncollected result and an unpublished one are no longer conflated.
  */
 /** A fixture's outcome from one team's perspective, once it is played. */
 function outcomeFor(f: Fixture, team: string): "w" | "l" | "d" | undefined {
@@ -936,7 +938,7 @@ function rail(fixtures: readonly Fixture[], today: string, team?: string): strin
     played === 0 && toKickoff > 0
       ? `First kickoff in <b>${toKickoff}</b> day${toKickoff === 1 ? "" : "s"}`
       : late.length
-        ? `<span class="late-n">${late.length} played, not collected</span>`
+        ? `<span class="late-n">${late.length} past date, no result published</span>`
         : `${total} week${total === 1 ? "" : "s"}`;
 
   return `
@@ -1084,16 +1086,26 @@ function ledgerRow(
     )}"></i>${esc(displayName(f.away, names))}</span>`;
   }
 
+  // The compact row marks an exhibition in its status cell — "Exh" — the
+  // same fact the card and drawer spell out in full.
+  const exh = f.match_type === "exhibition" ? "Exh" : undefined;
   let right: string;
   if (off) {
-    right = `<span class="st">${f.status === "postponed" ? "Postponed" : "Cancelled"}</span>`;
+    right = `<span class="st">${[exh, f.status === "postponed" ? "Postponed" : "Cancelled"]
+      .filter(Boolean)
+      .join(" · ")}</span>`;
   } else if (played) {
     const a = f.home_score ?? "–";
     const b = f.away_score ?? "–";
     const score = perspective ? (f.home === perspective ? `${a}–${b}` : `${b}–${a}`) : `${a}–${b}`;
-    right = `<span class="sc">${esc(score)}</span><span class="st">${f.status === "live" ? esc(f.clock ?? "Live") : "Final"}</span>`;
+    right = `<span class="sc">${esc(score)}</span><span class="st">${[
+      exh,
+      f.status === "live" ? esc(f.clock ?? "Live") : "Final",
+    ]
+      .filter(Boolean)
+      .join(" · ")}</span>`;
   } else {
-    right = `<span class="tm">${f.time ? esc(fmtTime(f.time)) : "TBA"}</span>`;
+    right = `${exh ? `<span class="st">${exh}</span>` : ""}<span class="tm">${f.time ? esc(fmtTime(f.time)) : "TBA"}</span>`;
   }
 
   const payload = esc(JSON.stringify({ fixture: f.id }));
@@ -1120,18 +1132,21 @@ function cardBits(
   const away = displayName(f.away, names);
   const off = f.status === "postponed" || f.status === "cancelled";
   const played = isPlayed(f) || f.status === "live";
+  // The site's own marking that this game does not count. It explains a
+  // missing score and a record that stays 0-0, so it leads the byline.
+  const exh = f.match_type === "exhibition" ? "Exhibition" : undefined;
   let tt: string;
   let nt: string;
   if (played) {
     tt = `${home} ${f.home_score ?? "–"}–${f.away_score ?? "–"} ${away}`;
-    nt = [f.status === "live" ? (f.clock ?? "Live") : "Final", f.venue].filter(Boolean).join(" · ");
+    nt = [exh, f.status === "live" ? (f.clock ?? "Live") : "Final", f.venue]
+      .filter(Boolean)
+      .join(" · ");
   } else {
     tt = `${away} at ${home}`;
     nt = off
-      ? f.status === "postponed"
-        ? "Postponed"
-        : "Cancelled"
-      : [WDAYS[wd], f.time ? fmtTime(f.time) : undefined, f.venue].filter(Boolean).join(" · ");
+      ? [exh, f.status === "postponed" ? "Postponed" : "Cancelled"].filter(Boolean).join(" · ")
+      : [exh, WDAYS[wd], f.time ? fmtTime(f.time) : undefined, f.venue].filter(Boolean).join(" · ");
   }
   return { mo: MONS[m - 1] ?? "", dy: String(d), tt, nt };
 }
@@ -1227,6 +1242,8 @@ function matrix(
             .filter(Boolean)
             .join(" ");
           const label = `${p.name} ${isHome ? "hosts" : "visits"} ${displayName(opp, names)} on ${fmtDate(f.date)}${
+            f.match_type === "exhibition" ? " (exhibition)" : ""
+          }${
             sc
               ? `, ${isHome ? f.home_score : f.away_score}–${isHome ? f.away_score : f.home_score}`
               : ""
@@ -1282,7 +1299,7 @@ function matrix(
     playedN === 0 && toKickoff > 0
       ? `<span>First kickoff in <b>${toKickoff}</b> day${toKickoff === 1 ? "" : "s"}</span>`
       : late.length
-        ? `<span class="late-n">${late.length} played, not collected</span>`
+        ? `<span class="late-n">${late.length} past date, no result published</span>`
         : "";
 
   // No legend: the home tint and each cell's spoken label carry venue, and the
@@ -2085,6 +2102,7 @@ function matchDrawer(
     </div>
     <div class="dr-bio">${[
       `${fmtDate(f.date)} ${f.date.slice(0, 4)}`,
+      f.match_type === "exhibition" ? "Exhibition" : undefined,
       played ? "Final" : f.time ? `Kickoff ${fmtTime(f.time)}` : "Scheduled",
       detail?.stadium ?? f.venue,
       typeof detail?.attendance === "number" ? `${detail.attendance} attended` : undefined,
@@ -2094,6 +2112,15 @@ function matchDrawer(
       .join(" · ")}</div>`;
 
   const sections: string[] = [];
+
+  // The schedule page's silence is its own fact, independent of whether a
+  // box score was collected: with one, the header's dashes sit above real
+  // period scores, and this line is what reconciles them.
+  if (played && typeof f.home_score !== "number") {
+    sections.push(
+      `<p class="dr-note">Final without a published score — the site's schedule marked the game finished but never entered a result.</p>`,
+    );
+  }
 
   if (detail && sides.length === 2) {
     const periodCount = Math.max(...sides.map((s) => s.team.periods.length));
