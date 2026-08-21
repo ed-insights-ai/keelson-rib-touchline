@@ -144,11 +144,14 @@ export function planSummary(plan: CollectionPlan): string {
 // process, not to police a slow fleet — so it scales with the work rather
 // than sitting at a flat number. A season's collect fetches three pages per
 // programme plus a box score for every played match, politely rate-limited,
-// which makes runtime proportional to fleet size: measured fresh seasons ran
-// 120–220s against a warm page cache, and the first cold nine-programme
-// archive season ran past 300s — where the previous flat five-minute budget
-// killed the subprocess with the shard unwritten (the shard write lands at
-// the end). So a single programme keeps that proven five-minute budget,
+// which makes runtime proportional to fleet size. Every run refetches — the
+// raw_html archive exists for offline re-parsing, not as a fetch cache — so
+// the spread is site latency and match count: measured whole-conference
+// archive seasons ran 50–220s, and one nine-programme season ran past 300s,
+// where the previous flat five-minute budget killed the subprocess with the
+// shard unwritten (the shard write lands at the end). A re-run after such a
+// kill starts its network work over, which is exactly why the budget must
+// fit the first attempt. So a single programme keeps that proven budget,
 // every further programme adds a minute, and the ceiling sits far above any
 // fleet the membership record can produce. For scale: the touchline-collect
 // workflow gives the identical CLI a 900s node budget.

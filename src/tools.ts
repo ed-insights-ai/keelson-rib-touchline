@@ -19,7 +19,7 @@ import {
   loadRosters,
   packageDir,
 } from "./datahome.ts";
-import { resolveTargets, titleFromSlug } from "./membership.ts";
+import { collectFleetSize, resolveTargets, titleFromSlug } from "./membership.ts";
 import {
   collectTimeoutMs,
   planForSeason,
@@ -361,9 +361,12 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
       ];
       command.push("--layers", plan.attempted.join(","));
       if (target.extrapolated) command.push("--membership-extrapolated");
+      // Budgeted for the fleet the run can BECOME, not the fleet requested:
+      // a one-programme ask against a home already holding this conference-
+      // season widens to refresh the whole unit.
       const run = await exec.runText("uv", command, {
         cwd: root,
-        timeoutMs: collectTimeoutMs(target.slugs.length),
+        timeoutMs: collectTimeoutMs(await collectFleetSize(target, args.gender, season)),
         acceptNonZeroExit: true,
         env: { TOUCHLINE_DATA_DIR: root },
       });
@@ -377,15 +380,6 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
             ? `Collection FAILED: ${run.error}`
             : `Collection FAILED (exit ${run.exitCode}): ${run.data.trim()}`,
         );
-        // A killed run is not a total loss: the collector caches every page
-        // it fetched, so the same collect re-run resumes where this one
-        // stopped instead of starting over. Say so — a caller who reads
-        // this as unrecoverable abandons the tool for no reason.
-        if (!run.ok) {
-          out.push(
-            "Pages fetched before the failure are cached in the data home — running the same collect again resumes from there.",
-          );
-        }
         emit(tctx, out.join("\n"), true);
         return;
       }
