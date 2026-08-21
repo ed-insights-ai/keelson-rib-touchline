@@ -1835,3 +1835,56 @@ describe("roster tenure", () => {
     expect(html).not.toContain("2nd season");
   });
 });
+
+describe("the surface states what the sites publish", () => {
+  // Measured 2026-08-21: preseason exhibitions arrive as finals without a
+  // score, and past-dated games the sites still list as upcoming carry no
+  // result at all. The board must say each of those precisely — not imply
+  // an upcoming game, an uncollected result, or an invented score.
+  const file: FixturesFile = {
+    ...base,
+    fixtures: [
+      {
+        id: "sidearm:rogers-state:7655",
+        date: "2026-08-13",
+        home: "rogers-state",
+        away: "oklahoma-wesleyan",
+        status: "final",
+        match_type: "exhibition",
+        conference_game: false,
+        venue: "Soldier Field",
+      },
+      {
+        id: "sidearm:rogers-state:7656",
+        date: "2026-08-18",
+        home: "rogers-state",
+        away: "harding",
+        status: "scheduled",
+        conference_game: true,
+      },
+    ],
+  };
+
+  test("an exhibition final's drawer names both truths: exhibition, and no published score", () => {
+    const html = composeBoard({
+      projectName: "p",
+      fixtures: file,
+      fixture: "sidearm:rogers-state:7655",
+      today: "2026-08-21",
+    });
+    const drawer = html.split('class="drawer"')[1] ?? "";
+    expect(drawer).toContain("Exhibition");
+    expect(drawer).toContain("Final without a published score");
+  });
+
+  test("the exhibition marking rides the matchday card byline", () => {
+    const html = composeBoard({ projectName: "p", fixtures: file, today: "2026-08-21" });
+    expect(html).toContain("Exhibition · Final");
+  });
+
+  test("a past-dated fixture counts as unpublished, never as played-and-missed", () => {
+    const html = composeBoard({ projectName: "p", fixtures: file, today: "2026-08-21" });
+    expect(html).toContain("1 past date, no result published");
+    expect(html).not.toContain("played, not collected");
+  });
+});
