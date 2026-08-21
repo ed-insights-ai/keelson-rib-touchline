@@ -580,6 +580,46 @@ def test_a_poll_rank_is_not_part_of_an_identity() -> None:
     assert opponent_slug("No. 7 Fort Hays State", aliases) == "fort-hays-state"
 
 
+def test_receiving_votes_is_a_rank_not_an_identity() -> None:
+    """"RV" is a rank with no digits in it, so the numeric forms never caught it.
+
+    Measured in the archive: rv-lee beside lee, rv-rollins, rv-seattle-pacific
+    and five more — eight rows across eight shards, in both the GSC and the
+    LSC. A team drifting in and out of the poll minted a second slug for itself
+    exactly as a moving number did.
+    """
+    aliases = identity_aliases(_gac(), "men")
+    assert (
+        opponent_slug("RV Rollins", aliases)
+        == opponent_slug("rv Rollins", aliases)
+        == opponent_slug("Rollins", aliases)
+        == "rollins"
+    )
+    # A ranked configured member must still fold onto its canonical slug.
+    assert opponent_slug("RV Fort Hays State", aliases) == "fort-hays-state"
+
+
+def test_two_polls_publish_one_rank_joined_by_a_slash() -> None:
+    """A school ranked in two polls carries both, e.g. "RV/#11 Palm Beach".
+
+    Stripping a single token leaves the other behind, so the prefix repeats.
+    """
+    aliases = identity_aliases(_gac(), "men")
+    for published in (
+        "RV/#11 Palm Beach Atlantic University",
+        "#11/RV Palm Beach Atlantic",
+        "Palm Beach Atlantic",
+    ):
+        assert opponent_slug(published, aliases) == "palm-beach-atlantic"
+
+
+def test_a_name_merely_starting_with_those_letters_is_untouched() -> None:
+    """The trailing-whitespace requirement is what makes the bare "rv" safe."""
+    aliases = identity_aliases(_gac(), "men")
+    assert opponent_slug("Rverside", aliases) == "rverside"
+    assert opponent_slug("RVing Club", aliases) == "rving-club"
+
+
 def test_st_is_saint_before_a_word_and_state_at_the_end() -> None:
     """One abbreviation, two different words, told apart by position.
 

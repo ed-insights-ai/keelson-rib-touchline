@@ -42,6 +42,23 @@ def test_normalize_observed_source_variants(raw_value, expected):
     assert normalize(raw_value) == expected
 
 
+def test_normalize_strips_every_published_rank_form():
+    """Mirrors the live collector: "#4", "No. 4", bare "4", "RV", and slash pairs.
+
+    The old pattern matched only "#4", so "No. 7 Harding" and "RV Lee" each
+    minted an identity that drifted with the poll.
+    """
+    for published in ("#4 Harding", "No. 4 Harding", "no 4 Harding", "4 Harding",
+                      "RV Harding", "rv Harding", "RV/#11 Harding", "#11/RV Harding"):
+        assert normalize(published) == normalize("Harding") == "harding"
+
+
+def test_normalize_leaves_a_name_that_merely_starts_with_rv():
+    """The trailing-whitespace requirement is what makes a bare "rv" safe."""
+    assert normalize("Rverside") == "rverside"
+    assert normalize("RVing Club") == "rving club"
+
+
 def test_normalize_preserves_distinguishing_parenthetical():
     assert normalize("Southwestern") != normalize("Southwestern (KS)")
     assert normalize("Southwestern (KS)") == "southwestern (ks)"

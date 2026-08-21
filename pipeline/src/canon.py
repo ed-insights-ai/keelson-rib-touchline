@@ -186,7 +186,15 @@ PROGRAMMES = {
     },
 }
 
-_RANK_PREFIX = re.compile(r"^#\d+\s+")
+# Mirrors the live collector's rank handling (sidearm_live._RANK_PREFIX).
+# A poll rank is published as "#4", "No. 4", bare "4", or "RV"
+# (receiving votes, which carries no digits at all), and a school ranked
+# in two polls at once publishes both joined by a slash — "RV/#11 Palm
+# Beach Atlantic". Leaving any of them in mints one identity per week.
+_RANK_TOKEN = r"(?:#\s*\d{1,2}|no\.?\s*\d{1,2}|rv|\d{1,2})"
+_RANK_PREFIX = re.compile(
+    rf"^{_RANK_TOKEN}(?:\s*/\s*{_RANK_TOKEN})*\s+", re.IGNORECASE
+)
 _WHITESPACE = re.compile(r"\s+")
 _TRAILING_SOURCE_CODE = re.compile(r"\s+(?:NU|OK|OKLA\.)$")
 _TRAILING_UNIVERSITY = re.compile(r"\s+(?:Un|Univ|University)$", re.IGNORECASE)
