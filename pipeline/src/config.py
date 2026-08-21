@@ -24,6 +24,12 @@ class SchoolConfig:
     data_status: str = "unverified"
     notes: str = ""
     mascot: str = ""
+    # Published name variants opponents use for this school. The live
+    # collector resolves an opponent string against name/abbreviation and
+    # falls back to token matching; a formal name ("Auburn University at
+    # Montgomery") shares no token with a short one ("AUM") and so needs
+    # to be stated. Scoped per stanza, which keeps the map gender-correct.
+    aliases: list[str] = field(default_factory=list)
     # Namespaces the legacy game_id space (ordinal * 1_000_000 + year * 100 +
     # game_num), so it must be globally unique among the schools that have one.
     # Only the StatCrew lineage builds game_ids; the live collector never reads
@@ -84,6 +90,7 @@ def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
             data_status=entry.get("data_status", "unverified"),
             notes=entry.get("notes", ""),
             mascot=entry.get("mascot", ""),
+            aliases=entry.get("aliases", []),
             ordinal=entry.get("ordinal", 0),
             gender=entry.get("gender", "men"),
             scraper=entry.get("scraper", "statcrew"),
