@@ -1942,14 +1942,28 @@ describe("the surface states what the sites publish", () => {
     expect(html).toContain("Exh · Final");
   });
 
-  test("the matrix cell's accessible label names the exhibition", () => {
+  test("the matrix cell's accessible label names the exhibition, exactly", () => {
+    // The aria-label is the only exhibition cue a screen reader gets from
+    // the cell, so it is pinned verbatim, not by a floating substring.
     const html = composeBoard({ projectName: "p", fixtures: file, today: "2026-08-21" });
-    expect(html).toContain("(exhibition)");
+    expect(html).toContain(
+      'aria-label="Rogers State hosts Oklahoma Wesleyan on THU AUG 13 (exhibition)"',
+    );
   });
 
   test("a past-dated fixture counts as unpublished, never as played-and-missed", () => {
-    const html = composeBoard({ projectName: "p", fixtures: file, today: "2026-08-21" });
-    expect(html).toContain("1 past date, no result published");
-    expect(html).not.toContain("played, not collected");
+    // Two separate counters render the late set — the conference matrix
+    // foot and the team rail foot — and both must make the honest claim.
+    const conference = composeBoard({ projectName: "p", fixtures: file, today: "2026-08-21" });
+    expect(conference).toContain("1 past date, no result published");
+    expect(conference).not.toContain("played, not collected");
+    const team = composeBoard({
+      projectName: "p",
+      fixtures: file,
+      team: "rogers-state",
+      today: "2026-08-21",
+    });
+    expect(team).toContain("1 past date, no result published");
+    expect(team).not.toContain("played, not collected");
   });
 });
