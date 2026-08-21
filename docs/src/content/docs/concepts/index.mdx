@@ -1,0 +1,88 @@
+---
+title: Concepts
+description: "The theory behind Touchline: five layers, an archive-first store, canonical identity, honest absence, and a language model held behind gates."
+sidebar:
+  label: Overview
+  order: 0
+---
+
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+This tier explains why the rib is built the way it is. It assumes you know the
+[Keelson](https://danielscholl.github.io/keelson/) harness and spends its words
+on what Touchline adds. Every page anchors its claims to a file and a symbol in
+the shipped code, and every page ends by naming the lab that makes it physical.
+
+Read in order and the tier is a course: how pages are collected under proof,
+parsed against hostile templates, reconciled into canonical identities, computed
+into one deterministic digest, and interpreted by a model that is never allowed
+to invent a number. Four pages carry the deepest transferable ideas and are
+marked as the flagships of the spine: identity, absence, the determinism
+boundary, and evidence.
+
+## The spine
+
+<CardGrid>
+  <LinkCard
+    title="The system in one view"
+    href="five-layers/"
+    description="Five layers, one generative, a gate after every generative step. The map the rest of the tier fills in."
+  />
+  <LinkCard
+    title="The archive is the system of record"
+    href="archive-first/"
+    description="Raw pages first, every other store derived, the whole tree rebuildable offline."
+  />
+  <LinkCard
+    title="Proof before parse"
+    href="proof-before-parse/"
+    description="A fetched page must prove what it is before a single value is read."
+  />
+  <LinkCard
+    title="Reading hostile HTML"
+    href="reading-hostile-html/"
+    description="Parsing theory from two site generations: signatures over positions, captions over ids, fallback in layers."
+  />
+  <LinkCard
+    title="Identity: resolving who is who"
+    href="identity/"
+    description="Flagship. Entity resolution end to end: normalization, aliases, adjudication, and the refusal to guess."
+  />
+  <LinkCard
+    title="Absence is data"
+    href="absence-is-data/"
+    description="Flagship. The kinds of empty, coverage cells, null semantics, and absence claims that must be licensed."
+  />
+  <LinkCard
+    title="The determinism boundary"
+    href="the-determinism-boundary/"
+    description="Flagship. Code computes every number, the model writes only words, and the seam is a versioned contract."
+  />
+  <LinkCard
+    title="Evidence, not recall"
+    href="evidence-not-recall/"
+    description="Flagship. Findings with receipts, adversarial verification, and grades that decide print rights."
+  />
+  <LinkCard
+    title="The model declares, the validator decides"
+    href="gates/"
+    description="Mechanical gates after every generative step, because a completion claim is a request to be checked."
+  />
+  <LinkCard
+    title="Season is a dimension"
+    href="season-and-membership/"
+    description="Membership as dated windows, season-year time, and conference as configuration."
+  />
+</CardGrid>
+
+## Related
+
+**Run it**
+
+- [Guides](../guides/): the same machinery as operator tasks.
+- [Reference](../reference/): the exact contracts these pages explain.
+
+**Understand it**
+
+- [The syllabus](../tutorials/syllabus/): how these pages interleave with the lab rail.
+- [Design](../design/): the decision records behind the spine.

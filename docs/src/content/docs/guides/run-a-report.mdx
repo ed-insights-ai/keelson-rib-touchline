@@ -1,0 +1,132 @@
+---
+title: Run a scouting report
+description: "Start the touchline-report workflow, read each gate honestly when it stops the run, and collect the narrative and PDF pair it delivers."
+sidebar:
+  order: 5
+---
+
+import { Image } from "astro:assets";
+import coverHarding from "../../../assets/cover-harding.png";
+
+The `touchline-report` workflow turns one collected season into the preseason
+scouting briefing: deterministic numbers, offseason research verified at its
+sources, and a print-first PDF. This page runs it as an operator. The
+definition is `workflows/touchline-report.yml`; every node and gate below is
+named there.
+
+## Before you start
+
+- A data home holding collected fixtures for the target season. The first node
+  refuses to run without `data/fixtures/{season}-{gender}-{conference}.json`;
+  if that file is missing, [run a collection](../run-a-collection/) first.
+- The run executes with the data home as its working directory; preflight
+  checks the `touchline-data.yaml` marker first.
+- Live web access: the research stage lives on the open web
+  (`webSearchMode: live` in the YAML).
+
+## Start the run
+
+```sh
+keelson workflow run touchline-report \
+  --inputs season={season} \
+  --inputs gender={gender} \
+  --inputs conference={conference} \
+  --inputs focus={focus}
+```
+
+`focus` is the programme the briefing is prepared for. In chat, the workflow's
+trigger phrases do the same job: "build the preseason report".
+
+## What runs, in order
+
+1. **preflight** checks the marker, the four inputs, and the collected
+   fixtures.
+2. **digest** rebuilds `data/scratch/digest-{season}-{gender}-{focus}.json`
+   fresh on every run. It is the only source of numbers downstream.
+3. The **research** loop researches one programme per iteration (focus first,
+   then alphabetical) in a fresh context each time, writing
+   `data/research/{season}-{gender}/research-{slug}.json`. An `until_bash`
+   probe ends the loop once every programme has a research file with a coach
+   object. A premature "ALL RESEARCHED" reply can also end it, which is why
+   the `validate-research` gate re-checks every file afterward.
+4. The **verify** loop re-fetches every finding's URL trying to refute it and
+   writes a `verified-{slug}.json` per programme. A timestamp check against
+   the just-rebuilt digest makes an earlier run's verification unusable.
+5. **merge-verified** and **normalize** are deterministic: a schema-checked
+   `jq` merge into `verified.json`, then the canonical rewrite by
+   `pipeline/scripts/normalize_research.py`.
+6. **narrative-core** and the **narrative-cards** loop write the prose as JSON
+   under the contracts in `prompts/scouting-questionnaire.md` and
+   `prompts/style-contract.md`; **assemble-narrative** merges the parts into
+   `data/reports/narrative-{season}-{gender}-{focus}.json`.
+7. **render** builds the briefing and prints it to PDF, and **summary**
+   reports what was verified, dropped, and left unswept, never softened.
+
+Research files are durable: re-runs top up only what is missing or
+incomplete. Player profiles under `data/players/` are reused too; their
+findings arrive already verified.
+
+## When a gate stops the run
+
+A gate is a bash node that prints a `REFUSED` or `ALARM` line and exits 1. The
+run stops there; nothing downstream ever sees unvalidated output. The `render`
+step is a build step rather than a validation gate, but its failure modes
+belong in the same table.
+
+| Gate | Failing looks like | Your move |
+|---|---|---|
+| `preflight` | A `REFUSED` line: not a data home, an invalid input, or no collected fixtures | Run from the data home; collect the season first. |
+| `validate-research` | `ALARM: research stage ended incomplete` with per-programme tags like `{slug}(no-file)` or `{slug}(no-coach)` | Re-run. Existing research files are kept; the loop finishes only what the tags name. |
+| `merge-verified`, `validate-verified` | `ALARM: missing or stale per-programme verification`, an invalid file, or a coaches-map undercount | Re-run. Verification redoes itself against the fresh digest; a failed coach is downgraded to "unknown", never dropped from the map. |
+| `assemble-narrative` | `ALARM: invalid opponent card` or a missing or stale narrative core | Re-run; the narrative stage rewrites against the rebuilt digest. |
+| `validate-narrative` | `ALARM: narrative out of contract` (finding and decision counts), word budgets over their `wc -w` limits, or machinery words like "digest" leaking into prose | Re-run so the narrative nodes rewrite. Do not hand-edit the JSON past the gate: the gate is the contract. |
+| `render` | Exit 3 with `PDF failed for` a page, or exit 0 with `no Chrome/Chromium found` and HTML only | Install Chrome or Chromium, or point `TOUCHLINE_CHROME` at one, and re-run. |
+
+## Collect the deliverable
+
+Everything lands in the data home under `data/reports/`:
+
+- `narrative-{season}-{gender}-{focus}.json`: the assembled narrative,
+  schema `touchline.report-narrative/4`.
+- `preseason-{season}-{gender}-{focus}.pdf` and its `-appendix.pdf` sibling:
+  the briefing and its technical appendix.
+
+The PDF is the deliverable. `pipeline/scripts/render_report.py` deletes the
+HTML intermediates once the PDFs exist; they survive only when Chrome is
+absent or printing fails. The digest stays in `data/scratch/` because it is
+regenerable; the research layer stays in `data/research/` because it is not.
+
+The run ends as a document, and the cover states the evidence rules before the
+first claim.
+
+<figure>
+  <Image src={coverHarding} alt="A delivered briefing cover: prepared for Harding men's soccer, GAC men's soccer 2026 preseason intelligence, a one-line headline, a named coverage gap, and a legend explaining the observed, unverified signal, and scouting judgment labels." />
+  <figcaption>Figure 1. A delivered briefing cover: the audience, a named coverage gap, and the evidence-label legend before any claim.</figcaption>
+</figure>
+
+## Models are pinned per node
+
+`workflows/touchline-report.yml` pins a literal model id on every generative
+node: a workflow-level pin the loops inherit (per-loop overrides are dropped),
+a heavier pin with `effort: xhigh` on `narrative-core`, and a light pin on
+`summary`. The ids are literal deliberately: model classes resolve to the
+provider default here, which silently selects the smallest tier. The
+selection rules belong to the harness; see the keelson
+[workflow nodes reference](https://danielscholl.github.io/keelson/docs/reference/workflow-nodes/).
+
+**What you just exercised:** [Gates](../../concepts/gates/),
+[The determinism boundary](../../concepts/the-determinism-boundary/), and
+[A briefing is a run, not a document](../../design/a-briefing-is-a-run/).
+
+## Related
+
+**Run it**
+
+- [Run a collection](../run-a-collection/): the collected season this workflow refuses to start without.
+- [Build a player profile](../build-a-player-profile/): pre-verified findings the research loop reuses.
+- [Gates and exit codes](../../reference/gates-and-exit-codes/): every gate, message, and exit code in one table.
+
+**Understand it**
+
+- [Evidence, not recall](../../concepts/evidence-not-recall/): why every finding must survive an adversarial re-fetch before it can print.
+- [Capstone: scout a season](../../tutorials/capstone-scout-a-season/): the lab that runs and audits this workflow end to end.

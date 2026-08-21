@@ -1,0 +1,76 @@
+---
+title: Guides
+description: "Operator how-tos for the Touchline rib: install, create a data home, collect, work the board, run reports, and audit the data."
+sidebar:
+  label: Overview
+  order: 0
+---
+
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+This tier does the task. Each guide is a recipe with exact commands, what
+success looks like, and what each failure means. There are no teaching detours:
+every guide closes with a short "What you just exercised" line linking the
+concepts the task touched, and the theory stays in [Concepts](../concepts/).
+
+Contributor setup (linking the rib into a local keelson checkout, the pre-PR
+checks) lives in the repo's CONTRIBUTING.md, not here.
+
+<CardGrid>
+  <LinkCard
+    title="Install and activate"
+    href="install/"
+    description="Install the rib into Keelson and read the status ladder."
+  />
+  <LinkCard
+    title="Create a data home"
+    href="create-a-data-home/"
+    description="The marker file, the empty-or-ours rule, and the two-step removal."
+  />
+  <LinkCard
+    title="Run a collection"
+    href="run-a-collection/"
+    description="Collect a conference season and read the coverage manifest it writes."
+  />
+  <LinkCard
+    title="Work the board"
+    href="work-the-board/"
+    description="The season rail, drawers, focus, and the notices that surface gaps."
+  />
+  <LinkCard
+    title="Run a scouting report"
+    href="run-a-report/"
+    description="The gated report workflow from preflight to a delivered PDF."
+  />
+  <LinkCard
+    title="Build a player profile"
+    href="build-a-player-profile/"
+    description="Per-player research with verification, additive merges, and shared locking."
+  />
+  <LinkCard
+    title="Onboard a school"
+    href="onboard-a-school/"
+    description="The read-only probe, the drafted config stanza, and the human review before collection."
+  />
+  <LinkCard
+    title="Rebuild from the archive"
+    href="rebuild-from-the-archive/"
+    description="Reparse offline, migrate shards, and reload the derived database."
+  />
+  <LinkCard
+    title="Audit the data"
+    href="audit-the-data/"
+    description="The read-only integrity checks and how to tell a failed check from a check that did not run."
+  />
+</CardGrid>
+
+## Related
+
+**Run it**
+
+- [Reference](../reference/): tools, workflows, file contracts, exit codes.
+
+**Understand it**
+
+- [Concepts](../concepts/): why each mechanism exists.
+- [The syllabus](../tutorials/syllabus/): the same machinery as a curriculum.

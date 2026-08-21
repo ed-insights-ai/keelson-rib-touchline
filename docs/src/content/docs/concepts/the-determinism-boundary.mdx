@@ -1,0 +1,163 @@
+---
+title: The determinism boundary
+description: Code computes every number, the model writes only words, and the seam between them is a versioned contract of prose slots.
+sidebar:
+  order: 7
+---
+
+import { Image } from "astro:assets";
+import excerptNumbers from "../../../assets/excerpt-numbers.png";
+
+A Touchline briefing is a generated document a coaching staff is expected to
+trust, and one wrong number in front of a coach ends the conversation. So the
+rib draws a hard line through the product: code computes every number, the
+language model writes only words, and the seam between the two is a versioned
+contract of named prose slots. This page walks the line: where it runs, how it
+is enforced, and what it refuses to say.
+
+## The digest owns every number
+
+The numeric side of the line is the **digest**, assembled by `build_digest` in
+`pipeline/src/digest.py` and written by the `build-digest` command to
+`data/scratch/digest-{season}-{gender}-{focus}.json` under the schema tag
+`touchline.digest/1`. Its docstring states the boundary in one sentence: "if a
+figure is not in the digest, the report cannot say it." Season form, box-score
+patterns, roster turnover, career lines, head-to-head history: every figure a
+briefing may cite is computed there, from the data home's season files and
+nowhere else. A language model writes prose around these figures. It never
+produces one.
+
+Two habits make a single numeric source worth trusting. First, it is honest
+about what counts. `_counts` in `pipeline/src/digest.py` aggregates a fixture
+only when it is final, carries both scores, and is not an exhibition, because
+counting a score-less final "would invent a 0-0 draw, a clean sheet, and a
+shutout at once". Coverage travels with the numbers: `match_patterns` ships
+`matches_counted` beside `played_total`, so a pattern built on partial
+box-score coverage arrives pre-caveated, and `minute_chart` in
+`pipeline/src/report.py` prints that caveat under the goal-timing chart as "N
+of M matches with a held box score".
+
+Second, it fails rather than guesses. `build_digest` raises `ValueError` when
+the home lacks the season's fixtures or the focus programme is unknown: the
+caller should collect first, not guess. And the digest carries its own lineage.
+Its `sources` map records each season file's `collected_at` stamp, and
+`render_appendix` prints that map as the briefing's technical appendix,
+rendered to its own PDF and delivered beside the report, so the collection
+record travels with the claims built on it.
+
+The digest is a regenerable intermediate, which is why it lives in the data
+home's scratch space. The report workflow rebuilds it at the start of every
+run, and `pipeline/scripts/build_digest.py` never touches the network:
+determinism here is testable, because rerunning `build-digest` over the same
+season files yields the same figures.
+
+## The seam is a versioned contract
+
+The model's side of the line is the **narrative**, a JSON file whose shape is
+the contract `touchline.report-narrative/4`, spelled out in the module
+docstring of `pipeline/src/report.py`. The contract is a fixed set of named
+prose slots: a headline, a bottom line, exactly three findings each split into
+evidence, meaning, and implication, at most three decisions, a landscape
+paragraph, per-opponent card fields, watchlist entries. Slots carry hard word
+budgets (the bottom line at most 70 words, the landscape 100, the overview
+110, a watchlist "why" 90) because prose past budget breaks the print layout.
+
+The renderer that merges the two files is plain code, and in its own words it
+"decides everything that is actually a fact on the page". Tiles, tables,
+charts, per-match rates, and conference medians are computed by the renderer
+from digest values; narrative text is escaped and dropped into its slot. A
+slot the model never filled renders as an explicit placeholder rather than
+being papered over, so the deterministic skeleton always ships.
+
+The version number in the tag is load-bearing. The narrative-writing nodes in
+`workflows/touchline-report.yml` are told to read the contract before writing,
+and their instructions name the digest as the only source of numbers and the
+verified research pool as the only admissible news. The `validate-narrative` gate then
+checks the result mechanically, starting from the exact string
+`touchline.report-narrative/4` and moving through the slot counts, the word
+budgets, and a grep that fails the run when machinery words such as "digest"
+leak into prose. Any violation blocks the render. The gates have
+[a canonical page of their own](../gates/), and the incident that made one
+after every generative step non-negotiable is recorded in
+[its design record](../../design/gate-after-every-generative-step/).
+
+Because every generated word lands in a named slot of this contract, the
+generative surface is enumerable: you can measure how much of a finished
+briefing the model actually wrote. That measurement is a dated empirical
+fact, and it lives with its date in the
+[system narrative](../../design/system-narrative/), not here.
+
+Here is the boundary on a shipped page: the tiles and the goal-timing chart
+are drawn by the renderer from digest values, and the paragraph beneath them
+is a narrative slot quoting those same values back.
+
+<figure>
+  <Image src={excerptNumbers} alt="The numbers panel of a shipped briefing: a row of indicator tiles for overall and conference record, clean sheets, one-goal games, shots, corners, and cards, above a diverging goals-by-minute bar chart with a coverage note, followed by a prose paragraph repeating the same figures." />
+  <figcaption>Figure 1. The numbers panel of a real briefing. Every tile and bar is code-drawn from the digest; the prose beneath is model-drafted and may only repeat figures the digest already holds.</figcaption>
+</figure>
+
+## Words cross with labels on
+
+Prose does not cross the seam naked. Every important claim carries an
+**evidence label**, one of the four in `LABEL_NAMES` in
+`pipeline/src/report.py`: `observed` (computed from published results or event
+data), `projected` (a model estimate with its assumptions stated), `signal`
+(rendered as "Unverified signal": an observed pattern whose cause is
+unverified), and `judgment` (rendered as "Scouting judgment": interpretation
+that requires film). Confidence is a separate axis: `confidence_dot` renders
+high, medium, or low beside the label, so what kind of claim and how sure
+never blur into one chip.
+
+`signal` is the label that keeps the system honest about its most tempting
+inference. `availability_flags` in `pipeline/src/digest.py` finds players with
+large unexplained holes in their participation and says plainly that the
+record cannot distinguish injury from transfer, discipline, or redshirt, so it
+reports only the pattern and never the cause. The style contract in
+`prompts/style-contract.md` holds the prose to the same rule: a gap is a
+signal, not a diagnosis. The contract also grants the boundary's one narrow
+exception: a verified news claim's own figures (a date, a poll position) come
+verbatim from the cited page instead of the digest, and from nowhere else.
+
+## What the boundary refuses to say
+
+The strongest statement the boundary makes is a refusal. There is no
+expected-goals figure anywhere in a Touchline briefing, and the reason sits
+beside the renderer's contract in `pipeline/src/report.py`: shot locations are
+not collected, and "a transparent absence beats false precision". The digest
+scopes itself to what the box scores actually publish. `match_patterns`
+aggregates shots, shots on goal, corners, fouls, saves, and goals by half
+and minute band; no field in `touchline.digest/1` holds a shot location, so
+nothing downstream can pretend to have one.
+
+The same discipline decides which source feeds which number: `discipline` in
+`pipeline/src/digest.py` reads season card totals from the published
+statistics page rather than counting card events across held box scores,
+because the statistics page covers games whose box scores were never
+collected. And the style contract polices the words wrapped around the
+numbers: corner counts show territorial and restart exposure, not marking
+quality. Claim only what the data measures, and recommend the film audit
+rather than pre-judging its result.
+
+Observe it (read-only, under ten minutes): open a completed archived
+season's `data/scratch/digest-{season}-{gender}-{focus}.json` beside its
+delivered PDF and trace any three tile figures back to their digest keys;
+each must be there verbatim.
+
+Lab: [Interrogate the digest](../../tutorials/interrogate-the-digest/) traces
+printed figures back to their computations, and
+[Break a gate](../../tutorials/break-a-gate/) feeds the narrative gate an
+out-of-contract file and watches it refuse.
+
+## Related
+
+**Run it**
+
+- [Run a scouting report](../../guides/run-a-report/): drive the workflow that crosses this boundary end to end.
+- [File contracts](../../reference/file-contracts/): the exact digest and narrative schemas.
+- [Prompt contracts](../../reference/prompts-and-protocols/): the style contract the prose side obeys.
+
+**Understand it**
+
+- [The model declares, the validator decides](../gates/): the mechanical gates that hold this contract.
+- [Evidence, not recall](../evidence-not-recall/): how the news layer's claims earn their print rights.
+- [System narrative](../../design/system-narrative/): the measured generative share of a shipped briefing, stated with its date.

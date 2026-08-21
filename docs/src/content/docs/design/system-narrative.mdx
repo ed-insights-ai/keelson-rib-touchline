@@ -1,0 +1,107 @@
+---
+title: How a machine scouts a season
+description: "The shipped system-design narrative: the hosted PDF, its section map into this site, the eight learnings, and the dated measurements from the August 2026 run."
+sidebar:
+  order: 1
+---
+
+import { Image } from "astro:assets";
+import coverHarding from "../../../assets/cover-harding.png";
+import coverFhsu from "../../../assets/cover-fhsu.png";
+import coverNewman from "../../../assets/cover-newman.png";
+
+This page hosts the prototype's design narrative, a nine-section document
+dated August 2026 with every count measured from the system's own stores on
+its date of writing. It is kept as shipped, not transcribed into these pages.
+Where the document and the code disagree, the code is current: the PDF is a
+dated record, these pages track the code, and the site supersedes the
+document.
+
+Read it as produced: [system-design.pdf](../../system-design.pdf).
+
+## The nine sections, mapped to this site
+
+Each section of the document now has one or more site pages that carry its
+material forward against the current code.
+
+| # | Section | In one line | Deepened in |
+|---|---|---|---|
+| 01 | The problem | The data exists on the athletics sites; the analyst to assemble it does not. | [The landing](../../) and [The system in one view](../../concepts/five-layers/) |
+| 02 | The system in one view | Five layers, two kinds of worker, and one place a model is allowed to be wrong. | [The system in one view](../../concepts/five-layers/) |
+| 03 | Collection and cleansing | Archive the page verbatim, derive everything else, and let a partial run fail loudly. | [Archive first](../../concepts/archive-first/), [Proof before parse](../../concepts/proof-before-parse/), [Reading hostile HTML](../../concepts/reading-hostile-html/) |
+| 04 | The determinism boundary | Code computes every number; the model writes only words. | [The determinism boundary](../../concepts/the-determinism-boundary/) |
+| 05 | Research as evidence | Findings come from the live web with source, date, and grade, then survive refutation. | [Evidence, not recall](../../concepts/evidence-not-recall/) |
+| 06 | Guardrails | The model declares; a mechanical gate after every generative step decides. | [Gates](../../concepts/gates/) and [Gate after every generative step](../gate-after-every-generative-step/) |
+| 07 | The reproducibility test | Same prompts, contract, validators, and renderer across three programmes; the claim is the measured diff. | [Contracts beat examples](../contracts-not-examples/) |
+| 08 | The living season | A briefing is a run, not a document; new data reruns the same circuit. | [A briefing is a run](../a-briefing-is-a-run/) |
+| 09 | What building it taught | Eight learnings for any system of this type. | [The eight learnings](#the-eight-learnings) below |
+
+## The eight learnings
+
+The document closes with eight learnings. Each now has a canonical page here,
+and every other mention on the site links to that page.
+
+1. **Put a gate after every generative step.** A completion claim is a request to be checked, never an exit condition: [Gate after every generative step](../gate-after-every-generative-step/).
+2. **Draw the determinism boundary early; never let a number cross it.** [The determinism boundary](../../concepts/the-determinism-boundary/).
+3. **Use the model as a reader, never as a source.** [The model as reader, never a source](../the-model-as-reader/).
+4. **Grade evidence; never delete it.** A refuted claim, downgraded and kept, protects every future run: [Evidence, not recall](../../concepts/evidence-not-recall/).
+5. **Contracts beat examples.** Written rules plus validators reproduce quality; a reference sample imprints: [Contracts beat examples](../contracts-not-examples/).
+6. **Absence is data.** Compute the gaps and print them, so a caveat heals itself: [Absence is data](../../concepts/absence-is-data/).
+7. **Archive primary sources; treat every store as derived.** [The raw archive as system of record](../raw-archive-as-system-of-record/).
+8. **A report is a run, not a document.** [A briefing is a run, not a document](../a-briefing-is-a-run/).
+
+## The dated measurements
+
+Two point-in-time measurements from the document are collected here. The
+generative-surface figure lives only on this page; the language-reuse figure
+is also part of the record in
+[Contracts beat examples](../contracts-not-examples/). Outside the design
+tier, pages link to these numbers rather than restating them.
+
+**The generative surface, August 2026 Harding run.** Of the words on the
+briefing's pages, the model drafted about 62 percent; the rest are code-set
+labels. Code computed 100 percent of the numbers, and the renderer drew every
+chart and graphic. The generative surface is enumerable, which is what makes
+the output auditable: a reviewer can point at any element and say which worker
+produced it.
+
+**Language reuse across briefings, August 2026 run set.** Cross-narrative
+5-gram Jaccard overlap between any two of the three briefings measured 3.4
+percent, and every shared 8-gram was a data artifact such as a source URL or a
+citation line, not template language. The contract constrains form without
+leaking phrasing.
+
+## The reproducibility test, in three covers
+
+The three briefings the document compares in section 07 were produced by the
+same prompts, contract, validators, and renderer, and each cover already shows
+the run's character: a one-line read that differs per programme because the
+evidence differs, and the same printed caveat naming the one roster not yet
+published.
+
+<figure>
+  <Image src={coverHarding} alt="Briefing cover prepared for Harding men's soccer: GAC men's soccer 2026 preseason intelligence, with the one-line read 'Midfield continuity, decisions at both ends' and a printed caveat that the Southern Nazarene 2026 roster is not yet published." />
+  <figcaption>Figure 1. Harding: the tuning subject.</figcaption>
+</figure>
+
+<figure>
+  <Image src={coverFhsu} alt="Briefing cover prepared for Fort Hays State men's soccer: GAC men's soccer 2026 preseason intelligence, with the one-line read 'Five returners, a title standard to rebuild' and the same printed roster caveat." />
+  <figcaption>Figure 2. Fort Hays State: the first cold run.</figcaption>
+</figure>
+
+<figure>
+  <Image src={coverNewman} alt="Briefing cover prepared for Newman men's soccer: GAC men's soccer 2026 preseason intelligence, with the one-line read 'Thirty arrivals, three calls' and the same printed roster caveat." />
+  <figcaption>Figure 3. Newman: the weakest published data.</figcaption>
+</figure>
+
+## Related
+
+**Run it**
+
+- [Run a scouting report](../../guides/run-a-report/): produce the briefing this narrative describes, gate by gate.
+- [Workflows](../../reference/workflows/): the four run graphs behind the document's implementation note.
+
+**Understand it**
+
+- [The system in one view](../../concepts/five-layers/): the section 02 map, kept current against the code.
+- [Capstone: scout a season](../../tutorials/capstone-scout-a-season/): run and audit the full gated report yourself.

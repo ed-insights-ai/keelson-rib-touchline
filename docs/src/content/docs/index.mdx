@@ -1,0 +1,63 @@
+---
+title: Keelson Rib · Touchline
+description: "College soccer season intelligence for Keelson: archived-verbatim collection, canonical records, a deterministic digest, and gated, evidence-cited scouting reports."
+---
+
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+College soccer publishes nearly everything a scout needs: schedules, rosters,
+player statistics, and a box score for every match, on the athletics sites
+every programme already maintains. What almost no programme below the top
+divisions has is the analyst to assemble it.
+
+Touchline is that analyst. It collects what schools publish and archives every
+page verbatim, reconciles the parses into canonical records, computes every
+number deterministically, and lets a language model write the scouting prose
+under an evidence standard: every figure computed by code, every claim cited,
+every gap named. The season board shows what is held, what is missing, and why.
+
+Touchline is a [Keelson](https://danielscholl.github.io/keelson/) rib: it
+installs into the harness you already run and reuses what the harness owns, its
+providers, the workflow engine, and the board surface. Everything here is what
+Touchline adds.
+
+This site serves two readers through the same pages. An operator runs the rib:
+collections, the board, reports. A student of data science reads the same
+system as a working curriculum: scraping under proof, identity resolution,
+missingness, deterministic analysis, and how to put a language model inside a
+data system without letting it invent a number.
+
+:::tip[Choose a door]
+**Run it**: start with [install](guides/install/) and
+[run a collection](guides/run-a-collection/). **Study it**: start with the
+[syllabus](tutorials/syllabus/) or the [concepts](concepts/) spine. **Look it
+up**: the [reference](reference/) is the exact contract.
+:::
+
+<CardGrid>
+  <LinkCard
+    title="Concepts"
+    href="concepts/"
+    description="Why the rib is built this way: the five layers, the archive, identity, absence, the determinism boundary, evidence, and gates."
+  />
+  <LinkCard
+    title="Guides"
+    href="guides/"
+    description="Operator how-tos: install, create a data home, collect, work the board, run a report, audit."
+  />
+  <LinkCard
+    title="Tutorials"
+    href="tutorials/"
+    description="The lab rail: a data-science curriculum against a real data home, capstoned by a full gated report run."
+  />
+  <LinkCard
+    title="Reference"
+    href="reference/"
+    description="The contract tier: the surface and tools, workflows, file contracts, gates and exit codes, the CLI, and the glossary."
+  />
+  <LinkCard
+    title="Design"
+    href="design/"
+    description="Decision records and the system-design narrative: what building it settled, and why."
+  />
+</CardGrid>
