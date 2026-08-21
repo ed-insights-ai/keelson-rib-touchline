@@ -629,10 +629,33 @@ def test_a_bracketed_seed_can_be_followed_by_a_second_rank() -> None:
     assert opponent_slug("#10 (4) Rockhurst", aliases) == "rockhurst"
 
 
-def test_a_seed_word_is_not_a_rank_prefix() -> None:
-    """"5th-Seed" has no space after the digit, which is what saves it."""
+def test_a_seed_is_a_rank_however_it_is_spelled() -> None:
+    """A seed word is a rank, and an earlier pass here asserted the opposite.
+
+    "5th-Seed Oklahoma Christian" was pinned as untouchable on the guess that
+    the digit belonged to the name. It does not — that is Oklahoma Christian,
+    a configured programme, and the assertion pinned the bug rather than the
+    behaviour. The archive publishes the seed three ways.
+    """
     aliases = identity_aliases(_gac(), "men")
-    assert opponent_slug("5th-Seed Oklahoma Christian", aliases) == "5th-seed-oklahoma-christian"
+    assert opponent_slug("3-seed Oklahoma Christian", aliases) == "oklahoma-christian"
+    assert opponent_slug("#4-seed Oklahoma Christian", aliases) == "oklahoma-christian"
+    assert opponent_slug("5th-Seed Oklahoma Christian", aliases) == "oklahoma-christian"
+
+
+def test_a_seed_in_square_brackets_is_still_a_rank() -> None:
+    """Tournament seeds are bracketed, and can sit behind a poll rank."""
+    aliases = identity_aliases(_gac(), "men")
+    assert opponent_slug("[7] Cedarville", aliases) == "cedarville"
+    assert opponent_slug("#17 [7] Cedarville", aliases) == "cedarville"
+    assert opponent_slug("#15 [3] Lincoln", aliases) == "lincoln"
+
+
+def test_an_all_caps_abbreviation_is_not_a_rank() -> None:
+    """The scan for rank forms turns up far more abbreviations than ranks."""
+    aliases = identity_aliases(_gac(), "men")
+    for published in ("UT Tyler", "MSU Denver", "CSU Pueblo", "USC Aiken"):
+        assert opponent_slug(published, aliases) == published.lower().replace(" ", "-")
 
 
 def test_two_polls_publish_one_rank_joined_by_a_slash() -> None:

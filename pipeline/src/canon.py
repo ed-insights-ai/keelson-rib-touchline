@@ -192,7 +192,14 @@ PROGRAMMES = {
 # readily as a number does — "#RV ..."), and a school ranked
 # in two polls at once publishes both joined by a slash — "RV/#11 Palm
 # Beach Atlantic". Leaving any of them in mints one identity per week.
-_RANK_TOKEN = r"(?:\(\s*(?:rv|\d{1,2})\s*\)|(?:#|no\.?)?\s*(?:rv|\d{1,2}))"
+_RANK_VALUE = r"(?:rv|\d{1,2})"
+_RANK_TOKEN = (
+    r"(?:"
+    rf"\(\s*{_RANK_VALUE}\s*\)|\[\s*{_RANK_VALUE}\s*\]"
+    r"|(?:#|no\.?)?\s*\d{1,2}(?:st|nd|rd|th)?-seed"
+    rf"|(?:#|no\.?)?\s*{_RANK_VALUE}"
+    r")"
+)
 _RANK_PREFIX = re.compile(
     rf"^(?:{_RANK_TOKEN}(?:\s*/\s*{_RANK_TOKEN})*\s+)+", re.IGNORECASE
 )
