@@ -1,7 +1,27 @@
 {
-  "conferences": ["GAC", "LSC", "MIAA", "independent", "non_member"],
-  "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2026. Authored from official GAC/MIAA and LSC records; each window cites its source. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
+  "conferences": ["GAC", "GSC", "LSC", "MIAA", "independent", "non_member"],
+  "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2026. Authored from official GAC/MIAA, LSC and GSC records; each window cites its source. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
   "memberships": {
+    "aum": {
+      "men": [
+        {
+          "conference": "GSC",
+          "from_season": 2019,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2019 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2019&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both. Absent from the 2018 records (https://gscsports.org/stats.aspx?path=msoc&year=2018&conf=true); first listed 2019."
+        }
+      ]
+    },
+    "christian-brothers": {
+      "men": [
+        {
+          "conference": "GSC",
+          "from_season": 2016,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both."
+        }
+      ]
+    },
     "dallas-baptist": {
       "men": [
         {
@@ -9,6 +29,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Lone Star Conference, 2022 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12); listed in both."
+        }
+      ]
+    },
+    "delta-state": {
+      "men": [
+        {
+          "conference": "GSC",
+          "from_season": 2016,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both."
         }
       ]
     },
@@ -74,6 +104,16 @@
         }
       ]
     },
+    "lee": {
+      "men": [
+        {
+          "conference": "GSC",
+          "from_season": 2016,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both."
+        }
+      ]
+    },
     "lubbock-christian": {
       "men": [
         {
@@ -91,6 +131,26 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Lone Star Conference, 2022 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12); listed in both."
+        }
+      ]
+    },
+    "mississippi-college": {
+      "men": [
+        {
+          "conference": "GSC",
+          "from_season": 2016,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both. Listed as 'MC' in the conference records."
+        }
+      ]
+    },
+    "montevallo": {
+      "men": [
+        {
+          "conference": "GSC",
+          "from_season": 2017,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2017 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2017&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both. Absent from the 2016 records (https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true); first listed 2017."
         }
       ]
     },
@@ -260,6 +320,16 @@
         }
       ]
     },
+    "shorter": {
+      "men": [
+        {
+          "conference": "GSC",
+          "from_season": 2016,
+          "to_season": 2023,
+          "source": "Gulf South Conference, 2016 and 2023 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/stats.aspx?path=msoc&year=2023&conf=true (accessed 2026-08-20); listed in both. Absent from the 2024 records (https://gscsports.org/stats.aspx?path=msoc&year=2024&conf=true); left GSC men's soccer after 2023 and now competes in Conference Carolinas."
+        }
+      ]
+    },
     "southern-nazarene": {
       "men": [
         {
@@ -288,6 +358,16 @@
         }
       ]
     },
+    "spring-hill": {
+      "men": [
+        {
+          "conference": "GSC",
+          "from_season": 2018,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2018 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2018&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both. Absent from the 2016-2017 records; first listed 2018. Absent from the 2020 conference statistics: the GSC postponed fall 2020 soccer to spring 2021 (https://goargos.com/news/2020/8/12/general-gsc-statement-on-the-fall-2020-season.aspx). Non-participation, not a membership lapse, so the window stays continuous."
+        }
+      ]
+    },
     "sul-ross-state": {
       "men": [
         {
@@ -305,6 +385,36 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Lone Star Conference, 2022 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12); listed in both."
+        }
+      ]
+    },
+    "trevecca": {
+      "men": [
+        {
+          "conference": "GSC",
+          "from_season": 2024,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2024 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2024&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both. Absent from the 2023 records (https://gscsports.org/stats.aspx?path=msoc&year=2023&conf=true); first listed 2024, matching Trevecca's 2024-25 move into the GSC."
+        }
+      ]
+    },
+    "uah": {
+      "men": [
+        {
+          "conference": "GSC",
+          "from_season": 2016,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both."
+        }
+      ]
+    },
+    "union": {
+      "men": [
+        {
+          "conference": "GSC",
+          "from_season": 2016,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both. Union has been a GSC member since its 2012-13 move from the NAIA to NCAA Division II, predating this document's 2016 floor."
         }
       ]
     },
@@ -335,6 +445,26 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Lone Star Conference, 2022 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12); listed in both."
+        }
+      ]
+    },
+    "west-alabama": {
+      "men": [
+        {
+          "conference": "GSC",
+          "from_season": 2016,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both."
+        }
+      ]
+    },
+    "west-florida": {
+      "men": [
+        {
+          "conference": "GSC",
+          "from_season": 2016,
+          "to_season": 2025,
+          "source": "Gulf South Conference, 2016 and 2025 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/stats.aspx?path=msoc&year=2025&conf=true (accessed 2026-08-20); listed in both. Absent from the 2026 standings (https://gscsports.org/standings.aspx?path=msoc); left GSC men's soccer after 2025. Absent from the 2020 conference statistics: the GSC postponed fall 2020 soccer to spring 2021 (https://goargos.com/news/2020/8/12/general-gsc-statement-on-the-fall-2020-season.aspx). Non-participation, not a membership lapse, so the window stays continuous. West Florida opted out of that spring season."
         }
       ]
     },

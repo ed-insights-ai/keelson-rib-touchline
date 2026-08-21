@@ -73,7 +73,7 @@ async function tempHome(): Promise<string> {
 
 describe("membership resolution", () => {
   test("collectable conferences come from the shipped membership data", async () => {
-    expect(await knownConferences()).toEqual(["GAC", "LSC", "MIAA"]);
+    expect(await knownConferences()).toEqual(["GAC", "GSC", "LSC", "MIAA"]);
   });
 
   test("adding a conference to membership data advertises it without code changes", async () => {
