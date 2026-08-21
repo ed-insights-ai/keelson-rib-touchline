@@ -404,3 +404,45 @@ def test_dedupe_never_discards_a_published_score_pair() -> None:
     assert merged[0]["home_score"] == 2
     assert merged[0]["away_score"] == 1
     assert merged[0]["match_type"] == "exhibition"
+
+
+def test_dedupe_orients_a_backfilled_score_by_team_id() -> None:
+    # Each site publishes itself as home, so the grouped rows arrive with
+    # reversed orientations; a verbatim copy would hand each team the
+    # other's goals.
+    scoreless = _fx(
+        id="sidearm:harding:1",
+        status="final",
+        match_type="exhibition",
+        time="19:00",
+        venue="Soldier Field",
+    )
+    reversed_scored = _fx(
+        id="sidearm:rogers-state:9",
+        home="rogers-state",
+        away="harding",
+        status="final",
+        home_score=2,
+        away_score=1,
+    )
+    merged, _ = _dedupe_fixtures([reversed_scored, scoreless])
+    [fixture] = merged
+    # rogers-state scored 2 on its own page; whichever orientation won,
+    # rogers-state's side must still carry the 2.
+    rs_score = (
+        fixture["home_score"] if fixture["home"] == "rogers-state" else fixture["away_score"]
+    )
+    assert rs_score == 2
+    assert fixture["match_type"] == "exhibition"
+
+
+def test_dedupe_never_promotes_a_live_score_into_a_final() -> None:
+    # One site still shows the game live with a partial score while the
+    # other has already declared it final without one; an in-progress
+    # score is not a result.
+    live = _fx(id="sidearm:harding:1", status="live", home_score=1, away_score=0)
+    finished = _fx(id="sidearm:rogers-state:9", status="final")
+    merged, _ = _dedupe_fixtures([live, finished])
+    [fixture] = merged
+    assert fixture["status"] == "final"
+    assert "home_score" not in fixture
