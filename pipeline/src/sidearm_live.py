@@ -320,9 +320,9 @@ def assert_untrapped_schedule(
 # matching a single token. The trailing whitespace requirement is what keeps
 # the bare "rv" alternative from biting a name that merely starts with those
 # letters.
-_RANK_TOKEN = r"(?:(?:#|no\.?)\s*)?(?:rv|\d{1,2})"
+_RANK_TOKEN = r"(?:\(\s*(?:rv|\d{1,2})\s*\)|(?:#|no\.?)?\s*(?:rv|\d{1,2}))"
 _RANK_PREFIX = re.compile(
-    rf"^{_RANK_TOKEN}(?:\s*/\s*{_RANK_TOKEN})*\s+", re.IGNORECASE
+    rf"^(?:{_RANK_TOKEN}(?:\s*/\s*{_RANK_TOKEN})*\s+)+", re.IGNORECASE
 )
 
 
