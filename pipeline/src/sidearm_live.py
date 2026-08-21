@@ -466,6 +466,11 @@ def _event_status(event: dict[str, object]) -> str:
         return "postponed"
     if event.get("type") == "live" or "live" in status or "progress" in status:
         return "live"
+    # A status naming Final outranks the score check: a played game whose
+    # score was never entered (measured on exhibitions) is final, and calling
+    # it scheduled makes the board show a finished game as upcoming.
+    if "final" in status:
+        return "final"
     if (
         _integer(result_dict.get("team_score")) is not None
         and _integer(result_dict.get("opponent_score")) is not None
@@ -593,6 +598,8 @@ def _parse_schedule_dom(
             r"tournament|championship", opponent_name, re.IGNORECASE
         ):
             continue
+        classes = set(row.get("class") or [])
+        exhibition = bool(re.search(r"exhib", opponent_raw, re.IGNORECASE))
         hosted = re.split(r"\s+vs\.?\s+", opponent_name)
         if len(hosted) == 2:
             # A tournament host lists other teams' games on its own schedule
@@ -605,7 +612,6 @@ def _parse_schedule_dom(
             participant_slugs = (home, away)
         else:
             other_slug = opponent_slug(opponent_name, aliases)
-            classes = set(row.get("class") or [])
             if "sidearm-schedule-neutral-game" in classes:
                 # Neutral rows keep the "vs"/"at" span as the only side
                 # indicator.
@@ -622,11 +628,20 @@ def _parse_schedule_dom(
 
         result_text = _first_text(row, ".sidearm-schedule-game-result") or ""
         result = _dom_result(result_text) if owner_is_home is not None else None
+        # A played game whose score was never entered (measured on the modern
+        # theme, which fills scores client-side: the served DOM carries only a
+        # completed class on the row and a Final span whose class the result
+        # selector does not match) is final, not scheduled — leaving it
+        # scheduled makes the board show a finished game as upcoming.
+        completed = (
+            "sidearm-schedule-game-completed" in classes
+            or row.select_one(".sidearm-schedule-game-result-final") is not None  # type: ignore[attr-defined]
+        )
         if re.search(r"cancel", result_text, re.IGNORECASE):
             status = "cancelled"
         elif re.search(r"postpon", result_text, re.IGNORECASE):
             status = "postponed"
-        elif result:
+        elif result or completed:
             status = "final"
         else:
             status = "scheduled"
@@ -639,10 +654,11 @@ def _parse_schedule_dom(
             "status": status,
             "source_url": page_url,
         }
+        if exhibition:
+            fixture["match_type"] = "exhibition"
         if theme_marks_conference:
             fixture["conference_game"] = conference_marked(row)
         else:
-            exhibition = bool(re.search(r"exhib", opponent_raw, re.IGNORECASE))
             fixture["conference_game"] = not exhibition and all(
                 slug in member_slugs for slug in participant_slugs
             )
@@ -707,9 +723,10 @@ def parse_schedule_page(
     for event_id, event in events.items():
         opponent = event.get("opponent")
         opponent_dict = opponent if isinstance(opponent, dict) else {}
-        opponent_name = _clean_team_name(
-            opponent_dict.get("title") or opponent_dict.get("name")
+        published_title = str(
+            opponent_dict.get("title") or opponent_dict.get("name") or ""
         )
+        opponent_name = _clean_team_name(published_title)
         if not opponent_name:
             continue
         other_slug = opponent_slug(opponent_name, aliases)
@@ -735,6 +752,10 @@ def parse_schedule_page(
             "conference_game": bool(event.get("is_conference")),
             "source_url": page_url,
         }
+        # The payload has no exhibition field — the site says it in the
+        # opponent's own published title ("Oklahoma Wesleyan (Exhibition)").
+        if re.search(r"exhib", published_title, re.IGNORECASE):
+            fixture["match_type"] = "exhibition"
         if not event.get("tbd") and "T" in date_text:
             try:
                 local = datetime.fromisoformat(date_text)

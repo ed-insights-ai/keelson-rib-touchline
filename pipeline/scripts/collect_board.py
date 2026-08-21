@@ -105,7 +105,8 @@ def _dedupe_fixtures(
         # Prefer the source that has reached the later lifecycle stage, then
         # retain whichever published more detail — but never lose detail the
         # other side published: each site is authoritative for its own extras
-        # (kickoff time, facility), and the conference claim resolves by rank.
+        # (kickoff time, facility, an exhibition marking), and the conference
+        # claim resolves by rank.
         rank = {"scheduled": 0, "postponed": 1, "cancelled": 1, "live": 2, "final": 3}
         existing_score = rank.get(str(existing["status"]), 0) * 10 + len(existing)
         candidate_score = rank.get(str(fixture["status"]), 0) * 10 + len(fixture)
@@ -114,9 +115,27 @@ def _dedupe_fixtures(
             if candidate_score > existing_score
             else (existing, dict(fixture))
         )
-        for field in ("time", "venue"):
+        for field in ("time", "venue", "match_type"):
             if field not in winner and field in loser:
                 winner[field] = loser[field]
+        # Two finals can tie on lifecycle rank when one side published a
+        # score and the other published only completion; the detail count
+        # must never decide a published score pair away.  Finals only — a
+        # live row's score is in progress, not a result.  And oriented by
+        # team id, because the match key groups reversed home/away rows.
+        if (
+            str(winner["status"]) == "final"
+            and str(loser["status"]) == "final"
+            and "home_score" not in winner
+            and "home_score" in loser
+            and "away_score" in loser
+        ):
+            if loser["home"] == winner["home"]:
+                winner["home_score"] = loser["home_score"]
+                winner["away_score"] = loser["away_score"]
+            else:
+                winner["home_score"] = loser["away_score"]
+                winner["away_score"] = loser["home_score"]
         _merge_conference_claim(winner, loser)
         by_match[key] = winner
     values = sorted(
