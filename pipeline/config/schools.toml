@@ -77,12 +77,12 @@ ordinal      = 4
 prefix       = "nsu"
 base_url     = "https://nsuathletics.com/sports/mens-soccer"
 live_base_url = "https://goriverhawksgo.com/sports/mens-soccer"
-live_scraper = "sidearm_legacy"
+live_scraper = "sidearm"
 years        = [2019, 2020, 2021, 2022, 2023, 2024, 2025]
 scraper      = "sidearm_legacy"
 data_status  = "unverified"
 enabled      = true
-notes        = "Athletics moved to goriverhawksgo.com (standard SideArm; school's primary conference is now MIAA, but 2026 men's soccer is GAC-marked on its own schedule). Old domains nsuathletics.com and nsuriverhawks.com are GoDaddy-parked, so the sidearm_legacy historical recipe at base_url is dead — repoint it before any historical backfill."
+notes        = "Athletics moved to goriverhawksgo.com (standard SideArm; school's primary conference is now MIAA, but 2026 men's soccer is GAC-marked on its own schedule). live_scraper was sidearm_legacy, which has no implemented collector, so every live layer filed a no-collector gap; probed 2026-08-20 and the live site is standard SideArm serving 2016-2026, so the live path is now sidearm. Old domains nsuathletics.com and nsuriverhawks.com are GoDaddy-parked, so the sidearm_legacy historical recipe at base_url is still dead — repoint it before any historical backfill."
 
 [[schools]]
 name         = "Ouachita Baptist"
