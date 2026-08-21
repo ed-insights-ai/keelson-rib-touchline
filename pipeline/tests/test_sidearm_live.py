@@ -602,6 +602,39 @@ def test_receiving_votes_is_a_rank_not_an_identity() -> None:
     assert opponent_slug("RV Fort Hays State", aliases) == "fort-hays-state"
 
 
+def test_a_rank_in_parentheses_is_still_a_rank() -> None:
+    """A seed is published bracketed — "(3) Ouachita Baptist".
+
+    _identity_key drops parentheticals anyway, so a configured member still
+    matched; the damage was in the fallback slug for an opponent that is not
+    configured, which never saw the parenthetical stripper at all and minted
+    3-ouachita-baptist. Measured across the archive: 41 bracketed numbers and
+    22 bracketed RVs on 231 schedule pages.
+    """
+    aliases = identity_aliases(_gac(), "men")
+    assert opponent_slug("(3) Ouachita Baptist", aliases) == "ouachita-baptist"
+    assert opponent_slug("(4) Northeastern State", aliases) == "northeastern-state"
+    assert opponent_slug("(RV) Rollins", aliases) == "rollins"
+
+
+def test_a_bracketed_seed_can_be_followed_by_a_second_rank() -> None:
+    """The prefix repeats because the rank strip runs before parentheses go.
+
+    "(5) RV Seattle Pacific" and "(1) #3 Stanislaus State" both hid a second
+    rank behind the bracket, so stripping one token left the other stranded.
+    """
+    aliases = identity_aliases(_gac(), "men")
+    assert opponent_slug("(5) RV Seattle Pacific", aliases) == "seattle-pacific"
+    assert opponent_slug("(1) #3 Stanislaus State", aliases) == "stanislaus-state"
+    assert opponent_slug("#10 (4) Rockhurst", aliases) == "rockhurst"
+
+
+def test_a_seed_word_is_not_a_rank_prefix() -> None:
+    """"5th-Seed" has no space after the digit, which is what saves it."""
+    aliases = identity_aliases(_gac(), "men")
+    assert opponent_slug("5th-Seed Oklahoma Christian", aliases) == "5th-seed-oklahoma-christian"
+
+
 def test_two_polls_publish_one_rank_joined_by_a_slash() -> None:
     """A school ranked in two polls carries both, e.g. "RV/#11 Palm Beach".
 
