@@ -162,14 +162,12 @@ nodes:
         set -u
         D="data/research/${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}"
         DG="data/scratch/digest-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
-        N=$(jq -e '.programmes | length' "$DG") || exit $?
-        FILES=("$D"/research-*.json)
-        if [ ! -e "${FILES[0]}" ]; then
-          C=0
-        else
-          C=$(jq -s '[.[] | select((.coach // null) != null)] | length' "${FILES[@]}") || exit $?
-        fi
-        [ "$C" -ge "$N" ]
+        SLUGS=$(jq -er '.programmes | keys[]' "$DG") || exit $?
+        for slug in $SLUGS; do
+          F="$D/research-$slug.json"
+          [ -f "$F" ] || exit 1
+          jq -e '(.coach.name // "") != ""' "$F" >/dev/null 2>&1 || exit 1
+        done
       prompt: |
         You are one iteration of the Touchline offseason research stage for the
         $inputs.season $inputs.gender season, prepared for '$inputs.focus'. Each
