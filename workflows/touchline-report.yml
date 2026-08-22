@@ -430,7 +430,12 @@ nodes:
           exit 1
         fi
       done
-      WANT=$(jq -s '[.[] | select((.coach // null) != null)] | length' "$D"/research-*.json)
+      DG="data/scratch/digest-${KEELSON_INPUTS_season}-${KEELSON_INPUTS_gender}-${KEELSON_INPUTS_focus}.json"
+      WANT=0
+      for slug in $(jq -r '.programmes | keys[]' "$DG" 2>/dev/null); do
+        F="$D/research-$slug.json"
+        [ -f "$F" ] && jq -e '(.coach // null) != null' "$F" >/dev/null 2>&1 && WANT=$((WANT+1))
+      done
       HAVE=$(jq '.coaches | length' "$V")
       if [ "$HAVE" -lt "$WANT" ]; then
         printf 'ALARM: verified.json coaches map holds %s entries but %s research files carry coach objects — verify carries every one (downgraded to "unknown" when unsupported, never dropped from the map).\n' "$HAVE" "$WANT"
