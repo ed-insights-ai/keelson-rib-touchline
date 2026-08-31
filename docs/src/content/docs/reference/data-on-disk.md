@@ -1,6 +1,6 @@
 ---
 title: Data on disk
-description: The data home tier by tier, the season-file naming contract, and the two derived stores rebuilt from it.
+description: The data home tier by tier, the season-file naming contract, and the evidence that backs every deliverable.
 sidebar:
   order: 3
 ---
@@ -9,10 +9,9 @@ A Touchline data home is an ordinary directory the consumer owns. The rib
 resolves its paths through `src/datahome.ts`; the pipeline resolves every path
 through the functions in `pipeline/src/paths.py`, which read
 `TOUCHLINE_DATA_DIR` and fall back to the current working directory at call
-time. Everything durable in the home derives from fetched pages, and the two
-stores at the foot of this page (the parquet tree and the Postgres index) are
-derived again from those files: both rebuildable, neither the system of
-record.
+time. Everything durable in the home derives from fetched pages: the raw
+archive is the evidence, and the JSON files beside it are the system of
+record that every consumer reads.
 
 ## The marker
 
@@ -63,23 +62,23 @@ Field semantics live in [File contracts](../file-contracts/).
 
 | Path | Written by | Contents |
 |---|---|---|
-| `data/raw_html/{programme}/{season}-{gender}-schedule.html` (also `-roster`, `-stats`) | `write_raw_pages` in `pipeline/src/sidearm_live.py` | The pages exactly as the live collector fetched them, so any parse can be redone offline. |
-| `data/raw_html/{school}/{year}/game_{n}.html` | The legacy box-score archive | Read back by `pipeline/scripts/reparse.py` to rebuild the parquet tree without network access. |
-| `data/source_urls.csv` | `source_urls_path` in `pipeline/src/paths.py` | The URL ledger `reparse` pairs with the legacy archive. |
-| `data/errors/{year}/` | `pipeline/src/parser.py` | Per-game JSON error reports, kept rather than dropped. |
-| `data/errors/collect-board-{season}-{gender}-{conference}.json` | `pipeline/scripts/collect_board.py` | A live run's named gaps, written alongside the coverage cells that record them. |
+| `data/raw_html/{programme}/{season}-{gender}-schedule.html` (also `-roster`, `-stats`) | `write_raw_pages` in `pipeline/src/sidearm_live.py` | The pages exactly as the collector fetched them, so any parse can be redone offline. |
+| `data/errors/collect-board-{season}-{gender}-{conference}.json` | `pipeline/scripts/collect_board.py` | A run's named gaps, written alongside the coverage cells that record them. |
 
 ## Reference
 
 | Path | Contents |
 |---|---|
-| `data/reference/canon.json` | The team-string identity artifact, built and checked against the database by `pipeline/scripts/build_canon.py` (`canon_path` in `pipeline/src/paths.py`). |
 | `data/reference/membership.json` | Season-windowed conference membership, each window citing its source (`membership_path` in `pipeline/src/paths.py`). |
+
+Identity reference is code, not a data-home file: the institution registry,
+alias index, and adjudication ledger live in `pipeline/src/canon.py`, where
+the test suite holds every ruling to its evidence contract.
 
 The membership file exists twice, with one authority: the copy shipped
 inside the rib package (`membershipPath` in `src/membership.ts` resolves
-against the package root) is the source of record — version-controlled and
-reviewed — and the data home copy is a deployment artifact mirrored from
+against the package root) is the source of record, version-controlled and
+reviewed, and the data home copy is a deployment artifact mirrored from
 it. Pipeline loaders prefer the packaged copy and fall back to the mirror
 (`load_membership` in `pipeline/src/membership.py`), collect refreshes the
 mirror at the start of every run (`sync_membership_reference` in
@@ -101,70 +100,22 @@ path below is created on demand by its writer.
 | `data/reports/` | `touchline-report` and `pipeline/scripts/render_report.py` | `narrative-{season}-{gender}-{focus}.json`, plus `preseason-{season}-{gender}-{focus}.html` and `.pdf` and their `-appendix` pair. |
 | `data/players/{gender}/{programme}/` | `upsert_profile` in `pipeline/src/profile.py` | One accumulating profile per player, filed by `player_key`. |
 
-## The parquet tree
+## Derived stores
 
-The first derived store. `pipeline/src/storage.py` writes it under
-`data/structured/`:
-
-| Path | Contents |
-|---|---|
-| `data/structured/{school}/{year}/` | `games.parquet`, `player_stats.parquet`, `events.parquet`, `team_stats.parquet` for one school season (`save_season`). |
-| `data/structured/{school}/all/` | That school's seasons merged (`merge_all_seasons`). |
-| `data/structured/all/` | Every configured school merged (`merge_all_schools`). |
-
-`merge_all_seasons` ignores its deprecated `years` parameter and rescans
-every numeric season directory on disk, so updating one season cannot
-truncate the merged archive. `merge_all_schools` recovers school identity
-from the key itself: `game_id` encodes `ordinal * 1_000_000 + year * 100 +
-game_num` (`pipeline/src/config.py`, whose `load_schools` raises on duplicate
-ordinals), so the merge filters on `game_id // 1_000_000`. Events carry a
-content-addressed `event_id` (`_assign_event_ids`: SHA1 over lowercased
-identity fields plus an occurrence counter) and merges drop duplicates on it.
-`pipeline/scripts/reparse.py` rebuilds the whole tree offline from
-`data/raw_html/` and `data/source_urls.csv`; `pipeline/scripts/export.py`
-copies the four merged parquets from `data/structured/all/` to a flat
-directory.
-
-## The Postgres index
-
-The second derived store, loaded from the merged parquets by
-`pipeline/scripts/load_db.py`. The DSN is `DATABASE_URL`, else
-`FALLBACK_DATABASE_URL` in `pipeline/src/paths.py`, whose comment states the
-frame: the database is "rebuildable from the files under data_root(); it is
-never the system of record."
-
-| Table | Kind | Key |
-|---|---|---|
-| `schools` | Dimension | `SERIAL` id, unique `abbreviation`. |
-| `games` | Fact | Natural primary key `game_id`. |
-| `team_game_stats`, `player_game_stats`, `game_events` | Children | `SERIAL` surrogate id, foreign keys to `games` and `schools`. |
-| `opponents` | Reference | Unique `name`; migration 006's comment: "Populated on scrape; conference/division filled over time." |
-
-The migrations in `pipeline/migrations/` are idempotent
-(`CREATE TABLE IF NOT EXISTS`, `ADD COLUMN IF NOT EXISTS`,
-`ON CONFLICT ... DO NOTHING`) and transactional. NULL semantics are written
-into the schema itself as `COMMENT` entries:
-
-| Column | Semantics |
-|---|---|
-| `games.is_conference_game` | "True if game counts toward conference standings. From SideArm is_conference flag." Defaults to NULL, meaning unknown (migration 005). |
-| `games.home_conference` | "Conference of the scraping school (always known from schools.conference)." |
-| `games.away_conference` | "Conference of opponent. NULL = unknown. Filled as opponent registry grows." |
-| `games.neutral_site` | "True only when source venue evidence identifies a neutral site." Defaults to false (migration 008). |
-| `opponents.verified_at` | `TIMESTAMP DEFAULT NULL`, stamped as opponents are verified over time (migration 006). |
-| `schools.gender`, `schools.enabled` | Mirror the `gender` and enablement flags of `config/schools.toml` (migration 007). |
-
-The loader keeps reloads safe: `games` upserts with
-`ON CONFLICT (game_id) DO UPDATE` and `COALESCE` on the three conference
-columns, so a NULL re-load never erases a known value; the keyless child
-tables reload by delete-then-insert scoped to the school and its game set.
+There are none to maintain. The JSON data home is the system of record: the
+season files are what every consumer reads, and the raw page archive is the
+evidence they were parsed from. If a SQL index ever earns its keep for ad-hoc
+querying, it can be built from these files and dropped without losing a
+fact; that is the standing the retired Postgres index held, and any
+successor would hold the same one. Nothing in the rib or the pipeline reads
+a database.
 
 ## Related
 
 **Run it**
 
 - [Create a data home](../../guides/create-a-data-home/): scaffold the tree this page maps.
-- [Rebuild from the archive](../../guides/rebuild-from-the-archive/): regenerate both derived stores from the evidence tier.
+- [Rebuild from the archive](../../guides/rebuild-from-the-archive/): re-derive the season files from the evidence tier.
 - [Pipeline CLI](../pipeline-cli/): the console scripts that write these paths.
 
 **Understand it**

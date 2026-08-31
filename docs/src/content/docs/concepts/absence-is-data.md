@@ -93,14 +93,12 @@ a clean sheet, and a shutout at once."
 
 Season statistics get the parallel rule. Every stat field in `src/model.ts` is
 optional because a site prints what its stat crew recorded, and an absent
-number means "not published", never zero. The Postgres side of the pipeline
-says the same thing in its schema: `pipeline/migrations/001_create_schema.sql`
-leaves `home_score` and `away_score` nullable, and
-`pipeline/migrations/005_add_conference_fields.sql` adds `is_conference_game`
-and `away_conference` defaulting to NULL, with a `COMMENT ON COLUMN` spelling
-out that a NULL `away_conference` means unknown, filled in as the opponent
-registry grows. The meaning of NULL is part
-of the contract, written where the next reader will find it.
+number means "not published", never zero. The collector says the same thing
+in its payloads: a stat cell it cannot read is omitted from the player's
+entry rather than written as zero, and a card whose color the page never
+encodes is stored as `unknown` rather than guessed. The meaning of an
+absent field is part of the contract, written where the next reader will
+find it.
 
 ## Honest denominators
 

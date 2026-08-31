@@ -34,9 +34,9 @@ which season the site actually served (`assert_served_season`), and writes
 conference-sharded season files under the schema tags `touchline.fixtures/2`,
 `touchline.rosters/1`, `touchline.stats/1`, and `touchline.matches/1`. Every
 run also merges its outcome cells into `data/coverage.json`, because a named
-gap is data, not a failure. `pipeline/scripts/scrape.py` is the historical
-box-score scraper, with the opposite temperament: discover, fetch, parse,
-save, and exit zero only when every discovered game completed.
+gap is data, not a failure. `pipeline/scripts/probe.py` is the read-only
+scout beside it: it fingerprints a candidate site's platform and drafts a
+disabled configuration stanza without writing a byte of season data.
 
 Deep pages: [Archive first](../archive-first/),
 [Proof before parse](../proof-before-parse/), and
@@ -52,8 +52,8 @@ institution, a non-member, or an artifact. `pipeline/src/membership.py`
 answers a different question, season by season: which conference a programme
 belonged to (`conference_for` reads the season-windowed `membership.json`).
 And because everything durable derives from the archive, curation is
-re-runnable: `uv run reparse` (`pipeline/scripts/reparse.py`) rebuilds every
-parquet from the committed HTML with no network access.
+re-runnable: a page verified unchanged is re-parsed from the archived copy,
+so a parser or identity fix replays the collection without re-fetching it.
 
 Deep pages: [Identity](../identity/) and
 [Season is a dimension](../season-and-membership/).
@@ -115,8 +115,8 @@ TypeScript rib (`src/`) is the surface: the board, the chat tools, and the
 conference-sharded season JSON files validated by the zod schemas in
 `src/model.ts`. The Python pipeline (`pipeline/src/` and `pipeline/scripts/`)
 is the machinery: collection, curation, the digest, and the report, with
-Postgres kept strictly as a derived index that `pipeline/src/paths.py` labels
-"never the system of record". What the two planes share is a philosophy:
+the season JSON files as the one record both planes read.
+What the two planes share is a philosophy:
 everything durable derives from the verbatim archive under `data/raw_html/`.
 Lose any downstream store and you rebuild it; lose the archive and you have
 lost the evidence.

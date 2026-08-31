@@ -79,17 +79,14 @@ explicit instruction. Conference scope is configuration, not identity: the
 probe stamps whatever `--conference` you passed, and pasting the stanza is
 you asserting the school belongs there.
 
-## 4. Decide the ordinal
+## 4. Leave the ordinal alone
 
-The legacy `game_id` namespace is arithmetic:
-`ordinal * 1_000_000 + year * 100 + game_num`. Only the StatCrew lineage
-builds game_ids, so a SideArm-only school leaves `ordinal` unset (0 means
-unassigned). If the school will be collected through the StatCrew lineage,
-assign a globally unique ordinal: `load_schools` in `pipeline/src/config.py`
-raises on a duplicate, naming both schools and the next free value. The
-refusal is symmetric downstream: `uv run scrape` rejects an ordinal-0 school
-before discovery ever hits the network, and `_build_game_id` in
-`pipeline/scripts/reparse.py` refuses to mint an id for one.
+`ordinal` is a legacy field from the retired numeric `game_id` namespace.
+The live collector never reads it, so a new school leaves it unset (0 means
+unassigned), and several existing stanzas legitimately carry none. The one
+rule that still holds is uniqueness among the ordinals that are assigned:
+`load_schools` in `pipeline/src/config.py` raises on a duplicate, naming
+both schools, so the historical ids the field once minted stay unambiguous.
 
 ## 5. Cover the programme in membership
 

@@ -3,7 +3,7 @@
 Touchline collects the published college-soccer schedule, roster, player
 season statistics, and a box score for every played match — current season
 and archive back to 2016 — then renders those files as a living season board.
-Standings tables, Postgres, parquet, and generated reports remain outside the
+Standings tables and generated reports remain outside the
 first-contact flow.
 
 `/touchline <folder-name>` creates an ordinary data directory under Keelson's

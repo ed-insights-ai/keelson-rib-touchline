@@ -32,18 +32,13 @@ on URL shape alone would refuse the very season that was requested. The guard
 encodes "acceptable only when proven": a redirect is fine exactly when the
 served page still independently names the requested year.
 
-Historical discovery runs the same defense one layer earlier.
-`discover_sidearm_season` (`pipeline/src/sidearm_discovery.py`) harvests
-box-score links from a schedule page, and treats a redirect as a defect only
-when the season actually served differs from the season requested, or cannot
-be determined at all, resolving it from the final path's year segment first
-and the title as a fallback. A
-`2020-21` slug is season 2020, so only the leading year is compared. Each
-harvested link then carries its own embedded season year, which must equal
-the requested one. A few mismatches are logged and dropped; if every link is
-rejected, the run raises `DiscoveryError` naming the seasons the page
-actually served, because a schedule with zero correct-season links is not a
-thin season, it is the wrong page.
+Box-score links get the same defense one layer earlier. `boxscore_links`
+harvests each schedule page's own `/boxscore/{id}` hrefs, so a match is
+only ever fetched through a link the proven schedule itself published: the
+schedule's proof covers the links it carries, and no box-score URL is ever
+constructed by guesswork. A season with zero such links is not treated as
+thin; the matches layer records, per fixture, that no box-score link
+existed on any collected schedule page.
 
 ## The payload trap
 
@@ -84,42 +79,24 @@ season-2020 addresses. A season-year check would refuse every one of them. A
 record's identity is its own fields, matched against what was asked for, not
 the folder it arrived in.
 
-## Knowing when to stop
-
-The oldest lineage has the subtlest proof problem: knowing that a season has
-ended. Legacy StatCrew sites publish games at predictable numbered URLs, so
-`discover_season_games` (`pipeline/src/discovery.py`) probes
-`{year}/{prefix}-{nn}.htm` sequentially. The stopping rule trusts the body,
-not the status code: the probe never checks for a 404 at all, and the first
-response under 1000 bytes is read as the end of the season.
-
-A stopping rule invites an ambiguity, and the collector refuses to live with
-it. A list truncated by a network error mid-probe would be indistinguishable
-from a season that genuinely ended, so `discover_season_games` raises
-`DiscoveryError` instead of returning the partial list. An ambiguous truncation must never masquerade as a completed
-season; a run that cannot tell the difference fails, and the gap stays
-visible.
-
-## Scraper citizenship
+## Collector citizenship
 
 Proof protects the data. The same code is equally deliberate about protecting
 the source, because a collector that behaves badly loses its access and its
 legitimacy together.
 
 - **Transparent identity.** Every session says what it is instead of
-  impersonating a browser build: `"Mozilla/5.0 (Educational/Research
-  Scraper)"` in `pipeline/src/fetcher.py`, `pipeline/src/discovery.py`, and
-  `pipeline/src/sidearm_discovery.py`, and `"Mozilla/5.0 (Touchline
+  impersonating a browser build: `"Mozilla/5.0 (Touchline
   educational/research collector)"` in `build_session`
   (`pipeline/src/sidearm_live.py`).
-- **Politeness paid on the network only.** `GameFetcher.fetch` sleeps half a
-  second after each network fetch, and a cache hit pays nothing, so replays
-  cost the site nothing at all. The board collector parallelizes across
+- **Politeness paid on the network only.** A page verified unchanged is
+  re-parsed from the archive instead of re-fetched, so replays cost the
+  site nothing at all. The board collector parallelizes across
   hosts, never against one: `HostGate` (`pipeline/src/fetch_pool.py`) caps
   every host at a single in-flight request and spaces consecutive requests
-  to the same host 0.2 seconds apart — refused fetches pay too, because the
-  spacing is charged per request, not per success.
-- **Backoff for outages, not answers.** The discovery and live-collection
+  to the same host 0.2 seconds apart, and refused fetches pay too, because
+  the spacing is charged per request, not per success.
+- **Backoff for outages, not answers.** The collection
   sessions retry with
   `Retry(total=3, backoff_factor=1, status_forcelist=[500, 502, 503, 504])`:
   exponential backoff on server errors only. A 4xx is an answer, and

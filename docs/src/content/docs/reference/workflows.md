@@ -95,32 +95,22 @@ Exit semantics: when `merge` alarms, the profile keeps its previous findings, be
 
 ## data-integrity
 
-Answers which numbers in the touchline database are currently trustworthy. It never writes to the database; it does regenerate the parquet export (`reparse`) to compare it against Postgres, which is why it declares the mutation lock. The database defaults to `postgresql://lume@localhost:5432/touchline`, overridable with `DATABASE_URL`.
+Answers which numbers in the touchline data home are currently trustworthy. It is read-only end to end: nothing it runs writes to the home.
 
-Thirteen check nodes run independently (only `export-staleness` waits, on `archive`), then a `report` node aggregates. Eleven measure the parquet/Postgres corpus; `goal-attribution` reads the season JSON layers (`data/fixtures`, `data/stats`) in the working directory instead, and `membership-sync` compares the reference artifact's two copies:
+Three check nodes run independently, then a `report` node aggregates. All of them read the working directory, which is the data home:
 
 | Node | Measures |
 |---|---|
-| `freshness` | games count, newest date, days since, distinct seasons |
-| `conference-flag` | rows with NULL `is_conference_game` or `away_conference` |
-| `conference-derivation` | invokes `conference-audit` and passes through its one-line verdict |
-| `duplication` | duplicate `(date, home, away, gender)` groups and score disagreements |
-| `season-label` | program-seasons whose dates or source URLs disagree with `season_year` |
-| `identity` | scored games where the school cannot identify itself in either team slot |
-| `discipline` | red-card coverage across enabled programs |
-| `orphans` | games with no team stats, player stats, or events; implausibly long seasons |
-| `parse-failures` | unparsed box scores under `data/errors` |
-| `archive` | database row count against the per-school parquet exports; raw_html tracked-vs-disk drift |
-| `export-staleness` | merged export row count against the database; retired ordinals |
+| `collect-gaps` | collect-board gap ledger files waiting under `data/errors`, each naming the layers a run could not prove |
 | `goal-attribution` | per-programme scoreboard goals (fixtures layer, exhibitions and scoreless finals excluded and counted) against summed player goals (stats layer), every divergence named with both figures; programmes present in one layer but not the other |
 | `membership-sync` | the data home's `data/reference/membership.json` against the rib's packaged source of record, canonicalized with `jq -S` so only data can differ; a divergence warns with the exact unified diff printed above the verdict line and the install command in the cause |
 | `report` | bun script; renders the per-check table and one final JSON verdict line |
 
 The contract, uniform across the checks:
 
-- **Fail closed.** The query helper discards psql stderr, so a dead database arrives as an empty capture. Every captured variable is asserted non-empty; any empty one prints a `CHECK DID NOT RUN` headline naming the failed captures and stating they are failed queries, not measurements of zero.
+- **Fail closed.** Every captured variable is asserted non-empty; any empty one prints a `CHECK DID NOT RUN` headline naming the failed captures and stating they are failed measurements, not measurements of zero. A missing or unreadable directory is never a clean zero.
 - **Monitors exit 0.** A check signals failure through the `alarm` verdict in its one-line JSON payload, never through its exit code; even a check that cannot run prints its `CHECK DID NOT RUN` alarm and exits 0.
-- **Severity only rises.** Where a node escalates in more than one place, it goes through a `raise()` helper permitting only the upward moves, `ok` to `warn` to `alarm`, so a later assignment can never undo an earlier signal.
+- **Severity only rises.** Each verdict starts at `ok` and moves only upward, `ok` to `warn` to `alarm`, so a later assignment can never undo an earlier signal.
 - **One verdict.** The `report` node (`runtime: bun`, `always_run: true`, `trigger_rule: all_done`) parses each check's last JSON line from `KEELSON_NODE_{id}_OUTPUT`, rendering an alarm row for a check whose output is empty or unparseable, and prints the worst verdict: any alarm makes the run ALARM, else any warn makes it WARN, else CLEAR.
 
 ## Related

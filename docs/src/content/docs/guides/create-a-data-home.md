@@ -63,7 +63,7 @@ the path already registered under another name) refuses with nothing changed.
 | `data/fixtures/`, `data/rosters/`, `data/stats/`, `data/matches/` | The four deliverable layers, one JSON file per season, gender, and conference (`seasonFileName` in `src/datahome.ts`). |
 | `data/raw_html/` | Every page exactly as fetched, so any parse can be redone offline. |
 | `data/errors/` | Anything a run could not parse, kept rather than dropped. |
-| `data/reference/` | Reference data beside the deliverables: `canon.json` and `membership.json` (`pipeline/src/paths.py`). |
+| `data/reference/` | Reference data beside the deliverables: the `membership.json` mirror (`pipeline/src/paths.py`). |
 
 Plus the marker itself and a README describing the layout.
 

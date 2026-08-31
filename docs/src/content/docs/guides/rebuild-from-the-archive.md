@@ -1,18 +1,17 @@
 ---
 title: Rebuild from the archive
-description: Rebuild parquet and Postgres offline from the raw HTML archive, migrating legacy season files to conference shards first.
+description: Re-derive lost or stale season files from the raw page archive, migrating legacy season files to conference shards first.
 sidebar:
   order: 8
 ---
 
-The raw HTML archive is the system of record. The parquet tree under
-`data/structured/` and the Postgres database are rebuildable derivatives, so
-a corrupt, stale, or deleted derived store is an inconvenience, not a loss:
-rebuild it offline from `data/raw_html/` and the URL manifest. What is never
-a rebuild path is scraping: `uv run scrape` is not offline even with a warm
-cache, because discovery always hits the network (`pipeline/CLAUDE.md`). Use
-`scrape` only for pages you never archived; use `reparse` for everything the
-archive already holds.
+The raw page archive is the evidence tier, and the season JSON files are
+derivatives of it, so a corrupt, stale, or deleted season file is an
+inconvenience, not a loss. The recovery move is always the same: run the
+collect again for that season. The collector proves each page before
+believing it, replays pages the archive already holds when their stored
+validators still stand, and re-fetches only what it must, so a rebuild is
+mostly an offline replay with a thin network edge.
 
 ## 1. Migrate legacy season files, once
 
@@ -41,51 +40,44 @@ is skipped, and a differing destination is refused rather than overwritten.
 Success prints each shard written and exits 0; a refusal prints
 `migration refused:` with the reason and exits 1, having changed nothing.
 
-## 2. Reparse the archive
+## 2. Re-collect the season
 
 ```bash
-TOUCHLINE_DATA_DIR={data-home} uv run --project pipeline reparse
+TOUCHLINE_DATA_DIR={data-home} uv run --project pipeline collect-board \
+  --season {season} --gender {gender} --conference {conference} \
+  --programmes {slug},{slug}
 ```
 
-`pipeline/scripts/reparse.py` reads every archived page under
-`data/raw_html/{school}/{year}/` plus the manifest `data/source_urls.csv` and
-rebuilds the whole `data/structured/` parquet tree without touching the
-network. The manifest is strict: exactly the header `game_id,source_url`, no
-blanks, no duplicates. Reconciliation is bidirectional: every archived page
-must have a manifest row, and every manifest row must be consumed by a page.
+The run rewrites the season's fixtures, rosters, stats, and matches files
+wholesale, widened to whatever scope the home already covers, so one
+command refreshes the whole season unit. Three mechanisms keep the rebuild
+cheap and honest:
 
-Output is built in a staging directory, validated (`_validate_staged_output`
-requires every expected parquet to exist and be non-empty), stamped with a
-`.reparse-complete` marker, then swapped into place by rename, with a backup
-that is restored if the swap fails (`_publish_staged_output`). Success prints
-`Reparsed {n} cached games into ...`. Any page that fails to parse fails the
-whole run, naming the game_id and path, and the previous `data/structured/`
-tree is left untouched: a partial rebuild is never published.
+- **Unchanged pages replay from the archive.** The conditional-fetch memory
+  (`pipeline/src/page_state.py`) answers a cheap validation request per
+  page, and a page verified unchanged is re-parsed from the archived copy
+  `write_raw_pages` kept, not re-fetched. A parser fix invalidates the
+  cached parse through its fingerprint without costing a fetch.
+- **Settled box scores are reused.** A stored box score for a final whose
+  scoreline has not moved is data that cannot have changed since the
+  whistle; the run keeps it rather than re-fetching it.
+- **`--refetch` is the clean slate.** It collects as if the home had never
+  seen the pages: every validator ignored, every box score re-fetched. Use
+  it when the stored state itself is what you distrust.
 
-## 3. Reload the database
+Any layer that cannot be proven lands as a named gap in `data/coverage.json`
+and the run's gap ledger, never as silently missing data.
 
-```bash
-TOUCHLINE_DATA_DIR={data-home} uv run --project pipeline load-db
-```
+## 3. Verify the rebuild
 
-`pipeline/scripts/load_db.py` loads the parquet tree into Postgres
-(`DATABASE_URL`, defaulting to the local touchline database). The load is
-idempotent: games upsert on `game_id`, and the child tables (team stats,
-player stats, events) are deleted and reinserted per game, so re-running
-converges to the same rows. `--dry-run` prints what would load without
-writing; `--school {abbrev}` restricts the load to one school. The database
-is a derived index, never the record: dropping and reloading it is always
-safe.
-
-## 4. Verify the rebuild
-
-Run the checks in [Audit the data](../audit-the-data/). The archive check in
-`workflows/data-integrity.yml` compares Postgres row counts against freshly
-reparsed parquet exports, so a clean rebuild reads as agreement and any gap
-is a real divergence.
+Run the checks in [Audit the data](../audit-the-data/):
+`workflows/data-integrity.yml` sweeps the rebuilt season layers cell by
+cell, and its goal-attribution check names any programme whose fixtures and
+stats layers disagree, which after a rebuild usually means one layer's
+publication lagged the other; re-collect once the site catches up.
 
 **What you just exercised:** [Archive first](../../concepts/archive-first/),
-[The determinism boundary](../../concepts/the-determinism-boundary/), and
+[Proof before parse](../../concepts/proof-before-parse/), and
 [Raw archive as system of record](../../design/raw-archive-as-system-of-record/).
 
 ## Related
@@ -93,9 +85,9 @@ is a real divergence.
 **Run it**
 
 - [Audit the data](../audit-the-data/): the read-only checks that grade the rebuild.
-- [Run a collection](../run-a-collection/): the online path, for data the archive does not hold.
+- [Run a collection](../run-a-collection/): the same command in its everyday shape.
 
 **Understand it**
 
-- [Read a raw page](../../tutorials/read-a-raw-page/): the archived HTML the reparse consumes, opened by hand.
+- [Read a raw page](../../tutorials/read-a-raw-page/): the archived HTML the replay consumes, opened by hand.
 - [Archive first](../../concepts/archive-first/): why the page is written verbatim before anything parses it.

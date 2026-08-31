@@ -11,8 +11,8 @@ and, on a ranked week, "#9 SWOSU". Every downstream join keys on identity:
 membership windows, conference flags, the digest's tables. So Touchline
 resolves every team string to one canonical **institution slug**, without
 similarity scoring: identity here is a grammar, an exact-match index, and a
-ledger of committed human rulings. Exactly one fuzzy comparison exists in the
-whole system, and it is not about institutions. This page follows the rib's
+ledger of committed human rulings. No fuzzy comparison exists anywhere in
+the system. This page follows the rib's
 **entity resolution** story from raw string to slug.
 
 ## A rank is not a name
@@ -72,16 +72,13 @@ raising `ValueError` the moment any normalized alias maps to two slugs. That
 is an **import-time invariant**: an ambiguous alias is a build failure with a
 named collision, never a runtime coin flip decided by iteration order.
 
-`pipeline/scripts/build_canon.py` extends the invariant to the data. It
-measures the universe (every distinct team string across the five source
-columns of games, team stats, player stats, and events), resolves each one,
-and writes `data/reference/canon.json` with deterministic, sorted
-serialization. Its `validate_document` enforces bidirectional parity between
-the measured universe and the committed artifact (no missing keys, no stale
-ones), requires every adjudication to carry an evidence note and every
-artifact-classified note to name a `game_id`, refuses any normalized key that
-crosses identities, and carries regression sentinels for two past bugs. The
-`--check` flag validates the committed artifact without rewriting it.
+The test suite extends the invariant to the ledger.
+`pipeline/tests/test_canon.py` requires every adjudication to carry an
+evidence note, holds a battery of observed source spellings (every published
+rank form included) to their expected normalized keys and slugs, and asserts
+the alias sets stay disjoint after normalization. A ruling without evidence,
+or an alias that drifts onto two identities, fails the test run rather than
+the join.
 
 ## Aliases are scoped by gender
 
@@ -107,8 +104,8 @@ adjudicated to Ozarks of Arkansas, not Oklahoma, on the evidence of a named
 game. "Southwestern" resolves to SWOSU because every source row carrying it
 occurs in SWOSU context on swosuathletics.com. This is **human-in-the-loop**
 resolution done as data engineering: the ambiguity is ruled on once, the
-ruling cites its evidence and is committed where review and `--check` can
-hold it, and nothing is patched silently in the parse path.
+ruling cites its evidence and is committed where review and the test suite
+can hold it, and nothing is patched silently in the parse path.
 
 `resolve` applies the layers in a fixed order: the ledger first, on the raw
 string; the alias index second, on the normalized string; and a default of
@@ -147,18 +144,16 @@ above. An unresolved string remains visibly itself rather than silently
 joining the wrong entity; in the historical universe the ledger then rules
 on it.
 
-## The one fuzzy match in the system
+## No fuzzy matching anywhere
 
-Fuzzy string comparison appears exactly once, in `_looks_like_city_typo` in
-`pipeline/src/home_cities.py`: a `SequenceMatcher` ratio of at least 0.8 over
-the letters of two city names, with trailing "high" and "highschool"
-fragments stripped. `resolve_home_away` uses it only when a venue's city
-matches neither team's known home city, to ask whether the mismatch is a
-typo before concluding the game was played on neutral ground. A hit falls
-back to page order and is tagged `venue-city-unmatched`, a provenance bucket,
-not an identity. A misspelled city was worth one bounded exception because
-the alternative was misclassifying real home games as neutral-site games.
-Institutions are never fuzzy-matched.
+There is no similarity scoring in the resolution path, and no longer any
+fuzzy comparison anywhere in the system. (The retired box-score lineage
+carried one bounded exception, a city-typo check used only to decide
+neutral-site venues, and it retired with that lineage.) Two strings meet
+only through exact equality on a normalized key, through an alias set, or
+through a committed ruling. Institutions are never fuzzy-matched: a string
+that resolves to nothing stays visibly itself instead of being scored onto
+its nearest neighbour.
 
 Lab: [Trace an identity](../../tutorials/trace-an-identity/) follows a raw
 string through every layer on the real data home.
@@ -168,9 +163,9 @@ string through every layer on the real data home.
 **Run it**
 
 - [Onboard a school](../../guides/onboard-a-school/): where a new school's
-  aliases and home city enter the configuration.
-- [Audit the data](../../guides/audit-the-data/): run the checks that hold
-  the canon artifact and the conference flags to this page's rules.
+  aliases enter the configuration.
+- [Audit the data](../../guides/audit-the-data/): run the standing checks
+  that grade what the identities feed, layer against layer.
 
 **Understand it**
 

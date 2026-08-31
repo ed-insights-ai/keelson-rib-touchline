@@ -1,6 +1,6 @@
 ---
 title: Read a page the way the parser does
-description: Parse a real box-score page naively, watch three template defects flatten away, then follow the production parsers, the payload trap, and a forensics artifact.
+description: Parse a real box-score page naively, watch three template defects flatten away, then follow the production reader, the payload trap, and a named refusal.
 sidebar:
   order: 3
 ---
@@ -8,20 +8,19 @@ sidebar:
 The naive theory of this system is one line long: a box score is a table,
 and pandas reads tables. This lab runs that theory against a page from
 your own season, watches it fail three ways, then reads how the production
-parsers survive. Writes go only to the scratch tier and your
-practice home.
+reader survives. Writes go only to the scratch tier.
 
 By the end you can:
 
 - pull a verbatim copy of a box-score page the collector already proved
-- say which facts a flattened `pd.read_html` table cannot carry
-- verify three template defects in the parser sources
-- classify tables by column signature and diff against the classifier
+- say which facts a flattened table dump cannot carry
+- verify three template defects in the collector source
+- classify tables by caption and diff against the reader
 - spring the payload trap on your archived schedule page, and read a
-  parse-forensics artifact
+  named refusal
 
 You need the data home from [Stand up a season](../first-season-board/)
-(`{data-home}`, `{practice-dir}`, `{season}`), plus `jq` and `uv`.
+(`{data-home}`, `{season}`), plus `jq` and `uv`.
 `{package-dir}` is the installed rib package root.
 
 ## 1. Try it: pull the page the collector proved
@@ -56,22 +55,24 @@ command above.
 
 ## 2. Try it: parse it naively
 
-The one-liner:
+The one-liner, every `<table>` flattened to rows of text:
 
 ```sh
 uv run --project {package-dir}/pipeline python -c '
-from io import StringIO
-import pandas as pd
-tables = pd.read_html(StringIO(open("data/scratch/box.html").read()))
+from bs4 import BeautifulSoup
+soup = BeautifulSoup(open("data/scratch/box.html").read(), "lxml")
+tables = soup.find_all("table")
 print(len(tables), "tables")
 for i, t in enumerate(tables):
-    print(i, t.shape, [str(c).lower() for c in t.columns][:8])'
+    rows = t.find_all("tr")
+    heads = [th.get_text(" ", strip=True).lower() for th in t.find_all("th")][:8]
+    print(i, len(rows), "rows", heads)'
 ```
 
 It works, and that is the trap: a pile of anonymous shapes. The page knows
-which table is which, in `caption` elements pandas never showed you; the
-live reader keys table lookups on that text (`parse_boxscore_page` in
-`pipeline/src/sidearm_live.py`):
+which table is which, in `caption` elements the flattening never showed
+you; the live reader keys table lookups on that text (`parse_boxscore_page`
+in `pipeline/src/sidearm_live.py`):
 
 ```sh
 uv run --project {package-dir}/pipeline python -c '
@@ -91,10 +92,8 @@ for c in soup.find_all("caption"):
 Each defect is written down where it is survived:
 
 ```sh
-grep -n "offsides\|penalty-type" {package-dir}/pipeline/src/sidearm_live.py \
-  {package-dir}/pipeline/src/sidearm_parser.py
-grep -ni "substitutes" {package-dir}/pipeline/src/parser.py \
-  {package-dir}/pipeline/src/sidearm_parser.py
+grep -n "offsides" {package-dir}/pipeline/src/sidearm_live.py
+grep -ni "starters\|substitutes" {package-dir}/pipeline/src/sidearm_live.py
 ```
 
 **The mislabeled Fouls id.** The template stamps the Fouls stat group with
@@ -103,17 +102,16 @@ offsides; `_TEAM_STAT_LABELS` in `pipeline/src/sidearm_live.py` keys by
 the visible header text instead.
 
 **Card color lives in a CSS class.** Yellow or red is encoded in the class
-attribute of the type cell, and `pd.read_html` flattens cells to text, so
-the naive pass structurally cannot see it. `_parse_cautions_table` in
-`pipeline/src/sidearm_parser.py` drops to BeautifulSoup and checks for
-`"red"` in the class list, as does `parse_boxscore_page` on the live page.
+attribute of the type cell, and a naive table pass flattens cells to text,
+so it structurally cannot see the color. The cautions reader in
+`parse_boxscore_page` checks the cell's class list for `yellow` or `red`
+and stores `unknown` when neither appears.
 
 **The substitutes flip.** Starter versus substitute is never printed on a
-player's row; it is carried by a section row. Both lineages read the table
-as a two-state machine: `is_starter` starts true and flips at the
-"substitutes" row (`parse_player_stats_table` in `pipeline/src/parser.py`,
-`_parse_player_table` in `pipeline/src/sidearm_parser.py`, and the
-`Starters`/`Substitutes` header groups in `match_lines`).
+player's row; it is carried by a section row. `match_lines` in
+`parse_boxscore_page` reads the table as a two-state machine: the
+`Starters` header group sets the flag and the `Substitutes` header group
+flips it.
 
 **Check yourself**: the stored card types have a closed vocabulary,
 because the class attribute is their only source; verify with this
@@ -127,32 +125,27 @@ jq -r '[.matches[].cards // [] | .[].type] | unique[]' \
 Every line is `yellow`, `red`, or `unknown`, the three values
 `parse_boxscore_page` can produce.
 
-## 4. Try it: classify by signature, then diff
+## 4. Try it: classify by caption, then diff
 
-Classify each table in your listing by hand with the signatures in
-`pipeline/src/sidearm_parser.py`: columns containing `_PLAYER_COLS` make a
-player table, `_GOALIE_COLS` a goalie table, `_SCORING_COLS` a scoring
-summary; a `statistic` column marks team stats; the score table holds a
-`team` column and sits first; four columns with `type` is cautions. Then
-run the classifier:
+Classify each table in your caption listing from exercise 2 by hand:
+`Team Score By Period` is the name table every reference resolves against,
+`Team Statistics` is the label-keyed stat groups, `Scoring Summary` and
+`Cautions and Ejections` are event lists, and the captions ending in a
+player or goalie suffix are the two sides' rosters. Then run the reader
+and compare what it extracted against your verdicts:
 
 ```sh
 uv run --project {package-dir}/pipeline python -c '
-from io import StringIO
-import pandas as pd
-from src.sidearm_parser import _classify_tables
-c = _classify_tables(pd.read_html(StringIO(open("data/scratch/box.html").read())))
-print({k: len(v) if isinstance(v, list) else v is not None for k, v in c.items()})'
+from src.sidearm_live import parse_boxscore_page
+d = parse_boxscore_page(open("data/scratch/box.html").read(), page_url="scratch")
+print({k: (len(v) if isinstance(v, (list, dict)) else v) for k, v in d.items()})'
 ```
 
-**Check yourself**: your hand verdicts and the printout agree table for
-table; verify with the command above. Where a caption from exercise 2
-names a table the signatures missed, the columns name the reason: a header
-outside the signature's dialect (the live reader's label map accepts both
-`MIN` and `Mins.`). The StatCrew lineage trusts headers
-even less: `identify_table_type` in `pipeline/src/parser.py` checks goalie
-signatures before player ones and confirms a player table statistically
-with `has_jersey_number_column`.
+**Check yourself**: `teams` holds exactly 2 entries, and the scoring,
+cards, and plays counts match the rows you can see in the page's own
+tables; verify with the command above. A caption the reader does not
+know is left unread on purpose: an unknown table is no evidence, and
+reading it by position would be a guess.
 
 ## 5. Try it: spring the payload trap
 
@@ -185,46 +178,45 @@ command:
 jq -r '.cells["{season}/men/{programme}/schedule"].state' data/coverage.json
 ```
 
-## 6. Try it: break a page and read the forensics
+## 6. Try it: break a page and watch the refusal
 
-When a page defeats the parser, the failure is recorded, not discarded:
-`pipeline/scripts/scrape.py` calls `log_parse_error`
-(`pipeline/src/parser.py`) with the raw HTML, and the game still fails the
-run's exit code. Reproduce it on a scratch copy, artifact routed to your
-practice home:
+When a page defeats the collector, the failure is recorded with a name,
+not discarded. Reproduce the defeat on a scratch copy by cutting out the
+one table every reference resolves against:
 
 ```sh
 cp data/scratch/box.html data/scratch/broken.html
-TOUCHLINE_DATA_DIR={practice-dir} uv run --project {package-dir}/pipeline python -c '
+uv run --project {package-dir}/pipeline python -c '
 from bs4 import BeautifulSoup
-from src.parser import log_parse_error
-from src.sidearm_parser import parse_sidearm_game
+from src.sidearm_live import parse_boxscore_page
 soup = BeautifulSoup(open("data/scratch/broken.html").read(), "lxml")
-for table in soup.find_all("table")[3:]:
-    table.decompose()
-html = str(soup)
-open("data/scratch/broken.html", "w").write(html)
-try:
-    parse_sidearm_game(html, 999, "scratch", {season})
-except Exception as exc:
-    log_parse_error(999, {season}, exc, html)'
+for table in soup.find_all("table"):
+    caption = table.find("caption")
+    if caption is not None and caption.get_text(strip=True) == "Team Score By Period":
+        table.decompose()
+detail = parse_boxscore_page(str(soup), page_url="scratch")
+print(len(detail.get("teams") or []), "team(s) in the score-by-period table")'
 ```
 
-The gutted page fails the fail-fast bound: fewer than seven tables raises
-`ValueError` in `parse_sidearm_game`.
+Zero teams: with the name table gone, no reference on the page can be
+resolved. In a real run `collect_match` raises `LiveCollectionError` at
+exactly this point, naming the fixture and the count it saw, and the
+refusal lands three places rather than none: the matches file's `missing`
+map, the coverage cell's `reason`, and the run's
+`data/errors/collect-board-{season}-{gender}-{conference}.json` gap
+ledger. Because the served bytes were archived first, the failed parse is
+debuggable later without re-fetching the page.
 
-**Check yourself**: the artifact names the error and still describes each
-surviving table, debuggable without re-fetching; verify with this command:
+**Check yourself**: any box score the collector could not confirm is a
+named reason, one line per fixture; verify with this command:
 
 ```sh
-jq -r '.error_type, .error_message' \
-  {practice-dir}/data/errors/{season}/game_999.json
-jq -r '.tables[] | "\(.index)  \(.shape)  \(.columns | join(","))"' \
-  {practice-dir}/data/errors/{season}/game_999.json
+jq -r '.missing // {} | to_entries[] | "\(.key): \(.value)"' \
+  data/matches/{season}-men-gac.json
 ```
 
-The first prints `ValueError` and its message; the second, one line per
-surviving table.
+An empty listing means every played fixture carries its box score; each
+line that does print names the fixture and why.
 
 ## Next stop
 
@@ -239,9 +231,10 @@ normalization, aliases, and adjudication to canonical identities. Read
 **Run it**
 
 - [Rebuild from the archive](../../guides/rebuild-from-the-archive/):
-  `reparse` re-runs these parsers over every archived page, offline.
-- [Audit the data](../../guides/audit-the-data/): the caption check that
-  re-audits the whole cached population.
+  re-derive the season files from the archived pages, offline where the
+  archive allows it.
+- [Audit the data](../../guides/audit-the-data/): the standing checks over
+  what the collector produced.
 
 **Understand it**
 

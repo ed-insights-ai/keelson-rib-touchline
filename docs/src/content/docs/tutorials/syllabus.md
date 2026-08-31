@@ -26,11 +26,12 @@ student**. Every checkpoint ends "verify with this command", and no lab
 carries a prose answer key. The graders are the rib's own validators, so
 passing a checkpoint and having correct data are the same event:
 
-- **`reparse`** (`pipeline/scripts/reparse.py`) rebuilds the parquet
-  tier from `data/raw_html/` and `data/source_urls.csv` with no network.
-  A parse is right when the rebuild diffs clean.
-- **`build-canon --check`** (`pipeline/scripts/build_canon.py`)
-  validates the committed identity artifact without rewriting it.
+- **`collect-board`** (`pipeline/scripts/collect_board.py`) proves every
+  page before parsing it and writes the coverage manifest; a collection
+  is right when its cells say so, gaps named.
+- **The canon test suite** (`pipeline/tests/test_canon.py`) holds every
+  identity ruling to its evidence contract and the alias index to
+  disjointness.
 - **`check-membership`** (`pipeline/scripts/check_membership.py`)
   validates the authored membership artifact and reports its coverage.
 - **`build-digest`** (`pipeline/scripts/build_digest.py`) is
@@ -71,13 +72,12 @@ always say "on a scratch copy".
    and the season files and recompute results by hand; nothing is
    written, so the living season is never at risk.
 3. **Scratch writes only.** Labs that must write touch only regenerable
-   tiers: `data/scratch/`, the parquet build outputs, and the database
-   that `load-db` reloads from them.
+   tiers: `data/scratch/` and the derived files a re-collect rebuilds.
 
 The taxonomy is not invented for teaching; it mirrors the data home's
-own tiers. The archive under `data/raw_html/` is the system of record
-and no lab writes it. Scratch, parquet, and the database are derived and
-rebuildable, which is exactly why scratch labs may write them. And a
+own tiers. The archive under `data/raw_html/` is the evidence and no lab
+writes it. Scratch and the derived files are rebuildable, which is
+exactly why scratch labs may write them. And a
 practice home is cheap because the empty-or-ours rule makes creating one
 a one-step, reversible act.
 
