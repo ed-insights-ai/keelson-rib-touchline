@@ -12,10 +12,17 @@ import { packageDir } from "./datahome.ts";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Conference membership is DATA, not code. "GAC men's 2026" resolves to a list
-// of programme slugs by reading the authored membership windows — the same
-// artifact the Python pipeline reads. Nothing in this rib may hardcode a
-// conference's member list; conferences change, and the product is meant to
-// expand beyond the one we started with.
+// of programme slugs by reading the authored membership windows. Nothing in
+// this rib may hardcode a conference's member list; conferences change, and
+// the product is meant to expand beyond the one we started with.
+//
+// Two copies of membership.json exist, and nothing syncs them. This rib reads
+// the copy shipped in its own package (packageDir()/data/reference/
+// membership.json). The Python pipeline reads the consumer data home's copy
+// (TOUCHLINE_DATA_DIR/data/reference/membership.json, via membership_path()
+// in pipeline/src/paths.py) — a file bootstrapDataHome() never seeds. An edit
+// to one copy must be propagated to the other by hand, or the two surfaces
+// resolve different member lists for the same season.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface Window {

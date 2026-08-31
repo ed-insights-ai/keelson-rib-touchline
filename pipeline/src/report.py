@@ -7,7 +7,7 @@ briefing (US Letter, warm paper, old-gold accent):
   the page is drawn from it and nowhere else.  The renderer may present
   digest numbers (per-match rates, conference medians, streaks) but never
   invents one;
-* a **narrative** (``touchline.report-narrative/2``) — prose authored by the
+* a **narrative** (``touchline.report-narrative/4``) — prose authored by the
   report workflow's analyst and research nodes.  The narrative never carries
   a number the digest doesn't; the workflow's verification pass enforces
   that upstream.

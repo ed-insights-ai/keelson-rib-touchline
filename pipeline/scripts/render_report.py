@@ -66,7 +66,7 @@ def main() -> int:
     parser.add_argument("--focus", required=True, help="Focus programme slug the report is prepared for.")
     parser.add_argument(
         "--narrative",
-        help="Path to a touchline.report-narrative/1 JSON file; default "
+        help="Path to a touchline.report-narrative/4 JSON file; default "
         "data/reports/narrative-<season>-<gender>.json when present.",
     )
     args = parser.parse_args()

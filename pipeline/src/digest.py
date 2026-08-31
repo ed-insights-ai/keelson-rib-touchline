@@ -673,7 +673,10 @@ def availability_flags(
     injury-and-recovery shape).  The record cannot distinguish injury from
     transfer, discipline, or redshirt, so the digest reports only the pattern
     (apps, starts, minutes, the dates around the hole) and never the cause.
-    Consumers must label conclusions drawn from this as projected.
+    Consumers must label conclusions drawn from this as an unverified signal
+    ("Unverified signal — requires confirmation", the ``signal`` narrative
+    label; prompts/style-contract.md), never a diagnosis such as "projected
+    injury".
     """
     matches = matches_payload.get("matches") or {}
     timeline: list[tuple[str, dict]] = []
@@ -780,7 +783,10 @@ def usage_shifts(
     position battle lost, academic redshirt — the record cannot say which.
     Only players on the current published roster are reported; departures
     are the turnover section's story.  Consumers must present conclusions
-    from this as possible analysis, labeled projected.
+    from this as an unverified signal ("Unverified signal — requires
+    confirmation", the ``signal`` narrative label; prompts/style-contract.md
+    names minutes collapses explicitly), never a diagnosis such as
+    "projected injury".
     """
     before_stats = stats_by_season.get(prev_season - 1)
     after_stats = stats_by_season.get(prev_season)

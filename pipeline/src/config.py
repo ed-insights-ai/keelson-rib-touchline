@@ -19,6 +19,15 @@ class SchoolConfig:
     conference: str
     prefix: str
     base_url: str
+    # Reader-facing name, when it differs from ``name``. ``name`` does double
+    # duty: programme_slug(name) mints the institution slug that keys
+    # membership.json, canon.json and every coverage cell, so it must stay
+    # ASCII-plain and stable even when the school's published name carries
+    # punctuation ("St. Mary's" → name "Saint Marys", slug "saint-marys") or
+    # the school renames (slugs never rename). ``display_name`` carries the
+    # published spelling for reader-facing surfaces; empty means ``name`` is
+    # already the published name. Use ``display()`` to resolve.
+    display_name: str = ""
     years: list[int] = field(default_factory=list)
     enabled: bool = False
     data_status: str = "unverified"
@@ -42,6 +51,10 @@ class SchoolConfig:
     # use base_url directly.
     live_base_url: str = ""
     live_scraper: str = ""
+
+    def display(self) -> str:
+        """The reader-facing programme name — published spelling over slug source."""
+        return self.display_name or self.name
 
     def build_game_url(self, year: int, game_num: int) -> str:
         """Build a game URL from the template, substituting {year}, {prefix}, {num:02d}."""
@@ -81,6 +94,7 @@ def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
     for entry in data.get("schools", []):
         school = SchoolConfig(
             name=entry["name"],
+            display_name=entry.get("display_name", ""),
             abbreviation=entry["abbreviation"],
             conference=entry.get("conference", ""),
             prefix=entry.get("prefix", ""),
