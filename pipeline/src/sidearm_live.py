@@ -44,6 +44,7 @@ table, so no guard may require it.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 from collections.abc import Sequence
@@ -57,6 +58,7 @@ from bs4 import BeautifulSoup
 from urllib3.util.retry import Retry
 
 from src.config import SchoolConfig
+from src.page_state import PageState, PageStateStore, content_signature
 from src.tls import TruststoreHTTPAdapter
 
 
@@ -104,6 +106,10 @@ class LayerOutcome:
     count: int = 0
     reason: str | None = None
     source_url: str | None = None
+    #: The page was verified still current (a 304, or identical bytes) and its
+    #: stored data was reused: the parse was skipped and the archived bytes
+    #: must not be rewritten.
+    unchanged: bool = False
 
 
 @dataclass(frozen=True)
@@ -187,20 +193,99 @@ def assert_served_season(page: PublishedPage, year: int, kind: str) -> None:
         )
 
 
-def fetch_published_page(
-    session: requests.Session, base_url: str, year: int, kind: str
-) -> PublishedPage:
+@dataclass(frozen=True)
+class ConditionalFetch:
+    """What one conditional request learned about a published page.
+
+    ``unchanged`` with no ``page`` is a 304: the server confirmed the archived
+    bytes are current and sent nothing.  ``unchanged`` with a ``page`` is the
+    content-hash tier: the body arrived but is byte-identical to the archive,
+    so the parse and the write are still skipped.  Neither is a gap — the data
+    home already holds this page and its parse.
+    """
+
+    page: PublishedPage | None
+    unchanged: bool
+    etag: str | None = None
+    last_modified: str | None = None
+    signature: str | None = None
+
+
+def fetch_published_page_conditional(
+    session: requests.Session,
+    base_url: str,
+    year: int,
+    kind: str,
+    state: PageState | None = None,
+    want_validators: bool = False,
+) -> ConditionalFetch:
+    """Fetch a page, asking the server first whether it changed at all.
+
+    Two tiers, cheapest first.  With stored validators the request carries
+    ``If-None-Match``/``If-Modified-Since`` and a 304 is an immediate skip —
+    no body, no parse.  Servers that answer 200 anyway are caught by the
+    content hash: identical bytes under the same final URL still skip the
+    parse, costing only the transfer.  The season assertion runs only on
+    genuinely new content — an unchanged page already proved its season when
+    it was archived, and the assertion's title parse is exactly the work the
+    skip exists to avoid.
+    """
     requested_url = f"{base_url.rstrip('/')}/{kind}/{year}"
+    headers: dict[str, str] = {}
+    if state is not None:
+        if state.etag:
+            headers["If-None-Match"] = state.etag
+        if state.last_modified:
+            headers["If-Modified-Since"] = state.last_modified
     try:
-        response = session.get(requested_url, timeout=30)
+        response = session.get(requested_url, timeout=30, headers=headers or None)
+        if state is not None and response.status_code == 304:
+            return ConditionalFetch(page=None, unchanged=True)
         response.raise_for_status()
     except requests.RequestException as exc:
         raise LiveCollectionError(
             f"[{year}] failed to fetch {kind} page {requested_url}: {exc}"
         ) from exc
     page = PublishedPage(requested_url, response.url, response.text)
+    etag: str | None = None
+    last_modified: str | None = None
+    signature: str | None = None
+    if want_validators:
+        served = getattr(response, "headers", None) or {}
+        etag = served.get("ETag")
+        last_modified = served.get("Last-Modified")
+        signature = content_signature(page.html)
+        if (
+            state is not None
+            and state.signature == signature
+            and state.final_url == page.final_url
+        ):
+            return ConditionalFetch(
+                page=page,
+                unchanged=True,
+                etag=etag,
+                last_modified=last_modified,
+                signature=signature,
+            )
     assert_served_season(page, year, kind)
-    return page
+    return ConditionalFetch(
+        page=page,
+        unchanged=False,
+        etag=etag,
+        last_modified=last_modified,
+        signature=signature,
+    )
+
+
+def fetch_published_page(
+    session: requests.Session, base_url: str, year: int, kind: str
+) -> PublishedPage:
+    fetched = fetch_published_page_conditional(session, base_url, year, kind)
+    if fetched.page is None:  # unreachable without stored validators
+        raise LiveCollectionError(
+            f"[{year}] {kind} page returned no content without a conditional request"
+        )
+    return fetched.page
 
 
 def _component_objects(html: str) -> list[dict[str, object]]:
@@ -1555,6 +1640,26 @@ def collect_match(
     return detail
 
 
+def parse_fingerprint(*inputs: object) -> str:
+    """The identity of a parse: what, besides the page's bytes, shapes output.
+
+    A cached parse is only reusable while the function that produced it and
+    every configured input it read are unchanged.  The parser's own source is
+    hashed rather than hand-versioned — a hand-bumped constant is exactly the
+    kind of thing a parser bugfix forgets, and forgetting it would silently
+    serve the old parse of an unchanged page.  Callers append the inputs that
+    steer their parse (the identity aliases and conference membership for a
+    schedule; the season year everywhere, since date resolution depends on
+    it), so a schools.toml edit invalidates cached parses without costing a
+    single extra fetch — the archived bytes are simply read again.
+    """
+    digest = hashlib.sha256(Path(__file__).read_bytes())
+    for value in inputs:
+        digest.update(b"\x00")
+        digest.update(json.dumps(value, sort_keys=True, default=str).encode("utf-8"))
+    return digest.hexdigest()
+
+
 def collect_programme(
     school: SchoolConfig,
     year: int,
@@ -1562,6 +1667,7 @@ def collect_programme(
     session: requests.Session | None = None,
     layers: Sequence[str] = DEFAULT_LAYERS,
     members: set[str] | None = None,
+    page_cache: PageStateStore | None = None,
 ) -> ProgrammeCollection:
     """Collect the requested layers, each standing or falling on its own.
 
@@ -1570,6 +1676,13 @@ def collect_programme(
     a year, or refuse one COVID season while serving every neighbour — so a
     collector that fails the whole programme when one layer fails discards the
     layers that worked.
+
+    With a ``page_cache``, each fetch first asks whether the page changed at
+    all: an unchanged page (a 304, or byte-identical content) reuses the
+    cached parse output and marks its outcome ``unchanged`` instead of
+    re-parsing, and a page whose bytes are current but whose cached parse is
+    stale (parser or identity config changed) is re-parsed from the archive
+    without another transfer of the body.
     """
     slug = programme_slug(school.name)
     wanted = tuple(layers)
@@ -1620,88 +1733,328 @@ def collect_programme(
 
     if LAYER_SCHEDULE in wanted:
         schedule_url = f"{base_url}/schedule/{year}"
+        # The schedule parse reads more than the page: opponent identity comes
+        # from the alias map and the conference flag from membership, so both
+        # belong to the cached parse's identity.
+        fingerprint = parse_fingerprint(
+            year, aliases, sorted(members) if members is not None else None
+        )
+        state = (
+            page_cache.load(slug, LAYER_SCHEDULE, fingerprint) if page_cache else None
+        )
         try:
-            page = fetch_published_page(client, base_url, year, "schedule")
-            schedule_html = page.html
-            schedule_url = page.final_url
-            fixtures = parse_schedule_page(
-                page.html,
-                page_url=page.final_url,
-                year=year,
-                owner_slug=slug,
-                aliases=aliases,
-                members=members,
-            )
-            assert_untrapped_schedule(
-                page.html, year, page.final_url, fixtures, slug
-            )
-            if not fixtures and not _has_schedule_markup(page.html):
-                raise LiveCollectionError(
-                    f"[{year}] {page.final_url} published no schedule payload "
-                    f"and no rendered games — either the season is not "
-                    f"released yet or the page is not SideArm"
-                )
-            outcomes[LAYER_SCHEDULE] = LayerOutcome(
+            fetched = fetch_published_page_conditional(
+                client,
+                base_url,
+                year,
                 LAYER_SCHEDULE,
-                STATE_COMPLETE if fixtures else STATE_EMPTY,
-                count=len(fixtures),
-                reason=None
-                if fixtures
-                else f"[{year}] the {year} schedule page proved its season but listed no fixtures",
-                source_url=page.final_url,
+                state=state,
+                want_validators=page_cache is not None,
             )
-        except LiveCollectionError as exc:
+            if fetched.unchanged and state is not None and page_cache is not None:
+                schedule_url = state.final_url
+                # The archived bytes still stand, and downstream consumers
+                # (box-score link extraction) read them without a parse.
+                schedule_html = state.read_html()
+                if state.parsed is not None:
+                    fixtures = list(state.parsed.get("fixtures") or [])  # type: ignore[arg-type]
+                    outcomes[LAYER_SCHEDULE] = LayerOutcome(
+                        LAYER_SCHEDULE,
+                        state.outcome_state,
+                        count=state.outcome_count,
+                        reason=state.outcome_reason,
+                        source_url=state.final_url,
+                        unchanged=True,
+                    )
+                    page_cache.mark_verified(
+                        slug,
+                        LAYER_SCHEDULE,
+                        etag=fetched.etag,
+                        last_modified=fetched.last_modified,
+                    )
+                else:
+                    # Unchanged page, stale parse: read the archive again.
+                    fixtures = parse_schedule_page(
+                        schedule_html,
+                        page_url=state.final_url,
+                        year=year,
+                        owner_slug=slug,
+                        aliases=aliases,
+                        members=members,
+                    )
+                    outcomes[LAYER_SCHEDULE] = LayerOutcome(
+                        LAYER_SCHEDULE,
+                        STATE_COMPLETE if fixtures else STATE_EMPTY,
+                        count=len(fixtures),
+                        reason=None
+                        if fixtures
+                        else f"[{year}] the {year} schedule page proved its season but listed no fixtures",
+                        source_url=state.final_url,
+                        unchanged=True,
+                    )
+                    page_cache.mark_verified(
+                        slug,
+                        LAYER_SCHEDULE,
+                        etag=fetched.etag,
+                        last_modified=fetched.last_modified,
+                        fingerprint=fingerprint,
+                        outcome_state=outcomes[LAYER_SCHEDULE].state,
+                        outcome_count=len(fixtures),
+                        outcome_reason=outcomes[LAYER_SCHEDULE].reason,
+                        parsed={"fixtures": fixtures},
+                    )
+            else:
+                page = fetched.page
+                assert page is not None
+                schedule_html = page.html
+                schedule_url = page.final_url
+                fixtures = parse_schedule_page(
+                    page.html,
+                    page_url=page.final_url,
+                    year=year,
+                    owner_slug=slug,
+                    aliases=aliases,
+                    members=members,
+                )
+                assert_untrapped_schedule(
+                    page.html, year, page.final_url, fixtures, slug
+                )
+                if not fixtures and not _has_schedule_markup(page.html):
+                    raise LiveCollectionError(
+                        f"[{year}] {page.final_url} published no schedule payload "
+                        f"and no rendered games — either the season is not "
+                        f"released yet or the page is not SideArm"
+                    )
+                outcomes[LAYER_SCHEDULE] = LayerOutcome(
+                    LAYER_SCHEDULE,
+                    STATE_COMPLETE if fixtures else STATE_EMPTY,
+                    count=len(fixtures),
+                    reason=None
+                    if fixtures
+                    else f"[{year}] the {year} schedule page proved its season but listed no fixtures",
+                    source_url=page.final_url,
+                )
+                if page_cache is not None and fetched.signature is not None:
+                    page_cache.save(
+                        slug,
+                        LAYER_SCHEDULE,
+                        requested_url=page.requested_url,
+                        final_url=page.final_url,
+                        etag=fetched.etag,
+                        last_modified=fetched.last_modified,
+                        signature=fetched.signature,
+                        fingerprint=fingerprint,
+                        outcome_state=outcomes[LAYER_SCHEDULE].state,
+                        outcome_count=len(fixtures),
+                        outcome_reason=outcomes[LAYER_SCHEDULE].reason,
+                        parsed={"fixtures": fixtures},
+                    )
+        except (LiveCollectionError, OSError) as exc:
             outcomes[LAYER_SCHEDULE] = LayerOutcome(
                 LAYER_SCHEDULE,
                 STATE_UNAVAILABLE,
                 reason=str(exc),
                 source_url=schedule_url,
             )
+            if page_cache is not None and schedule_html:
+                # The refused page's bytes will overwrite the archive, so a
+                # sidecar describing the previous good page would lie.
+                page_cache.invalidate(slug, LAYER_SCHEDULE)
 
     if LAYER_ROSTER in wanted:
         roster_url = f"{base_url}/roster/{year}"
+        fingerprint = parse_fingerprint(year)
+        state = (
+            page_cache.load(slug, LAYER_ROSTER, fingerprint) if page_cache else None
+        )
         try:
-            page = fetch_published_page(client, base_url, year, "roster")
-            roster_html = page.html
-            roster_url = page.final_url
-            players = parse_roster_page(page.html, page_url=page.final_url)
-            outcomes[LAYER_ROSTER] = LayerOutcome(
+            fetched = fetch_published_page_conditional(
+                client,
+                base_url,
+                year,
                 LAYER_ROSTER,
-                STATE_COMPLETE if players else STATE_EMPTY,
-                count=len(players),
-                reason=None
-                if players
-                else f"[{year}] the {year} roster page proved its season but listed no players",
-                source_url=page.final_url,
+                state=state,
+                want_validators=page_cache is not None,
             )
-        except LiveCollectionError as exc:
+            if fetched.unchanged and state is not None and page_cache is not None:
+                roster_url = state.final_url
+                if state.parsed is not None:
+                    players = list(state.parsed.get("players") or [])  # type: ignore[arg-type]
+                    outcomes[LAYER_ROSTER] = LayerOutcome(
+                        LAYER_ROSTER,
+                        state.outcome_state,
+                        count=state.outcome_count,
+                        reason=state.outcome_reason,
+                        source_url=state.final_url,
+                        unchanged=True,
+                    )
+                    page_cache.mark_verified(
+                        slug,
+                        LAYER_ROSTER,
+                        etag=fetched.etag,
+                        last_modified=fetched.last_modified,
+                    )
+                else:
+                    players = parse_roster_page(
+                        state.read_html(), page_url=state.final_url
+                    )
+                    outcomes[LAYER_ROSTER] = LayerOutcome(
+                        LAYER_ROSTER,
+                        STATE_COMPLETE if players else STATE_EMPTY,
+                        count=len(players),
+                        reason=None
+                        if players
+                        else f"[{year}] the {year} roster page proved its season but listed no players",
+                        source_url=state.final_url,
+                        unchanged=True,
+                    )
+                    page_cache.mark_verified(
+                        slug,
+                        LAYER_ROSTER,
+                        etag=fetched.etag,
+                        last_modified=fetched.last_modified,
+                        fingerprint=fingerprint,
+                        outcome_state=outcomes[LAYER_ROSTER].state,
+                        outcome_count=len(players),
+                        outcome_reason=outcomes[LAYER_ROSTER].reason,
+                        parsed={"players": players},
+                    )
+            else:
+                page = fetched.page
+                assert page is not None
+                roster_html = page.html
+                roster_url = page.final_url
+                players = parse_roster_page(page.html, page_url=page.final_url)
+                outcomes[LAYER_ROSTER] = LayerOutcome(
+                    LAYER_ROSTER,
+                    STATE_COMPLETE if players else STATE_EMPTY,
+                    count=len(players),
+                    reason=None
+                    if players
+                    else f"[{year}] the {year} roster page proved its season but listed no players",
+                    source_url=page.final_url,
+                )
+                if page_cache is not None and fetched.signature is not None:
+                    page_cache.save(
+                        slug,
+                        LAYER_ROSTER,
+                        requested_url=page.requested_url,
+                        final_url=page.final_url,
+                        etag=fetched.etag,
+                        last_modified=fetched.last_modified,
+                        signature=fetched.signature,
+                        fingerprint=fingerprint,
+                        outcome_state=outcomes[LAYER_ROSTER].state,
+                        outcome_count=len(players),
+                        outcome_reason=outcomes[LAYER_ROSTER].reason,
+                        parsed={"players": players},
+                    )
+        except (LiveCollectionError, OSError) as exc:
             outcomes[LAYER_ROSTER] = LayerOutcome(
                 LAYER_ROSTER, STATE_UNAVAILABLE, reason=str(exc), source_url=roster_url
             )
+            if page_cache is not None and roster_html:
+                page_cache.invalidate(slug, LAYER_ROSTER)
 
     if LAYER_STATS in wanted:
         stats_url = f"{base_url}/stats/{year}"
+        fingerprint = parse_fingerprint(year)
+        state = (
+            page_cache.load(slug, LAYER_STATS, fingerprint) if page_cache else None
+        )
         try:
-            page = fetch_published_page(client, base_url, year, "stats")
-            stats_html = page.html
-            stats_url = page.final_url
-            stat_players, stat_keepers = parse_stats_page(
-                page.html, page_url=page.final_url
-            )
-            count = len(stat_players) + len(stat_keepers)
-            outcomes[LAYER_STATS] = LayerOutcome(
+            fetched = fetch_published_page_conditional(
+                client,
+                base_url,
+                year,
                 LAYER_STATS,
-                STATE_COMPLETE if count else STATE_EMPTY,
-                count=count,
-                reason=None
-                if count
-                else f"[{year}] the {year} statistics page proved its season but listed no players",
-                source_url=page.final_url,
+                state=state,
+                want_validators=page_cache is not None,
             )
-        except LiveCollectionError as exc:
+            if fetched.unchanged and state is not None and page_cache is not None:
+                stats_url = state.final_url
+                if state.parsed is not None:
+                    stat_players = list(state.parsed.get("players") or [])  # type: ignore[arg-type]
+                    stat_keepers = list(state.parsed.get("keepers") or [])  # type: ignore[arg-type]
+                    outcomes[LAYER_STATS] = LayerOutcome(
+                        LAYER_STATS,
+                        state.outcome_state,
+                        count=state.outcome_count,
+                        reason=state.outcome_reason,
+                        source_url=state.final_url,
+                        unchanged=True,
+                    )
+                    page_cache.mark_verified(
+                        slug,
+                        LAYER_STATS,
+                        etag=fetched.etag,
+                        last_modified=fetched.last_modified,
+                    )
+                else:
+                    stat_players, stat_keepers = parse_stats_page(
+                        state.read_html(), page_url=state.final_url
+                    )
+                    count = len(stat_players) + len(stat_keepers)
+                    outcomes[LAYER_STATS] = LayerOutcome(
+                        LAYER_STATS,
+                        STATE_COMPLETE if count else STATE_EMPTY,
+                        count=count,
+                        reason=None
+                        if count
+                        else f"[{year}] the {year} statistics page proved its season but listed no players",
+                        source_url=state.final_url,
+                        unchanged=True,
+                    )
+                    page_cache.mark_verified(
+                        slug,
+                        LAYER_STATS,
+                        etag=fetched.etag,
+                        last_modified=fetched.last_modified,
+                        fingerprint=fingerprint,
+                        outcome_state=outcomes[LAYER_STATS].state,
+                        outcome_count=count,
+                        outcome_reason=outcomes[LAYER_STATS].reason,
+                        parsed={"players": stat_players, "keepers": stat_keepers},
+                    )
+            else:
+                page = fetched.page
+                assert page is not None
+                stats_html = page.html
+                stats_url = page.final_url
+                stat_players, stat_keepers = parse_stats_page(
+                    page.html, page_url=page.final_url
+                )
+                count = len(stat_players) + len(stat_keepers)
+                outcomes[LAYER_STATS] = LayerOutcome(
+                    LAYER_STATS,
+                    STATE_COMPLETE if count else STATE_EMPTY,
+                    count=count,
+                    reason=None
+                    if count
+                    else f"[{year}] the {year} statistics page proved its season but listed no players",
+                    source_url=page.final_url,
+                )
+                if page_cache is not None and fetched.signature is not None:
+                    page_cache.save(
+                        slug,
+                        LAYER_STATS,
+                        requested_url=page.requested_url,
+                        final_url=page.final_url,
+                        etag=fetched.etag,
+                        last_modified=fetched.last_modified,
+                        signature=fetched.signature,
+                        fingerprint=fingerprint,
+                        outcome_state=outcomes[LAYER_STATS].state,
+                        outcome_count=count,
+                        outcome_reason=outcomes[LAYER_STATS].reason,
+                        parsed={"players": stat_players, "keepers": stat_keepers},
+                    )
+        except (LiveCollectionError, OSError) as exc:
             outcomes[LAYER_STATS] = LayerOutcome(
                 LAYER_STATS, STATE_UNAVAILABLE, reason=str(exc), source_url=stats_url
             )
+            if page_cache is not None and stats_html:
+                page_cache.invalidate(slug, LAYER_STATS)
 
     return ProgrammeCollection(
         slug=slug,
@@ -1723,20 +2076,30 @@ def collect_programme(
 def write_raw_pages(
     root: Path, result: ProgrammeCollection, year: int, gender: str
 ) -> None:
-    """Archive whatever was actually served, so any parse can be redone offline."""
+    """Archive whatever was actually served, so any parse can be redone offline.
+
+    A layer verified unchanged is not rewritten: the archive already holds
+    exactly those bytes, and skipping the write is half of what the
+    conditional check buys.
+    """
     if not (result.schedule_html or result.roster_html or result.stats_html):
         return
+
+    def fresh(layer: str) -> bool:
+        outcome = result.outcomes.get(layer)
+        return outcome is None or not outcome.unchanged
+
     directory = root / "data" / "raw_html" / result.slug
     directory.mkdir(parents=True, exist_ok=True)
-    if result.schedule_html:
+    if result.schedule_html and fresh(LAYER_SCHEDULE):
         (directory / f"{year}-{gender}-schedule.html").write_text(
             result.schedule_html, encoding="utf-8"
         )
-    if result.roster_html:
+    if result.roster_html and fresh(LAYER_ROSTER):
         (directory / f"{year}-{gender}-roster.html").write_text(
             result.roster_html, encoding="utf-8"
         )
-    if result.stats_html:
+    if result.stats_html and fresh(LAYER_STATS):
         (directory / f"{year}-{gender}-stats.html").write_text(
             result.stats_html, encoding="utf-8"
         )

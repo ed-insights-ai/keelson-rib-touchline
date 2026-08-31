@@ -24,6 +24,7 @@ from pathlib import Path
 
 from src import coverage, paths
 from src.config import DEFAULT_CONFIG, load_schools
+from src.page_state import PageStateStore
 from src.sidearm_live import (
     DEFAULT_LAYERS,
     LAYER_MATCHES,
@@ -227,6 +228,10 @@ def collect(
     cells: dict[str, dict[str, object]] = {}
     root = paths.data_root()
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    # The conditional-fetch memory: with it, an unchanged page answers a cheap
+    # validation request instead of a re-parse.  --refetch collects as if the
+    # data home had never seen these pages.
+    page_cache = None if refetch else PageStateStore(root, season, gender)
 
     def record(programme: str, layer: str, state: str, **extra: object) -> None:
         cells[coverage.cell_key(season, gender, programme, layer)] = {
@@ -255,7 +260,8 @@ def collect(
             continue
 
         result = collect_programme(
-            school, season, aliases, layers=layers, members=members
+            school, season, aliases, layers=layers, members=members,
+            page_cache=page_cache,
         )
         write_raw_pages(root, result, season, gender)
         results.append(result)
@@ -270,6 +276,9 @@ def collect(
                 count=outcome.count,
                 reason=outcome.reason,
                 source_url=outcome.source_url,
+                # A run that legitimately did nothing must be legible as
+                # verified-unchanged, not mistakable for a gap.
+                verified="unchanged" if outcome.unchanged else None,
             )
             if outcome.reason:
                 errors.append(f"{slug} {layer}: {outcome.reason}")
@@ -578,8 +587,9 @@ def main() -> int:
         "--refetch",
         action="store_true",
         help=(
-            "Re-fetch every box score, ignoring stored match data — the "
-            "wholesale behaviour, for when stored details need refreshing."
+            "Collect as if the data home had never seen these pages: ignore "
+            "stored validators and stored box scores, re-fetching and "
+            "re-parsing everything."
         ),
     )
     args = parser.parse_args()
@@ -681,6 +691,17 @@ def main() -> int:
         return 1
 
     print(f"wrote {', '.join(str(path) for path in written)} and {manifest_path}")
+
+    unchanged = sum(
+        1
+        for cell in cells.values()
+        if isinstance(cell, dict) and cell.get("verified") == "unchanged"
+    )
+    if unchanged:
+        print(
+            f"{unchanged} page(s) verified unchanged — reused without "
+            f"re-parsing or rewriting"
+        )
 
     if LAYER_SCHEDULE in layers:
         played = sum(

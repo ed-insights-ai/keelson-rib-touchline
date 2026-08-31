@@ -159,8 +159,8 @@ def test_collect_emits_schema_v2_and_each_programmes_actual_conference(
         ),
     ]
 
-    def fake_programme(school, season, aliases, *, layers, members):
-        del season, aliases, members
+    def fake_programme(school, season, aliases, *, layers, members, page_cache=None):
+        del season, aliases, members, page_cache
         return ProgrammeCollection(
             slug=programme_slug(school.name),
             name=school.name,
@@ -627,3 +627,51 @@ def test_stored_match_current_respects_orientation() -> None:
     unoriented = _stored_detail(1, 1)
     unoriented.pop("home_index")
     assert _stored_match_current(unoriented, draw) is True
+
+
+def test_collect_records_verified_unchanged_cells(
+    monkeypatch, tmp_path: Path
+) -> None:
+    # A page verified unchanged must be legible in the manifest as
+    # verified-unchanged, not mistakable for a gap — and a freshly parsed
+    # page must not carry the marker.
+    school = SchoolConfig(
+        name="Harding",
+        abbreviation="HU",
+        conference="GAC",
+        prefix="hu",
+        base_url="https://example.test/sports/mens-soccer",
+        enabled=True,
+    )
+    result = ProgrammeCollection(
+        slug="harding",
+        name=school.name,
+        fixtures=[],
+        players=[],
+        outcomes={
+            LAYER_SCHEDULE: LayerOutcome(
+                LAYER_SCHEDULE, STATE_COMPLETE, count=9, unchanged=True
+            ),
+            "roster": LayerOutcome("roster", STATE_COMPLETE, count=20),
+        },
+    )
+    monkeypatch.setattr(collect_board, "load_schools", lambda _path: [school])
+    monkeypatch.setattr(
+        collect_board, "collect_programme", lambda *_args, **_kwargs: result
+    )
+    monkeypatch.setattr(collect_board, "write_raw_pages", lambda *_args: None)
+    monkeypatch.setattr(collect_board.paths, "data_root", lambda: tmp_path)
+
+    cells = collect_board.collect(
+        season=2026,
+        gender="men",
+        conference="GAC",
+        wanted=["harding"],
+        layers=(LAYER_SCHEDULE, "roster"),
+        config_path=tmp_path / "schools.toml",
+        membership_extrapolated=False,
+    )[4]
+
+    assert cells["2026/men/harding/schedule"]["verified"] == "unchanged"
+    assert cells["2026/men/harding/schedule"]["state"] == STATE_COMPLETE
+    assert "verified" not in cells["2026/men/harding/roster"]
