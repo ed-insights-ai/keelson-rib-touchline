@@ -159,8 +159,10 @@ def test_collect_emits_schema_v2_and_each_programmes_actual_conference(
         ),
     ]
 
-    def fake_programme(school, season, aliases, *, layers, members, page_cache=None):
-        del season, aliases, members, page_cache
+    def fake_programme(
+        school, season, aliases, *, session=None, layers, members, page_cache=None
+    ):
+        del season, aliases, session, members, page_cache
         return ProgrammeCollection(
             slug=programme_slug(school.name),
             name=school.name,
@@ -229,8 +231,10 @@ def test_display_name_reaches_the_fixtures_payload_but_never_the_slug(
         encoding="utf-8",
     )
 
-    def fake_programme(school, season, aliases, *, layers, members, page_cache=None):
-        del season, aliases, members, page_cache
+    def fake_programme(
+        school, season, aliases, *, session=None, layers, members, page_cache=None
+    ):
+        del season, aliases, session, members, page_cache
         return ProgrammeCollection(
             slug=programme_slug(school.name),
             name=school.name,

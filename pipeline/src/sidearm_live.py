@@ -133,8 +133,14 @@ class ProgrammeCollection:
         return outcome.state if outcome else STATE_UNAVAILABLE
 
 
-def build_session() -> requests.Session:
-    session = requests.Session()
+def build_session(session: requests.Session | None = None) -> requests.Session:
+    """Configure the collector's session — headers, retries, OS-trust TLS.
+
+    A caller may supply the session instance (the board collector hands in a
+    host-gated one so the politeness contract rides every request); by
+    default a plain one is built.
+    """
+    session = session if session is not None else requests.Session()
     session.headers.update(
         {"User-Agent": "Mozilla/5.0 (Touchline educational/research collector)"}
     )
