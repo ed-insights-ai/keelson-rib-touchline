@@ -17,8 +17,9 @@ keelson workflow run data-integrity
 ```
 
 `workflows/data-integrity.yml` rebuilds the parquet export offline from the
-raw archive, then runs eleven deterministic read-only checks against it and
-live Postgres. Each check emits a one-line JSON verdict (`check`, `verdict`,
+raw archive, then runs twelve deterministic read-only checks against it,
+live Postgres, and the season JSON layers (`data/fixtures`, `data/stats`).
+Each check emits a one-line JSON verdict (`check`, `verdict`,
 `headline`, `cause`), and the report node renders them as a verdict table: a
 rollup line (`CLEAR`, `WARN`, or `ALARM`, the worst of all checks, with
 counts) and one row per check.
@@ -36,6 +37,7 @@ counts) and one row per check.
 | parse-failures | unparsed box scores waiting in `data/errors` |
 | archive | Postgres row count vs the per-school parquet exports; archive git drift |
 | export-staleness | the merged parquet export vs Postgres; retired-ordinal rows |
+| goal-attribution | per-programme scoreboard goals (fixtures layer, exhibitions and scoreless finals excluded and counted) vs summed player goals (stats layer), every divergence named with both figures |
 
 ## 2. Tell a failed check from a pass
 

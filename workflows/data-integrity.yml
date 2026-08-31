@@ -2,7 +2,7 @@ name: data-integrity
 description: |
   Use when: you need to know which numbers in the touchline database are currently trustworthy — before believing a report, and before and after any data repair.
   Triggers: "data integrity", "check the data", "is the data right", "integrity report", "did the repair work".
-  Does: rebuilds the parquet archive offline from the data repo's raw_html, runs eleven deterministic read-only checks against it and live Postgres, then prints one report with a per-check verdict and the file:line that causes each failure.
+  Does: rebuilds the parquet archive offline from the data repo's raw_html, runs twelve deterministic read-only checks against it, live Postgres, and the season JSON layers, then prints one report with a per-check verdict and the file:line that causes each failure.
   NOT for: repairing anything (this never writes to the database), scraping, or judging code quality.
 
 requiresProject: true
@@ -29,7 +29,8 @@ tags: [data, integrity, soccer]
 # this machine), where it is supported. Do not port these loops to sh.
 #
 # This workflow runs with cwd = the consumer data repo (e.g. soccer-data), so
-# data paths are cwd-relative (data/raw_html, data/errors, data/structured).
+# data paths are cwd-relative (data/raw_html, data/errors, data/structured,
+# and the season JSON layers data/fixtures and data/stats).
 # The database defaults to postgresql://lume@localhost:5432/touchline and is
 # overridable with DATABASE_URL. Pipeline commands resolve the installed rib's
 # pipeline/ directory: TOUCHLINE_PIPELINE_DIR env override, else packageDir
@@ -542,6 +543,171 @@ nodes:
       printf '{"check":"export-staleness","verdict":"%s","headline":"merged games export %s rows vs db %s — %s; retired ordinals (>14): games %s of %s rows, player stats %s of %s rows","cause":"data/structured/all is stale or was merged from retired school directories. Regenerate only after prerequisite data repairs are present, then re-run this check."}\n' \
         "$V" "$GAMES" "$DB" "$AGREE" "$RETIRED_GAMES" "$GAMES" "$RETIRED_PLAYERS" "$PLAYERS"
 
+  # ── 11. Goal attribution — scoreboard vs stats layer ────────────────────
+  - id: goal-attribution
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      # For every collected programme in every conference-season cell the data
+      # home holds, compare the scoreline reading of its goals (fixtures layer:
+      # its side of every final scoreline, either team slot) against the
+      # attributed reading (stats layer: its players' goals summed). The two
+      # can diverge HONESTLY — an own goal or unattributed scorer inflates the
+      # scoreboard side, a stats page that lags or leads the schedule page
+      # moves either — so a divergence is reported with both figures, named,
+      # never dropped, and never escalated past warn. Alarm is reserved for
+      # the check itself failing to run, per the file's rule.
+      # EXHIBITIONS ARE NOT SCOREBOARD GOALS. Season statistics tables never
+      # attribute exhibition goals to players, so a scored friendly in the
+      # sum is a guaranteed false divergence, not a finding: Saint Mary's
+      # 2026 read 5 scoreboard v 0 attributed until its two scored friendlies
+      # (one against a club side) were excluded, after which both readings
+      # agree at 0. match_type=="exhibition" fixtures are therefore excluded
+      # from the sums and counted, like scoreless finals — excluded, never
+      # hidden. A fixture without match_type is a regular match and counts.
+      # Conference, gender, and season all come from the files on disk — the
+      # sweep covers whatever has been collected, nothing is hardcoded.
+      FD=data/fixtures
+      SD=data/stats
+      # Same rule as parse-failures: a missing or unreadable layer directory is
+      # CHECK DID NOT RUN, never a clean sweep of zero cells.
+      for D in "$FD" "$SD"; do
+        if [ ! -d "$D" ]; then
+          printf '{"check":"goal-attribution","verdict":"alarm","headline":"CHECK DID NOT RUN — no directory at %s (cwd %s). A missing layer directory is not an empty one.","cause":"the path is relative to the data home root, so either this node ran from an unexpected working directory or the season layer was moved, renamed, or never collected"}\n' "$D" "$(pwd)"
+          exit 0
+        fi
+        if [ ! -r "$D" ] || [ ! -x "$D" ]; then
+          printf '{"check":"goal-attribution","verdict":"alarm","headline":"CHECK DID NOT RUN — %s exists but is not both readable and searchable by this user (cwd %s), so its season files cannot be listed.","cause":"permissions or ownership on the directory changed — check with ls -ld. An unreadable directory is not an empty one."}\n' "$D" "$(pwd)"
+          exit 0
+        fi
+      done
+      FLIST=$(find "$FD" -maxdepth 1 -name '*.json' 2>/dev/null | sort); FRC=$?
+      if [ "$FRC" -ne 0 ]; then
+        printf '{"check":"goal-attribution","verdict":"alarm","headline":"CHECK DID NOT RUN — find exited %s listing %s (cwd %s), so the season files were only partly listed and any sweep over them is an undercount, not a measurement.","cause":"find stderr is discarded here — re-run the same find by hand from the data home root to see what it could not read"}\n' "$FRC" "$FD" "$(pwd)"
+        exit 0
+      fi
+      if [ -z "$FLIST" ]; then
+        printf '{"check":"goal-attribution","verdict":"alarm","headline":"CHECK DID NOT RUN — %s holds no season files (cwd %s), so there is nothing to compare. A fixtures layer with nothing in it cannot be measured, only collected.","cause":"either this node ran outside a collected data home or the fixtures layer was moved or renamed — list the directory by hand"}\n' "$FD" "$(pwd)"
+        exit 0
+      fi
+      # One jq pass per cell. META carries the cell labels and two exclusion
+      # counts, both named rather than silent: regular finals published
+      # without a scoreline (at least one modern theme publishes completion
+      # without a result) and exhibition finals that DO carry a scoreline
+      # (the goals the stats layer will rightly never attribute). CMP carries
+      # one row per collected programme: scoreboard goals-for summed over
+      # non-exhibition final fixtures that carry BOTH scores, from either
+      # team slot, against that programme's summed player goals from the
+      # stats layer — "absent" when the stats layer has no entry for the
+      # programme at all. EXTRA names a stats-layer team the fixtures layer
+      # does not list as a programme, so neither direction of layer mismatch
+      # is dropped.
+      JQ='
+        .season as $y | .gender as $g | .conference as $c
+        | (.programmes | map(.slug)) as $ps
+        | ($st[0].teams // {}) as $tm
+        | ([.fixtures[] | select(.status=="final" and .match_type!="exhibition" and (((.home_score|type)!="number") or ((.away_score|type)!="number")))] | length) as $noscore
+        | ([.fixtures[] | select(.status=="final" and .match_type=="exhibition" and ((.home_score|type)=="number") and ((.away_score|type)=="number"))] | length) as $exh
+        | ( ["META\t\($y)\t\($g)\t\($c)\t\($ps|length)\t\($noscore)\t\($exh)"]
+          + [ $ps[] as $p
+              | ([ .fixtures[]
+                   | select(.status=="final" and .match_type!="exhibition" and ((.home_score|type)=="number") and ((.away_score|type)=="number"))
+                   | select(.home==$p or .away==$p)
+                   | (if .home==$p then .home_score else .away_score end) ] | add // 0) as $gf
+              | (if ($tm|has($p)) then ([ $tm[$p].players[]?.goals // 0 ] | add // 0 | tostring) else "absent" end) as $att
+              | "CMP\t\($y)\t\($g)\t\($c)/\($p)\t\($gf)\t\($att)" ]
+          + [ ($tm | keys[]) as $p | select(($ps | index($p)) | not)
+              | "EXTRA\t\($y)\t\($g)\t\($c)/\($p)\t\([ $tm[$p].players[]?.goals // 0 ] | add // 0)" ]
+          )[]'
+      ROWS_ALL=""
+      CELLS=0
+      UNPAIRED=0
+      UNPAIREDNAMES=""
+      MAXSEASON=0
+      NOSCORE=0
+      EXHIBITIONS=0
+      # Word-splitting FLIST on whitespace is safe here: season files are named
+      # {season}-{gender}-{conference}.json by the collector, never with spaces.
+      for F in $FLIST; do
+        B=$(basename "$F")
+        S="$SD/$B"
+        # A fixtures cell with no stats file is a NAMED finding, not a silent
+        # skip and not an alarm: a freshly collected season legitimately
+        # precedes its stats publication, and the coverage manifest already
+        # owns that gap.
+        if [ ! -f "$S" ]; then
+          UNPAIRED=$((UNPAIRED+1))
+          UNPAIREDNAMES="$UNPAIREDNAMES ${B%.json}"
+          continue
+        fi
+        ROWS=$(jq -r --slurpfile st "$S" "$JQ" "$F" 2>/dev/null); RC=$?
+        META=$(printf '%s\n' "$ROWS" | awk -F '\t' '$1=="META" && NF==7 {print; exit}')
+        if [ "$RC" -ne 0 ] || [ -z "$META" ]; then
+          printf '{"check":"goal-attribution","verdict":"alarm","headline":"CHECK DID NOT RUN — jq exited %s reading %s against %s, so no cell was measured. A season file that cannot be read is not a clean one.","cause":"jq stderr is discarded here — re-run it by hand against the pair to see the parse error: a malformed season file, or a layer shape this check does not know."}\n' "$RC" "$F" "$S"
+          exit 0
+        fi
+        Y=$(printf '%s' "$META" | cut -f2)
+        NS=$(printf '%s' "$META" | cut -f6)
+        EX=$(printf '%s' "$META" | cut -f7)
+        case "$Y$NS$EX" in *[!0-9]*|"")
+          printf '{"check":"goal-attribution","verdict":"alarm","headline":"CHECK DID NOT RUN — %s carries a non-numeric season, scoreless-final, or exhibition count, so the sweep cannot be keyed. A cell that cannot be keyed is not a measured one.","cause":"the season field must be an integer year — inspect the file by hand"}\n' "$F"
+          exit 0
+        ;; esac
+        [ "$Y" -gt "$MAXSEASON" ] && MAXSEASON=$Y
+        NOSCORE=$((NOSCORE+NS))
+        EXHIBITIONS=$((EXHIBITIONS+EX))
+        CELLS=$((CELLS+1))
+        ROWS_ALL="$ROWS_ALL$ROWS
+      "
+      done
+      if [ "$CELLS" -eq 0 ]; then
+        printf '{"check":"goal-attribution","verdict":"alarm","headline":"CHECK DID NOT RUN — none of the fixtures cells has a stats file (%s), so not one comparison could be made. A comparison that cannot be evaluated is not a pass.","cause":"the stats layer was never collected into this home, or lives under a different naming — list data/stats by hand"}\n' "${UNPAIREDNAMES# }"
+        exit 0
+      fi
+      # Every divergent programme-season, named with both figures — the whole
+      # point of the check, so the full table precedes the one-line verdict the
+      # way the conference audit prints its summary before its payload. The
+      # report node reads only the final JSON line; the table stays in this
+      # node's output, named, not dropped.
+      TABLE=$(printf '%s' "$ROWS_ALL" | awk -F '\t' '
+        $1=="CMP" && $6!="absent" && ($5+0)!=($6+0) { printf "%s %s %s scoreboard %s attributed %s\n",$2,$3,$4,$5,$6 }
+        $1=="CMP" && $6=="absent" && ($5+0)>0 { printf "%s %s %s scoreboard %s attributed none (no stats entry)\n",$2,$3,$4,$5 }
+        $1=="EXTRA" { printf "%s %s %s stats layer only: %s attributed goals, no fixtures programme\n",$2,$3,$4,$5 }
+      ' | sort)
+      COMPARED=$(printf '%s' "$ROWS_ALL" | awk -F '\t' '$1=="CMP"{n++} END{print n+0}')
+      DIVN=$(printf '%s' "$ROWS_ALL" | awk -F '\t' '$1=="CMP" && $6!="absent" && ($5+0)!=($6+0){n++} END{print n+0}')
+      OVERN=$(printf '%s' "$ROWS_ALL" | awk -F '\t' '$1=="CMP" && $6!="absent" && ($5+0)>($6+0){n++} END{print n+0}')
+      UNDERN=$(printf '%s' "$ROWS_ALL" | awk -F '\t' '$1=="CMP" && $6!="absent" && ($6+0)>($5+0){n++} END{print n+0}')
+      NOG=$(printf '%s' "$ROWS_ALL" | awk -F '\t' '$1=="CMP" && $6=="absent" && ($5+0)>0{n++} END{print n+0}')
+      NO0=$(printf '%s' "$ROWS_ALL" | awk -F '\t' '$1=="CMP" && $6=="absent" && ($5+0)==0{n++} END{print n+0}')
+      NO0NAMES=$(printf '%s' "$ROWS_ALL" | awk -F '\t' '$1=="CMP" && $6=="absent" && ($5+0)==0 { printf "%s%s %s %s",sep,$2,$3,$4; sep=", " }')
+      EXTRAN=$(printf '%s' "$ROWS_ALL" | awk -F '\t' '$1=="EXTRA"{n++} END{print n+0}')
+      # The newest season is the live one — its divergences travel in the
+      # headline in full, because collect time is when a lagging layer is
+      # cheapest to chase. The archive's divergences are endemic (own goals
+      # were never attributed historically) and live in the table above.
+      CUR=$(printf '%s' "$ROWS_ALL" | awk -F '\t' -v m="$MAXSEASON" '
+        $1=="CMP" && $2==m && ( ($6!="absent" && ($5+0)!=($6+0)) || ($6=="absent" && ($5+0)>0) ) {
+          a=$6; if (a=="absent") a="none"
+          printf "%s%s %s %sv%s", sep, $3, $4, $5, a; sep="; "
+        }')
+      MISSING=
+      for v in COMPARED DIVN OVERN UNDERN NOG NO0 EXTRAN; do [ -n "${!v:-}" ] || MISSING="$MISSING $v"; done
+      if [ -n "$MISSING" ]; then
+        printf '{"check":"goal-attribution","verdict":"alarm","headline":"CHECK DID NOT RUN — no count for:%s. Those are failed aggregations, not measurements of zero.","cause":"awk produced no output over rows jq already validated — re-run the sweep by hand from the data home root"}\n' "$MISSING"
+        exit 0
+      fi
+      V=ok
+      { [ "$DIVN" -gt 0 ] || [ "$NOG" -gt 0 ] || [ "$EXTRAN" -gt 0 ] || [ "$UNPAIRED" -gt 0 ]; } && V=warn
+      [ -n "$TABLE" ] && printf '%s\n' "$TABLE"
+      [ -n "$CUR" ] || CUR="every programme agrees"
+      UP="none"
+      [ -n "$UNPAIREDNAMES" ] && UP="${UNPAIREDNAMES# }"
+      NO0OUT="none"
+      [ -n "$NO0NAMES" ] && NO0OUT="$NO0NAMES"
+      printf '{"check":"goal-attribution","verdict":"%s","headline":"%s of %s programme-seasons diverge between scoreboard and attributed goals across %s conference-season cells — %s scoreboard ahead, %s stats ahead, %s with goals but no stats entry, each named above; season %s: %s; %s scoreless finals and %s scored exhibitions excluded from scoreboard totals; %s programmes absent from stats with 0 scoreboard goals (%s); %s stats-only programmes; %s cells with no stats file (%s)","cause":"both layers can be honest — a scoreboard goal nobody was credited with (own goal, unattributed scorer) or a stats page that lags or leads the schedule page by a match — so a divergence is a collector-domain signal to re-collect the lagging layer, never proof of corruption. Exhibition scorelines are excluded before summing: season statistics tables never attribute exhibition goals, so a scored friendly in the sum is a guaranteed false divergence. Consumer surfaces already verify against either reading; this names the gap at collect time."}\n' \
+        "$V" "$((DIVN + NOG))" "$COMPARED" "$CELLS" "$OVERN" "$UNDERN" "$NOG" "$MAXSEASON" "$CUR" "$NOSCORE" "$EXHIBITIONS" "$NO0" "$NO0OUT" "$EXTRAN" "$UNPAIRED" "$UP"
+
   # ── Report ──────────────────────────────────────────────────────────────
   - id: report
     runtime: bun
@@ -549,10 +715,10 @@ nodes:
     trigger_rule: all_done
     depends_on:
       [freshness, conference-flag, conference-derivation, duplication, season-label, identity,
-       discipline, orphans, parse-failures, archive, export-staleness]
+       discipline, orphans, parse-failures, archive, export-staleness, goal-attribution]
     script: |
       const IDS = ['freshness','conference_flag','conference_derivation','duplication','season_label','identity',
-                   'discipline','orphans','parse_failures','archive','export_staleness']
+                   'discipline','orphans','parse_failures','archive','export_staleness','goal_attribution']
       const MARK = { ok: '[ OK   ]', warn: '[ WARN ]', alarm: '[ ALARM]' }
       const rows = []
       for (const id of IDS) {
