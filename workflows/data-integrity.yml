@@ -2,7 +2,7 @@ name: data-integrity
 description: |
   Use when: you need to know which numbers in the touchline data home are currently trustworthy — before believing a report, and before and after any data repair.
   Triggers: "data integrity", "check the data", "is the data right", "integrity report", "did the repair work".
-  Does: runs three deterministic read-only checks against the season JSON layers, the collect gap ledger, and the membership reference, then prints one report with a per-check verdict and the file that causes each failure.
+  Does: runs four deterministic read-only checks against the season JSON layers, the collect gap ledger, and the membership reference, then prints one report with a per-check verdict and the file that causes each failure.
   NOT for: repairing anything (this never writes to the data home), collecting, or judging code quality.
 
 requiresProject: true
@@ -245,7 +245,91 @@ nodes:
       printf '{"check":"goal-attribution","verdict":"%s","headline":"%s of %s programme-seasons diverge between scoreboard and attributed goals across %s conference-season cells — %s scoreboard ahead, %s stats ahead, %s with goals but no stats entry, each named above; season %s: %s; %s scoreless finals and %s scored exhibitions excluded from scoreboard totals; %s programmes absent from stats with 0 scoreboard goals (%s); %s stats-only programmes; %s cells with no stats file (%s)","cause":"both layers can be honest — a scoreboard goal nobody was credited with (own goal, unattributed scorer) or a stats page that lags or leads the schedule page by a match — so a divergence is a collector-domain signal to re-collect the lagging layer, never proof of corruption. Exhibition scorelines are excluded before summing: season statistics tables never attribute exhibition goals, so a scored friendly in the sum is a guaranteed false divergence. Consumer surfaces already verify against either reading; this names the gap at collect time."}\n' \
         "$V" "$((DIVN + NOG))" "$COMPARED" "$CELLS" "$OVERN" "$UNDERN" "$NOG" "$MAXSEASON" "$CUR" "$NOSCORE" "$EXHIBITIONS" "$NO0" "$NO0OUT" "$EXTRAN" "$UNPAIRED" "$UP"
 
-  # ── 3. Membership reference sync ────────────────────────────────────────
+  # ── 3. Exhibition wording vs match_type flag ────────────────────────────
+  - id: exhibition-markers
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      # A schedule page can say a game is a friendly/exhibition in text the
+      # collector stores while the parsed match_type flag stays unset —
+      # measured: a venue of "Tulsa, Okla. Friendly" rode in with no
+      # match_type, so a friendly against a D1 side counted as a competitive
+      # silent final and goal-attribution excluded nothing. Text and flag
+      # must not disagree silently: every fixture whose stored venue or
+      # opponent slugs carry the wording while match_type is unset is named,
+      # verdict warn. The regex is the parser's own — \bexhib or
+      # \bfriendl(y|ies)\b, case-insensitive, word-bounded so a school named
+      # Friends never matches. A fixture that DOES carry match_type is
+      # consistent by definition and is not reported. Nothing here names a
+      # conference: the sweep covers whatever season files the data home
+      # holds. Alarm is reserved for the check itself failing to run, per
+      # the file's rule.
+      FD=data/fixtures
+      if [ ! -d "$FD" ]; then
+        printf '{"check":"exhibition-markers","verdict":"alarm","headline":"CHECK DID NOT RUN — no directory at %s (cwd %s). A missing layer directory is not an empty one.","cause":"the path is relative to the data home root, so either this node ran from an unexpected working directory or the fixtures layer was moved, renamed, or never collected"}\n' "$FD" "$(pwd)"
+        exit 0
+      fi
+      if [ ! -r "$FD" ] || [ ! -x "$FD" ]; then
+        printf '{"check":"exhibition-markers","verdict":"alarm","headline":"CHECK DID NOT RUN — %s exists but is not both readable and searchable by this user (cwd %s), so its season files cannot be listed.","cause":"permissions or ownership on the directory changed — check with ls -ld. An unreadable directory is not an empty one."}\n' "$FD" "$(pwd)"
+        exit 0
+      fi
+      FLIST=$(find "$FD" -maxdepth 1 -name '*.json' 2>/dev/null | sort); FRC=$?
+      if [ "$FRC" -ne 0 ]; then
+        printf '{"check":"exhibition-markers","verdict":"alarm","headline":"CHECK DID NOT RUN — find exited %s listing %s (cwd %s), so the season files were only partly listed and any sweep over them is an undercount, not a measurement.","cause":"find stderr is discarded here — re-run the same find by hand from the data home root to see what it could not read"}\n' "$FRC" "$FD" "$(pwd)"
+        exit 0
+      fi
+      if [ -z "$FLIST" ]; then
+        printf '{"check":"exhibition-markers","verdict":"alarm","headline":"CHECK DID NOT RUN — %s holds no season files (cwd %s), so there is nothing to sweep. A fixtures layer with nothing in it cannot be measured, only collected.","cause":"either this node ran outside a collected data home or the fixtures layer was moved or renamed — list the directory by hand"}\n' "$FD" "$(pwd)"
+        exit 0
+      fi
+      # One jq pass per cell. TOTAL counts every fixture swept so the
+      # headline can say how much was measured; ROW names each offender with
+      # the text that tripped it.
+      JQ='
+        def marked: test("\\bexhib|\\bfriendl(y|ies)\\b"; "i");
+        ( ["TOTAL\t\(.fixtures | length)"]
+        + [ .fixtures[]
+            | select(has("match_type") | not)
+            | select([.venue // "", .home // "", .away // ""] | any(marked))
+            | "ROW\t\(.id)\t\(.date)\t\(.home) v \(.away)\t\(.venue // "(no venue)")" ]
+        )[]'
+      CELLS=0
+      TOTAL=0
+      TABLE_ALL=""
+      # Word-splitting FLIST on whitespace is safe here: season files are named
+      # {season}-{gender}-{conference}.json by the collector, never with spaces.
+      for F in $FLIST; do
+        ROWS=$(jq -r "$JQ" "$F" 2>/dev/null); RC=$?
+        T=$(printf '%s\n' "$ROWS" | awk -F '\t' '$1=="TOTAL" && NF==2 {print $2; exit}')
+        if [ "$RC" -ne 0 ] || [ -z "$T" ]; then
+          printf '{"check":"exhibition-markers","verdict":"alarm","headline":"CHECK DID NOT RUN — jq exited %s reading %s, so no fixture was swept. A season file that cannot be read is not a clean one.","cause":"jq stderr is discarded here — re-run it by hand against the file to see the parse error: a malformed season file, or a fixtures shape this check does not know"}\n' "$RC" "$F"
+          exit 0
+        fi
+        case "$T" in *[!0-9]*|"")
+          printf '{"check":"exhibition-markers","verdict":"alarm","headline":"CHECK DID NOT RUN — %s yielded a non-numeric fixture count, so the sweep cannot be totalled. A cell that cannot be counted is not a measured one.","cause":"the fixtures field must be an array — inspect the file by hand"}\n' "$F"
+          exit 0
+        ;; esac
+        TOTAL=$((TOTAL+T))
+        CELLS=$((CELLS+1))
+        CELL=${F##*/}; CELL=${CELL%.json}
+        ROWS_CELL=$(printf '%s\n' "$ROWS" | awk -F '\t' -v c="$CELL" '$1=="ROW" && NF==5 {printf "%s %s %s %s venue: %s\n", c, $3, $2, $4, $5}')
+        [ -n "$ROWS_CELL" ] && TABLE_ALL="$TABLE_ALL$ROWS_CELL
+      "
+      done
+      N=$(printf '%s' "$TABLE_ALL" | grep -c . | tr -d ' ')
+      if [ -z "$N" ]; then
+        printf '{"check":"exhibition-markers","verdict":"alarm","headline":"CHECK DID NOT RUN — could not count the named fixtures after a sweep that read every cell. That is a failed count, not a measurement of zero.","cause":"grep or tr produced no output over rows jq already validated — re-run the sweep by hand from the data home root"}\n'
+        exit 0
+      fi
+      # Every offender, named with its season file — the whole point of the
+      # check, printed above the one-line verdict the way goal-attribution
+      # prints its table. The report node reads only the final JSON line.
+      [ -n "$TABLE_ALL" ] && printf '%s' "$TABLE_ALL" | grep . | sort
+      V=ok; [ "$N" -gt 0 ] && V=warn
+      printf '{"check":"exhibition-markers","verdict":"%s","headline":"%s of %s fixtures across %s season files carry friendly/exhibition wording in stored text (venue or opponent) while match_type is unset — each named above","cause":"the schedule page called the game a friendly/exhibition in text the collector stored, but the parser never stamped match_type, so every consumer counts it as competitive and goal-attribution excludes nothing. Fix or re-collect: the next collect of the named season re-parses the page, and the parser reads the wording from both the opponent title and the location text. The internal identifier stays match_type exhibition; only reader copy says friendly."}\n' \
+        "$V" "$N" "$TOTAL" "$CELLS"
+
+  # ── 4. Membership reference sync ────────────────────────────────────────
   - id: membership-sync
     timeout: 60000
     bash: |
@@ -349,9 +433,9 @@ nodes:
     runtime: bun
     always_run: true
     trigger_rule: all_done
-    depends_on: [collect-gaps, goal-attribution, membership-sync]
+    depends_on: [collect-gaps, goal-attribution, exhibition-markers, membership-sync]
     script: |
-      const IDS = ['collect_gaps', 'goal_attribution', 'membership_sync']
+      const IDS = ['collect_gaps', 'goal_attribution', 'exhibition_markers', 'membership_sync']
       const MARK = { ok: '[ OK   ]', warn: '[ WARN ]', alarm: '[ ALARM]' }
       const rows = []
       for (const id of IDS) {

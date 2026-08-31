@@ -631,6 +631,17 @@ def _dom_result(text: str) -> tuple[str, int, int] | None:
     return match.group(1), int(match.group(2)), int(match.group(3))
 
 
+# Sites publish the marker in two places: the opponent's own title
+# ("Oklahoma Wesleyan (Exhibition)") or the schedule row's location text
+# (measured: "Friendly" beside "Tulsa, Okla." on goriverhawksgo.com 2026).
+# Word boundaries keep "Friends University" from reading as a friendly.
+_EXHIBITION_MARKER = re.compile(r"\bexhib|\bfriendl(?:y|ies)\b", re.IGNORECASE)
+
+
+def _exhibition_marked(*texts: str) -> bool:
+    return any(_EXHIBITION_MARKER.search(text) for text in texts)
+
+
 def _parse_schedule_dom(
     html: str,
     *,
@@ -695,7 +706,11 @@ def _parse_schedule_dom(
         ):
             continue
         classes = set(row.get("class") or [])
-        exhibition = bool(re.search(r"exhib", opponent_raw, re.IGNORECASE))
+        location = row.select_one(".sidearm-schedule-game-location")
+        location_text = (
+            location.get_text(" ", strip=True) if location is not None else ""
+        )
+        exhibition = _exhibition_marked(opponent_raw, location_text)
         hosted = re.split(r"\s+vs\.?\s+", opponent_name)
         if len(hosted) == 2:
             # A tournament host lists other teams' games on its own schedule
@@ -766,8 +781,13 @@ def _parse_schedule_dom(
         ) or _dom_time(_first_text(row, ".sidearm-schedule-game-opponent-date") or "")
         if time:
             fixture["time"] = time
-        location = row.select_one(".sidearm-schedule-game-location")
         if location is not None:
+            # measured: the "Friendly" marker rides in a distinct child node
+            # (div.sidearm-schedule-game-opponent-promotion) inside the
+            # location element, which get_text flattened into a stored venue
+            # of "Tulsa, Okla. Friendly". A promotion is never the venue.
+            for promo in location.select(".sidearm-schedule-game-opponent-promotion"):
+                promo.extract()
             facility = location.select_one("a")
             venue = (
                 facility.get_text(" ", strip=True)
@@ -848,9 +868,13 @@ def parse_schedule_page(
             "conference_game": bool(event.get("is_conference")),
             "source_url": page_url,
         }
+        facility = event.get("game_facility")
+        facility_dict = facility if isinstance(facility, dict) else {}
+        venue = str(facility_dict.get("title") or event.get("location") or "").strip()
         # The payload has no exhibition field — the site says it in the
-        # opponent's own published title ("Oklahoma Wesleyan (Exhibition)").
-        if re.search(r"exhib", published_title, re.IGNORECASE):
+        # opponent's own published title ("Oklahoma Wesleyan (Exhibition)")
+        # or beside the venue in its location text ("Tulsa, Okla. Friendly").
+        if _exhibition_marked(published_title, venue):
             fixture["match_type"] = "exhibition"
         if not event.get("tbd") and "T" in date_text:
             try:
@@ -858,9 +882,6 @@ def parse_schedule_page(
                 fixture["time"] = local.strftime("%H:%M")
             except ValueError:
                 pass
-        facility = event.get("game_facility")
-        facility_dict = facility if isinstance(facility, dict) else {}
-        venue = str(facility_dict.get("title") or event.get("location") or "").strip()
         if venue:
             fixture["venue"] = venue
         if (

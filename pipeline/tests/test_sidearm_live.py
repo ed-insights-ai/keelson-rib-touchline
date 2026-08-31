@@ -754,6 +754,8 @@ def _dom_game(
     conference: str = "",
     result: str = "",
     facility: str = "",
+    location: str = "",
+    promotion: str = "",
     completed: bool = False,
 ) -> str:
     side_class = f"sidearm-schedule-{side}-game"
@@ -780,12 +782,27 @@ def _dom_game(
             if result
             else ""
         )
-    facility_html = (
-        f'<div class="sidearm-schedule-game-location"><span>Somewhere, OK</span>'
-        f'<span><a href="/facilities/?id=1">{facility}</a></span></div>'
-        if facility
+    # The measured served shape (goriverhawksgo.com 2026): a promotion such as
+    # "Friendly" is a distinct child div inside the location element, beside
+    # the city span.
+    promotion_html = (
+        f'<div class="sidearm-schedule-game-opponent-promotion">{promotion}</div>'
+        if promotion
         else ""
     )
+    if facility:
+        facility_html = (
+            f'<div class="sidearm-schedule-game-location"><span>Somewhere, OK</span>'
+            f'<span><a href="/facilities/?id=1">{facility}</a></span>'
+            f"{promotion_html}</div>"
+        )
+    elif location or promotion:
+        facility_html = (
+            f'<div class="sidearm-schedule-game-location"><span>{location}</span>'
+            f"{promotion_html}</div>"
+        )
+    else:
+        facility_html = ""
     return f"""
     <li class="sidearm-schedule-game {side_class} upcoming-game" data-game-id="{game_id}">
       <span class="sidearm-schedule-game-opponent-date"><span>{date}</span></span>
@@ -1661,3 +1678,100 @@ def test_a_league_game_carries_no_match_type() -> None:
     )
     assert fixture["status"] == "scheduled"
     assert "match_type" not in fixture
+
+
+def test_a_friendly_said_only_in_the_location_is_an_exhibition() -> None:
+    """The measured Northeastern State 2026 shape: the opponent's title says
+    nothing, and "Friendly" rides a distinct promotion div inside the
+    location element.  The flag must be read from it — and the venue must
+    not, or it flattens into "Tulsa, Okla. Friendly"."""
+    html = _dom_page(
+        _dom_game(
+            game_id="14421",
+            opponent="Oral Roberts",
+            date="Aug 14 (Fri)",
+            side="away",
+            location="Tulsa, Okla.",
+            promotion="Friendly",
+            completed=True,
+        )
+    )
+    [fixture] = parse_schedule_page(
+        html,
+        page_url="https://example.test/schedule/2026",
+        year=2026,
+        owner_slug="northeastern-state",
+        aliases={"oral roberts": "oral-roberts"},
+    )
+    assert fixture["home"] == "oral-roberts"
+    assert fixture["away"] == "northeastern-state"
+    assert fixture["status"] == "final"
+    assert fixture["match_type"] == "exhibition"
+    assert fixture["venue"] == "Tulsa, Okla."
+
+
+def test_the_payload_marks_a_friendly_said_only_in_the_location() -> None:
+    event = {
+        "id": 14421,
+        "date": "2026-08-14T19:00:00",
+        "location_indicator": "A",
+        "location": "Tulsa, Okla. Friendly",
+        "is_conference": False,
+        "type": "completed",
+        "schedule": {"title": "2026 Men's Soccer Schedule"},
+        "opponent": {"title": "Oral Roberts"},
+        "result": {"team_score": None, "opponent_score": None, "status": "Final"},
+    }
+    [fixture] = parse_schedule_page(
+        _schedule_html(event),
+        page_url="https://example.test/schedule/2026",
+        year=2026,
+        owner_slug="northeastern-state",
+        aliases={"oral roberts": "oral-roberts"},
+    )
+    assert fixture["status"] == "final"
+    assert fixture["match_type"] == "exhibition"
+
+
+def test_friends_university_is_an_opponent_not_a_friendly() -> None:
+    """The marker is word-bounded: a school named Friends is not a friendly."""
+    html = _dom_page(
+        _dom_game(
+            game_id="9101",
+            opponent="Friends University",
+            date="Sep 9 (Wed)",
+            location="Wichita, Kan.",
+        )
+    )
+    [fixture] = parse_schedule_page(
+        html,
+        page_url="https://example.test/schedule/2026",
+        year=2026,
+        owner_slug="rogers-state",
+        aliases={"friends": "friends"},
+    )
+    assert "match_type" not in fixture
+    assert fixture["venue"] == "Wichita, Kan."
+
+
+def test_the_payload_does_not_mark_friends_university_as_a_friendly() -> None:
+    event = {
+        "id": 9102,
+        "date": "2026-09-09T19:00:00",
+        "location_indicator": "A",
+        "location": "Wichita, Kan.",
+        "is_conference": False,
+        "type": "upcoming",
+        "schedule": {"title": "2026 Men's Soccer Schedule"},
+        "opponent": {"title": "Friends University"},
+        "result": {"team_score": None, "opponent_score": None, "status": None},
+    }
+    [fixture] = parse_schedule_page(
+        _schedule_html(event),
+        page_url="https://example.test/schedule/2026",
+        year=2026,
+        owner_slug="rogers-state",
+        aliases={"friends": "friends"},
+    )
+    assert "match_type" not in fixture
+    assert fixture["venue"] == "Wichita, Kan."
