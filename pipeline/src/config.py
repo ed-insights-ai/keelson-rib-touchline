@@ -21,7 +21,7 @@ class SchoolConfig:
     base_url: str
     # Reader-facing name, when it differs from ``name``. ``name`` does double
     # duty: programme_slug(name) mints the institution slug that keys
-    # membership.json, canon.json and every coverage cell, so it must stay
+    # membership.json and every coverage cell, so it must stay
     # ASCII-plain and stable even when the school's published name carries
     # punctuation ("St. Mary's" → name "Saint Marys", slug "saint-marys") or
     # the school renames (slugs never rename). ``display_name`` carries the
