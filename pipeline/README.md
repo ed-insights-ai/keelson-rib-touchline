@@ -1,32 +1,35 @@
-# Ed Insights Pipeline
+# Touchline Pipeline
 
-Production data-collection pipeline for the Ed Insights Platform. Scrapes collegiate athletic statistics from StatCrew HTML endpoints and outputs structured data.
+Data-collection pipeline for the Touchline rib. Collects published college
+soccer schedules, rosters, season statistics, and box scores into the JSON
+data home — the system of record.
 
 ## Setup
 
 ```bash
-cd packages/pipeline
+cd pipeline
 uv sync
 ```
 
 ## Usage
 
 ```bash
-# Scrape all enabled schools
-uv run scrape --all
+# Collect one conference season into the data home
+TOUCHLINE_DATA_DIR=/path/to/data-home uv run collect-board \
+  --season 2025 --gender men --conference GAC --programmes harding,...
 
-# Scrape a single school
-uv run scrape --school HU
+# Probe a new site before onboarding it
+uv run probe --url https://example.edu/sports/mens-soccer --conference GAC
 
-# Full pipeline (scrape → load → export → audit)
-uv run pipeline-run --all-enabled
-
-# Load parquets into PostgreSQL (requires Docker)
-uv run load-db
+# Validate the membership reference
+uv run check-membership
 
 # Run tests
 uv run pytest
 ```
+
+See `docs/src/content/docs/reference/pipeline-cli.md` for the full command
+reference.
 
 ## Related
 

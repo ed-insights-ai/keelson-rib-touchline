@@ -23,11 +23,7 @@ def test_env_reroutes_every_path(monkeypatch, tmp_path):
     monkeypatch.setenv("TOUCHLINE_DATA_DIR", str(tmp_path))
     root = tmp_path.resolve()
     assert paths.data_root() == root
-    assert paths.raw_html_dir() == root / "data" / "raw_html"
-    assert paths.structured_root() == root / "data" / "structured"
-    assert paths.source_urls_path() == root / "data" / "source_urls.csv"
     assert paths.reference_dir() == root / "data" / "reference"
-    assert paths.canon_path() == root / "data" / "reference" / "canon.json"
     assert paths.membership_path() == root / "data" / "reference" / "membership.json"
     assert paths.errors_dir() == root / "data" / "errors"
 
@@ -54,24 +50,6 @@ def test_env_change_applies_at_call_time(monkeypatch, tmp_path):
     assert paths.data_root() == a.resolve()
     monkeypatch.setenv("TOUCHLINE_DATA_DIR", str(b))
     assert paths.data_root() == b.resolve()
-
-
-def test_default_database_url_prefers_env(monkeypatch):
-    monkeypatch.setenv("DATABASE_URL", "postgresql://x@h:5/db")
-    assert paths.default_database_url() == "postgresql://x@h:5/db"
-    monkeypatch.delenv("DATABASE_URL")
-    assert paths.default_database_url() == paths.FALLBACK_DATABASE_URL
-    assert "touchline" in paths.FALLBACK_DATABASE_URL
-
-
-def test_consumers_route_through_seam(monkeypatch, tmp_path):
-    """GameFetcher and storage defaults must land inside the configured root."""
-    monkeypatch.setenv("TOUCHLINE_DATA_DIR", str(tmp_path))
-    from src.fetcher import GameFetcher
-
-    fetcher = GameFetcher()
-    assert fetcher.cache_dir == tmp_path.resolve() / "data" / "raw_html"
-    fetcher.close()
 
 
 def test_no_hardcoded_data_paths_remain():

@@ -9,8 +9,6 @@ import truststore
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-from src import discovery, sidearm_discovery
-from src.fetcher import GameFetcher
 from src.sidearm_live import build_session
 from src.tls import TruststoreHTTPAdapter
 
@@ -28,28 +26,12 @@ def _assert_truststore_adapter(session) -> None:
     )
 
 
-@pytest.mark.parametrize(
-    "session_builder",
-    [
-        build_session,
-        sidearm_discovery._build_session,
-        discovery._build_session,
-    ],
-)
-def test_session_builders_mount_truststore_adapter(session_builder) -> None:
-    session = session_builder()
+def test_session_builder_mounts_truststore_adapter() -> None:
+    session = build_session()
     try:
         _assert_truststore_adapter(session)
     finally:
         session.close()
-
-
-def test_game_fetcher_mounts_truststore_adapter(tmp_path) -> None:
-    fetcher = GameFetcher(tmp_path)
-    try:
-        _assert_truststore_adapter(fetcher.session)
-    finally:
-        fetcher.close()
 
 
 def test_adapter_injects_truststore_context_and_preserves_retries() -> None:

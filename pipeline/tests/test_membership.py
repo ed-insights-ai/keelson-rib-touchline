@@ -437,19 +437,12 @@ def test_missing_configured_programme_fails():
     )
 
 
-def test_generated_canon_slugs_are_covered_when_present(membership_document):
-    generated_slugs: set[str] = set()
-    canon_path = paths.canon_path()
-    if canon_path.exists():
-        canon_document = json.loads(canon_path.read_text(encoding="utf-8"))
-        generated_slugs = {
-            resolution["institution_slug"]
-            for resolution in canon_document["opponents"].values()
-            if resolution["classification"] == "institution_slug"
-        }
-
+def test_registry_slugs_are_covered(membership_document):
     covered_slugs = {
         slug for slug, _gender in membership.covered_programmes(membership_document)
     }
-    assert generated_slugs <= set(REGISTRY)
-    assert generated_slugs <= covered_slugs
+    registry_slugs = {
+        programme["institution_slug"] for programme in PROGRAMMES.values()
+    }
+    assert registry_slugs <= set(REGISTRY)
+    assert registry_slugs <= covered_slugs
