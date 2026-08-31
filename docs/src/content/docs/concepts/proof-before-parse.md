@@ -114,9 +114,11 @@ legitimacy together.
   (`pipeline/src/sidearm_live.py`).
 - **Politeness paid on the network only.** `GameFetcher.fetch` sleeps half a
   second after each network fetch, and a cache hit pays nothing, so replays
-  cost the site nothing at all. The board collector
-  (`pipeline/scripts/collect_board.py`) sleeps 0.2 seconds after every
-  box-score attempt, in a `finally` clause so refused fetches pay too.
+  cost the site nothing at all. The board collector parallelizes across
+  hosts, never against one: `HostGate` (`pipeline/src/fetch_pool.py`) caps
+  every host at a single in-flight request and spaces consecutive requests
+  to the same host 0.2 seconds apart — refused fetches pay too, because the
+  spacing is charged per request, not per success.
 - **Backoff for outages, not answers.** The discovery and live-collection
   sessions retry with
   `Retry(total=3, backoff_factor=1, status_forcelist=[500, 502, 503, 504])`:

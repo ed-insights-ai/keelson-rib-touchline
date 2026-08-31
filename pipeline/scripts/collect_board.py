@@ -10,6 +10,23 @@ Every run writes `data/coverage.json`, and the exit code reports only whether
 that manifest was written.  Named gaps are data, not failures: a run that
 collects twelve of thirteen programmes has produced twelve useful cells and one
 cell carrying a reason, and discarding that would be worse than keeping it.
+
+Fetches fan out scatter-gather across a worker pool, capped PER HOST rather
+than globally: each programme's site is one host, a ``HostGate`` guarantees
+no host ever sees two concurrent requests (with the historical polite
+spacing preserved), and parallelism lives entirely across programmes.
+``--serial`` collapses the pool to one worker for debugging; the outputs are
+byte-identical either way, because every order-dependent assembly step — the
+fixture dedupe, the season payloads, the coverage cells — runs serialized in
+the main thread over the gathered results in request order.
+
+Two things keep a bad minute from costing the whole run.  Each fetch task (a
+programme's pages; one box score) runs behind its own budget, so a hung site
+is recorded as that programme's gap while the rest of the run completes.
+And progress is checkpointed as it confirms — coverage cells are merged to
+disk per programme, box scores every few fetches — so a run killed at the
+node budget keeps what it confirmed instead of writing nothing.  The season
+files themselves are still assembled and written wholesale at the end.
 """
 
 from __future__ import annotations
@@ -18,11 +35,16 @@ import argparse
 import json
 import os
 import sys
+import threading
 import time
+from collections.abc import Callable
+from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
 from datetime import datetime, timezone
+from functools import partial
 from pathlib import Path
 
 from src import coverage, paths
+from src.fetch_pool import GatedSession, HostGate
 from src.config import DEFAULT_CONFIG, load_schools
 from src.page_state import PageStateStore
 from src.sidearm_live import (
@@ -36,6 +58,7 @@ from src.sidearm_live import (
     STATE_NO_COLLECTOR,
     STATE_UNAVAILABLE,
     LiveCollectionError,
+    ProgrammeCollection,
     boxscore_links,
     build_session,
     collect_match,
@@ -52,6 +75,85 @@ STATS_SCHEMA = "touchline.stats/1"
 MATCHES_SCHEMA = "touchline.matches/1"
 
 COLLECTOR = "sidearm-live"
+
+# Sized off programme count, never above this: eight workers empty a
+# conference-season in minutes while each individual host still sees at most
+# one politely spaced request at a time.
+DEFAULT_WORKERS = 8
+# Seconds one isolated fetch task may run before it is recorded as a gap so
+# the rest of the run completes.  A programme task is at most three page
+# fetches, each already bounded by per-request timeouts and retries; five
+# minutes is generous headroom, not a target.
+DEFAULT_TASK_BUDGET = 300.0
+# Box scores are the run's long network tail and have no sidecar cache, so
+# the matches payload is checkpointed to disk every this-many new fetches —
+# a killed run keeps them, and the next run's incremental harvest skips them.
+MATCH_CHECKPOINT_EVERY = 10
+
+
+def _scatter(
+    executor: ThreadPoolExecutor,
+    tasks: dict[str, Callable[[], object]],
+    budget: float | None,
+    on_settled: Callable[[str, object], None] | None = None,
+) -> dict[str, object]:
+    """Run isolated tasks, each behind its own budget measured from its start.
+
+    Returns every key mapped to its result, to the exception it raised, or to
+    a ``TimeoutError`` when it outlived its budget.  A timed-out task's thread
+    cannot be killed — it is abandoned to finish in the background (every
+    network read inside it is separately bounded by the request timeout)
+    while the run completes without it, and its late result is discarded.  A
+    queued task spends no budget until a worker actually starts it, so a
+    small pool cannot time out work it never began.
+
+    ``on_settled`` runs in the calling thread as each task settles, which is
+    what lets progress be checkpointed in completion order while all
+    order-dependent assembly stays with the caller, in request order.
+    """
+    starts: dict[str, float] = {}
+
+    def tracked(key: str, call: Callable[[], object]) -> Callable[[], object]:
+        def run() -> object:
+            starts[key] = time.monotonic()
+            return call()
+
+        return run
+
+    pending: dict[Future[object], str] = {
+        executor.submit(tracked(key, call)): key for key, call in tasks.items()
+    }
+    settled: dict[str, object] = {}
+
+    def settle(key: str, value: object) -> None:
+        settled[key] = value
+        if on_settled is not None:
+            on_settled(key, value)
+
+    while pending:
+        done, _ = wait(set(pending), timeout=0.1, return_when=FIRST_COMPLETED)
+        for future in done:
+            key = pending.pop(future)
+            try:
+                settle(key, future.result())
+            except Exception as exc:  # isolation is the point: a task's
+                settle(key, exc)  # failure is its own named gap, never fatal
+        if budget is None or budget <= 0:
+            continue
+        now = time.monotonic()
+        for future, key in list(pending.items()):
+            begun = starts.get(key)
+            if begun is None or now - begun <= budget:
+                continue
+            if future.done():
+                continue  # finished in the gap since wait(); next pass settles it
+            pending.pop(future)
+            future.cancel()
+            settle(
+                key,
+                TimeoutError(f"did not finish within its {budget:.0f}s budget"),
+            )
+    return settled
 
 
 def _atomic_json(path: Path, payload: dict[str, object]) -> None:
@@ -191,6 +293,9 @@ def collect(
     membership_extrapolated: bool,
     stored_matches: dict[str, dict[str, object]] | None = None,
     refetch: bool = False,
+    workers: int | None = None,
+    task_budget: float | None = DEFAULT_TASK_BUDGET,
+    matches_checkpoint: Callable[[dict[str, object]], None] | None = None,
 ) -> tuple[
     dict[str, object],
     dict[str, object],
@@ -233,8 +338,30 @@ def collect(
     # data home had never seen these pages.
     page_cache = None if refetch else PageStateStore(root, season, gender)
 
-    def record(programme: str, layer: str, state: str, **extra: object) -> None:
-        cells[coverage.cell_key(season, gender, programme, layer)] = {
+    if workers is None:
+        workers = max(1, min(DEFAULT_WORKERS, len(wanted)))
+
+    # One gate for the whole run: the per-host cap of one in-flight request,
+    # with polite spacing, holds across both phases and every worker.
+    # Sessions are per thread — requests makes no thread-safety promise.
+    gate = HostGate()
+    thread_state = threading.local()
+
+    def thread_session():
+        session = getattr(thread_state, "session", None)
+        if session is None:
+            session = build_session(GatedSession(gate))
+            thread_state.session = session
+        return session
+
+    def record_into(
+        target: dict[str, dict[str, object]],
+        programme: str,
+        layer: str,
+        state: str,
+        **extra: object,
+    ) -> None:
+        target[coverage.cell_key(season, gender, programme, layer)] = {
             "season": season,
             "gender": gender,
             "programme": programme,
@@ -245,43 +372,173 @@ def collect(
             **{key: value for key, value in extra.items() if value is not None},
         }
 
-    for slug in wanted:
-        school = candidates.get(slug)
-        if school is None:
-            blocked = disabled.get(slug)
-            reason = (
-                f"{slug}: {blocked.notes or 'programme is disabled in schools.toml'}"
-                if blocked is not None
-                else f"{slug}: no configured {gender} programme recipe"
-            )
-            errors.append(reason)
-            for layer in layers:
-                record(slug, layer, coverage.STATE_NO_COLLECTOR, reason=reason)
-            continue
+    def record(programme: str, layer: str, state: str, **extra: object) -> None:
+        record_into(cells, programme, layer, state, **extra)
 
-        result = collect_programme(
-            school, season, aliases, layers=layers, members=members,
-            page_cache=page_cache,
-        )
-        write_raw_pages(root, result, season, gender)
-        results.append(result)
-        for layer in layers:
-            outcome = result.outcomes.get(layer)
-            if outcome is None:
-                continue
-            record(
-                slug,
-                layer,
-                outcome.state,
-                count=outcome.count,
-                reason=outcome.reason,
-                source_url=outcome.source_url,
-                # A run that legitimately did nothing must be legible as
-                # verified-unchanged, not mistakable for a gap.
-                verified="unchanged" if outcome.unchanged else None,
+    def checkpoint_cells(batch: dict[str, dict[str, object]]) -> None:
+        """Merge confirmed cells to disk NOW, so a run killed at the node
+        budget keeps them.  Never fatal — the final merge in main() is the
+        authoritative write and reports its own failure."""
+        if not batch:
+            return
+        try:
+            coverage.write_coverage(
+                root, coverage.merge_cells(root, batch, updated_at=now)
             )
-            if outcome.reason:
-                errors.append(f"{slug} {layer}: {outcome.reason}")
+        except (OSError, ValueError):
+            pass
+
+    executor = ThreadPoolExecutor(
+        max_workers=workers, thread_name_prefix="touchline-fetch"
+    )
+    try:
+        collections: dict[str, object] = {}
+        programme_cells: dict[str, dict[str, dict[str, object]]] = {}
+        programme_errors: dict[str, list[str]] = {}
+
+        def programme_task(school) -> object:
+            return collect_programme(
+                school,
+                season,
+                aliases,
+                session=thread_session(),
+                layers=layers,
+                members=members,
+                page_cache=page_cache,
+            )
+
+        def settle_programme(slug: str, value: object) -> None:
+            """As each programme finishes (in completion order, main thread):
+            archive its pages and checkpoint its cells.  Everything whose
+            order matters is assembled later, in request order."""
+            batch: dict[str, dict[str, object]] = {}
+            gaps: list[str] = []
+            if isinstance(value, ProgrammeCollection):
+                collections[slug] = value
+                write_raw_pages(root, value, season, gender)
+                for layer in layers:
+                    outcome = value.outcomes.get(layer)
+                    if outcome is None:
+                        continue
+                    record_into(
+                        batch,
+                        slug,
+                        layer,
+                        outcome.state,
+                        count=outcome.count,
+                        reason=outcome.reason,
+                        source_url=outcome.source_url,
+                        # A run that legitimately did nothing must be legible
+                        # as verified-unchanged, not mistakable for a gap.
+                        verified="unchanged" if outcome.unchanged else None,
+                    )
+                    if outcome.reason:
+                        gaps.append(f"{slug} {layer}: {outcome.reason}")
+            else:
+                # A hung or crashed collector is ITS programme's named gap;
+                # the rest of the run completes around it.
+                reason = (
+                    f"[{season}] programme collection {value}"
+                    if isinstance(value, TimeoutError)
+                    else f"[{season}] programme collector failed: {value}"
+                )
+                for layer in layers:
+                    record_into(batch, slug, layer, STATE_UNAVAILABLE, reason=reason)
+                gaps.append(f"{slug}: {reason}")
+            programme_cells[slug] = batch
+            programme_errors[slug] = gaps
+            checkpoint_cells(batch)
+
+        _scatter(
+            executor,
+            {
+                slug: partial(programme_task, candidates[slug])
+                for slug in wanted
+                if slug in candidates
+            },
+            task_budget,
+            on_settled=settle_programme,
+        )
+
+        for slug in wanted:
+            school = candidates.get(slug)
+            if school is None:
+                blocked = disabled.get(slug)
+                reason = (
+                    f"{slug}: {blocked.notes or 'programme is disabled in schools.toml'}"
+                    if blocked is not None
+                    else f"{slug}: no configured {gender} programme recipe"
+                )
+                errors.append(reason)
+                for layer in layers:
+                    record(slug, layer, coverage.STATE_NO_COLLECTOR, reason=reason)
+                continue
+            value = collections.get(slug)
+            if isinstance(value, ProgrammeCollection):
+                results.append(value)
+            cells.update(programme_cells.get(slug, {}))
+            errors.extend(programme_errors.get(slug, []))
+
+        return _assemble(
+            season=season,
+            gender=gender,
+            conference=conference,
+            wanted=wanted,
+            layers=layers,
+            membership_extrapolated=membership_extrapolated,
+            candidates=candidates,
+            results=results,
+            errors=errors,
+            cells=cells,
+            now=now,
+            stored_matches=stored_matches,
+            refetch=refetch,
+            executor=executor,
+            task_budget=task_budget,
+            thread_session=thread_session,
+            record_into=record_into,
+            checkpoint_cells=checkpoint_cells,
+            matches_checkpoint=matches_checkpoint,
+        )
+    finally:
+        # Never wait on an abandoned straggler: its work is already recorded
+        # as a gap, and each of its network reads is separately bounded.
+        executor.shutdown(wait=False, cancel_futures=True)
+
+
+def _assemble(
+    *,
+    season: int,
+    gender: str,
+    conference: str,
+    wanted: list[str],
+    layers: tuple[str, ...],
+    membership_extrapolated: bool,
+    candidates: dict[str, object],
+    results: list,
+    errors: list[str],
+    cells: dict[str, dict[str, object]],
+    now: str,
+    stored_matches: dict[str, dict[str, object]] | None,
+    refetch: bool,
+    executor: ThreadPoolExecutor,
+    task_budget: float | None,
+    thread_session: Callable[[], object],
+    record_into: Callable[..., None],
+    checkpoint_cells: Callable[[dict[str, dict[str, object]]], None],
+    matches_checkpoint: Callable[[dict[str, object]], None] | None,
+) -> tuple[
+    dict[str, object],
+    dict[str, object],
+    dict[str, object],
+    dict[str, object],
+    dict[str, dict[str, object]],
+    list[str],
+    int,
+]:
+    """Serialized assembly: every payload is built in the main thread, in
+    request order, so the outputs are byte-identical however the parallel
+    fetches interleaved."""
 
     all_fixtures = [fixture for result in results for fixture in result.fixtures]
     fixtures, duplicates = _dedupe_fixtures(all_fixtures)
@@ -417,21 +674,81 @@ def collect(
         # fixture's own result is current every run, because the schedule
         # pages above are re-collected (or verified unchanged) first.
         available = {} if refetch else dict(stored_matches or {})
-        reused = 0
-        session = build_session()
+        reused: dict[str, dict[str, object]] = {}
+        planned: dict[str, tuple[list[str], dict[str, object]]] = {}
         for fixture in fixtures:
             if str(fixture.get("status")) != "final":
                 continue
             fixture_id = str(fixture["id"])
             stored = available.get(fixture_id)
             if stored is not None and _stored_match_current(stored, fixture):
-                matches[fixture_id] = stored
-                reused += 1
+                reused[fixture_id] = stored
                 continue
             pair = sorted((str(fixture["home"]), str(fixture["away"])))
             key = (str(fixture["date"]), pair[0], pair[1])
             urls = candidates_by_match.get(key, [])
-            if not urls:
+            if urls:
+                planned[fixture_id] = (urls, fixture)
+
+        def match_task(urls: list[str], fixture: dict[str, object]) -> object:
+            failures: list[str] = []
+            for url in urls:
+                try:
+                    return collect_match(thread_session(), url, season, fixture)
+                except LiveCollectionError as exc:
+                    failures.append(str(exc))
+            raise LiveCollectionError("; ".join(failures))
+
+        fetched: dict[str, dict[str, object]] = {}
+        settled_count = 0
+
+        def assembled_payload() -> dict[str, object]:
+            """A valid matches payload from what is confirmed so far, in
+            fixture order — the same wholesale shape the final write uses."""
+            held: dict[str, object] = {}
+            for value in fixtures:
+                identity = str(value["id"])
+                detail = reused.get(identity) or fetched.get(identity)
+                if detail is not None:
+                    held[identity] = detail
+            return {
+                "schema": MATCHES_SCHEMA,
+                "season": season,
+                "gender": gender,
+                "collected_at": now,
+                "matches": held,
+            }
+
+        def settle_match(fixture_id: str, value: object) -> None:
+            nonlocal settled_count
+            if not isinstance(value, dict):
+                return
+            fetched[fixture_id] = value
+            settled_count += 1
+            if (
+                matches_checkpoint is not None
+                and settled_count % MATCH_CHECKPOINT_EVERY == 0
+            ):
+                matches_checkpoint(assembled_payload())
+
+        settled = _scatter(
+            executor,
+            {
+                fixture_id: partial(match_task, urls, fixture)
+                for fixture_id, (urls, fixture) in planned.items()
+            },
+            task_budget,
+            on_settled=settle_match,
+        )
+
+        for fixture in fixtures:
+            if str(fixture.get("status")) != "final":
+                continue
+            fixture_id = str(fixture["id"])
+            if fixture_id in reused:
+                matches[fixture_id] = reused[fixture_id]
+                continue
+            if fixture_id not in planned:
                 matches_missing[fixture_id] = (
                     "no box-score link on any collected schedule page"
                 )
@@ -439,24 +756,29 @@ def collect(
                     f"match {fixture_id}: no box-score link on any collected schedule page"
                 )
                 continue
-            failures: list[str] = []
-            for url in urls:
-                try:
-                    matches[fixture_id] = collect_match(session, url, season, fixture)
-                    break
-                except LiveCollectionError as exc:
-                    failures.append(str(exc))
-                finally:
-                    time.sleep(0.2)
+            value = settled.get(fixture_id)
+            if isinstance(value, dict):
+                matches[fixture_id] = value
+                continue
+            if isinstance(value, LiveCollectionError):
+                reason = str(value)
+            elif isinstance(value, TimeoutError):
+                reason = f"box-score fetch {value}"
             else:
-                matches_missing[fixture_id] = "; ".join(failures)
-                errors.append(f"match {fixture_id}: {'; '.join(failures)}")
+                reason = f"box-score collector failed: {value}"
+            matches_missing[fixture_id] = reason
+            errors.append(f"match {fixture_id}: {reason}")
 
         if reused:
             print(
-                f"matches: kept {reused} stored box score(s) whose results "
+                f"matches: kept {len(reused)} stored box score(s) whose results "
                 f"are unchanged — not re-fetched"
             )
+
+        match_cells: dict[str, dict[str, object]] = {}
+
+        def record(programme: str, layer: str, state: str, **extra: object) -> None:
+            record_into(match_cells, programme, layer, state, **extra)
 
         for result in results:
             if result.state(LAYER_SCHEDULE) == STATE_NO_COLLECTOR:
@@ -513,6 +835,9 @@ def collect(
                         + ", ".join(gaps)
                     ),
                 )
+
+        cells.update(match_cells)
+        checkpoint_cells(match_cells)
 
     matches_payload: dict[str, object] = {
         "schema": MATCHES_SCHEMA,
@@ -592,7 +917,42 @@ def main() -> int:
             "re-parsing everything."
         ),
     )
+    concurrency = parser.add_mutually_exclusive_group()
+    concurrency.add_argument(
+        "--workers",
+        type=int,
+        default=None,
+        help=(
+            "Fetch tasks in flight at once. Parallelism is across hosts, "
+            "never against one — a per-host cap of one politely spaced "
+            "request is enforced regardless of this value. Default: "
+            f"min({DEFAULT_WORKERS}, programme count)."
+        ),
+    )
+    concurrency.add_argument(
+        "--serial",
+        action="store_true",
+        help=(
+            "Collect one fetch at a time (equivalent to --workers 1), for "
+            "debugging. Outputs are byte-identical to a parallel run."
+        ),
+    )
+    parser.add_argument(
+        "--programme-timeout",
+        type=float,
+        default=DEFAULT_TASK_BUDGET,
+        help=(
+            "Seconds each isolated fetch task (one programme's pages, or one "
+            "box score) may run before it is recorded as a named gap so the "
+            "rest of the run completes. <= 0 disables the budget. Default: "
+            f"{DEFAULT_TASK_BUDGET:.0f}."
+        ),
+    )
     args = parser.parse_args()
+
+    if args.workers is not None and args.workers < 1:
+        print("--workers must be at least 1", file=sys.stderr)
+        return 2
 
     wanted = [value.strip() for value in args.programmes.split(",") if value.strip()]
     if not wanted:
@@ -665,6 +1025,16 @@ def main() -> int:
         membership_extrapolated=args.membership_extrapolated,
         stored_matches=stored_matches,
         refetch=args.refetch,
+        workers=1 if args.serial else args.workers,
+        task_budget=args.programme_timeout,
+        # Box scores checkpoint to their season file as they confirm: a run
+        # killed at the node budget keeps them, and the next run's
+        # incremental harvest starts from them instead of from zero.
+        matches_checkpoint=(
+            (lambda payload: _atomic_json(matches_path, payload))
+            if LAYER_MATCHES in layers
+            else None
+        ),
     )
     written: list[Path] = []
     if LAYER_SCHEDULE in layers:
