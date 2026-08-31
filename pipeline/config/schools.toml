@@ -14,6 +14,14 @@
 # to sidearm_legacy/statcrew when the live site has no implemented collector;
 # collection then files no-collector rather than a fetch error.
 #
+# display_name carries the school's published name when it differs from `name`.
+# `name` mints the institution slug (programme_slug in src/sidearm_live.py) that
+# keys membership.json, canon.json and every coverage cell, so it stays
+# ASCII-plain and never changes — not for punctuation ("St. Mary's") and not for
+# a rename (Mississippi College → Mississippi Christian). display_name is what
+# reader-facing surfaces show; leave it unset when `name` is already the
+# published name. Cite the school's own site when setting it.
+#
 # data_status values:
 #   verified   — URL confirmed live, sport confirmed present, scraper confirmed working
 #   unverified — config set but not tested end-to-end
@@ -292,10 +300,15 @@ scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
 
-# Officially "St. Edward's". Men's soccer cut April 2020, reinstated for
-# 2023 — the site serves no 2022 season and membership starts at 2023.
+# Officially "St. Edward's" — the athletics site titles itself "St. Edward's
+# University Athletics" (https://gohilltoppers.com/sports/mens-soccer,
+# verified 2026-08-31). `name` stays apostrophe-free because it mints the
+# saint-edwards slug; `display_name` carries the published spelling.
+# Men's soccer cut April 2020, reinstated for 2023 — the site serves no
+# 2022 season and membership starts at 2023.
 [[schools]]
 name         = "Saint Edwards"
+display_name = "St. Edward's"
 abbreviation = "SEU"
 conference   = "LSC"
 mascot       = "Hilltoppers"
@@ -306,9 +319,14 @@ scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
 
-# Officially "St. Mary's" (San Antonio, Texas).
+# Officially "St. Mary's" (San Antonio, Texas) — the athletics site titles
+# itself "St. Mary's University Athletics"
+# (https://rattlerathletics.com/sports/mens-soccer, verified 2026-08-31).
+# `name` stays apostrophe-free because it mints the saint-marys slug;
+# `display_name` carries the published spelling.
 [[schools]]
 name         = "Saint Marys"
+display_name = "St. Mary's"
 abbreviation = "STMU"
 conference   = "LSC"
 mascot       = "Rattlers"
@@ -458,8 +476,18 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 
+# Renamed Mississippi Christian University effective 2026-06-01. The
+# athletics site titles itself "Mississippi Christian University Athletics"
+# and its footer reads "Copyright© 2026 Mississippi Christian University"
+# (https://gochoctaws.com/sports/mens-soccer, verified 2026-08-31); the 2026
+# GSC standings list the team as "Mississippi Christian"
+# (https://gscsports.org/standings.aspx?path=msoc, verified 2026-08-31).
+# `name` keeps the old spelling because it mints the mississippi-college
+# slug, which never renames; `display_name` carries the current published
+# name.
 [[schools]]
 name         = "Mississippi College"
+display_name = "Mississippi Christian"
 abbreviation = "MC"
 conference   = "GSC"
 mascot       = "Choctaws"

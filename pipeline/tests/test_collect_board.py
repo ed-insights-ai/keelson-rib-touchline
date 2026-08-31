@@ -198,6 +198,68 @@ def test_collect_emits_schema_v2_and_each_programmes_actual_conference(
     ]
 
 
+def test_display_name_reaches_the_fixtures_payload_but_never_the_slug(
+    monkeypatch,
+    tmp_path: Path,
+) -> None:
+    """A school whose published name differs from its slug source ("St.
+    Mary's" vs "Saint Marys") emits the published spelling as the programme
+    name, while the slug — and every identity key built on ``name`` — stays
+    unchanged. Exercises the real ``load_schools`` so the TOML field, the
+    ``display()`` accessor, and the payload emission are covered together."""
+    config = tmp_path / "schools.toml"
+    config.write_text(
+        "\n".join(
+            [
+                "[[schools]]",
+                'name         = "Saint Marys"',
+                "display_name = \"St. Mary's\"",
+                'abbreviation = "STMU"',
+                'conference   = "LSC"',
+                'gender       = "men"',
+                'base_url     = "https://rattler.example/sports/mens-soccer"',
+                "enabled      = true",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    def fake_programme(school, season, aliases, *, layers, members):
+        del season, aliases, members
+        return ProgrammeCollection(
+            slug=programme_slug(school.name),
+            name=school.name,
+            fixtures=[],
+            players=[],
+            outcomes={
+                layer: LayerOutcome(layer=layer, state=STATE_EMPTY) for layer in layers
+            },
+        )
+
+    monkeypatch.setattr(collect_board, "collect_programme", fake_programme)
+    monkeypatch.setattr(collect_board, "write_raw_pages", lambda *args: None)
+    monkeypatch.setattr(collect_board.paths, "data_root", lambda: tmp_path)
+
+    fixtures, *_ = collect_board.collect(
+        season=2026,
+        gender="men",
+        conference="LSC",
+        wanted=["saint-marys"],
+        layers=(LAYER_SCHEDULE,),
+        config_path=config,
+        membership_extrapolated=False,
+    )
+
+    assert fixtures["programmes"] == [
+        {
+            "slug": "saint-marys",
+            "name": "St. Mary's",
+            "conference": "LSC",
+            "abbr": "STMU",
+        }
+    ]
+
+
 def test_main_keeps_conference_shards_independent(
     monkeypatch,
     tmp_path: Path,

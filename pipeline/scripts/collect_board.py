@@ -261,7 +261,7 @@ def collect(
         "programmes": [
             {
                 "slug": slug,
-                "name": candidates[slug].name
+                "name": candidates[slug].display()
                 if slug in candidates
                 else slug.replace("-", " ").title(),
                 "conference": candidates[slug].conference

@@ -385,7 +385,12 @@ def identity_aliases(
         if gender is not None and school.gender != gender:
             continue
         slug = programme_slug(school.name)
-        for candidate in (school.name, school.abbreviation, *school.aliases):
+        for candidate in (
+            school.name,
+            school.display_name,
+            school.abbreviation,
+            *school.aliases,
+        ):
             key = _identity_key(candidate)
             if key:
                 aliases[key] = slug
