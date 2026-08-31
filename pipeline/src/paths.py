@@ -50,7 +50,37 @@ def canon_path() -> Path:
 
 
 def membership_path() -> Path:
+    """The data home's mirrored membership copy — a deployment artifact.
+
+    The source of record is ``packaged_membership_path()``; collect mirrors
+    it here (scripts/collect_board.py) so the data repo stays self-describing.
+    """
     return reference_dir() / "membership.json"
+
+
+def package_root() -> Path:
+    """The rib package root — the parent of pipeline/.
+
+    Resolved from this module's own location (pipeline/src/paths.py), the
+    same way the rib's ``packageDir()`` works in src/datahome.ts, so a
+    checkout and an installed package resolve alike (uv installs this
+    project editable, so ``__file__`` stays inside the real tree).
+    """
+    return Path(__file__).resolve().parents[2]
+
+
+def packaged_membership_path() -> Path:
+    """The rib's own authored membership.json — the source of record.
+
+    Membership is authored, reviewed data that ships with the rib, like
+    config/schools.toml — not durable collected data — so this path is
+    package-relative on purpose: the one deliberate exception to this
+    module's data-home charter. The data home's copy (``membership_path()``)
+    is a deployment artifact mirrored from this file by collect; loaders
+    prefer this copy and fall back to the data home's only when an install
+    carries no packaged data tree.
+    """
+    return package_root() / "data" / "reference" / "membership.json"
 
 
 def errors_dir() -> Path:

@@ -97,7 +97,7 @@ Exit semantics: when `merge` alarms, the profile keeps its previous findings, be
 
 Answers which numbers in the touchline database are currently trustworthy. It never writes to the database; it does regenerate the parquet export (`reparse`) to compare it against Postgres, which is why it declares the mutation lock. The database defaults to `postgresql://lume@localhost:5432/touchline`, overridable with `DATABASE_URL`.
 
-Twelve check nodes run independently (only `export-staleness` waits, on `archive`), then a `report` node aggregates. Eleven measure the parquet/Postgres corpus; `goal-attribution` reads the season JSON layers (`data/fixtures`, `data/stats`) in the working directory instead:
+Thirteen check nodes run independently (only `export-staleness` waits, on `archive`), then a `report` node aggregates. Eleven measure the parquet/Postgres corpus; `goal-attribution` reads the season JSON layers (`data/fixtures`, `data/stats`) in the working directory instead, and `membership-sync` compares the reference artifact's two copies:
 
 | Node | Measures |
 |---|---|
@@ -113,6 +113,7 @@ Twelve check nodes run independently (only `export-staleness` waits, on `archive
 | `archive` | database row count against the per-school parquet exports; raw_html tracked-vs-disk drift |
 | `export-staleness` | merged export row count against the database; retired ordinals |
 | `goal-attribution` | per-programme scoreboard goals (fixtures layer, exhibitions and scoreless finals excluded and counted) against summed player goals (stats layer), every divergence named with both figures; programmes present in one layer but not the other |
+| `membership-sync` | the data home's `data/reference/membership.json` against the rib's packaged source of record, canonicalized with `jq -S` so only data can differ; a divergence warns with the exact unified diff printed above the verdict line and the install command in the cause |
 | `report` | bun script; renders the per-check table and one final JSON verdict line |
 
 The contract, uniform across the checks:

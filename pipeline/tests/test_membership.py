@@ -94,7 +94,28 @@ def _multi_conference_case() -> tuple[dict, list[SchoolConfig]]:
     return document, schools
 
 
-def test_default_load_uses_configured_data_root(monkeypatch, tmp_path):
+def test_default_load_prefers_the_packaged_source_of_record(
+    monkeypatch, tmp_path
+):
+    # A data home carrying a DIFFERENT membership document must not steer
+    # resolution: the packaged copy is the source of record, and the data
+    # home copy is a mirrored deployment artifact.
+    reference_dir = tmp_path / "data" / "reference"
+    reference_dir.mkdir(parents=True)
+    (reference_dir / "membership.json").write_text(
+        json.dumps({"memberships": {"stale-programme": {}}}),
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("TOUCHLINE_DATA_DIR", str(tmp_path))
+
+    assert membership.load_membership() == json.loads(
+        MEMBERSHIP_PATH.read_text(encoding="utf-8")
+    )
+
+
+def test_default_load_falls_back_to_the_data_home_copy(monkeypatch, tmp_path):
+    # An install that ships no packaged data tree still resolves membership
+    # from the mirrored data home copy.
     reference_dir = tmp_path / "data" / "reference"
     reference_dir.mkdir(parents=True)
     document = {"memberships": {}}
@@ -103,8 +124,30 @@ def test_default_load_uses_configured_data_root(monkeypatch, tmp_path):
         encoding="utf-8",
     )
     monkeypatch.setenv("TOUCHLINE_DATA_DIR", str(tmp_path))
+    monkeypatch.setattr(
+        paths,
+        "packaged_membership_path",
+        lambda: tmp_path / "nowhere" / "membership.json",
+    )
 
     assert membership.load_membership() == document
+
+
+def test_default_load_names_both_paths_when_neither_exists(
+    monkeypatch, tmp_path
+):
+    monkeypatch.setenv("TOUCHLINE_DATA_DIR", str(tmp_path))
+    missing_packaged = tmp_path / "nowhere" / "membership.json"
+    monkeypatch.setattr(
+        paths, "packaged_membership_path", lambda: missing_packaged
+    )
+
+    with pytest.raises(FileNotFoundError) as excinfo:
+        membership.load_membership()
+    assert str(missing_packaged) in str(excinfo.value)
+    assert str(tmp_path / "data" / "reference" / "membership.json") in str(
+        excinfo.value
+    )
 
 
 def test_document_is_valid(membership_document):

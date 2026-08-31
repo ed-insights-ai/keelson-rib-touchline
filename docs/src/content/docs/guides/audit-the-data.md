@@ -17,8 +17,9 @@ keelson workflow run data-integrity
 ```
 
 `workflows/data-integrity.yml` rebuilds the parquet export offline from the
-raw archive, then runs twelve deterministic read-only checks against it,
-live Postgres, and the season JSON layers (`data/fixtures`, `data/stats`).
+raw archive, then runs thirteen deterministic read-only checks against it,
+live Postgres, the season JSON layers (`data/fixtures`, `data/stats`), and
+the membership reference.
 Each check emits a one-line JSON verdict (`check`, `verdict`,
 `headline`, `cause`), and the report node renders them as a verdict table: a
 rollup line (`CLEAR`, `WARN`, or `ALARM`, the worst of all checks, with
@@ -38,6 +39,7 @@ counts) and one row per check.
 | archive | Postgres row count vs the per-school parquet exports; archive git drift |
 | export-staleness | the merged parquet export vs Postgres; retired-ordinal rows |
 | goal-attribution | per-programme scoreboard goals (fixtures layer, exhibitions and scoreless finals excluded and counted) vs summed player goals (stats layer), every divergence named with both figures |
+| membership-sync | the data home's mirrored `data/reference/membership.json` vs the rib's packaged source of record, canonicalized; a divergence warns with the exact diff |
 
 ## 2. Tell a failed check from a pass
 
@@ -86,11 +88,15 @@ then totals and acceptance checks: a floor on total games, no empty schools, and
 ## 5. Membership validation
 
 ```bash
-TOUCHLINE_DATA_DIR={data-home} uv run --project pipeline check-membership
+uv run --project pipeline check-membership
 ```
 
 `pipeline/scripts/check_membership.py` validates the authored
-`data/reference/membership.json`: the structural codes `independent` and
+`data/reference/membership.json` — the rib's packaged source of record,
+which the loader prefers; the data home's mirrored copy is only the
+fallback for an install shipping no packaged data tree, and the
+data-integrity workflow's `membership-sync` check reports any drift
+between the two. The validation: the structural codes `independent` and
 `non_member` must be declared, every window must carry a non-empty source
 citation, per-programme coverage must have no gaps (the error tells you to
 cover them explicitly with an independent or non_member window) and no
