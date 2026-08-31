@@ -76,9 +76,16 @@ Field semantics live in [File contracts](../file-contracts/).
 | `data/reference/canon.json` | The team-string identity artifact, built and checked against the database by `pipeline/scripts/build_canon.py` (`canon_path` in `pipeline/src/paths.py`). |
 | `data/reference/membership.json` | Season-windowed conference membership, each window citing its source (`membership_path` in `pipeline/src/paths.py`). |
 
-The membership file exists twice by design: the data home copy serves the
-pipeline, while the rib reads the copy shipped inside its own package
-(`membershipPath` in `src/membership.ts` resolves against the package root).
+The membership file exists twice, with one authority: the copy shipped
+inside the rib package (`membershipPath` in `src/membership.ts` resolves
+against the package root) is the source of record — version-controlled and
+reviewed — and the data home copy is a deployment artifact mirrored from
+it. Pipeline loaders prefer the packaged copy and fall back to the mirror
+(`load_membership` in `pipeline/src/membership.py`), collect refreshes the
+mirror at the start of every run (`sync_membership_reference` in
+`pipeline/scripts/collect_board.py`), and the data-integrity workflow's
+`membership-sync` check reports any divergence with the exact diff. Edits
+belong in the packaged copy only.
 
 ## Working and delivered
 

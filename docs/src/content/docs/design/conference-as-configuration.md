@@ -10,9 +10,11 @@ sidebar:
 Conference membership is authored data, never code. The artifact is
 `data/reference/membership.json`: for each programme and gender, a list of
 windows `{conference, from_season, to_season, source}`, each citing its
-source. The pipeline reads the data home's copy through
-`pipeline/src/membership.py`; the rib reads the copy of the same authored
-document shipped inside its package through `src/membership.ts` (see
+source. The copy shipped inside the rib package is the source of record:
+the rib reads it through `src/membership.ts`, and the pipeline prefers it
+too (`pipeline/src/membership.py`), falling back to the data home's
+mirrored copy — which collect keeps fresh and the data-integrity
+workflow's `membership-sync` check guards (see
 [Data on disk](../../reference/data-on-disk/)). Neither side owns the answer;
 both defer to the authored windows, and no member list appears in logic.
 Because the lookup is season-scoped, a school's 2019
