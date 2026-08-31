@@ -229,8 +229,8 @@ def test_display_name_reaches_the_fixtures_payload_but_never_the_slug(
         encoding="utf-8",
     )
 
-    def fake_programme(school, season, aliases, *, layers, members):
-        del season, aliases, members
+    def fake_programme(school, season, aliases, *, layers, members, page_cache=None):
+        del season, aliases, members, page_cache
         return ProgrammeCollection(
             slug=programme_slug(school.name),
             name=school.name,
