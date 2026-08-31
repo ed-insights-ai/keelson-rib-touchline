@@ -144,6 +144,41 @@ def _dedupe_fixtures(
     return values, duplicates
 
 
+def _stored_match_current(
+    stored: dict[str, object], fixture: dict[str, object]
+) -> bool:
+    """Whether a stored box score still stands for this fixture, so its
+    re-fetch can be skipped.
+
+    The ruled vocabulary decides every branch.  "Played" means final WITH a
+    published score, and only a played fixture whose stored detail carries the
+    same score pair is skippable.  A silent final — final with no published
+    score — is never skipped on stored data alone: tomorrow's collect retries
+    silence, and a skip here would blind the pipeline to a late-published
+    score.  A fixture whose result moved (a correction) no longer matches its
+    stored detail and is re-fetched.  The score comparison respects the stored
+    orientation when the match was oriented; an unoriented detail (a draw)
+    compares the pair regardless of order.
+    """
+    home_score = fixture.get("home_score")
+    away_score = fixture.get("away_score")
+    if not isinstance(home_score, int) or not isinstance(away_score, int):
+        return False
+    teams = stored.get("teams")
+    if not isinstance(teams, list) or len(teams) != 2:
+        return False
+    scores = [team.get("score") if isinstance(team, dict) else None for team in teams]
+    if not all(isinstance(score, int) for score in scores):
+        return False
+    home_index = stored.get("home_index")
+    if home_index in (0, 1):
+        return (
+            scores[home_index] == home_score
+            and scores[1 - home_index] == away_score  # type: ignore[index]
+        )
+    return sorted(scores) == sorted([home_score, away_score])  # type: ignore[type-var]
+
+
 def collect(
     *,
     season: int,
@@ -153,6 +188,8 @@ def collect(
     layers: tuple[str, ...],
     config_path: Path,
     membership_extrapolated: bool,
+    stored_matches: dict[str, dict[str, object]] | None = None,
+    refetch: bool = False,
 ) -> tuple[
     dict[str, object],
     dict[str, object],
@@ -363,11 +400,25 @@ def collect(
             if url:
                 candidates_by_match.setdefault(key, []).append(url)
 
+        # Incremental harvest: a box score already stored for a final whose
+        # result has not moved is data that cannot have changed since the
+        # whistle, so re-fetching it is pure load on the publisher's site.
+        # The skip never applies to a silent final (its box score may publish
+        # late) or to a fixture whose result moved (a correction) — and the
+        # fixture's own result is current every run, because the schedule
+        # pages above are re-collected (or verified unchanged) first.
+        available = {} if refetch else dict(stored_matches or {})
+        reused = 0
         session = build_session()
         for fixture in fixtures:
             if str(fixture.get("status")) != "final":
                 continue
             fixture_id = str(fixture["id"])
+            stored = available.get(fixture_id)
+            if stored is not None and _stored_match_current(stored, fixture):
+                matches[fixture_id] = stored
+                reused += 1
+                continue
             pair = sorted((str(fixture["home"]), str(fixture["away"])))
             key = (str(fixture["date"]), pair[0], pair[1])
             urls = candidates_by_match.get(key, [])
@@ -391,6 +442,12 @@ def collect(
             else:
                 matches_missing[fixture_id] = "; ".join(failures)
                 errors.append(f"match {fixture_id}: {'; '.join(failures)}")
+
+        if reused:
+            print(
+                f"matches: kept {reused} stored box score(s) whose results "
+                f"are unchanged — not re-fetched"
+            )
 
         for result in results:
             if result.state(LAYER_SCHEDULE) == STATE_NO_COLLECTOR:
@@ -517,6 +574,14 @@ def main() -> int:
         default=",".join(DEFAULT_LAYERS),
         help="Comma-separated layers to collect: schedule, roster, stats, matches.",
     )
+    parser.add_argument(
+        "--refetch",
+        action="store_true",
+        help=(
+            "Re-fetch every box score, ignoring stored match data — the "
+            "wholesale behaviour, for when stored details need refreshing."
+        ),
+    )
     args = parser.parse_args()
 
     wanted = [value.strip() for value in args.programmes.split(",") if value.strip()]
@@ -563,6 +628,23 @@ def main() -> int:
         )
         layers = (LAYER_SCHEDULE, *layers)
 
+    # The epic's ratified incremental behaviour: fetch only finals lacking
+    # their stored match data.  The previous run's matches file is the cache
+    # the payload is assembled from — the file is still written wholesale, it
+    # is just assembled from cache plus new fetches.
+    stored_matches: dict[str, dict[str, object]] = {}
+    if LAYER_MATCHES in layers and not args.refetch:
+        try:
+            existing = json.loads(matches_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            existing = None
+        if isinstance(existing, dict) and isinstance(existing.get("matches"), dict):
+            stored_matches = {
+                str(fixture_id): detail
+                for fixture_id, detail in existing["matches"].items()
+                if isinstance(detail, dict)
+            }
+
     fixtures, rosters, stats, matches, cells, errors, duplicates = collect(
         season=args.season,
         gender=args.gender,
@@ -571,6 +653,8 @@ def main() -> int:
         layers=layers,
         config_path=Path(args.config),
         membership_extrapolated=args.membership_extrapolated,
+        stored_matches=stored_matches,
+        refetch=args.refetch,
     )
     written: list[Path] = []
     if LAYER_SCHEDULE in layers:
