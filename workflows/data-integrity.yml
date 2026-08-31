@@ -2,7 +2,7 @@ name: data-integrity
 description: |
   Use when: you need to know which numbers in the touchline database are currently trustworthy — before believing a report, and before and after any data repair.
   Triggers: "data integrity", "check the data", "is the data right", "integrity report", "did the repair work".
-  Does: rebuilds the parquet archive offline from the data repo's raw_html, runs twelve deterministic read-only checks against it, live Postgres, and the season JSON layers, then prints one report with a per-check verdict and the file:line that causes each failure.
+  Does: rebuilds the parquet archive offline from the data repo's raw_html, runs thirteen deterministic read-only checks against it, live Postgres, the season JSON layers, and the membership reference, then prints one report with a per-check verdict and the file:line that causes each failure.
   NOT for: repairing anything (this never writes to the database), scraping, or judging code quality.
 
 requiresProject: true
@@ -708,6 +708,105 @@ nodes:
       printf '{"check":"goal-attribution","verdict":"%s","headline":"%s of %s programme-seasons diverge between scoreboard and attributed goals across %s conference-season cells — %s scoreboard ahead, %s stats ahead, %s with goals but no stats entry, each named above; season %s: %s; %s scoreless finals and %s scored exhibitions excluded from scoreboard totals; %s programmes absent from stats with 0 scoreboard goals (%s); %s stats-only programmes; %s cells with no stats file (%s)","cause":"both layers can be honest — a scoreboard goal nobody was credited with (own goal, unattributed scorer) or a stats page that lags or leads the schedule page by a match — so a divergence is a collector-domain signal to re-collect the lagging layer, never proof of corruption. Exhibition scorelines are excluded before summing: season statistics tables never attribute exhibition goals, so a scored friendly in the sum is a guaranteed false divergence. Consumer surfaces already verify against either reading; this names the gap at collect time."}\n' \
         "$V" "$((DIVN + NOG))" "$COMPARED" "$CELLS" "$OVERN" "$UNDERN" "$NOG" "$MAXSEASON" "$CUR" "$NOSCORE" "$EXHIBITIONS" "$NO0" "$NO0OUT" "$EXTRAN" "$UNPAIRED" "$UP"
 
+  # ── 12. Membership reference sync ───────────────────────────────────────
+  - id: membership-sync
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      # The rib's packaged data/reference/membership.json is the SOURCE OF
+      # RECORD for conference membership: version-controlled, reviewed, read
+      # by the rib's src/membership.ts (and so by the collect cadence's
+      # programme resolution) and preferred by the pipeline's
+      # src/membership.py. The data home's data/reference/membership.json is
+      # the deployment artifact collect mirrors from it
+      # (pipeline/scripts/collect_board.py, sync_membership_reference). A
+      # divergence no longer silently steers resolution — loaders prefer the
+      # packaged copy — but it does publish a stale membership record to
+      # anything reading the data repo's files directly, so it is reported
+      # as WARN with the exact canonical diff printed above the verdict
+      # line. Alarm is reserved for this check itself not running, per the
+      # file's rule. Nothing here names a conference: every figure is
+      # measured from the two documents.
+      CFG="$HOME/.keelson/rib-touchline/config.json"
+      PKG=""
+      [ -n "${TOUCHLINE_PIPELINE_DIR:-}" ] && PKG=$(dirname "$TOUCHLINE_PIPELINE_DIR")
+      if [ ! -f "${PKG:-/nonexistent}/data/reference/membership.json" ] && [ -f "$CFG" ]; then
+        PD=$(jq -r '.packageDir // empty' "$CFG" 2>/dev/null); [ -n "$PD" ] && PKG="$PD"
+      fi
+      [ -f "${PKG:-/nonexistent}/data/reference/membership.json" ] || PKG="$HOME/.keelson/node_modules/@keelson/rib-touchline"
+      SRC="$PKG/data/reference/membership.json"
+      DST=data/reference/membership.json
+      if [ ! -f "$SRC" ]; then
+        printf '{"check":"membership-sync","verdict":"alarm","headline":"CHECK DID NOT RUN — no packaged membership.json resolvable (tried the parent of TOUCHLINE_PIPELINE_DIR, packageDir in %s, and the installed rib), so there is no source of record to compare the data home against.","cause":"install or link the touchline rib, or export TOUCHLINE_PIPELINE_DIR pointing at its pipeline/ directory — the source of record lives beside it at <package>/data/reference/membership.json."}\n' "$CFG"
+        exit 0
+      fi
+      # Canonicalize BOTH sides (jq -S) so key order and whitespace never
+      # count as divergence — only the data can differ.
+      SRCC=$(jq -S . "$SRC" 2>/dev/null); SRCRC=$?
+      if [ "$SRCRC" -ne 0 ] || [ -z "${SRCC:-}" ]; then
+        printf '{"check":"membership-sync","verdict":"alarm","headline":"CHECK DID NOT RUN — the packaged source of record %s is not parseable JSON (jq exited %s), so no comparison can be made. An unreadable authority is not a clean one.","cause":"jq stderr is discarded here — run jq -S . on the file by hand; the rib install at that path is broken and must be fixed before this check means anything."}\n' "$SRC" "$SRCRC"
+        exit 0
+      fi
+      if [ ! -f "$DST" ]; then
+        printf '{"check":"membership-sync","verdict":"warn","headline":"data home carries no membership.json at %s (cwd %s) — pipeline loaders fall back to the packaged source of record, so resolution stays consistent, but the data repo publishes no membership record at all.","cause":"the next collect run mirrors the packaged copy into the data home; to install it now, from the data home root: cp %s %s"}\n' "$DST" "$(pwd)" "$SRC" "$DST"
+        exit 0
+      fi
+      if [ ! -r "$DST" ]; then
+        printf '{"check":"membership-sync","verdict":"alarm","headline":"CHECK DID NOT RUN — %s exists but is not readable by this user (cwd %s), so the data home side cannot be compared. An unreadable file is not a synced one.","cause":"permissions or ownership on the file changed — check with ls -l on the path."}\n' "$DST" "$(pwd)"
+        exit 0
+      fi
+      DSTC=$(jq -S . "$DST" 2>/dev/null); DSTRC=$?
+      if [ "$DSTRC" -ne 0 ] || [ -z "${DSTC:-}" ]; then
+        printf '{"check":"membership-sync","verdict":"warn","headline":"data home membership.json at %s is not parseable JSON (jq exited %s) — it cannot match the packaged source of record, and anything reading the data repo directly gets a corrupt membership record.","cause":"the file was hand-edited or truncated; the next collect run mirrors the packaged copy over it, or install it now from the data home root: cp %s %s"}\n' "$DST" "$DSTRC" "$SRC" "$DST"
+        exit 0
+      fi
+      TMPD=$(mktemp -d "${TMPDIR:-/tmp}/membership-sync.XXXXXX" 2>/dev/null)
+      if [ -z "${TMPD:-}" ] || [ ! -d "$TMPD" ]; then
+        printf '{"check":"membership-sync","verdict":"alarm","headline":"CHECK DID NOT RUN — mktemp could not create a scratch directory under %s, so the canonicalized documents cannot be diffed.","cause":"TMPDIR is unwritable or full — fix that and re-run."}\n' "${TMPDIR:-/tmp}"
+        exit 0
+      fi
+      trap 'rm -rf "$TMPD"' EXIT
+      printf '%s\n' "$SRCC" >"$TMPD/packaged"
+      printf '%s\n' "$DSTC" >"$TMPD/data-home"
+      # Headline figures, measured from the canonical forms — never asserted
+      # flat. jq already parsed both documents above, so an empty capture
+      # here is an extraction failure, not data.
+      PPROG=$(printf '%s\n' "$SRCC" | jq -r '.memberships // {} | length' 2>/dev/null)
+      DPROG=$(printf '%s\n' "$DSTC" | jq -r '.memberships // {} | length' 2>/dev/null)
+      PWIN=$(printf '%s\n' "$SRCC" | jq -r '[.memberships // {} | .[] | .[] | length] | add // 0' 2>/dev/null)
+      DWIN=$(printf '%s\n' "$DSTC" | jq -r '[.memberships // {} | .[] | .[] | length] | add // 0' 2>/dev/null)
+      PCONF=$(printf '%s\n' "$SRCC" | jq -r '.conferences // [] | join("/")' 2>/dev/null)
+      DCONF=$(printf '%s\n' "$DSTC" | jq -r '.conferences // [] | join("/")' 2>/dev/null)
+      MISSING=
+      for v in PPROG DPROG PWIN DWIN PCONF DCONF; do [ -n "${!v:-}" ] || MISSING="$MISSING $v"; done
+      if [ -n "$MISSING" ]; then
+        printf '{"check":"membership-sync","verdict":"alarm","headline":"CHECK DID NOT RUN — jq returned nothing for:%s over documents it already parsed, so the comparison cannot be summarized. Those are failed extractions, not measurements of zero.","cause":"re-run jq -S over both files by hand: %s and %s."}\n' "$MISSING" "$SRC" "$DST"
+        exit 0
+      fi
+      DIFF=$(diff -u -L "packaged $SRC (canonical)" -L "data-home $DST (canonical)" "$TMPD/packaged" "$TMPD/data-home" 2>/dev/null); DRC=$?
+      if [ "$DRC" -gt 1 ]; then
+        printf '{"check":"membership-sync","verdict":"alarm","headline":"CHECK DID NOT RUN — diff exited %s comparing the canonicalized documents, so agreement was never measured. A comparison that cannot be evaluated is not a pass.","cause":"diff stderr is discarded here — run jq -S on both files and diff them by hand: %s vs %s."}\n' "$DRC" "$SRC" "$DST"
+        exit 0
+      fi
+      if [ "$DRC" -eq 0 ]; then
+        BYTES="byte-identical"
+        cmp -s "$SRC" "$DST" 2>/dev/null || BYTES="formatting differs only, canonical data equal (the next collect run rewrites the mirror byte-for-byte)"
+        printf '{"check":"membership-sync","verdict":"ok","headline":"data home membership.json matches the packaged source of record — %s programmes, %s windows, conferences %s; %s","cause":""}\n' "$PPROG" "$PWIN" "$PCONF" "$BYTES"
+        exit 0
+      fi
+      # Divergence: the exact canonical diff precedes the one-line verdict,
+      # the way goal-attribution prints its table — named in full, never
+      # dropped. The report node reads only the final JSON line.
+      # `^-[^-]` / `^+[^+]` count body lines while skipping the ---/+++
+      # headers; jq -S output never starts a content line with - or +, and
+      # never emits an empty line, so the counts are exact.
+      ONLYSRC=$(printf '%s\n' "$DIFF" | grep -c '^-[^-]')
+      ONLYDST=$(printf '%s\n' "$DIFF" | grep -c '^+[^+]')
+      printf 'membership-sync: canonicalized diff, packaged source of record (-) vs data home copy (+):\n'
+      printf '%s\n' "$DIFF"
+      printf '{"check":"membership-sync","verdict":"warn","headline":"membership.json DIVERGES from the packaged source of record: %s canonical lines only in the packaged record, %s only in the data home copy — packaged holds %s programmes, %s windows, conferences %s; the data home copy holds %s programmes, %s windows, conferences %s. The exact diff precedes this line.","cause":"the data home copy is a stale deployment artifact. Pipeline loaders prefer the packaged copy, so resolution is already consistent — but the data repo is publishing a stale membership record to anything reading its files directly. The next collect run mirrors the packaged copy over it, or install now from the data home root: cp %s %s"}\n' \
+        "$ONLYSRC" "$ONLYDST" "$PPROG" "$PWIN" "$PCONF" "$DPROG" "$DWIN" "$DCONF" "$SRC" "$DST"
+
   # ── Report ──────────────────────────────────────────────────────────────
   - id: report
     runtime: bun
@@ -715,10 +814,12 @@ nodes:
     trigger_rule: all_done
     depends_on:
       [freshness, conference-flag, conference-derivation, duplication, season-label, identity,
-       discipline, orphans, parse-failures, archive, export-staleness, goal-attribution]
+       discipline, orphans, parse-failures, archive, export-staleness, goal-attribution,
+       membership-sync]
     script: |
       const IDS = ['freshness','conference_flag','conference_derivation','duplication','season_label','identity',
-                   'discipline','orphans','parse_failures','archive','export_staleness','goal_attribution']
+                   'discipline','orphans','parse_failures','archive','export_staleness','goal_attribution',
+                   'membership_sync']
       const MARK = { ok: '[ OK   ]', warn: '[ WARN ]', alarm: '[ ALARM]' }
       const rows = []
       for (const id of IDS) {

@@ -13,10 +13,31 @@ from src.config import SchoolConfig, load_schools
 def load_membership(
     path: str | Path | None = None,
 ) -> dict[str, Any]:
-    """Load the authored membership document."""
-    membership_path = Path(path) if path is not None else paths.membership_path()
-    if not membership_path.exists():
-        raise FileNotFoundError(f"Membership file not found: {membership_path}")
+    """Load the authored membership document.
+
+    With no explicit ``path``, the rib's packaged copy is preferred — it is
+    the source of record — and the data home's mirrored copy is only the
+    fallback for an install that ships no packaged data tree. Collect keeps
+    the mirror fresh (scripts/collect_board.py) and the data-integrity
+    workflow's membership-sync check reports any divergence, so the two
+    surfaces can never quietly resolve different member lists.
+    """
+    if path is not None:
+        membership_path = Path(path)
+        if not membership_path.exists():
+            raise FileNotFoundError(
+                f"Membership file not found: {membership_path}"
+            )
+    else:
+        packaged = paths.packaged_membership_path()
+        membership_path = (
+            packaged if packaged.exists() else paths.membership_path()
+        )
+        if not membership_path.exists():
+            raise FileNotFoundError(
+                "Membership file not found: no packaged copy at "
+                f"{packaged} and no data home copy at {membership_path}"
+            )
 
     with membership_path.open(encoding="utf-8") as membership_file:
         document = json.load(membership_file)

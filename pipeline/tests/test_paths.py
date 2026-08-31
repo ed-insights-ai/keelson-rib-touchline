@@ -32,6 +32,21 @@ def test_env_reroutes_every_path(monkeypatch, tmp_path):
     assert paths.errors_dir() == root / "data" / "errors"
 
 
+def test_packaged_membership_path_ignores_the_data_root(monkeypatch, tmp_path):
+    # The packaged copy is the SOURCE OF RECORD and ships with the rib, so it
+    # must resolve package-relative — never through TOUCHLINE_DATA_DIR — the
+    # same deliberate exception as config/schools.toml.
+    monkeypatch.setenv("TOUCHLINE_DATA_DIR", str(tmp_path))
+    package_root = Path(__file__).resolve().parents[2]
+    assert paths.package_root() == package_root
+    assert (
+        paths.packaged_membership_path()
+        == package_root / "data" / "reference" / "membership.json"
+    )
+    # In this checkout the source of record actually exists.
+    assert paths.packaged_membership_path().is_file()
+
+
 def test_env_change_applies_at_call_time(monkeypatch, tmp_path):
     a = tmp_path / "a"
     b = tmp_path / "b"

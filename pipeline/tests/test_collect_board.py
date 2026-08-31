@@ -737,3 +737,105 @@ def test_collect_records_verified_unchanged_cells(
     assert cells["2026/men/harding/schedule"]["verified"] == "unchanged"
     assert cells["2026/men/harding/schedule"]["state"] == STATE_COMPLETE
     assert "verified" not in cells["2026/men/harding/roster"]
+
+
+# ── membership mirror: collect is the data home's one writer ─────────────────
+# The packaged membership.json is the source of record; collect self-heals the
+# data home's mirrored copy when it is absent or diverged, and never touches
+# it when the packaged copy itself cannot be trusted.
+
+
+def _packaged_membership(tmp_path: Path, text: str) -> Path:
+    packaged = tmp_path / "package" / "data" / "reference" / "membership.json"
+    packaged.parent.mkdir(parents=True, exist_ok=True)
+    packaged.write_text(text, encoding="utf-8")
+    return packaged
+
+
+def test_sync_mirrors_a_missing_data_home_copy(monkeypatch, tmp_path: Path):
+    home = tmp_path / "home"
+    text = json.dumps({"memberships": {"harding": {}}}, indent=2) + "\n"
+    packaged = _packaged_membership(tmp_path, text)
+    monkeypatch.setattr(
+        collect_board.paths, "packaged_membership_path", lambda: packaged
+    )
+    monkeypatch.setattr(collect_board.paths, "data_root", lambda: home)
+
+    note = collect_board.sync_membership_reference()
+
+    assert note is not None and "absent" in note
+    mirrored = home / "data" / "reference" / "membership.json"
+    assert mirrored.read_text(encoding="utf-8") == text
+
+
+def test_sync_replaces_a_diverged_data_home_copy(monkeypatch, tmp_path: Path):
+    home = tmp_path / "home"
+    stale = home / "data" / "reference" / "membership.json"
+    stale.parent.mkdir(parents=True, exist_ok=True)
+    stale.write_text(json.dumps({"memberships": {}}), encoding="utf-8")
+    text = json.dumps({"memberships": {"harding": {}}}, indent=2) + "\n"
+    packaged = _packaged_membership(tmp_path, text)
+    monkeypatch.setattr(
+        collect_board.paths, "packaged_membership_path", lambda: packaged
+    )
+    monkeypatch.setattr(collect_board.paths, "data_root", lambda: home)
+
+    note = collect_board.sync_membership_reference()
+
+    assert note is not None and "diverged" in note
+    assert stale.read_text(encoding="utf-8") == text
+
+
+def test_sync_is_a_noop_when_the_mirror_is_fresh(monkeypatch, tmp_path: Path):
+    home = tmp_path / "home"
+    text = json.dumps({"memberships": {"harding": {}}}, indent=2) + "\n"
+    packaged = _packaged_membership(tmp_path, text)
+    mirrored = home / "data" / "reference" / "membership.json"
+    mirrored.parent.mkdir(parents=True, exist_ok=True)
+    mirrored.write_text(text, encoding="utf-8")
+    monkeypatch.setattr(
+        collect_board.paths, "packaged_membership_path", lambda: packaged
+    )
+    monkeypatch.setattr(collect_board.paths, "data_root", lambda: home)
+
+    assert collect_board.sync_membership_reference() is None
+    assert mirrored.read_text(encoding="utf-8") == text
+
+
+def test_sync_never_writes_from_a_broken_source_of_record(
+    monkeypatch, tmp_path: Path
+):
+    home = tmp_path / "home"
+    stale_text = json.dumps({"memberships": {}})
+    stale = home / "data" / "reference" / "membership.json"
+    stale.parent.mkdir(parents=True, exist_ok=True)
+    stale.write_text(stale_text, encoding="utf-8")
+    monkeypatch.setattr(collect_board.paths, "data_root", lambda: home)
+
+    # Packaged copy absent entirely.
+    monkeypatch.setattr(
+        collect_board.paths,
+        "packaged_membership_path",
+        lambda: tmp_path / "nowhere" / "membership.json",
+    )
+    note = collect_board.sync_membership_reference()
+    assert note is not None and "NOT synced" in note
+    assert stale.read_text(encoding="utf-8") == stale_text
+
+    # Packaged copy unparseable.
+    broken = _packaged_membership(tmp_path, "{not json")
+    monkeypatch.setattr(
+        collect_board.paths, "packaged_membership_path", lambda: broken
+    )
+    note = collect_board.sync_membership_reference()
+    assert note is not None and "NOT synced" in note
+    assert stale.read_text(encoding="utf-8") == stale_text
+
+    # Packaged copy parseable but carrying no memberships map.
+    empty = _packaged_membership(tmp_path, json.dumps({"conferences": []}))
+    monkeypatch.setattr(
+        collect_board.paths, "packaged_membership_path", lambda: empty
+    )
+    note = collect_board.sync_membership_reference()
+    assert note is not None and "NOT synced" in note
+    assert stale.read_text(encoding="utf-8") == stale_text

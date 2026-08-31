@@ -16,13 +16,15 @@ import { packageDir } from "./datahome.ts";
 // this rib may hardcode a conference's member list; conferences change, and
 // the product is meant to expand beyond the one we started with.
 //
-// Two copies of membership.json exist, and nothing syncs them. This rib reads
-// the copy shipped in its own package (packageDir()/data/reference/
-// membership.json). The Python pipeline reads the consumer data home's copy
-// (TOUCHLINE_DATA_DIR/data/reference/membership.json, via membership_path()
-// in pipeline/src/paths.py) — a file bootstrapDataHome() never seeds. An edit
-// to one copy must be propagated to the other by hand, or the two surfaces
-// resolve different member lists for the same season.
+// The copy shipped in this package (packageDir()/data/reference/
+// membership.json, read here) is the SOURCE OF RECORD: version-controlled and
+// reviewed. The consumer data home's copy (TOUCHLINE_DATA_DIR/data/reference/
+// membership.json) is a deployment artifact mirrored from it — the Python
+// pipeline prefers the packaged copy and falls back to the mirror
+// (pipeline/src/membership.py), collect refreshes the mirror at the start of
+// every run (pipeline/scripts/collect_board.py, sync_membership_reference),
+// and the data-integrity workflow's membership-sync check reports any
+// divergence with the exact diff. Edit ONLY the packaged copy.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface Window {
