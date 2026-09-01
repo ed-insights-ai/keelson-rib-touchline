@@ -1,6 +1,6 @@
 {
-  "conferences": ["GAC", "GSC", "LSC", "MIAA", "independent", "non_member"],
-  "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2026. Authored from official GAC/MIAA, LSC and GSC records; each window cites its source. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
+  "conferences": ["GAC", "GLVC", "GSC", "LSC", "MIAA", "independent", "non_member"],
+  "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2026. Authored from official GAC/MIAA, LSC, GSC and GLVC records; each window cites its source. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
   "memberships": {
     "aum": {
       "men": [
@@ -39,6 +39,16 @@
           "from_season": 2016,
           "to_season": 2026,
           "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both."
+        }
+      ]
+    },
+    "drury": {
+      "men": [
+        {
+          "conference": "GLVC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Valley Conference, 2022 and 2026 Men's Soccer records, https://glvcsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://glvcsports.com/standings.aspx?path=msoc (accessed 2026-09-01); listed in both."
         }
       ]
     },
@@ -104,6 +114,26 @@
         }
       ]
     },
+    "illinois-springfield": {
+      "men": [
+        {
+          "conference": "GLVC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Valley Conference, 2022 and 2026 Men's Soccer records, https://glvcsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://glvcsports.com/standings.aspx?path=msoc (accessed 2026-09-01); listed in both."
+        }
+      ]
+    },
+    "indianapolis": {
+      "men": [
+        {
+          "conference": "GLVC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Valley Conference, 2022 and 2026 Men's Soccer records, https://glvcsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://glvcsports.com/standings.aspx?path=msoc (accessed 2026-09-01); listed in both. Listed as 'Indianapolis' in the conference records; the school brands itself UIndy."
+        }
+      ]
+    },
     "lee": {
       "men": [
         {
@@ -114,6 +144,26 @@
         }
       ]
     },
+    "lewis": {
+      "men": [
+        {
+          "conference": "GLVC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Valley Conference, 2022 and 2026 Men's Soccer records, https://glvcsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://glvcsports.com/standings.aspx?path=msoc (accessed 2026-09-01); listed in both."
+        }
+      ]
+    },
+    "lincoln": {
+      "men": [
+        {
+          "conference": "GLVC",
+          "from_season": 2024,
+          "to_season": 2026,
+          "source": "Great Lakes Valley Conference, 2024 and 2026 Men's Soccer records, https://glvcsports.com/stats.aspx?path=msoc&year=2024&conf=true and https://glvcsports.com/standings.aspx?path=msoc (accessed 2026-09-01); listed in both. Absent from the 2023 records (https://glvcsports.com/stats.aspx?path=msoc&year=2023&conf=true); first listed 2024, matching Lincoln (Mo.)'s 2024-25 move into the GLVC from the MIAA."
+        }
+      ]
+    },
     "lubbock-christian": {
       "men": [
         {
@@ -121,6 +171,26 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Lone Star Conference, 2022 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12); listed in both."
+        }
+      ]
+    },
+    "maryville": {
+      "men": [
+        {
+          "conference": "GLVC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Valley Conference, 2022 and 2026 Men's Soccer records, https://glvcsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://glvcsports.com/standings.aspx?path=msoc (accessed 2026-09-01); listed in both."
+        }
+      ]
+    },
+    "mckendree": {
+      "men": [
+        {
+          "conference": "GLVC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Valley Conference, 2022 and 2026 Men's Soccer records, https://glvcsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://glvcsports.com/standings.aspx?path=msoc (accessed 2026-09-01); listed in both."
         }
       ]
     },
@@ -141,6 +211,26 @@
           "from_season": 2016,
           "to_season": 2026,
           "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both. Listed as 'MC' in the conference records."
+        }
+      ]
+    },
+    "missouri-s-t": {
+      "men": [
+        {
+          "conference": "GLVC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Valley Conference, 2022 and 2026 Men's Soccer records, https://glvcsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://glvcsports.com/standings.aspx?path=msoc (accessed 2026-09-01); listed in both. Listed as 'Missouri S&T' in the conference records."
+        }
+      ]
+    },
+    "missouri-st-louis": {
+      "men": [
+        {
+          "conference": "GLVC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Valley Conference, 2022 and 2026 Men's Soccer records, https://glvcsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://glvcsports.com/standings.aspx?path=msoc (accessed 2026-09-01); listed in both. Listed as 'Missouri-St. Louis' in the conference records; the school brands itself UMSL."
         }
       ]
     },
@@ -270,6 +360,26 @@
         }
       ]
     },
+    "quincy": {
+      "men": [
+        {
+          "conference": "GLVC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Valley Conference, 2022 and 2026 Men's Soccer records, https://glvcsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://glvcsports.com/standings.aspx?path=msoc (accessed 2026-09-01); listed in both."
+        }
+      ]
+    },
+    "rockhurst": {
+      "men": [
+        {
+          "conference": "GLVC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Valley Conference, 2022 and 2026 Men's Soccer records, https://glvcsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://glvcsports.com/standings.aspx?path=msoc (accessed 2026-09-01); listed in both."
+        }
+      ]
+    },
     "rogers-state": {
       "men": [
         {
@@ -348,6 +458,16 @@
         }
       ]
     },
+    "southwest-baptist": {
+      "men": [
+        {
+          "conference": "GLVC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Valley Conference, 2022 and 2026 Men's Soccer records, https://glvcsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://glvcsports.com/standings.aspx?path=msoc (accessed 2026-09-01); listed in both. Joined the GLVC from the MIAA in 2019, before this window opens."
+        }
+      ]
+    },
     "southwestern-oklahoma-state": {
       "women": [
         {
@@ -398,6 +518,16 @@
         }
       ]
     },
+    "truman": {
+      "men": [
+        {
+          "conference": "GLVC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Valley Conference, 2022 and 2026 Men's Soccer records, https://glvcsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://glvcsports.com/standings.aspx?path=msoc (accessed 2026-09-01); listed in both. Listed as 'Truman' in the conference records; opponents also publish 'Truman State'."
+        }
+      ]
+    },
     "uah": {
       "men": [
         {
@@ -415,6 +545,16 @@
           "from_season": 2016,
           "to_season": 2026,
           "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both. Union has been a GSC member since its 2012-13 move from the NAIA to NCAA Division II, predating this document's 2016 floor."
+        }
+      ]
+    },
+    "upper-iowa": {
+      "men": [
+        {
+          "conference": "GLVC",
+          "from_season": 2023,
+          "to_season": 2026,
+          "source": "Great Lakes Valley Conference, 2023 and 2026 Men's Soccer records, https://glvcsports.com/stats.aspx?path=msoc&year=2023&conf=true and https://glvcsports.com/standings.aspx?path=msoc (accessed 2026-09-01); listed in both. Absent from the 2022 records (https://glvcsports.com/stats.aspx?path=msoc&year=2022&conf=true); first listed 2023, matching Upper Iowa's 2023-24 move into the GLVC."
         }
       ]
     },
@@ -475,6 +615,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Lone Star Conference, 2022 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12); listed in both."
+        }
+      ]
+    },
+    "william-jewell": {
+      "men": [
+        {
+          "conference": "GLVC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Valley Conference, 2022 and 2026 Men's Soccer records, https://glvcsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://glvcsports.com/standings.aspx?path=msoc (accessed 2026-09-01); listed in both."
         }
       ]
     }
