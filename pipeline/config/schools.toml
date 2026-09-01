@@ -638,3 +638,238 @@ years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+
+# ============================================================
+# GLVC MEN'S SOCCER — 15 programmes, backfill window 2022-2026
+# ============================================================
+# Source of truth: GLVC per-season records (glvcsports.com conference
+# statistics per year, plus the live standings for 2026), verified
+# 2026-09-01. All 15 sites probed 2026-09-01 (uv run probe): SideArm-new,
+# schedule / roster / stats / matches present on every one, every season in
+# the window served (Lincoln's site serves 2023-2026; its window starts
+# 2024). Truman's fingerprint carries only the sidearmsports asset evidence
+# (no server-rendered schedule markup on the landing page) but all four
+# layers probed present. No collect has run yet, so every stanza is
+# data_status = unverified — promote once a collect confirms the layers
+# end to end. No ordinals: the StatCrew legacy lineage never reads these.
+#
+# Season-aware membership lives in data/reference/membership.json —
+# Upper Iowa joined 2023 and Lincoln (Mo.) 2024; nobody left inside the
+# window. The realignment traps all fall before it: Bellarmine left for
+# Division I in 2020, Lindenwood and Southern Indiana are in the 2021
+# records and gone from 2022 (both to Division I), Southwest Baptist
+# arrived from the MIAA in 2019. Every year-list here equals the window.
+#
+# Names are chosen so programme_slug(name) matches the membership key. The
+# GAC archive already minted indianapolis, maryville, rockhurst, drury,
+# william-jewell, mckendree, southwest-baptist, upper-iowa, quincy,
+# illinois-springfield and lincoln from opponent text; it also carries a
+# residual missouri-s-and-t (18 rows) beside the missouri-s-t this config
+# mints, the same split the LSC accepted for texas-a-m-international.
+# Aliases come from opponent spellings on member schedules (UIndy 2025,
+# Lincoln 2025) — Illinois-Springfield, Missouri -St. Louis, Truman State.
+
+[[schools]]
+name         = "Indianapolis"
+abbreviation = "UINDY"
+conference   = "GLVC"
+mascot       = "Greyhounds"
+gender       = "men"
+base_url     = "https://athletics.uindy.edu/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["UIndy", "University of Indianapolis"]
+
+[[schools]]
+name         = "Maryville"
+abbreviation = "MARY"
+conference   = "GLVC"
+mascot       = "Saints"
+gender       = "men"
+base_url     = "https://maryvillesaints.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Maryville University"]
+
+[[schools]]
+name         = "Missouri S&T"
+abbreviation = "MST"
+conference   = "GLVC"
+mascot       = "Miners"
+gender       = "men"
+base_url     = "https://minerathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Missouri University of Science and Technology"]
+
+[[schools]]
+name         = "Illinois Springfield"
+abbreviation = "UIS"
+conference   = "GLVC"
+mascot       = "Prairie Stars"
+gender       = "men"
+base_url     = "https://uisprairiestars.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Illinois-Springfield", "University of Illinois Springfield"]
+
+[[schools]]
+name         = "Lewis"
+abbreviation = "LEW"
+conference   = "GLVC"
+mascot       = "Flyers"
+gender       = "men"
+base_url     = "https://lewisflyers.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lewis University"]
+
+[[schools]]
+name         = "Rockhurst"
+abbreviation = "RU"
+conference   = "GLVC"
+mascot       = "Hawks"
+gender       = "men"
+base_url     = "https://rockhursthawks.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Rockhurst University"]
+
+# Conference records say "Truman"; opponents (Lincoln 2025) publish
+# "Truman State". The landing page fingerprint is asset-only but every layer
+# probed present.
+[[schools]]
+name         = "Truman"
+abbreviation = "TRU"
+conference   = "GLVC"
+mascot       = "Bulldogs"
+gender       = "men"
+base_url     = "https://trumanbulldogs.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Truman State", "Truman State University"]
+
+[[schools]]
+name         = "William Jewell"
+abbreviation = "WJC"
+conference   = "GLVC"
+mascot       = "Cardinals"
+gender       = "men"
+base_url     = "https://jewellcardinals.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["William Jewell College"]
+
+[[schools]]
+name         = "Drury"
+abbreviation = "DU"
+conference   = "GLVC"
+mascot       = "Panthers"
+gender       = "men"
+base_url     = "https://drurypanthers.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Drury University"]
+
+# Conference records say "Missouri-St. Louis"; the school brands itself
+# UMSL and opponents also publish "Missouri -St. Louis" and "Mo.-St. Louis".
+[[schools]]
+name         = "Missouri-St. Louis"
+abbreviation = "UMSL"
+conference   = "GLVC"
+mascot       = "Tritons"
+gender       = "men"
+base_url     = "https://umsltritons.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Missouri -St. Louis", "Mo.-St. Louis", "University of Missouri-St. Louis"]
+
+[[schools]]
+name         = "Quincy"
+abbreviation = "QU"
+conference   = "GLVC"
+mascot       = "Hawks"
+gender       = "men"
+base_url     = "https://quhawks.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Quincy University"]
+
+[[schools]]
+name         = "McKendree"
+abbreviation = "MCK"
+conference   = "GLVC"
+mascot       = "Bearcats"
+gender       = "men"
+base_url     = "https://mckbearcats.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["McKendree University"]
+
+# GLVC member since 2019 (from the MIAA), before the window opens.
+[[schools]]
+name         = "Southwest Baptist"
+abbreviation = "SBU"
+conference   = "GLVC"
+mascot       = "Bearcats"
+gender       = "men"
+base_url     = "https://sbubearcats.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Southwest Baptist University"]
+
+# Joined the GLVC for 2023 (absent from the 2022 records).
+[[schools]]
+name         = "Upper Iowa"
+abbreviation = "UIU"
+conference   = "GLVC"
+mascot       = "Peacocks"
+gender       = "men"
+base_url     = "https://uiupeacocks.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Upper Iowa University"]
+
+# Lincoln University (Jefferson City, Mo.). Joined the GLVC for 2024 from
+# the MIAA (absent from the 2023 records). Not Lincoln Memorial, which the
+# GAC archive already carries as lincoln-memorial.
+[[schools]]
+name         = "Lincoln"
+abbreviation = "LU"
+conference   = "GLVC"
+mascot       = "Blue Tigers"
+gender       = "men"
+base_url     = "https://lubluetigers.com/sports/mens-soccer"
+years        = [2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lincoln (Mo.)", "Lincoln University"]
