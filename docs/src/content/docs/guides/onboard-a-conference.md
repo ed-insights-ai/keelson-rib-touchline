@@ -153,7 +153,17 @@ conference, gender and season: its preflight refuses because the workflow's
 `membership reference synced`; that is the mirror healing, and expected.
 
 Each call reports schedule, roster, stats and matches counts, the duplicate
-rows collapsed, and every named gap. Copy the gaps verbatim into the collect
+rows collapsed, and every named gap.
+
+Expect an **alias round** after the first collect. A member's peers spell it
+their own way ("Lincoln University of Missouri" for the stanza's "Lincoln"),
+and a spelling no alias covers is collected as a stranger beside the member,
+so one match appears twice. Scan the new fixture files for non-member slugs
+that look like members, read the spelling off a peer's schedule page, add
+it to the stanza's `aliases`, and re-collect the affected seasons. A
+parenthetical is dropped before matching, so an alias like "Lincoln (Mo.)"
+resolves nothing on its own; the alias must be the words that survive
+normalisation. Copy the gaps verbatim into the collect
 bead's notes as you go; they are also in
 `data/errors/collect-board-{season}-{gender}-{conference}.json`. A season
 takes about four minutes.
@@ -217,13 +227,26 @@ What the GLVC, the fourth conference, actually required, measured on
 | `~/.keelson/scripts/touchline-collect-cadence.sh` line 74 | `TOUCHLINE_CONFERENCES` default string must be extended by hand |
 | finished-season `scheduled` rows | unpublished exhibitions, one cancellation, one tournament placeholder; noted, not gaps |
 
-**Site (coordinator)**
+**Site (coordinator, then the site beads under tui-4me)**
 
 | touchpoint | change |
 |---|---|
-| `touchline-ui/src/site.config.ts` | `conferences` +1, `conferenceNames` +1 |
+| `touchline-ui/src/site.config.ts` | 2 lines: `conferences` +1, `conferenceNames` +1 |
 | journal | one GLVC model call |
 | national page | one regeneration |
+| `programmes.json`, `programme-coordinates.json` | 30 hand-kept reference rows: nickname, town as published, Gazetteer GEOID and centroid |
+| division fold | a neutral-site rule, the first time two followed conferences shared a tournament match with no agreed home side |
+| roster vocabulary | six published misspellings aliased, two abbreviations added, two non-positions named, one initials rule |
+| copy test | one pairwise threshold, the chart caption marked mechanical |
+
+**The alias round (tl-v7p)**
+
+| touchpoint | what happened |
+|---|---|
+| `schools.toml` lincoln stanza | one alias, "Lincoln University of Missouri", after six 2026 fixtures collected twice |
+| GLVC 2024-2026 | re-collected after merge and restart so the twins fold |
+| other conferences' files | keep `missouri-s-and-t`, `uindy`, `of-missouri-saint-louis` until their own re-collect; the stanzas now resolve all three |
+| tournament pages | `seed-` and `no-NN-` prefixes reach slugs; collector bug filed (tl-4sg.22) |
 
 **What collapses, with a cost each** (filed as beads under tl-4sg):
 
@@ -246,7 +269,11 @@ What the GLVC, the fourth conference, actually required, measured on
    `abbreviation`, `mascot` and `aliases` from the site's own title and
    schedule opponent text, so the stanza is pasted, not rewritten. Cost:
    medium.
-5. **A backfill workflow fans a conference out over seasons.** One
+5. **The first collect scans itself for the alias round.** After a collect,
+   list non-member slugs whose tokens are a superset of a member's name and
+   print them as candidate aliases, so the round above is one report, not a
+   test failure on the site three steps later. Cost: small.
+6. **A backfill workflow fans a conference out over seasons.** One
    `touchline-backfill` run takes conference, gender and a season range and
    executes one collect node per season under the existing mutation lock,
    turning five tool calls into one durable run. Cost: medium; a single

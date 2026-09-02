@@ -861,6 +861,12 @@ aliases      = ["Upper Iowa University"]
 # Lincoln University (Jefferson City, Mo.). Joined the GLVC for 2024 from
 # the MIAA (absent from the 2023 records). Not Lincoln Memorial, which the
 # GAC archive already carries as lincoln-memorial.
+# Peer schedules print "Lincoln University of Missouri" (McKendree and
+# Truman 2026, verified 2026-09-02), which the identity key reduces to
+# "lincoln of missouri" and nothing matched: six 2026 fixtures collected
+# twice, once under lincoln and once under lincoln-of-missouri (tl-v7p).
+# "Lincoln (Mo.)" stays for the record, but a parenthetical is dropped
+# before matching, so it never resolves anything on its own.
 [[schools]]
 name         = "Lincoln"
 abbreviation = "LU"
@@ -872,4 +878,4 @@ years        = [2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Lincoln (Mo.)", "Lincoln University"]
+aliases      = ["Lincoln (Mo.)", "Lincoln University", "Lincoln University of Missouri"]
