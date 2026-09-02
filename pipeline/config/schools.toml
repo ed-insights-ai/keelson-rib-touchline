@@ -1073,3 +1073,186 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Westminster University", "Westminster College"]
+
+# ============================================================
+# SSC MEN'S SOCCER — 11 programmes, backfill window 2022-2026
+# ============================================================
+# Source of truth: Sunshine State Conference per-season records
+# (sunshinestateconference.com conference statistics per year, plus the
+# live standings for 2026), verified 2026-09-02. All 11 sites probed
+# 2026-09-02 (uv run probe --name): ten are SideArm with schedule / roster /
+# stats / matches present and every window season served. Tampa
+# (tampaspartans.com) answers 403 to the probe and, to a browser, is
+# PrestoSports (/sports/msoc/2025-26/schedule); no collector exists for it,
+# so its stanza names that platform and every live layer files a
+# no-collector gap until one is written. Tampa's matches against members
+# still land from the members' own pages. No collect has run yet, so every
+# stanza is data_status = unverified. No ordinals.
+#
+# Season-aware membership lives in data/reference/membership.json — the
+# same eleven programmes appear in every season 2021-2026, so nobody
+# joined, left, or discontinued inside the window and every year-list here
+# equals the window. Hosts came from the conference's members page
+# (sunshinestateconference.com/members).
+#
+# Names are the conference records' spellings, chosen so programme_slug(name)
+# matches the membership key; no archive file had minted any of them. The
+# probe's initials-derived abbreviations (B, E, EA, NS, R, SL, T, SFLO,
+# LYNNU) were replaced with the short forms the schools use. Aliases come
+# from opponent spellings on member 2025 schedule pages (Barry, Rollins,
+# Saint Leo, Nova Southeastern, Embry-Riddle): the published long names and
+# "Embry-Riddle University (Fla.)" / "(FL)", whose parenthetical drops
+# before matching.
+
+[[schools]]
+name         = "Barry"
+abbreviation = "BU"
+conference   = "SSC"
+mascot       = "Buccaneers"
+gender       = "men"
+base_url     = "https://gobarrybucs.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Barry University"]
+
+[[schools]]
+name         = "Eckerd"
+abbreviation = "EC"
+conference   = "SSC"
+mascot       = "Tritons"
+gender       = "men"
+base_url     = "https://www.eckerdtritons.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Eckerd College"]
+
+[[schools]]
+name         = "Embry-Riddle"
+abbreviation = "ERAU"
+conference   = "SSC"
+mascot       = "Eagles"
+gender       = "men"
+base_url     = "https://www.erauathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Embry-Riddle Aeronautical University", "Embry-Riddle University"]
+
+# The probe found no mascot where it reads; "Moccasins" ("Mocs") is the
+# site's own name (fscmocs.com).
+[[schools]]
+name         = "Florida Southern"
+abbreviation = "FSC"
+conference   = "SSC"
+mascot       = "Moccasins"
+gender       = "men"
+base_url     = "https://www.fscmocs.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Florida Southern College"]
+
+# The probe found no mascot and drafted "Florida Tech Panthers" (the site's
+# title, mascot included) as an alias.
+[[schools]]
+name         = "Florida Tech"
+abbreviation = "FIT"
+conference   = "SSC"
+mascot       = "Panthers"
+gender       = "men"
+base_url     = "https://floridatechsports.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Florida Institute of Technology"]
+
+[[schools]]
+name         = "Lynn"
+abbreviation = "LYNN"
+conference   = "SSC"
+mascot       = "Fighting Knights"
+gender       = "men"
+base_url     = "https://www.lynnfightingknights.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lynn University"]
+
+[[schools]]
+name         = "Nova Southeastern"
+abbreviation = "NSU"
+conference   = "SSC"
+mascot       = "Sharks"
+gender       = "men"
+base_url     = "https://www.nsusharks.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Nova Southeastern University"]
+
+[[schools]]
+name         = "Palm Beach Atlantic"
+abbreviation = "PBA"
+conference   = "SSC"
+mascot       = "Sailfish"
+gender       = "men"
+base_url     = "https://pbasailfish.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Palm Beach Atlantic University"]
+
+[[schools]]
+name         = "Rollins"
+abbreviation = "ROL"
+conference   = "SSC"
+mascot       = "Tars"
+gender       = "men"
+base_url     = "https://www.rollinssports.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Rollins College"]
+
+[[schools]]
+name         = "Saint Leo"
+abbreviation = "SLU"
+conference   = "SSC"
+mascot       = "Lions"
+gender       = "men"
+base_url     = "https://saintleolions.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Saint Leo University", "St. Leo"]
+
+# tampaspartans.com answers 403 to every automated request and serves
+# PrestoSports to a browser (/sports/msoc/{season}-{yy}/schedule, verified
+# 2026-09-02), a platform with no collector. Every live layer files a
+# no-collector gap; the base_url is the sport landing page PrestoSports
+# publishes, kept for the day a collector exists.
+[[schools]]
+name         = "Tampa"
+abbreviation = "UT"
+conference   = "SSC"
+mascot       = "Spartans"
+gender       = "men"
+base_url     = "https://www.tampaspartans.com/sports/msoc"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Tampa"]

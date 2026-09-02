@@ -6,6 +6,8 @@ fails `pipeline/tests/test_contracts.py`.
 
 ## 2026-09-02
 
+- Membership reference: `SSC` joins `conferences`, with one window (Rollins,
+  2022-2026) so the fixture exhibits it (bead tl-v1q.1).
 - Membership reference: `RMAC` joins `conferences`, with one window (Regis,
   2022-2026) so the fixture exhibits it. The fixture's conference list must
   equal the packaged file's, so every conference add touches this file
