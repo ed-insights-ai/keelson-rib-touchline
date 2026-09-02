@@ -15,6 +15,7 @@ from src.probe import (
     PLATFORM_UNKNOWN,
     ProbeReport,
     classify_platform,
+    derive_identity,
     draft_stanza,
     probe_layers,
     served_seasons,
@@ -108,6 +109,138 @@ def test_served_seasons_keeps_only_proven_schedule_years() -> None:
     assert served_seasons(session, base_url, [2026, 2025]) == [2026]
 
 
+def _site_html(
+    *,
+    site_name: str,
+    described: str,
+    short_token: str,
+    og_url: str,
+    opponents: tuple[str, ...] = (),
+) -> str:
+    rows = "".join(
+        f'<li class="sidearm-schedule-game">'
+        f'<div class="sidearm-schedule-game-opponent-name">{name}</div></li>'
+        for name in opponents
+    )
+    return f"""
+    <html>
+      <head>
+        <title>2026 Men's Soccer Schedule - {site_name} Athletics</title>
+        <meta property="og:site_name" content="{site_name} Athletics">
+        <meta property="og:url" content="{og_url}">
+        <meta name="description"
+              content="The official 2026 Men's Soccer schedule for the {described}">
+      </head>
+      <body>
+        <script>var obj = {{"type":"theme","site_name":"{short_token}"}};</script>
+        <ul>{rows}</ul>
+      </body>
+    </html>
+    """
+
+
+def test_derive_identity_reads_mascot_and_published_name_off_the_site() -> None:
+    html = _site_html(
+        site_name="Truman State University",
+        described="Truman State University Bulldogs",
+        short_token="truman",
+        og_url="https://trumanbulldogs.com/sports/mens-soccer/schedule/2026",
+        opponents=("Quincy", "Truman State vs. Rockhurst", "Lewis (Ill.)"),
+    )
+
+    identity = derive_identity(
+        name="Truman", pages=[html], url="https://trumanbulldogs.com/sports/mens-soccer"
+    )
+
+    assert identity.name == "Truman"
+    assert identity.mascot == "Bulldogs"
+    # The site's short token is only the first word of a long name, so the
+    # abbreviation falls back to initials.  The published long name becomes
+    # an alias; "Truman State" does not, because the collector's identity key
+    # already folds it onto the same spelling.
+    assert identity.abbreviation == "TS"
+    assert identity.aliases == ["Truman State University"]
+
+
+def test_derive_identity_keeps_the_site_short_form_and_multiword_mascot() -> None:
+    uis = _site_html(
+        site_name="UIS",
+        described="UIS Prairie Stars",
+        short_token="uis",
+        og_url="https://uisprairiestars.com/sports/mens-soccer/schedule/2026",
+    )
+    uindy = _site_html(
+        site_name="UIndy",
+        described="University of Indianapolis Greyhounds",
+        short_token="uindy",
+        og_url="https://athletics.uindy.edu/sports/mens-soccer/schedule/2026",
+    )
+    umsl = _site_html(
+        site_name="University of Missouri - St. Louis",
+        described="University of Missouri - St. Louis Tritons",
+        short_token="umsl",
+        og_url="https://umsltritons.com/sports/mens-soccer/schedule/2026",
+    )
+
+    springfield = derive_identity(name="Illinois Springfield", pages=[uis])
+    indianapolis = derive_identity(name="Indianapolis", pages=[uindy])
+    st_louis = derive_identity(name="UMSL", pages=[umsl])
+
+    assert (springfield.abbreviation, springfield.mascot) == ("UIS", "Prairie Stars")
+    assert (indianapolis.abbreviation, indianapolis.mascot) == ("UIndy", "Greyhounds")
+    assert indianapolis.aliases == ["University of Indianapolis"]
+    assert (st_louis.abbreviation, st_louis.mascot) == ("UMSL", "Tritons")
+    assert st_louis.aliases == ["University of Missouri - St. Louis"]
+
+
+def test_derive_identity_falls_back_to_the_published_name_without_name() -> None:
+    html = _site_html(
+        site_name="Example University",
+        described="Example University Owls",
+        short_token="example",
+        og_url="https://example.test/sports/mens-soccer/schedule/2026",
+    )
+
+    identity = derive_identity(name="", pages=[html])
+
+    assert identity.name == "Example University"
+    assert identity.abbreviation == "E"
+    assert identity.mascot == "Owls"
+    assert identity.aliases == []
+
+
+def test_draft_stanza_uses_the_house_layout_with_mascot_and_aliases() -> None:
+    stanza = draft_stanza(
+        name="Truman",
+        abbreviation="TRU",
+        conference="GLVC",
+        base_url="https://trumanbulldogs.com/sports/mens-soccer",
+        gender="men",
+        platform=PLATFORM_SIDEARM,
+        seasons=[2025, 2026],
+        mascot="Bulldogs",
+        aliases=["Truman State University", "Truman State"],
+    )
+
+    assert stanza == (
+        "[[schools]]\n"
+        'name         = "Truman"\n'
+        'abbreviation = "TRU"\n'
+        'conference   = "GLVC"\n'
+        'mascot       = "Bulldogs"\n'
+        'aliases      = ["Truman State University", "Truman State"]\n'
+        'gender       = "men"\n'
+        'base_url     = "https://trumanbulldogs.com/sports/mens-soccer"\n'
+        "years        = [2025, 2026]\n"
+        'scraper      = "sidearm"\n'
+        'data_status  = "unverified"\n'
+        "enabled      = false\n"
+    )
+    parsed = tomllib.loads(stanza)["schools"][0]
+    assert parsed["mascot"] == "Bulldogs"
+    assert parsed["aliases"] == ["Truman State University", "Truman State"]
+
+
 def test_draft_stanza_is_parseable_and_disabled() -> None:
     stanza = draft_stanza(
         name="Example University",
@@ -124,6 +257,8 @@ def test_draft_stanza_is_parseable_and_disabled() -> None:
     assert parsed["years"] == [2024, 2025, 2026]
     assert parsed["enabled"] is False
     assert "live_scraper" not in parsed
+    assert "mascot" not in parsed
+    assert "# mascot:" in stanza
 
 
 def test_probe_report_renders_verdict_layers_seasons_and_stanza() -> None:
@@ -175,6 +310,15 @@ def test_cli_prints_report_without_writing_to_data_home(
             f"<title>{year} Men's Soccer Cumulative Statistics - Example</title>",
         ),
         _response(f"{base_url}/schedule/{year}", _schedule_html(year)),
+        _response(
+            f"{base_url}/schedule/{year}",
+            _site_html(
+                site_name="Example University",
+                described="Example University Owls",
+                short_token="example",
+                og_url=f"{base_url}/schedule/{year}",
+            ),
+        ),
     ]
     data_root = tmp_path / "touchline-data"
     monkeypatch.setenv("TOUCHLINE_DATA_DIR", str(data_root))
@@ -183,6 +327,8 @@ def test_cli_prints_report_without_writing_to_data_home(
         [
             "--url",
             base_url,
+            "--name",
+            "Example",
             "--conference",
             "LSC",
             "--seasons",
@@ -195,4 +341,30 @@ def test_cli_prints_report_without_writing_to_data_home(
     assert exit_code == 0
     assert "Platform: sidearm" in output
     assert "[[schools]]" in output
+    assert 'name         = "Example"' in output
+    assert 'mascot       = "Owls"' in output
+    # "Example University" keys identically to "Example", so no alias line.
+    assert "aliases" not in output
     assert not data_root.exists()
+
+
+def test_cli_refuses_a_name_count_that_does_not_match_the_urls(capsys) -> None:
+    try:
+        probe_cli.main(
+            [
+                "--url",
+                "https://a.test/sports/mens-soccer",
+                "--url",
+                "https://b.test/sports/mens-soccer",
+                "--name",
+                "Only One",
+                "--conference",
+                "LSC",
+            ],
+            session=MagicMock(),
+        )
+    except SystemExit as exc:
+        assert exc.code == 2
+    else:
+        raise AssertionError("expected argparse to exit")
+    assert "--name given 1 times for 2 --url values" in capsys.readouterr().err

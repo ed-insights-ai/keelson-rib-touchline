@@ -74,9 +74,18 @@ From the rib checkout, one command, every URL:
 
 ```bash
 uv run --project pipeline probe --conference GLVC --seasons 2022-2026 \
-  --url https://{host-1}/sports/mens-soccer \
-  --url https://{host-2}/sports/mens-soccer ...
+  --url https://{host-1}/sports/mens-soccer --name "{school-1}" \
+  --url https://{host-2}/sports/mens-soccer --name "{school-2}" ...
 ```
+
+`--name` is the slug-minting name, one per `--url` in order, chosen so
+`programme_slug(name)` equals the membership key (check the GAC archive for
+slugs opponent text already minted). The probe reads the rest off the site:
+`abbreviation` from the site's own short form ("UIS", "UMSL"), `mascot`
+from the schedule page's description ("Prairie Stars", "Tritons"), and
+`aliases` from the published long name and the opponent spellings that
+contain every word of the name. Each stanza arrives in the house layout,
+ready to paste.
 
 Expect a guessed hostname or two to fail name resolution (two of fifteen did
 for the GLVC); correct them and re-probe rather than trusting a guess. A
@@ -88,20 +97,21 @@ served.
 
 ## 3. Author the data, verify it reproduces the count, open a PR
 
-Three files change and nothing else should:
+Two files change and nothing else should:
 
 1. `data/reference/membership.json`: the conference joins `conferences`;
    one window per programme, `source` written as URL + accessed date + the
    sentence that proves the window (see the GSC entries for the shape).
-2. `pipeline/config/schools.toml`: one stanza per programme, `name` chosen
-   so `programme_slug(name)` equals the membership key (check the GAC
-   archive for slugs opponent text already minted), `aliases` from opponent
-   spellings the member schools actually publish, `years` equal to the
-   window, `data_status = "unverified"`.
-3. `test/board.test.ts`: the `knownConferences` fixture.
+2. `pipeline/config/schools.toml`: one stanza per programme, pasted from
+   the probe and checked against the site: `name` as passed to `--name`,
+   `aliases` covering the opponent spellings the member schools actually
+   publish, `years` equal to the window, `data_status = "unverified"`.
 
-If a fourth file must change, that is a finding for the touchpoint ledger,
-not a quiet fix.
+`test/board.test.ts` asserts the shape of `knownConferences()` against the
+shipped membership file (its `conferences` minus `independent` and
+`non_member`, sorted), so a conference added to the data joins the
+collectable set without a test edit. If a third file must change, that is a
+finding for the touchpoint ledger, not a quiet fix.
 
 Verify before the PR:
 
@@ -265,11 +275,12 @@ What the GLVC, the fourth conference, actually required, measured on
    `knownConferences()` equals the membership file's conferences minus
    `independent` and `non_member`, sorted. Cost: extra small; the trade is
    losing the tripwire that names the shipped list, so keep one snapshot
-   test if that tripwire is wanted.
+   test if that tripwire is wanted. Done (tl-4sg.19): the test now reads
+   the shipped file and no snapshot was kept.
 4. **Probe emits a usable stanza.** Let the probe take `--name` and mint
    `abbreviation`, `mascot` and `aliases` from the site's own title and
    schedule opponent text, so the stanza is pasted, not rewritten. Cost:
-   medium.
+   medium. Done (tl-4sg.20): step 2 above is the new shape.
 5. **The first collect scans itself for the alias round.** After a collect,
    list non-member slugs whose tokens are a superset of a member's name and
    print them as candidate aliases, so the round above is one report, not a
