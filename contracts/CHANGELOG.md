@@ -6,6 +6,14 @@ fails `pipeline/tests/test_contracts.py`.
 
 ## 2026-09-02
 
+- `touchline.coverage/1`: `collector` gains the value `presto-live`, written
+  on every cell of a programme whose stanza names `live_scraper =
+  "prestosports"`; SideArm programmes keep `sidearm-live` (bead tl-v1q.5,
+  PR 3, owner's ruling 2026-09-02 that the coverage contract names the
+  PrestoSports collector rather than filing its cells under sidearm-live).
+  Same schema version: the site's `coverage.ts` reads `collector` as a
+  free string. The fixture exhibits it on Tampa's 2025 stats and matches
+  cells.
 - `touchline.programmes/2`: first published fixture for the programmes
   reference (bead tl-891). One row per programme slug — `name`, `nickname`,
   `abbreviation`, `city` (AP state style), `point` — each fact with a

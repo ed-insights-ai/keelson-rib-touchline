@@ -102,9 +102,14 @@ identity_accessed = "{probe date}"
 `scraper` and `live_scraper` name the platform the collector reads the site
 with: `sidearm` (the default when `live_scraper` is absent) or
 `prestosports`, each a recipe in `pipeline/src/recipes.py`. A PrestoSports
-stanza collects the schedule and roster layers; its stats and matches cells
-file `no-collector`, with a reason naming the platform and the layer, until
-the team-statistics and box-score parsers land (bead tl-v1q.5, PR 3).
+stanza collects all four layers the way a SideArm one does, into the same
+row shapes: the schedule and roster pages, the team page's print template
+(the site's "Coach's View", the one served page that carries every
+player's season line; the team page itself fills its individual tables by
+script), and the `boxscores/{yyyymmdd}_{id}.xml` pages the schedule links.
+The roster's abbreviations are normalised to the SideArm vocabulary ("Def."
+is Defender, "Sr." is Senior, "6-4" is 6'4", "200" is 200 lbs). Coverage
+cells name the collector per platform: `sidearm-live` or `presto-live`.
 
 `derive_identity` (`pipeline/src/probe.py`) fills the identity fields from
 what the site says of itself, reading the landing page and the newest served

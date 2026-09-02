@@ -84,9 +84,10 @@ def test_coverage_fixture_exercises_every_state_layer_and_marker() -> None:
     assert contracts.values(document, contracts.COVERAGE, (*cells, "verified")) == {
         "unchanged"
     }
-    assert contracts.values(document, contracts.COVERAGE, (*cells, "collector")) == {
-        collect_board.COLLECTOR
-    }
+    # One collector name per platform recipe; the fixture must promise each.
+    assert contracts.values(document, contracts.COVERAGE, (*cells, "collector")) == set(
+        collect_board.COLLECTORS.values()
+    )
 
 
 def test_fixtures_fixture_exercises_every_status_and_marking() -> None:
@@ -397,6 +398,9 @@ def test_the_run_exercised_what_it_claims_to(collected) -> None:
         coverage.STATE_NO_COLLECTOR,
     }
     assert cells["2026/men/bravo/schedule"]["verified"] == "unchanged"
+    # Every programme here is a SideArm one (or has no recipe at all), so
+    # every cell still names the SideArm collector.
+    assert {cell["collector"] for cell in cells.values()} == {"sidearm-live"}
     assert collected["matches"]["matches"]
     assert collected["matches"]["missing"]
 

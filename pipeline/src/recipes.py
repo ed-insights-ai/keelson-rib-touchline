@@ -10,12 +10,15 @@ those, so nothing downstream (collect_board, coverage, data-integrity, the
 site) has to know a second platform exists.
 
 ``SIDEARM`` is the SideArm path, function for function.  ``PRESTO`` is
-PrestoSports (pipeline/src/presto.py): schedule and roster collect today;
-team statistics and box scores raise ``NoCollector`` until the change that
-follows (bead tl-v1q.5, PR 3), which the collectors record as the
-``no-collector`` state for that layer alone, with a reason naming the
-platform and the layer.  ``LIVE_COLLECTORS`` maps a stanza's ``live_scraper``
-value onto its recipe.
+PrestoSports (pipeline/src/presto.py), all four layers: the same outcome
+states, page cache, raw-page archive, statistics line shapes and match
+detail shape, so a PrestoSports programme collects exactly like a SideArm
+one.  A platform whose season statistics live at an address the base URL
+alone cannot build carries ``locate_stats``.  A platform with no collector
+for a layer raises ``NoCollector`` from the member that would start it,
+which the collectors record as the ``no-collector`` state for that layer
+alone, with a reason naming the platform and the layer.  ``LIVE_COLLECTORS``
+maps a stanza's ``live_scraper`` value onto its recipe.
 """
 
 from __future__ import annotations
@@ -31,7 +34,7 @@ import requests
 
 from src import presto, sidearm_live
 from src.config import DEFAULT_LIVE_COLLECTOR, SchoolConfig
-from src.sidearm_live import LAYER_MATCHES, LAYER_STATS, PublishedPage
+from src.sidearm_live import PublishedPage
 
 
 class NoCollector(NotImplementedError):
@@ -98,6 +101,12 @@ class Recipe:
     #: digest of the platform module for parsers that live elsewhere, so a
     #: parser change there re-reads the archive; nothing for SideArm.
     parse_identity: tuple[str, ...]
+    #: Find the season statistics page when the base URL alone cannot name
+    #: it: PrestoSports reveals the team segment in its statistics path by
+    #: redirecting ``{base}/{y}-{yy}/teams``, one unfollowed request through
+    #: the collection's own session.  ``None`` means ``layer_url`` is the
+    #: whole address.
+    locate_stats: Callable[[requests.Session, str, int], str] | None = None
 
 
 def _late(module: ModuleType, name: str) -> Callable[..., Any]:
@@ -135,46 +144,18 @@ SIDEARM = Recipe(
     parse_identity=(),
 )
 
-# Where the PrestoSports statistics and box-score collectors land.
-_PRESTO_NEXT = "yet (PR 3)"
-
-
-def _presto_layer_url(base_url: str, year: int, kind: str) -> str:
-    if kind == LAYER_STATS:
-        raise NoCollector(presto.PLATFORM, LAYER_STATS, note=_PRESTO_NEXT)
-    return presto.layer_url(base_url, year, kind)
-
-
-def _presto_parse_stats(
-    html: str, *, page_url: str
-) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
-    del html, page_url
-    raise NoCollector(presto.PLATFORM, LAYER_STATS, note=_PRESTO_NEXT)
-
-
-def _presto_boxscore_links(html: str, page_url: str) -> dict[str, str]:
-    del html, page_url
-    raise NoCollector(presto.PLATFORM, LAYER_MATCHES, note=_PRESTO_NEXT)
-
-
-def _presto_collect_match(
-    session: requests.Session, url: str, year: int, fixture: dict[str, object]
-) -> dict[str, object]:
-    del session, url, year, fixture
-    raise NoCollector(presto.PLATFORM, LAYER_MATCHES, note=_PRESTO_NEXT)
-
-
 PRESTO = Recipe(
     platform=presto.PLATFORM,
-    layer_url=_presto_layer_url,
+    layer_url=_late(presto, "layer_url"),
     assert_served_season=_late(presto, "assert_served_season"),
     parse_schedule=_late(presto, "parse_schedule"),
     assert_schedule_proven=_late(presto, "assert_schedule_proven"),
     parse_roster=_late(presto, "parse_roster"),
-    parse_stats=_presto_parse_stats,
-    boxscore_links=_presto_boxscore_links,
-    collect_match=_presto_collect_match,
+    parse_stats=_late(presto, "parse_stats"),
+    boxscore_links=_late(presto, "boxscore_links_by_event"),
+    collect_match=_late(presto, "collect_match"),
     parse_identity=(_source_digest(presto.__file__),),
+    locate_stats=_late(presto, "locate_stats"),
 )
 
 LIVE_COLLECTORS: Mapping[str, Recipe] = {

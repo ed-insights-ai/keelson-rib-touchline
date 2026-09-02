@@ -1911,6 +1911,7 @@ def collect_match(
             f"[{year}] {fixture.get('id')}: failed to fetch box score {url}: {exc}",
             status=http_status(exc),
         ) from exc
+    assert_served_body(response, year=year, kind="box-score", url=url)
     page = PublishedPage(url, response.url, response.text)
     assert_served_match(page, year, fixture)
     detail = parse_boxscore_page(response.text, page_url=response.url)
@@ -2262,7 +2263,13 @@ def collect_programme(
         fingerprint = parse_fingerprint(year, *recipe.parse_identity)
         state = page_cache.load(slug, LAYER_STATS, fingerprint) if page_cache else None
         try:
-            stats_url = recipe.layer_url(base_url, year, LAYER_STATS)
+            # A platform whose statistics page the base URL alone cannot
+            # name locates it first, through this collection's session.
+            stats_url = (
+                recipe.locate_stats(client, base_url, year)
+                if recipe.locate_stats is not None
+                else recipe.layer_url(base_url, year, LAYER_STATS)
+            )
             fetched = fetch_published_page_conditional(
                 client,
                 stats_url,

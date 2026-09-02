@@ -1627,6 +1627,30 @@ def test_collect_match_proves_and_parses_one_fixture() -> None:
     assert detail["source_url"].endswith("/boxscore/14824")
 
 
+def test_a_challenge_answer_to_a_box_score_is_refused_with_its_status() -> None:
+    """The body check at the season-page seam guards the box-score fetch
+    too: an empty HTTP 202 names its status, never a box score with no
+    teams (bead tl-v1q.12)."""
+    from src.sidearm_live import collect_match
+
+    url = "https://example.test/sports/mens-soccer/stats/2025/union-tn-/boxscore/14824"
+    response = MagicMock()
+    response.status_code = 202
+    response.url = url
+    response.text = ""
+    session = MagicMock()
+    session.get.return_value = response
+
+    with pytest.raises(LiveCollectionError) as refused:
+        collect_match(session, url, 2025, dict(_OT_FIXTURE))
+
+    assert refused.value.status == 202
+    assert str(refused.value) == (
+        f"[2025] box-score page {url} answered HTTP 202 with an empty body "
+        "(served a challenge, not the page)"
+    )
+
+
 def test_a_boxscore_with_one_team_is_refused_not_persisted(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
