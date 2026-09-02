@@ -101,6 +101,27 @@
       "state": "complete",
       "verified": "unchanged"
     },
+    "2025/men/tampa/matches": {
+      "collector": "presto-live",
+      "confirmed_at": "2026-09-02T06:30:00+00:00",
+      "count": 15,
+      "gender": "men",
+      "layer": "matches",
+      "programme": "tampa",
+      "season": 2025,
+      "state": "complete"
+    },
+    "2025/men/tampa/stats": {
+      "collector": "presto-live",
+      "confirmed_at": "2026-09-02T06:30:00+00:00",
+      "count": 30,
+      "gender": "men",
+      "layer": "stats",
+      "programme": "tampa",
+      "season": 2025,
+      "source_url": "https://www.tampaspartans.com/sports/msoc/2025-26/teams/tampa?tmpl=teaminfo-network-monospace-template",
+      "state": "complete"
+    },
     "2026/men/mississippi-college/matches": {
       "collector": "sidearm-live",
       "confirmed_at": "2026-09-01T11:30:42+00:00",

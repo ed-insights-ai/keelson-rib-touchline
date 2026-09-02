@@ -37,7 +37,7 @@ import os
 import sys
 import threading
 import time
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
 from dataclasses import replace
 from datetime import datetime, timezone
@@ -48,7 +48,7 @@ from src import coverage, paths
 from src.fetch_pool import GatedSession, HostGate
 from src.config import DEFAULT_CONFIG, SchoolConfig, load_schools
 from src.page_state import PageStateStore
-from src.recipes import SIDEARM, NoCollector, Recipe, live_recipe
+from src.recipes import PRESTO, SIDEARM, NoCollector, Recipe, live_recipe
 from src.sidearm_live import (
     DEFAULT_LAYERS,
     LAYER_MATCHES,
@@ -76,7 +76,23 @@ ROSTERS_SCHEMA = "touchline.rosters/1"
 STATS_SCHEMA = "touchline.stats/1"
 MATCHES_SCHEMA = "touchline.matches/1"
 
-COLLECTOR = "sidearm-live"
+# What a coverage cell names as its collector, per platform recipe.  A
+# programme with no recipe at all (a platform the table does not know, or a
+# slug no stanza configures) is filed under the default platform's name,
+# as every cell was before a second platform existed.
+COLLECTORS: Mapping[str, str] = {
+    SIDEARM.platform: "sidearm-live",
+    PRESTO.platform: "presto-live",
+}
+COLLECTOR = COLLECTORS[SIDEARM.platform]
+
+
+def collector_name(school: SchoolConfig | None) -> str:
+    """The coverage collector value for one programme's cells."""
+    if school is None:
+        return COLLECTOR
+    return COLLECTORS.get(school.live_collector(), COLLECTOR)
+
 
 # Sized off programme count, never above this: eight workers empty a
 # conference-season in minutes while each individual host still sees at most
@@ -450,7 +466,9 @@ def collect(
             "layer": layer,
             "state": state,
             "confirmed_at": now,
-            "collector": COLLECTOR,
+            "collector": collector_name(
+                candidates.get(programme) or disabled.get(programme)
+            ),
             **{key: value for key, value in extra.items() if value is not None},
         }
 

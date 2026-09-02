@@ -3,15 +3,18 @@
 PrestoSports is the second platform the pipeline recognises (Tampa in the
 SSC; Westmont, Wilmington and St. Thomas Aquinas are next), and this module
 holds everything the pipeline knows about it: the URL shapes, the markup the
-probe fingerprints, the season proof, and the schedule and roster parsers.
-The stats and box-score parsers land here in the change that follows (bead
-tl-v1q.5, PR 3); nothing about the platform lives anywhere else.  The recipe
-that hands these to ``collect_programme`` is ``PRESTO`` in src/recipes.py.
+probe fingerprints, the season proof, and the parsers for all four layers
+(schedule, roster, season statistics, box scores); nothing about the
+platform lives anywhere else.  The recipe that hands these to
+``collect_programme`` and the board collector is ``PRESTO`` in
+src/recipes.py.
 
-The parsers emit the same fixture and player rows the SideArm parsers do,
-and they read rendered text by the SideArm DOM path's own rules (its date,
-kickoff, result, orientation and exhibition helpers are imported below), so
-a date, a kickoff or a "L, 2-1" resolves the same way on both platforms.
+The parsers emit the same fixture, player, statistics and match-detail
+shapes the SideArm parsers do, and they read rendered text by the SideArm
+path's own rules (its date, kickoff, result, orientation, exhibition,
+statistic and play-type helpers are imported below), so a date, a kickoff, a
+"L, 2-1", a "905:07" of keeper minutes or a "GOAL by" line resolves the same
+way on both platforms.
 
 Season paths are academic years.  The fall ``{year}`` season lives under
 ``{base}/{year}-{yy}/…`` where ``yy`` is the last two digits of ``year + 1``:
@@ -19,9 +22,12 @@ Season paths are academic years.  The fall ``{year}`` season lives under
 "2025 Tampa Spartans Men's Soccer Schedule".  The layers are ``schedule``,
 ``roster``, and team statistics at ``teams/{segment}``; the segment is read
 from a link the site publishes (every page carries a "Current Season" link
-to ``{y}-{yy}/teams/{segment}``), never derived from the school's name.  Box
-scores are ``boxscores/{yyyymmdd}_{id}.xml`` pages linked from played
-schedule rows.
+to ``{y}-{yy}/teams/{segment}``) or from the site's own redirect of
+``{y}-{yy}/teams`` (``locate_stats``), never derived from the school's name.
+The team page fills its individual tables by script, so the season lines
+are read from its print template (``player_stats_url``).  Box scores are
+``boxscores/{yyyymmdd}_{id}.xml`` pages linked from played schedule rows;
+the extension is a name, the body is HTML.
 
 Fingerprints, verified 2026-09-02 against
 https://www.tampaspartans.com/sports/msoc: stylesheets and scripts on the
@@ -36,6 +42,7 @@ built from ``stats-container`` tables beside a ``team-stats`` block.
 from __future__ import annotations
 
 import re
+from collections.abc import Callable
 from urllib.parse import urljoin, urlparse
 
 import requests
@@ -44,17 +51,27 @@ from bs4 import BeautifulSoup, Tag
 from src.sidearm_live import (
     LAYER_ROSTER,
     LAYER_SCHEDULE,
+    LAYER_STATS,
     LiveCollectionError,
     PublishedPage,
     _clean_team_name,
+    _DOM_MONTHS,
     _dom_date,
     _dom_result,
     _dom_time,
     _exhibition_marked,
+    _name_slug_affinity,
     _oriented_scores,
+    _play_type,
+    _stat_float,
+    _stat_int,
+    _stat_minutes,
+    _stat_pair,
+    _stats_player_name,
     assert_served_body,
     http_status,
     opponent_slug,
+    orient_match,
 )
 
 PLATFORM = "prestosports"
@@ -84,6 +101,27 @@ def layer_url(base_url: str, year: int, kind: str) -> str:
 def stats_url(base_url: str, year: int, team_segment: str) -> str:
     """The team statistics URL: ``{base}/{y}-{yy}/teams/{segment}``."""
     return f"{base_url.rstrip('/')}/{season_path(year)}/teams/{team_segment}"
+
+
+# The team page's "Coach's View" link: a print version of the same page.
+STATS_TEMPLATE = "teaminfo-network-monospace-template"
+
+
+def player_stats_url(base_url: str, year: int, team_segment: str) -> str:
+    """The one served page carrying every player's season line.
+
+    Measured 2026-09-02 on
+    https://www.tampaspartans.com/sports/msoc/2025-26/teams/tampa: the team
+    page itself server-renders the roster tab, the team-level figures and
+    empty game-log shells, and fills each individual table (Scoring,
+    Shooting, Misc., Goalkeepers) by script from
+    ``players?teamId=…&view=lineup&pos=…&ajax=true``, one request per tab.
+    Its "Coach's View" link is ``?tmpl=teaminfo-network-monospace-template``,
+    a print version that renders the cumulative individual and goalkeeping
+    tables in one page under an honest title ("2025-26 Men's Soccer
+    Statistics - Tampa - University of Tampa Athletics - Print Version").
+    """
+    return f"{stats_url(base_url, year, team_segment)}?tmpl={STATS_TEMPLATE}"
 
 
 def team_segment(html: str) -> str | None:
@@ -217,8 +255,18 @@ def fetch_page(
 
 
 def assert_served_season(page: PublishedPage, year: int, kind: str) -> None:
-    """The recipe's season proof: ``season_served`` over a fetched page."""
+    """The recipe's season proof: ``season_served`` over a fetched page.
+
+    A statistics page must also be the print template that carries the
+    player lines: the team page proves the same season and renders none,
+    so a redirect back to it would otherwise read as an empty season.
+    """
     season_served(page.final_url, page.html, year, kind)
+    if kind == LAYER_STATS and not has_player_stats_markup(page.html):
+        raise LiveCollectionError(
+            f"[{year}] {page.final_url} proved its season but is not the "
+            f"PrestoSports player statistics page (no individual table)"
+        )
 
 
 def assert_schedule_proven(
@@ -474,6 +522,70 @@ _ROSTER_COLUMNS = {
 }
 _ROSTER_FIELDS = ("number", "position", "height", "weight", "hometown", "class_year")
 
+# The abbreviations the roster table prints (measured on the 2026-27 Tampa
+# roster: GK, Def., Mid., For.; Fr., So., Jr., Sr., Grad.) and the SideArm
+# words they stand for, which are the words the consumers' vocabularies
+# parse.  Keys are lower-cased with their trailing period dropped.
+_ROSTER_POSITIONS = {
+    "gk": "Goalkeeper",
+    "g": "Goalkeeper",
+    "def": "Defender",
+    "d": "Defender",
+    "mid": "Midfielder",
+    "m": "Midfielder",
+    "for": "Forward",
+    "fwd": "Forward",
+    "f": "Forward",
+}
+_ROSTER_CLASSES = {
+    "fr": "Freshman",
+    "so": "Sophomore",
+    "jr": "Junior",
+    "sr": "Senior",
+    "gr": "Graduate Student",
+    "grad": "Graduate Student",
+    "5th": "Fifth Year",
+}
+_REDSHIRT = re.compile(r"^(?:redshirt|rs|r)[\s.-]*(.+)$", re.IGNORECASE)
+_HEIGHT = re.compile(r"^(\d)\s*-\s*(\d{1,2}(?:\.\d+)?)$")
+_WEIGHT = re.compile(r"^\d{2,3}$")
+
+
+def _roster_position(text: str) -> str:
+    """ "Def." is Defender; a two-position "Mid./For." is Midfielder/Forward."""
+    parts = re.split(r"\s*/\s*", text.strip())
+    words = [_ROSTER_POSITIONS.get(_column_key(part)) for part in parts]
+    return "/".join(words) if parts and all(words) else text  # type: ignore[arg-type]
+
+
+def _roster_class_year(text: str) -> str:
+    """ "Sr." is Senior, "Grad." Graduate Student, "R-Fr." Redshirt Freshman."""
+    key = _column_key(text)
+    redshirt = _REDSHIRT.match(key)
+    if redshirt:
+        word = _ROSTER_CLASSES.get(_column_key(redshirt.group(1)))
+        return f"Redshirt {word}" if word else text
+    return _ROSTER_CLASSES.get(key, text)
+
+
+def _roster_height(text: str) -> str:
+    """ "6-4" is 6'4", the form every SideArm roster prints."""
+    match = _HEIGHT.match(text.strip())
+    return f"{match.group(1)}'{match.group(2)}\"" if match else text
+
+
+def _roster_weight(text: str) -> str:
+    """ "200" is 200 lbs."""
+    return f"{text.strip()} lbs" if _WEIGHT.match(text.strip()) else text
+
+
+_ROSTER_NORMALISERS: dict[str, Callable[[str], str]] = {
+    "position": _roster_position,
+    "class_year": _roster_class_year,
+    "height": _roster_height,
+    "weight": _roster_weight,
+}
+
 
 def _column_key(label: str) -> str:
     return re.sub(r"[.\s]+$", "", label.strip().lower())
@@ -490,8 +602,13 @@ def parse_roster(html: str, *, page_url: str) -> list[dict[str, str]]:
     ``data-field-label``) and whose body rows carry a ``jersey-number``
     cell.  Columns are mapped by that header text, never by position.  Each
     body cell repeats its header in a ``.label`` span for narrow screens,
-    which is dropped before the value is read; values are kept as published
-    ("6-4", "200", "Sr.").  The name is the bio link's text ("Alex Hare")
+    which is dropped before the value is read.  The site abbreviates what
+    SideArm spells out, so four fields are normalised to the SideArm
+    vocabulary the consumers parse: position ("Def." is Defender), class
+    year ("Sr." is Senior, "Grad." Graduate Student, "R-Fr." Redshirt
+    Freshman), height ("6-4" is 6'4") and weight ("200" is 200 lbs); a value
+    outside the measured forms is kept as published.  The name is the bio
+    link's text ("Alex Hare")
     and ``source_url`` is that link resolved against the page; a print-only
     copy of the same link in the cell is the same player, so rows are
     deduplicated by bio URL (a row without one, by number and name), as the
@@ -542,8 +659,782 @@ def parse_roster(html: str, *, page_url: str) -> list[dict[str, str]]:
             player: dict[str, str] = {"name": name}
             for field in _ROSTER_FIELDS:
                 if field in values:
-                    player[field] = values[field]
+                    normalise = _ROSTER_NORMALISERS.get(field)
+                    player[field] = (
+                        normalise(values[field]) if normalise else values[field]
+                    )
             if path:
                 player["source_url"] = urljoin(page_url, path)
             players.append(player)
     return players
+
+
+# --- Season statistics ------------------------------------------------------
+
+# The header labels the print template's two individual tables carry, and
+# the season-line field each names.  The goalkeeping table is the one that
+# names GA; the offensive table prints no minutes and no card column, so a
+# PrestoSports field player's season line carries neither.
+_STATS_PLAYER_FIELDS: dict[str, tuple[str, Callable[[str], object]]] = {
+    "GP": ("gp", _stat_int),
+    "GS": ("gs", _stat_int),
+    "MIN": ("minutes", _stat_minutes),
+    "G": ("goals", _stat_int),
+    "A": ("assists", _stat_int),
+    "PTS": ("points", _stat_int),
+    "SH": ("shots", _stat_int),
+    "SH%": ("shot_pct", _stat_float),
+    "SOG": ("sog", _stat_int),
+    "SOG%": ("sog_pct", _stat_float),
+    "GW": ("game_winners", _stat_int),
+}
+_STATS_KEEPER_FIELDS: dict[str, tuple[str, Callable[[str], object]]] = {
+    "GP": ("gp", _stat_int),
+    "GS": ("gs", _stat_int),
+    "MIN": ("minutes", _stat_minutes),
+    "GA": ("goals_against", _stat_int),
+    "GAA": ("gaa", _stat_float),
+    "SV": ("saves", _stat_int),
+    "SV%": ("save_pct", _stat_float),
+    "W": ("wins", _stat_int),
+    "L": ("losses", _stat_int),
+    "T": ("ties", _stat_int),
+    "SHUTOUTS": ("shutouts", _stat_int),
+    "SHO": ("shutouts", _stat_int),
+    "SF": ("shots_faced", _stat_int),
+}
+# The template pads every name to its column with dots ("Rodrigo Lopes......").
+_DOT_LEADERS = re.compile(r"\.+$")
+_FOOTER_ROWS = frozenset({"total", "opponents"})
+
+
+def _cell_texts(cells: list[Tag]) -> list[str]:
+    return [" ".join(cell.get_text(" ", strip=True).split()) for cell in cells]
+
+
+def _individual_tables(soup: BeautifulSoup) -> list[tuple[list[str], list[list[str]]]]:
+    """Each individual table as (column labels, rows of cell texts).
+
+    The header is the row of ``th`` cells naming a Player column (the
+    template prints a group row above it, "GOAL AVERAGE / SAVES / RECORD");
+    a row counts when it is as wide as the header, which drops the
+    ``<hr>`` spacer rows.
+    """
+    found: list[tuple[list[str], list[list[str]]]] = []
+    for table in soup.select("table"):
+        labels: list[str] | None = None
+        rows: list[list[str]] = []
+        for row in table.find_all("tr"):
+            cells = row.find_all(["th", "td"], recursive=False)
+            texts = _cell_texts(cells)
+            if labels is None:
+                if all(cell.name == "th" for cell in cells) and any(
+                    text.lower() == "player" for text in texts
+                ):
+                    labels = [text.upper() for text in texts]
+                continue
+            if len(texts) == len(labels):
+                rows.append(texts)
+        if labels is not None:
+            found.append((labels, rows))
+    return found
+
+
+def has_player_stats_markup(html: str) -> bool:
+    """Whether the page is the print template carrying individual tables."""
+    return bool(_individual_tables(BeautifulSoup(html, "lxml")))
+
+
+def locate_stats(session: requests.Session, base_url: str, year: int) -> str:
+    """Find the season's player statistics page through the site's own redirect.
+
+    The team page's path carries a team segment ("tampa") the pipeline never
+    derives from a school's name.  The site reveals it: ``{base}/{y}-{yy}/teams``
+    answers HTTP 302 to ``…/teams/{segment}`` (measured 2026-09-02 on
+    tampaspartans.com), so one unfollowed request names the segment without
+    transferring a page.  A site that serves a page there instead is read for
+    the same link (``team_segment``).  Anything else cannot locate the page
+    and says what HTTP said.
+    """
+    url = f"{base_url.rstrip('/')}/{season_path(year)}/teams"
+    try:
+        response = session.get(url, timeout=30, allow_redirects=False)
+        response.raise_for_status()
+    except requests.RequestException as exc:
+        raise LiveCollectionError(
+            f"[{year}] failed to fetch {LAYER_STATS} page {url}: {exc}",
+            status=http_status(exc),
+        ) from exc
+    segment: str | None = None
+    location = str((response.headers or {}).get("Location") or "").strip()
+    if 300 <= int(response.status_code) < 400 and location:
+        match = _TEAM_LINK.search(urlparse(urljoin(url, location)).path)
+        segment = match.group(1) if match else None
+    else:
+        assert_served_body(response, year=year, kind=LAYER_STATS, url=url)
+        segment = team_segment(response.text)
+    if segment is None:
+        raise LiveCollectionError(
+            f"[{year}] cannot locate the {LAYER_STATS} page: {url} neither "
+            f"redirected to a team page nor linked one"
+        )
+    return player_stats_url(base_url, year, segment)
+
+
+def parse_stats(
+    html: str, *, page_url: str
+) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
+    """Read the print template's two individual tables into season lines.
+
+    Same line shapes as the SideArm parser (``sidearm_live.parse_stats_page``).
+    Measured on the 2025-26 Tampa template (2026-09-02): an offensive table
+    headed "#, Player, GP, GS, G, A, PTS, SH, SH%, SOG, SOG%, PK-ATT, GW" and
+    a goalkeeping table headed "#, Player, GP, GS, MIN, GA, GAA, SV, SV%, W,
+    L, T, SHUTOUTS", columns mapped by that header text, never by position.
+    Names print "First Last" padded with dot leaders, which are dropped.
+    Both tables list the whole roster and print "-" for a player without an
+    appearance (the goalkeeping table prints every field player that way),
+    and the "Total" and "Opponents" footers close each: a row is a season
+    line only when it counts a game played, as a SideArm table's rows do.
+    The template links no bios, so no line carries a player id or bio URL;
+    the consumers join these lines to the roster by name.
+    """
+    del page_url
+    players: list[dict[str, object]] = []
+    keepers: list[dict[str, object]] = []
+    for labels, rows in _individual_tables(BeautifulSoup(html, "lxml")):
+        keeping = "GA" in labels
+        fields = _STATS_KEEPER_FIELDS if keeping else _STATS_PLAYER_FIELDS
+        for texts in rows:
+            cells = dict(zip(labels, texts))
+            name = _DOT_LEADERS.sub("", cells.get("PLAYER", "")).strip()
+            if not name or name.lower() in _FOOTER_ROWS:
+                continue
+            if "GP" in labels and _stat_int(cells.get("GP", "")) is None:
+                continue
+            entry: dict[str, object] = {"name": name}
+            number = cells.get("#", "")
+            if number:
+                entry["number"] = number
+            for label, (field, convert) in fields.items():
+                value = convert(cells.get(label, ""))
+                if value is not None:
+                    entry[field] = value
+            if not keeping:
+                cards = _stat_pair(cells.get("YC-RC", ""))
+                if cards:
+                    entry["yellow"], entry["red"] = cards
+                penalties = _stat_pair(cells.get("PK-ATT", "")) or _stat_pair(
+                    cells.get("PG-PA", "")
+                )
+                if penalties:
+                    entry["penalty_goals"], entry["penalty_attempts"] = penalties
+            (keepers if keeping else players).append(entry)
+    return players, keepers
+
+
+# --- Box scores -------------------------------------------------------------
+
+_BOX_PATH = re.compile(r"/boxscores/(\d{8})_([A-Za-z0-9]+)\.xml$")
+_SLASH_DATE = re.compile(r"\b(\d{1,2})/(\d{1,2})/(\d{4})\b")
+_LONG_DATE = re.compile(r"\b([A-Za-z]{3})[a-z.]*\s+(\d{1,2}),\s*(\d{4})\b")
+# The team-statistics boxes, headed by the statistic's name in capitals.
+_TEAM_STAT_LABELS = {
+    "shots": "shots",
+    "saves": "saves",
+    "corner kicks": "corners",
+    "fouls": "fouls",
+    "offsides": "offsides",
+}
+# A play-by-play line names its side after one of these verbs ("Shot by AUM
+# …", "Foul on Tampa.", "Offside against AUM.", "Alex Hare at goalie for
+# Tampa.") or leads with it ("Tampa substitution: …").
+_TEAM_VERBS = r"(?:by|on|against|for)"
+_GOALIE_LINE = re.compile(r"^(?P<name>.+?) at goalie for (?P<team>.+?)\.?$")
+_CARD_KINDS: tuple[tuple[str, re.Pattern[str]], ...] = (
+    ("yellow", re.compile(r"\byellow\b", re.IGNORECASE)),
+    ("red", re.compile(r"\bred\b", re.IGNORECASE)),
+)
+_CARD_PHRASE = re.compile(r"^\s*(?:yellow|red)?\s*card\s*-?\s*", re.IGNORECASE)
+_LINEUP_FIELDS: dict[str, tuple[str, Callable[[str], object]]] = {
+    "SH": ("shots", _stat_int),
+    "SOG": ("sog", _stat_int),
+    "G": ("goals", _stat_int),
+    "A": ("assists", _stat_int),
+    "MIN": ("minutes", _stat_minutes),
+}
+_GOALIE_FIELDS: dict[str, tuple[str, Callable[[str], object]]] = {
+    "MIN": ("minutes", _stat_minutes),
+    "GA": ("goals_against", _stat_int),
+    "SV": ("saves", _stat_int),
+}
+
+
+def boxscore_links_by_event(html: str, page_url: str) -> dict[str, str]:
+    """Event id → absolute box-score URL, from each schedule card's own link.
+
+    The recipe's join: a PrestoSports fixture id is ``presto:{owner}:{event
+    id}`` and the card carrying that ``data-event-id`` links its box score
+    (a ``data-boxscore`` attribute and the "Box Score" link in its
+    ``event-links`` block carry the same href).  The box-score filename
+    repeats only the id's first four characters, so the join runs through
+    the card, never the filename.  The first card per id wins, as in
+    ``parse_schedule``.
+    """
+    links: dict[str, str] = {}
+    for card in BeautifulSoup(html, "lxml").select(".event-row[data-event-id]"):
+        event_id = str(card.get("data-event-id") or "").strip()
+        holder = (
+            card
+            if card.has_attr("data-boxscore")
+            else card.select_one("[data-boxscore]")
+        )
+        href = str(holder.get("data-boxscore") or "").strip() if holder else ""
+        if not href:
+            anchor = card.select_one('.event-links a[href*="/boxscores/"]')
+            href = str(anchor.get("href") or "").strip() if anchor is not None else ""
+        if event_id and href and event_id not in links:
+            links[event_id] = urljoin(page_url, href)
+    return links
+
+
+def _person(text: str) -> str:
+    """ "Hoffman, Benjamin" is Benjamin Hoffman; a name without a comma, or a
+    list of names, is kept as printed."""
+    text = " ".join(text.split())
+    return _stats_player_name(text) if text.count(",") == 1 else text
+
+
+def _box_title(soup: BeautifulSoup) -> str:
+    """The Open Graph title: "AUM vs. Tampa - Box Score - 9/6/2025".
+
+    The document title is the site's name on every box score measured, so
+    the Open Graph title is the one the page names the match by.
+    """
+    meta = soup.select_one('meta[property="og:title"]')
+    return " ".join(str(meta.get("content") or "").split()) if meta is not None else ""
+
+
+def _box_date(soup: BeautifulSoup) -> str | None:
+    """The match date the page names: the Open Graph title's M/D/YYYY, else
+    the heading's "September 6, 2025", else the Game Information date."""
+    match = _SLASH_DATE.search(_box_title(soup))
+    if match:
+        month, day, year = (int(part) for part in match.groups())
+        return f"{year:04d}-{month:02d}-{day:02d}"
+    for text in (
+        _text(soup, "article.game-boxscore .head h1"),
+        _text(soup, ".game-info .date"),
+    ):
+        match = _LONG_DATE.search(text)
+        month = _DOM_MONTHS.get(match.group(1).lower()) if match else None
+        if match and month is not None:
+            return f"{int(match.group(3)):04d}-{month:02d}-{int(match.group(2)):02d}"
+    return None
+
+
+def _linescore_teams(soup: BeautifulSoup) -> list[dict[str, object]]:
+    """The two sides as the score-by-period table lists them, visitor first.
+
+    Each row's ``th`` names the side as the page spells it ("#21
+    Auburn-Montgomery", rank and all), its ``td.score`` cells are the
+    periods and ``td.score.total`` the final, and a ``winner`` row class
+    marks the winner.  The abbreviation each side plays under is not in
+    the table; the Open Graph title carries both in the same order ("AUM
+    vs. Tampa", measured 2026-09-02 on two pages), and the play-by-play
+    uses them ("Shot by AUM …").
+    """
+    teams: list[dict[str, object]] = []
+    table = soup.select_one(".linescore table")
+    for row in table.find_all("tr") if table is not None else []:
+        header = row.find("th", scope="row")
+        if header is None:
+            continue
+        name = " ".join(header.get_text(" ", strip=True).split())
+        if not name:
+            continue
+        team: dict[str, object] = {"name": name}
+        periods: list[int] = []
+        for cell in row.find_all("td"):
+            value = _stat_int(cell.get_text(strip=True))
+            if "total" in set(cell.get("class") or []):
+                if value is not None:
+                    team["score"] = value
+            elif value is not None:
+                periods.append(value)
+        team["periods"] = periods
+        if "winner" in set(row.get("class") or []):
+            team["winner"] = True
+        teams.append(team)
+    named = _box_title(soup).split(" - ")[0]
+    abbrs = [part.strip() for part in re.split(r"\s+vs\.?\s+", named)]
+    if len(abbrs) == len(teams) == 2:
+        for team, abbr in zip(teams, abbrs):
+            if abbr:
+                team["abbr"] = abbr
+    return teams
+
+
+def _identifiers(team: dict[str, object], tokens: set[str]) -> set[str]:
+    """Every spelling a page uses for one side: its linescore name, that
+    name without its rank, its abbreviation, and the tokens its own
+    play-by-play taught (``_learn_play_tokens``)."""
+    values = {
+        str(team.get("name") or ""),
+        _clean_team_name(team.get("name")),
+        str(team.get("abbr") or ""),
+        *tokens,
+    }
+    return {value.lower() for value in values if value}
+
+
+def _side_finder(
+    teams: list[dict[str, object]], tokens: list[set[str]]
+) -> Callable[[str], int | None]:
+    """Resolve a published team reference to an index into ``teams``."""
+
+    def side(reference: str) -> int | None:
+        text = " ".join(reference.split()).lower()
+        if not text:
+            return None
+        stripped = _clean_team_name(text).lower()
+        for index, team in enumerate(teams):
+            known = _identifiers(team, tokens[index])
+            if text in known or stripped in known:
+                return index
+        return None
+
+    return side
+
+
+def _play_side(
+    text: str, teams: list[dict[str, object]], tokens: list[set[str]]
+) -> int | None:
+    """The side a play narrates: the earliest team identifier the line names
+    after a verb or leads with.  Two sides at the same place (one identifier
+    spelling both) name nobody."""
+    best: tuple[int, int] | None = None
+    tie = False
+    for index, team in enumerate(teams):
+        for identifier in _identifiers(team, tokens[index]):
+            pattern = re.compile(
+                rf"(?:^|\b{_TEAM_VERBS}\s+){re.escape(identifier)}(?=$|[\s,.:;!])",
+                re.IGNORECASE,
+            )
+            match = pattern.search(text)
+            if match is None:
+                continue
+            if best is None or match.start() < best[0]:
+                best, tie = (match.start(), index), False
+            elif match.start() == best[0] and index != best[1]:
+                tie = True
+    return None if best is None or tie else best[1]
+
+
+def _learn_play_tokens(
+    texts: list[str], names_by_side: dict[str, int], tokens: list[set[str]]
+) -> None:
+    """Read each side's play-by-play token off its keeper's opening line.
+
+    "Rosenkrantz, Viktor at goalie for AUM." names the keeper the lineup
+    lists for one side and the token every later line uses for that side,
+    so the token is learned from the page rather than guessed from a name.
+    """
+    for text in texts:
+        match = _GOALIE_LINE.match(text)
+        if match is None:
+            continue
+        index = names_by_side.get(_person(match.group("name")).lower())
+        if index is not None:
+            tokens[index].add(match.group("team").strip())
+
+
+def _period_name(caption: str) -> str:
+    """The play-by-play caption in the SideArm period vocabulary: "1st" is
+    "1", "OT" is "3", "2OT" is "4", a shootout is "SO"."""
+    text = " ".join(caption.split()).lower()
+    if re.search(r"shootout|penalt|\bpk\b|\bso\b", text):
+        return "SO"
+    ordinal = re.fullmatch(r"(\d+)(?:st|nd|rd|th)(?:\s+(?:half|period))?", text)
+    if ordinal:
+        return str(int(ordinal.group(1)))
+    overtime = re.fullmatch(r"(\d*)\s*ot", text)
+    if overtime:
+        return str(2 + int(overtime.group(1) or 1))
+    return caption.strip()
+
+
+def _lineup_reference(caption: Tag) -> tuple[str, bool]:
+    """The side a lineup table belongs to, and whether it is the goalie table."""
+    named = caption.select_one(".team-name")
+    text = " ".join(caption.get_text(" ", strip=True).split())
+    goalies = re.search(r"\bgoalies?\b", text, re.IGNORECASE) is not None
+    if named is not None:
+        return " ".join(named.get_text(" ", strip=True).split()), goalies
+    return re.sub(r"\s*goalies?\s*$", "", text, flags=re.IGNORECASE), goalies
+
+
+def parse_boxscore(html: str, *, page_url: str) -> dict[str, object]:
+    """Read one match's published detail off its box-score page.
+
+    Same detail shape as the SideArm parser (``sidearm_live.parse_boxscore_page``).
+    Measured on https://www.tampaspartans.com/sports/msoc/2025-26/boxscores/20250906_4zcl.xml
+    and 20250911_fjlo.xml (2026-09-02):
+
+    - ``teams``: the ``linescore`` table, visitor first (``_linescore_teams``);
+      the four ``stats-box team-stats`` tables (SHOTS, SAVES, CORNER KICKS,
+      FOULS, each with per-period cells and a TOTAL) fill the team totals by
+      the table's own heading, and shots on goal come from the lineup
+      table's totals row, the one place the page sums them.
+    - ``players`` and ``keepers``: the ``stats-box lineup`` tables, one per
+      side, captioned with the side's name (the goalie tables add
+      "Goalies").  A row's ``th`` carries the position, the uniform number
+      and the name (a link for the site owner's players, a span for the
+      opponent's); its cells are mapped by the header text (SH, SOG, G, A,
+      MIN; GA, SV, Min).  The "TM TEAM" row and the totals row are not
+      people.  The page marks no starters, so no line says ``started``, and
+      its player links point into a different id space from the roster's
+      bio links, so no line carries a player id.
+    - ``scoring``: the Scoring Summary rows, each headed by the scoring side
+      (an offscreen span beside its logo) and its period, with the clock and
+      "Scorer (season total) (assist)".
+    - ``cards``: the Penalty Summary rows, "Yellow card - Name" under the
+      side and period; a card the page words some other way is ``unknown``.
+    - ``plays``: every play-by-play row, per period table ("1st", "2nd";
+      overtime and shootout captions map onto the SideArm period names).
+      A row's side is the team identifier its text names after "by", "on",
+      "against" or "for", or leads with ("Tampa substitution: …"); the
+      identifiers are the linescore names, the Open Graph abbreviations and
+      the tokens the keepers' opening lines teach.  A goal row's running
+      score (visitor, home) is stored in ``teams`` order.
+    - ``stadium``, ``attendance``, ``kickoff`` and the labelled officials
+      from the Game Information table.
+    """
+    soup = BeautifulSoup(html, "lxml")
+    teams = _linescore_teams(soup)
+    tokens: list[set[str]] = [set() for _ in teams]
+    side = _side_finder(teams, tokens)
+
+    for box in soup.select(".stats-box.team-stats"):
+        rows = box.find_all("tr")
+        if not rows:
+            continue
+        heading = rows[0].find("th")
+        field = _TEAM_STAT_LABELS.get(
+            " ".join(heading.get_text(" ", strip=True).split()).lower()
+            if heading is not None
+            else ""
+        )
+        if field is None:
+            continue
+        for row in rows[1:]:
+            header = row.find("th")
+            cells = row.find_all("td")
+            if header is None or not cells:
+                continue
+            index = side(header.get_text(" ", strip=True))
+            total = _stat_int(cells[-1].get_text(strip=True))
+            if index is not None and total is not None:
+                teams[index][field] = total
+
+    names_by_side: dict[str, int] = {}
+    for box in soup.select(".stats-box.lineup"):
+        table = box.find("table")
+        caption = table.find("caption") if table is not None else None
+        if table is None or caption is None:
+            continue
+        reference, goalies = _lineup_reference(caption)
+        index = side(reference)
+        if index is None:
+            continue
+        labels: list[str] = []
+        head = table.find("thead")
+        for cell in head.find_all("th") if head is not None else []:
+            labels.extend(
+                [" ".join(cell.get_text(" ", strip=True).split()).upper()]
+                * int(cell.get("colspan") or 1)
+            )
+        fields = _GOALIE_FIELDS if goalies else _LINEUP_FIELDS
+        lines: list[dict[str, object]] = []
+        for row in table.select("tbody tr"):
+            header = row.find("th")
+            if header is None:
+                continue
+            values = dict(
+                zip(labels, _cell_texts([header, *row.find_all("td", recursive=False)]))
+            )
+            if "totals" in set(row.get("class") or []):
+                on_goal = _stat_int(values.get("SOG", ""))
+                if not goalies and on_goal is not None and "sog" not in teams[index]:
+                    teams[index]["sog"] = on_goal
+                continue
+            number = _text(header, ".uniform").rstrip(" -").strip()
+            name_node = header.select_one(".player-name")
+            name = _person(name_node.get_text(" ", strip=True)) if name_node else ""
+            if (
+                not name
+                or number.upper() == "TM"
+                or name.lower() in {"team", "tm team"}
+            ):
+                continue
+            line: dict[str, object] = {"name": name}
+            position = _text(header, ".position")
+            if position:
+                line["position"] = position.upper()
+            if number:
+                line["number"] = number
+            for label, (field, convert) in fields.items():
+                value = convert(values.get(label, ""))
+                if value is not None:
+                    line[field] = value
+            lines.append(line)
+            names_by_side.setdefault(name.lower(), index)
+        teams[index]["keepers" if goalies else "players"] = lines
+
+    scoring: list[dict[str, object]] = []
+    for row in soup.select(".stats-box.scoring-summary tbody tr"):
+        header = row.find("th")
+        text = _text(row, "td.text")
+        if header is None or not text:
+            continue
+        entry: dict[str, object] = {}
+        clock = _text(row, "td.time")
+        if clock:
+            entry["time"] = clock
+        index = side(
+            _text(header, ".offscreen")
+            or re.sub(r"\s+\S+$", "", header.get_text(" ", strip=True))
+        )
+        if index is not None:
+            entry["team"] = index
+        scorer = _person(text.split("(", 1)[0])
+        if not scorer:
+            continue
+        entry["scorer"] = scorer
+        for part in re.findall(r"\(([^)]*)\)", text):
+            note = part.strip()
+            if note.isdigit():
+                entry["season_total"] = int(note)
+            elif re.search(r"unassisted", note, re.IGNORECASE):
+                continue
+            elif re.search(r"penalty|own goal|\bpk\b", note, re.IGNORECASE):
+                entry["description"] = note
+            elif note:
+                entry["assist"] = _person(note)
+        scoring.append(entry)
+
+    cards: list[dict[str, object]] = []
+    for row in soup.select(".stats-box.penalty-summary tbody tr"):
+        header = row.find("th")
+        cell = row.find("td", class_="text")
+        if header is None or cell is None:
+            continue
+        text = " ".join(cell.get_text(" ", strip=True).split())
+        kind = next(
+            (name for name, pattern in _CARD_KINDS if pattern.search(text)), None
+        )
+        player = _person(_CARD_PHRASE.sub("", text))
+        if not player:
+            continue
+        entry = {"type": kind or "unknown", "player": player}
+        clock = _text(row, "td.time")
+        if clock:
+            entry["time"] = clock
+        index = side(
+            _text(header, ".offscreen")
+            or re.sub(r"\s+\S+$", "", header.get_text(" ", strip=True))
+        )
+        if index is not None:
+            entry["team"] = index
+        cards.append(entry)
+
+    # The linescore, the Open Graph title and the lineup panels all list the
+    # visitor first; the panel labels say which side that is.
+    visitor = 0
+    label = soup.select_one('.player-stats [data-panel-for="team-label-v"] .team-name')
+    if label is not None:
+        found = side(label.get_text(" ", strip=True))
+        if found is not None:
+            visitor = found
+    home = 1 - visitor if len(teams) == 2 else None
+
+    narrated: list[tuple[str, str, str, list[int] | None]] = []
+    for table in soup.select("#pbp-tabpanel table, .plays table"):
+        period = _period_name(_text(table, "caption"))
+        for row in table.find_all("tr"):
+            cell = row.find("td", class_="play")
+            if cell is None:
+                continue
+            score: list[int] | None = None
+            visiting = _stat_int(_text(cell, ".v-score"))
+            hosting = _stat_int(_text(cell, ".h-score"))
+            if visiting is not None and hosting is not None and home is not None:
+                score = [0, 0]
+                score[visitor] = visiting
+                score[home] = hosting
+            for extra in cell.select(".action-title, strong"):
+                extra.extract()
+            text = " ".join(cell.get_text(" ", strip=True).split())
+            if not re.search(r"[A-Za-z]", text):
+                continue
+            narrated.append((period, _text(row, "td.time"), text, score))
+    _learn_play_tokens([text for _, _, text, _ in narrated], names_by_side, tokens)
+    plays: list[dict[str, object]] = []
+    for period, clock, text, score in narrated:
+        play: dict[str, object] = {"period": period, "text": text}
+        if re.fullmatch(r"\d+:\d{2}", clock):
+            play["clock"] = clock
+        index = _play_side(text, teams, tokens)
+        if index is not None:
+            play["team"] = index
+        kind = _play_type(text)
+        if kind:
+            play["type"] = kind
+        if score is not None:
+            play["score"] = score
+        plays.append(play)
+
+    detail: dict[str, object] = {"source_url": page_url, "teams": teams}
+    if scoring:
+        detail["scoring"] = scoring
+    if cards:
+        detail["cards"] = cards
+    if plays:
+        detail["plays"] = plays
+
+    officials: list[str] = []
+    for row in soup.select(".stats-box.game-info tr"):
+        header = row.find("th")
+        cell = row.find("td")
+        if header is None or cell is None:
+            continue
+        label = " ".join(header.get_text(" ", strip=True).split())
+        value = " ".join(cell.get_text(" ", strip=True).split())
+        if label.endswith(":"):
+            role = label.rstrip(":").strip()
+            if role and value:
+                officials.append(f"{role}: {value}")
+            continue
+        key = label.lower()
+        if key == "date/time" and " - " in value:
+            kickoff = value.split(" - ", 1)[1].strip()
+            if kickoff:
+                detail["kickoff"] = kickoff
+        elif key == "stadium" and value:
+            detail["stadium"] = value
+        elif key == "attendance":
+            attendance = _stat_int(value)
+            if attendance is not None:
+                detail["attendance"] = attendance
+    if officials:
+        detail["officials"] = officials
+    return detail
+
+
+def _names_both_sides(
+    teams: list[dict[str, object]], fixture: dict[str, object]
+) -> bool:
+    """Whether the page's two sides name the fixture's two slugs, either way
+    round, by the name affinity ``orient_match`` uses; an abbreviation counts
+    ("AUM" for the slug ``aum`` where "#21 Auburn-Montgomery" would not)."""
+    if len(teams) != 2:
+        return False
+    home, away = str(fixture.get("home") or ""), str(fixture.get("away") or "")
+
+    def affinity(team: dict[str, object], slug: str) -> int:
+        return max(
+            _name_slug_affinity(str(team.get(key) or ""), slug)
+            for key in ("name", "abbr")
+        )
+
+    straight = affinity(teams[0], home) and affinity(teams[1], away)
+    crossed = affinity(teams[0], away) and affinity(teams[1], home)
+    return bool(straight or crossed)
+
+
+def assert_served_match(
+    page: PublishedPage, year: int, fixture: dict[str, object]
+) -> None:
+    """A box score must prove WHICH match it is, not merely which season.
+
+    The SideArm rule (``sidearm_live.assert_served_match``) on this
+    platform's page: the served path must be a ``boxscores/{yyyymmdd}_{id}.xml``
+    page carrying the requested id (a redirect that swaps it is a different
+    match), the page must title itself a box score and name a match date,
+    that date must equal the fixture's own, and the two sides it names must
+    be the fixture's two slugs (``_names_both_sides``).
+    """
+    fixture_id = str(fixture.get("id", ""))
+    served = _BOX_PATH.search(urlparse(page.final_url).path)
+    if served is None:
+        raise LiveCollectionError(
+            f"[{year}] {fixture_id}: {page.requested_url} redirected to "
+            f"{page.final_url}, which is not a box-score page"
+        )
+    requested = _BOX_PATH.search(urlparse(page.requested_url).path)
+    if requested is not None and requested.group(0) != served.group(0):
+        raise LiveCollectionError(
+            f"[{year}] {fixture_id}: requested box score {requested.group(2)} "
+            f"but {page.final_url} served box score {served.group(2)}"
+        )
+    soup = BeautifulSoup(page.html, "lxml")
+    if (
+        not re.search(r"box\s*score", _box_title(soup), re.IGNORECASE)
+        and soup.select_one("article.game-boxscore") is None
+    ):
+        raise LiveCollectionError(
+            f"[{year}] {fixture_id}: {page.final_url} does not title itself a box score"
+        )
+    served_date = _box_date(soup)
+    if served_date is None:
+        raise LiveCollectionError(
+            f"[{year}] {fixture_id}: cannot prove which match {page.final_url} "
+            f"served: its title names no match date"
+        )
+    if served_date != str(fixture.get("date")):
+        raise LiveCollectionError(
+            f"[{year}] {fixture_id}: requested the {fixture.get('date')} match "
+            f"but {page.final_url} served the match of {served_date}"
+        )
+    teams = _linescore_teams(soup)
+    if not _names_both_sides(teams, fixture):
+        named = " and ".join(str(team.get("name")) for team in teams) or "no side"
+        raise LiveCollectionError(
+            f"[{year}] {fixture_id}: {page.final_url} served {named}, which "
+            f"does not name both {fixture.get('home')} and {fixture.get('away')}"
+        )
+
+
+def collect_match(
+    session: requests.Session,
+    url: str,
+    year: int,
+    fixture: dict[str, object],
+) -> dict[str, object]:
+    """Fetch one fixture's box score, prove it is that fixture's, and parse it.
+
+    The fetch rides the shared session and the shared body check: a 2xx that
+    is not the page (the site's HTTP 202 challenge after a burst) is refused
+    with its status, never read as a box score with no teams.
+    """
+    try:
+        response = session.get(url, timeout=30)
+        response.raise_for_status()
+    except requests.RequestException as exc:
+        raise LiveCollectionError(
+            f"[{year}] {fixture.get('id')}: failed to fetch box score {url}: {exc}",
+            status=http_status(exc),
+        ) from exc
+    assert_served_body(response, year=year, kind="box-score", url=url)
+    page = PublishedPage(url, response.url, response.text)
+    assert_served_match(page, year, fixture)
+    detail = parse_boxscore(page.html, page_url=page.final_url)
+    teams = detail.get("teams") or []
+    if len(teams) != 2:  # type: ignore[arg-type]
+        raise LiveCollectionError(
+            f"[{year}] {fixture.get('id')}: {page.final_url} proved its match but "
+            f"its score-by-period table rendered {len(teams)} team(s) "  # type: ignore[arg-type]
+            f"where a match needs exactly two"
+        )
+    orient_match(detail, fixture)
+    return detail
