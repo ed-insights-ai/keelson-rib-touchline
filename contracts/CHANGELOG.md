@@ -6,6 +6,10 @@ fails `pipeline/tests/test_contracts.py`.
 
 ## 2026-09-02
 
+- Membership reference: `RMAC` joins `conferences`, with one window (Regis,
+  2022-2026) so the fixture exhibits it. The fixture's conference list must
+  equal the packaged file's, so every conference add touches this file
+  (bead tl-clk.1).
 - `touchline.fixtures/2`: a fixture may carry `neutral: true`, set when the
   schedule page itself marks a neutral site (the theme's
   `sidearm-schedule-neutral-game` row class, or `location_indicator: "N"` in

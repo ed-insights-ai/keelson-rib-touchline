@@ -326,12 +326,14 @@ def test_derivation_is_conference_agnostic():
 
 
 def test_validation_accepts_declared_conference(membership_document):
-    # RMAC because the shipped document does not declare it yet — the point is
-    # that declaring a NEW conference in data is all it takes; LSC already
-    # graduated from this test into the real file.
+    # A code the shipped document does not declare — the point is that
+    # declaring a NEW conference in data is all it takes. LSC and RMAC each
+    # sat here until they graduated into the real file, so the code is now
+    # one no conference will ever carry.
     document = copy.deepcopy(membership_document)
-    document["conferences"].append("RMAC")
-    document["memberships"]["harding"]["men"][0]["conference"] = "RMAC"
+    assert "NEWC" not in document["conferences"]
+    document["conferences"].append("NEWC")
+    document["memberships"]["harding"]["men"][0]["conference"] = "NEWC"
 
     assert membership.validate(document) == []
 
