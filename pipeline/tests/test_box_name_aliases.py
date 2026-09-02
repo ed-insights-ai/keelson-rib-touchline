@@ -37,6 +37,8 @@ BOX_SPELLINGS = [
     ("The University of Texas at Tyler", "ut-tyler"),
     # sidearm:westminster:12070, 2023-09-02
     ("Midwestern", "midwestern-state"),
+    # sidearm:colorado-school-of-mines:21603, 2022-09-04 (box-vs-fixture, unresolved)
+    ("Colo. Sch. of Mines", "colorado-school-of-mines"),
 ]
 
 
