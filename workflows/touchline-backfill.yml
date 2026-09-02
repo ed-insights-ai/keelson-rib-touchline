@@ -1,0 +1,243 @@
+name: touchline-backfill
+description: |
+  Use when: someone asks to backfill or rebuild a conference's archive across several seasons at once, into an existing Touchline data home.
+  Triggers: "backfill GLVC men 2022 to 2026", "collect every LSC season", "rebuild the GSC archive", "load the last five seasons".
+  Does: refuses any directory that is not a Touchline data home, then runs one collect per season in the range, sequentially, each resolving its own members from the membership record, and reports every season's outcome in one summary.
+  NOT for: one season (use touchline-collect), repairing data (use data-integrity), or judging code.
+
+# Same locking as touchline-collect: the seasons write into one data home, so
+# they run under one exclusive mutation lock and one after another. A single
+# node cannot hold a whole range inside the node budget (the LSC backfill
+# measured about two thirds of one node's headroom per season), so each season
+# is its own node with its own budget. Eight slots are wired below; a range
+# longer than that is refused at preflight and run as two backfills.
+requiresProject: false
+mutates_checkout: true
+tags: [soccer, collection, touchline, backfill]
+
+inputs:
+  - name: conference
+    description: Conference to backfill, e.g. GLVC. Members resolve per season from the membership record.
+    required: true
+  - name: gender
+    description: men or women.
+    required: true
+  - name: from_season
+    description: First season year of the range, inclusive, e.g. 2022.
+    required: true
+  - name: to_season
+    description: Last season year of the range, inclusive, e.g. 2026. At most 8 seasons per run.
+    required: true
+  - name: layers
+    description: >-
+      Comma-separated layers to collect for every season: schedule, roster,
+      stats, matches. Defaults to all four.
+    required: false
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Runs with cwd = the consumer's Touchline data directory. Git is not required.
+#
+# A bash body is NOT template-substituted; inputs arrive as
+# KEELSON_INPUTS_<key> and an upstream node's output as
+# KEELSON_NODE_<id>_OUTPUT (hyphens become underscores).
+#
+# The per-season body lives in the rib at bin/backfill-slot.sh so the slot
+# nodes share one script and one test. Each slot's season is
+# from_season + (slot - 1); a slot past to_season prints SKIPPED and exits 0.
+# Slots chain with trigger_rule all_done so one failed season is reported and
+# the later seasons still run: a partial backfill with named failures beats a
+# run that stops at the first gap.
+# ─────────────────────────────────────────────────────────────────────────────
+
+nodes:
+  - id: preflight
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      MAX_SEASONS=8
+      if [ ! -f touchline-data.yaml ]; then
+        printf 'REFUSED: %s is not a Touchline data home (no touchline-data.yaml marker).\n' "$PWD"
+        exit 1
+      fi
+      KIND=$(sed -n 's/^[[:space:]]*kind:[[:space:]]*\(.*\)$/\1/p' touchline-data.yaml | head -1)
+      if [ "$KIND" != "touchline-data" ]; then
+        printf 'REFUSED: touchline-data.yaml exists but declares kind=%s, not touchline-data.\n' "${KIND:-(none)}"
+        exit 1
+      fi
+      for v in KEELSON_INPUTS_conference KEELSON_INPUTS_gender KEELSON_INPUTS_from_season KEELSON_INPUTS_to_season; do
+        eval "val=\${$v:-}"
+        if [ -z "$val" ]; then
+          printf 'REFUSED: required input %s is empty. Nothing was collected.\n' "$v"
+          exit 1
+        fi
+      done
+      case "$KEELSON_INPUTS_gender" in
+        men|women) ;;
+        *) printf 'REFUSED: gender %s is not men or women.\n' "$KEELSON_INPUTS_gender"; exit 1 ;;
+      esac
+      for y in "$KEELSON_INPUTS_from_season" "$KEELSON_INPUTS_to_season"; do
+        case "$y" in
+          [0-9][0-9][0-9][0-9]) ;;
+          *) printf 'REFUSED: season %s is not a four-digit year.\n' "$y"; exit 1 ;;
+        esac
+      done
+      if [ "$KEELSON_INPUTS_from_season" -gt "$KEELSON_INPUTS_to_season" ]; then
+        printf 'REFUSED: from_season %s is after to_season %s.\n' "$KEELSON_INPUTS_from_season" "$KEELSON_INPUTS_to_season"
+        exit 1
+      fi
+      COUNT=$((KEELSON_INPUTS_to_season - KEELSON_INPUTS_from_season + 1))
+      if [ "$COUNT" -gt "$MAX_SEASONS" ]; then
+        printf 'REFUSED: %s seasons requested (%s-%s) but this workflow wires %s collect slots. Split the range and run twice.\n' \
+          "$COUNT" "$KEELSON_INPUTS_from_season" "$KEELSON_INPUTS_to_season" "$MAX_SEASONS"
+        exit 1
+      fi
+      printf 'data home OK: %s\n' "$PWD"
+      printf 'layers: %s\n' "${KEELSON_INPUTS_layers:-schedule,roster,stats,matches}"
+      printf 'range: %s %s %s-%s (%s seasons, %s slots)\n' \
+        "$KEELSON_INPUTS_conference" "$KEELSON_INPUTS_gender" \
+        "$KEELSON_INPUTS_from_season" "$KEELSON_INPUTS_to_season" "$COUNT" "$MAX_SEASONS"
+
+  - id: resolve-pipeline
+    depends_on: [preflight]
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      KEELSON_HOME_DIR="${KEELSON_HOME:-$HOME/.keelson}"
+      CFG="$KEELSON_HOME_DIR/rib-touchline/config.json"
+      PIPELINE_DIR="${TOUCHLINE_PIPELINE_DIR:-}"
+      if [ -z "$PIPELINE_DIR" ] && [ -f "$CFG" ]; then
+        PKG=$(jq -r '.packageDir // empty' "$CFG" 2>/dev/null)
+        [ -n "$PKG" ] && PIPELINE_DIR="$PKG/pipeline"
+      fi
+      if [ -z "$PIPELINE_DIR" ]; then
+        PIPELINE_DIR="$KEELSON_HOME_DIR/node_modules/@keelson/rib-touchline/pipeline"
+      fi
+      if [ ! -f "$PIPELINE_DIR/pyproject.toml" ]; then
+        printf 'ALARM: cannot resolve the Touchline pipeline. Tried TOUCHLINE_PIPELINE_DIR, %s, and the installed package path. Last candidate: %s\n' "$CFG" "$PIPELINE_DIR"
+        exit 1
+      fi
+      if [ ! -f "$(dirname "$PIPELINE_DIR")/bin/backfill-slot.sh" ]; then
+        printf 'ALARM: the rib package at %s carries no bin/backfill-slot.sh; the installed rib predates touchline-backfill.\n' "$(dirname "$PIPELINE_DIR")"
+        exit 1
+      fi
+      printf '%s\n' "$PIPELINE_DIR"
+
+  - id: collect-1
+    depends_on: [resolve-pipeline]
+    timeout: 900000
+    bash: |
+      set -uo pipefail
+      PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
+      SLOT=1 sh "$(dirname "$PIPELINE_DIR")/bin/backfill-slot.sh"
+
+  - id: collect-2
+    depends_on: [collect-1]
+    trigger_rule: all_done
+    timeout: 900000
+    bash: |
+      set -uo pipefail
+      PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
+      SLOT=2 sh "$(dirname "$PIPELINE_DIR")/bin/backfill-slot.sh"
+
+  - id: collect-3
+    depends_on: [collect-2]
+    trigger_rule: all_done
+    timeout: 900000
+    bash: |
+      set -uo pipefail
+      PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
+      SLOT=3 sh "$(dirname "$PIPELINE_DIR")/bin/backfill-slot.sh"
+
+  - id: collect-4
+    depends_on: [collect-3]
+    trigger_rule: all_done
+    timeout: 900000
+    bash: |
+      set -uo pipefail
+      PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
+      SLOT=4 sh "$(dirname "$PIPELINE_DIR")/bin/backfill-slot.sh"
+
+  - id: collect-5
+    depends_on: [collect-4]
+    trigger_rule: all_done
+    timeout: 900000
+    bash: |
+      set -uo pipefail
+      PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
+      SLOT=5 sh "$(dirname "$PIPELINE_DIR")/bin/backfill-slot.sh"
+
+  - id: collect-6
+    depends_on: [collect-5]
+    trigger_rule: all_done
+    timeout: 900000
+    bash: |
+      set -uo pipefail
+      PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
+      SLOT=6 sh "$(dirname "$PIPELINE_DIR")/bin/backfill-slot.sh"
+
+  - id: collect-7
+    depends_on: [collect-6]
+    trigger_rule: all_done
+    timeout: 900000
+    bash: |
+      set -uo pipefail
+      PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
+      SLOT=7 sh "$(dirname "$PIPELINE_DIR")/bin/backfill-slot.sh"
+
+  - id: collect-8
+    depends_on: [collect-7]
+    trigger_rule: all_done
+    timeout: 900000
+    bash: |
+      set -uo pipefail
+      PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
+      SLOT=8 sh "$(dirname "$PIPELINE_DIR")/bin/backfill-slot.sh"
+
+  - id: report
+    depends_on: [collect-8]
+    trigger_rule: all_done
+    always_run: true
+    timeout: 120000
+    prompt: |
+      A Touchline backfill run just finished.
+
+      Preflight reported:
+      $preflight.output
+
+      Each season's collect printed (a slot past the range says SKIPPED; a
+      slot whose text is empty did not run and must be reported as such):
+
+      Slot 1:
+      $collect-1.output
+
+      Slot 2:
+      $collect-2.output
+
+      Slot 3:
+      $collect-3.output
+
+      Slot 4:
+      $collect-4.output
+
+      Slot 5:
+      $collect-5.output
+
+      Slot 6:
+      $collect-6.output
+
+      Slot 7:
+      $collect-7.output
+
+      Slot 8:
+      $collect-8.output
+
+      Write a SHORT completion summary, in plain prose, for the person who asked for this data:
+      - one line per season in the range: collected, failed (with the exit code and
+        the reason printed), or did not run; never fold a failed season into a total
+      - per collected season: programmes and fixtures, anything reported as missing,
+        collapsed as duplicates, or DERIVED rather than published; name it, never soften it
+      - distinguish played from upcoming exactly as the collector reports them
+      - say that schedule, roster, statistics and box-score data came from official programme season pages
+
+      Do not invent numbers. Every figure must appear in the text above; if a figure is
+      not there, say it was not reported.

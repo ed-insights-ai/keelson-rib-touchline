@@ -91,7 +91,13 @@ for (const file of sourceDocs) {
 
 // --- 4. documented sets match the source ------------------------------------
 
-const WORKFLOWS = ["touchline-collect", "touchline-report", "touchline-player-profile", "data-integrity"];
+const WORKFLOWS = [
+  "touchline-collect",
+  "touchline-backfill",
+  "touchline-report",
+  "touchline-player-profile",
+  "data-integrity",
+];
 if (existsSync(workflowsDir)) {
   const onDisk = readdirSync(workflowsDir)
     .filter((f) => f.endsWith(".yml"))

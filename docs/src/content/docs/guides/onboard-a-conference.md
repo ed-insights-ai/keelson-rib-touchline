@@ -146,11 +146,14 @@ touchline_collect(target="GLVC", gender="men", season=2022, project="d2-soccer")
 ```
 
 The tool resolves the programme list through the served rib and runs the
-collect. Do not call `workflow_run("touchline-collect", …)` with only
-conference, gender and season: its preflight refuses because the workflow's
-`programmes` input must be caller-resolved (measured 2026-09-01, run
-6708b27d). The first collect into a data home whose mirror is behind prints
-`membership reference synced`; that is the mirror healing, and expected.
+collect. `workflow_run("touchline-collect")` with only conference, gender
+and season does the same: its `resolve-programmes` node reads the members
+from the packaged membership record (the preflight refusal measured on
+2026-09-01, run 6708b27d, is gone). For the whole range in one durable run,
+`workflow_run("touchline-backfill")` with `from_season` and `to_season`
+runs one collect node per season. The first collect into a data home whose
+mirror is behind prints `membership reference synced`; that is the mirror
+healing, and expected.
 
 Each call reports schedule, roster, stats and matches counts, the duplicate
 rows collapsed, and every named gap.
@@ -199,8 +202,9 @@ The public site is told separately, by the coordinator session that owns
 touchline-ui: `src/site.config.ts` gains the conference in `conferences` and
 `conferenceNames`, one journal generation for the conference and one
 national regeneration are run (model spend, authorised per conference in the
-epic), and the cadence script's default conference list is extended. None
-of this is derived from membership today; see the ledger below.
+epic). The cadence script's conference set resolves from the membership
+record (`bin/resolve-membership.ts conferences`), so it needs no edit. The
+site side is not derived from membership today; see the ledger below.
 
 ## 8. The touchpoint ledger
 
@@ -222,9 +226,9 @@ What the GLVC, the fourth conference, actually required, measured on
 |---|---|
 | `keelson restart` | required after merge; `rib reload` does not pick up membership |
 | data-home membership mirror | self-healed on the first collect ("membership reference synced … was diverged") |
-| `workflow_run("touchline-collect")` | refuses without caller-resolved `programmes`; the `touchline_collect` tool is the working front door |
+| `workflow_run("touchline-collect")` | refused without caller-resolved `programmes` at the time; the workflow now resolves its own (proposal 1 below) |
 | data-integrity check count | 4, matching the workflow file; a remembered "12" was stale |
-| `~/.keelson/scripts/touchline-collect-cadence.sh` line 74 | `TOUCHLINE_CONFERENCES` default string must be extended by hand |
+| `~/.keelson/scripts/touchline-collect-cadence.sh` line 74 | `TOUCHLINE_CONFERENCES` default string had to be extended by hand; the default now resolves from data (proposal 2 below) |
 | finished-season `scheduled` rows | unpublished exhibitions, one cancellation, one tournament placeholder; noted, not gaps |
 
 **Site (coordinator, then the site beads under tui-4me)**

@@ -180,6 +180,25 @@ export async function knownConferences(): Promise<string[]> {
   return file.conferences.filter((c) => c !== "independent" && c !== "non_member");
 }
 
+/** The conferences a scheduled collect should sweep for one gender: every
+ *  advertised conference that authors at least one membership window in that
+ *  gender, sorted. A conference the file knows only through another gender's
+ *  windows (or none at all) has no member to collect, so it is left out rather
+ *  than sent to the sites to be refused. Nothing here names a conference; a
+ *  newly authored one joins the set the day its windows merge. */
+export async function activeConferences(gender: string): Promise<string[]> {
+  const file = await loadMembership();
+  const advertised = new Set(await knownConferences());
+  const active = new Set<string>();
+  for (const byGender of Object.values(file.memberships)) {
+    for (const w of byGender[gender] ?? []) {
+      const conference = w.conference.toUpperCase();
+      if (advertised.has(conference)) active.add(conference);
+    }
+  }
+  return [...active].sort();
+}
+
 /** Resolve free text ("the whole GAC", "Harding") to a target set. */
 export async function resolveTargets(
   subject: string,
