@@ -44,6 +44,10 @@ jobs:
         if: steps.pipeline.outputs.exists == 'true'
         working-directory: pipeline
         run: uv run ruff check .
+      - name: Format
+        if: steps.pipeline.outputs.exists == 'true'
+        working-directory: pipeline
+        run: uv run ruff format --check .
       - name: Test
         if: steps.pipeline.outputs.exists == 'true'
         working-directory: pipeline

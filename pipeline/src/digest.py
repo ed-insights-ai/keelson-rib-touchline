@@ -60,12 +60,7 @@ def normalize_name(name: str) -> str:
 def _season_path(
     root: Path, kind: str, season: int, gender: str, conference: str
 ) -> Path:
-    return (
-        root
-        / "data"
-        / kind
-        / f"{season}-{gender}-{programme_slug(conference)}.json"
-    )
+    return root / "data" / kind / f"{season}-{gender}-{programme_slug(conference)}.json"
 
 
 def load_season(
@@ -84,9 +79,7 @@ def seasons_held(root: Path, gender: str, conference: str) -> list[int]:
     """Every season the home holds for one conference shard, ascending."""
     directory = root / "data" / "fixtures"
     shard = programme_slug(conference)
-    pattern = re.compile(
-        rf"^(\d{{4}})-{re.escape(gender)}-{re.escape(shard)}\.json$"
-    )
+    pattern = re.compile(rf"^(\d{{4}})-{re.escape(gender)}-{re.escape(shard)}\.json$")
     found = []
     if directory.is_dir():
         for entry in directory.iterdir():
@@ -167,12 +160,8 @@ def season_form(fixtures_payload: dict, slug: str) -> dict:
     return {
         "overall": overall,
         "conference": conference,
-        "clean_sheets": sum(
-            1 for f in finals if _scored_conceded(f, slug)[1] == 0
-        ),
-        "times_shut_out": sum(
-            1 for f in finals if _scored_conceded(f, slug)[0] == 0
-        ),
+        "clean_sheets": sum(1 for f in finals if _scored_conceded(f, slug)[1] == 0),
+        "times_shut_out": sum(1 for f in finals if _scored_conceded(f, slug)[0] == 0),
         "one_goal_games": sum(
             1
             for f in finals
@@ -355,26 +344,142 @@ def _position_bucket(raw: str | None) -> str:
 _US_MARKERS = {
     marker.replace(".", "").casefold()
     for marker in (
-        "Ala", "Alaska", "Ariz", "Ark", "Calif", "Colo", "Conn", "Del", "Fla",
-        "Ga", "Hawaii", "Idaho", "Ill", "Ind", "Iowa", "Kan", "Ky", "La",
-        "Maine", "Md", "Mass", "Mich", "Minn", "Miss", "Mo", "Mont", "Neb",
-        "Nev", "NH", "NJ", "NM", "NY", "NC", "ND", "Ohio", "Okla", "Ore",
-        "Pa", "RI", "SC", "SD", "Tenn", "Texas", "Utah", "Vt", "Va", "Wash",
-        "WVa", "Wis", "Wyo", "DC",
-        "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI",
-        "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI",
-        "MN", "MS", "MO", "MT", "NE", "NV", "OK", "OR", "PA", "TN", "TX",
-        "UT", "VT", "VA", "WA", "WV", "WI", "WY",
-        "Alabama", "Arizona", "Arkansas", "California", "Colorado",
-        "Connecticut", "Delaware", "Florida", "Georgia", "Illinois",
-        "Indiana", "Kansas", "Kentucky", "Louisiana", "Maryland",
-        "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri",
-        "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
-        "New Mexico", "New York", "North Carolina", "North Dakota",
-        "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island",
-        "South Carolina", "South Dakota", "Tennessee", "Texas", "Vermont",
-        "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming",
-        "USA", "US",
+        "Ala",
+        "Alaska",
+        "Ariz",
+        "Ark",
+        "Calif",
+        "Colo",
+        "Conn",
+        "Del",
+        "Fla",
+        "Ga",
+        "Hawaii",
+        "Idaho",
+        "Ill",
+        "Ind",
+        "Iowa",
+        "Kan",
+        "Ky",
+        "La",
+        "Maine",
+        "Md",
+        "Mass",
+        "Mich",
+        "Minn",
+        "Miss",
+        "Mo",
+        "Mont",
+        "Neb",
+        "Nev",
+        "NH",
+        "NJ",
+        "NM",
+        "NY",
+        "NC",
+        "ND",
+        "Ohio",
+        "Okla",
+        "Ore",
+        "Pa",
+        "RI",
+        "SC",
+        "SD",
+        "Tenn",
+        "Texas",
+        "Utah",
+        "Vt",
+        "Va",
+        "Wash",
+        "WVa",
+        "Wis",
+        "Wyo",
+        "DC",
+        "AL",
+        "AK",
+        "AZ",
+        "AR",
+        "CA",
+        "CO",
+        "CT",
+        "DE",
+        "FL",
+        "GA",
+        "HI",
+        "ID",
+        "IL",
+        "IN",
+        "IA",
+        "KS",
+        "KY",
+        "LA",
+        "ME",
+        "MD",
+        "MA",
+        "MI",
+        "MN",
+        "MS",
+        "MO",
+        "MT",
+        "NE",
+        "NV",
+        "OK",
+        "OR",
+        "PA",
+        "TN",
+        "TX",
+        "UT",
+        "VT",
+        "VA",
+        "WA",
+        "WV",
+        "WI",
+        "WY",
+        "Alabama",
+        "Arizona",
+        "Arkansas",
+        "California",
+        "Colorado",
+        "Connecticut",
+        "Delaware",
+        "Florida",
+        "Georgia",
+        "Illinois",
+        "Indiana",
+        "Kansas",
+        "Kentucky",
+        "Louisiana",
+        "Maryland",
+        "Massachusetts",
+        "Michigan",
+        "Minnesota",
+        "Mississippi",
+        "Missouri",
+        "Montana",
+        "Nebraska",
+        "Nevada",
+        "New Hampshire",
+        "New Jersey",
+        "New Mexico",
+        "New York",
+        "North Carolina",
+        "North Dakota",
+        "Oklahoma",
+        "Oregon",
+        "Pennsylvania",
+        "Rhode Island",
+        "South Carolina",
+        "South Dakota",
+        "Tennessee",
+        "Texas",
+        "Vermont",
+        "Virginia",
+        "Washington",
+        "West Virginia",
+        "Wisconsin",
+        "Wyoming",
+        "USA",
+        "US",
     )
 }
 
@@ -430,7 +535,9 @@ def roster_shape(
     }
     minutes_by_name = {
         normalize_name(str(p.get("name") or "")): int(p.get("minutes") or 0)
-        for p in (((prev_stats or {}).get("teams") or {}).get(slug) or {}).get("players")
+        for p in (((prev_stats or {}).get("teams") or {}).get(slug) or {}).get(
+            "players"
+        )
         or []
     }
 
@@ -569,7 +676,9 @@ def turnover(
     return result
 
 
-def _stat_row(stats_payload: dict | None, slug: str, key: str, player_id: str | None) -> dict | None:
+def _stat_row(
+    stats_payload: dict | None, slug: str, key: str, player_id: str | None
+) -> dict | None:
     team = ((stats_payload or {}).get("teams") or {}).get(slug) or {}
     for player in team.get("players") or []:
         if player_id and str(player.get("player_id") or "") == player_id:
@@ -735,16 +844,22 @@ def availability_flags(
                 gap_missed, gap_out, gap_back = run, previous, current
 
         if tail_missed >= AVAILABILITY_MIN_MISSED and tail_missed >= gap_missed:
-            kind, detail = "stopped", {
-                "last_seen": timeline[played[-1]][0],
-                "missed_after": tail_missed,
-            }
+            kind, detail = (
+                "stopped",
+                {
+                    "last_seen": timeline[played[-1]][0],
+                    "missed_after": tail_missed,
+                },
+            )
         elif gap_missed >= AVAILABILITY_MIN_MISSED:
-            kind, detail = "gap", {
-                "out_after": timeline[gap_out][0],
-                "back_on": timeline[gap_back][0],
-                "missed": gap_missed,
-            }
+            kind, detail = (
+                "gap",
+                {
+                    "out_after": timeline[gap_out][0],
+                    "back_on": timeline[gap_back][0],
+                    "missed": gap_missed,
+                },
+            )
         else:
             continue
 
@@ -796,7 +911,9 @@ def usage_shifts(
     if not on_roster:
         return []
 
-    team_before = ((before_stats.get("teams") or {}).get(slug) or {}).get("players") or []
+    team_before = ((before_stats.get("teams") or {}).get(slug) or {}).get(
+        "players"
+    ) or []
     shifts = []
     for row in team_before:
         minutes_before = int(row.get("minutes") or 0)
@@ -853,7 +970,11 @@ def head_to_head(
                     "home": fixture.get("home"),
                     "away": fixture.get("away"),
                     "score": f"{fixture.get('home_score')}-{fixture.get('away_score')}",
-                    "focus_result": "W" if scored > conceded else "L" if scored < conceded else "D",
+                    "focus_result": "W"
+                    if scored > conceded
+                    else "L"
+                    if scored < conceded
+                    else "D",
                 }
             )
     if not meetings:
@@ -923,8 +1044,7 @@ def build_digest(
     prev_season = max(previous_candidates) if previous_candidates else None
 
     fixtures_by_season = {
-        year: load_season(root, "fixtures", year, gender, conference)
-        for year in held
+        year: load_season(root, "fixtures", year, gender, conference) for year in held
     }
     stats_by_season = {
         year: load_season(root, "stats", year, gender, conference) for year in held
@@ -1005,9 +1125,9 @@ def build_digest(
         for year in held:
             payload = load_season(root, kind, year, gender, conference)
             if payload is not None and payload.get("collected_at"):
-                sources[
-                    f"{kind}/{year}-{gender}-{programme_slug(conference)}"
-                ] = payload["collected_at"]
+                sources[f"{kind}/{year}-{gender}-{programme_slug(conference)}"] = (
+                    payload["collected_at"]
+                )
 
     return {
         "schema": DIGEST_SCHEMA,

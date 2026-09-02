@@ -442,7 +442,9 @@ def _build_alias_index() -> dict[str, str]:
         for alias in aliases:
             existing = index.get(alias)
             if existing is not None and existing != slug:
-                raise ValueError(f"normalized alias {alias!r} maps to {existing!r} and {slug!r}")
+                raise ValueError(
+                    f"normalized alias {alias!r} maps to {existing!r} and {slug!r}"
+                )
             index[alias] = slug
     return index
 

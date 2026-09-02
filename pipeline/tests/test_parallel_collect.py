@@ -285,8 +285,10 @@ def test_parallel_output_is_byte_identical_to_serial(monkeypatch, tmp_path) -> N
     # Adversarial completion order: the first-submitted programme and the
     # first-planned box scores finish LAST.
     prog_delays = {slug: 0.12 - 0.04 * index for index, slug in enumerate(slugs)}
-    match_delays = {f"sidearm:{slug}:{index + 1}": 0.12 - 0.03 * index
-                    for index, slug in enumerate(slugs)}
+    match_delays = {
+        f"sidearm:{slug}:{index + 1}": 0.12 - 0.03 * index
+        for index, slug in enumerate(slugs)
+    }
     parallel = _run_collect(
         monkeypatch,
         parallel_root,
@@ -335,9 +337,7 @@ class _CannedSession:
     """Serves each host's schedule page after that host's delay."""
 
     def __init__(self, schools: list[SchoolConfig], delays: dict[str, float]) -> None:
-        self._by_host = {
-            host_of(school.base_url): school for school in schools
-        }
+        self._by_host = {host_of(school.base_url): school for school in schools}
         self._delays = delays
 
     def get(self, url: str, timeout: int | None = None, headers=None):

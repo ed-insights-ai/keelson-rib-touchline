@@ -133,8 +133,18 @@ def _long_date(iso: str) -> str:
     except ValueError:
         return iso
     months = (
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
     )
     return f"{months[month - 1]} {day}, {year}"
 
@@ -231,9 +241,17 @@ def indicator_tiles(digest: dict) -> str:
         )
 
     if share.get("minutes") is not None:
-        tile(f"{round(share['minutes'] * 100)}%", "Returning minutes", f"of {turnover.get('previous_season')} played")
+        tile(
+            f"{round(share['minutes'] * 100)}%",
+            "Returning minutes",
+            f"of {turnover.get('previous_season')} played",
+        )
     if share.get("goals") is not None:
-        tile(f"{round(share['goals'] * 100)}%", "Returning goals", f"of {turnover.get('previous_season')} scored")
+        tile(
+            f"{round(share['goals'] * 100)}%",
+            "Returning goals",
+            f"of {turnover.get('previous_season')} scored",
+        )
     if counts.get("returning") is not None:
         tile(
             str(counts["returning"]),
@@ -241,7 +259,11 @@ def indicator_tiles(digest: dict) -> str:
             f"+{counts.get('newcomers', 0)} new, {counts.get('departed', 0)} departed",
         )
     if conf:
-        tile(record_line(conf), f"{last.get('season')} conference (W-L-T)", f"{conf.get('gf')}:{conf.get('ga')} goals")
+        tile(
+            record_line(conf),
+            f"{last.get('season')} conference (W-L-T)",
+            f"{conf.get('gf')}:{conf.get('ga')} goals",
+        )
     return f'<div class="tiles">{"".join(tiles)}</div>'
 
 
@@ -379,9 +401,20 @@ def landscape_scatter(digest: dict) -> str:
     points = []
     for slug, section in digest["programmes"].items():
         rates = _programme_rates(section)
-        if not rates or rates.get("gf_per_match") is None or rates.get("ga_per_match") is None:
+        if (
+            not rates
+            or rates.get("gf_per_match") is None
+            or rates.get("ga_per_match") is None
+        ):
             continue
-        points.append((slug, section.get("abbr") or slug[:3].upper(), rates["gf_per_match"], rates["ga_per_match"]))
+        points.append(
+            (
+                slug,
+                section.get("abbr") or slug[:3].upper(),
+                rates["gf_per_match"],
+                rates["ga_per_match"],
+            )
+        )
     if len(points) < 3:
         return ""
     width, height, pad = 620, 330, 46
@@ -413,7 +446,9 @@ def landscape_scatter(digest: dict) -> str:
     )
 
 
-def h2h_strip(versus: dict | None, names: dict[str, str], focus: str, limit: int = 8) -> str:
+def h2h_strip(
+    versus: dict | None, names: dict[str, str], focus: str, limit: int = 8
+) -> str:
     """Held meetings as result chips, most recent last, scores focus-first."""
     if not versus:
         return '<div class="viz-note">No held meetings.</div>'
@@ -428,8 +463,8 @@ def h2h_strip(versus: dict | None, names: dict[str, str], focus: str, limit: int
             score = f"{away_goals}-{home_goals}"
         chips.append(
             f'<span class="chip chip-{result.lower()}" title="{esc(meeting.get("date"))} · '
-            f'{esc(names.get(meeting.get("home"), meeting.get("home")))} '
-            f'{esc(meeting.get("score"))} '
+            f"{esc(names.get(meeting.get('home'), meeting.get('home')))} "
+            f"{esc(meeting.get('score'))} "
             f'{esc(names.get(meeting.get("away"), meeting.get("away")))}">'
             f'<b>{letter}</b> <span class="num">{esc(score)}</span>'
             f'<i class="num">{esc(meeting.get("season"))}</i></span>'
@@ -480,9 +515,13 @@ def offseason_ledger(items: list[dict] | None) -> str:
             for src in item.get("sources") or []
         ]
         if not cites and (item.get("source") or item.get("date")):
-            cites = [_cite(item.get("source", ""), item.get("url", ""), item.get("date", ""))]
+            cites = [
+                _cite(item.get("source", ""), item.get("url", ""), item.get("date", ""))
+            ]
         cite_row = (
-            f'<span class="ledger-cite">{"&ensp;·&ensp;".join(cites)}</span>' if cites else ""
+            f'<span class="ledger-cite">{"&ensp;·&ensp;".join(cites)}</span>'
+            if cites
+            else ""
         )
         rows.append(
             f'<div class="ledger-row"><b>{esc(item.get("player", ""))}</b>'
@@ -534,7 +573,11 @@ def landscape_table(digest: dict) -> str:
         focus_class = ' class="is-focus"' if slug == digest["focus"] else ""
         rows.append(
             f"<tr{focus_class}><td>{esc(section.get('name', slug))}"
-            + (f' <span class="abbr">{esc(section["abbr"])}</span>' if section.get("abbr") else "")
+            + (
+                f' <span class="abbr">{esc(section["abbr"])}</span>'
+                if section.get("abbr")
+                else ""
+            )
             + f'</td><td class="num">{record_line(overall)}</td>'
             f'<td class="num">{overall.get("gf")}:{overall.get("ga")}</td>'
             f'<td class="num">{record_line(conf)}</td>'
@@ -556,7 +599,7 @@ def landscape_table(digest: dict) -> str:
     )
     return (
         '<table class="grid"><thead><tr>'
-        f'<th>{esc(digest.get("conference", ""))} programme</th>'
+        f"<th>{esc(digest.get('conference', ''))} programme</th>"
         f'<th class="num">{season} W-L-T</th><th class="num">GF:GA</th>'
         '<th class="num">Conf W-L-T</th><th class="num">Conf GF:GA</th>'
         '<th class="num">CS</th><th>Returning goals</th>'
@@ -703,7 +746,13 @@ def shape_strip(section: dict, compact: bool = False) -> str:
         return ""
     known = shape.get("turnover_known")
     cls_order = ("Sr", "Jr", "So", "Fr", "?")
-    cls_words = {"Sr": "senior", "Jr": "junior", "So": "sophomore", "Fr": "freshman", "?": "class unlisted"}
+    cls_words = {
+        "Sr": "senior",
+        "Jr": "junior",
+        "So": "sophomore",
+        "Fr": "freshman",
+        "?": "class unlisted",
+    }
 
     def units(group: dict, intl_group: dict, status: str) -> str:
         out = []
@@ -714,7 +763,9 @@ def shape_strip(section: dict, compact: bool = False) -> str:
             marked = min(int(intl_group.get(cls) or 0), count)
             for slot in range(count):
                 intl = slot >= count - marked
-                tip = f"{cls_words[cls]} {status}" + (" · international" if intl else "")
+                tip = f"{cls_words[cls]} {status}" + (
+                    " · international" if intl else ""
+                )
                 out.append(
                     f'<i class="unit u-{cls.lower().replace("?", "x")}'
                     f'{" intl" if intl else ""}" title="{tip}"></i>'
@@ -729,12 +780,18 @@ def shape_strip(section: dict, compact: bool = False) -> str:
         classes = row.get("classes") or {}
         intl_classes = row.get("intl_classes") or {}
         returning_units = units(
-            classes.get("returning") or {}, intl_classes.get("returning") or {}, "returning"
+            classes.get("returning") or {},
+            intl_classes.get("returning") or {},
+            "returning",
         )
         newcomer_units = units(
             classes.get("newcomers") or {}, intl_classes.get("newcomers") or {}, "new"
         )
-        divider = '<i class="sq-div"></i>' if known and (returning_units or newcomer_units) else ""
+        divider = (
+            '<i class="sq-div"></i>'
+            if known and (returning_units or newcomer_units)
+            else ""
+        )
         share = row.get("minutes_share")
         share_cell = (
             f'<span class="mini-track"><span class="mini-fill" style="width:{round(share * 100)}%"></span></span>'
@@ -742,7 +799,11 @@ def shape_strip(section: dict, compact: bool = False) -> str:
             if share is not None
             else '<span class="dim">–</span>'
         )
-        counts = f"{row.get('returning', 0)} return · {row.get('newcomers', 0)} new" if known else f"{row.get('newcomers', 0)} listed"
+        counts = (
+            f"{row.get('returning', 0)} return · {row.get('newcomers', 0)} new"
+            if known
+            else f"{row.get('newcomers', 0)} listed"
+        )
         rows.append(
             f'<div class="sq-row"><span class="sq-label">{esc(POSITION_LABELS.get(pos, pos))}'
             f"<em>{esc(counts)}</em></span>"
@@ -773,17 +834,19 @@ def shape_strip(section: dict, compact: bool = False) -> str:
     )
     intl_note = ""
     if intl.get("total") and not compact:
-        unknown = f' · {intl["unknown"]} hometowns unpublished' if intl.get("unknown") else ""
+        unknown = (
+            f" · {intl['unknown']} hometowns unpublished" if intl.get("unknown") else ""
+        )
         intl_note = (
             f'<div class="viz-note">International players: {intl["total"]}'
-            f' ({intl.get("newcomers", 0)} among the newcomers), from published hometowns{unknown}.'
+            f" ({intl.get('newcomers', 0)} among the newcomers), from published hometowns{unknown}."
             " D2 eligibility rules let international recruits arrive older than domestic"
             " freshmen — a newcomer class heavy on internationals is usually more"
             " experienced than its class years suggest.</div>"
         )
     return (
         f'<div class="squadmap{" sq-compact" if compact else ""}">'
-        f'{"".join(rows)}{legend}{intl_note}</div>'
+        f"{''.join(rows)}{legend}{intl_note}</div>"
     )
 
 
@@ -816,10 +879,8 @@ def shape_line(section: dict) -> str:
     if not bits:
         return ""
     intl = (shape.get("international") or {}).get("total")
-    intl_bit = f' · {intl} international' if intl else ""
-    return (
-        f'<div class="viz-note">Minutes back by line: <span class="num">{esc(" · ".join(bits))}</span>{esc(intl_bit)}</div>'
-    )
+    intl_bit = f" · {intl} international" if intl else ""
+    return f'<div class="viz-note">Minutes back by line: <span class="num">{esc(" · ".join(bits))}</span>{esc(intl_bit)}</div>'
 
 
 def stat_grid(last: dict) -> str:
@@ -832,15 +893,33 @@ def stat_grid(last: dict) -> str:
     cells = [
         ("Overall", record_line(overall), f"{overall.get('gf')}:{overall.get('ga')}"),
         ("Conference", record_line(conf), f"{conf.get('gf')}:{conf.get('ga')}"),
-        ("Clean sheets", str(last.get("clean_sheets", "–")), f"shut out {last.get('times_shut_out', '–')}×"),
+        (
+            "Clean sheets",
+            str(last.get("clean_sheets", "–")),
+            f"shut out {last.get('times_shut_out', '–')}×",
+        ),
         ("One-goal games", str(last.get("one_goal_games", "–")), "margin of one"),
     ]
     if shots:
-        cells.append(("Shots for:against", f"{shots.get('for')}:{shots.get('against')}", f"on goal {shots.get('sog_for')}:{shots.get('sog_against')}"))
+        cells.append(
+            (
+                "Shots for:against",
+                f"{shots.get('for')}:{shots.get('against')}",
+                f"on goal {shots.get('sog_for')}:{shots.get('sog_against')}",
+            )
+        )
     if corners:
-        cells.append(("Corners", f"{corners.get('for')}:{corners.get('against')}", "for:against"))
+        cells.append(
+            ("Corners", f"{corners.get('for')}:{corners.get('against')}", "for:against")
+        )
     if discipline:
-        cells.append(("Cards", f"{discipline.get('yellow')}Y {discipline.get('red')}R", "season total"))
+        cells.append(
+            (
+                "Cards",
+                f"{discipline.get('yellow')}Y {discipline.get('red')}R",
+                "season total",
+            )
+        )
     boxes = "".join(
         f'<div class="stat"><span class="stat-label">{esc(label)}</span>'
         f'<span class="stat-val num">{esc(value)}</span>'
@@ -918,7 +997,7 @@ def watch_profile(digest: dict, slug: str, entry: dict) -> str:
             f'<div class="compact-line num">{profile.get("minutes", 0)}′ · '
             f"{profile.get('saves', 0)} saves · {profile.get('goals_against', 0)} GA · "
             f"{pct} save pct · {profile.get('shutouts', 0)} CS "
-            f"<span class=\"dim\">(last season, in goal)</span></div>"
+            f'<span class="dim">(last season, in goal)</span></div>'
         )
     why = entry.get("why") or entry.get("note") or ""
     verify = entry.get("verify") or ""
@@ -941,7 +1020,9 @@ def watch_profile(digest: dict, slug: str, entry: dict) -> str:
 </div>"""
 
 
-def watchlist_sheets(digest: dict, narrative: dict, names: dict[str, str], ordered: list[str]) -> list[str]:
+def watchlist_sheets(
+    digest: dict, narrative: dict, names: dict[str, str], ordered: list[str]
+) -> list[str]:
     """One sheet per opponent carrying that team's watchlist profiles (up
     to two per team under narrative/4; an opponent with none gets no
     sheet).  Entries naming an unknown programme render together on a
@@ -1048,9 +1129,13 @@ def opponent_half_card(
     # Every full card carries the squad map, which already shows the
     # return/new counts and minute shares — the bracketed line would repeat
     # it. Condensed cards keep the one-line summary instead.
-    squad_block = shape_line(section) if condensed else shape_strip(section, compact=True)
+    squad_block = (
+        shape_line(section) if condensed else shape_strip(section, compact=True)
+    )
     roster_tail = (
-        f'<span class="dim"> [{esc(roster_line)}]</span>' if condensed or not squad_block else ""
+        f'<span class="dim"> [{esc(roster_line)}]</span>'
+        if condensed or not squad_block
+        else ""
     )
     return f"""
 <div class="half-opp{" condensed" if condensed else ""}">
@@ -1074,7 +1159,9 @@ def opponent_half_card(
 </div>"""
 
 
-def compact_card(digest: dict, slug: str, narrative: dict, names: dict[str, str]) -> str:
+def compact_card(
+    digest: dict, slug: str, narrative: dict, names: dict[str, str]
+) -> str:
     section = digest["programmes"][slug]
     last = section.get("last_season") or {}
     overall = last.get("overall", {})
@@ -1110,7 +1197,10 @@ def compact_card(digest: dict, slug: str, narrative: dict, names: dict[str, str]
 
 
 def _names(digest: dict) -> dict[str, str]:
-    return {slug: section.get("name", slug) for slug, section in digest["programmes"].items()}
+    return {
+        slug: section.get("name", slug)
+        for slug, section in digest["programmes"].items()
+    }
 
 
 def _schedule_order(digest: dict) -> list[str]:
@@ -1131,19 +1221,22 @@ def exec_sheet(digest: dict, narrative: dict) -> str:
     exec_block = narrative.get("exec") or {}
     findings = (exec_block.get("findings") or [])[:3]
     bottom = exec_block.get("bottom_line")
-    finding_rows = "".join(
-        f'<li><div class="ev-row"><span class="ev">{esc(item.get("evidence", ""))}</span>'
-        f'<span class="ev-tags">{label_chip(item.get("label"))}{confidence_dot(item.get("confidence"))}</span></div>'
-        f'<div class="f-grid"><span class="f-label">Meaning</span>'
-        f'<span>{esc(item.get("meaning", ""))}</span>'
-        + (
-            f'<span class="f-label">For the staff</span><span>{esc(item["implication"])}</span>'
-            if item.get("implication")
-            else ""
+    finding_rows = (
+        "".join(
+            f'<li><div class="ev-row"><span class="ev">{esc(item.get("evidence", ""))}</span>'
+            f'<span class="ev-tags">{label_chip(item.get("label"))}{confidence_dot(item.get("confidence"))}</span></div>'
+            f'<div class="f-grid"><span class="f-label">Meaning</span>'
+            f"<span>{esc(item.get('meaning', ''))}</span>"
+            + (
+                f'<span class="f-label">For the staff</span><span>{esc(item["implication"])}</span>'
+                if item.get("implication")
+                else ""
+            )
+            + "</div></li>"
+            for item in findings
         )
-        + "</div></li>"
-        for item in findings
-    ) or f'<li class="pending">{PLACEHOLDER}</li>'
+        or f'<li class="pending">{PLACEHOLDER}</li>'
+    )
     bottom_block = (
         f'<div class="bottomline"><span class="viz-title">Bottom line</span>'
         f"<p>{esc(bottom)}</p></div>"
@@ -1170,11 +1263,14 @@ def exec_outside_sheet(digest: dict, narrative: dict, names: dict[str, str]) -> 
     focus_last = focus.get("last_season") or {}
     focus_story = narrative.get("focus") or {}
     focus_name = names.get(digest["focus"], digest["focus"])
-    decision_rows = "".join(
-        f'<div class="decision"><span class="decision-n num">{index}</span>'
-        f'<div><b>{esc(item.get("title", ""))}</b><p>{esc(item.get("text", ""))}</p></div></div>'
-        for index, item in enumerate(decisions, start=1)
-    ) or f'<p class="pending">{PLACEHOLDER}</p>'
+    decision_rows = (
+        "".join(
+            f'<div class="decision"><span class="decision-n num">{index}</span>'
+            f"<div><b>{esc(item.get('title', ''))}</b><p>{esc(item.get('text', ''))}</p></div></div>"
+            for index, item in enumerate(decisions, start=1)
+        )
+        or f'<p class="pending">{PLACEHOLDER}</p>'
+    )
     return f"""
 <section class="sheet">
   <h2 class="section-head">Executive brief — the view from outside</h2>
@@ -1203,7 +1299,7 @@ def exec_people_sheet(digest: dict, narrative: dict, names: dict[str, str]) -> s
         for name in (focus.get("turnover") or {}).get("returning") or []
     }
     returner_rows = "".join(
-        f'<tr><td><b>{esc(profile.get("name", ""))}</b> '
+        f"<tr><td><b>{esc(profile.get('name', ''))}</b> "
         f'<span class="dim">{esc(profile.get("position", ""))} · {esc(profile.get("class_year", ""))}</span></td>'
         f'<td class="num">{len(profile.get("career") or [])}</td>'
         f'<td class="num">{last.get("gp", "–")}-{last.get("gs", "–")}</td>'
@@ -1324,9 +1420,13 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
     untiered = [slug for slug in ordered if tier_of(slug) is None]
 
     exec_block = narrative.get("exec") or {}
-    questions = "".join(
-        f'<li class="check">{esc(item)}</li>' for item in narrative.get("questions") or []
-    ) or f'<li class="pending">{PLACEHOLDER}</li>'
+    questions = (
+        "".join(
+            f'<li class="check">{esc(item)}</li>'
+            for item in narrative.get("questions") or []
+        )
+        or f'<li class="pending">{PLACEHOLDER}</li>'
+    )
     priorities = "".join(
         f"<li>{esc(item)}</li>" for item in exec_block.get("priorities") or []
     )
@@ -1403,7 +1503,9 @@ def render_report(digest: dict, narrative: dict | None = None) -> str:
         f"{esc((programme_stories.get(slug) or {}).get('implication', ''))}</p></div>"
         for slug in update
     )
-    carded = [("benchmark", slug) for slug in benchmark] + [("swing", slug) for slug in swing]
+    carded = [("benchmark", slug) for slug in benchmark] + [
+        ("swing", slug) for slug in swing
+    ]
     for index, (tier, slug) in enumerate(carded):
         # No tier headers: the card's own tier pill carries the label, and
         # a header risks orphaning onto its own page when the card runs tall.

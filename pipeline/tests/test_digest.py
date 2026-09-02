@@ -96,7 +96,13 @@ def test_form_reads_both_home_and_away_finals():
             final("2025-09-01", "alpha", "beta", 2, 1, conference_game=True),
             final("2025-09-08", "beta", "alpha", 3, 3, conference_game=True),
             final("2025-09-15", "outsider", "alpha", 2, 0),
-            {"id": "x", "date": "2025-09-22", "home": "alpha", "away": "beta", "status": "scheduled"},
+            {
+                "id": "x",
+                "date": "2025-09-22",
+                "home": "alpha",
+                "away": "beta",
+                "status": "scheduled",
+            },
         ],
     )
     form = season_form(payload, "alpha")
@@ -128,7 +134,9 @@ def test_patterns_attribute_by_home_index_not_column_order():
     """Alpha is the AWAY side of a box score whose teams list the home side
     second — attribution must go through home_index, never position."""
     fixture = final("2025-09-01", "beta", "alpha", 1, 2, fixture_id="m1")
-    payload = fixtures_payload(2025, [fixture, final("2025-09-08", "alpha", "beta", 1, 0, fixture_id="m2")])
+    payload = fixtures_payload(
+        2025, [fixture, final("2025-09-08", "alpha", "beta", 1, 0, fixture_id="m2")]
+    )
     matches = {
         "schema": "touchline.matches/1",
         "matches": {
@@ -136,8 +144,26 @@ def test_patterns_attribute_by_home_index_not_column_order():
                 # teams[0] is alpha (away), teams[1] is beta (home).
                 "home_index": 1,
                 "teams": [
-                    {"name": "Alpha", "score": 2, "periods": [1, 0, 1], "shots": 10, "sog": 6, "saves": 3, "corners": 5, "fouls": 9},
-                    {"name": "Beta", "score": 1, "periods": [0, 1, 0], "shots": 14, "sog": 4, "saves": 4, "corners": 2, "fouls": 12},
+                    {
+                        "name": "Alpha",
+                        "score": 2,
+                        "periods": [1, 0, 1],
+                        "shots": 10,
+                        "sog": 6,
+                        "saves": 3,
+                        "corners": 5,
+                        "fouls": 9,
+                    },
+                    {
+                        "name": "Beta",
+                        "score": 1,
+                        "periods": [0, 1, 0],
+                        "shots": 14,
+                        "sog": 4,
+                        "saves": 4,
+                        "corners": 2,
+                        "fouls": 12,
+                    },
                 ],
                 "scoring": [
                     {"time": "12:30", "team": 0},
@@ -152,11 +178,20 @@ def test_patterns_attribute_by_home_index_not_column_order():
     assert patterns["matches_counted"] == 1
     assert patterns["played_total"] == 2
     assert patterns["goals_by_half"]["for"] == {"first": 1, "second": 0, "overtime": 1}
-    assert patterns["goals_by_half"]["against"] == {"first": 0, "second": 1, "overtime": 0}
+    assert patterns["goals_by_half"]["against"] == {
+        "first": 0,
+        "second": 1,
+        "overtime": 0,
+    }
     assert patterns["goals_by_minute"]["for"]["0-15"] == 1
     assert patterns["goals_by_minute"]["for"]["90+"] == 1
     assert patterns["goals_by_minute"]["against"]["30-45"] == 1
-    assert patterns["shots"] == {"for": 10, "sog_for": 6, "against": 14, "sog_against": 4}
+    assert patterns["shots"] == {
+        "for": 10,
+        "sog_for": 6,
+        "against": 14,
+        "sog_against": 4,
+    }
     assert patterns["corners"] == {"for": 5, "against": 2}
     assert patterns["fouls"] == {"committed": 9, "drawn": 12}
     assert patterns["saves"] == {"made": 3, "faced": 4}
@@ -174,8 +209,18 @@ def test_discipline_and_keepers_come_from_the_stats_page():
                     {"name": "A Two", "yellow": 2, "red": 0},
                 ],
                 [
-                    {"name": "Sub Keeper", "minutes": 90, "saves": 4, "goals_against": 4},
-                    {"name": "Main Keeper", "minutes": 900, "saves": 45, "goals_against": 9},
+                    {
+                        "name": "Sub Keeper",
+                        "minutes": 90,
+                        "saves": 4,
+                        "goals_against": 4,
+                    },
+                    {
+                        "name": "Main Keeper",
+                        "minutes": 900,
+                        "saves": 45,
+                        "goals_against": 9,
+                    },
                 ],
             )
         }
@@ -197,9 +242,27 @@ def test_turnover_joins_rosters_by_normalized_name():
         "teams": {
             "alpha": stats_team(
                 [
-                    {"name": "Jose Nunez", "goals": 6, "assists": 2, "points": 14, "minutes": 1200},
-                    {"name": "Jordan Smith", "goals": 0, "assists": 1, "points": 1, "minutes": 300},
-                    {"name": "Old Star", "goals": 4, "assists": 5, "points": 13, "minutes": 1500},
+                    {
+                        "name": "Jose Nunez",
+                        "goals": 6,
+                        "assists": 2,
+                        "points": 14,
+                        "minutes": 1200,
+                    },
+                    {
+                        "name": "Jordan Smith",
+                        "goals": 0,
+                        "assists": 1,
+                        "points": 1,
+                        "minutes": 300,
+                    },
+                    {
+                        "name": "Old Star",
+                        "goals": 4,
+                        "assists": 5,
+                        "points": 13,
+                        "minutes": 1500,
+                    },
                 ]
             )
         }
@@ -241,7 +304,16 @@ def test_top_returning_ranks_by_points_and_builds_career_lines():
         2024: {
             "teams": {
                 "alpha": stats_team(
-                    [{"name": "Star Player", "player_id": "77", "gp": 15, "goals": 5, "points": 12, "minutes": 1300}]
+                    [
+                        {
+                            "name": "Star Player",
+                            "player_id": "77",
+                            "gp": 15,
+                            "goals": 5,
+                            "points": 12,
+                            "minutes": 1300,
+                        }
+                    ]
                 )
             }
         },
@@ -250,8 +322,21 @@ def test_top_returning_ranks_by_points_and_builds_career_lines():
                 "alpha": stats_team(
                     [
                         # The site renamed him but kept the id — the join must hold.
-                        {"name": "Star Player Jr.", "player_id": "77", "gp": 16, "goals": 8, "points": 19, "minutes": 1400},
-                        {"name": "Role Player", "gp": 16, "goals": 1, "points": 3, "minutes": 900},
+                        {
+                            "name": "Star Player Jr.",
+                            "player_id": "77",
+                            "gp": 16,
+                            "goals": 8,
+                            "points": 19,
+                            "minutes": 1400,
+                        },
+                        {
+                            "name": "Role Player",
+                            "gp": 16,
+                            "goals": 1,
+                            "points": 3,
+                            "minutes": 900,
+                        },
                     ]
                 )
             }
@@ -261,7 +346,12 @@ def test_top_returning_ranks_by_points_and_builds_career_lines():
         "rosters": {
             "alpha": {
                 "players": [
-                    {"name": "Star Player Jr.", "position": "Forward", "class_year": "Senior", "number": "9"},
+                    {
+                        "name": "Star Player Jr.",
+                        "position": "Forward",
+                        "class_year": "Senior",
+                        "number": "9",
+                    },
                     {"name": "Role Player", "position": "Defender"},
                 ]
             }
@@ -272,7 +362,10 @@ def test_top_returning_ranks_by_points_and_builds_career_lines():
     # by the returning name's key, so rank via the row that matches.
     churn = {"returning": ["Star Player Jr.", "Role Player"]}
     profiles = top_returning(churn, stats_by_season, current, "alpha", 2025, limit=5)
-    assert [profile["name"] for profile in profiles] == ["Star Player Jr.", "Role Player"]
+    assert [profile["name"] for profile in profiles] == [
+        "Star Player Jr.",
+        "Role Player",
+    ]
     star = profiles[0]
     assert star["position"] == "Forward"
     assert star["class_year"] == "Senior"
@@ -297,11 +390,19 @@ def _season_of_matches(dates_and_squads):
         matches[fixture_id] = {
             "home_index": 0,
             "teams": [
-                {"name": "Alpha", "players": [{"name": name, "minutes": minutes} for name, minutes in squad]},
+                {
+                    "name": "Alpha",
+                    "players": [
+                        {"name": name, "minutes": minutes} for name, minutes in squad
+                    ],
+                },
                 {"name": "Beta", "players": []},
             ],
         }
-    return fixtures_payload(2025, fixtures), {"schema": "touchline.matches/1", "matches": matches}
+    return fixtures_payload(2025, fixtures), {
+        "schema": "touchline.matches/1",
+        "matches": matches,
+    }
 
 
 def test_availability_flags_a_regular_who_stops_appearing():
@@ -383,7 +484,9 @@ def test_usage_shift_flags_a_minutes_collapse_for_a_rostered_player():
             }
         },
     }
-    current = {"rosters": {"alpha": roster(["Was A Starter", "Still Going", "Ghosted"])}}
+    current = {
+        "rosters": {"alpha": roster(["Was A Starter", "Still Going", "Ghosted"])}
+    }
     shifts = usage_shifts(stats_by_season, "alpha", 2025, current)
     # Still Going held steady; Left Anyway is off the roster (turnover's story).
     assert [shift["name"] for shift in shifts] == ["Was A Starter"]
@@ -468,7 +571,15 @@ def seed_home(root: Path) -> None:
         fixtures_payload(
             2025,
             [
-                final("2025-09-01", "alpha", "beta", 2, 1, conference_game=True, fixture_id="m1"),
+                final(
+                    "2025-09-01",
+                    "alpha",
+                    "beta",
+                    2,
+                    1,
+                    conference_game=True,
+                    fixture_id="m1",
+                ),
                 final("2025-09-15", "outsider", "alpha", 2, 0),
             ],
         ),
@@ -502,8 +613,26 @@ def seed_home(root: Path) -> None:
                 "m1": {
                     "home_index": 0,
                     "teams": [
-                        {"name": "Alpha", "score": 2, "periods": [2, 0], "shots": 9, "sog": 5, "saves": 2, "corners": 4, "fouls": 7},
-                        {"name": "Beta", "score": 1, "periods": [0, 1], "shots": 8, "sog": 3, "saves": 3, "corners": 3, "fouls": 10},
+                        {
+                            "name": "Alpha",
+                            "score": 2,
+                            "periods": [2, 0],
+                            "shots": 9,
+                            "sog": 5,
+                            "saves": 2,
+                            "corners": 4,
+                            "fouls": 7,
+                        },
+                        {
+                            "name": "Beta",
+                            "score": 1,
+                            "periods": [0, 1],
+                            "shots": 8,
+                            "sog": 3,
+                            "saves": 3,
+                            "corners": 3,
+                            "fouls": 10,
+                        },
                     ],
                     "scoring": [
                         {"time": "10:00", "team": 0},
@@ -518,13 +647,22 @@ def seed_home(root: Path) -> None:
         root,
         "rosters",
         2025,
-        {"collected_at": "2025-08-15T00:00:00+00:00", "rosters": {"alpha": roster(["Star", "Leaver"]), "beta": roster(["B One"])}},
+        {
+            "collected_at": "2025-08-15T00:00:00+00:00",
+            "rosters": {"alpha": roster(["Star", "Leaver"]), "beta": roster(["B One"])},
+        },
     )
     write_season(
         root,
         "rosters",
         2026,
-        {"collected_at": "2026-08-01T00:00:00+00:00", "rosters": {"alpha": roster(["Star", "Arrival"]), "beta": roster(["B One"])}},
+        {
+            "collected_at": "2026-08-01T00:00:00+00:00",
+            "rosters": {
+                "alpha": roster(["Star", "Arrival"]),
+                "beta": roster(["B One"]),
+            },
+        },
     )
     write_season(
         root,
@@ -535,12 +673,42 @@ def seed_home(root: Path) -> None:
             "teams": {
                 "alpha": stats_team(
                     [
-                        {"name": "Star", "player_id": "1", "gp": 2, "goals": 2, "assists": 0, "points": 4, "minutes": 180, "yellow": 1, "red": 0},
-                        {"name": "Leaver", "gp": 2, "goals": 0, "assists": 1, "points": 1, "minutes": 120, "yellow": 0, "red": 1},
+                        {
+                            "name": "Star",
+                            "player_id": "1",
+                            "gp": 2,
+                            "goals": 2,
+                            "assists": 0,
+                            "points": 4,
+                            "minutes": 180,
+                            "yellow": 1,
+                            "red": 0,
+                        },
+                        {
+                            "name": "Leaver",
+                            "gp": 2,
+                            "goals": 0,
+                            "assists": 1,
+                            "points": 1,
+                            "minutes": 120,
+                            "yellow": 0,
+                            "red": 1,
+                        },
                     ],
                     [{"name": "Wall", "minutes": 180, "saves": 7, "goals_against": 3}],
                 ),
-                "beta": stats_team([{"name": "B One", "goals": 1, "points": 2, "minutes": 170, "yellow": 2, "red": 0}]),
+                "beta": stats_team(
+                    [
+                        {
+                            "name": "B One",
+                            "goals": 1,
+                            "points": 2,
+                            "minutes": 170,
+                            "yellow": 2,
+                            "red": 0,
+                        }
+                    ]
+                ),
             },
         },
     )
@@ -579,10 +747,7 @@ def test_build_digest_assembles_the_unit(tmp_path):
     assert beta["head_to_head"]["losses"] == 0
     assert beta["fixtures_vs_focus"][0]["date"] == "2026-10-10"
     assert "sources" in digest
-    assert (
-        digest["sources"]["stats/2025-men-testconf"]
-        == "2025-11-20T00:00:00+00:00"
-    )
+    assert digest["sources"]["stats/2025-men-testconf"] == "2025-11-20T00:00:00+00:00"
 
 
 def test_season_readers_resolve_only_the_requested_conference_shard(tmp_path):
@@ -694,8 +859,18 @@ def test_international_hometown_read():
 def test_roster_shape_counts_internationals():
     current = _shape_roster(
         [
-            {"name": "Local Kid", "position": "F", "class_year": "Fr.", "hometown": "Searcy, Ark."},
-            {"name": "Euro Vet", "position": "D", "class_year": "Sr.", "hometown": "Lyon, France"},
+            {
+                "name": "Local Kid",
+                "position": "F",
+                "class_year": "Fr.",
+                "hometown": "Searcy, Ark.",
+            },
+            {
+                "name": "Euro Vet",
+                "position": "D",
+                "class_year": "Sr.",
+                "hometown": "Lyon, France",
+            },
             {"name": "No Home", "position": "M", "class_year": "So."},
         ]
     )
@@ -775,7 +950,12 @@ def test_head_to_head_skips_an_exhibition_meeting():
         2025: fixtures_payload(2025, [final("2025-10-01", "alpha", "beta", 3, 1)]),
         2026: fixtures_payload(
             2026,
-            [{**final("2026-08-13", "beta", "alpha", 2, 0), "match_type": "exhibition"}],
+            [
+                {
+                    **final("2026-08-13", "beta", "alpha", 2, 0),
+                    "match_type": "exhibition",
+                }
+            ],
         ),
     }
     versus = head_to_head(by_season, "alpha", "beta")
