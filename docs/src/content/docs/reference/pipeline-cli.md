@@ -30,12 +30,13 @@ independently. Named gaps are data, not failures.
 
 Read-only onboarding probe: fingerprints a site's platform with positive
 evidence, reports which layers it publishes and which seasons it serves, and
-drafts a disabled `schools.toml` stanza for human review. Writes no local
-data.
+drafts a disabled `schools.toml` stanza in the house layout for human
+review, with `abbreviation`, `mascot` and `aliases` read off the site.
+Writes no local data.
 
-- **Inputs**: `--url` (repeatable), `--conference`, `--seasons` (a year or inclusive range, default the current year back through 2016), `--json`.
+- **Inputs**: `--url` (repeatable), `--name` (the slug-minting name, one per `--url` in order, or none), `--conference`, `--seasons` (a year or inclusive range, default the current year back through 2016), `--json`.
 - **Outputs**: a report per URL on stdout, including the draft stanza.
-- **Exit**: 0 every URL probed; 1 any URL invalid or unfetchable.
+- **Exit**: 0 every URL probed; 1 any URL invalid or unfetchable; 2 `--name` given for some URLs but not all.
 
 ## Data home maintenance (offline)
 

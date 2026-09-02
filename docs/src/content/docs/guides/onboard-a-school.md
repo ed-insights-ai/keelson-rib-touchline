@@ -17,6 +17,7 @@ From the rib checkout:
 ```bash
 uv run --project pipeline probe \
   --url https://{host}/sports/mens-soccer \
+  --name "{school-name}" \
   --conference GAC
 ```
 
@@ -24,6 +25,10 @@ uv run --project pipeline probe \
   must start with `mens-` or `womens-`: gender is derived from it, and
   `pipeline/scripts/probe.py` refuses a URL that cannot say which programme
   it names.
+- `--name` is the slug-minting name for the matching `--url`, in order, one
+  per URL or none. It is the one identity field a person chooses, because
+  `programme_slug(name)` keys membership and every coverage cell and never
+  changes. Left out, the site's own published name stands in.
 - `--seasons` takes `{year}` or `{year}-{year}`; the default walks the
   current year back through 2016.
 - `--json` prints the same report machine-readable.
@@ -55,23 +60,39 @@ carried schedule markup; anything less drops it silently.
 
 ## 3. Review the draft stanza
 
-`draft_stanza` renders a `[[schools]]` entry that is deliberately inert:
+`draft_stanza` renders a `[[schools]]` entry in the house layout that is
+deliberately inert:
 
 ```toml
 [[schools]]
-name = "{school-name}"
+name         = "{school-name}"
 abbreviation = "{abbrev}"
-conference = "GAC"
-gender = "men"
-base_url = "https://{host}/sports/mens-soccer"
-years = [{seasons}]
-scraper = "sidearm"
-data_status = "unverified"
-enabled = false
+conference   = "GAC"
+mascot       = "{mascot}"
+aliases      = ["{published long name}"]
+gender       = "men"
+base_url     = "https://{host}/sports/mens-soccer"
+years        = [{seasons}]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = false
 ```
 
-Check the name, abbreviation, and years against what the site actually shows,
-then paste the stanza into `pipeline/config/schools.toml`. Human review before
+`derive_identity` (`pipeline/src/probe.py`) fills the identity fields from
+what the site says of itself, reading the landing page and the newest served
+schedule page: `abbreviation` is the site's own short token when the site
+spells it as its whole name ("UIndy", "UIS") or when it is an opaque short
+form ("UMSL"), otherwise the initials of the published name; `mascot` is the
+tail of the description meta once the published name is removed ("The
+official 2026 Men's Soccer schedule for the UIS Prairie Stars"), kept whole
+when the hostname spells it; `aliases` are the published long name and every
+schedule opponent spelling that contains all the words of `name`, minus any
+spelling the collector's identity key already folds onto the name. A mascot
+the site does not publish becomes a comment line, never an empty value.
+
+Check every field against what the site actually shows (the abbreviation in
+particular is a draft: initials are a fallback, not a verdict), then paste
+the stanza into `pipeline/config/schools.toml`. Human review before
 any collection is mandatory: the stanza ships `enabled = false` and
 `data_status = "unverified"` precisely so that pasting it changes nothing,
 and `pipeline/CLAUDE.md` forbids modifying `config/schools.toml` without

@@ -72,8 +72,19 @@ async function tempHome(): Promise<string> {
 }
 
 describe("membership resolution", () => {
-  test("collectable conferences come from the shipped membership data", async () => {
-    expect(await knownConferences()).toEqual(["GAC", "GLVC", "GSC", "LSC", "MIAA"]);
+  test("collectable conferences are the shipped membership file minus the placeholders", async () => {
+    // Shape, not a literal: a conference added to membership.json joins the
+    // collectable set without this test being hand-edited.
+    const shipped = JSON.parse(
+      await readFile(join(import.meta.dir, "..", "data", "reference", "membership.json"), "utf8"),
+    ) as MembershipFile;
+    const expected = shipped.conferences
+      .filter((c) => c !== "independent" && c !== "non_member")
+      .sort();
+
+    expect(expected.length).toBeGreaterThan(0);
+    expect(shipped.conferences).toEqual(expect.arrayContaining(["independent", "non_member"]));
+    expect(await knownConferences()).toEqual(expected);
   });
 
   test("adding a conference to membership data advertises it without code changes", async () => {
