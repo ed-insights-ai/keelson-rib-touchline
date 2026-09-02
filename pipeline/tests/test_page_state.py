@@ -125,7 +125,7 @@ def test_content_signature_survives_render_noise() -> None:
     def render(uuid: str, ticks: str, nonce: str) -> str:
         return (
             f"<script>window.urlArgs = '{ticks}';</script>"
-            f'<navigation-component params="{{ id: \'{uuid}\' }}">'
+            f"<navigation-component params=\"{{ id: '{uuid}' }}\">"
             f'<div class="{nonce}-modal__title">Ad Blocker Detected</div>'
             '<li class="sidearm-schedule-game" data-game-id="42">W, 2-1</li>'
         )
@@ -246,9 +246,10 @@ def test_a_changed_page_is_reparsed_and_its_sidecar_updated(
     )
     assert sidecar["signature"] == content_signature(changed)
     # The archive now holds the changed bytes.
-    assert store.html_path("harding", LAYER_SCHEDULE).read_text(
-        encoding="utf-8"
-    ) == changed
+    assert (
+        store.html_path("harding", LAYER_SCHEDULE).read_text(encoding="utf-8")
+        == changed
+    )
 
 
 def test_a_stale_fingerprint_reparses_the_archive_without_a_transfer(

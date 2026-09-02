@@ -63,7 +63,11 @@ def main() -> int:
     )
     parser.add_argument("--season", type=int, required=True)
     parser.add_argument("--gender", choices=["men", "women"], required=True)
-    parser.add_argument("--focus", required=True, help="Focus programme slug the report is prepared for.")
+    parser.add_argument(
+        "--focus",
+        required=True,
+        help="Focus programme slug the report is prepared for.",
+    )
     parser.add_argument(
         "--narrative",
         help="Path to a touchline.report-narrative/4 JSON file; default "
@@ -72,7 +76,12 @@ def main() -> int:
     args = parser.parse_args()
 
     root = paths.data_root()
-    digest_path = root / "data" / "scratch" / f"digest-{args.season}-{args.gender}-{args.focus}.json"
+    digest_path = (
+        root
+        / "data"
+        / "scratch"
+        / f"digest-{args.season}-{args.gender}-{args.focus}.json"
+    )
     try:
         digest = json.loads(digest_path.read_text(encoding="utf-8"))
     except OSError:
@@ -82,21 +91,36 @@ def main() -> int:
     narrative_path = (
         Path(args.narrative)
         if args.narrative
-        else root / "data" / "reports" / f"narrative-{args.season}-{args.gender}-{args.focus}.json"
+        else root
+        / "data"
+        / "reports"
+        / f"narrative-{args.season}-{args.gender}-{args.focus}.json"
     )
     narrative: dict = {}
     if narrative_path.exists():
         narrative = json.loads(narrative_path.read_text(encoding="utf-8"))
         print(f"narrative: {narrative_path}")
     else:
-        print("narrative: none — rendering the deterministic skeleton with placeholders")
+        print(
+            "narrative: none — rendering the deterministic skeleton with placeholders"
+        )
 
-    out = root / "data" / "reports" / f"preseason-{args.season}-{args.gender}-{args.focus}.html"
+    out = (
+        root
+        / "data"
+        / "reports"
+        / f"preseason-{args.season}-{args.gender}-{args.focus}.html"
+    )
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(render_report(digest, narrative), encoding="utf-8")
     print(f"wrote {out}")
 
-    appendix = root / "data" / "reports" / f"preseason-{args.season}-{args.gender}-{args.focus}-appendix.html"
+    appendix = (
+        root
+        / "data"
+        / "reports"
+        / f"preseason-{args.season}-{args.gender}-{args.focus}-appendix.html"
+    )
     appendix.write_text(render_appendix(digest), encoding="utf-8")
     print(f"wrote {appendix}")
 

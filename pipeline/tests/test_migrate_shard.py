@@ -86,13 +86,11 @@ def test_migrates_every_layer_and_is_idempotent(tmp_path: Path) -> None:
     assert roster["schema"] == "touchline.rosters/1"
 
     before = {
-        path: path.read_bytes()
-        for path in sorted((tmp_path / "data").glob("*/*.json"))
+        path: path.read_bytes() for path in sorted((tmp_path / "data").glob("*/*.json"))
     }
     assert migrate_home(tmp_path) == []
     assert {
-        path: path.read_bytes()
-        for path in sorted((tmp_path / "data").glob("*/*.json"))
+        path: path.read_bytes() for path in sorted((tmp_path / "data").glob("*/*.json"))
     } == before
 
 

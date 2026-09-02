@@ -8,6 +8,7 @@ from src.canon import ADJUDICATIONS, ALIASES, normalize, resolve
 
 VALID_CLASSIFICATIONS = {"institution_slug", "non_member", "artifact"}
 
+
 @pytest.mark.parametrize(
     ("raw_value", "expected"),
     [
@@ -30,13 +31,28 @@ def test_normalize_strips_every_published_rank_form():
     The old pattern matched only "#4", so "No. 7 Harding" and "RV Lee" each
     minted an identity that drifted with the poll.
     """
-    for published in ("#4 Harding", "No. 4 Harding", "no 4 Harding", "4 Harding",
-                      "No.4 Harding", "RV Harding", "rv Harding", "#RV Harding",
-                      "(4) Harding", "(RV) Harding", "(1) #3 Harding",
-                      "(5) RV Harding", "#10 (4) Harding",
-                      "[4] Harding", "#17 [7] Harding",
-                      "3-seed Harding", "#4-seed Harding", "5th-Seed Harding",
-                      "RV/#11 Harding", "#11/RV Harding"):
+    for published in (
+        "#4 Harding",
+        "No. 4 Harding",
+        "no 4 Harding",
+        "4 Harding",
+        "No.4 Harding",
+        "RV Harding",
+        "rv Harding",
+        "#RV Harding",
+        "(4) Harding",
+        "(RV) Harding",
+        "(1) #3 Harding",
+        "(5) RV Harding",
+        "#10 (4) Harding",
+        "[4] Harding",
+        "#17 [7] Harding",
+        "3-seed Harding",
+        "#4-seed Harding",
+        "5th-Seed Harding",
+        "RV/#11 Harding",
+        "#11/RV Harding",
+    ):
         assert normalize(published) == normalize("Harding") == "harding"
 
 

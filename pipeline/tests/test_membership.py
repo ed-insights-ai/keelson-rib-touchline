@@ -94,9 +94,7 @@ def _multi_conference_case() -> tuple[dict, list[SchoolConfig]]:
     return document, schools
 
 
-def test_default_load_prefers_the_packaged_source_of_record(
-    monkeypatch, tmp_path
-):
+def test_default_load_prefers_the_packaged_source_of_record(monkeypatch, tmp_path):
     # A data home carrying a DIFFERENT membership document must not steer
     # resolution: the packaged copy is the source of record, and the data
     # home copy is a mirrored deployment artifact.
@@ -133,14 +131,10 @@ def test_default_load_falls_back_to_the_data_home_copy(monkeypatch, tmp_path):
     assert membership.load_membership() == document
 
 
-def test_default_load_names_both_paths_when_neither_exists(
-    monkeypatch, tmp_path
-):
+def test_default_load_names_both_paths_when_neither_exists(monkeypatch, tmp_path):
     monkeypatch.setenv("TOUCHLINE_DATA_DIR", str(tmp_path))
     missing_packaged = tmp_path / "nowhere" / "membership.json"
-    monkeypatch.setattr(
-        paths, "packaged_membership_path", lambda: missing_packaged
-    )
+    monkeypatch.setattr(paths, "packaged_membership_path", lambda: missing_packaged)
 
     with pytest.raises(FileNotFoundError) as excinfo:
         membership.load_membership()
@@ -291,10 +285,7 @@ def test_derivation_is_conference_agnostic():
         },
     }
 
-    assert (
-        membership.conference_for("harding", "men", 2020, document=document)
-        == "GAC"
-    )
+    assert membership.conference_for("harding", "men", 2020, document=document) == "GAC"
     assert (
         membership.conference_for(
             "fort-hays-state",
@@ -356,16 +347,13 @@ def test_validation_rejects_contract_violations(membership_document):
     gap = copy.deepcopy(membership_document)
     gap["memberships"]["fort-hays-state"]["men"][1]["from_season"] = 2020
     assert any(
-        "membership gaps" in error
-        and "independent or non_member" in error
+        "membership gaps" in error and "independent or non_member" in error
         for error in membership.validate(gap)
     )
 
     overlap = copy.deepcopy(membership_document)
     overlap["memberships"]["fort-hays-state"]["men"][1]["from_season"] = 2018
-    assert any(
-        "overlapping windows" in error for error in membership.validate(overlap)
-    )
+    assert any("overlapping windows" in error for error in membership.validate(overlap))
 
     missing_citation = copy.deepcopy(membership_document)
     missing_citation["memberships"]["harding"]["women"][0]["source"] = ""
@@ -378,9 +366,7 @@ def test_validation_rejects_contract_violations(membership_document):
     out_of_span["memberships"]["harding"]["men"][0]["to_season"] = (
         membership_document["seasons"]["to"] + 1
     )
-    assert any(
-        "falls outside" in error for error in membership.validate(out_of_span)
-    )
+    assert any("falls outside" in error for error in membership.validate(out_of_span))
 
     unknown_slug = copy.deepcopy(membership_document)
     unknown_slug["memberships"]["unknown"] = {

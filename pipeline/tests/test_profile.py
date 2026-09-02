@@ -73,7 +73,12 @@ def test_upsert_merges_findings_additively_and_refreshes_record(tmp_path):
     first = {
         "schema": "touchline.player-findings/1",
         "findings": [
-            {"type": "summer-league", "text": "On Club X squad", "url": "https://x", "confidence": "high"}
+            {
+                "type": "summer-league",
+                "text": "On Club X squad",
+                "url": "https://x",
+                "confidence": "high",
+            }
         ],
         "attested_uncaptured": ["all-team honor, no link yet"],
         "unswept": ["Club Y (roster 403)"],
@@ -95,8 +100,18 @@ def test_upsert_merges_findings_additively_and_refreshes_record(tmp_path):
     second = {
         "schema": "touchline.player-findings/1",
         "findings": [
-            {"type": "summer-league", "text": "On Club X squad", "url": "https://x", "confidence": "high"},
-            {"type": "honor", "text": "Team of the Season", "url": "https://y", "confidence": "medium"},
+            {
+                "type": "summer-league",
+                "text": "On Club X squad",
+                "url": "https://x",
+                "confidence": "high",
+            },
+            {
+                "type": "honor",
+                "text": "Team of the Season",
+                "url": "https://y",
+                "confidence": "medium",
+            },
         ],
     }
     findings_path.write_text(json.dumps(second), encoding="utf-8")

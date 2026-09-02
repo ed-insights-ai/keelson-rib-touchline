@@ -109,7 +109,9 @@ def test_no_collector_schedule_propagates_to_matches(
         },
     )
     monkeypatch.setattr(collect_board, "load_schools", lambda _path: [school])
-    monkeypatch.setattr(collect_board, "collect_programme", lambda *_args, **_kwargs: result)
+    monkeypatch.setattr(
+        collect_board, "collect_programme", lambda *_args, **_kwargs: result
+    )
     monkeypatch.setattr(collect_board, "write_raw_pages", lambda *_args: None)
     monkeypatch.setattr(collect_board.paths, "data_root", lambda: tmp_path)
 
@@ -220,7 +222,7 @@ def test_display_name_reaches_the_fixtures_payload_but_never_the_slug(
             [
                 "[[schools]]",
                 'name         = "Saint Marys"',
-                "display_name = \"St. Mary's\"",
+                'display_name = "St. Mary\'s"',
                 'abbreviation = "STMU"',
                 'conference   = "LSC"',
                 'gender       = "men"',
@@ -314,9 +316,7 @@ def test_main_keeps_conference_shards_independent(
             "collected_at": "2026-08-12T12:00:00+00:00",
             "matches": {},
         }
-        cells = {
-            f"{season}/{gender}/{wanted[0]}/schedule": {"state": "complete"}
-        }
+        cells = {f"{season}/{gender}/{wanted[0]}/schedule": {"state": "complete"}}
         return (
             fixture_payload,
             roster_payload,
@@ -351,9 +351,7 @@ def test_main_keeps_conference_shards_independent(
         assert collect_board.main() == 0
 
     run("GAC", "harding")
-    gac_bytes = (
-        tmp_path / "data" / "fixtures" / "2026-men-gac.json"
-    ).read_bytes()
+    gac_bytes = (tmp_path / "data" / "fixtures" / "2026-men-gac.json").read_bytes()
     run("LSC", "lubbock-christian")
 
     assert calls[0]["wanted"] == ["harding"]
@@ -364,12 +362,8 @@ def test_main_keeps_conference_shards_independent(
     for layer in ("fixtures", "rosters", "stats", "matches"):
         assert (tmp_path / "data" / layer / "2026-men-gac.json").is_file()
         assert (tmp_path / "data" / layer / "2026-men-lsc.json").is_file()
-    assert (
-        tmp_path / "data" / "errors" / "collect-board-2026-men-gac.json"
-    ).is_file()
-    assert (
-        tmp_path / "data" / "errors" / "collect-board-2026-men-lsc.json"
-    ).is_file()
+    assert (tmp_path / "data" / "errors" / "collect-board-2026-men-gac.json").is_file()
+    assert (tmp_path / "data" / "errors" / "collect-board-2026-men-lsc.json").is_file()
 
     manifest = json.loads((tmp_path / "data" / "coverage.json").read_text())
     assert set(manifest["cells"]) == {
@@ -415,9 +409,7 @@ def test_dedupe_two_published_claims_or_together() -> None:
 
 def test_dedupe_keeps_detail_the_other_side_published() -> None:
     bare = _fx(id="sidearm:harding:1", status="final", home_score=2, away_score=1)
-    detailed = _fx(
-        id="sidearm:rogers-state:9", time="19:00", venue="Soldier Field"
-    )
+    detailed = _fx(id="sidearm:rogers-state:9", time="19:00", venue="Soldier Field")
     merged, _ = _dedupe_fixtures([bare, detailed])
     assert len(merged) == 1
     # The final wins the row; the loser's kickoff and venue survive the merge.
@@ -501,7 +493,9 @@ def test_dedupe_orients_a_backfilled_score_by_team_id() -> None:
     # rogers-state scored 2 on its own page; whichever orientation won,
     # rogers-state's side must still carry the 2.
     rs_score = (
-        fixture["home_score"] if fixture["home"] == "rogers-state" else fixture["away_score"]
+        fixture["home_score"]
+        if fixture["home"] == "rogers-state"
+        else fixture["away_score"]
     )
     assert rs_score == 2
     assert fixture["match_type"] == "exhibition"
@@ -673,9 +667,7 @@ def test_refetch_restores_wholesale_collection(monkeypatch, tmp_path: Path) -> N
     assert len(fetched) == 1
 
 
-def test_a_final_with_no_stored_detail_is_fetched(
-    monkeypatch, tmp_path: Path
-) -> None:
+def test_a_final_with_no_stored_detail_is_fetched(monkeypatch, tmp_path: Path) -> None:
     payload, _cells, fetched = _harvest([_final_fixture()], {}, monkeypatch, tmp_path)
 
     assert len(fetched) == 1
@@ -695,9 +687,7 @@ def test_stored_match_current_respects_orientation() -> None:
     assert _stored_match_current(unoriented, draw) is True
 
 
-def test_collect_records_verified_unchanged_cells(
-    monkeypatch, tmp_path: Path
-) -> None:
+def test_collect_records_verified_unchanged_cells(monkeypatch, tmp_path: Path) -> None:
     # A page verified unchanged must be legible in the manifest as
     # verified-unchanged, not mistakable for a gap — and a freshly parsed
     # page must not carry the marker.
@@ -806,9 +796,7 @@ def test_sync_is_a_noop_when_the_mirror_is_fresh(monkeypatch, tmp_path: Path):
     assert mirrored.read_text(encoding="utf-8") == text
 
 
-def test_sync_never_writes_from_a_broken_source_of_record(
-    monkeypatch, tmp_path: Path
-):
+def test_sync_never_writes_from_a_broken_source_of_record(monkeypatch, tmp_path: Path):
     home = tmp_path / "home"
     stale_text = json.dumps({"memberships": {}})
     stale = home / "data" / "reference" / "membership.json"
@@ -828,18 +816,14 @@ def test_sync_never_writes_from_a_broken_source_of_record(
 
     # Packaged copy unparseable.
     broken = _packaged_membership(tmp_path, "{not json")
-    monkeypatch.setattr(
-        collect_board.paths, "packaged_membership_path", lambda: broken
-    )
+    monkeypatch.setattr(collect_board.paths, "packaged_membership_path", lambda: broken)
     note = collect_board.sync_membership_reference()
     assert note is not None and "NOT synced" in note
     assert stale.read_text(encoding="utf-8") == stale_text
 
     # Packaged copy parseable but carrying no memberships map.
     empty = _packaged_membership(tmp_path, json.dumps({"conferences": []}))
-    monkeypatch.setattr(
-        collect_board.paths, "packaged_membership_path", lambda: empty
-    )
+    monkeypatch.setattr(collect_board.paths, "packaged_membership_path", lambda: empty)
     note = collect_board.sync_membership_reference()
     assert note is not None and "NOT synced" in note
     assert stale.read_text(encoding="utf-8") == stale_text

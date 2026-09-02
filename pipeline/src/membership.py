@@ -25,14 +25,10 @@ def load_membership(
     if path is not None:
         membership_path = Path(path)
         if not membership_path.exists():
-            raise FileNotFoundError(
-                f"Membership file not found: {membership_path}"
-            )
+            raise FileNotFoundError(f"Membership file not found: {membership_path}")
     else:
         packaged = paths.packaged_membership_path()
-        membership_path = (
-            packaged if packaged.exists() else paths.membership_path()
-        )
+        membership_path = packaged if packaged.exists() else paths.membership_path()
         if not membership_path.exists():
             raise FileNotFoundError(
                 "Membership file not found: no packaged copy at "
@@ -139,8 +135,7 @@ def _season_span(
         return None
     if from_season > to_season:
         errors.append(
-            "seasons 'from' must not exceed 'to' "
-            f"({from_season} > {to_season})"
+            f"seasons 'from' must not exceed 'to' ({from_season} > {to_season})"
         )
         return None
     return from_season, to_season
@@ -212,27 +207,20 @@ def _validate_windows(
             continue
 
         valid_ranges.append((from_season, to_season))
-        if span is not None and (
-            from_season < span[0] or to_season > span[1]
-        ):
+        if span is not None and (from_season < span[0] or to_season > span[1]):
             errors.append(
-                f"{label} falls outside {span[0]}-{span[1]}: "
-                f"{from_season}-{to_season}"
+                f"{label} falls outside {span[0]}-{span[1]}: {from_season}-{to_season}"
             )
 
     if valid_ranges:
         authored_from = min(from_season for from_season, _ in valid_ranges)
         authored_to = max(to_season for _, to_season in valid_ranges)
-        authored_counts = {
-            year: 0 for year in range(authored_from, authored_to + 1)
-        }
+        authored_counts = {year: 0 for year in range(authored_from, authored_to + 1)}
         for from_season, to_season in valid_ranges:
             for year in range(from_season, to_season + 1):
                 authored_counts[year] += 1
 
-        gaps = [
-            year for year, count in authored_counts.items() if count == 0
-        ]
+        gaps = [year for year, count in authored_counts.items() if count == 0]
         if gaps:
             errors.append(
                 f"{programme} has membership gaps at seasons {gaps}; "
@@ -248,13 +236,9 @@ def _validate_windows(
             ):
                 season_counts[year] += 1
 
-        overlaps = [
-            year for year, count in season_counts.items() if count > 1
-        ]
+        overlaps = [year for year, count in season_counts.items() if count > 1]
         if overlaps:
-            errors.append(
-                f"{programme} has overlapping windows at seasons {overlaps}"
-            )
+            errors.append(f"{programme} has overlapping windows at seasons {overlaps}")
 
 
 def validate(
@@ -284,9 +268,7 @@ def validate(
     memberships = document.get("memberships")
     if not isinstance(memberships, dict):
         errors.append("memberships must be a JSON object")
-        errors.append(
-            f"missing configured programmes: {sorted(configured_programmes)}"
-        )
+        errors.append(f"missing configured programmes: {sorted(configured_programmes)}")
         return errors
 
     for slug, genders in memberships.items():

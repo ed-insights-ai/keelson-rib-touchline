@@ -61,7 +61,12 @@ def test_no_hardcoded_data_paths_remain():
             if file.name == "paths.py":
                 continue
             text = file.read_text(encoding="utf-8")
-            for needle in ('Path("data/', "'data/raw_html'", '"data/raw_html"', '"data/structured"'):
+            for needle in (
+                'Path("data/',
+                "'data/raw_html'",
+                '"data/raw_html"',
+                '"data/structured"',
+            ):
                 if needle in text:
                     offenders.append(f"{file.relative_to(package_root)}: {needle}")
     assert not offenders, f"hardcoded data paths: {offenders}"

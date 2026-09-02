@@ -38,12 +38,25 @@ PROFILE_SCHEMA = "touchline.player-profile/1"
 
 #: Career-line fields lifted from a season statistics row.
 _CAREER_FIELDS = (
-    "gp", "gs", "minutes", "goals", "assists", "points",
-    "shots", "sog", "yellow", "red",
+    "gp",
+    "gs",
+    "minutes",
+    "goals",
+    "assists",
+    "points",
+    "shots",
+    "sog",
+    "yellow",
+    "red",
 )
 _KEEPER_FIELDS = ("gp", "minutes", "saves", "goals_against", "shutouts")
 _IDENTITY_FIELDS = (
-    "position", "class_year", "number", "height", "weight", "hometown",
+    "position",
+    "class_year",
+    "number",
+    "height",
+    "weight",
+    "hometown",
 )
 
 
@@ -200,9 +213,7 @@ def assemble_record(
         "identity": identity or {"name": player},
         "career": career,
         "appearances": appearances,
-        "availability_flags": _availability(
-            root, programme, gender, conference, key
-        ),
+        "availability_flags": _availability(root, programme, gender, conference, key),
         "seasons_searched": seasons_held(root, gender, conference),
     }
     if keeper_career:

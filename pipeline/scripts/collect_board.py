@@ -340,8 +340,7 @@ def _stored_match_current(
     home_index = stored.get("home_index")
     if home_index in (0, 1):
         return (
-            scores[home_index] == home_score
-            and scores[1 - home_index] == away_score  # type: ignore[index]
+            scores[home_index] == home_score and scores[1 - home_index] == away_score  # type: ignore[index]
         )
     return sorted(scores) == sorted([home_score, away_score])  # type: ignore[type-var]
 
@@ -714,9 +713,7 @@ def _assemble(
         # missing or refusing link on the surviving row's site can still be
         # collected through the other programme's link.
         links_by_owner = {
-            result.slug: boxscore_links(
-                result.schedule_html, result.schedule_url or ""
-            )
+            result.slug: boxscore_links(result.schedule_html, result.schedule_url or "")
             for result in results
             if result.schedule_html
         }
@@ -879,9 +876,7 @@ def _assemble(
                     reason=f"[{season}] no played fixtures to detail",
                 )
             elif len(collected) == len(involved):
-                record(
-                    result.slug, LAYER_MATCHES, STATE_COMPLETE, count=len(collected)
-                )
+                record(result.slug, LAYER_MATCHES, STATE_COMPLETE, count=len(collected))
             else:
                 gaps = [
                     str(fixture["id"])
@@ -1025,7 +1020,9 @@ def main() -> int:
 
     conference_slug = programme_slug(args.conference)
     if not conference_slug:
-        print("--conference must contain at least one letter or number", file=sys.stderr)
+        print(
+            "--conference must contain at least one letter or number", file=sys.stderr
+        )
         return 2
 
     data_root = paths.data_root()
@@ -1179,12 +1176,7 @@ def main() -> int:
         )
 
     if errors:
-        error_path = (
-            data_root
-            / "data"
-            / "errors"
-            / f"collect-board-{season_key}.json"
-        )
+        error_path = data_root / "data" / "errors" / f"collect-board-{season_key}.json"
         _atomic_json(
             error_path,
             {

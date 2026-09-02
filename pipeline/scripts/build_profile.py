@@ -23,7 +23,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description="Assemble or refresh a player profile from collected data."
     )
-    parser.add_argument("--programme", required=True, help="Programme slug, e.g. harding.")
+    parser.add_argument(
+        "--programme", required=True, help="Programme slug, e.g. harding."
+    )
     parser.add_argument("--gender", choices=["men", "women"], required=True)
     parser.add_argument("--conference", required=True)
     parser.add_argument("--player", required=True, help="Player name as published.")
@@ -62,8 +64,12 @@ def main() -> int:
                 "player": profile["player"],
                 "programme": profile["programme"],
                 "identity": profile.get("identity", {}),
-                "career_seasons": [line["season"] for line in profile.get("career", [])],
-                "keeper_seasons": [line["season"] for line in profile.get("keeper_career", [])],
+                "career_seasons": [
+                    line["season"] for line in profile.get("career", [])
+                ],
+                "keeper_seasons": [
+                    line["season"] for line in profile.get("keeper_career", [])
+                ],
                 "appearance_seasons": [
                     block["season"] for block in profile.get("appearances", [])
                 ],
