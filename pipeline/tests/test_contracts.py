@@ -200,7 +200,9 @@ def _rows(slug: str, opponent: str) -> list[dict[str, object]]:
     ]
 
 
-def _fake_programme(school, season, aliases, *, session=None, layers, members, page_cache=None):
+def _fake_programme(
+    school, season, aliases, *, session=None, layers, members, page_cache=None
+):
     del season, aliases, session, members, page_cache
     slug = programme_slug(school.name)
     if slug == "charlie":
@@ -338,7 +340,11 @@ def _fake_collect_match(session, url, season, fixture):
 
 @pytest.fixture
 def collected(monkeypatch, tmp_path: Path):
-    schools = [_school("Alpha", "GAC"), _school("Bravo", "GAC"), _school("Charlie", "LSC")]
+    schools = [
+        _school("Alpha", "GAC"),
+        _school("Bravo", "GAC"),
+        _school("Charlie", "LSC"),
+    ]
     monkeypatch.setattr(collect_board, "load_schools", lambda _path: schools)
     monkeypatch.setattr(collect_board, "collect_programme", _fake_programme)
     monkeypatch.setattr(collect_board, "collect_match", _fake_collect_match)
@@ -356,7 +362,9 @@ def collected(monkeypatch, tmp_path: Path):
         stored_matches={},
         workers=1,
     )
-    manifest = coverage.merge_cells(tmp_path, cells, updated_at="2026-09-02T06:30:00+00:00")
+    manifest = coverage.merge_cells(
+        tmp_path, cells, updated_at="2026-09-02T06:30:00+00:00"
+    )
     coverage.write_coverage(tmp_path, manifest)
     return {
         "fixtures": fixtures,
@@ -414,6 +422,55 @@ def test_a_new_marker_is_caught_here_not_on_the_published_build(collected) -> No
     cell["etag"] = "abc"
     found = contracts.drift(manifest, contracts.COVERAGE)
     assert found == {(("cells", contracts.KEY, "etag"), "string")}
+
+
+# Every fixture field the writer may leave out, per contracts/fixtures-2.json:
+# present on some of its rows and not on others.  A field absent from a row is
+# a fact about what the page published; null is never a value in
+# touchline.fixtures/2, and a writer that starts stamping one has drifted.
+OPTIONAL_FIXTURE_FIELDS = (
+    "time",
+    "venue",
+    "match_type",
+    "neutral",
+    "conference_game_source",
+    "home_score",
+    "away_score",
+)
+
+
+def test_the_contract_fixture_leaves_each_optional_field_out_somewhere() -> None:
+    rows = contracts.FIXTURES.fixture()["fixtures"]
+    for field in OPTIONAL_FIXTURE_FIELDS:
+        assert any(field not in row for row in rows), field
+        assert any(field in row for row in rows), field
+    assert not any(value is None for row in rows for value in row.values())
+
+
+def test_fixtures_writer_omits_an_optional_field_rather_than_writing_null(
+    collected,
+) -> None:
+    """The absent case, which drift() cannot see by construction: an omitted
+    key exhibits no fact.  So assert it directly — a non-neutral row carries
+    no neutral key at all (tl-0p1), and the same for every optional field."""
+    rows = collected["fixtures"]["fixtures"]
+    assert rows
+    for field in OPTIONAL_FIXTURE_FIELDS:
+        assert any(field not in row for row in rows), f"{field} is never omitted"
+    assert any(row.get("neutral") is True for row in rows)
+    assert all(row["neutral"] is True for row in rows if "neutral" in row)
+    for row in rows:
+        assert None not in row.values(), f"{row['id']} writes null: {row}"
+
+
+def test_a_null_optional_field_is_drift(collected) -> None:
+    """A writer that stamps neutral: null on the ordinary row must fail here,
+    because null is not a value the fixture promises for any field."""
+    document = json.loads(json.dumps(collected["fixtures"]))
+    row = next(r for r in document["fixtures"] if "neutral" not in r)
+    row["neutral"] = None
+    found = contracts.drift(document, contracts.FIXTURES)
+    assert found == {(("fixtures", contracts.ITEM, "neutral"), "null")}
 
 
 # ── a real data home, when one is offered ────────────────────────────────────
