@@ -981,7 +981,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Colorado Mines", "Mines"]
+# Box scores print "Colo. Sch. of Mines" (sidearm:colorado-school-of-mines:21603,
+# 24213, 24999), which box-vs-fixture could not resolve until this alias.
+aliases      = ["Colorado Mines", "Mines", "Colo. Sch. of Mines"]
 
 # The probe found no mascot where it reads; "ThunderWolves" is the site's
 # own name (gothunderwolves.com).
