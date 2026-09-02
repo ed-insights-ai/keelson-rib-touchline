@@ -16,9 +16,11 @@ Run it against the data home:
 keelson workflow run data-integrity
 ```
 
-`workflows/data-integrity.yml` runs three deterministic read-only checks
-against the season JSON layers (`data/fixtures`, `data/stats`), the collect
-gap ledger (`data/errors`), and the membership reference.
+`workflows/data-integrity.yml` runs six deterministic read-only checks
+against the season JSON layers (`data/fixtures`, `data/stats`,
+`data/matches`), the collect gap ledger (`data/errors`), and the membership
+reference. Every check compares against a second, independently collected
+copy of the fact ([The second-source rule](../../design/second-source-rule/)).
 Each check emits a one-line JSON verdict (`check`, `verdict`,
 `headline`, `cause`), and the report node renders them as a verdict table: a
 rollup line (`CLEAR`, `WARN`, or `ALARM`, the worst of all checks, with
@@ -28,7 +30,10 @@ counts) and one row per check.
 |---|---|
 | collect-gaps | collect-board gap ledger files waiting in `data/errors`, each naming the layers a run could not prove and why |
 | goal-attribution | per-programme scoreboard goals (fixtures layer, exhibitions and scoreless finals excluded and counted) vs summed player goals (stats layer), every divergence named with both figures |
+| exhibition-markers | fixtures whose stored venue or opponent text says friendly or exhibition while `match_type` is unset, each named |
 | membership-sync | the data home's mirrored `data/reference/membership.json` vs the rib's packaged source of record, canonicalized; a divergence warns with the exact diff |
+| twin-check | every match collected from both sides (two season files, same date and slugs): unordered score and status must agree; the home side is not compared, since a neutral site differs there honestly |
+| box-vs-fixture | every box score against its fixture by team name, the names resolved through the collector's identity rules; reversed or different scorelines named, a disagreeing stored `home_index` named, unresolved names counted and never passed |
 
 ## 2. Tell a failed check from a pass
 

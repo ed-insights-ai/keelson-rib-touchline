@@ -173,8 +173,9 @@ takes about four minutes.
 Run all four, in any order:
 
 1. **`workflow_run("data-integrity", project="d2-soccer")`**, and count the
-   checks. The workflow file has five (`collect-gaps`, `goal-attribution`,
-   `exhibition-markers`, `membership-sync`, `twin-check`); if the served run shows fewer,
+   checks. The workflow file has six (`collect-gaps`, `goal-attribution`,
+   `exhibition-markers`, `membership-sync`, `twin-check`, `box-vs-fixture`);
+   if the served run shows fewer,
    Keelson is serving a stale catalogue and needs a restart. `membership-sync`
    must be `ok` and say byte-identical.
 2. **`touchline_status(project="d2-soccer")`** lists every season of the new
