@@ -39,14 +39,16 @@ import threading
 import time
 from collections.abc import Callable
 from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
+from dataclasses import replace
 from datetime import datetime, timezone
 from functools import partial
 from pathlib import Path
 
 from src import coverage, paths
 from src.fetch_pool import GatedSession, HostGate
-from src.config import DEFAULT_CONFIG, load_schools
+from src.config import DEFAULT_CONFIG, SchoolConfig, load_schools
 from src.page_state import PageStateStore
+from src.recipes import SIDEARM, NoCollector, Recipe, live_recipe
 from src.sidearm_live import (
     DEFAULT_LAYERS,
     LAYER_MATCHES,
@@ -586,6 +588,22 @@ def collect(
         executor.shutdown(wait=False, cancel_futures=True)
 
 
+def _recipe_for(school: SchoolConfig) -> Recipe | None:
+    """The platform recipe for one school's pages.
+
+    The SideArm recipe is rebuilt around this module's own ``boxscore_links``
+    and ``collect_match`` names: they are the seams a dry run or a test
+    replaces for one box-score fetch, so the recipe must read them at call
+    time rather than carry the functions it was built with.
+    """
+    recipe = live_recipe(school.live_collector())
+    if recipe is SIDEARM:
+        return replace(
+            recipe, boxscore_links=boxscore_links, collect_match=collect_match
+        )
+    return recipe
+
+
 def _assemble(
     *,
     season: int,
@@ -729,20 +747,37 @@ def _assemble(
         # own game id.  Every published (owner, id) pair is a candidate, so a
         # missing or refusing link on the surviving row's site can still be
         # collected through the other programme's link.
-        links_by_owner = {
-            result.slug: boxscore_links(result.schedule_html, result.schedule_url or "")
-            for result in results
-            if result.schedule_html
-        }
-        candidates_by_match: dict[tuple[str, str, str], list[str]] = {}
+        # Each link is fetched by its own site's recipe, whichever programme's
+        # row survived the fold.  A platform with no box-score collector yet
+        # contributes no links and its programme's matches cell says so; its
+        # fixtures are still detailed through the other side's link.
+        links_by_owner: dict[str, tuple[Recipe, dict[str, str]]] = {}
+        without_collector: dict[str, str] = {}
+        for result in results:
+            if not result.schedule_html:
+                continue
+            school = candidates.get(result.slug)
+            recipe = _recipe_for(school) if isinstance(school, SchoolConfig) else None
+            if recipe is None:
+                continue
+            try:
+                links = recipe.boxscore_links(
+                    result.schedule_html, result.schedule_url or ""
+                )
+            except NoCollector as exc:
+                without_collector[result.slug] = exc.reason(school)
+                continue
+            links_by_owner[result.slug] = (recipe, links)
+        candidates_by_match: dict[tuple[str, str, str], list[tuple[str, Recipe]]] = {}
         for fixture in all_fixtures:
             pair = sorted((str(fixture["home"]), str(fixture["away"])))
             key = (str(fixture["date"]), pair[0], pair[1])
             owner, _, game_id = str(fixture["id"]).rpartition(":")
             owner = owner.split(":")[-1]
-            url = links_by_owner.get(owner, {}).get(game_id)
-            if url:
-                candidates_by_match.setdefault(key, []).append(url)
+            published = links_by_owner.get(owner)
+            url = published[1].get(game_id) if published else None
+            if published and url:
+                candidates_by_match.setdefault(key, []).append((url, published[0]))
 
         # Incremental harvest: a box score already stored for a final whose
         # result has not moved is data that cannot have changed since the
@@ -753,7 +788,7 @@ def _assemble(
         # pages above are re-collected (or verified unchanged) first.
         available = {} if refetch else dict(stored_matches or {})
         reused: dict[str, dict[str, object]] = {}
-        planned: dict[str, tuple[list[str], dict[str, object]]] = {}
+        planned: dict[str, tuple[list[tuple[str, Recipe]], dict[str, object]]] = {}
         for fixture in fixtures:
             if str(fixture.get("status")) != "final":
                 continue
@@ -768,11 +803,13 @@ def _assemble(
             if urls:
                 planned[fixture_id] = (urls, fixture)
 
-        def match_task(urls: list[str], fixture: dict[str, object]) -> object:
+        def match_task(
+            urls: list[tuple[str, Recipe]], fixture: dict[str, object]
+        ) -> object:
             failures: list[str] = []
-            for url in urls:
+            for url, recipe in urls:
                 try:
-                    return collect_match(thread_session(), url, season, fixture)
+                    return recipe.collect_match(thread_session(), url, season, fixture)
                 except LiveCollectionError as exc:
                     failures.append(str(exc))
             raise LiveCollectionError("; ".join(failures))
@@ -865,6 +902,14 @@ def _assemble(
                     LAYER_MATCHES,
                     coverage.STATE_NO_COLLECTOR,
                     reason=result.outcomes[LAYER_SCHEDULE].reason,
+                )
+                continue
+            if result.slug in without_collector:
+                record(
+                    result.slug,
+                    LAYER_MATCHES,
+                    coverage.STATE_NO_COLLECTOR,
+                    reason=without_collector[result.slug],
                 )
                 continue
             if result.state(LAYER_SCHEDULE) not in {STATE_COMPLETE, STATE_EMPTY}:

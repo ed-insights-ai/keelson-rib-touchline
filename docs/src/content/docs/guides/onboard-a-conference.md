@@ -122,12 +122,12 @@ own session on the next run, and the probe read PrestoSports off its markup.
 A PrestoSports site is probed at its sport landing page
 (`https://{host}/sports/msoc`), its seasons are academic-year paths
 (`/sports/msoc/2025-26/schedule` is the 2025 season), and its stanza sets
-`scraper` and `live_scraper` to `"prestosports"`. Until the PrestoSports
-collector lands (bead tl-v1q.5), such a programme's matches against members
-still land from the members' pages, single-source, and its roster and stats
-do not land at all. Record the verdict for
-every site in the conference block's header comment: the probe date, the
-platform, which layers were present, and which seasons were served.
+`scraper` and `live_scraper` to `"prestosports"`, which collects the
+schedule and roster layers today; stats and box scores file `no-collector`
+until PR 3 of bead tl-v1q.5, so such a programme's box scores land only
+from the members' pages until then. Record the verdict for every site in
+the conference block's header comment: the probe date, the platform, which
+layers were present, and which seasons were served.
 
 ## 3. Author the data, verify it reproduces the count, open a PR
 
