@@ -12,6 +12,7 @@ dependencies = [
 
 [project.scripts]
 check-membership = "scripts.check_membership:main"
+check-box-scores = "scripts.check_box_scores:main"
 collect-board = "scripts.collect_board:main"
 migrate-shard = "scripts.migrate_shard:main"
 build-digest = "scripts.build_digest:main"
