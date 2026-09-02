@@ -18,7 +18,7 @@ engine and the board surface; this rib adds the season intelligence.
 |---|---|
 | Concepts | The theory: the five layers, archive-first storage, proof before parse, identity resolution, absence as data, the determinism boundary, evidence-not-recall, gates, and season/membership time modeling. |
 | Design | Decision records (gate after every generative step, the model as reader, contracts not examples, the raw archive as system of record, conference as configuration, a briefing is a run) and the hosted system-design narrative PDF. |
-| Reference | The exact contract: the rib surface and tools, the four workflows, data on disk, the versioned file contracts, gates and exit codes, the pipeline CLI, the prompt contracts, and the glossary. |
+| Reference | The exact contract: the rib surface and tools, the five workflows, data on disk, the versioned file contracts, gates and exit codes, the pipeline CLI, the prompt contracts, and the glossary. |
 | Guides | Operator recipes: install, create a data home, run a collection, work the board, run a report, build a player profile, onboard a school, rebuild from the archive, audit the data. |
 | Tutorials | The lab rail: a data-science curriculum run against a real data home, capstoned by a full gated report run. |
 

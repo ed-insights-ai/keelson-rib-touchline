@@ -25,8 +25,13 @@ inputs:
     description: Season year, e.g. 2026 for the current season or 2019 for an archive roster.
     required: true
   - name: programmes
-    description: Comma-separated membership slugs to collect, already resolved by the caller.
-    required: true
+    description: >-
+      Comma-separated membership slugs to collect. Optional: when empty, the
+      resolve-programmes node reads the conference's members for the season
+      from the rib's packaged membership record, the same resolver the
+      touchline_collect tool uses, so the tool and the workflow share one
+      input contract. Pass it only to narrow the run to named programmes.
+    required: false
   - name: layers
     description: >-
       Comma-separated layers to collect: schedule, roster, stats, matches.
@@ -67,7 +72,7 @@ nodes:
         printf 'REFUSED: touchline-data.yaml exists but declares kind=%s, not touchline-data.\n' "${KIND:-(none)}"
         exit 1
       fi
-      for v in KEELSON_INPUTS_conference KEELSON_INPUTS_gender KEELSON_INPUTS_season KEELSON_INPUTS_programmes; do
+      for v in KEELSON_INPUTS_conference KEELSON_INPUTS_gender KEELSON_INPUTS_season; do
         eval "val=\${$v:-}"
         if [ -z "$val" ]; then
           printf 'REFUSED: required input %s is empty. Nothing was collected.\n' "$v"
@@ -85,7 +90,7 @@ nodes:
       printf 'layers: %s\n' "${KEELSON_INPUTS_layers:-schedule,roster,stats,matches}"
       printf 'target: %s %s %s -> %s\n' \
         "$KEELSON_INPUTS_conference" "$KEELSON_INPUTS_gender" \
-        "$KEELSON_INPUTS_season" "$KEELSON_INPUTS_programmes"
+        "$KEELSON_INPUTS_season" "${KEELSON_INPUTS_programmes:-(resolved from membership)}"
 
   - id: resolve-pipeline
     depends_on: [preflight]
@@ -108,8 +113,40 @@ nodes:
       fi
       printf '%s\n' "$PIPELINE_DIR"
 
-  - id: collect
+  # Membership is DATA, not code. With no programmes input the member list
+  # comes from the packaged data/reference/membership.json through the rib's
+  # bin/resolve-membership.ts, the same resolveConference the touchline_collect
+  # tool calls; a season past the authored windows is carried forward and
+  # flagged. The node prints one line, "<extrapolated> <slug,slug,...>", and
+  # passes a caller-supplied list through untouched so the collect node has one
+  # shape to read. Nothing here names a conference or a member.
+  - id: resolve-programmes
     depends_on: [resolve-pipeline]
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      if [ -n "${KEELSON_INPUTS_programmes:-}" ]; then
+        printf 'programmes supplied by the caller.\n' >&2
+        printf '%s %s\n' "${KEELSON_INPUTS_membership_extrapolated:-false}" "$KEELSON_INPUTS_programmes"
+        exit 0
+      fi
+      PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
+      RESOLVER="$(dirname "$PIPELINE_DIR")/bin/resolve-membership.ts"
+      if [ ! -f "$RESOLVER" ]; then
+        printf 'ALARM: membership resolver not found at %s (the rib package beside the pipeline should carry bin/resolve-membership.ts)\n' "$RESOLVER"
+        exit 1
+      fi
+      RES=$(bun "$RESOLVER" conference "$KEELSON_INPUTS_conference" "$KEELSON_INPUTS_gender" "$KEELSON_INPUTS_season" 2>&1)
+      RC=$?
+      if [ "$RC" -ne 0 ] || [ -z "$RES" ]; then
+        printf 'REFUSED: no programmes resolve for %s %s %s: %s\n' \
+          "$KEELSON_INPUTS_conference" "$KEELSON_INPUTS_gender" "$KEELSON_INPUTS_season" "${RES:-no output}"
+        exit 1
+      fi
+      printf '%s\n' "$RES"
+
+  - id: collect
+    depends_on: [resolve-programmes]
     timeout: 900000
     bash: |
       set -uo pipefail
@@ -118,13 +155,22 @@ nodes:
         printf 'ALARM: pipeline not found at %s (resolve-pipeline output did not carry a usable path)\n' "${PIPELINE_DIR:-<empty>}"
         exit 1
       fi
+      RESOLVED=$(printf '%s' "${KEELSON_NODE_resolve_programmes_OUTPUT:-}" | tr -d '\r' | tail -1)
+      EXTRAPOLATED=${RESOLVED%% *}
+      PROGRAMMES=${RESOLVED#* }
+      if [ -z "$PROGRAMMES" ] || [ "$PROGRAMMES" = "$RESOLVED" ]; then
+        printf 'ALARM: resolve-programmes output did not carry a programme list (%s). Nothing was collected.\n' "${RESOLVED:-<empty>}"
+        exit 1
+      fi
+      printf 'programmes: %s\n' "$PROGRAMMES"
 
       # NOT a bash array: macOS ships bash 3.2 as /bin/bash, where expanding an
       # EMPTY array under `set -u` raises "unbound variable" — which would fire
       # on the common path, where no extra flag is set.
       EXTRA=""
-      if [ "${KEELSON_INPUTS_membership_extrapolated:-false}" = "true" ]; then
+      if [ "$EXTRAPOLATED" = "true" ]; then
         EXTRA="--membership-extrapolated"
+        printf 'NOTE: membership carried forward past its last authored season (extrapolated).\n'
       fi
 
       # shellcheck disable=SC2086 # EXTRA is a single controlled flag or empty.
@@ -132,7 +178,7 @@ nodes:
         --conference "$KEELSON_INPUTS_conference" \
         --gender "$KEELSON_INPUTS_gender" \
         --season "$KEELSON_INPUTS_season" \
-        --programmes "$KEELSON_INPUTS_programmes" \
+        --programmes "$PROGRAMMES" \
         --layers "${KEELSON_INPUTS_layers:-schedule,roster,stats,matches}" \
         $EXTRA
       RC=$?
@@ -152,6 +198,9 @@ nodes:
 
       Preflight reported:
       $preflight.output
+
+      The programme list resolved to:
+      $resolve-programmes.output
 
       The collection command printed:
       $collect.output

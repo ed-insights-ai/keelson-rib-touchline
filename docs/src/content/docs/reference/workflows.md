@@ -1,11 +1,11 @@
 ---
 title: Workflows
-description: "The four Touchline workflows as contracts: node chains, gates and their failure conditions, locking, the KEELSON_INPUTS_* env contract, model pinning, and exit semantics."
+description: "The five Touchline workflows as contracts: node chains, gates and their failure conditions, locking, the KEELSON_INPUTS_* env contract, model pinning, and exit semantics."
 sidebar:
   order: 2
 ---
 
-Four workflows ship in `workflows/`: `touchline-collect`, `touchline-report`, `touchline-player-profile`, and `data-integrity`. This page is their contract. The generic node model (bash, prompt, loop, and bun nodes; `until_bash`) is the harness's: see keelson's [workflow nodes reference](https://danielscholl.github.io/keelson/docs/reference/workflow-nodes/). The full assertion list per gate lives in [Gates and exit codes](../gates-and-exit-codes/).
+Five workflows ship in `workflows/`: `touchline-collect`, `touchline-backfill`, `touchline-report`, `touchline-player-profile`, and `data-integrity`. This page is their contract. The generic node model (bash, prompt, loop, and bun nodes; `until_bash`) is the harness's: see keelson's [workflow nodes reference](https://danielscholl.github.io/keelson/docs/reference/workflow-nodes/). The full assertion list per gate lives in [Gates and exit codes](../gates-and-exit-codes/).
 
 ## How inputs reach nodes
 
@@ -16,26 +16,43 @@ The env and substitution contract is the harness's, in the workflow nodes refere
 | Workflow | `requiresProject` | `mutates_checkout` | `locking` | `webSearchMode` |
 |---|---|---|---|---|
 | `touchline-collect` | `false` | `true` | exclusive (default) | unset |
+| `touchline-backfill` | `false` | `true` | exclusive (default) | unset |
 | `touchline-report` | `false` | `true` | exclusive (default) | `live` |
 | `touchline-player-profile` | `false` | `true` | `shared` | `live` |
 | `data-integrity` | `true` | `true` | exclusive (default) | unset |
 
-In Keelson, `requiresProject: true` means the working directory must be a git repository. A Touchline data home is an ordinary registered directory, so the three data-home workflows set it `false`; the selected project still supplies the working directory. `data-integrity` runs against the data repo, which is a git checkout, and requires one.
+In Keelson, `requiresProject: true` means the working directory must be a git repository. A Touchline data home is an ordinary registered directory, so the four data-home workflows set it `false`; the selected project still supplies the working directory. `data-integrity` runs against the data repo, which is a git checkout, and requires one.
 
 `mutates_checkout: true` takes the mutation lock on that directory: two collects into one data home would race on the same season file. `touchline-player-profile` adds `locking: shared` because it writes only per-player files (`data/players/...`, `data/research/players/...`), disjoint between runs: profile runs fan out in parallel against one data home while staying mutually exclusive with a mutating collect.
 
 ## touchline-collect
 
-Collects a conference or one programme for one season into the data home. Inputs: `conference`, `gender`, `season`, `programmes` (required); `layers` (defaults to `schedule,roster,stats,matches`) and `membership_extrapolated` (optional).
+Collects a conference or one programme for one season into the data home. Inputs: `conference`, `gender`, `season` (required); `programmes` (optional, comma-separated slugs to narrow the run; empty means the whole conference), `layers` (defaults to `schedule,roster,stats,matches`) and `membership_extrapolated` (optional).
 
 | Node | Kind | Contract |
 |---|---|---|
 | `preflight` | bash | Refuses (exit 1) a directory without a `touchline-data.yaml` marker, a marker not declaring `kind: touchline-data`, any empty required input, or a season that is not a four-digit year |
 | `resolve-pipeline` | bash | Resolves the pipeline directory: `TOUCHLINE_PIPELINE_DIR`, else `packageDir` from `rib-touchline/config.json` under the Keelson home (`KEELSON_HOME`, defaulting to `~/.keelson`), else the installed package path; ALARM exit 1 when no candidate holds a `pyproject.toml` |
-| `collect` | bash | Runs `collect-board` with `TOUCHLINE_DATA_DIR` set to the data home, forwarding the inputs and adding `--membership-extrapolated` when that input is `true`; propagates the collector's exit code |
+| `resolve-programmes` | bash | Prints one line, `{extrapolated} {slug,slug,...}`. With a `programmes` input it passes that list through with the `membership_extrapolated` input as the flag. With none it runs the rib's `bin/resolve-membership.ts conference` against the packaged `data/reference/membership.json`, the same `resolveConference` the `touchline_collect` tool calls, carrying the last authored window forward past the authored range and flagging it; REFUSED exit 1 when no member resolves, ALARM exit 1 when the resolver is not beside the pipeline |
+| `collect` | bash | Runs `collect-board` with `TOUCHLINE_DATA_DIR` set to the data home, forwarding the inputs and the resolved list, adding `--membership-extrapolated` when the resolved flag is `true`; ALARM exit 1 when the resolved line carries no list; otherwise propagates the collector's exit code |
 | `report` | prompt | Short completion summary; every figure must appear in the upstream node text, and gaps are named, never softened |
 
 Exit semantics: exit 0 from `collect` is a defined claim, the coverage manifest was written and describes reality, gaps included. A non-zero exit means no manifest was written, and nothing printed above it is a claim that data landed.
+
+The resolver behind `resolve-programmes` is also a command line for anything outside the rib's TypeScript, such as the daily cadence script: `bun bin/resolve-membership.ts conference {conference} {gender} {season}` prints the flag and the member list, and `bun bin/resolve-membership.ts conferences {gender}` prints, sorted on one line, every advertised conference that authors at least one membership window for that gender. Neither names a conference; both read the packaged record.
+
+## touchline-backfill
+
+Collects one conference over a season range into the data home, one collect node per season, under the same exclusive lock as `touchline-collect`. Inputs: `conference`, `gender`, `from_season`, `to_season` (required, inclusive, at most 8 seasons per run); `layers` (optional, defaults to all four).
+
+| Node | Kind | Contract |
+|---|---|---|
+| `preflight` | bash | Marker and `kind` check; required inputs; `gender` in `men` or `women`; both seasons four-digit years; REFUSED exit 1 when `from_season` is after `to_season` or the range is longer than the wired slots (`MAX_SEASONS=8`, split the range and run twice) |
+| `resolve-pipeline` | bash | Same resolution chain as touchline-collect, plus an ALARM when the rib package beside the pipeline carries no `bin/backfill-slot.sh` |
+| `collect-1` to `collect-8` | bash | Each runs `bin/backfill-slot.sh` with `SLOT={n}`; the slot's season is `from_season + n - 1`. A slot past `to_season` prints `SKIPPED` and exits 0. Otherwise the slot resolves its own members for that season through `bin/resolve-membership.ts`, REFUSES when none resolve, and runs `collect-board` exactly as touchline-collect does, propagating its exit code. Slots chain in order with `trigger_rule: all_done`, so one failed season is reported and the later seasons still run |
+| `report` | prompt | `trigger_rule: all_done`, `always_run: true`; one line per season, collected, failed with the printed reason, or did not run; a failed season is never folded into a total |
+
+Why one node per season: a single node cannot hold a whole range inside the node budget (the LSC backfill measured about two thirds of one node's headroom per season), so each season carries its own 15 minute budget. Each season is written as its own season file, so a failed slot leaves the other seasons' files as their own collects left them.
 
 ## touchline-report
 

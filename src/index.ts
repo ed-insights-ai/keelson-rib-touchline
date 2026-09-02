@@ -353,6 +353,7 @@ const rib: Rib = {
         "## Workflows",
         "",
         "- `touchline-collect` — the schedule-and-roster run the touchline_collect tool launches.",
+        "- `touchline-backfill` — one conference over a season range, one collect node per season.",
       ].join("\n"),
     },
   ],

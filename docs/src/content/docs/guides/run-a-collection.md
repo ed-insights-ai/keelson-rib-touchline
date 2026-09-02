@@ -48,16 +48,23 @@ widen (the scope widening below).
 
 ## 3. Or run the workflow
 
-An archive season is a long call, and chat clients have deadlines. For
-archive seasons and multi-season backfills, start the `touchline-collect`
-workflow with `workflow_run` instead, one run per season, and it runs
-durably. Its nodes (`workflows/touchline-collect.yml`): `preflight` refuses
-any working directory without a `touchline-data.yaml` marker declaring
-`kind: touchline-data`; `resolve-pipeline` locates the installed pipeline;
-`collect` runs the identical CLI; `report` writes a prose summary that is
-forbidden to invent a number. Inputs: `conference`, `gender`, `season`,
-`programmes` (already-resolved slugs), plus optional `layers` and
+An archive season is a long call, and chat clients have deadlines. For an
+archive season, start the `touchline-collect` workflow with `workflow_run`
+instead and it runs durably. Its nodes (`workflows/touchline-collect.yml`):
+`preflight` refuses any working directory without a `touchline-data.yaml`
+marker declaring `kind: touchline-data`; `resolve-pipeline` locates the
+installed pipeline; `resolve-programmes` reads the conference's members for
+the season from the packaged membership record, the same resolver the tool
+uses; `collect` runs the identical CLI; `report` writes a prose summary that
+is forbidden to invent a number. Inputs: `conference`, `gender`, `season`,
+plus optional `programmes` (slugs to narrow the run), `layers` and
 `membership_extrapolated`.
+
+For a multi-season backfill, start `touchline-backfill` with `conference`,
+`gender`, `from_season` and `to_season` (at most 8 seasons per run). It runs
+one collect node per season, in order, under one lock, and reports every
+season's outcome in one summary; a failed season is named and the later
+seasons still run. See [Workflows](../../reference/workflows/).
 
 ## 4. Read the output
 
