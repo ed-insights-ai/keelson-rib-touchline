@@ -13,6 +13,7 @@ from urllib.parse import urlparse
 import requests
 from bs4 import BeautifulSoup
 
+from src import presto
 from src.gazetteer import parse_town
 from src.sidearm_live import (
     LAYER_MATCHES,
@@ -20,11 +21,11 @@ from src.sidearm_live import (
     LAYER_SCHEDULE,
     LAYER_STATS,
     LiveCollectionError,
+    PublishedPage,
     _clean_team_name,
     _component_objects,
     _has_schedule_markup,
     _identity_key,
-    assert_served_season,
     boxscore_links,
     fetch_published_page,
     parse_roster_page,
@@ -35,6 +36,7 @@ from src.sidearm_live import (
 PLATFORM_SIDEARM = "sidearm"
 PLATFORM_SIDEARM_LEGACY = "sidearm_legacy"
 PLATFORM_STATCREW = "statcrew"
+PLATFORM_PRESTOSPORTS = presto.PLATFORM
 PLATFORM_UNKNOWN = "unknown"
 
 LAYER_PRESENT = "present"
@@ -64,6 +66,13 @@ def classify_platform(html: str) -> tuple[str, list[str]]:
             "SideArm branding without server-rendered schedule or box-score markup"
         ]
 
+    # A SideArm page never carries PrestoSports markup, but the order is kept
+    # explicit: SideArm first, PrestoSports next, then the advisory StatCrew
+    # shape and the unknown fallback.
+    presto_evidence = presto.is_presto(html)
+    if presto_evidence:
+        return PLATFORM_PRESTOSPORTS, presto_evidence
+
     soup = BeautifulSoup(html, "lxml")
     text = soup.get_text(" ", strip=True)
     statcrew_evidence: list[str] = []
@@ -80,8 +89,59 @@ def classify_platform(html: str) -> tuple[str, list[str]]:
     return PLATFORM_UNKNOWN, []
 
 
-def probe_layers(session: requests.Session, base_url: str, year: int) -> dict[str, str]:
-    """Report whether each live collection layer is present for one season."""
+def failure_detail(exc: LiveCollectionError) -> str:
+    """What HTTP said, in the words the report prints after ``error``.
+
+    A 403 is not nothing (bead tl-v1q.6): the status rides the exception when
+    the server answered one; a timeout or a refused connection is named as
+    such; the remaining case is a page that was served but could not prove
+    its season.
+    """
+    if exc.status is not None:
+        return f"HTTP {exc.status}"
+    cause = exc.__cause__
+    if isinstance(cause, requests.Timeout):
+        return "timeout"
+    if isinstance(cause, requests.ConnectionError):
+        return "connection failed"
+    if isinstance(cause, requests.RequestException):
+        return "request failed"
+    return "season not proven"
+
+
+def _fetch_failed(exc: LiveCollectionError) -> bool:
+    """Whether the page was never served, as opposed to served and unproven."""
+    return exc.status is not None or isinstance(
+        exc.__cause__, requests.RequestException
+    )
+
+
+def _layer_error(exc: LiveCollectionError) -> str:
+    return f"{LAYER_ERROR} ({failure_detail(exc)})"
+
+
+def fetch_schedule_page(
+    session: requests.Session,
+    base_url: str,
+    year: int,
+    platform: str = PLATFORM_SIDEARM,
+) -> PublishedPage:
+    """Fetch and prove one season's schedule page at the platform's own URL."""
+    if platform == PLATFORM_PRESTOSPORTS:
+        url = presto.layer_url(base_url, year, LAYER_SCHEDULE)
+        return presto.fetch_page(session, url, year, LAYER_SCHEDULE)
+    return fetch_published_page(session, base_url, year, LAYER_SCHEDULE)
+
+
+def _schedule_markup(html: str, platform: str) -> bool:
+    if platform == PLATFORM_PRESTOSPORTS:
+        return presto.has_schedule_markup(html)
+    return _has_schedule_markup(html)
+
+
+def _sidearm_layers(
+    session: requests.Session, base_url: str, year: int
+) -> dict[str, str]:
     layers: dict[str, str] = {}
     try:
         schedule = fetch_published_page(session, base_url, year, LAYER_SCHEDULE)
@@ -102,16 +162,16 @@ def probe_layers(session: requests.Session, base_url: str, year: int) -> dict[st
             if boxscore_links(schedule.html, schedule.final_url)
             else LAYER_ABSENT
         )
-    except LiveCollectionError:
-        layers[LAYER_SCHEDULE] = LAYER_ERROR
-        layers[LAYER_MATCHES] = LAYER_ERROR
+    except LiveCollectionError as exc:
+        layers[LAYER_SCHEDULE] = _layer_error(exc)
+        layers[LAYER_MATCHES] = _layer_error(exc)
 
     try:
         roster = fetch_published_page(session, base_url, year, LAYER_ROSTER)
         players = parse_roster_page(roster.html, page_url=roster.final_url)
         layers[LAYER_ROSTER] = LAYER_PRESENT if players else LAYER_ABSENT
-    except LiveCollectionError:
-        layers[LAYER_ROSTER] = LAYER_ERROR
+    except LiveCollectionError as exc:
+        layers[LAYER_ROSTER] = _layer_error(exc)
 
     try:
         stats = fetch_published_page(session, base_url, year, LAYER_STATS)
@@ -121,29 +181,144 @@ def probe_layers(session: requests.Session, base_url: str, year: int) -> dict[st
         layers[LAYER_STATS] = (
             LAYER_PRESENT if stat_players or stat_keepers else LAYER_ABSENT
         )
-    except LiveCollectionError:
-        layers[LAYER_STATS] = LAYER_ERROR
+    except LiveCollectionError as exc:
+        layers[LAYER_STATS] = _layer_error(exc)
+    return layers
 
+
+def _presto_layers(
+    session: requests.Session, base_url: str, year: int, landing_html: str
+) -> dict[str, str]:
+    layers: dict[str, str] = {}
+    segment: str | None = None
+    schedule_failure: LiveCollectionError | None = None
+    try:
+        schedule = presto.fetch_page(
+            session,
+            presto.layer_url(base_url, year, LAYER_SCHEDULE),
+            year,
+            LAYER_SCHEDULE,
+        )
+        layers[LAYER_SCHEDULE] = (
+            LAYER_PRESENT if presto.has_schedule_markup(schedule.html) else LAYER_ABSENT
+        )
+        layers[LAYER_MATCHES] = (
+            LAYER_PRESENT
+            if presto.boxscore_links(schedule.html, schedule.final_url)
+            else LAYER_ABSENT
+        )
+        segment = presto.team_segment(schedule.html)
+    except LiveCollectionError as exc:
+        layers[LAYER_SCHEDULE] = _layer_error(exc)
+        layers[LAYER_MATCHES] = _layer_error(exc)
+        schedule_failure = exc
+
+    try:
+        roster = presto.fetch_page(
+            session, presto.layer_url(base_url, year, LAYER_ROSTER), year, LAYER_ROSTER
+        )
+        layers[LAYER_ROSTER] = (
+            LAYER_PRESENT if presto.has_roster_markup(roster.html) else LAYER_ABSENT
+        )
+    except LiveCollectionError as exc:
+        layers[LAYER_ROSTER] = _layer_error(exc)
+
+    # The statistics URL carries the school's own segment, read from a link
+    # the site publishes (the schedule page, else the landing page), never
+    # guessed from the school's name.
+    if segment is None and landing_html:
+        segment = presto.team_segment(landing_html)
+    if segment is None:
+        layers[LAYER_STATS] = (
+            f"{LAYER_ERROR} (team link not read: {failure_detail(schedule_failure)})"
+            if schedule_failure is not None
+            else f"{LAYER_ABSENT} (no team link on the schedule or landing page)"
+        )
+        return layers
+    try:
+        stats = presto.fetch_page(
+            session, presto.stats_url(base_url, year, segment), year, LAYER_STATS
+        )
+        layers[LAYER_STATS] = (
+            LAYER_PRESENT if presto.has_stats_markup(stats.html) else LAYER_ABSENT
+        )
+    except LiveCollectionError as exc:
+        layers[LAYER_STATS] = _layer_error(exc)
+    return layers
+
+
+def probe_layers(
+    session: requests.Session,
+    base_url: str,
+    year: int,
+    platform: str = PLATFORM_SIDEARM,
+    *,
+    landing_html: str = "",
+) -> dict[str, str]:
+    """Report whether each live collection layer is present for one season.
+
+    A layer whose page was not served reads ``error (HTTP 403)``, ``error
+    (timeout)`` and so on: what HTTP said is a suffix on the error value,
+    never a bare ``error``.  PrestoSports sites are probed at their own URLs
+    with their own season proof and detectors; ``landing_html`` is where the
+    team statistics segment is read when the schedule page did not carry it.
+    Every other platform keeps the SideArm path.
+    """
+    if platform == PLATFORM_PRESTOSPORTS:
+        layers = _presto_layers(session, base_url, year, landing_html)
+    else:
+        layers = _sidearm_layers(session, base_url, year)
     return {
         layer: layers[layer]
         for layer in (LAYER_SCHEDULE, LAYER_ROSTER, LAYER_STATS, LAYER_MATCHES)
     }
 
 
-def served_seasons(
-    session: requests.Session, base_url: str, years: Iterable[int]
-) -> list[int]:
-    """Return candidate seasons whose schedule page proves the requested year."""
+@dataclass(frozen=True)
+class SeasonSurvey:
+    """Which candidate seasons a site proved, and which it never showed."""
+
+    served: list[int]
+    #: Candidate seasons whose schedule fetch was refused, with what HTTP said.
+    errors: dict[int, str]
+
+
+def survey_seasons(
+    session: requests.Session,
+    base_url: str,
+    years: Iterable[int],
+    platform: str = PLATFORM_SIDEARM,
+) -> SeasonSurvey:
+    """Prove each candidate season's schedule page, naming the fetches refused.
+
+    A season is served when its page proved the requested year and carries
+    schedule markup.  A page the site served but that proves another season,
+    or carries no markup, is not served and says nothing more, as before; a
+    fetch the site refused is recorded with what HTTP said (bead tl-v1q.6),
+    so a 403 on every season never reads as "none".
+    """
     served: list[int] = []
+    errors: dict[int, str] = {}
     for year in years:
         try:
-            page = fetch_published_page(session, base_url, year, LAYER_SCHEDULE)
-            assert_served_season(page, year, LAYER_SCHEDULE)
-        except LiveCollectionError:
+            page = fetch_schedule_page(session, base_url, year, platform)
+        except LiveCollectionError as exc:
+            if _fetch_failed(exc):
+                errors[year] = failure_detail(exc)
             continue
-        if _has_schedule_markup(page.html):
+        if _schedule_markup(page.html, platform):
             served.append(year)
-    return served
+    return SeasonSurvey(served=served, errors=errors)
+
+
+def served_seasons(
+    session: requests.Session,
+    base_url: str,
+    years: Iterable[int],
+    platform: str = PLATFORM_SIDEARM,
+) -> list[int]:
+    """Return candidate seasons whose schedule page proves the requested year."""
+    return survey_seasons(session, base_url, years, platform).served
 
 
 # Words that carry no identity when they lead a published name.  They are
@@ -153,6 +328,12 @@ _FILLER_WORDS = frozenset({"university", "college", "of", "the", "at", "in", "an
 _SITE_SUFFIX = re.compile(r"\s+athletics(?:\s+site)?$", re.I)
 _DESCRIBED_FOR = re.compile(r"\bfor\s+the\s+(.+?)\s*$", re.I)
 _SITE_NAME_JSON = re.compile(r'"site_name"\s*:\s*"([A-Za-z0-9-]+)"')
+# PrestoSports titles lead with the season and the team ("2025 Tampa Spartans
+# Men's Soccer Schedule"); SideArm titles lead with the season and the sport
+# ("2026 Men's Soccer Schedule - …") and never match.
+_TITLED_TEAM = re.compile(
+    r"^\s*\d{4}(?:-\d{2})?\s+(.+?)\s+(?:men|women)[’']s\s+soccer\b", re.I
+)
 
 
 @dataclass(frozen=True)
@@ -220,7 +401,8 @@ def _home_town(html: str) -> str:
     row or an element inside it. When no row is marked home, every location
     on the page counts and the majority wins — a school plays most of its
     games at home. A page that prints no location, or towns that never
-    agree, yields "" and the stanza says so.
+    agree, yields "" and the stanza says so.  PrestoSports rows print no
+    location at all (only "vs"/"at" and the opponent), so they yield "".
     """
     soup = BeautifulSoup(html, "lxml")
     home: list[str] = []
@@ -296,9 +478,11 @@ def derive_identity(
     the site's own ``og:site_name`` stands in.  The site is read in three
     places: ``og:site_name`` carries the published institution name, or the
     site's short form ("UIS Athletics"); the description meta ends with
-    "for the {published name} {Mascot}"; the theme payload's ``site_name`` is
-    the site's own short token ("umsl").  Schedule opponent spellings that
-    contain every word of the name are aliases the member sites publish.
+    "for the {published name} {Mascot}", or on PrestoSports the title leads
+    with "{season} {published name} {Mascot} Men's Soccer"; the theme
+    payload's ``site_name`` is the site's own short token ("umsl").  Schedule
+    opponent spellings that contain every word of the name are aliases the
+    member sites publish.
     """
     site_names: list[str] = []
     described: list[str] = []
@@ -321,6 +505,10 @@ def derive_identity(
             match = _DESCRIBED_FOR.search(content)
             if match:
                 described.append(match.group(1).strip().rstrip("."))
+        title = soup.title.get_text(" ", strip=True) if soup.title is not None else ""
+        titled = _TITLED_TEAM.match(title)
+        if titled:
+            described.append(titled.group(1).strip())
         short_tokens.extend(_SITE_NAME_JSON.findall(html))
         opponents.extend(_opponent_spellings(html))
 
@@ -397,7 +585,9 @@ def draft_stanza(
 
     Keys pad to the width the hand-authored stanzas use so the draft pastes
     beside them unchanged.  A mascot the site did not yield becomes a comment
-    naming the gap rather than an empty value.
+    naming the gap rather than an empty value.  For PrestoSports, ``base_url``
+    is the sport landing page and both ``scraper`` and ``live_scraper`` name
+    the platform.
     """
     scraper = platform
     live_scraper = platform
@@ -423,7 +613,10 @@ def draft_stanza(
             _toml_line("scraper", scraper),
         ]
     )
-    if live_scraper != scraper:
+    # config.py reads a missing ``live_scraper`` as SideArm, so a platform
+    # with a live path of its own is written out; the hand-authored StatCrew
+    # stanzas leave it absent because their live sites are SideArm.
+    if live_scraper != scraper or live_scraper == PLATFORM_PRESTOSPORTS:
         lines.append(_toml_line("live_scraper", live_scraper))
     lines.extend(
         [
@@ -456,13 +649,24 @@ class ProbeReport:
     layers: dict[str, str]
     seasons: list[int]
     stanza: str
+    #: What HTTP said when the landing page itself was refused ("HTTP 403"):
+    #: the platform line then says so instead of claiming the site showed no
+    #: evidence (bead tl-v1q.6).
+    not_seen: str = ""
+    #: Candidate seasons whose schedule fetch was refused, with what HTTP said.
+    season_errors: dict[int, str] = field(default_factory=dict)
 
     def render(self) -> str:
-        evidence = "; ".join(self.evidence) if self.evidence else "none"
+        if self.not_seen:
+            platform = f"{self.platform} — {self.not_seen} from {self.url}"
+            evidence = "site not seen"
+        else:
+            platform = self.platform
+            evidence = "; ".join(self.evidence) if self.evidence else "none"
         seasons = ", ".join(str(year) for year in self.seasons) or "none"
         lines = [
             f"URL: {self.url}",
-            f"Platform: {self.platform}",
+            f"Platform: {platform}",
             f"Evidence: {evidence}",
             "Layers:",
         ]
@@ -470,9 +674,16 @@ class ProbeReport:
             f"  {layer}: {self.layers.get(layer, LAYER_ERROR)}"
             for layer in (LAYER_SCHEDULE, LAYER_ROSTER, LAYER_STATS, LAYER_MATCHES)
         )
+        lines.append(f"Served seasons: {seasons}")
+        if self.season_errors:
+            lines.append(
+                "Seasons not seen: "
+                + ", ".join(
+                    f"{year} ({detail})" for year, detail in self.season_errors.items()
+                )
+            )
         lines.extend(
             [
-                f"Served seasons: {seasons}",
                 "",
                 "Draft schools.toml stanza:",
                 self.stanza.rstrip(),

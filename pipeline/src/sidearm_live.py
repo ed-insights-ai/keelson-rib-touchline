@@ -66,7 +66,24 @@ _LOG = logging.getLogger(__name__)
 
 
 class LiveCollectionError(RuntimeError):
-    """A live page could not be proven to represent the requested season."""
+    """A live page could not be proven to represent the requested season.
+
+    ``status`` is the HTTP status the server answered when the failure was a
+    non-2xx response, so a report can say what HTTP said rather than reading
+    a 403 as nothing (bead tl-v1q.6).  It is None for a timeout, a refused
+    connection, or a page that was served but proves the wrong season.
+    """
+
+    def __init__(self, message: str, *, status: int | None = None) -> None:
+        super().__init__(message)
+        self.status = status
+
+
+def http_status(exc: requests.RequestException) -> int | None:
+    """The status code of the response a failed request carries, if any."""
+    response = getattr(exc, "response", None)
+    status = getattr(response, "status_code", None)
+    return status if isinstance(status, int) else None
 
 
 @dataclass(frozen=True)
@@ -253,7 +270,8 @@ def fetch_published_page_conditional(
         response.raise_for_status()
     except requests.RequestException as exc:
         raise LiveCollectionError(
-            f"[{year}] failed to fetch {kind} page {requested_url}: {exc}"
+            f"[{year}] failed to fetch {kind} page {requested_url}: {exc}",
+            status=http_status(exc),
         ) from exc
     page = PublishedPage(requested_url, response.url, response.text)
     etag: str | None = None
@@ -1818,7 +1836,8 @@ def collect_match(
         response.raise_for_status()
     except requests.RequestException as exc:
         raise LiveCollectionError(
-            f"[{year}] {fixture.get('id')}: failed to fetch box score {url}: {exc}"
+            f"[{year}] {fixture.get('id')}: failed to fetch box score {url}: {exc}",
+            status=http_status(exc),
         ) from exc
     page = PublishedPage(url, response.url, response.text)
     assert_served_match(page, year, fixture)
