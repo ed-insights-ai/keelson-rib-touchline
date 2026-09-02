@@ -1,6 +1,6 @@
 ---
 title: Onboard a conference
-description: Add a whole conference the way the LSC, GSC and GLVC were added — cited membership windows, probed school recipes, one collect per conference-season, and the verification that proves the neighbours are untouched.
+description: "Add a whole conference the way the LSC, GSC and GLVC were added: cited membership windows, probed school recipes, one collect per conference-season, and the verification that proves the neighbours are untouched."
 sidebar:
   order: 10
 ---
