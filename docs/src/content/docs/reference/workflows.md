@@ -104,6 +104,7 @@ Three check nodes run independently, then a `report` node aggregates. All of the
 | `collect-gaps` | collect-board gap ledger files waiting under `data/errors`, each naming the layers a run could not prove |
 | `goal-attribution` | per-programme scoreboard goals (fixtures layer, exhibitions and scoreless finals excluded and counted) against summed player goals (stats layer), every divergence named with both figures; programmes present in one layer but not the other |
 | `membership-sync` | the data home's `data/reference/membership.json` against the rib's packaged source of record, canonicalized with `jq -S` so only data can differ; a divergence warns with the exact unified diff printed above the verdict line and the install command in the cause |
+| `twin-check` | every match collected from both sides (same date, same two slugs, two season files) against itself: the unordered score and the status must agree; a disagreement warns with every record of the pair named above the verdict line. Which side each file calls home is not compared, since a neutral-site tournament legitimately differs there |
 | `report` | bun script; renders the per-check table and one final JSON verdict line |
 
 The contract, uniform across the checks:

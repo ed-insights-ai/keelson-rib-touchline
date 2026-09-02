@@ -46,6 +46,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 import re
 from collections.abc import Sequence
 from dataclasses import dataclass
@@ -60,6 +61,8 @@ from urllib3.util.retry import Retry
 from src.config import SchoolConfig
 from src.page_state import PageState, PageStateStore, content_signature
 from src.tls import TruststoreHTTPAdapter
+
+_LOG = logging.getLogger(__name__)
 
 
 class LiveCollectionError(RuntimeError):
@@ -356,11 +359,11 @@ def _payload_event_ids(html: str, owner_slug: str) -> set[str]:
 
 def _has_schedule_markup(html: str) -> bool:
     """Whether the page carries any SideArm schedule shape at all."""
-    if any(
-        component.get("type") == "events" for component in _component_objects(html)
-    ):
+    if any(component.get("type") == "events" for component in _component_objects(html)):
         return True
-    return BeautifulSoup(html, "lxml").select_one("li.sidearm-schedule-game") is not None
+    return (
+        BeautifulSoup(html, "lxml").select_one("li.sidearm-schedule-game") is not None
+    )
 
 
 def assert_untrapped_schedule(
@@ -624,11 +627,74 @@ def _dom_time(text: str) -> str | None:
 
 
 def _dom_result(text: str) -> tuple[str, int, int] | None:
-    """Parse an owner-perspective result like ``W, 2-0`` or ``T, 1-1 (2OT)``."""
+    """Parse a result like ``W, 2-0`` or ``T, 1-1 (2OT)`` as it is printed.
+
+    The two numbers are returned in PAGE ORDER, which is not an orientation:
+    ``_oriented_scores`` decides which is the owner's. See it for why.
+    """
     match = re.search(r"\b([WLT])\s*,?\s*(\d+)\s*-\s*(\d+)", text)
     if not match:
         return None
     return match.group(1), int(match.group(2)), int(match.group(3))
+
+
+def _oriented_scores(
+    letter: str | None, first: int, second: int, *, fixture_id: str
+) -> tuple[int, int] | None:
+    """The owner's score and the other side's, in that order, or nothing.
+
+    Sites do not agree on which number comes first. Most print the owner's
+    score first ("L, 0-1" on a schedule the owner lost 0-1); oceagles.com
+    prints the winner's first ("L, 3-2" for a match Oklahoma Christian lost
+    2-3, verified on the live 2025 schedule 2026-09-02). Trusting the order
+    stored twenty of Oklahoma Christian's results reversed, and the box-score
+    orienter, matching scores to the reversed fixture, put home_index on the
+    wrong side so the two errors cancelled on every surface (tl-b39).
+
+    The letter is the only orientation the page actually publishes, so it
+    wins: W means the owner scored more, L less, T the same. A pair the
+    letter contradicts is swapped and the swap is logged by fixture id; a T
+    beside unequal numbers, or a letter this function does not know, cannot
+    be put right by swapping and is refused — the row keeps its status and
+    stores no score, which the coverage and twin checks name rather than a
+    reversed result nothing would catch.
+    """
+    if letter == "W":
+        if first > second:
+            return first, second
+        if second > first:
+            _LOG.warning(
+                "%s: W printed %s-%s; stored owner %s-%s",
+                fixture_id,
+                first,
+                second,
+                second,
+                first,
+            )
+            return second, first
+    elif letter == "L":
+        if first < second:
+            return first, second
+        if second < first:
+            _LOG.warning(
+                "%s: L printed %s-%s; stored owner %s-%s",
+                fixture_id,
+                first,
+                second,
+                second,
+                first,
+            )
+            return second, first
+    elif letter == "T" and first == second:
+        return first, second
+    _LOG.warning(
+        "%s: result letter %r contradicts %s-%s and no swap can honour it; scores refused",
+        fixture_id,
+        letter,
+        first,
+        second,
+    )
+    return None
 
 
 # Sites publish the marker in two places: the opponent's own title
@@ -796,8 +862,15 @@ def _parse_schedule_dom(
             )
             if venue:
                 fixture["venue"] = venue
-        if result:
-            _, owner_score, other_score = result
+        oriented = (
+            _oriented_scores(
+                result[0], result[1], result[2], fixture_id=str(fixture["id"])
+            )
+            if result
+            else None
+        )
+        if oriented:
+            owner_score, other_score = oriented
             if owner_is_home:
                 fixture["home_score"], fixture["away_score"] = owner_score, other_score
             else:
@@ -889,16 +962,31 @@ def parse_schedule_page(
             and team_score is not None
             and opponent_score is not None
         ):
-            if owner_is_home:
-                fixture["home_score"], fixture["away_score"] = (
-                    team_score,
-                    opponent_score,
+            # The payload names the fields team_score / opponent_score, and
+            # the same site that prints the winner first in the DOM fills
+            # them the same way. The letter (result.status) decides, as in
+            # the DOM path; a live match carries no letter yet and is taken
+            # as filled.
+            letter = str(result_dict.get("status") or "").strip().upper() or None
+            oriented = (
+                (team_score, opponent_score)
+                if status == "live" and letter is None
+                else _oriented_scores(
+                    letter, team_score, opponent_score, fixture_id=str(fixture["id"])
                 )
-            else:
-                fixture["home_score"], fixture["away_score"] = (
-                    opponent_score,
-                    team_score,
-                )
+            )
+            if oriented:
+                team_score, opponent_score = oriented
+                if owner_is_home:
+                    fixture["home_score"], fixture["away_score"] = (
+                        team_score,
+                        opponent_score,
+                    )
+                else:
+                    fixture["home_score"], fixture["away_score"] = (
+                        opponent_score,
+                        team_score,
+                    )
         fixtures.append(fixture)
 
     # The component JSON is authoritative where it speaks; the DOM supplies
@@ -1017,7 +1105,9 @@ def _stat_pair(text: str) -> tuple[int, int] | None:
 def _stats_player_name(published: str) -> str:
     """Flip the stats page's "Last, First" to the roster's "First Last"."""
     head, _, tail = published.partition(",")
-    return f"{tail.strip()} {head.strip()}".strip() if tail.strip() else published.strip()
+    return (
+        f"{tail.strip()} {head.strip()}".strip() if tail.strip() else published.strip()
+    )
 
 
 def parse_stats_page(
@@ -1160,7 +1250,9 @@ def _title_box_date(html: str) -> tuple[str | None, str]:
     return f"{year:04d}-{month:02d}-{day:02d}", text
 
 
-def assert_served_match(page: PublishedPage, year: int, fixture: dict[str, object]) -> None:
+def assert_served_match(
+    page: PublishedPage, year: int, fixture: dict[str, object]
+) -> None:
     """A box score must prove WHICH match it is, not merely which season.
 
     The title reads "vs <Opponent> on M/D/YYYY - Box Score" and that date must
@@ -1298,7 +1390,9 @@ def parse_boxscore_page(html: str, *, page_url: str) -> dict[str, object]:
             name, abbr = _box_span_pair(header)
             if not name and not abbr:
                 continue
-            cells = [_stat_int(cell.get_text(strip=True)) for cell in row.find_all("td")]
+            cells = [
+                _stat_int(cell.get_text(strip=True)) for cell in row.find_all("td")
+            ]
             team: dict[str, object] = {"name": name or abbr}
             if abbr:
                 team["abbr"] = abbr
@@ -1335,13 +1429,17 @@ def parse_boxscore_page(html: str, *, page_url: str) -> dict[str, object]:
             total_cell = cells[-1]
             bold = total_cell.find("span", class_="text-bold")
             total = _stat_int(
-                bold.get_text(strip=True) if bold is not None else total_cell.get_text(strip=True)
+                bold.get_text(strip=True)
+                if bold is not None
+                else total_cell.get_text(strip=True)
             )
             if total is not None:
                 teams[index][field] = total
             if field == "shots":
                 italic = total_cell.find("span", class_="text-italic")
-                on_goal = re.search(r"\((\d+)\)", italic.get_text() if italic is not None else "")
+                on_goal = re.search(
+                    r"\((\d+)\)", italic.get_text() if italic is not None else ""
+                )
                 if on_goal:
                     teams[index]["sog"] = int(on_goal.group(1))
         break
@@ -1361,7 +1459,9 @@ def parse_boxscore_page(html: str, *, page_url: str) -> dict[str, object]:
             reference = (
                 hidden.get_text(strip=True)
                 if hidden is not None
-                else str(image.get("alt", "")) if image is not None else cells[1].get_text(strip=True)
+                else str(image.get("alt", ""))
+                if image is not None
+                else cells[1].get_text(strip=True)
             )
             index = side(reference)
             if index is not None:
@@ -1376,7 +1476,12 @@ def parse_boxscore_page(html: str, *, page_url: str) -> dict[str, object]:
                 entry["scorer"] = scorer
             italic = cells[2].find("span", class_="text-italic")
             if italic is not None:
-                assist = re.sub(r"^Assisted\s+By:\s*", "", italic.get_text(" ", strip=True), flags=re.I)
+                assist = re.sub(
+                    r"^Assisted\s+By:\s*",
+                    "",
+                    italic.get_text(" ", strip=True),
+                    flags=re.I,
+                )
                 if assist:
                     entry["assist"] = assist
             described = cells[2].find("span", class_="text-capitalize")
@@ -1425,7 +1530,11 @@ def parse_boxscore_page(html: str, *, page_url: str) -> dict[str, object]:
     # beside the "Visiting Team Score" cell that fills in on goals.
     plays: list[dict[str, object]] = []
     panel = soup.find(id="play-by-play")
-    sections = panel.find_all("section", id=re.compile(r"^period-")) if panel is not None else []
+    sections = (
+        panel.find_all("section", id=re.compile(r"^period-"))
+        if panel is not None
+        else []
+    )
     for section in sections:
         period = str(section.get("id", ""))[len("period-") :]
         table = section.find("table", class_="play-by-play")
@@ -1441,7 +1550,11 @@ def parse_boxscore_page(html: str, *, page_url: str) -> dict[str, object]:
         right = side(abbrs[1]) if len(abbrs) == 2 else None
         body = table.find("tbody")
         for row in body.find_all("tr") if body is not None else []:
-            cells = [td for td in row.find_all("td") if "hide-on-large" not in (td.get("class") or [])]
+            cells = [
+                td
+                for td in row.find_all("td")
+                if "hide-on-large" not in (td.get("class") or [])
+            ]
             if len(cells) != 6:
                 continue
             left_text = cells[1].get_text(" ", strip=True)
@@ -1471,7 +1584,9 @@ def parse_boxscore_page(html: str, *, page_url: str) -> dict[str, object]:
 
     def match_lines(suffix: str) -> dict[int, object]:
         by_side: dict[int, object] = {}
-        for text, table in captioned(lambda value, suffix=suffix: value.endswith(suffix)):
+        for text, table in captioned(
+            lambda value, suffix=suffix: value.endswith(suffix)
+        ):
             index = side(text[: -len(suffix)].strip())
             if index is None:
                 continue
@@ -1481,7 +1596,13 @@ def parse_boxscore_page(html: str, *, page_url: str) -> dict[str, object]:
                 group = row.find("th", class_="header-group")
                 if group is not None:
                     label = group.get_text(strip=True).lower()
-                    started = True if label == "starters" else False if label == "substitutes" else None
+                    started = (
+                        True
+                        if label == "starters"
+                        else False
+                        if label == "substitutes"
+                        else None
+                    )
                     continue
                 cells = row.find_all("td")
                 labelled = {
@@ -1490,7 +1611,11 @@ def parse_boxscore_page(html: str, *, page_url: str) -> dict[str, object]:
                     if cell.get("data-label")
                 }
                 name_cell = next(
-                    (cell for cell in cells if not cell.get("data-label") and cell.find("a") is not None),
+                    (
+                        cell
+                        for cell in cells
+                        if not cell.get("data-label") and cell.find("a") is not None
+                    ),
                     None,
                 )
                 if name_cell is None:
@@ -1512,7 +1637,13 @@ def parse_boxscore_page(html: str, *, page_url: str) -> dict[str, object]:
                 name, player_id = _box_player_name(name_cell)
                 # Footer rows ("Totals", "TM Team") carry data-labelled cells
                 # too; only real people belong in a match line.
-                if not name or name.lower() in {"totals", "team", "tm", "tm team", "team tm"}:
+                if not name or name.lower() in {
+                    "totals",
+                    "team",
+                    "tm",
+                    "tm team",
+                    "team tm",
+                }:
                     continue
                 line: dict[str, object] = {"name": name}
                 if player_id:
@@ -1522,8 +1653,13 @@ def parse_boxscore_page(html: str, *, page_url: str) -> dict[str, object]:
                     for cell in cells
                     if not cell.get("data-label") and cell is not name_cell
                 ]
-                position = next((value for value in plain if re.fullmatch(r"[A-Za-z]{1,3}", value)), None)
-                number = next((value for value in plain if re.fullmatch(r"\d{1,3}", value)), None)
+                position = next(
+                    (value for value in plain if re.fullmatch(r"[A-Za-z]{1,3}", value)),
+                    None,
+                )
+                number = next(
+                    (value for value in plain if re.fullmatch(r"\d{1,3}", value)), None
+                )
                 if position:
                     line["position"] = position
                 if number:
@@ -1632,12 +1768,12 @@ def orient_match(detail: dict[str, object], fixture: dict[str, object]) -> None:
             detail["home_index"] = 1
         return
     home_slug, away_slug = str(fixture.get("home", "")), str(fixture.get("away", ""))
-    straight = _name_slug_affinity(str(teams[0].get("name", "")), home_slug) + _name_slug_affinity(
-        str(teams[1].get("name", "")), away_slug
-    )
-    crossed = _name_slug_affinity(str(teams[0].get("name", "")), away_slug) + _name_slug_affinity(
-        str(teams[1].get("name", "")), home_slug
-    )
+    straight = _name_slug_affinity(
+        str(teams[0].get("name", "")), home_slug
+    ) + _name_slug_affinity(str(teams[1].get("name", "")), away_slug)
+    crossed = _name_slug_affinity(
+        str(teams[0].get("name", "")), away_slug
+    ) + _name_slug_affinity(str(teams[1].get("name", "")), home_slug)
     if straight > crossed:
         detail["home_index"] = 0
     elif crossed > straight:
@@ -1896,9 +2032,7 @@ def collect_programme(
     if LAYER_ROSTER in wanted:
         roster_url = f"{base_url}/roster/{year}"
         fingerprint = parse_fingerprint(year)
-        state = (
-            page_cache.load(slug, LAYER_ROSTER, fingerprint) if page_cache else None
-        )
+        state = page_cache.load(slug, LAYER_ROSTER, fingerprint) if page_cache else None
         try:
             fetched = fetch_published_page_conditional(
                 client,
@@ -1991,9 +2125,7 @@ def collect_programme(
     if LAYER_STATS in wanted:
         stats_url = f"{base_url}/stats/{year}"
         fingerprint = parse_fingerprint(year)
-        state = (
-            page_cache.load(slug, LAYER_STATS, fingerprint) if page_cache else None
-        )
+        state = page_cache.load(slug, LAYER_STATS, fingerprint) if page_cache else None
         try:
             fetched = fetch_published_page_conditional(
                 client,

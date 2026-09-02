@@ -11,6 +11,7 @@ from src import coverage
 from src.config import SchoolConfig
 from src.sidearm_live import (
     LiveCollectionError,
+    _oriented_scores,
     STATE_NO_COLLECTOR,
     identity_aliases,
     opponent_slug,
@@ -309,7 +310,10 @@ def test_a_genuine_archive_page_parses_dom_only_without_current_pollution() -> N
         page_url="https://example.test/schedule/2019",
         year=2019,
         owner_slug="harding",
-        aliases={"southern nazarene": "southern-nazarene", "rogers state": "rogers-state"},
+        aliases={
+            "southern nazarene": "southern-nazarene",
+            "rogers state": "rogers-state",
+        },
     )
     assert_untrapped_schedule(
         html, 2019, "https://example.test/schedule/2019", fixtures, "harding"
@@ -333,7 +337,10 @@ def test_a_spring_completion_lands_in_the_following_calendar_year() -> None:
     """The COVID 2020 season was finished in spring 2021; the rendered date
     carries no year, so January–June belongs to the year after the season's."""
     rows = _dom_game(
-        game_id="8801", opponent="Southern Nazarene", date="Feb 20 (Sat)", result="W, 1-0"
+        game_id="8801",
+        opponent="Southern Nazarene",
+        date="Feb 20 (Sat)",
+        result="W, 1-0",
     )
     html = (
         "<html><head><title>2020 Men's Soccer Schedule - Example</title></head>"
@@ -358,7 +365,9 @@ def test_an_honest_empty_season_is_empty_not_unavailable() -> None:
     session = MagicMock()
     session.get.side_effect = [schedule_response]
 
-    result = collect_programme(_school(), 2020, {}, session=session, layers=("schedule",))
+    result = collect_programme(
+        _school(), 2020, {}, session=session, layers=("schedule",)
+    )
 
     assert result.state("schedule") == "empty"
     assert "listed no fixtures" in (result.outcomes["schedule"].reason or "")
@@ -374,7 +383,9 @@ def test_a_page_with_no_schedule_shape_at_all_is_unavailable() -> None:
     session = MagicMock()
     session.get.side_effect = [schedule_response]
 
-    result = collect_programme(_school(), 2019, {}, session=session, layers=("schedule",))
+    result = collect_programme(
+        _school(), 2019, {}, session=session, layers=("schedule",)
+    )
 
     assert result.state("schedule") == "unavailable"
     assert "no rendered games" in (result.outcomes["schedule"].reason or "")
@@ -581,7 +592,7 @@ def test_a_poll_rank_is_not_part_of_an_identity() -> None:
 
 
 def test_receiving_votes_is_a_rank_not_an_identity() -> None:
-    """"RV" is a rank with no digits in it, so the numeric forms never caught it.
+    """ "RV" is a rank with no digits in it, so the numeric forms never caught it.
 
     Measured in the archive: rv-lee beside lee, rv-rollins, rv-seattle-pacific
     and five more — eight rows across eight shards, in both the GSC and the
@@ -722,7 +733,9 @@ def test_a_programme_with_no_live_recipe_reports_every_layer_unavailable() -> No
     assert "no live schedule/roster recipe" in (result.outcomes["roster"].reason or "")
 
 
-def test_an_unimplemented_live_collector_reports_no_collector_without_fetching() -> None:
+def test_an_unimplemented_live_collector_reports_no_collector_without_fetching() -> (
+    None
+):
     school = _school()
     school.live_scraper = "sidearm_legacy"
     session = MagicMock()
@@ -1068,15 +1081,12 @@ def test_roster_position_blob_is_peeled_into_fields() -> None:
 
 def test_a_logo_only_conference_marker_still_counts_as_published() -> None:
     """One theme marks conference games with a bare logo image and no text."""
-    rows = (
-        _dom_game(
-            game_id="1",
-            opponent="Harding",
-            date="Oct 3 (Sat)",
-            conference='<img alt="Great American Conference" src="/gac.png">',
-        )
-        + _dom_game(game_id="2", opponent="Drury", date="Sep 2 (Wed)")
-    )
+    rows = _dom_game(
+        game_id="1",
+        opponent="Harding",
+        date="Oct 3 (Sat)",
+        conference='<img alt="Great American Conference" src="/gac.png">',
+    ) + _dom_game(game_id="2", opponent="Drury", date="Sep 2 (Wed)")
     fixtures = parse_schedule_page(
         _dom_page(rows),
         page_url="https://example.test/schedule/2026",
@@ -1103,7 +1113,7 @@ def _stats_html(title: str = "2019 Men's Soccer Cumulative Statistics") -> str:
         return f'<td data-label="{label}">{value}</td>'
 
     offense = (
-        '<table><caption>Individual Overall Offensive Statistics</caption>'
+        "<table><caption>Individual Overall Offensive Statistics</caption>"
         "<tr><th>#</th><th>Player</th><th>GP</th></tr>"
         '<tr><td data-sort="7">7</td>'
         '<td><a data-player-id="2914" href="#">Simpson, Jake</a>'
@@ -1128,7 +1138,7 @@ def _stats_html(title: str = "2019 Men's Soccer Cumulative Statistics") -> str:
         + "</tr></table>"
     )
     keeping = (
-        '<table><caption>Individual Overall Goalkeeping Statistics</caption>'
+        "<table><caption>Individual Overall Goalkeeping Statistics</caption>"
         "<tr><th>#</th><th>Player</th><th>GP</th></tr>"
         '<tr><td data-sort="1">1</td>'
         '<td><a data-player-id="2902" href="#">Dean, Dillon</a></td>'
@@ -1368,7 +1378,13 @@ def test_boxscore_parser_reads_the_whole_match() -> None:
     assert second["team"] == 1 and second["scorer"] == "Solomon Pela"
 
     yellow, red, bench = detail["cards"]
-    assert yellow == {"type": "yellow", "player": "Wesley Mhlanga", "number": "8", "time": "41:45", "team": 1}
+    assert yellow == {
+        "type": "yellow",
+        "player": "Wesley Mhlanga",
+        "number": "8",
+        "time": "41:45",
+        "team": 1,
+    }
     assert red["type"] == "red" and red["player"] == "Cian Halpin" and red["team"] == 0
     assert bench["player"] == "0"  # the site's own anonymous bench caution
 
@@ -1421,9 +1437,7 @@ def test_a_covid_season_boxscore_dated_the_following_spring_is_accepted() -> Non
         "https://example.test/stats/2020/rogers-state/boxscore/900",
         "<html><head><title>Men's Soccer vs Rogers State on 4/3/2021 - Box Score - Example</title></head></html>",
     )
-    assert_served_match(
-        page, 2020, {"id": "sidearm:x:900", "date": "2021-04-03"}
-    )
+    assert_served_match(page, 2020, {"id": "sidearm:x:900", "date": "2021-04-03"})
 
 
 def test_a_boxscore_redirected_to_the_schedule_is_refused() -> None:
@@ -1475,7 +1489,9 @@ def test_an_unresolvable_draw_stays_unoriented() -> None:
     from src.sidearm_live import orient_match
 
     detail = {"teams": [{"name": "Alpha", "score": 0}, {"name": "Beta", "score": 0}]}
-    orient_match(detail, {"home": "gamma", "away": "delta", "home_score": 0, "away_score": 0})
+    orient_match(
+        detail, {"home": "gamma", "away": "delta", "home_score": 0, "away_score": 0}
+    )
     assert "home_index" not in detail
 
 
@@ -1530,7 +1546,9 @@ def _play_panel_html(rows: str, *, left: str, right: str) -> str:
     </section></section></body></html>"""
 
 
-def _play_row(clock: str, left: str, right: str, visiting: str = "", home: str = "") -> str:
+def _play_row(
+    clock: str, left: str, right: str, visiting: str = "", home: str = ""
+) -> str:
     return f"""<tr><td>{clock}</td>
       <td class="text-right hide-on-medium-down">{left}</td>
       <td class="text-center text-bold hide-on-medium-down">{visiting}</td>
@@ -1548,7 +1566,9 @@ def test_play_by_play_scores_align_by_abbreviation_not_column_order() -> None:
     # Beta is the visiting (left) column but sits second in the teams order,
     # and shootout rows carry no game clock.
     html = _play_panel_html(
-        _play_row("--", "Shootout attempt by BU Doe, Jan MADE [Keeper, Al].", "", "1", "0")
+        _play_row(
+            "--", "Shootout attempt by BU Doe, Jan MADE [Keeper, Al].", "", "1", "0"
+        )
         + _play_row("00:00", "", "*")
         + _play_row("00:00", "", "GOAL by AU Roe, Sam."),
         left="BU",
@@ -1574,7 +1594,9 @@ def test_boxscore_links_join_on_the_game_id() -> None:
         '<a href="/sports/mens-soccer/stats/2025/union-tn-/boxscore/14824">Box Score</a>'
         '<a href="/sports/mens-soccer/stats/2025/drury/boxscore/14820">Box Score</a>'
     )
-    links = boxscore_links(html, "https://example.test/sports/mens-soccer/schedule/2025")
+    links = boxscore_links(
+        html, "https://example.test/sports/mens-soccer/schedule/2025"
+    )
     assert links == {
         "14824": "https://example.test/sports/mens-soccer/stats/2025/union-tn-/boxscore/14824",
         "14820": "https://example.test/sports/mens-soccer/stats/2025/drury/boxscore/14820",
@@ -1585,7 +1607,9 @@ def test_collect_match_proves_and_parses_one_fixture() -> None:
     from src.sidearm_live import collect_match
 
     response = MagicMock()
-    response.url = "https://example.test/sports/mens-soccer/stats/2025/union-tn-/boxscore/14824"
+    response.url = (
+        "https://example.test/sports/mens-soccer/stats/2025/union-tn-/boxscore/14824"
+    )
     response.text = _boxscore_html()
     session = MagicMock()
     session.get.return_value = response
@@ -1603,14 +1627,19 @@ def test_a_boxscore_with_one_team_is_refused_not_persisted(
     from src import sidearm_live
 
     response = MagicMock()
-    response.url = "https://example.test/sports/mens-soccer/stats/2025/union-tn-/boxscore/14824"
+    response.url = (
+        "https://example.test/sports/mens-soccer/stats/2025/union-tn-/boxscore/14824"
+    )
     response.text = _boxscore_html()
     session = MagicMock()
     session.get.return_value = response
     monkeypatch.setattr(
         sidearm_live,
         "parse_boxscore_page",
-        lambda html, *, page_url: {"source_url": page_url, "teams": [{"name": "Harding"}]},
+        lambda html, *, page_url: {
+            "source_url": page_url,
+            "teams": [{"name": "Harding"}],
+        },
     )
     with pytest.raises(LiveCollectionError, match="rendered 1 team"):
         sidearm_live.collect_match(session, response.url, 2025, dict(_OT_FIXTURE))
@@ -1666,9 +1695,7 @@ def test_the_payload_marks_an_exhibition_and_a_scoreless_final() -> None:
 
 
 def test_a_league_game_carries_no_match_type() -> None:
-    html = _dom_page(
-        _dom_game(game_id="8", opponent="Harding", date="Sep 17 (Thu)")
-    )
+    html = _dom_page(_dom_game(game_id="8", opponent="Harding", date="Sep 17 (Thu)"))
     [fixture] = parse_schedule_page(
         html,
         page_url="https://example.test/schedule/2026",
@@ -1775,3 +1802,102 @@ def test_the_payload_does_not_mark_friends_university_as_a_friendly() -> None:
     )
     assert "match_type" not in fixture
     assert fixture["venue"] == "Wichita, Kan."
+
+
+# ── tl-b39: the W/L/T letter orients a result, never the printed order ──────
+# oceagles.com prints the winner's score first ("L, 3-2" for a match Oklahoma
+# Christian lost 2-3), verified on the live 2025 schedule 2026-09-02. These
+# are that page's own strings.
+
+_OC_2025 = [
+    # (result as printed, owner is home, expected owner score, other score)
+    ("W, 1-0", True, 1, 0),  # Sep 4 vs Southern Nazarene
+    ("L, 3-2", False, 2, 3),  # Sep 6 at Newman — Newman 3, OC 2
+    ("T, 1-1", True, 1, 1),  # Sep 10 vs Drury
+    ("L, 1-0", True, 0, 1),  # Sep 13 vs Rogers State — RSU 1, OC 0
+    ("W, 4-0", False, 4, 0),  # Sep 20 at Mid-America Christian
+    ("L, 2-1", False, 1, 2),  # Oct 1 at UT Dallas
+    ("L, 3-1", False, 1, 3),  # Nov 5 at Drury
+]
+
+
+@pytest.mark.parametrize(("printed", "owner_home", "owner", "other"), _OC_2025)
+def test_dom_result_honours_the_letter_over_the_printed_order(
+    printed: str, owner_home: bool, owner: int, other: int
+) -> None:
+    rows = _dom_game(
+        game_id="12572",
+        opponent="Newman",
+        date="Sep 6 (Sat)",
+        side="home" if owner_home else "away",
+        result=printed,
+    )
+    fixture = parse_schedule_page(
+        _dom_page(rows),
+        page_url="https://oceagles.com/sports/mens-soccer/schedule/2025",
+        year=2025,
+        owner_slug="oklahoma-christian",
+        aliases=identity_aliases(_gac(), "men"),
+    )[0]
+    owner_score = fixture["home_score"] if owner_home else fixture["away_score"]
+    other_score = fixture["away_score"] if owner_home else fixture["home_score"]
+    assert (owner_score, other_score) == (owner, other)
+    letter = printed[0]
+    # The invariant the bug violated: L can never store the owner higher and
+    # W never lower, whatever order the page printed.
+    if letter == "L":
+        assert owner_score < other_score
+    elif letter == "W":
+        assert owner_score > other_score
+    else:
+        assert owner_score == other_score
+
+
+def test_dom_result_refuses_a_tie_with_unequal_numbers() -> None:
+    rows = _dom_game(
+        game_id="9",
+        opponent="Harding",
+        date="Oct 1 (Wed)",
+        side="home",
+        result="T, 2-1",
+    )
+    fixture = parse_schedule_page(
+        _dom_page(rows),
+        page_url="https://example.test/schedule/2026",
+        year=2026,
+        owner_slug="rogers-state",
+        aliases=identity_aliases(_gac(), "men"),
+    )[0]
+    assert fixture["status"] == "final"
+    assert "home_score" not in fixture
+    assert "away_score" not in fixture
+
+
+def test_component_json_honours_the_letter_too() -> None:
+    event = {
+        "id": 12572,
+        "date": "2025-09-06T19:00:00",
+        "location_indicator": "A",
+        "is_conference": False,
+        "type": "completed",
+        "schedule": {"title": "2025 Men's Soccer Schedule"},
+        "opponent": {"title": "Newman"},
+        "result": {"team_score": "3", "opponent_score": "2", "status": "L"},
+    }
+    fixture = parse_schedule_page(
+        _schedule_html(event),
+        page_url="https://oceagles.com/sports/mens-soccer/schedule/2025",
+        year=2025,
+        owner_slug="oklahoma-christian",
+        aliases={"newman": "newman"},
+    )[0]
+    assert fixture["home"] == "newman"
+    assert fixture["home_score"] == 3
+    assert fixture["away_score"] == 2
+
+
+def test_a_swap_is_logged_by_fixture_id(caplog: pytest.LogCaptureFixture) -> None:
+    with caplog.at_level("WARNING", logger="src.sidearm_live"):
+        _oriented_scores("L", 3, 2, fixture_id="sidearm:oklahoma-christian:12572")
+    assert "sidearm:oklahoma-christian:12572" in caplog.text
+    assert "stored owner 2-3" in caplog.text
