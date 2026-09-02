@@ -60,6 +60,8 @@ years        = [2019, 2021, 2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
+# Peers print "Fort Hays" (CSU Pueblo 2022, sidearm:csu-pueblo:6569).
+aliases      = ["Fort Hays"]
 
 [[schools]]
 name         = "Newman"
@@ -289,6 +291,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
+# Westminster 2023 prints a tournament result line as "Midwestern"
+# (sidearm:westminster:12070).
+aliases      = ["Midwestern"]
 
 [[schools]]
 name         = "Oklahoma Christian"
@@ -392,6 +397,10 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
+# Peers print "Texas-Tyler" (CSU Pueblo 2024, sidearm:csu-pueblo:7640) and
+# "The University of Texas at Tyler" (Colorado Christian 2025,
+# sidearm:colorado-christian:7440), which keys to "of texas at tyler".
+aliases      = ["Texas-Tyler", "University of Texas at Tyler"]
 
 # Archive fixtures derived pre-config carry the alias slug
 # west-texas-a-and-m; the adjudicated alias pass reconciles them.
@@ -1042,7 +1051,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["South Dakota School of Mines", "South Dakota School of Mines and Technology", "South Dakota School of Mines & Technology"]
+# CSU Pueblo prints "S.D. Mines" (2022 and 2023, sidearm:csu-pueblo:6579 and
+# 7004), collected as s-d-mines beside the member until this alias.
+aliases      = ["South Dakota School of Mines", "South Dakota School of Mines and Technology", "South Dakota School of Mines & Technology", "S.D. Mines"]
 
 [[schools]]
 name         = "UCCS"
