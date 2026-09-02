@@ -25,6 +25,18 @@ BOX_SPELLINGS = [
     ("Ouachita", "ouachita-baptist"),
     # sidearm:eastern-new-mexico:12464, 2022-10-15
     ("Eastern N.M.", "eastern-new-mexico"),
+    # The RMAC alias round (tl-clk.2, 2026-09-02): spellings read off member
+    # schedule pages that collected a member as a stranger.
+    # sidearm:csu-pueblo:6579, 2022-09-30
+    ("S.D. Mines", "south-dakota-mines"),
+    # sidearm:csu-pueblo:6569, 2022-08-25
+    ("Fort Hays", "fort-hays-state"),
+    # sidearm:csu-pueblo:7640, 2024-09-14
+    ("Texas-Tyler", "ut-tyler"),
+    # sidearm:colorado-christian:7440, 2025-09-13
+    ("The University of Texas at Tyler", "ut-tyler"),
+    # sidearm:westminster:12070, 2023-09-02
+    ("Midwestern", "midwestern-state"),
 ]
 
 
