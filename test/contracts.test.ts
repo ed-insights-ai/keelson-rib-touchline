@@ -85,6 +85,7 @@ describe("the fixtures exercise every value the schemas enumerate", () => {
     );
     expect(file.fixtures.some((f) => f.match_type === "exhibition")).toBe(true);
     expect(file.fixtures.some((f) => f.conference_game_source === "derived:membership")).toBe(true);
+    expect(file.fixtures.some((f) => f.neutral === true)).toBe(true);
     expect(file.programmes.some((p) => p.abbr === undefined)).toBe(true);
   });
 

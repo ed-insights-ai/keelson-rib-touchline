@@ -843,3 +843,19 @@ def test_sync_never_writes_from_a_broken_source_of_record(
     note = collect_board.sync_membership_reference()
     assert note is not None and "NOT synced" in note
     assert stale.read_text(encoding="utf-8") == stale_text
+
+
+def test_dedupe_a_neutral_marking_survives_the_merge() -> None:
+    # Only one side's theme may class the row neutral (measured: the
+    # goriverhawksgo.com 2022 row for Maryville carried the class); the flag
+    # must not be lost when the other side's fuller record wins the merge.
+    marked = _fx(id="sidearm:rogers-state:1", neutral=True)
+    fuller = _fx(
+        id="sidearm:midwestern-state:9",
+        status="final",
+        time="19:00",
+        venue="Springfield, Mo.",
+    )
+    merged, _ = _dedupe_fixtures([marked, fuller])
+    assert merged[0]["status"] == "final"
+    assert merged[0]["neutral"] is True

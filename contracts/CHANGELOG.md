@@ -6,6 +6,12 @@ fails `pipeline/tests/test_contracts.py`.
 
 ## 2026-09-02
 
+- `touchline.fixtures/2`: a fixture may carry `neutral: true`, set when the
+  schedule page itself marks a neutral site (the theme's
+  `sidearm-schedule-neutral-game` row class, or `location_indicator: "N"` in
+  the events payload). Home and away stay as published; the flag gives the
+  site's neutral fold a first-hand source in place of twin disagreement
+  (bead tl-4sg.25). Restamped from goriverhawksgo.com 2022 game 12745.
 - `touchline.coverage/1`: cells may carry `verified: "unchanged"`, the
   conditional fetch's marker for a page reused rather than re-parsed (rib
   7a2f481). The first re-collect to write it (GLVC, 2026-09-02) was refused by
