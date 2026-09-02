@@ -110,6 +110,9 @@ def test_fixtures_fixture_exercises_every_status_and_marking() -> None:
     ) == {"published:schedule-page"}
     assert document["membership_extrapolated"] is True
     assert document["missing"]
+    # The neutral-site marker is a boolean the writer sets only when the page
+    # itself says so; the fixture must carry one so the writer may.
+    assert any(fixture.get("neutral") is True for fixture in document["fixtures"])
 
 
 def test_matches_fixture_exercises_every_card_type_and_period() -> None:
@@ -170,6 +173,7 @@ def _rows(slug: str, opponent: str) -> list[dict[str, object]]:
             "home": opponent,
             "away": slug,
             "status": "scheduled",
+            "neutral": True,
             "conference_game": False,
             "conference_game_source": "derived:membership",
             "source_url": url,

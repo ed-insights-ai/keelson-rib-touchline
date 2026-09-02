@@ -770,8 +770,14 @@ def _dom_game(
     location: str = "",
     promotion: str = "",
     completed: bool = False,
+    neutral: bool = False,
 ) -> str:
-    side_class = f"sidearm-schedule-{side}-game"
+    # The measured neutral shape (goriverhawksgo.com 2022, mckbearcats.com
+    # 2025): the row carries sidearm-schedule-neutral-game in place of the
+    # home/away class, and the "vs"/"at" span is the only side indicator.
+    side_class = (
+        "sidearm-schedule-neutral-game" if neutral else f"sidearm-schedule-{side}-game"
+    )
     if completed:
         side_class += " sidearm-schedule-game-completed"
     indicator = "at" if side == "away" else "vs"
@@ -1901,3 +1907,94 @@ def test_a_swap_is_logged_by_fixture_id(caplog: pytest.LogCaptureFixture) -> Non
         _oriented_scores("L", 3, 2, fixture_id="sidearm:oklahoma-christian:12572")
     assert "sidearm:oklahoma-christian:12572" in caplog.text
     assert "stored owner 2-3" in caplog.text
+
+
+def test_a_seed_spelled_as_a_separate_word_is_a_rank() -> None:
+    """The tournament theme prints the seed as its own span before the link.
+
+    Measured: "#5 Seed Maryville University" on mckbearcats.com 2025 (game
+    19843), "#8 Seed Drury University" and "#4 Seed McKendree University" on
+    uisprairiestars.com 2023, "#4 seed DBU" on uttylerpatriots.com 2025. The
+    hyphenated form stripped "#5" and kept "Seed", so the archive filed those
+    matches under seed-maryville, seed-drury, seed-mckendree and seed-dbu,
+    slugs nobody else uses (tl-4sg.22).
+    """
+    aliases = identity_aliases(_gac(), "men")
+    assert opponent_slug("#5 Seed Maryville University", aliases) == "maryville"
+    assert opponent_slug("#8 Seed Drury University", aliases) == "drury"
+    assert opponent_slug("#4 Seed McKendree University", aliases) == "mckendree"
+    assert opponent_slug("#4 seed DBU", aliases) == "dbu"
+    # The "No. N" forms the same pages print already fold; they stay pinned so
+    # a stricter seed token can never widen into them.
+    assert opponent_slug("No. 25 Maryville", aliases) == "maryville"
+    assert opponent_slug("No. 12 Maryville", aliases) == "maryville"
+    assert opponent_slug("No. 24 McKendree", aliases) == "mckendree"
+
+
+def test_a_neutral_site_row_carries_the_flag_and_keeps_the_published_sides() -> None:
+    """The measured goriverhawksgo.com 2022 shape (game 12745): the row's only
+    site class is sidearm-schedule-neutral-game, the indicator span says "vs",
+    and the venue is "Springfield, Mo.". Both twins of a neutral game name a
+    different home side, so the site's fold had only their disagreement to go
+    on; the flag is its first-hand source, and home/away stay as published."""
+    html = _dom_page(
+        _dom_game(
+            game_id="12745",
+            opponent="No. 25 Maryville",
+            date="Sep 4 (Sun)",
+            neutral=True,
+            location="Springfield, Mo.",
+            result="W, 2-0",
+            completed=True,
+        )
+        + _dom_game(
+            game_id="12746",
+            opponent="Harding",
+            date="Sep 8 (Thu)",
+            side="home",
+            completed=True,
+        )
+    )
+    neutral, hosted = parse_schedule_page(
+        html,
+        page_url="https://example.test/schedule/2022",
+        year=2022,
+        owner_slug="northeastern-state",
+        aliases={"maryville": "maryville", "harding": "harding"},
+    )
+    assert neutral["id"] == "sidearm:northeastern-state:12745"
+    assert neutral["neutral"] is True
+    assert (neutral["home"], neutral["away"]) == ("northeastern-state", "maryville")
+    assert neutral["venue"] == "Springfield, Mo."
+    assert (neutral["home_score"], neutral["away_score"]) == (2, 0)
+    # A hosted row says nothing: absence means the page published no marker.
+    assert "neutral" not in hosted
+
+
+def test_the_payload_marks_a_neutral_site_by_its_indicator() -> None:
+    """Measured in the snuathletics.com events component: Maryville University
+    with "location_indicator":"N" and "neutral_hometeam":true at
+    "Claremore, OK". The indicator is the payload's whole word on the site;
+    the flag rides it the same way the DOM path rides the row class."""
+    event = {
+        "id": 7718,
+        "date": "2026-08-27T17:00:00",
+        "location_indicator": "N",
+        "neutral_hometeam": True,
+        "location": "Claremore, OK",
+        "is_conference": False,
+        "type": "completed",
+        "schedule": {"title": "2026 Men's Soccer Schedule"},
+        "opponent": {"title": "Maryville University"},
+        "result": {"team_score": 1, "opponent_score": 0, "status": "W"},
+    }
+    [fixture] = parse_schedule_page(
+        _schedule_html(event),
+        page_url="https://example.test/schedule/2026",
+        year=2026,
+        owner_slug="southern-nazarene",
+        aliases={"maryville": "maryville"},
+    )
+    assert fixture["neutral"] is True
+    assert (fixture["home"], fixture["away"]) == ("southern-nazarene", "maryville")
+    assert fixture["venue"] == "Claremore, OK"

@@ -61,6 +61,12 @@ export const fixtureSchema = z
      *  not count — "(Exhibition)" in the opponent's published title. Absence
      *  means a countable game. */
     match_type: z.enum(["exhibition"]).optional(),
+    /** Present (and true) only when the schedule page itself marks a neutral
+     *  site: the theme's sidearm-schedule-neutral-game row class, or the
+     *  events payload's location_indicator "N". Home and away stay as the
+     *  page published them; this says neither side hosted. Absence means the
+     *  page published no marker, not that the site was someone's home. */
+    neutral: z.literal(true).optional(),
     /** Whether the result counts in the conference table. */
     conference_game: z.boolean().optional(),
     /** Present only when the flag was NOT published by a schedule page —

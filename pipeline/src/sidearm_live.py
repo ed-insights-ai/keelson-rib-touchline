@@ -409,6 +409,16 @@ def assert_untrapped_schedule(
 #                               all, which every numeric form missed
 #   (3)  [7]                    a seed, bracketed either way
 #   3-seed  #4-seed  5th-Seed   a seed spelled as a word
+#   #5 Seed  #8 Seed  #4 seed   a seed spelled as a separate word: the
+#                               tournament theme renders "<span>#5 Seed</span>"
+#                               before the opponent link (measured
+#                               "#5 Seed Maryville University" on
+#                               mckbearcats.com 2025, "#8 Seed Drury
+#                               University" on uisprairiestars.com 2023,
+#                               "#4 seed DBU" on uttylerpatriots.com 2025).
+#                               The hyphenated form alone stripped the "#5"
+#                               and left "Seed", filing the match under
+#                               seed-maryville, seed-drury, seed-dbu
 #   RV/#11  #4/#5               ranked in two polls at once, slash-joined
 #   (1) #3   #17 [7]   (5) RV   a bracketed seed in front of a second rank
 #
@@ -426,7 +436,7 @@ _RANK_VALUE = r"(?:rv|\d{1,2})"
 _RANK_TOKEN = (
     r"(?:"
     rf"\(\s*{_RANK_VALUE}\s*\)|\[\s*{_RANK_VALUE}\s*\]"
-    r"|(?:#|no\.?)?\s*\d{1,2}(?:st|nd|rd|th)?-seed"
+    r"|(?:#|no\.?)?\s*\d{1,2}(?:st|nd|rd|th)?[-\s]seed"
     rf"|(?:#|no\.?)?\s*{_RANK_VALUE}"
     r")"
 )
@@ -772,6 +782,13 @@ def _parse_schedule_dom(
         ):
             continue
         classes = set(row.get("class") or [])
+        # The theme's own word for a neutral site is a row class (measured:
+        # "sidearm-schedule-neutral-game" on goriverhawksgo.com 2022 game
+        # 12745, Maryville at "Springfield, Mo."; mckbearcats.com 2025 game
+        # 19843 at "Creve Coeur, Mo."). Both twins of such a game name a
+        # different home side, so the fold on the site had only their
+        # disagreement to go on; the flag is that first-hand source.
+        neutral = "sidearm-schedule-neutral-game" in classes
         location = row.select_one(".sidearm-schedule-game-location")
         location_text = (
             location.get_text(" ", strip=True) if location is not None else ""
@@ -789,9 +806,10 @@ def _parse_schedule_dom(
             participant_slugs = (home, away)
         else:
             other_slug = opponent_slug(opponent_name, aliases)
-            if "sidearm-schedule-neutral-game" in classes:
+            if neutral:
                 # Neutral rows keep the "vs"/"at" span as the only side
-                # indicator.
+                # indicator; home/away stay as published, the flag says
+                # neither side hosted.
                 indicator = _first_text(
                     row, ".sidearm-schedule-game-home, .sidearm-schedule-game-away"
                 )
@@ -831,6 +849,8 @@ def _parse_schedule_dom(
             "status": status,
             "source_url": page_url,
         }
+        if neutral:
+            fixture["neutral"] = True
         if exhibition:
             fixture["match_type"] = "exhibition"
         if theme_marks_conference:
@@ -941,6 +961,12 @@ def parse_schedule_page(
             "conference_game": bool(event.get("is_conference")),
             "source_url": page_url,
         }
+        # The payload's word for a neutral site is the indicator itself
+        # (measured: "location_indicator":"N" with "neutral_hometeam":true,
+        # Maryville University at "Claremore, OK" in the snuathletics.com
+        # events component). Same flag as the DOM path, same meaning.
+        if indicator == "N":
+            fixture["neutral"] = True
         facility = event.get("game_facility")
         facility_dict = facility if isinstance(facility, dict) else {}
         venue = str(facility_dict.get("title") or event.get("location") or "").strip()

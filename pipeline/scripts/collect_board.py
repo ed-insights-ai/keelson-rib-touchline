@@ -282,7 +282,7 @@ def _dedupe_fixtures(
             if candidate_score > existing_score
             else (existing, dict(fixture))
         )
-        for field in ("time", "venue", "match_type"):
+        for field in ("time", "venue", "match_type", "neutral"):
             if field not in winner and field in loser:
                 winner[field] = loser[field]
         # Two finals can tie on lifecycle rank when one side published a
