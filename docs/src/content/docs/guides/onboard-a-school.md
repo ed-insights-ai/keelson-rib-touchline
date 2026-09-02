@@ -99,6 +99,13 @@ city         = "{Town, St.}"
 identity_accessed = "{probe date}"
 ```
 
+`scraper` and `live_scraper` name the platform the collector reads the site
+with: `sidearm` (the default when `live_scraper` is absent) or
+`prestosports`, each a recipe in `pipeline/src/recipes.py`. A PrestoSports
+stanza collects the schedule and roster layers; its stats and matches cells
+file `no-collector`, with a reason naming the platform and the layer, until
+the team-statistics and box-score parsers land (bead tl-v1q.5, PR 3).
+
 `derive_identity` (`pipeline/src/probe.py`) fills the identity fields from
 what the site says of itself, reading the landing page and the newest served
 schedule page: `abbreviation` is the site's own short token when the site

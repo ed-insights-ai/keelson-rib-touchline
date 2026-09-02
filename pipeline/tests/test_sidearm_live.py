@@ -1998,3 +1998,113 @@ def test_the_payload_marks_a_neutral_site_by_its_indicator() -> None:
     assert fixture["neutral"] is True
     assert (fixture["home"], fixture["away"]) == ("southern-nazarene", "maryville")
     assert fixture["venue"] == "Claremore, OK"
+
+
+def test_the_sidearm_recipe_routes_collect_programme_as_before(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The live-collector table maps a platform onto a recipe now.  SideArm's
+    entry is this module's own functions, looked up by name at call time so
+    the module names stay the seams tests replace, and a SideArm school
+    still requests ``{base}/{layer}/{year}`` and parses with them."""
+    from src import sidearm_live
+    from src.recipes import LIVE_COLLECTORS, SIDEARM
+
+    assert LIVE_COLLECTORS["sidearm"] is SIDEARM
+    assert _school().live_collector() == "sidearm"
+    assert SIDEARM.layer_url(
+        "https://example.test/sports/mens-soccer/", 2026, "schedule"
+    ) == ("https://example.test/sports/mens-soccer/schedule/2026")
+    assert {
+        member: getattr(SIDEARM, member).__name__
+        for member in (
+            "assert_served_season",
+            "parse_schedule",
+            "assert_schedule_proven",
+            "parse_roster",
+            "parse_stats",
+            "boxscore_links",
+            "collect_match",
+        )
+    } == {
+        "assert_served_season": "assert_served_season",
+        "parse_schedule": "parse_schedule_page",
+        "assert_schedule_proven": "assert_schedule_proven",
+        "parse_roster": "parse_roster_page",
+        "parse_stats": "parse_stats_page",
+        "boxscore_links": "boxscore_links",
+        "collect_match": "collect_match",
+    }
+
+    parsed: list[str] = []
+
+    def counting_parse(html: str, *, page_url: str) -> list[dict[str, str]]:
+        parsed.append(page_url)
+        return parse_roster_page(html, page_url=page_url)
+
+    monkeypatch.setattr(sidearm_live, "parse_roster_page", counting_parse)
+    roster_response = MagicMock()
+    roster_response.url = "https://example.test/sports/mens-soccer/roster/2019"
+    roster_response.text = (
+        "<html><head><title>2019 Men's Soccer Roster</title></head><body><ul>"
+        '<li class="sidearm-roster-player" data-player-id="9">'
+        '<div class="sidearm-roster-player-name"><a href="/x">Andre Cunha</a></div>'
+        "</li></ul></body></html>"
+    )
+    session = MagicMock()
+    session.get.side_effect = [roster_response]
+
+    result = collect_programme(_school(), 2019, {}, session=session, layers=("roster",))
+
+    assert session.get.call_args.args[0] == (
+        "https://example.test/sports/mens-soccer/roster/2019"
+    )
+    assert result.state("roster") == "complete"
+    assert [player["name"] for player in result.players] == ["Andre Cunha"]
+    assert parsed == ["https://example.test/sports/mens-soccer/roster/2019"]
+
+
+def test_an_empty_2xx_is_refused_as_what_http_said() -> None:
+    """Measured 2026-09-02 on tampaspartans.com: a WAF challenge answers HTTP
+    202 with an empty body.  ``raise_for_status`` passes it; the seam must
+    not, and must name the status rather than fail the season proof with
+    "cannot prove which season", which reads as a parser problem."""
+    from src.sidearm_live import fetch_published_page_conditional
+
+    url = "https://example.test/sports/mens-soccer/schedule/2025"
+    response = MagicMock()
+    response.status_code = 202
+    response.url = url
+    response.text = ""
+    session = MagicMock()
+    session.get.return_value = response
+
+    with pytest.raises(LiveCollectionError) as refused:
+        fetch_published_page_conditional(session, url, 2025, "schedule")
+
+    assert refused.value.status == 202
+    assert str(refused.value) == (
+        f"[2025] schedule page {url} answered HTTP 202 with an empty body "
+        "(served a challenge, not the page)"
+    )
+
+
+def test_a_challenge_answer_is_an_unavailable_layer_not_a_retry() -> None:
+    url = "https://example.test/sports/mens-soccer/schedule/2025"
+    response = MagicMock()
+    response.status_code = 202
+    response.url = url
+    response.text = ""
+    session = MagicMock()
+    session.get.return_value = response
+
+    result = collect_programme(
+        _school(), 2025, {}, session=session, layers=("schedule",)
+    )
+
+    assert result.state("schedule") == "unavailable"
+    assert result.outcomes["schedule"].reason == (
+        f"[2025] schedule page {url} answered HTTP 202 with an empty body "
+        "(served a challenge, not the page)"
+    )
+    assert session.get.call_count == 1

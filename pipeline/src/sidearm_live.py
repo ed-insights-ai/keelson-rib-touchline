@@ -48,7 +48,7 @@ import hashlib
 import json
 import logging
 import re
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
@@ -114,7 +114,6 @@ STATE_COMPLETE = "complete"  # served, proven, and holds rows
 STATE_EMPTY = "empty"  # served and proven, and genuinely holds nothing
 STATE_UNAVAILABLE = "unavailable"  # could not be collected; `reason` says why
 STATE_NO_COLLECTOR = "no-collector"
-LIVE_COLLECTORS: frozenset[str] = frozenset({"sidearm"})
 
 
 @dataclass(frozen=True)
@@ -174,6 +173,11 @@ def build_session(session: requests.Session | None = None) -> requests.Session:
 def programme_slug(name: str) -> str:
     text = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
     return text
+
+
+def layer_url(base_url: str, year: int, kind: str) -> str:
+    """The SideArm URL of one season layer: ``{base}/{kind}/{year}``."""
+    return f"{base_url.rstrip('/')}/{kind}/{year}"
 
 
 def _season_in_path(url: str, kind: str) -> int | None:
@@ -237,13 +241,48 @@ class ConditionalFetch:
     signature: str | None = None
 
 
+_HTML_TAG = re.compile(r"<[A-Za-z!][^>]*>")
+
+
+def assert_served_body(
+    response: requests.Response, *, year: int, kind: str, url: str
+) -> None:
+    """Refuse a 2xx answer that is not the page.
+
+    Measured 2026-09-02 on tampaspartans.com: after a burst of requests from
+    one client the site answers HTTP 202 with an empty body (CloudFront,
+    ``Cache-Control: no-store``), a WAF challenge rather than the page.
+    ``raise_for_status`` passes a 202, and the season proof then fails with
+    "cannot prove which season was served" and no status, which reads as a
+    parser problem.  A 2xx other than 200, or a body with no HTML in it, is
+    refused here with the status attached, so the layer's outcome and the
+    probe say what HTTP said.  No challenge is answered or bypassed.
+    """
+    status = response.status_code
+    text = response.text or ""
+    if not text.strip():
+        body = "an empty body"
+    elif _HTML_TAG.search(text) is None:
+        body = "a body carrying no HTML"
+    elif status != 200 and status in range(200, 300):
+        body = "an HTML body"
+    else:
+        return
+    raise LiveCollectionError(
+        f"[{year}] {kind} page {url} answered HTTP {status} with {body} "
+        f"(served a challenge, not the page)",
+        status=status,
+    )
+
+
 def fetch_published_page_conditional(
     session: requests.Session,
-    base_url: str,
+    requested_url: str,
     year: int,
     kind: str,
     state: PageState | None = None,
     want_validators: bool = False,
+    served_season: Callable[[PublishedPage, int, str], None] = assert_served_season,
 ) -> ConditionalFetch:
     """Fetch a page, asking the server first whether it changed at all.
 
@@ -255,8 +294,11 @@ def fetch_published_page_conditional(
     genuinely new content — an unchanged page already proved its season when
     it was archived, and the assertion's title parse is exactly the work the
     skip exists to avoid.
+
+    The URL and the season proof are the platform recipe's (src/recipes.py):
+    this seam builds no URL of its own, and ``served_season`` defaults to
+    the SideArm proof.
     """
-    requested_url = f"{base_url.rstrip('/')}/{kind}/{year}"
     headers: dict[str, str] = {}
     if state is not None:
         if state.etag:
@@ -273,6 +315,7 @@ def fetch_published_page_conditional(
             f"[{year}] failed to fetch {kind} page {requested_url}: {exc}",
             status=http_status(exc),
         ) from exc
+    assert_served_body(response, year=year, kind=kind, url=requested_url)
     page = PublishedPage(requested_url, response.url, response.text)
     etag: str | None = None
     last_modified: str | None = None
@@ -294,7 +337,7 @@ def fetch_published_page_conditional(
                 last_modified=last_modified,
                 signature=signature,
             )
-    assert_served_season(page, year, kind)
+    served_season(page, year, kind)
     return ConditionalFetch(
         page=page,
         unchanged=False,
@@ -307,7 +350,10 @@ def fetch_published_page_conditional(
 def fetch_published_page(
     session: requests.Session, base_url: str, year: int, kind: str
 ) -> PublishedPage:
-    fetched = fetch_published_page_conditional(session, base_url, year, kind)
+    """Fetch one SideArm season page and prove it is the requested season."""
+    fetched = fetch_published_page_conditional(
+        session, layer_url(base_url, year, kind), year, kind
+    )
     if fetched.page is None:  # unreachable without stored validators
         raise LiveCollectionError(
             f"[{year}] {kind} page returned no content without a conditional request"
@@ -412,6 +458,32 @@ def assert_untrapped_schedule(
         raise LiveCollectionError(
             f"[{year}] {page_url} renders the season-{listed} schedule at this "
             f"season URL, so {year} fixtures cannot be collected from it"
+        )
+
+
+def assert_schedule_proven(
+    html: str,
+    *,
+    year: int,
+    page_url: str,
+    fixtures: list[dict[str, object]],
+    owner_slug: str,
+) -> None:
+    """Refuse a freshly served schedule that parsed but cannot be trusted.
+
+    Two shapes.  ``assert_untrapped_schedule`` refuses a past-season URL whose
+    rendered games are the payload's current-season events.  And a page with
+    neither a schedule payload nor rendered games is not a season with no
+    fixtures but a page that is not a SideArm schedule at all (or a season
+    the site has not released).  Runs on new content only: an archived page
+    proved itself when it was archived.
+    """
+    assert_untrapped_schedule(html, year, page_url, fixtures, owner_slug)
+    if not fixtures and not _has_schedule_markup(html):
+        raise LiveCollectionError(
+            f"[{year}] {page_url} published no schedule payload "
+            f"and no rendered games — either the season is not "
+            f"released yet or the page is not SideArm"
         )
 
 
@@ -1864,7 +1936,10 @@ def parse_fingerprint(*inputs: object) -> str:
     steer their parse (the identity aliases and conference membership for a
     schedule; the season year everywhere, since date resolution depends on
     it), so a schools.toml edit invalidates cached parses without costing a
-    single extra fetch — the archived bytes are simply read again.
+    single extra fetch — the archived bytes are simply read again.  A recipe
+    whose parsers live in another module appends that module's source digest
+    (``Recipe.parse_identity``), so a PrestoSports parser fix re-reads the
+    archive the same way.
     """
     digest = hashlib.sha256(Path(__file__).read_bytes())
     for value in inputs:
@@ -1900,7 +1975,12 @@ def collect_programme(
     slug = programme_slug(school.name)
     wanted = tuple(layers)
     platform = school.live_collector()
-    if platform not in LIVE_COLLECTORS:
+    # The recipe table is built from this module's own functions, so it can
+    # only be imported once they exist: here, at call time.
+    from src.recipes import NoCollector, live_recipe
+
+    recipe = live_recipe(platform)
+    if recipe is None:
         reason = (
             f"{school.name} {school.gender}: no live collector for platform "
             f"'{platform}' — the '{platform}' recipe is not implemented"
@@ -1945,24 +2025,28 @@ def collect_programme(
     client = session or build_session()
 
     if LAYER_SCHEDULE in wanted:
-        schedule_url = f"{base_url}/schedule/{year}"
         # The schedule parse reads more than the page: opponent identity comes
         # from the alias map and the conference flag from membership, so both
-        # belong to the cached parse's identity.
+        # belong to the cached parse's identity, beside the recipe's parsers.
         fingerprint = parse_fingerprint(
-            year, aliases, sorted(members) if members is not None else None
+            year,
+            aliases,
+            sorted(members) if members is not None else None,
+            *recipe.parse_identity,
         )
         state = (
             page_cache.load(slug, LAYER_SCHEDULE, fingerprint) if page_cache else None
         )
         try:
+            schedule_url = recipe.layer_url(base_url, year, LAYER_SCHEDULE)
             fetched = fetch_published_page_conditional(
                 client,
-                base_url,
+                schedule_url,
                 year,
                 LAYER_SCHEDULE,
                 state=state,
                 want_validators=page_cache is not None,
+                served_season=recipe.assert_served_season,
             )
             if fetched.unchanged and state is not None and page_cache is not None:
                 schedule_url = state.final_url
@@ -1987,7 +2071,7 @@ def collect_programme(
                     )
                 else:
                     # Unchanged page, stale parse: read the archive again.
-                    fixtures = parse_schedule_page(
+                    fixtures = recipe.parse_schedule(
                         schedule_html,
                         page_url=state.final_url,
                         year=year,
@@ -2021,7 +2105,7 @@ def collect_programme(
                 assert page is not None
                 schedule_html = page.html
                 schedule_url = page.final_url
-                fixtures = parse_schedule_page(
+                fixtures = recipe.parse_schedule(
                     page.html,
                     page_url=page.final_url,
                     year=year,
@@ -2029,15 +2113,13 @@ def collect_programme(
                     aliases=aliases,
                     members=members,
                 )
-                assert_untrapped_schedule(
-                    page.html, year, page.final_url, fixtures, slug
+                recipe.assert_schedule_proven(
+                    page.html,
+                    year=year,
+                    page_url=page.final_url,
+                    fixtures=fixtures,
+                    owner_slug=slug,
                 )
-                if not fixtures and not _has_schedule_markup(page.html):
-                    raise LiveCollectionError(
-                        f"[{year}] {page.final_url} published no schedule payload "
-                        f"and no rendered games — either the season is not "
-                        f"released yet or the page is not SideArm"
-                    )
                 outcomes[LAYER_SCHEDULE] = LayerOutcome(
                     LAYER_SCHEDULE,
                     STATE_COMPLETE if fixtures else STATE_EMPTY,
@@ -2062,6 +2144,10 @@ def collect_programme(
                         outcome_reason=outcomes[LAYER_SCHEDULE].reason,
                         parsed={"fixtures": fixtures},
                     )
+        except NoCollector as exc:
+            outcomes[LAYER_SCHEDULE] = LayerOutcome(
+                LAYER_SCHEDULE, STATE_NO_COLLECTOR, reason=exc.reason(school)
+            )
         except (LiveCollectionError, OSError) as exc:
             outcomes[LAYER_SCHEDULE] = LayerOutcome(
                 LAYER_SCHEDULE,
@@ -2075,17 +2161,18 @@ def collect_programme(
                 page_cache.invalidate(slug, LAYER_SCHEDULE)
 
     if LAYER_ROSTER in wanted:
-        roster_url = f"{base_url}/roster/{year}"
-        fingerprint = parse_fingerprint(year)
+        fingerprint = parse_fingerprint(year, *recipe.parse_identity)
         state = page_cache.load(slug, LAYER_ROSTER, fingerprint) if page_cache else None
         try:
+            roster_url = recipe.layer_url(base_url, year, LAYER_ROSTER)
             fetched = fetch_published_page_conditional(
                 client,
-                base_url,
+                roster_url,
                 year,
                 LAYER_ROSTER,
                 state=state,
                 want_validators=page_cache is not None,
+                served_season=recipe.assert_served_season,
             )
             if fetched.unchanged and state is not None and page_cache is not None:
                 roster_url = state.final_url
@@ -2106,7 +2193,7 @@ def collect_programme(
                         last_modified=fetched.last_modified,
                     )
                 else:
-                    players = parse_roster_page(
+                    players = recipe.parse_roster(
                         state.read_html(), page_url=state.final_url
                     )
                     outcomes[LAYER_ROSTER] = LayerOutcome(
@@ -2135,7 +2222,7 @@ def collect_programme(
                 assert page is not None
                 roster_html = page.html
                 roster_url = page.final_url
-                players = parse_roster_page(page.html, page_url=page.final_url)
+                players = recipe.parse_roster(page.html, page_url=page.final_url)
                 outcomes[LAYER_ROSTER] = LayerOutcome(
                     LAYER_ROSTER,
                     STATE_COMPLETE if players else STATE_EMPTY,
@@ -2160,6 +2247,10 @@ def collect_programme(
                         outcome_reason=outcomes[LAYER_ROSTER].reason,
                         parsed={"players": players},
                     )
+        except NoCollector as exc:
+            outcomes[LAYER_ROSTER] = LayerOutcome(
+                LAYER_ROSTER, STATE_NO_COLLECTOR, reason=exc.reason(school)
+            )
         except (LiveCollectionError, OSError) as exc:
             outcomes[LAYER_ROSTER] = LayerOutcome(
                 LAYER_ROSTER, STATE_UNAVAILABLE, reason=str(exc), source_url=roster_url
@@ -2168,17 +2259,18 @@ def collect_programme(
                 page_cache.invalidate(slug, LAYER_ROSTER)
 
     if LAYER_STATS in wanted:
-        stats_url = f"{base_url}/stats/{year}"
-        fingerprint = parse_fingerprint(year)
+        fingerprint = parse_fingerprint(year, *recipe.parse_identity)
         state = page_cache.load(slug, LAYER_STATS, fingerprint) if page_cache else None
         try:
+            stats_url = recipe.layer_url(base_url, year, LAYER_STATS)
             fetched = fetch_published_page_conditional(
                 client,
-                base_url,
+                stats_url,
                 year,
                 LAYER_STATS,
                 state=state,
                 want_validators=page_cache is not None,
+                served_season=recipe.assert_served_season,
             )
             if fetched.unchanged and state is not None and page_cache is not None:
                 stats_url = state.final_url
@@ -2200,7 +2292,7 @@ def collect_programme(
                         last_modified=fetched.last_modified,
                     )
                 else:
-                    stat_players, stat_keepers = parse_stats_page(
+                    stat_players, stat_keepers = recipe.parse_stats(
                         state.read_html(), page_url=state.final_url
                     )
                     count = len(stat_players) + len(stat_keepers)
@@ -2230,7 +2322,7 @@ def collect_programme(
                 assert page is not None
                 stats_html = page.html
                 stats_url = page.final_url
-                stat_players, stat_keepers = parse_stats_page(
+                stat_players, stat_keepers = recipe.parse_stats(
                     page.html, page_url=page.final_url
                 )
                 count = len(stat_players) + len(stat_keepers)
@@ -2258,6 +2350,10 @@ def collect_programme(
                         outcome_reason=outcomes[LAYER_STATS].reason,
                         parsed={"players": stat_players, "keepers": stat_keepers},
                     )
+        except NoCollector as exc:
+            outcomes[LAYER_STATS] = LayerOutcome(
+                LAYER_STATS, STATE_NO_COLLECTOR, reason=exc.reason(school)
+            )
         except (LiveCollectionError, OSError) as exc:
             outcomes[LAYER_STATS] = LayerOutcome(
                 LAYER_STATS, STATE_UNAVAILABLE, reason=str(exc), source_url=stats_url
