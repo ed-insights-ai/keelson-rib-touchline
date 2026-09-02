@@ -128,6 +128,14 @@ MEMBERSHIP = Contract(
     enums=frozenset(),
 )
 
+PROGRAMMES = Contract(
+    name="programmes",
+    filename="programmes-2.json",
+    schema="touchline.programmes/2",
+    records=frozenset({("programmes",)}),
+    enums=frozenset(),
+)
+
 CONTRACTS: tuple[Contract, ...] = (
     COVERAGE,
     FIXTURES,
@@ -135,6 +143,7 @@ CONTRACTS: tuple[Contract, ...] = (
     STATS,
     MATCHES,
     MEMBERSHIP,
+    PROGRAMMES,
 )
 
 

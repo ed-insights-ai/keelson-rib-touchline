@@ -138,6 +138,7 @@ def main(
             platform=platform,
             seasons=sorted(seasons),
             mascot=identity.mascot,
+            city=identity.city,
             aliases=identity.aliases,
         )
         reports.append(

@@ -6,6 +6,20 @@ fails `pipeline/tests/test_contracts.py`.
 
 ## 2026-09-02
 
+- `touchline.programmes/2`: first published fixture for the programmes
+  reference (bead tl-891). One row per programme slug — `name`, `nickname`,
+  `abbreviation`, `city` (AP state style), `point` — each fact with a
+  `provenance` entry (`source`, `accessed`, optional `url`; the point's also
+  `geoid`, `name`, `state`, optional `note`). Built by `uv run
+  build-programmes` from `pipeline/config/schools.toml` (new `city`,
+  `city_source`, `identity_accessed`, `gazetteer_geoid`) and the pinned
+  U.S. Census Bureau 2023 Gazetteer Files (Places, national),
+  https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip,
+  server Last-Modified 2023-09-26; the rows it resolved to are the offline
+  fixture `pipeline/data/gazetteer/2023_Gaz_place_trimmed.txt`. A Gazetteer
+  refresh is a contract bump recorded here, never a build-time drift.
+  Version 1 was the site's local `programmes.json` (nickname, city, no
+  provenance) and `programme-coordinates.json`, which this replaces.
 - Membership reference: `SSC` joins `conferences`, with one window (Rollins,
   2022-2026) so the fixture exhibits it (bead tl-v1q.1).
 - Membership reference: `RMAC` joins `conferences`, with one window (Regis,

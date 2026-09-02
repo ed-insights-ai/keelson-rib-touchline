@@ -130,6 +130,18 @@ def test_matches_fixture_exercises_every_card_type_and_period() -> None:
     assert any("home_index" not in m for m in document["matches"].values())
 
 
+def test_programmes_fixture_covers_the_packaged_source_of_record() -> None:
+    packaged = json.loads(paths.packaged_programmes_path().read_text(encoding="utf-8"))
+    _assert_within(packaged, contracts.PROGRAMMES)
+    fixture = contracts.PROGRAMMES.fixture()
+    assert fixture["schema"] == packaged["schema"] == "touchline.programmes/2"
+    # The fixture exhibits both the plain match and the pinned one with its note.
+    notes = [
+        r["provenance"]["point"].get("note") for r in fixture["programmes"].values()
+    ]
+    assert any(notes) and not all(notes)
+
+
 def test_membership_fixture_matches_the_packaged_source_of_record() -> None:
     packaged = membership.load_membership(paths.packaged_membership_path())
     _assert_within(packaged, contracts.MEMBERSHIP)

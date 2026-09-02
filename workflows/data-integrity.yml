@@ -429,6 +429,68 @@ nodes:
         "$ONLYSRC" "$ONLYDST" "$PPROG" "$PWIN" "$PCONF" "$DPROG" "$DWIN" "$DCONF" "$SRC" "$DST"
 
   # ── 5. Cross-file twins ─────────────────────────────────────────────────
+  - id: programmes-sync
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      # The rib's packaged data/reference/programmes.json (touchline.programmes/2,
+      # built from schools.toml and the pinned Gazetteer, reviewed in the PR
+      # that changes it) is the SOURCE OF RECORD for programme identity —
+      # nickname, town, point, with provenance. The data home's copy is the
+      # deployment artifact collect mirrors from it (pipeline/scripts/
+      # collect_board.py, sync_programmes_reference). A divergence publishes a
+      # stale identity record to the site, which reads the mirrored file, so
+      # it is WARN with the canonical diff; alarm only when this check itself
+      # cannot run. Same rules as membership-sync, same resolution of the rib.
+      CFG="$HOME/.keelson/rib-touchline/config.json"
+      PKG=""
+      [ -n "${TOUCHLINE_PIPELINE_DIR:-}" ] && PKG=$(dirname "$TOUCHLINE_PIPELINE_DIR")
+      if [ ! -f "${PKG:-/nonexistent}/data/reference/programmes.json" ] && [ -f "$CFG" ]; then
+        PD=$(jq -r '.packageDir // empty' "$CFG" 2>/dev/null); [ -n "$PD" ] && PKG="$PD"
+      fi
+      [ -f "${PKG:-/nonexistent}/data/reference/programmes.json" ] || PKG="$HOME/.keelson/node_modules/@keelson/rib-touchline"
+      SRC="$PKG/data/reference/programmes.json"
+      DST="data/reference/programmes.json"
+      if [ ! -f "$SRC" ]; then
+        printf '{"check":"programmes-sync","verdict":"alarm","headline":"CHECK DID NOT RUN — no packaged programmes.json resolvable (tried the parent of TOUCHLINE_PIPELINE_DIR, packageDir in %s, and the installed rib), so there is no source of record to compare the data home against.","cause":"install or link the touchline rib at a version that builds data/reference/programmes.json (tl-891), or export TOUCHLINE_PIPELINE_DIR pointing at its pipeline/ directory."}\n' "$CFG"
+        exit 0
+      fi
+      SRCC=$(jq -S . "$SRC" 2>/dev/null); SRCRC=$?
+      if [ "$SRCRC" -ne 0 ] || [ -z "${SRCC:-}" ]; then
+        printf '{"check":"programmes-sync","verdict":"alarm","headline":"CHECK DID NOT RUN — the packaged source of record %s is not parseable JSON (jq exited %s), so no comparison can be made.","cause":"run jq -S . on the file by hand; the rib install at that path is broken and must be fixed before this check means anything."}\n' "$SRC" "$SRCRC"
+        exit 0
+      fi
+      if [ ! -f "$DST" ]; then
+        printf '{"check":"programmes-sync","verdict":"warn","headline":"data home carries no programmes.json at %s (cwd %s) — the site has no identity record to read from this data repo.","cause":"the next collect run mirrors the packaged copy into the data home; to install it now, from the data home root: cp %s %s"}\n' "$DST" "$(pwd)" "$SRC" "$DST"
+        exit 0
+      fi
+      DSTC=$(jq -S . "$DST" 2>/dev/null); DSTRC=$?
+      if [ "$DSTRC" -ne 0 ] || [ -z "${DSTC:-}" ]; then
+        printf '{"check":"programmes-sync","verdict":"warn","headline":"data home programmes.json at %s is not parseable JSON (jq exited %s) — it cannot match the packaged source of record.","cause":"the file was hand-edited or truncated; the next collect run mirrors the packaged copy over it, or install it now: cp %s %s"}\n' "$DST" "$DSTRC" "$SRC" "$DST"
+        exit 0
+      fi
+      PROWS=$(printf '%s\n' "$SRCC" | jq -r '.programmes // {} | length' 2>/dev/null)
+      DROWS=$(printf '%s\n' "$DSTC" | jq -r '.programmes // {} | length' 2>/dev/null)
+      PSCHEMA=$(printf '%s\n' "$SRCC" | jq -r '.schema // ""' 2>/dev/null)
+      if [ -z "${PROWS:-}" ] || [ -z "${DROWS:-}" ]; then
+        printf '{"check":"programmes-sync","verdict":"alarm","headline":"CHECK DID NOT RUN — jq returned nothing for the row counts over documents it already parsed, so the comparison cannot be summarized.","cause":"re-run jq -S over both files by hand: %s and %s."}\n' "$SRC" "$DST"
+        exit 0
+      fi
+      if [ "$SRCC" = "$DSTC" ]; then
+        BYTES="byte-identical"
+        cmp -s "$SRC" "$DST" 2>/dev/null || BYTES="formatting differs only, canonical data equal"
+        printf '{"check":"programmes-sync","verdict":"ok","headline":"data home programmes.json matches the packaged source of record — %s rows, %s; %s","cause":""}\n' "$PROWS" "$PSCHEMA" "$BYTES"
+        exit 0
+      fi
+      TMPD=$(mktemp -d "${TMPDIR:-/tmp}/programmes-sync.XXXXXX" 2>/dev/null)
+      if [ -n "${TMPD:-}" ] && [ -d "$TMPD" ]; then
+        trap 'rm -rf "$TMPD"' EXIT
+        printf '%s\n' "$SRCC" >"$TMPD/packaged"
+        printf '%s\n' "$DSTC" >"$TMPD/data-home"
+        diff -u -L "packaged $SRC (canonical)" -L "data-home $DST (canonical)" "$TMPD/packaged" "$TMPD/data-home" 2>/dev/null | head -80
+      fi
+      printf '{"check":"programmes-sync","verdict":"warn","headline":"data home programmes.json DIVERGES from the packaged source of record — packaged %s rows, data home %s rows; canonical diff printed above.","cause":"the site reads the mirrored file, so it is naming or placing programmes from a stale record. The next collect run mirrors the packaged copy over it, or install it now from the data home root: cp %s %s"}\n' "$PROWS" "$DROWS" "$SRC" "$DST"
+
   - id: twin-check
     timeout: 60000
     bash: |
@@ -539,9 +601,9 @@ nodes:
     runtime: bun
     always_run: true
     trigger_rule: all_done
-    depends_on: [collect-gaps, goal-attribution, exhibition-markers, membership-sync, twin-check, box-vs-fixture]
+    depends_on: [collect-gaps, goal-attribution, exhibition-markers, membership-sync, programmes-sync, twin-check, box-vs-fixture]
     script: |
-      const IDS = ['collect_gaps', 'goal_attribution', 'exhibition_markers', 'membership_sync', 'twin_check', 'box_vs_fixture']
+      const IDS = ['collect_gaps', 'goal_attribution', 'exhibition_markers', 'membership_sync', 'programmes_sync', 'twin_check', 'box_vs_fixture']
       const MARK = { ok: '[ OK   ]', warn: '[ WARN ]', alarm: '[ ALARM]' }
       const rows = []
       for (const id of IDS) {

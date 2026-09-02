@@ -24,6 +24,7 @@ import {
   STATS_SCHEMA,
   statsFileSchema,
 } from "../src/model.ts";
+import { PROGRAMMES_SCHEMA, programmesFileSchema, programmesPath } from "../src/programmes.ts";
 
 // The contract fixtures under contracts/ are the samples the site's strict
 // schemas test against. This side proves each one parses under the rib's own
@@ -52,6 +53,18 @@ describe("every published contract fixture parses under the rib's strict schema"
     });
   }
 
+  test("programmes-2.json parses, and so does the packaged source of record", () => {
+    const fixture = programmesFileSchema.parse(read("programmes-2.json"));
+    expect(fixture.schema).toBe(PROGRAMMES_SCHEMA);
+    const packaged = programmesFileSchema.parse(JSON.parse(readFileSync(programmesPath(), "utf8")));
+    // Every row carries all four facts with a dated provenance each.
+    for (const [slug, row] of Object.entries(packaged.programmes)) {
+      expect(row.provenance.point.geoid, slug).toBeTruthy();
+      expect(row.city, slug).toMatch(/, /);
+    }
+    expect(Object.keys(packaged.programmes).length).toBeGreaterThan(0);
+  });
+
   test("membership.json parses, and so does the packaged source of record", () => {
     const fixture = membershipFileSchema.parse(read("membership.json"));
     const packaged = membershipFileSchema.parse(JSON.parse(readFileSync(membershipPath(), "utf8")));
@@ -59,7 +72,11 @@ describe("every published contract fixture parses under the rib's strict schema"
   });
 
   test("no fixture exists without a schema to read it", () => {
-    const named = new Set([...PUBLISHED.map(([file]) => file), "membership.json"]);
+    const named = new Set([
+      ...PUBLISHED.map(([file]) => file),
+      "membership.json",
+      "programmes-2.json",
+    ]);
     const onDisk = readdirSync(contractsDir).filter((f) => f.endsWith(".json"));
     expect(new Set(onDisk)).toEqual(named);
   });

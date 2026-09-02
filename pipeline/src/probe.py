@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import json
 import re
+from collections import Counter
+from datetime import date
 from collections.abc import Iterable
 from dataclasses import dataclass, field
 from urllib.parse import urlparse
@@ -11,6 +13,7 @@ from urllib.parse import urlparse
 import requests
 from bs4 import BeautifulSoup
 
+from src.gazetteer import parse_town
 from src.sidearm_live import (
     LAYER_MATCHES,
     LAYER_ROSTER,
@@ -160,6 +163,8 @@ class SchoolIdentity:
     abbreviation: str
     mascot: str
     aliases: list[str] = field(default_factory=list)
+    #: The town the schedule page prints for home rows, normalised to AP style.
+    city: str = ""
 
 
 def _words(text: str) -> list[str]:
@@ -205,6 +210,47 @@ def _opponent_spellings(html: str) -> list[str]:
             if half:
                 halves.append(half)
     return halves
+
+
+def _home_town(html: str) -> str:
+    """The town the schedule page prints most often on its home rows, AP style.
+
+    SideArm rows carry ``.sidearm-schedule-game-location`` ("Alamosa, CO" then
+    the facility); a home row is marked ``sidearm-schedule-game-home`` on the
+    row or an element inside it. When no row is marked home, every location
+    on the page counts and the majority wins — a school plays most of its
+    games at home. A page that prints no location, or towns that never
+    agree, yields "" and the stanza says so.
+    """
+    soup = BeautifulSoup(html, "lxml")
+    home: list[str] = []
+    every: list[str] = []
+    for node in soup.select(".sidearm-schedule-game-location"):
+        first = node.find("span")
+        town = parse_town((first or node).get_text(" ", strip=True))
+        if town is None:
+            continue
+        every.append(town.ap)
+        row = node
+        for _ in range(8):
+            row = row.parent
+            if row is None:
+                break
+            classes = row.get("class") or []
+            if (
+                "sidearm-schedule-game" in classes
+                or "sidearm-schedule-game-home" in classes
+            ):
+                if "sidearm-schedule-game-home" in classes or row.select_one(
+                    ".sidearm-schedule-game-home"
+                ):
+                    home.append(town.ap)
+                break
+    counted = Counter(home or every)
+    if not counted:
+        return ""
+    ((best, n),) = counted.most_common(1)
+    return best if n * 2 > sum(counted.values()) else ""
 
 
 def _mascot_after(published: str, known: Iterable[str]) -> str:
@@ -258,8 +304,11 @@ def derive_identity(
     described: list[str] = []
     short_tokens: list[str] = []
     opponents: list[str] = []
+    city = ""
     hosts = [urlparse(url).hostname or ""]
     for html in pages:
+        if not city:
+            city = _home_town(html)
         soup = BeautifulSoup(html, "lxml")
         site_name = _SITE_SUFFIX.sub("", _meta(soup, property="og:site_name"))
         if site_name:
@@ -322,7 +371,7 @@ def derive_identity(
         seen.add(key)
         aliases.append(candidate)
     return SchoolIdentity(
-        name=name, abbreviation=abbreviation, mascot=mascot, aliases=aliases
+        name=name, abbreviation=abbreviation, mascot=mascot, aliases=aliases, city=city
     )
 
 
@@ -341,6 +390,8 @@ def draft_stanza(
     seasons: Iterable[int],
     mascot: str = "",
     aliases: Iterable[str] = (),
+    city: str = "",
+    accessed: str = "",
 ) -> str:
     """Render a disabled, unverified ``schools.toml`` entry in the house layout.
 
@@ -380,6 +431,18 @@ def draft_stanza(
             _toml_line("enabled", False),
         ]
     )
+    # The programmes reference (tl-891) needs the town and the date the
+    # identity facts were read; its build fails on a stanza without them.
+    if city:
+        lines.append(_toml_line("city", city))
+    else:
+        lines.append(
+            '# city: the schedule page prints no home town; fill by hand as "Town, St."'
+        )
+        lines.append(
+            "# city_source: cite where the town was read (default: the schedule page)"
+        )
+    lines.append(_toml_line("identity_accessed", accessed or date.today().isoformat()))
     return "\n".join(lines) + "\n"
 
 

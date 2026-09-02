@@ -13,6 +13,7 @@ value the writer can emit.
 | `stats-1.json` | `touchline.stats/1` | `pipeline/scripts/collect_board.py` |
 | `matches-1.json` | `touchline.matches/1` | `pipeline/scripts/collect_board.py` |
 | `membership.json` | untagged membership reference | authored at `data/reference/membership.json` |
+| `programmes-2.json` | `touchline.programmes/2` | built at `data/reference/programmes.json` by `pipeline/scripts/build_programmes.py` |
 
 ## The rule
 

@@ -97,7 +97,8 @@ served.
 
 ## 3. Author the data, verify it reproduces the count, open a PR
 
-Two files change and nothing else should:
+Four files change and nothing else should (measured on the RMAC and SSC
+adds, 2026-09-02, beads tl-clk.5 and tl-891):
 
 1. `data/reference/membership.json`: the conference joins `conferences`;
    one window per programme, `source` written as URL + accessed date + the
@@ -105,7 +106,20 @@ Two files change and nothing else should:
 2. `pipeline/config/schools.toml`: one stanza per programme, pasted from
    the probe and checked against the site: `name` as passed to `--name`,
    `aliases` covering the opponent spellings the member schools actually
-   publish, `years` equal to the window, `data_status = "unverified"`.
+   publish, `years` equal to the window, `data_status = "unverified"`, and
+   `city` as the schedule page prints the home town (the probe drafts it;
+   `enabled = true` once pasted).
+3. `data/reference/programmes.json`: not edited — rebuilt. Run
+   `uv run --project pipeline build-programmes`; it resolves every stanza's
+   `city` to one 2023 Gazetteer place and writes the row with its
+   provenance. A town that resolves to none or to two places stops the
+   build naming the slug and the candidates: fix the spelling, or pin the
+   place with `gazetteer_geoid = "<GEOID>"` on the stanza. The offline
+   Gazetteer fixture under `pipeline/data/gazetteer/` is rewritten by the
+   same run.
+4. `contracts/membership.json` + `contracts/CHANGELOG.md`: the membership
+   fixture's conference list must equal the packaged file's, so the
+   conference joins it with one window.
 
 `test/board.test.ts` asserts the shape of `knownConferences()` against the
 shipped membership file (its `conferences` minus `independent` and
@@ -119,6 +133,7 @@ Verify before the PR:
 bun test && bun run typecheck && bun run check
 uv run --project pipeline pytest -q
 uv run --project pipeline check-membership
+uv run --project pipeline build-programmes --check
 ```
 
 and reproduce the per-season count from step 1 through the rib's resolver:
@@ -186,16 +201,17 @@ takes about four minutes.
 Run all four, in any order:
 
 1. **`workflow_run("data-integrity", project="d2-soccer")`**, and count the
-   checks. The workflow file has six (`collect-gaps`, `goal-attribution`,
-   `exhibition-markers`, `membership-sync`, `twin-check`, `box-vs-fixture`);
-   if the served run shows fewer,
-   Keelson is serving a stale catalogue and needs a restart. `membership-sync`
-   must be `ok` and say byte-identical.
+   checks. The workflow file has seven (`collect-gaps`, `goal-attribution`,
+   `exhibition-markers`, `membership-sync`, `programmes-sync`, `twin-check`,
+   `box-vs-fixture`); if the served run shows fewer, Keelson is serving a
+   stale catalogue and needs a restart. `membership-sync` and
+   `programmes-sync` must be `ok` and say byte-identical.
 2. **`touchline_status(project="d2-soccer")`** lists every season of the new
    conference with programme, fixture and roster counts matching step 5.
 3. **Scope of the diff** in the data home: `git status --short` shows only
    `*-{conference}.json` under fixtures, rosters, stats, matches and errors,
-   `data/coverage.json`, `data/reference/membership.json`, and new
+   `data/coverage.json`, `data/reference/membership.json`,
+   `data/reference/programmes.json`, and new
    `data/raw_html/{programme}/` directories. No file of a neighbouring
    conference is modified.
 4. **Finished seasons carrying `status: scheduled` rows** are usually
@@ -249,7 +265,7 @@ What the GLVC, the fourth conference, actually required, measured on
 | `touchline-ui/src/site.config.ts` | 2 lines: `conferences` +1, `conferenceNames` +1 |
 | journal | one GLVC model call |
 | national page | one regeneration |
-| `programmes.json`, `programme-coordinates.json` | 30 hand-kept reference rows: nickname, town as published, Gazetteer GEOID and centroid |
+| `programmes.json`, `programme-coordinates.json` | 30 hand-kept reference rows: nickname, town as published, Gazetteer GEOID and centroid — since tl-891 the rows are built in the rib from the stanza's `city` and mirrored to the data home; the site reads that file |
 | division fold | a neutral-site rule, the first time two followed conferences shared a tournament match with no agreed home side |
 | roster vocabulary | six published misspellings aliased, two abbreviations added, two non-positions named, one initials rule |
 | copy test | one pairwise threshold, the chart caption marked mechanical |
