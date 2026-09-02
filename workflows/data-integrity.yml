@@ -428,14 +428,83 @@ nodes:
       printf '{"check":"membership-sync","verdict":"warn","headline":"membership.json DIVERGES from the packaged source of record: %s canonical lines only in the packaged record, %s only in the data home copy — packaged holds %s programmes, %s windows, conferences %s; the data home copy holds %s programmes, %s windows, conferences %s. The exact diff precedes this line.","cause":"the data home copy is a stale deployment artifact. Pipeline loaders prefer the packaged copy, so resolution is already consistent — but the data repo is publishing a stale membership record to anything reading its files directly. The next collect run mirrors the packaged copy over it, or install now from the data home root: cp %s %s"}\n' \
         "$ONLYSRC" "$ONLYDST" "$PPROG" "$PWIN" "$PCONF" "$DPROG" "$DWIN" "$DCONF" "$SRC" "$DST"
 
+  # ── 5. Cross-file twins ─────────────────────────────────────────────────
+  - id: twin-check
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      # A match between two programmes this data home follows is collected
+      # twice, once from each side's own schedule page, into two season files
+      # under two collector ids. The two records must agree on the unordered
+      # score and the status: they are the same match, and the only thing
+      # each side may legitimately differ on is which of them it calls home
+      # (a neutral-site tournament). This is the check that would have gone
+      # red on day one of tl-b39, when oceagles.com's winner-first result
+      # strings stored twenty Oklahoma Christian results reversed while
+      # every single-file check stayed green. Nothing here names a
+      # conference: every fixture file in the data home is swept, and a
+      # twin is any two rows on the same date between the same two slugs.
+      # Alarm is reserved for the check itself failing to run.
+      FD=data/fixtures
+      if [ ! -d "$FD" ] || [ ! -r "$FD" ] || [ ! -x "$FD" ]; then
+        printf '{"check":"twin-check","verdict":"alarm","headline":"CHECK DID NOT RUN — no readable directory at %s (cwd %s). A missing layer directory is not an empty one.","cause":"the path is relative to the data home root, so either this node ran from an unexpected working directory or the fixtures layer was moved, renamed, or never collected"}\n' "$FD" "$(pwd)"
+        exit 0
+      fi
+      FLIST=$(find "$FD" -maxdepth 1 -name '*.json' 2>/dev/null | sort); FRC=$?
+      if [ "$FRC" -ne 0 ] || [ -z "$FLIST" ]; then
+        printf '{"check":"twin-check","verdict":"alarm","headline":"CHECK DID NOT RUN — find exited %s or listed no season files under %s (cwd %s), so no twin could be paired.","cause":"either this node ran outside a collected data home or the fixtures layer was moved or renamed — list the directory by hand"}\n' "$FRC" "$FD" "$(pwd)"
+        exit 0
+      fi
+      # One row per fixture: the pair it belongs to (date + the two slugs in
+      # an order neither side chose) and the side-free shape it claims (each
+      # slug with its score, sorted, plus the status). Two rows in one pair
+      # with two shapes are a disagreement.
+      JQ='
+        .fixtures[]
+        | select(.status != "cancelled" and .status != "postponed")
+        | . as $f
+        | ([$f.home, $f.away] | sort | join(" v ")) as $pair
+        | ([ "\($f.home)=\($f.home_score // "-")", "\($f.away)=\($f.away_score // "-")" ] | sort | join("|")) as $shape
+        | "ROW\t\($f.date) \($pair)\t\($f.id)\t\($shape)|\($f.status // "-")\t\($f.home)"'
+      ROWS=""
+      FILES=0
+      for F in $FLIST; do
+        R=$(jq -r "$JQ" "$F" 2>/dev/null); RC=$?
+        if [ "$RC" -ne 0 ]; then
+          printf '{"check":"twin-check","verdict":"alarm","headline":"CHECK DID NOT RUN — jq exited %s reading %s, so no fixture was paired. A season file that cannot be read is not a clean one.","cause":"re-run the jq by hand against the file: a malformed season file, or a fixtures shape this check does not know"}\n' "$RC" "$F"
+          exit 0
+        fi
+        CELL=${F##*/}; CELL=${CELL%.json}
+        ROWS="$ROWS$(printf '%s\n' "$R" | awk -F '\t' -v c="$CELL" '$1=="ROW" && NF==5 {printf "%s\t%s\t%s\t%s\t%s\n", $2, c, $3, $4, $5}')
+      "
+        FILES=$((FILES+1))
+      done
+      # Group by pair; a pair with two or more rows is a twin; a twin whose
+      # rows carry more than one shape is named, every row of it.
+      TABLE=$(printf '%s' "$ROWS" | grep . | sort | awk -F '\t' '
+        { n[$1]++; rows[$1] = rows[$1] $2 " " $3 " home=" $5 " " $4 "\n"; if (!($1 SUBSEP $4 in seen)) { seen[$1 SUBSEP $4]=1; shapes[$1]++ } }
+        END { for (p in n) if (n[p] > 1) { twins++; if (shapes[p] > 1) { bad++; printf "%s\n%s", p, rows[p] } } printf "TWINS\t%d\tBAD\t%d\n", twins, bad }')
+      TWINS=$(printf '%s\n' "$TABLE" | awk -F '\t' '$1=="TWINS" {print $2}')
+      BAD=$(printf '%s\n' "$TABLE" | awk -F '\t' '$1=="TWINS" {print $4}')
+      case "$TWINS$BAD" in *[!0-9]*|"")
+        printf '{"check":"twin-check","verdict":"alarm","headline":"CHECK DID NOT RUN — the pairing produced no count (cwd %s). That is a failed count, not a measurement of zero.","cause":"awk produced no TWINS line over rows jq already validated — re-run the sweep by hand from the data home root"}\n' "$(pwd)"
+        exit 0
+      ;; esac
+      # Every disagreeing twin, each of its records named with its season
+      # file, id, the side it called home and the shape it claims.
+      printf '%s\n' "$TABLE" | grep -v '^TWINS' | grep .
+      V=ok; [ "$BAD" -gt 0 ] && V=warn
+      printf '{"check":"twin-check","verdict":"%s","headline":"%s of %s twin matches (one match, two season files) disagree on the unordered score or status across %s season files — each named above","cause":"two collectors published different facts about one match. A score reversed on one side is the collector trusting a printed order over the W/L/T letter (tl-b39, fixed: re-collect the named season); a status split is one side not yet updated, or a tournament row one side never entered a result for. A disagreement on which side was home alone is NOT reported: that is a neutral site, and the site fold handles it."}\n' \
+        "$V" "$BAD" "$TWINS" "$FILES"
+
   # ── Report ──────────────────────────────────────────────────────────────
   - id: report
     runtime: bun
     always_run: true
     trigger_rule: all_done
-    depends_on: [collect-gaps, goal-attribution, exhibition-markers, membership-sync]
+    depends_on: [collect-gaps, goal-attribution, exhibition-markers, membership-sync, twin-check]
     script: |
-      const IDS = ['collect_gaps', 'goal_attribution', 'exhibition_markers', 'membership_sync']
+      const IDS = ['collect_gaps', 'goal_attribution', 'exhibition_markers', 'membership_sync', 'twin_check']
       const MARK = { ok: '[ OK   ]', warn: '[ WARN ]', alarm: '[ ALARM]' }
       const rows = []
       for (const id of IDS) {
