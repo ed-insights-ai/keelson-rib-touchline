@@ -890,3 +890,186 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Lincoln (Mo.)", "Lincoln University", "Lincoln University of Missouri"]
+
+# ============================================================
+# RMAC MEN'S SOCCER — 11 programmes, backfill window 2022-2026
+# ============================================================
+# Source of truth: RMAC per-season records (rmacsports.org conference
+# statistics per year, plus the live standings for 2026), verified
+# 2026-09-02. All 11 sites probed 2026-09-02 (uv run probe --name): SideArm,
+# schedule / roster / stats / matches present on every one, every season in
+# the window (2022-2026) served by every site. No collect has run yet, so
+# every stanza is data_status = unverified — promote once a collect confirms
+# the layers end to end. No ordinals: the StatCrew legacy lineage never
+# reads these.
+#
+# Season-aware membership lives in data/reference/membership.json — the
+# same eleven programmes appear in every season 2021-2026, so nobody
+# joined, left, or discontinued inside the window and every year-list here
+# equals the window. Hosts came from the conference's members page
+# (rmacsports.org/members); South Dakota Mines is gorockers.com, not the
+# guessable gohardrockers.com, which does not resolve.
+#
+# Names are the conference records' spellings, chosen so programme_slug(name)
+# matches the membership key; no archive file had minted any of them. The
+# probe's initials-derived abbreviations (AS, CM, FL, MD, R, W) were
+# replaced with the short forms the schools and conference use. Aliases come
+# from opponent spellings on member 2025 schedule pages (Regis, Mines,
+# Adams State, Westminster, South Dakota Mines, MSU Denver): the published
+# long names, "Colorado Mines", "CSU-Pueblo", "Fort Lewis College",
+# "Westminster University (Utah)" and the "South Dakota School of Mines"
+# forms.
+
+[[schools]]
+name         = "Adams State"
+abbreviation = "ASU"
+conference   = "RMAC"
+mascot       = "Grizzlies"
+gender       = "men"
+base_url     = "https://asugrizzlies.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Adams State University"]
+
+[[schools]]
+name         = "Colorado Christian"
+abbreviation = "CCU"
+conference   = "RMAC"
+mascot       = "Cougars"
+gender       = "men"
+base_url     = "https://ccucougars.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Colorado Christian University"]
+
+[[schools]]
+name         = "Colorado Mesa"
+abbreviation = "CMU"
+conference   = "RMAC"
+mascot       = "Mavericks"
+gender       = "men"
+base_url     = "https://cmumavericks.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Colorado Mesa University"]
+
+# Conference records say "Colorado School of Mines"; peers also print
+# "Colorado Mines" and the site calls itself "Mines".
+[[schools]]
+name         = "Colorado School of Mines"
+abbreviation = "MINES"
+conference   = "RMAC"
+mascot       = "Orediggers"
+gender       = "men"
+base_url     = "https://minesathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Colorado Mines", "Mines"]
+
+# The probe found no mascot where it reads; "ThunderWolves" is the site's
+# own name (gothunderwolves.com).
+[[schools]]
+name         = "CSU Pueblo"
+abbreviation = "CSUP"
+conference   = "RMAC"
+mascot       = "ThunderWolves"
+gender       = "men"
+base_url     = "https://gothunderwolves.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Colorado State University Pueblo", "CSU-Pueblo", "Colorado State-Pueblo"]
+
+[[schools]]
+name         = "Fort Lewis"
+abbreviation = "FLC"
+conference   = "RMAC"
+mascot       = "Skyhawks"
+gender       = "men"
+base_url     = "https://goskyhawks.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Fort Lewis College"]
+
+# The probe found no mascot and drafted "Metropolitan State University
+# Roadrunners" as an alias (the site's title, mascot included); the alias
+# here is the spelling peers publish.
+[[schools]]
+name         = "MSU Denver"
+abbreviation = "MSUD"
+conference   = "RMAC"
+mascot       = "Roadrunners"
+gender       = "men"
+base_url     = "https://roadrunnersathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Metropolitan State University of Denver", "Metro State", "Metropolitan State"]
+
+[[schools]]
+name         = "Regis"
+abbreviation = "REG"
+conference   = "RMAC"
+mascot       = "Rangers"
+gender       = "men"
+base_url     = "https://regisrangers.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Regis University"]
+
+[[schools]]
+name         = "South Dakota Mines"
+abbreviation = "SDM"
+conference   = "RMAC"
+mascot       = "Hardrockers"
+gender       = "men"
+base_url     = "https://gorockers.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["South Dakota School of Mines", "South Dakota School of Mines and Technology", "South Dakota School of Mines & Technology"]
+
+[[schools]]
+name         = "UCCS"
+abbreviation = "UCCS"
+conference   = "RMAC"
+mascot       = "Mountain Lions"
+gender       = "men"
+base_url     = "https://gomountainlions.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Colorado Colorado Springs", "University of Colorado at Colorado Springs", "Colorado-Colorado Springs"]
+
+# Westminster University, Salt Lake City; the RMAC members page still links
+# westminstercollege.edu, the pre-rename host.
+# Peers print "Westminster University (Utah)"; the parenthetical drops
+# before matching, so the alias is the bare long name.
+[[schools]]
+name         = "Westminster"
+abbreviation = "WU"
+conference   = "RMAC"
+mascot       = "Griffins"
+gender       = "men"
+base_url     = "https://westminstergriffins.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Westminster University", "Westminster College"]

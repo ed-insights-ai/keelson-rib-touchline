@@ -1,7 +1,17 @@
 {
-  "conferences": ["GAC", "GLVC", "GSC", "LSC", "MIAA", "independent", "non_member"],
-  "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2026. Authored from official GAC/MIAA, LSC, GSC and GLVC records; each window cites its source. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
+  "conferences": ["GAC", "GLVC", "GSC", "LSC", "MIAA", "RMAC", "independent", "non_member"],
+  "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2026. Authored from official GAC/MIAA, LSC, GSC, GLVC and RMAC records; each window cites its source. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
   "memberships": {
+    "adams-state": {
+      "men": [
+        {
+          "conference": "RMAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
     "aum": {
       "men": [
         {
@@ -19,6 +29,46 @@
           "from_season": 2016,
           "to_season": 2026,
           "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both."
+        }
+      ]
+    },
+    "colorado-christian": {
+      "men": [
+        {
+          "conference": "RMAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "colorado-mesa": {
+      "men": [
+        {
+          "conference": "RMAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "colorado-school-of-mines": {
+      "men": [
+        {
+          "conference": "RMAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "csu-pueblo": {
+      "men": [
+        {
+          "conference": "RMAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
       ]
     },
@@ -93,6 +143,16 @@
           "from_season": 2016,
           "source": "Mid-America Intercollegiate Athletics Association, 2016 and 2025 MIAA Women's Soccer Standings, https://themiaa.com/standings.aspx?standings=50 and https://themiaa.com/standings.aspx?standings=158 (accessed 2026-08-09); Fort Hays State is listed in both.",
           "to_season": 2025
+        }
+      ]
+    },
+    "fort-lewis": {
+      "men": [
+        {
+          "conference": "RMAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
       ]
     },
@@ -244,6 +304,16 @@
         }
       ]
     },
+    "msu-denver": {
+      "men": [
+        {
+          "conference": "RMAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
     "newman": {
       "men": [
         {
@@ -370,6 +440,16 @@
         }
       ]
     },
+    "regis": {
+      "men": [
+        {
+          "conference": "RMAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
     "rockhurst": {
       "men": [
         {
@@ -437,6 +517,16 @@
           "from_season": 2016,
           "to_season": 2023,
           "source": "Gulf South Conference, 2016 and 2023 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/stats.aspx?path=msoc&year=2023&conf=true (accessed 2026-08-20); listed in both. Absent from the 2024 records (https://gscsports.org/stats.aspx?path=msoc&year=2024&conf=true); left GSC men's soccer after 2023 and now competes in Conference Carolinas."
+        }
+      ]
+    },
+    "south-dakota-mines": {
+      "men": [
+        {
+          "conference": "RMAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
       ]
     },
@@ -538,6 +628,16 @@
         }
       ]
     },
+    "uccs": {
+      "men": [
+        {
+          "conference": "RMAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
     "union": {
       "men": [
         {
@@ -615,6 +715,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Lone Star Conference, 2022 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12); listed in both."
+        }
+      ]
+    },
+    "westminster": {
+      "men": [
+        {
+          "conference": "RMAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
       ]
     },
