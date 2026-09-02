@@ -8,6 +8,7 @@
 
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
+import { z } from "zod";
 import { packageDir } from "./datahome.ts";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -27,17 +28,33 @@ import { packageDir } from "./datahome.ts";
 // divergence with the exact diff. Edit ONLY the packaged copy.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export interface Window {
-  conference: string;
-  from_season: number;
-  to_season: number;
-  source: string;
-}
+/** One authored window: a programme's conference over an inclusive season
+ *  range, with the citation that supports it. */
+export const membershipWindowSchema = z
+  .object({
+    conference: z.string().min(1),
+    from_season: z.number().int(),
+    to_season: z.number().int(),
+    source: z.string().min(1),
+  })
+  .strict();
+export type Window = z.infer<typeof membershipWindowSchema>;
 
-export interface MembershipFile {
-  conferences: string[];
-  memberships: Record<string, Record<string, Window[]>>;
-}
+/** The membership reference's contract. It carries no `schema` tag: the file
+ *  predates the tagged season files and is authored, not collected. The
+ *  sample at contracts/membership.json is the shape both this loader and
+ *  pipeline/src/membership.py read. */
+export const membershipFileSchema = z
+  .object({
+    version: z.number().int().optional(),
+    /** The authored horizon, inclusive. */
+    seasons: z.object({ from: z.number().int(), to: z.number().int() }).strict().optional(),
+    conferences: z.array(z.string().min(1)),
+    description: z.string().optional(),
+    memberships: z.record(z.string(), z.record(z.string(), z.array(membershipWindowSchema))),
+  })
+  .strict();
+export type MembershipFile = z.infer<typeof membershipFileSchema>;
 
 let cached: MembershipFile | undefined;
 

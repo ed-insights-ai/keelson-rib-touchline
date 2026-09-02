@@ -1,0 +1,212 @@
+{
+  "schema": "touchline.fixtures/2",
+  "season": 2016,
+  "gender": "men",
+  "conference": "GAC",
+  "collected_at": "2026-08-10T10:48:07+00:00",
+  "membership_extrapolated": true,
+  "conference_game_source": "published:schedule-page",
+  "programmes": [
+    {
+      "slug": "harding",
+      "name": "Harding",
+      "abbr": "HU",
+      "conference": "GAC"
+    },
+    {
+      "slug": "oklahoma-baptist",
+      "name": "Oklahoma Baptist",
+      "conference": "GAC"
+    }
+  ],
+  "fixtures": [
+    {
+      "id": "sidearm:ouachita-baptist:2434",
+      "date": "2016-08-19",
+      "home": "northeast-texas-community",
+      "away": "ouachita-baptist",
+      "status": "scheduled",
+      "source_url": "https://obutigers.com/sports/mens-soccer/schedule/2016",
+      "conference_game": false,
+      "time": "11:00",
+      "venue": "Mt. Pleasant, Texas"
+    },
+    {
+      "id": "sidearm:harding:3840",
+      "date": "2016-09-01",
+      "home": "dallas-baptist",
+      "away": "harding",
+      "status": "final",
+      "source_url": "https://hardingsports.com/sports/mens-soccer/schedule/2016",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Dallas, TX",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:ouachita-baptist:2437",
+      "date": "2016-09-02",
+      "home": "southwest-baptist",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "source_url": "https://obutigers.com/sports/mens-soccer/schedule/2016",
+      "conference_game": false,
+      "venue": "Bolivar, Mo.",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:harding:3847",
+      "date": "2016-09-22",
+      "home": "oklahoma-baptist",
+      "away": "harding",
+      "status": "final",
+      "source_url": "https://hardingsports.com/sports/mens-soccer/schedule/2016",
+      "conference_game": true,
+      "time": "20:00",
+      "venue": "Shawnee, OK",
+      "home_score": 4,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:spring-hill:4668",
+      "date": "2016-08-28",
+      "home": "spring-hill",
+      "away": "william-carey",
+      "status": "final",
+      "source_url": "https://shcbadgers.com/sports/mens-soccer/schedule/2016",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "venue": "Library Field"
+    },
+    {
+      "id": "sidearm:shorter:1748",
+      "date": "2016-09-03",
+      "home": "florida-southern",
+      "away": "shorter",
+      "status": "cancelled",
+      "source_url": "https://goshorterhawks.com/sports/mens-soccer/schedule/2016",
+      "conference_game": false,
+      "time": "15:30",
+      "venue": "Lakeland, FL"
+    },
+    {
+      "id": "sidearm:spring-hill:4677",
+      "date": "2016-10-05",
+      "home": "spring-hill",
+      "away": "mississippi-college",
+      "status": "cancelled",
+      "source_url": "https://shcbadgers.com/sports/mens-soccer/schedule/2016",
+      "conference_game": false,
+      "venue": "Library Field"
+    },
+    {
+      "id": "sidearm:christian-brothers:5673",
+      "date": "2016-10-14",
+      "home": "delta-state",
+      "away": "christian-brothers",
+      "status": "postponed",
+      "source_url": "https://cbubucs.com/sports/mens-soccer/schedule/2016",
+      "conference_game": true,
+      "venue": "Cleveland, Miss."
+    },
+    {
+      "id": "sidearm:west-florida:7798",
+      "date": "2019-11-17",
+      "home": "west-florida",
+      "away": "lee",
+      "status": "final",
+      "source_url": "https://goargos.com/sports/mens-soccer/schedule/2019",
+      "conference_game": false,
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:ouachita-baptist:4414",
+      "date": "2021-08-21",
+      "home": "ouachita-baptist",
+      "away": "national-park",
+      "status": "scheduled",
+      "source_url": "https://obutigers.com/sports/mens-soccer/schedule/2021",
+      "conference_game": false,
+      "conference_game_source": "derived:membership",
+      "venue": "Kluck Field"
+    },
+    {
+      "id": "sidearm:ouachita-baptist:4417",
+      "date": "2021-09-02",
+      "home": "union",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "source_url": "https://obutigers.com/sports/mens-soccer/schedule/2021",
+      "conference_game": false,
+      "conference_game_source": "derived:membership",
+      "venue": "Jackson, Tenn.",
+      "home_score": 4,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:shorter:5359",
+      "date": "2022-10-30",
+      "home": "shorter",
+      "away": "gulf-south-conference",
+      "status": "scheduled",
+      "source_url": "https://goshorterhawks.com/sports/mens-soccer/schedule/2022",
+      "conference_game": true
+    },
+    {
+      "id": "sidearm:west-texas-a-m:9858",
+      "date": "2022-08-13",
+      "home": "west-texas-a-m",
+      "away": "el-paso-locomotive-fc",
+      "status": "final",
+      "source_url": "https://gobuffsgo.com/sports/mens-soccer/schedule/2022",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "The Pitch"
+    },
+    {
+      "id": "sidearm:missouri-st-louis:5139",
+      "date": "2024-08-31",
+      "home": "webster",
+      "away": "missouri-st-louis",
+      "status": "final",
+      "source_url": "https://umsltritons.com/sports/mens-soccer/schedule/2024",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "venue": "St. Louis, Mo. / WWT Soccer Park",
+      "home_score": 0,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:ut-dallas:8991",
+      "date": "2025-08-25",
+      "home": "ut-dallas",
+      "away": "richland",
+      "status": "final",
+      "source_url": "https://utdcomets.com/sports/mens-soccer/schedule/2025",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Richardson, Texas",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:harding:3840-live",
+      "date": "2016-09-01",
+      "home": "dallas-baptist",
+      "away": "harding",
+      "status": "live",
+      "source_url": "https://hardingsports.com/sports/mens-soccer/schedule/2016",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Dallas, TX",
+      "home_score": 1,
+      "away_score": 0
+    }
+  ],
+  "missing": ["oklahoma-baptist"]
+}
