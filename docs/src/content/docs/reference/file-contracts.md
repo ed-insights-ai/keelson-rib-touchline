@@ -166,7 +166,31 @@ atomically (`pipeline/src/coverage.py`).
 | `cells` | Keyed `{season}/{gender}/{programme}/{layer}` by `cell_key`. |
 | Cell `state` | One of `complete`, `empty`, `unavailable`, `no-collector`. [Absence is data](../../concepts/absence-is-data/) owns what each state means. |
 | Cell stamps | `season`, `gender`, `programme`, `layer`, `confirmed_at`, `collector`, plus `reason`, `count`, and `source_url` when they exist. |
+| Cell `verified` | The single value `unchanged`, present only when the conditional fetch reused a page the server said had not changed. A marker, not a state: `state` is still the layer's outcome. |
 | `updated_at` | Set on every merge. |
+
+## Contract fixtures
+
+The tags above are read by strict schemas outside this repository, and a
+strict reader refuses a whole file for one unknown field. The `contracts/`
+directory at the package root publishes one sample per schema that crosses
+that boundary (`coverage-1.json`, `fixtures-2.json`, `rosters-1.json`,
+`stats-1.json`, `matches-1.json`, and the untagged `membership.json`), each
+cut from real collector output and trimmed to the fewest rows that still
+exercise every field, every optional, and every enumerated value the writer
+can emit.
+
+Two tests hold the writers to them. `pipeline/tests/test_contracts.py` runs
+a full collect and reduces every payload to shape facts (field path, JSON
+kind, and the value where the field is enumerated); a fact the fixture lacks
+fails the suite, so a writer that starts emitting a new value breaks here,
+in CI, rather than on the published build. `test/contracts.test.ts` proves
+each fixture parses under the rib's own strict zod schemas (`src/model.ts`,
+`src/coverage.ts`, `src/membership.ts`). A contract change therefore lands
+in one commit as the writer, its fixture, and a line in
+`contracts/CHANGELOG.md`. Setting `TOUCHLINE_CONTRACT_DATA_DIR` to a data
+home root runs the same check over every season file and the manifest it
+holds.
 
 ## Related
 

@@ -1,0 +1,168 @@
+{
+  "schema": "touchline.rosters/1",
+  "season": 2016,
+  "gender": "men",
+  "collected_at": "2026-08-10T10:48:07+00:00",
+  "rosters": {
+    "harding": {
+      "programme": "harding",
+      "source_url": "https://hardingsports.com/sports/mens-soccer/roster/2016",
+      "players": [
+        {
+          "name": "Thomas Shults",
+          "number": "0",
+          "position": "Goalkeeper",
+          "height": "6'0\"",
+          "weight": "160 lbs",
+          "hometown": "Florissant, Mo.",
+          "class_year": "Junior",
+          "source_url": "https://hardingsports.com/sports/mens-soccer/roster/thomas-shults/5229"
+        },
+        {
+          "name": "Dillon Farrell",
+          "hometown": "McKinney, Texas",
+          "class_year": "Redshirt Junior",
+          "source_url": "https://obutigers.com/sports/mens-soccer/roster/dillon-farrell/2405"
+        },
+        {
+          "name": "Harvey Stevens",
+          "number": "1",
+          "height": "6'0\"",
+          "hometown": "Watford, England",
+          "position": "GK",
+          "class_year": "Freshman",
+          "source_url": "https://gostatesmen.com/sports/mens-soccer/roster/harvey-stevens/3685"
+        },
+        {
+          "name": "Laith Dahhan",
+          "position": "Midfield",
+          "height": "5'11\"",
+          "weight": "150 lbs",
+          "hometown": "Homewood, Ala.",
+          "class_year": "Sophomore",
+          "source_url": "https://www.gochoctaws.com/sports/mens-soccer/roster/laith-dahhan/5027"
+        },
+        {
+          "name": "Morgan Goodman",
+          "number": "NA",
+          "class_year": "Sophomore",
+          "source_url": "https://uuathletics.com/sports/mens-soccer/roster/morgan-goodman/1063"
+        },
+        {
+          "name": "Corey Bieber",
+          "number": "3",
+          "position": "Defender",
+          "hometown": "Mustang, Okla.",
+          "class_year": "Freshman",
+          "source_url": "https://snuathletics.com/sports/mens-soccer/roster/corey-bieber/3813"
+        },
+        {
+          "name": "Robert Kuta",
+          "number": "1",
+          "hometown": "Zielona Gora, Poland",
+          "position": "GK",
+          "source_url": "https://montevallofalcons.com/sports/mens-soccer/roster/robert-kuta/2167"
+        },
+        {
+          "name": "Sergio Otalora",
+          "number": "13",
+          "hometown": "Bogota, Colombia",
+          "class_year": "Junior",
+          "source_url": "https://goargos.com/sports/mens-soccer/roster/sergio-otalora/4465"
+        },
+        {
+          "name": "Myron  Asamoah",
+          "number": "9",
+          "height": "6'3\"",
+          "hometown": "Phoenix, Arizona",
+          "class_year": "Freshman",
+          "source_url": "https://goshorterhawks.com/sports/mens-soccer/roster/myron-asamoah/4073"
+        },
+        {
+          "name": "Billy Grogan",
+          "number": "2",
+          "height": "5'10\"",
+          "weight": "145 lbs",
+          "hometown": "Burnley, England",
+          "class_year": "Freshman",
+          "source_url": "https://uuathletics.com/sports/mens-soccer/roster/billy-grogan/1371"
+        },
+        {
+          "name": "Salia  Carr",
+          "number": "17",
+          "position": "Defender",
+          "class_year": "Freshman",
+          "source_url": "https://montevallofalcons.com/sports/mens-soccer/roster/salia-carr/4210"
+        },
+        {
+          "name": "Augusto Jannone",
+          "position": "Goalkeeper",
+          "height": "5'7\"",
+          "hometown": "Sevilla, Spain",
+          "class_year": "Junior",
+          "source_url": "https://shcbadgers.com/sports/mens-soccer/roster/augusto-jannone/6815"
+        },
+        {
+          "name": "Lorenzo Weber",
+          "hometown": "Ivoti, Brazil",
+          "position": "D",
+          "class_year": "Freshman",
+          "source_url": "https://goargos.com/sports/mens-soccer/roster/lorenzo-weber/6457"
+        },
+        {
+          "name": "Hamish Pugh",
+          "number": "15",
+          "height": "5'11\"",
+          "position": "D",
+          "class_year": "Senior",
+          "source_url": "https://quhawks.com/sports/mens-soccer/roster/hamish-pugh/6474"
+        },
+        {
+          "name": "Ryan Bachtel",
+          "height": "6'0\"",
+          "hometown": "Lansing, Kan.",
+          "class_year": "Freshman",
+          "source_url": "https://trumanbulldogs.com/sports/mens-soccer/roster/ryan-bachtel/6037"
+        },
+        {
+          "name": "Xander Anaya",
+          "position": "Midfield",
+          "class_year": "Sophomore",
+          "source_url": "https://athletics.uindy.edu/sports/mens-soccer/roster/xander-anaya/13405"
+        },
+        {
+          "name": "Linus Saewe",
+          "height": "6'0\"",
+          "weight": "175 lbs",
+          "hometown": "DatteIn, Germany",
+          "class_year": "Junior",
+          "source_url": "https://umsltritons.com/sports/mens-soccer/roster/linus-saewe/4049"
+        },
+        {
+          "name": "Sam Coad",
+          "number": "28",
+          "weight": "150 lbs",
+          "hometown": "Flower Mound, Texas",
+          "position": "Fwd",
+          "class_year": "Sophomore",
+          "source_url": "https://uttylerpatriots.com/sports/mens-soccer/roster/sam-coad/5902"
+        },
+        {
+          "name": "Iker Arrazola",
+          "number": "26",
+          "position": "Defender",
+          "height": "6'2\"",
+          "weight": "188 lbs",
+          "class_year": "Sophomore",
+          "source_url": "https://uuathletics.com/sports/mens-soccer/roster/iker-arrazola/3763"
+        },
+        {
+          "name": "Jantje Arellanes",
+          "class_year": "Freshman",
+          "source_url": "https://gobuffsgo.com/sports/mens-soccer/roster/jantje-arellanes/14723"
+        }
+      ]
+    }
+  },
+  "missing": ["oklahoma-baptist"]
+}

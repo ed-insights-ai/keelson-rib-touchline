@@ -1,0 +1,127 @@
+{
+  "schema": "touchline.coverage/1",
+  "updated_at": "2026-09-02T00:47:05+00:00",
+  "cells": {
+    "2016/men/christian-brothers/matches": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-09-02T00:46:50+00:00",
+      "count": 16,
+      "gender": "men",
+      "layer": "matches",
+      "programme": "christian-brothers",
+      "season": 2016,
+      "state": "complete"
+    },
+    "2016/men/christian-brothers/roster": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-09-02T00:46:50+00:00",
+      "count": 25,
+      "gender": "men",
+      "layer": "roster",
+      "programme": "christian-brothers",
+      "season": 2016,
+      "source_url": "https://cbubucs.com/sports/mens-soccer/roster/2016",
+      "state": "complete"
+    },
+    "2016/men/christian-brothers/stats": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-09-02T00:46:50+00:00",
+      "count": 25,
+      "gender": "men",
+      "layer": "stats",
+      "programme": "christian-brothers",
+      "season": 2016,
+      "source_url": "https://cbubucs.com/sports/mens-soccer/stats/2016",
+      "state": "complete"
+    },
+    "2016/men/lee/matches": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-09-02T00:46:50+00:00",
+      "gender": "men",
+      "layer": "matches",
+      "programme": "lee",
+      "reason": "[2016] no proven schedule to take box-score links from",
+      "season": 2016,
+      "state": "unavailable"
+    },
+    "2016/men/lee/roster": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-09-02T00:46:50+00:00",
+      "count": 0,
+      "gender": "men",
+      "layer": "roster",
+      "programme": "lee",
+      "reason": "[2016] failed to fetch roster page https://leeflames.com/sports/mens-soccer/roster/2016: 403 Client Error: Forbidden for url: https://leeflames.com/sports/mens-soccer/roster/2016",
+      "season": 2016,
+      "source_url": "https://leeflames.com/sports/mens-soccer/roster/2016",
+      "state": "unavailable"
+    },
+    "2016/men/mississippi-college/schedule": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-09-02T00:46:50+00:00",
+      "count": 0,
+      "gender": "men",
+      "layer": "schedule",
+      "programme": "mississippi-college",
+      "reason": "[2016] the 2016 schedule page proved its season but listed no fixtures",
+      "season": 2016,
+      "source_url": "https://www.gochoctaws.com/sports/mens-soccer/schedule/2016",
+      "state": "empty"
+    },
+    "2016/men/oklahoma-baptist/matches": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-08-10T10:48:07+00:00",
+      "gender": "men",
+      "layer": "matches",
+      "programme": "oklahoma-baptist",
+      "reason": "oklahoma-baptist: no configured men programme recipe",
+      "season": 2016,
+      "state": "no-collector"
+    },
+    "2016/men/shorter/matches": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-09-02T00:46:50+00:00",
+      "count": 15,
+      "gender": "men",
+      "layer": "matches",
+      "programme": "shorter",
+      "reason": "[2016] box scores missing for 3 of 18 played fixtures: sidearm:shorter:1745, sidearm:shorter:1746, sidearm:shorter:1747",
+      "season": 2016,
+      "state": "complete"
+    },
+    "2024/men/indianapolis/roster": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-09-02T00:15:11+00:00",
+      "count": 53,
+      "gender": "men",
+      "layer": "roster",
+      "programme": "indianapolis",
+      "season": 2024,
+      "source_url": "https://athletics.uindy.edu/sports/mens-soccer/roster/2024",
+      "state": "complete",
+      "verified": "unchanged"
+    },
+    "2026/men/mississippi-college/matches": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-09-01T11:30:42+00:00",
+      "count": 0,
+      "gender": "men",
+      "layer": "matches",
+      "programme": "mississippi-college",
+      "reason": "[2026] box scores missing for 2 of 2 played fixtures: sidearm:mississippi-college:13614, sidearm:mississippi-college:13594",
+      "season": 2026,
+      "state": "unavailable"
+    },
+    "2026/men/spring-hill/matches": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-09-01T11:30:42+00:00",
+      "count": 0,
+      "gender": "men",
+      "layer": "matches",
+      "programme": "spring-hill",
+      "reason": "[2026] no played fixtures to detail",
+      "season": 2026,
+      "state": "empty"
+    }
+  }
+}

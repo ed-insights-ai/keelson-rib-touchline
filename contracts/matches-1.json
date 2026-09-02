@@ -1,0 +1,666 @@
+{
+  "schema": "touchline.matches/1",
+  "season": 2016,
+  "gender": "men",
+  "collected_at": "2026-08-10T10:48:07+00:00",
+  "matches": {
+    "sidearm:christian-brothers:5900": {
+      "source_url": "https://cbubucs.com/sports/mens-soccer/stats/2016/maryville-mo-/boxscore/5900",
+      "teams": [
+        {
+          "name": "Maryville (MO)",
+          "abbr": "MU",
+          "score": 2,
+          "periods": [2, 0],
+          "winner": true,
+          "shots": 6,
+          "sog": 4,
+          "saves": 4,
+          "corners": 2,
+          "fouls": 11,
+          "players": [
+            {
+              "name": "Michael Wasson",
+              "player_id": "5233",
+              "position": "GK",
+              "number": "1",
+              "started": true,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0,
+              "minutes": 101
+            },
+            {
+              "name": "Jeremy Nwonumah",
+              "player_id": "5225",
+              "started": false,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0,
+              "minutes": 31
+            },
+            {
+              "name": "Landon Lacy",
+              "position": "F",
+              "number": "5",
+              "started": true,
+              "shots": 3,
+              "sog": 1,
+              "goals": 0,
+              "assists": 0,
+              "minutes": 65
+            },
+            {
+              "name": "Seth Elliott",
+              "started": false,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0,
+              "minutes": 27
+            },
+            {
+              "name": "Cutter Smith",
+              "player_id": "3112",
+              "number": "2",
+              "started": true,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0,
+              "minutes": 70
+            },
+            {
+              "name": "Nelson Pacheco",
+              "number": "01",
+              "started": true,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0,
+              "minutes": 90
+            },
+            {
+              "name": "Austin Reis",
+              "player_id": "3463",
+              "position": "GK",
+              "number": "1",
+              "started": true,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0
+            },
+            {
+              "name": "Cole Pardo",
+              "player_id": "3462",
+              "started": false,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0
+            },
+            {
+              "name": "Robert Gjelaj",
+              "position": "GK",
+              "number": "1",
+              "started": true,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0
+            },
+            {
+              "name": "Arthur White",
+              "started": false,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0
+            },
+            {
+              "name": "George Francis V",
+              "number": "5",
+              "started": true,
+              "shots": 1,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0
+            },
+            {
+              "name": "Luca Saewe",
+              "player_id": "3770",
+              "number": "2",
+              "started": true,
+              "shots": 2,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0
+            }
+          ],
+          "keepers": [
+            {
+              "name": "Michael Wasson",
+              "player_id": "5233",
+              "position": "GK",
+              "number": "1",
+              "minutes": 101,
+              "goals_against": 1,
+              "saves": 7
+            },
+            {
+              "name": "Sean Bouland",
+              "position": "GK",
+              "number": "31",
+              "minutes": 101,
+              "goals_against": 0,
+              "saves": 2
+            }
+          ]
+        },
+        {
+          "name": "Christian Brothers",
+          "abbr": "CBU",
+          "score": 1,
+          "periods": [0, 1],
+          "shots": 12,
+          "sog": 5,
+          "saves": 2,
+          "corners": 3,
+          "fouls": 18,
+          "players": [],
+          "keepers": []
+        }
+      ],
+      "scoring": [
+        {
+          "time": "101:13",
+          "team": 1,
+          "scorer": "Jacob Garcia",
+          "season_total": 1,
+          "description": "GOAL by DBU Jacob Garcia (FIRST GOAL), goal number 1 for season."
+        },
+        {
+          "time": "70:29",
+          "team": 1,
+          "scorer": "Chris Sowder",
+          "season_total": 1,
+          "assist": "Niall Smith",
+          "description": "Header under keepers legs off corner"
+        },
+        {
+          "time": "2:50",
+          "team": 0,
+          "scorer": "Jason Diaz",
+          "season_total": 1,
+          "assist": "Matheus Ribeiro"
+        },
+        {
+          "time": "96:49",
+          "team": 0,
+          "scorer": "Joey Zerbo",
+          "assist": "Dylan Tritton",
+          "description": "GOAL by OUA Joey Zerbo (FIRST GOAL), Assist by Dylan Tritton."
+        },
+        {
+          "time": "78:51",
+          "team": 1,
+          "scorer": "Fernando RubioGarcia",
+          "description": "24 shot from right flank, save, out to 3"
+        },
+        {
+          "time": "04:47",
+          "team": 1,
+          "scorer": "Johnny Buckle",
+          "assist": "Bracken,Paul ,"
+        },
+        {
+          "time": "28:12",
+          "scorer": "Ramiro Guerrero",
+          "assist": "Daniel Valenciano",
+          "description": "GOAL by  Ramiro Guerrero, Assist by Daniel Valenciano, goal number 0 for season."
+        },
+        {
+          "time": "14:00",
+          "team": 0,
+          "scorer": "Breaux,Zachary",
+          "season_total": 4
+        },
+        {
+          "time": "57:00",
+          "team": 1,
+          "scorer": "Kevin Frazer"
+        },
+        {
+          "time": "18:26",
+          "scorer": "Eduardo Bengoa",
+          "description": "*"
+        },
+        {
+          "time": "44:44",
+          "scorer": "John Drew",
+          "season_total": 1,
+          "assist": "Isaac Guillory , Rodrigo Bandeira",
+          "description": "GOAL by QUINCY Drew, John Assist by Guillory, Isaac and Bandeira, Rodrigo."
+        },
+        {
+          "time": "10:38",
+          "scorer": "Leo Cann",
+          "season_total": 3,
+          "description": "GOAL by QUI Cann, Leo."
+        }
+      ],
+      "cards": [
+        {
+          "type": "yellow",
+          "player": "Michalin Dennie",
+          "number": "7",
+          "time": "53:27",
+          "team": 1
+        },
+        {
+          "type": "red",
+          "player": "Filho,Ricardo",
+          "number": "10",
+          "time": "87:43",
+          "team": 0
+        },
+        {
+          "type": "yellow",
+          "player": "#TM TEAM",
+          "time": "45:00",
+          "team": 1
+        },
+        {
+          "type": "yellow",
+          "player": "Juan Zapata",
+          "number": "33",
+          "time": "75:26"
+        },
+        {
+          "type": "unknown",
+          "player": "Michalin Dennie",
+          "number": "7",
+          "time": "53:27",
+          "team": 1
+        }
+      ],
+      "plays": [
+        {
+          "period": "1",
+          "text": "Ricardo Lao at goalie for Christian Brothers",
+          "clock": "00:00",
+          "team": 1,
+          "type": "goalie"
+        },
+        {
+          "period": "1",
+          "text": "Foul on Christian Brothers.",
+          "clock": "00:46",
+          "team": 1,
+          "type": "foul"
+        },
+        {
+          "period": "1",
+          "text": "Header HDR by CBU Patrick Power, SAVE Christi Kjaersgaard.",
+          "clock": "17:39",
+          "team": 1
+        },
+        {
+          "period": "1",
+          "text": "Offside against CBU.",
+          "clock": "18:01",
+          "team": 1,
+          "type": "offside"
+        },
+        {
+          "period": "1",
+          "text": "CBU substitution: Xavi Lao for Peter Kinsella.",
+          "clock": "19:15",
+          "team": 1,
+          "type": "sub"
+        },
+        {
+          "period": "1",
+          "text": "SHOT by MU Kevin Doherty BLOCKED.",
+          "clock": "21:20",
+          "team": 0,
+          "type": "shot"
+        },
+        {
+          "period": "1",
+          "text": "Corner kick by MU Joergen Pettersen[21:45].",
+          "clock": "21:45",
+          "team": 0,
+          "type": "corner"
+        },
+        {
+          "period": "1",
+          "text": "Header GOAL by MU Pontus Gitselov (FIRST GOAL), Assist by Joergen Pettersen, goal number 1 for season.",
+          "clock": "22:02",
+          "team": 0,
+          "type": "goal",
+          "score": [1, 0]
+        },
+        {
+          "period": "1",
+          "text": "Yellow card on CBU Daniel Rodman.",
+          "clock": "36:32",
+          "team": 1,
+          "type": "yellow"
+        },
+        {
+          "period": "1",
+          "text": "End of period [45:00].",
+          "clock": "45:00",
+          "team": 0,
+          "type": "period"
+        },
+        {
+          "period": "2",
+          "text": "Start of period.",
+          "clock": "45:00",
+          "team": 0,
+          "type": "period"
+        },
+        {
+          "period": "2",
+          "text": "For CBU:#01 Lao, Ricardo, #2 Marin, Dalton, #4 Forrest, Andrew, #5 Power, Patrick, #6 Barrett, Jake, #8 Djordjovic, Djordje, #9 Lao, Xavi, #12 Bennett, Brendan, #14 Boudreaux, Michael, #18 Chinas Lopez, Alejandro, #20 McKeever, Andrew.",
+          "clock": "45:00",
+          "team": 1,
+          "type": "lineup"
+        },
+        {
+          "period": "1",
+          "text": "Foul on FITM.",
+          "team": 1,
+          "type": "foul"
+        },
+        {
+          "period": "1",
+          "text": "*dribbled past three defenders on goaline",
+          "team": 1
+        },
+        {
+          "period": "3",
+          "text": "Start of period.",
+          "clock": "90:00",
+          "team": 0,
+          "type": "period"
+        },
+        {
+          "period": "4",
+          "text": "Start of period.",
+          "clock": "100:00",
+          "team": 0,
+          "type": "period"
+        },
+        {
+          "period": "1",
+          "text": "MU Pontus Gitselov PENALTY KICK GOAL, goal number 0 for season.",
+          "clock": "23:30",
+          "team": 0,
+          "type": "penalty",
+          "score": [2, 0]
+        },
+        {
+          "period": "2",
+          "text": "Red card on SU-M Power,Jack.",
+          "clock": "90:00",
+          "team": 0,
+          "type": "red"
+        },
+        {
+          "period": "1",
+          "text": "40:13 GOAL kicked in by Johnny BUCKLE (WCU), Assist by Paul BRACKEN",
+          "clock": "40:13",
+          "team": 1,
+          "score": [0, 1]
+        },
+        {
+          "period": "SO",
+          "text": "Start of period.",
+          "clock": "110:00",
+          "team": 0,
+          "type": "period"
+        },
+        {
+          "period": "SO",
+          "text": "Shootout attempt by UWF Marteinn Urbancic MADE [Brad Louis].",
+          "clock": "110:00",
+          "team": 1,
+          "type": "shootout"
+        },
+        {
+          "period": "1",
+          "text": "GOAL by  Ramiro Guerrero, Assist by Daniel Valenciano, goal number 0 for season.",
+          "clock": "28:12",
+          "type": "goal"
+        },
+        {
+          "period": "1",
+          "text": "Carson-Newman Dukes, Ben PENALTY KICK GOAL",
+          "team": 0,
+          "type": "penalty",
+          "score": [1, 1]
+        }
+      ],
+      "stadium": "Signaigo Field",
+      "attendance": 401,
+      "kickoff": "7:43 p.m.",
+      "officials": [
+        "Referee: Mark Herrington",
+        "Asst. Referee 1: Michael Carson",
+        "Asst. Referee 2: Ryan Harris",
+        "Alt. Official: 0",
+        "Timekeeper: Armando Montero",
+        "Scorer: Eric Opperman"
+      ],
+      "home_index": 1
+    },
+    "sidearm:lewis:18030": {
+      "source_url": "https://lewisflyers.com/sports/mens-soccer/stats/2022/glvc-semifinals-vs-3-indianapolis/boxscore/18030",
+      "teams": [
+        {
+          "name": "UIndy",
+          "abbr": "INDY",
+          "score": 1,
+          "periods": [1, 0],
+          "shots": 15,
+          "sog": 7,
+          "saves": 3,
+          "corners": 8,
+          "fouls": 12,
+          "players": [
+            {
+              "name": "Niklas Thanhofer",
+              "position": "DEF",
+              "number": "2",
+              "started": true,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0,
+              "minutes": 85
+            }
+          ],
+          "keepers": [
+            {
+              "name": "Joey Schrand",
+              "position": "GK",
+              "number": "29",
+              "minutes": 90,
+              "goals_against": 2,
+              "saves": 3
+            }
+          ]
+        },
+        {
+          "name": "Lewis",
+          "abbr": "LEW",
+          "score": 2,
+          "periods": [0, 2],
+          "winner": true,
+          "shots": 10,
+          "sog": 5,
+          "saves": 6,
+          "corners": 5,
+          "fouls": 12,
+          "players": [
+            {
+              "name": "Sebastian Doppelhofer",
+              "player_id": "10345",
+              "position": "GK",
+              "number": "1",
+              "started": true,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0,
+              "minutes": 90
+            }
+          ],
+          "keepers": [
+            {
+              "name": "Sebastian Doppelhofer",
+              "player_id": "10345",
+              "position": "GK",
+              "number": "1",
+              "minutes": 90,
+              "goals_against": 1,
+              "saves": 6
+            }
+          ]
+        }
+      ],
+      "scoring": [
+        {
+          "time": "31:47",
+          "team": 0,
+          "scorer": "Michael Tselios",
+          "season_total": 6,
+          "description": "GOAL by INDY Tselios, Michael."
+        }
+      ],
+      "cards": [
+        {
+          "type": "yellow",
+          "player": "Niklas Thanhofer",
+          "number": "2",
+          "time": "10:08",
+          "team": 0
+        },
+        {
+          "type": "yellow",
+          "player": "Cristian Perez",
+          "number": "19",
+          "time": "31:44",
+          "team": 1
+        },
+        {
+          "type": "yellow",
+          "player": "0",
+          "number": "0",
+          "time": "70:45",
+          "team": 0
+        },
+        {
+          "type": "yellow",
+          "player": "Zahkar Shkidchenko",
+          "number": "11",
+          "time": "86:35",
+          "team": 1
+        },
+        {
+          "type": "yellow",
+          "player": "Pierre Lurot",
+          "number": "5",
+          "time": "86:35",
+          "team": 0
+        }
+      ],
+      "plays": [
+        {
+          "period": "1",
+          "text": "Doppelhofer, Sebastian at goalie for Lewis",
+          "clock": "00:00",
+          "team": 1,
+          "type": "goalie"
+        },
+        {
+          "period": "1",
+          "text": "Schrand, Joey at goalie for UIndy",
+          "clock": "00:00",
+          "team": 0,
+          "type": "goalie"
+        }
+      ],
+      "stadium": "Maryville Soccer Field",
+      "attendance": 75,
+      "kickoff": "10:00",
+      "officials": [
+        "Referee: Michael Heath",
+        "Asst. Referee: Timo Billmann",
+        "Asst. Referee: Ramond Mendez",
+        "Alt. Official: Tim Lammering"
+      ]
+    },
+    "sidearm:ouachita-baptist:3599": {
+      "source_url": "https://obutigers.com/sports/mens-soccer/stats/2019/mississippi-college/boxscore/3599",
+      "teams": [
+        {
+          "name": "Mississippi Col.",
+          "abbr": "MSC",
+          "score": 0,
+          "periods": [0, 0, 0, 0],
+          "shots": 19,
+          "sog": 8,
+          "saves": 7,
+          "corners": 5,
+          "fouls": 8
+        },
+        {
+          "name": "Ouachita Baptist",
+          "abbr": "OUA",
+          "score": 0,
+          "periods": [0, 0, 0, 0],
+          "shots": 18,
+          "sog": 7,
+          "saves": 8,
+          "corners": 4,
+          "fouls": 14
+        }
+      ],
+      "cards": [
+        {
+          "type": "yellow",
+          "player": "Jakob Cuellar",
+          "number": "5",
+          "time": "53:40",
+          "team": 1
+        },
+        {
+          "type": "yellow",
+          "player": "Joshua Robinson",
+          "number": "11",
+          "time": "82:25",
+          "team": 0
+        },
+        {
+          "type": "yellow",
+          "player": "Abel Perez",
+          "number": "14",
+          "time": "97:42",
+          "team": 0
+        }
+      ],
+      "home_index": 1
+    }
+  },
+  "missing": {
+    "sidearm:shorter:1745": "no box-score link on any collected schedule page",
+    "sidearm:southern-nazarene:3410": "[2017] sidearm:southern-nazarene:3410: failed to fetch box score https://snuathletics.com/sports/mens-soccer/stats/2017/oklahoma-christian/boxscore/3410: HTTPSConnectionPool(host='snuathletics.com', port=443): Max retries exceeded with url: /sorry.ashx (Caused by ResponseError('too many 500 error responses'))"
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "schema": "touchline.stats/1",
+  "season": 2016,
+  "gender": "men",
+  "collected_at": "2026-08-10T10:48:07+00:00",
+  "teams": {
+    "harding": {
+      "programme": "harding",
+      "source_url": "https://hardingsports.com/sports/mens-soccer/stats/2016",
+      "players": [
+        {
+          "name": "Jeremy Nwonumah",
+          "player_id": "5225",
+          "number": "7",
+          "bio_url": "https://hardingsports.com/sports/mens-soccer/roster/jeremy-nwonumah/5225",
+          "gp": 20,
+          "gs": 8,
+          "minutes": 813,
+          "goals": 7,
+          "assists": 2,
+          "points": 16,
+          "shots": 35,
+          "shot_pct": 0.2,
+          "sog": 15,
+          "sog_pct": 0.429,
+          "game_winners": 3,
+          "yellow": 4,
+          "red": 0,
+          "penalty_goals": 0,
+          "penalty_attempts": 1
+        },
+        {
+          "name": "Jose Trejo",
+          "player_id": "4981",
+          "number": "13",
+          "bio_url": "https://newmanjets.com/sports/mens-soccer/roster/jose-trejo/4981",
+          "gp": 1,
+          "gs": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "shots": 0,
+          "shot_pct": 0.0,
+          "sog": 0,
+          "sog_pct": 0.0,
+          "game_winners": 0,
+          "yellow": 0,
+          "red": 0,
+          "penalty_goals": 0,
+          "penalty_attempts": 0
+        }
+      ],
+      "keepers": [
+        {
+          "name": "Tyler Melson",
+          "player_id": "5222",
+          "number": "30",
+          "bio_url": "https://hardingsports.com/sports/mens-soccer/roster/tyler-melson/5222",
+          "gp": 1,
+          "gs": 1,
+          "minutes": 90,
+          "goals_against": 0,
+          "gaa": 0.0,
+          "saves": 2,
+          "save_pct": 1.0,
+          "wins": 1,
+          "losses": 0,
+          "ties": 0,
+          "shutouts": 1,
+          "shots_faced": 7
+        },
+        {
+          "name": "Phil D'Amico",
+          "player_id": "3112",
+          "number": "1",
+          "bio_url": "https://goargos.com/sports/mens-soccer/roster/phil-d-amico/3112",
+          "gp": 18,
+          "gs": 18,
+          "minutes": 1652,
+          "goals_against": 25,
+          "gaa": 1.36,
+          "saves": 65,
+          "save_pct": 0.722,
+          "wins": 10,
+          "losses": 5,
+          "ties": 3,
+          "shots_faced": 211
+        }
+      ]
+    }
+  },
+  "missing": ["oklahoma-baptist"]
+}
