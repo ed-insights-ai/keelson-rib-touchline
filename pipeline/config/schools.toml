@@ -97,6 +97,8 @@ name         = "Ouachita Baptist"
 abbreviation = "OBU"
 conference   = "GAC"
 mascot       = "Tigers"
+# "Ouachita" is how its own box scores name it (sidearm:ouachita-baptist:4826, 2022-09-04).
+aliases      = ["Ouachita"]
 gender       = "men"
 ordinal      = 5
 prefix       = "obu"
@@ -293,6 +295,8 @@ name         = "Oklahoma Christian"
 abbreviation = "OC"
 conference   = "LSC"
 mascot       = "Eagles"
+# "Okla. Christian" is how its own box scores name it (sidearm:oklahoma-christian:11178, 2022-10-08).
+aliases      = ["Okla. Christian"]
 gender       = "men"
 base_url     = "https://oceagles.com/sports/mens-soccer"
 years        = [2022, 2023, 2024, 2025, 2026]
@@ -355,6 +359,8 @@ name         = "Texas A&M International"
 abbreviation = "TAMIU"
 conference   = "LSC"
 mascot       = "Dustdevils"
+# "Tex. A&M Int'l" is how its own box scores name it (sidearm:texas-a-m-international:7299, 2024-10-23).
+aliases      = ["Tex. A&M Int'l"]
 gender       = "men"
 base_url     = "https://godustdevils.com/sports/mens-soccer"
 years        = [2022, 2023, 2024, 2025, 2026]
@@ -394,6 +400,8 @@ name         = "West Texas A&M"
 abbreviation = "WT"
 conference   = "LSC"
 mascot       = "Buffaloes"
+# "West Tex. A&M" is the box-score spelling (sidearm:oklahoma-christian:11183, 2022-10-26).
+aliases      = ["West Tex. A&M"]
 gender       = "men"
 base_url     = "https://gobuffsgo.com/sports/mens-soccer"
 years        = [2022, 2023, 2024, 2025, 2026]
@@ -407,6 +415,8 @@ name         = "Eastern New Mexico"
 abbreviation = "ENMU"
 conference   = "LSC"
 mascot       = "Greyhounds"
+# "Eastern N.M." is how its own box scores name it (sidearm:eastern-new-mexico:12464, 2022-10-15).
+aliases      = ["Eastern N.M."]
 gender       = "men"
 base_url     = "https://goeasternathletics.com/sports/mens-soccer"
 years        = [2022, 2023, 2024]
@@ -468,7 +478,8 @@ name         = "West Alabama"
 abbreviation = "UWA"
 conference   = "GSC"
 mascot       = "Tigers"
-aliases      = ["University of West Alabama"]
+# "West Ala." is how its own box scores name it (sidearm:west-alabama:4498, 2017-11-12).
+aliases      = ["University of West Alabama", "West Ala."]
 gender       = "men"
 base_url     = "https://uwaathletics.com/sports/mens-soccer"
 years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
