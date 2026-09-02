@@ -4,7 +4,7 @@
     "from": 2016,
     "to": 2026
   },
-  "conferences": ["GAC", "GLVC", "GSC", "LSC", "MIAA", "RMAC", "independent", "non_member"],
+  "conferences": ["GAC", "GLVC", "GSC", "LSC", "MIAA", "RMAC", "SSC", "independent", "non_member"],
   "description": "Contract fixture: season-aware conference-membership windows per programme (institution_slug x gender). Each window cites its source. Identity and membership are separate axes.",
   "memberships": {
     "aum": {
@@ -48,6 +48,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "rollins": {
+      "men": [
+        {
+          "conference": "SSC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
       ]
     }

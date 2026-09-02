@@ -1,6 +1,6 @@
 {
-  "conferences": ["GAC", "GLVC", "GSC", "LSC", "MIAA", "RMAC", "independent", "non_member"],
-  "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2026. Authored from official GAC/MIAA, LSC, GSC, GLVC and RMAC records; each window cites its source. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
+  "conferences": ["GAC", "GLVC", "GSC", "LSC", "MIAA", "RMAC", "SSC", "independent", "non_member"],
+  "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2026. Authored from official GAC/MIAA, LSC, GSC, GLVC, RMAC and SSC records; each window cites its source. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
   "memberships": {
     "adams-state": {
       "men": [
@@ -19,6 +19,16 @@
           "from_season": 2017,
           "to_season": 2026,
           "source": "Auburn Montgomery Warhawks, https://en.wikipedia.org/wiki/Auburn_Montgomery_Warhawks (accessed 2026-08-20): AUM was approved for the NCAA Division II membership process on 2015-07-17 and \"began the transition with the 2015-16 season, while joining the Gulf South Conference for all sports effective in the 2017-18 season.\" The window therefore opens at 2017. This corrects an earlier reading of the conference statistics pages (https://gscsports.org/stats.aspx?path=msoc&year=2018&conf=true), which appeared to show AUM first joining in 2019: those pages omit schools still inside the D2 provisional period, which compete on a full conference schedule without counting toward conference statistics. Nine distinct GSC member sites independently published AUM as a conference opponent in each of 2017 and 2018 — a full round-robin slate in both seasons."
+        }
+      ]
+    },
+    "barry": {
+      "men": [
+        {
+          "conference": "SSC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
       ]
     },
@@ -119,6 +129,46 @@
           "from_season": 2022,
           "to_season": 2024,
           "source": "Lone Star Conference, listed in the 2022-2024 Men's Soccer records (https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true, https://lonestarconference.org/standings.aspx?standings=168, https://lonestarconference.org/stats.aspx?path=msoc&year=2024&conf=true) and absent from 2025 (https://lonestarconference.org/stats.aspx?path=msoc&year=2025&conf=true) (accessed 2026-08-12); men's soccer discontinued December 2024."
+        }
+      ]
+    },
+    "eckerd": {
+      "men": [
+        {
+          "conference": "SSC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "embry-riddle": {
+      "men": [
+        {
+          "conference": "SSC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "florida-southern": {
+      "men": [
+        {
+          "conference": "SSC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "florida-tech": {
+      "men": [
+        {
+          "conference": "SSC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
       ]
     },
@@ -231,6 +281,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Lone Star Conference, 2022 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12); listed in both."
+        }
+      ]
+    },
+    "lynn": {
+      "men": [
+        {
+          "conference": "SSC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
       ]
     },
@@ -378,6 +438,16 @@
         }
       ]
     },
+    "nova-southeastern": {
+      "men": [
+        {
+          "conference": "SSC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
     "oklahoma-baptist": {
       "men": [
         {
@@ -427,6 +497,16 @@
           "from_season": 2016,
           "source": "Great American Conference, 2016 and 2025 GAC Women's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=68 and https://greatamericanconference.com/standings.aspx?standings=214 (accessed 2026-08-09); Ouachita Baptist is listed in both.",
           "to_season": 2025
+        }
+      ]
+    },
+    "palm-beach-atlantic": {
+      "men": [
+        {
+          "conference": "SSC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
       ]
     },
@@ -490,6 +570,16 @@
         }
       ]
     },
+    "rollins": {
+      "men": [
+        {
+          "conference": "SSC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
     "saint-edwards": {
       "men": [
         {
@@ -497,6 +587,16 @@
           "from_season": 2023,
           "to_season": 2026,
           "source": "Lone Star Conference, 2023 and 2026 Men's Soccer records, https://lonestarconference.org/standings.aspx?standings=168 and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12); absent from the 2022 conference statistics (https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true) — men's soccer cut April 2020 and reinstated for 2023."
+        }
+      ]
+    },
+    "saint-leo": {
+      "men": [
+        {
+          "conference": "SSC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
       ]
     },
@@ -585,6 +685,16 @@
           "from_season": 2024,
           "to_season": 2026,
           "source": "LSC membership began 2024-07-01 (https://lonestarconference.org/news/2024/6/28/baseball-sul-ross-state-officially-begins-lone-star-conference-membership.aspx); listed in the 2024 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2024&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12)."
+        }
+      ]
+    },
+    "tampa": {
+      "men": [
+        {
+          "conference": "SSC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
       ]
     },
