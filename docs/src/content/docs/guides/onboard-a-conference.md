@@ -110,20 +110,24 @@ printed between conference and gender rather than last. Peer spellings
 of the other members' schedule pages, which the probe does not do; add
 them by hand now or in the alias round after the first collect.
 
-Expect a guessed hostname or two to fail name resolution if you skipped the
-members page (two of fifteen did for the GLVC); correct them and re-probe
-rather than trusting a guess. A site that answers 403 to every request
-(Lee, GSC; Tampa, SSC) comes back from the probe as platform unknown, every
-layer error, no seasons served, with a SideArm stanza drafted anyway (bead
-tl-v1q.6). Open it in a browser to name the platform: a schedule at
-`/sports/msoc/{season}/schedule` is PrestoSports, and the stanza sets
-`scraper` and `live_scraper` to `"prestosports"` so the collect files a
-named no-collector gap per layer instead of a fetch error (bead tl-v1q.5).
-Such a programme's matches against members still land from the members'
-pages, single-source; its roster and stats do not land at all until a
-collector for that platform exists. Record the verdict for every site in
-the conference block's header comment: the probe date, the platform, which
-layers were present, and which seasons were served.
+Expect a guessed hostname or two to fail name resolution (two of fifteen did
+for the GLVC); correct them and re-probe rather than trusting a guess. A
+site that refuses the probe (Lee, GSC, answers 403 to every request; Tampa,
+SSC, did on 2026-09-02) comes back with what HTTP said on every line: the
+platform line reads `unknown` with the status and the URL, every layer reads
+`error (HTTP 403)`, the candidate seasons are listed as not seen with their
+status, and a stanza is still drafted (bead tl-v1q.6). Re-probe on another
+day before naming the platform by hand: Tampa answered 200 to the pipeline's
+own session on the next run, and the probe read PrestoSports off its markup.
+A PrestoSports site is probed at its sport landing page
+(`https://{host}/sports/msoc`), its seasons are academic-year paths
+(`/sports/msoc/2025-26/schedule` is the 2025 season), and its stanza sets
+`scraper` and `live_scraper` to `"prestosports"`. Until the PrestoSports
+collector lands (bead tl-v1q.5), such a programme's matches against members
+still land from the members' pages, single-source, and its roster and stats
+do not land at all. Record the verdict for
+every site in the conference block's header comment: the probe date, the
+platform, which layers were present, and which seasons were served.
 
 ## 3. Author the data, verify it reproduces the count, open a PR
 

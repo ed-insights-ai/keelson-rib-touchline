@@ -6,9 +6,12 @@ import tomllib
 from pathlib import Path
 from unittest.mock import MagicMock
 
+import requests
+
 from scripts import probe as probe_cli
 from src.probe import (
     LAYER_PRESENT,
+    PLATFORM_PRESTOSPORTS,
     PLATFORM_SIDEARM,
     PLATFORM_SIDEARM_LEGACY,
     PLATFORM_STATCREW,
@@ -19,9 +22,11 @@ from src.probe import (
     draft_stanza,
     probe_layers,
     served_seasons,
+    survey_seasons,
 )
 
 FIXTURES = Path("tests/fixtures")
+PRESTO_BASE = "https://www.tampaspartans.com/sports/msoc"
 
 
 def _response(url: str, html: str) -> MagicMock:
@@ -434,3 +439,282 @@ def test_draft_stanza_carries_the_town_and_the_accessed_date() -> None:
         accessed="2026-09-02",
     )
     assert "# city: the schedule page prints no home town" in blank
+
+
+def _presto_page(name: str) -> str:
+    return (FIXTURES / f"prestosports_tampa_{name}.html").read_text()
+
+
+def _refused(url: str, status: int) -> MagicMock:
+    """A response the server answered with a non-2xx status."""
+    response = MagicMock()
+    response.url = url
+    response.text = ""
+    response.status_code = status
+    response.raise_for_status.side_effect = requests.HTTPError(
+        f"{status} Client Error for url: {url}", response=response
+    )
+    return response
+
+
+def _session_by_url(pages: dict[str, object]) -> MagicMock:
+    """A session answering each URL with its response, or raising its exception."""
+    session = MagicMock()
+
+    def get(url: str, **_: object) -> object:
+        answer = pages[url]
+        if isinstance(answer, Exception):
+            raise answer
+        return answer
+
+    session.get.side_effect = get
+    return session
+
+
+def test_classify_platform_recognizes_prestosports_from_its_markup() -> None:
+    for name in ("schedule_2025", "roster_2026", "teams_2026"):
+        platform, evidence = classify_platform(_presto_page(name))
+        assert platform == PLATFORM_PRESTOSPORTS, name
+        assert "prestosports theme asset host" in evidence, name
+    _, evidence = classify_platform(_presto_page("schedule_2025"))
+    assert "server-rendered PrestoSports schedule markup" in evidence
+
+
+def test_probe_layers_reads_a_prestosports_site_at_its_own_urls() -> None:
+    year = 2026
+    schedule_url = f"{PRESTO_BASE}/2026-27/schedule"
+    roster_url = f"{PRESTO_BASE}/2026-27/roster"
+    teams_url = f"{PRESTO_BASE}/2026-27/teams/tampa"
+    # The saved schedule is the played 2025 season, kept for its box-score
+    # links; only its title year moves so the season proof passes at the
+    # 2026-27 URL beside the saved 2026 roster and statistics pages.
+    schedule = _presto_page("schedule_2025").replace("<title>2025 ", "<title>2026 ", 1)
+    session = _session_by_url(
+        {
+            schedule_url: _response(schedule_url, schedule),
+            roster_url: _response(roster_url, _presto_page("roster_2026")),
+            teams_url: _response(teams_url, _presto_page("teams_2026")),
+        }
+    )
+
+    assert probe_layers(session, PRESTO_BASE, year, PLATFORM_PRESTOSPORTS) == {
+        "schedule": LAYER_PRESENT,
+        "roster": LAYER_PRESENT,
+        "stats": LAYER_PRESENT,
+        "matches": LAYER_PRESENT,
+    }
+    assert [call.args[0] for call in session.get.call_args_list] == [
+        schedule_url,
+        roster_url,
+        teams_url,
+    ]
+
+
+def test_probe_layers_says_what_http_said() -> None:
+    year = 2026
+    schedule_url = f"{PRESTO_BASE}/2026-27/schedule"
+    schedule = _presto_page("schedule_2025").replace("<title>2025 ", "<title>2026 ", 1)
+    session = _session_by_url(
+        {
+            schedule_url: _response(schedule_url, schedule),
+            f"{PRESTO_BASE}/2026-27/roster": _refused(
+                f"{PRESTO_BASE}/2026-27/roster", 403
+            ),
+            f"{PRESTO_BASE}/2026-27/teams/tampa": requests.ReadTimeout(
+                "read timed out"
+            ),
+        }
+    )
+
+    assert probe_layers(session, PRESTO_BASE, year, PLATFORM_PRESTOSPORTS) == {
+        "schedule": LAYER_PRESENT,
+        "roster": "error (HTTP 403)",
+        "stats": "error (timeout)",
+        "matches": LAYER_PRESENT,
+    }
+
+    sidearm = MagicMock()
+    sidearm.get.side_effect = lambda url, **_: _refused(url, 500)
+    assert probe_layers(sidearm, "https://example.test/sports/mens-soccer", year) == {
+        "schedule": "error (HTTP 500)",
+        "roster": "error (HTTP 500)",
+        "stats": "error (HTTP 500)",
+        "matches": "error (HTTP 500)",
+    }
+
+
+def test_probe_layers_reads_the_prestosports_team_link_off_the_landing_page() -> None:
+    year = 2026
+    roster_url = f"{PRESTO_BASE}/2026-27/roster"
+    teams_url = f"{PRESTO_BASE}/2026-27/teams/tampa"
+    pages = {
+        f"{PRESTO_BASE}/2026-27/schedule": _refused(
+            f"{PRESTO_BASE}/2026-27/schedule", 403
+        ),
+        roster_url: _response(roster_url, _presto_page("roster_2026")),
+        teams_url: _response(teams_url, _presto_page("teams_2026")),
+    }
+
+    # Without the schedule page there is no team link to read, and the
+    # statistics page is not guessed from the school's name.
+    blind = probe_layers(
+        _session_by_url(pages), PRESTO_BASE, year, PLATFORM_PRESTOSPORTS
+    )
+    assert blind["schedule"] == "error (HTTP 403)"
+    assert blind["stats"] == "error (team link not read: HTTP 403)"
+
+    landing = '<a href=" /sports/msoc/2026-27/teams/tampa ">Current Season</a>'
+    seen = probe_layers(
+        _session_by_url(pages),
+        PRESTO_BASE,
+        year,
+        PLATFORM_PRESTOSPORTS,
+        landing_html=landing,
+    )
+    assert seen["stats"] == LAYER_PRESENT
+
+
+def test_survey_seasons_names_the_seasons_the_site_refused() -> None:
+    schedule_2025 = f"{PRESTO_BASE}/2025-26/schedule"
+    session = _session_by_url(
+        {
+            f"{PRESTO_BASE}/2026-27/schedule": _refused(
+                f"{PRESTO_BASE}/2026-27/schedule", 403
+            ),
+            schedule_2025: _response(schedule_2025, _presto_page("schedule_2025")),
+        }
+    )
+
+    survey = survey_seasons(session, PRESTO_BASE, [2026, 2025], PLATFORM_PRESTOSPORTS)
+    assert survey.served == [2025]
+    assert survey.errors == {2026: "HTTP 403"}
+    assert served_seasons(
+        session, PRESTO_BASE, [2026, 2025], PLATFORM_PRESTOSPORTS
+    ) == [2025]
+
+
+def test_derive_identity_reads_the_mascot_off_a_prestosports_title() -> None:
+    identity = derive_identity(
+        name="Tampa", pages=[_presto_page("schedule_2025")], url=PRESTO_BASE
+    )
+
+    assert identity.name == "Tampa"
+    assert identity.mascot == "Spartans"
+    assert identity.aliases == ["University of Tampa"]
+    # PrestoSports rows print no town, and the site publishes no short token,
+    # so the city stays blank (the stanza says so) and the abbreviation is
+    # the initials fallback the reviewer corrects.
+    assert identity.city == ""
+    assert identity.abbreviation == "T"
+
+
+def test_draft_stanza_for_prestosports_names_both_scrapers() -> None:
+    stanza = draft_stanza(
+        name="Tampa",
+        abbreviation="UT",
+        conference="SSC",
+        base_url=f"{PRESTO_BASE}/",
+        gender="men",
+        platform=PLATFORM_PRESTOSPORTS,
+        seasons=[2025, 2026],
+        mascot="Spartans",
+        accessed="2026-09-02",
+    )
+
+    parsed = tomllib.loads(stanza)["schools"][0]
+    assert parsed["scraper"] == "prestosports"
+    assert parsed["live_scraper"] == "prestosports"
+    assert parsed["base_url"] == PRESTO_BASE
+    assert 'scraper      = "prestosports"\nlive_scraper = "prestosports"\n' in stanza
+
+
+def test_cli_reports_what_http_said_when_the_site_refuses(capsys) -> None:
+    session = MagicMock()
+    session.get.side_effect = lambda url, **_: _refused(url, 403)
+
+    exit_code = probe_cli.main(
+        [
+            "--url",
+            PRESTO_BASE,
+            "--name",
+            "Tampa",
+            "--conference",
+            "SSC",
+            "--seasons",
+            "2026",
+        ],
+        session=session,
+    )
+
+    out, err = capsys.readouterr()
+    assert exit_code == 1
+    assert f"Platform: unknown — HTTP 403 from {PRESTO_BASE}" in out
+    assert "Evidence: site not seen" in out
+    assert "  schedule: error (HTTP 403)" in out
+    assert "  stats: error (HTTP 403)" in out
+    assert "Served seasons: none" in out
+    assert "Seasons not seen: 2026 (HTTP 403)" in out
+    assert "[[schools]]" in out
+    assert "403" in err
+
+
+def test_cli_probes_a_prestosports_site_end_to_end(capsys) -> None:
+    landing = f"""
+    <html>
+      <head>
+        <title>Men's Soccer - University of Tampa Athletics</title>
+        <meta property="og:site_name" content="University of Tampa Athletics">
+        <meta property="og:url" content="{PRESTO_BASE}/index">
+        <link rel="stylesheet"
+              href="https://theme-assets.prestosports.com/theme-assets/generic/assets/css/global-reset.css">
+      </head>
+      <body><a href=" /sports/msoc/2026-27/teams/tampa ">Current Season</a></body>
+    </html>
+    """
+    schedule_2025 = f"{PRESTO_BASE}/2025-26/schedule"
+    roster_url = f"{PRESTO_BASE}/2026-27/roster"
+    teams_url = f"{PRESTO_BASE}/2026-27/teams/tampa"
+    session = _session_by_url(
+        {
+            PRESTO_BASE: _response(f"{PRESTO_BASE}/index", landing),
+            f"{PRESTO_BASE}/2026-27/schedule": _refused(
+                f"{PRESTO_BASE}/2026-27/schedule", 404
+            ),
+            roster_url: _response(roster_url, _presto_page("roster_2026")),
+            teams_url: _response(teams_url, _presto_page("teams_2026")),
+            schedule_2025: _response(schedule_2025, _presto_page("schedule_2025")),
+        }
+    )
+
+    exit_code = probe_cli.main(
+        [
+            "--url",
+            f"{PRESTO_BASE}/",
+            "--name",
+            "Tampa",
+            "--conference",
+            "SSC",
+            "--seasons",
+            "2025-2026",
+        ],
+        session=session,
+    )
+
+    out = capsys.readouterr().out
+    assert exit_code == 0
+    assert "Platform: prestosports" in out
+    assert "Evidence: prestosports theme asset host" in out
+    assert "  schedule: error (HTTP 404)" in out
+    assert "  roster: present" in out
+    assert "  stats: present" in out
+    assert "  matches: error (HTTP 404)" in out
+    assert "Served seasons: 2025" in out
+    assert "Seasons not seen: 2026 (HTTP 404)" in out
+    assert 'name         = "Tampa"' in out
+    assert 'mascot       = "Spartans"' in out
+    assert 'aliases      = ["University of Tampa"]' in out
+    assert f'base_url     = "{PRESTO_BASE}"' in out
+    assert "years        = [2025]" in out
+    assert 'scraper      = "prestosports"' in out
+    assert 'live_scraper = "prestosports"' in out
+    assert "# city: the schedule page prints no home town" in out

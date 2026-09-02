@@ -13,19 +13,16 @@ from urllib.parse import urlparse
 import requests
 
 from src.probe import (
+    PLATFORM_UNKNOWN,
     ProbeReport,
     classify_platform,
     derive_identity,
     draft_stanza,
+    fetch_schedule_page,
     probe_layers,
-    served_seasons,
+    survey_seasons,
 )
-from src.sidearm_live import (
-    LAYER_SCHEDULE,
-    LiveCollectionError,
-    build_session,
-    fetch_published_page,
-)
+from src.sidearm_live import LiveCollectionError, build_session, http_status
 
 
 def _season_range(value: str) -> list[int]:
@@ -40,12 +37,13 @@ def _season_range(value: str) -> list[int]:
 
 def _gender_from_url(url: str) -> str:
     sport_slug = urlparse(url).path.rstrip("/").rsplit("/", 1)[-1].lower()
-    if sport_slug.startswith("mens-"):
+    if sport_slug.startswith("mens-") or sport_slug == "msoc":
         return "men"
-    if sport_slug.startswith("womens-"):
+    if sport_slug.startswith("womens-") or sport_slug == "wsoc":
         return "women"
     raise ValueError(
-        f"{url}: sport slug must start with 'mens-' or 'womens-' to derive gender"
+        f"{url}: sport slug must start with 'mens-' or 'womens-' (or be the "
+        "PrestoSports 'msoc' or 'wsoc') to derive gender"
     )
 
 
@@ -100,29 +98,45 @@ def main(
             print(f"{raw_url}: expected an absolute HTTP(S) URL", file=sys.stderr)
             had_error = True
             continue
+        landing_html = ""
+        not_seen = ""
         try:
             gender = _gender_from_url(url)
             response = client.get(url, timeout=30)
             response.raise_for_status()
-        except (ValueError, requests.RequestException) as exc:
+            landing_html = response.text
+        except requests.RequestException as exc:
+            print(str(exc), file=sys.stderr)
+            had_error = True
+            status = http_status(exc)
+            if status is None:
+                continue
+            # The site answered: say what it said (bead tl-v1q.6) and probe
+            # on, so a 403 never again reads as "unknown, none".
+            not_seen = f"HTTP {status}"
+        except ValueError as exc:
             print(str(exc), file=sys.stderr)
             had_error = True
             continue
 
-        platform, evidence = classify_platform(response.text)
+        if not_seen:
+            platform, evidence = PLATFORM_UNKNOWN, []
+        else:
+            platform, evidence = classify_platform(landing_html)
         layer_year = max(args.seasons)
-        layers = probe_layers(client, url, layer_year)
-        seasons = served_seasons(client, url, args.seasons)
+        layers = probe_layers(
+            client, url, layer_year, platform, landing_html=landing_html
+        )
+        survey = survey_seasons(client, url, args.seasons, platform)
+        seasons = survey.served
         # The schedule page is where a site describes itself ("The official
         # 2026 Men's Soccer schedule for the Truman State University
         # Bulldogs") and where opponents spell the school; read the newest
         # season the site proved, or the landing page alone if none was.
-        pages = [response.text]
+        pages = [landing_html] if landing_html else []
         if seasons:
             try:
-                schedule = fetch_published_page(
-                    client, url, max(seasons), LAYER_SCHEDULE
-                )
+                schedule = fetch_schedule_page(client, url, max(seasons), platform)
                 pages.append(schedule.html)
             except LiveCollectionError:
                 pass
@@ -149,6 +163,8 @@ def main(
                 layers=layers,
                 seasons=seasons,
                 stanza=stanza,
+                not_seen=not_seen,
+                season_errors=survey.errors,
             )
         )
 

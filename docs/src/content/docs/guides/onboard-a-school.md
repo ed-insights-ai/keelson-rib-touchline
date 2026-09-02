@@ -40,23 +40,42 @@ invalid URL, an underivable gender, or a fetch error, printed to stderr).
 ## 2. Read the fingerprint, layers, and seasons
 
 `classify_platform` in `pipeline/src/probe.py` returns one of `sidearm`,
-`sidearm_legacy`, `statcrew`, or `unknown`, together with the positive
-evidence it used: server-rendered SideArm schedule or `li.sidearm-*` markup,
-a `sidearmsports` asset or hostname, the SideArm component runtime or events
-component, or (for StatCrew) a captioned goals-by-period table and the
-custompages title shape. `sidearm_legacy` means
+`sidearm_legacy`, `prestosports`, `statcrew`, or `unknown`, together with the
+positive evidence it used: server-rendered SideArm schedule or `li.sidearm-*`
+markup, a `sidearmsports` asset or hostname, the SideArm component runtime or
+events component; for PrestoSports (`pipeline/src/presto.py`) the
+`prestosports.com` theme-asset and mirror hosts, server-rendered `event-row`
+schedule cards, a roster table with `jersey-number` cells, or
+`stats-container` statistics tables; or (for StatCrew) a captioned
+goals-by-period table and the custompages title shape. `sidearm_legacy` means
 SideArm branding with none of the server-rendered markup the collector needs.
 `unknown` carries no evidence at all, and the report prints `Evidence: none`:
-the probe never claims a collector it cannot prove.
+the probe never claims a collector it cannot prove. When the landing page
+itself was refused, the report says what HTTP said instead, so a site that
+answers 403 is never mistaken for one that showed nothing (bead tl-v1q.6):
+
+```text
+Platform: unknown — HTTP 403 from https://{host}/sports/msoc
+Evidence: site not seen
+```
+
+PrestoSports seasons are academic years: the fall 2025 season lives at
+`{base}/2025-26/schedule` and `{base}/2025-26/roster`, and its team
+statistics at `{base}/2025-26/teams/{segment}`, where the segment is read
+from the "Current Season" link the site publishes, never from the school's
+name. Probe the sport landing page (`https://{host}/sports/msoc`); it is the
+draft stanza's `base_url`.
 
 Below that, `probe_layers` reports `present`, `absent`, or `error` for each
-layer (schedule, roster, stats, matches) at the newest candidate season, and
-`served_seasons` lists only the seasons the site proved it served: each
-schedule page must pass `assert_served_season`
-(`pipeline/src/sidearm_live.py`), which requires the final URL path or the
-page title to name the requested year. A season makes the list only when the
-fetch succeeded, the served page proved the requested year, and the page
-carried schedule markup; anything less drops it silently.
+layer (schedule, roster, stats, matches) at the newest candidate season, at
+the platform's own URLs and with its own season proof (`assert_served_season`
+in `pipeline/src/sidearm_live.py`, `season_served` in `presto.py`). An error
+names what HTTP said, `error (HTTP 403)`, `error (HTTP 500)`, or
+`error (timeout)`, never a bare `error`. `served_seasons` lists only the
+seasons the site proved it served: the schedule page must name the requested
+year in its final URL path or its title, and carry schedule markup. A page
+the site served that proves another season drops silently; a season whose
+fetch was refused is listed on a `Seasons not seen` line with its status.
 
 ## 3. Review the draft stanza
 
