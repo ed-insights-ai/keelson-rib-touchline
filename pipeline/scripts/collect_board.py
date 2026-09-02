@@ -163,31 +163,29 @@ def _atomic_json(path: Path, payload: dict[str, object]) -> None:
     temporary.replace(path)
 
 
-def sync_membership_reference() -> str | None:
-    """Mirror the rib's packaged membership.json into the data home.
+def _sync_reference(
+    label: str, packaged: Path, target: Path, required_key: str
+) -> str | None:
+    """Mirror one packaged reference file into the data home.
 
-    The packaged copy (version-controlled and reviewed, read by the rib's
-    src/membership.ts and preferred by src/membership.py) is the source of
-    record; the data home's data/reference/membership.json is a deployment
-    artifact that exists so the data repo stays self-describing. Collect is
-    the data home's one writer, so the mirror happens here: when the copies
-    differ byte-for-byte, the packaged bytes replace the data home copy
-    atomically. Nothing membership-semantic is decided here — windows,
-    authoredThrough, and extrapolation are read from the document, never
-    rewritten.
+    The packaged copy (version-controlled and reviewed) is the source of
+    record; the data home's copy is a deployment artifact that exists so the
+    data repo stays self-describing. Collect is the data home's one writer,
+    so the mirror happens here: when the copies differ byte-for-byte, the
+    packaged bytes replace the data home copy atomically. Nothing semantic
+    is decided here.
 
     Returns a one-line description of what happened for the run log, or
     ``None`` when the mirror was already fresh. A sync that cannot happen is
     reported, never raised: the run's exit code stays about the coverage
-    manifest, and the data-integrity workflow's membership-sync check is the
-    loud guard for a mirror that stays stale.
+    manifest, and the data-integrity workflow's sync checks are the loud
+    guard for a mirror that stays stale.
     """
-    packaged = paths.packaged_membership_path()
     try:
         text = packaged.read_text(encoding="utf-8")
     except OSError as error:
         return (
-            "membership reference NOT synced: cannot read the packaged "
+            f"{label} reference NOT synced: cannot read the packaged "
             f"source of record at {packaged} ({error}); the data home copy "
             "was left untouched"
         )
@@ -195,17 +193,16 @@ def sync_membership_reference() -> str | None:
         parsed = json.loads(text)
     except json.JSONDecodeError as error:
         return (
-            "membership reference NOT synced: the packaged source of record "
+            f"{label} reference NOT synced: the packaged source of record "
             f"at {packaged} is not parseable JSON ({error}); the data home "
             "copy was left untouched"
         )
-    if not isinstance(parsed, dict) or "memberships" not in parsed:
+    if not isinstance(parsed, dict) or required_key not in parsed:
         return (
-            "membership reference NOT synced: the packaged source of record "
-            f"at {packaged} carries no memberships map; the data home copy "
-            "was left untouched"
+            f"{label} reference NOT synced: the packaged source of record "
+            f"at {packaged} carries no {required_key} map; the data home "
+            "copy was left untouched"
         )
-    target = paths.membership_path()
     try:
         if target.read_text(encoding="utf-8") == text:
             return None
@@ -214,7 +211,7 @@ def sync_membership_reference() -> str | None:
         state = "absent, mirrored from"
     except OSError as error:
         return (
-            f"membership reference NOT synced: cannot read {target} "
+            f"{label} reference NOT synced: cannot read {target} "
             f"({error}); fix the data home copy by hand"
         )
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -222,8 +219,28 @@ def sync_membership_reference() -> str | None:
     temporary.write_text(text, encoding="utf-8")
     temporary.replace(target)
     return (
-        f"membership reference synced: the data home copy at {target} was "
+        f"{label} reference synced: the data home copy at {target} was "
         f"{state} the packaged source of record at {packaged}"
+    )
+
+
+def sync_membership_reference() -> str | None:
+    """Mirror the rib's packaged membership.json into the data home."""
+    return _sync_reference(
+        "membership",
+        paths.packaged_membership_path(),
+        paths.membership_path(),
+        "memberships",
+    )
+
+
+def sync_programmes_reference() -> str | None:
+    """Mirror the rib's built programmes.json into the data home (tl-891)."""
+    return _sync_reference(
+        "programmes",
+        paths.packaged_programmes_path(),
+        paths.programmes_path(),
+        "programmes",
     )
 
 
@@ -1026,9 +1043,9 @@ def main() -> int:
         return 2
 
     data_root = paths.data_root()
-    sync_note = sync_membership_reference()
-    if sync_note:
-        print(sync_note)
+    for sync_note in (sync_membership_reference(), sync_programmes_reference()):
+        if sync_note:
+            print(sync_note)
     season_key = f"{args.season}-{args.gender}-{conference_slug}"
     fixture_path = data_root / "data" / "fixtures" / f"{season_key}.json"
     roster_path = data_root / "data" / "rosters" / f"{season_key}.json"

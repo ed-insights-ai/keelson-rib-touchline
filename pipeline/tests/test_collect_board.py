@@ -829,6 +829,42 @@ def test_sync_never_writes_from_a_broken_source_of_record(monkeypatch, tmp_path:
     assert stale.read_text(encoding="utf-8") == stale_text
 
 
+def test_programmes_sync_mirrors_the_built_reference_beside_membership(
+    monkeypatch, tmp_path: Path
+):
+    home = tmp_path / "home"
+    text = (
+        json.dumps(
+            {"schema": "touchline.programmes/2", "programmes": {"harding": {}}},
+            indent=2,
+        )
+        + "\n"
+    )
+    packaged = tmp_path / "pkg" / "data" / "reference" / "programmes.json"
+    packaged.parent.mkdir(parents=True, exist_ok=True)
+    packaged.write_text(text, encoding="utf-8")
+    monkeypatch.setattr(
+        collect_board.paths, "packaged_programmes_path", lambda: packaged
+    )
+    monkeypatch.setattr(collect_board.paths, "data_root", lambda: home)
+
+    note = collect_board.sync_programmes_reference()
+
+    assert (
+        note is not None and "programmes reference synced" in note and "absent" in note
+    )
+    assert (home / "data" / "reference" / "programmes.json").read_text(
+        encoding="utf-8"
+    ) == text
+    assert collect_board.sync_programmes_reference() is None
+
+    packaged.write_text(
+        json.dumps({"schema": "touchline.programmes/2"}), encoding="utf-8"
+    )
+    note = collect_board.sync_programmes_reference()
+    assert note is not None and "NOT synced" in note and "programmes map" in note
+
+
 def test_dedupe_a_neutral_marking_survives_the_merge() -> None:
     # Only one side's theme may class the row neutral (measured: the
     # goriverhawksgo.com 2022 row for Maryville carried the class); the flag

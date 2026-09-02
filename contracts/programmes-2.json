@@ -1,0 +1,81 @@
+{
+  "schema": "touchline.programmes/2",
+  "description": "Contract fixture: programme identity per slug with provenance — one plainly matched row and one matched by a pinned GEOID with its note, cut from the packaged data/reference/programmes.json.",
+  "gazetteer": {
+    "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+    "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+    "file_date": "2023-09-26",
+    "license": "Public domain (work of the U.S. federal government)"
+  },
+  "programmes": {
+    "harding": {
+      "name": "Harding",
+      "nickname": "Bisons",
+      "abbreviation": "HU",
+      "city": "Searcy, Ark.",
+      "point": {
+        "lat": 35.2411,
+        "lon": -91.7352
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://hardingsports.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://hardingsports.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0563020",
+          "name": "Searcy city",
+          "state": "AR",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "saint-leo": {
+      "name": "Saint Leo",
+      "nickname": "Lions",
+      "abbreviation": "SLU",
+      "city": "Saint Leo, Fla.",
+      "point": {
+        "lat": 28.3361,
+        "lon": -82.2582
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://saintleolions.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://saintleolions.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1262775",
+          "name": "St. Leo town",
+          "state": "FL",
+          "accessed": "2023-09-26",
+          "note": "matched explicitly by GEOID: the programme prints 'Saint Leo' and the Gazetteer lists the place as 'St. Leo town'"
+        }
+      }
+    }
+  }
+}

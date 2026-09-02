@@ -1,0 +1,2534 @@
+{
+  "schema": "touchline.programmes/2",
+  "description": "Programme identity that no collected page publishes as data: the nickname a programme goes by, the town it plays in, and that town's point. One row per programme slug, gender-free; every fact carries its provenance and the date it was read. Built from pipeline/config/schools.toml and the pinned 2023 Census Gazetteer by `uv run build-programmes`; never edited by hand. Sibling in role to membership.json — identity, membership and results are separate axes.",
+  "gazetteer": {
+    "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+    "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+    "file_date": "2023-09-26",
+    "license": "Public domain (work of the U.S. federal government)"
+  },
+  "programmes": {
+    "adams-state": {
+      "name": "Adams State",
+      "nickname": "Grizzlies",
+      "abbreviation": "ASU",
+      "city": "Alamosa, Colo.",
+      "point": {
+        "lat": 37.4745,
+        "lon": -105.877
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://asugrizzlies.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://asugrizzlies.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0801090",
+          "name": "Alamosa city",
+          "state": "CO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "aum": {
+      "name": "AUM",
+      "nickname": "Warhawks",
+      "abbreviation": "AUM",
+      "city": "Montgomery, Ala.",
+      "point": {
+        "lat": 32.3485,
+        "lon": -86.2673
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://aumathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://aumathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0151000",
+          "name": "Montgomery city",
+          "state": "AL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "barry": {
+      "name": "Barry",
+      "nickname": "Buccaneers",
+      "abbreviation": "BU",
+      "city": "Miami Shores, Fla.",
+      "point": {
+        "lat": 25.867,
+        "lon": -80.1783
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gobarrybucs.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gobarrybucs.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1245175",
+          "name": "Miami Shores village",
+          "state": "FL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "christian-brothers": {
+      "name": "Christian Brothers",
+      "nickname": "Buccaneers",
+      "abbreviation": "CBU",
+      "city": "Memphis, Tenn.",
+      "point": {
+        "lat": 35.109,
+        "lon": -89.9675
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://cbubucs.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://cbubucs.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4748000",
+          "name": "Memphis city",
+          "state": "TN",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "colorado-christian": {
+      "name": "Colorado Christian",
+      "nickname": "Cougars",
+      "abbreviation": "CCU",
+      "city": "Lakewood, Colo.",
+      "point": {
+        "lat": 39.6989,
+        "lon": -105.1176
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://ccucougars.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://ccucougars.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0843000",
+          "name": "Lakewood city",
+          "state": "CO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "colorado-mesa": {
+      "name": "Colorado Mesa",
+      "nickname": "Mavericks",
+      "abbreviation": "CMU",
+      "city": "Grand Junction, Colo.",
+      "point": {
+        "lat": 39.0891,
+        "lon": -108.5675
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://cmumavericks.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://cmumavericks.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0831660",
+          "name": "Grand Junction city",
+          "state": "CO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "colorado-school-of-mines": {
+      "name": "Colorado School of Mines",
+      "nickname": "Orediggers",
+      "abbreviation": "MINES",
+      "city": "Golden, Colo.",
+      "point": {
+        "lat": 39.7425,
+        "lon": -105.2106
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://minesathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://minesathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0830835",
+          "name": "Golden city",
+          "state": "CO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "csu-pueblo": {
+      "name": "CSU Pueblo",
+      "nickname": "ThunderWolves",
+      "abbreviation": "CSUP",
+      "city": "Pueblo, Colo.",
+      "point": {
+        "lat": 38.2692,
+        "lon": -104.6108
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gothunderwolves.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gothunderwolves.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0862000",
+          "name": "Pueblo city",
+          "state": "CO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "dallas-baptist": {
+      "name": "Dallas Baptist",
+      "nickname": "Patriots",
+      "abbreviation": "DBU",
+      "city": "Dallas, Texas",
+      "point": {
+        "lat": 32.7933,
+        "lon": -96.7665
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://dbupatriots.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://dbupatriots.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4819000",
+          "name": "Dallas city",
+          "state": "TX",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "delta-state": {
+      "name": "Delta State",
+      "nickname": "Statesmen",
+      "abbreviation": "DSU",
+      "city": "Cleveland, Miss.",
+      "point": {
+        "lat": 33.744,
+        "lon": -90.7285
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gostatesmen.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gostatesmen.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2814260",
+          "name": "Cleveland city",
+          "state": "MS",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "drury": {
+      "name": "Drury",
+      "nickname": "Panthers",
+      "abbreviation": "DU",
+      "city": "Springfield, Mo.",
+      "point": {
+        "lat": 37.1942,
+        "lon": -93.2926
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://drurypanthers.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://drurypanthers.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2970000",
+          "name": "Springfield city",
+          "state": "MO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "east-central": {
+      "name": "East Central",
+      "nickname": "Tigers",
+      "abbreviation": "ECU",
+      "city": "Ada, Okla.",
+      "point": {
+        "lat": 34.7679,
+        "lon": -96.6691
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://ecutigers.com/sports/womens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://ecutigers.com/sports/womens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://ecutigers.com/sports/womens-soccer/schedule/2025",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4000200",
+          "name": "Ada city",
+          "state": "OK",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "eastern-new-mexico": {
+      "name": "Eastern New Mexico",
+      "nickname": "Greyhounds",
+      "abbreviation": "ENMU",
+      "city": "Portales, N.M.",
+      "point": {
+        "lat": 34.1773,
+        "lon": -103.3551
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://goeasternathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://goeasternathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://goenmu.com/sports/mens-soccer/schedule/2024",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3559260",
+          "name": "Portales city",
+          "state": "NM",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "eckerd": {
+      "name": "Eckerd",
+      "nickname": "Tritons",
+      "abbreviation": "EC",
+      "city": "St. Petersburg, Fla.",
+      "point": {
+        "lat": 27.7627,
+        "lon": -82.6441
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.eckerdtritons.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.eckerdtritons.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1263000",
+          "name": "St. Petersburg city",
+          "state": "FL",
+          "accessed": "2023-09-26",
+          "note": "matched explicitly by GEOID: the programme prints 'St. Petersburg' and the Gazetteer lists the place as 'St. Petersburg city'"
+        }
+      }
+    },
+    "embry-riddle": {
+      "name": "Embry-Riddle",
+      "nickname": "Eagles",
+      "abbreviation": "ERAU",
+      "city": "Daytona Beach, Fla.",
+      "point": {
+        "lat": 29.1907,
+        "lon": -81.0971
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.erauathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.erauathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1216525",
+          "name": "Daytona Beach city",
+          "state": "FL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "florida-southern": {
+      "name": "Florida Southern",
+      "nickname": "Moccasins",
+      "abbreviation": "FSC",
+      "city": "Lakeland, Fla.",
+      "point": {
+        "lat": 28.0555,
+        "lon": -81.9548
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.fscmocs.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.fscmocs.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1238250",
+          "name": "Lakeland city",
+          "state": "FL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "florida-tech": {
+      "name": "Florida Tech",
+      "nickname": "Panthers",
+      "abbreviation": "FIT",
+      "city": "Melbourne, Fla.",
+      "point": {
+        "lat": 28.1104,
+        "lon": -80.6627
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://floridatechsports.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://floridatechsports.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1243975",
+          "name": "Melbourne city",
+          "state": "FL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "fort-hays-state": {
+      "name": "Fort Hays State",
+      "nickname": "Tigers",
+      "abbreviation": "FHSU",
+      "city": "Hays, Kan.",
+      "point": {
+        "lat": 38.8822,
+        "lon": -99.3222
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://fhsuathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://fhsuathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2031100",
+          "name": "Hays city",
+          "state": "KS",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "fort-lewis": {
+      "name": "Fort Lewis",
+      "nickname": "Skyhawks",
+      "abbreviation": "FLC",
+      "city": "Durango, Colo.",
+      "point": {
+        "lat": 37.2654,
+        "lon": -107.8782
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://goskyhawks.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://goskyhawks.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0822035",
+          "name": "Durango city",
+          "state": "CO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "harding": {
+      "name": "Harding",
+      "nickname": "Bisons",
+      "abbreviation": "HU",
+      "city": "Searcy, Ark.",
+      "point": {
+        "lat": 35.2411,
+        "lon": -91.7352
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://hardingsports.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://hardingsports.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0563020",
+          "name": "Searcy city",
+          "state": "AR",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "illinois-springfield": {
+      "name": "Illinois Springfield",
+      "nickname": "Prairie Stars",
+      "abbreviation": "UIS",
+      "city": "Springfield, Ill.",
+      "point": {
+        "lat": 39.7911,
+        "lon": -89.6446
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://uisprairiestars.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://uisprairiestars.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1772000",
+          "name": "Springfield city",
+          "state": "IL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "indianapolis": {
+      "name": "Indianapolis",
+      "nickname": "Greyhounds",
+      "abbreviation": "UINDY",
+      "city": "Indianapolis, Ind.",
+      "point": {
+        "lat": 39.7767,
+        "lon": -86.1459
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://athletics.uindy.edu/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://athletics.uindy.edu/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1836003",
+          "name": "Indianapolis city (balance)",
+          "state": "IN",
+          "accessed": "2023-09-26",
+          "note": "matched explicitly by GEOID: the programme prints 'Indianapolis' and the Gazetteer lists the place as 'Indianapolis city (balance)'"
+        }
+      }
+    },
+    "lee": {
+      "name": "Lee",
+      "nickname": "Flames",
+      "abbreviation": "LEE",
+      "city": "Cleveland, Tenn.",
+      "point": {
+        "lat": 35.18,
+        "lon": -84.8713
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://leeflames.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://leeflames.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4715400",
+          "name": "Cleveland city",
+          "state": "TN",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "lewis": {
+      "name": "Lewis",
+      "nickname": "Flyers",
+      "abbreviation": "LEW",
+      "city": "Romeoville, Ill.",
+      "point": {
+        "lat": 41.6279,
+        "lon": -88.1012
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://lewisflyers.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://lewisflyers.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1765442",
+          "name": "Romeoville village",
+          "state": "IL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "lincoln": {
+      "name": "Lincoln",
+      "nickname": "Blue Tigers",
+      "abbreviation": "LU",
+      "city": "Jefferson City, Mo.",
+      "point": {
+        "lat": 38.5675,
+        "lon": -92.1753
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://lubluetigers.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://lubluetigers.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2937000",
+          "name": "Jefferson City city",
+          "state": "MO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "lubbock-christian": {
+      "name": "Lubbock Christian",
+      "nickname": "Chaparrals",
+      "abbreviation": "LCU",
+      "city": "Lubbock, Texas",
+      "point": {
+        "lat": 33.5619,
+        "lon": -101.8889
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://lcuchaps.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://lcuchaps.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4845000",
+          "name": "Lubbock city",
+          "state": "TX",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "lynn": {
+      "name": "Lynn",
+      "nickname": "Fighting Knights",
+      "abbreviation": "LYNN",
+      "city": "Boca Raton, Fla.",
+      "point": {
+        "lat": 26.3727,
+        "lon": -80.1037
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.lynnfightingknights.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.lynnfightingknights.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1207300",
+          "name": "Boca Raton city",
+          "state": "FL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "maryville": {
+      "name": "Maryville",
+      "nickname": "Saints",
+      "abbreviation": "MARY",
+      "city": "St. Louis, Mo.",
+      "point": {
+        "lat": 38.6357,
+        "lon": -90.2446
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://maryvillesaints.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://maryvillesaints.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2965000",
+          "name": "St. Louis city",
+          "state": "MO",
+          "accessed": "2023-09-26",
+          "note": "matched explicitly by GEOID: the programme prints 'St. Louis' and the Gazetteer lists the place as 'St. Louis city'"
+        }
+      }
+    },
+    "mckendree": {
+      "name": "McKendree",
+      "nickname": "Bearcats",
+      "abbreviation": "MCK",
+      "city": "Lebanon, Ill.",
+      "point": {
+        "lat": 38.6007,
+        "lon": -89.8097
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://mckbearcats.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://mckbearcats.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1742496",
+          "name": "Lebanon city",
+          "state": "IL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "midwestern-state": {
+      "name": "Midwestern State",
+      "nickname": "Mustangs",
+      "abbreviation": "MSU",
+      "city": "Wichita Falls, Texas",
+      "point": {
+        "lat": 33.9067,
+        "lon": -98.5258
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://msumustangs.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://msumustangs.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4879000",
+          "name": "Wichita Falls city",
+          "state": "TX",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "mississippi-college": {
+      "name": "Mississippi Christian",
+      "nickname": "Choctaws",
+      "abbreviation": "MC",
+      "city": "Clinton, Miss.",
+      "point": {
+        "lat": 32.3544,
+        "lon": -90.3419
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gochoctaws.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gochoctaws.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2814420",
+          "name": "Clinton city",
+          "state": "MS",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "missouri-s-t": {
+      "name": "Missouri S&T",
+      "nickname": "Miners",
+      "abbreviation": "MST",
+      "city": "Rolla, Mo.",
+      "point": {
+        "lat": 37.9459,
+        "lon": -91.7612
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://minerathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://minerathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2962912",
+          "name": "Rolla city",
+          "state": "MO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "missouri-st-louis": {
+      "name": "Missouri-St. Louis",
+      "nickname": "Tritons",
+      "abbreviation": "UMSL",
+      "city": "St. Louis, Mo.",
+      "point": {
+        "lat": 38.6357,
+        "lon": -90.2446
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://umsltritons.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://umsltritons.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2965000",
+          "name": "St. Louis city",
+          "state": "MO",
+          "accessed": "2023-09-26",
+          "note": "matched explicitly by GEOID: the programme prints 'St. Louis' and the Gazetteer lists the place as 'St. Louis city'"
+        }
+      }
+    },
+    "montevallo": {
+      "name": "Montevallo",
+      "nickname": "Falcons",
+      "abbreviation": "UM",
+      "city": "Montevallo, Ala.",
+      "point": {
+        "lat": 33.1261,
+        "lon": -86.8477
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://montevallofalcons.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://montevallofalcons.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0150312",
+          "name": "Montevallo city",
+          "state": "AL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "msu-denver": {
+      "name": "MSU Denver",
+      "nickname": "Roadrunners",
+      "abbreviation": "MSUD",
+      "city": "Denver, Colo.",
+      "point": {
+        "lat": 39.7619,
+        "lon": -104.8811
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://roadrunnersathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://roadrunnersathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0820000",
+          "name": "Denver city",
+          "state": "CO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "newman": {
+      "name": "Newman",
+      "nickname": "Jets",
+      "abbreviation": "NU",
+      "city": "Wichita, Kan.",
+      "point": {
+        "lat": 37.6906,
+        "lon": -97.3458
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://newmanjets.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://newmanjets.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2079000",
+          "name": "Wichita city",
+          "state": "KS",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "northeastern-state": {
+      "name": "Northeastern State",
+      "nickname": "RiverHawks",
+      "abbreviation": "NSU",
+      "city": "Tahlequah, Okla.",
+      "point": {
+        "lat": 35.9105,
+        "lon": -94.9777
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://goriverhawksgo.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://goriverhawksgo.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4072100",
+          "name": "Tahlequah city",
+          "state": "OK",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "northwestern-oklahoma-state": {
+      "name": "Northwestern Oklahoma State",
+      "nickname": "Rangers",
+      "abbreviation": "NWOSU",
+      "city": "Alva, Okla.",
+      "point": {
+        "lat": 36.7896,
+        "lon": -98.6649
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://riderangersride.com/sports/womens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://riderangersride.com/sports/womens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://riderangersride.com/sports/womens-soccer/schedule/2025",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4001800",
+          "name": "Alva city",
+          "state": "OK",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "nova-southeastern": {
+      "name": "Nova Southeastern",
+      "nickname": "Sharks",
+      "abbreviation": "NSU",
+      "city": "Fort Lauderdale, Fla.",
+      "point": {
+        "lat": 26.1412,
+        "lon": -80.1467
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.nsusharks.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.nsusharks.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1224000",
+          "name": "Fort Lauderdale city",
+          "state": "FL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "oklahoma-baptist": {
+      "name": "Oklahoma Baptist",
+      "nickname": "Bison",
+      "abbreviation": "OKBU",
+      "city": "Shawnee, Okla.",
+      "point": {
+        "lat": 35.3694,
+        "lon": -96.9564
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://obubison.com/sports/womens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://obubison.com/sports/womens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://obubison.com/sports/womens-soccer/schedule/2025",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4066800",
+          "name": "Shawnee city",
+          "state": "OK",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "oklahoma-christian": {
+      "name": "Oklahoma Christian",
+      "nickname": "Eagles",
+      "abbreviation": "OC",
+      "city": "Edmond, Okla.",
+      "point": {
+        "lat": 35.6738,
+        "lon": -97.4131
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://oceagles.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://oceagles.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4023200",
+          "name": "Edmond city",
+          "state": "OK",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "ouachita-baptist": {
+      "name": "Ouachita Baptist",
+      "nickname": "Tigers",
+      "abbreviation": "OBU",
+      "city": "Arkadelphia, Ark.",
+      "point": {
+        "lat": 34.1274,
+        "lon": -93.0709
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://obutigers.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://obutigers.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0501870",
+          "name": "Arkadelphia city",
+          "state": "AR",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "palm-beach-atlantic": {
+      "name": "Palm Beach Atlantic",
+      "nickname": "Sailfish",
+      "abbreviation": "PBA",
+      "city": "West Palm Beach, Fla.",
+      "point": {
+        "lat": 26.7451,
+        "lon": -80.127
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://pbasailfish.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://pbasailfish.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1276600",
+          "name": "West Palm Beach city",
+          "state": "FL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "quincy": {
+      "name": "Quincy",
+      "nickname": "Hawks",
+      "abbreviation": "QU",
+      "city": "Quincy, Ill.",
+      "point": {
+        "lat": 39.9337,
+        "lon": -91.3793
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://quhawks.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://quhawks.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1762367",
+          "name": "Quincy city",
+          "state": "IL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "regis": {
+      "name": "Regis",
+      "nickname": "Rangers",
+      "abbreviation": "REG",
+      "city": "Denver, Colo.",
+      "point": {
+        "lat": 39.7619,
+        "lon": -104.8811
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://regisrangers.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://regisrangers.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0820000",
+          "name": "Denver city",
+          "state": "CO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "rockhurst": {
+      "name": "Rockhurst",
+      "nickname": "Hawks",
+      "abbreviation": "RU",
+      "city": "Kansas City, Mo.",
+      "point": {
+        "lat": 39.1224,
+        "lon": -94.5551
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://rockhursthawks.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://rockhursthawks.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2938000",
+          "name": "Kansas City city",
+          "state": "MO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "rogers-state": {
+      "name": "Rogers State",
+      "nickname": "Hillcats",
+      "abbreviation": "RSU",
+      "city": "Claremore, Okla.",
+      "point": {
+        "lat": 36.3146,
+        "lon": -95.6083
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://rsuhillcats.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://rsuhillcats.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4014700",
+          "name": "Claremore city",
+          "state": "OK",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "rollins": {
+      "name": "Rollins",
+      "nickname": "Tars",
+      "abbreviation": "ROL",
+      "city": "Winter Park, Fla.",
+      "point": {
+        "lat": 28.5966,
+        "lon": -81.3457
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.rollinssports.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.rollinssports.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1278300",
+          "name": "Winter Park city",
+          "state": "FL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "saint-edwards": {
+      "name": "St. Edward's",
+      "nickname": "Hilltoppers",
+      "abbreviation": "SEU",
+      "city": "Austin, Texas",
+      "point": {
+        "lat": 30.2986,
+        "lon": -97.7541
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gohilltoppers.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gohilltoppers.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4805000",
+          "name": "Austin city",
+          "state": "TX",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "saint-leo": {
+      "name": "Saint Leo",
+      "nickname": "Lions",
+      "abbreviation": "SLU",
+      "city": "Saint Leo, Fla.",
+      "point": {
+        "lat": 28.3361,
+        "lon": -82.2582
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://saintleolions.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://saintleolions.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1262775",
+          "name": "St. Leo town",
+          "state": "FL",
+          "accessed": "2023-09-26",
+          "note": "matched explicitly by GEOID: the programme prints 'Saint Leo' and the Gazetteer lists the place as 'St. Leo town'"
+        }
+      }
+    },
+    "saint-marys": {
+      "name": "St. Mary's",
+      "nickname": "Rattlers",
+      "abbreviation": "STMU",
+      "city": "San Antonio, Texas",
+      "point": {
+        "lat": 29.4628,
+        "lon": -98.5246
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://rattlerathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://rattlerathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4865000",
+          "name": "San Antonio city",
+          "state": "TX",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "shorter": {
+      "name": "Shorter",
+      "nickname": "Hawks",
+      "abbreviation": "SU",
+      "city": "Rome, Ga.",
+      "point": {
+        "lat": 34.2661,
+        "lon": -85.1861
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://goshorterhawks.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://goshorterhawks.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://shorterhawks.com/sports/mens-soccer/schedule/2023",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1366668",
+          "name": "Rome city",
+          "state": "GA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "south-dakota-mines": {
+      "name": "South Dakota Mines",
+      "nickname": "Hardrockers",
+      "abbreviation": "SDM",
+      "city": "Rapid City, S.D.",
+      "point": {
+        "lat": 44.0711,
+        "lon": -103.2179
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gorockers.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gorockers.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4652980",
+          "name": "Rapid City city",
+          "state": "SD",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "southern-nazarene": {
+      "name": "Southern Nazarene",
+      "nickname": "Crimson Storm",
+      "abbreviation": "SNU",
+      "city": "Bethany, Okla.",
+      "point": {
+        "lat": 35.5072,
+        "lon": -97.6417
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://snuathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://snuathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4005700",
+          "name": "Bethany city",
+          "state": "OK",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "southwest-baptist": {
+      "name": "Southwest Baptist",
+      "nickname": "Bearcats",
+      "abbreviation": "SBU",
+      "city": "Bolivar, Mo.",
+      "point": {
+        "lat": 37.6067,
+        "lon": -93.4167
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://sbubearcats.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://sbubearcats.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2906976",
+          "name": "Bolivar city",
+          "state": "MO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "southwestern-oklahoma-state": {
+      "name": "Southwestern Oklahoma State",
+      "nickname": "Bulldogs",
+      "abbreviation": "SWOSU",
+      "city": "Weatherford, Okla.",
+      "point": {
+        "lat": 35.539,
+        "lon": -98.685
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://swosuathletics.com/sports/womens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://swosuathletics.com/sports/womens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://swosuathletics.com/sports/womens-soccer/schedule/2025",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4079450",
+          "name": "Weatherford city",
+          "state": "OK",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "spring-hill": {
+      "name": "Spring Hill",
+      "nickname": "Badgers",
+      "abbreviation": "SHC",
+      "city": "Mobile, Ala.",
+      "point": {
+        "lat": 30.6684,
+        "lon": -88.1002
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://shcbadgers.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://shcbadgers.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0150000",
+          "name": "Mobile city",
+          "state": "AL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "sul-ross-state": {
+      "name": "Sul Ross State",
+      "nickname": "Lobos",
+      "abbreviation": "SRSU",
+      "city": "Alpine, Texas",
+      "point": {
+        "lat": 30.3639,
+        "lon": -103.6645
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://srlobos.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://srlobos.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4802104",
+          "name": "Alpine city",
+          "state": "TX",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "tampa": {
+      "name": "Tampa",
+      "nickname": "Spartans",
+      "abbreviation": "UT",
+      "city": "Tampa, Fla.",
+      "point": {
+        "lat": 27.9663,
+        "lon": -82.4776
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.tampaspartans.com/sports/msoc",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.tampaspartans.com/sports/msoc",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1271000",
+          "name": "Tampa city",
+          "state": "FL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "texas-a-m-international": {
+      "name": "Texas A&M International",
+      "nickname": "Dustdevils",
+      "abbreviation": "TAMIU",
+      "city": "Laredo, Texas",
+      "point": {
+        "lat": 27.5604,
+        "lon": -99.4892
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://godustdevils.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://godustdevils.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4841464",
+          "name": "Laredo city",
+          "state": "TX",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "trevecca": {
+      "name": "Trevecca",
+      "nickname": "Trojans",
+      "abbreviation": "TNU",
+      "city": "Nashville, Tenn.",
+      "point": {
+        "lat": 36.1718,
+        "lon": -86.785
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://tnutrojans.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://tnutrojans.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4752006",
+          "name": "Nashville-Davidson metropolitan government (balance)",
+          "state": "TN",
+          "accessed": "2023-09-26",
+          "note": "matched explicitly by GEOID: the programme prints 'Nashville' and the Gazetteer lists the place as 'Nashville-Davidson metropolitan government (balance)'"
+        }
+      }
+    },
+    "truman": {
+      "name": "Truman",
+      "nickname": "Bulldogs",
+      "abbreviation": "TRU",
+      "city": "Kirksville, Mo.",
+      "point": {
+        "lat": 40.1982,
+        "lon": -92.5746
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://trumanbulldogs.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://trumanbulldogs.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2939026",
+          "name": "Kirksville city",
+          "state": "MO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "uah": {
+      "name": "UAH",
+      "nickname": "Chargers",
+      "abbreviation": "UAH",
+      "city": "Huntsville, Ala.",
+      "point": {
+        "lat": 34.6977,
+        "lon": -86.6767
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://uahchargers.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://uahchargers.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0137000",
+          "name": "Huntsville city",
+          "state": "AL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "uccs": {
+      "name": "UCCS",
+      "nickname": "Mountain Lions",
+      "abbreviation": "UCCS",
+      "city": "Colorado Springs, Colo.",
+      "point": {
+        "lat": 38.8673,
+        "lon": -104.7607
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gomountainlions.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gomountainlions.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0816000",
+          "name": "Colorado Springs city",
+          "state": "CO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "union": {
+      "name": "Union",
+      "nickname": "Bulldogs",
+      "abbreviation": "UU",
+      "city": "Jackson, Tenn.",
+      "point": {
+        "lat": 35.6541,
+        "lon": -88.835
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://uuathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://uuathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4737640",
+          "name": "Jackson city",
+          "state": "TN",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "upper-iowa": {
+      "name": "Upper Iowa",
+      "nickname": "Peacocks",
+      "abbreviation": "UIU",
+      "city": "Fayette, Iowa",
+      "point": {
+        "lat": 42.8418,
+        "lon": -91.8038
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://uiupeacocks.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://uiupeacocks.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1927165",
+          "name": "Fayette city",
+          "state": "IA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "ut-dallas": {
+      "name": "UT Dallas",
+      "nickname": "Comets",
+      "abbreviation": "UTD",
+      "city": "Richardson, Texas",
+      "point": {
+        "lat": 32.9723,
+        "lon": -96.7081
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://utdcomets.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://utdcomets.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4861796",
+          "name": "Richardson city",
+          "state": "TX",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "ut-permian-basin": {
+      "name": "UT Permian Basin",
+      "nickname": "Falcons",
+      "abbreviation": "UTPB",
+      "city": "Odessa, Texas",
+      "point": {
+        "lat": 31.8805,
+        "lon": -102.3453
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://utpbfalcons.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://utpbfalcons.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://utpbfalcons.com/sports/mens-soccer/schedule/2022",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4853388",
+          "name": "Odessa city",
+          "state": "TX",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "ut-tyler": {
+      "name": "UT Tyler",
+      "nickname": "Patriots",
+      "abbreviation": "UTT",
+      "city": "Tyler, Texas",
+      "point": {
+        "lat": 32.3173,
+        "lon": -95.3059
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://uttylerpatriots.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://uttylerpatriots.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4874144",
+          "name": "Tyler city",
+          "state": "TX",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "west-alabama": {
+      "name": "West Alabama",
+      "nickname": "Tigers",
+      "abbreviation": "UWA",
+      "city": "Livingston, Ala.",
+      "point": {
+        "lat": 32.5955,
+        "lon": -88.1869
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://uwaathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://uwaathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0143720",
+          "name": "Livingston city",
+          "state": "AL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "west-florida": {
+      "name": "West Florida",
+      "nickname": "Argonauts",
+      "abbreviation": "UWF",
+      "city": "Pensacola, Fla.",
+      "point": {
+        "lat": 30.441,
+        "lon": -87.1912
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://goargos.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://goargos.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://goargos.com/sports/mens-soccer/schedule/2025",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1255925",
+          "name": "Pensacola city",
+          "state": "FL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "west-texas-a-m": {
+      "name": "West Texas A&M",
+      "nickname": "Buffaloes",
+      "abbreviation": "WT",
+      "city": "Canyon, Texas",
+      "point": {
+        "lat": 34.9903,
+        "lon": -101.919
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gobuffsgo.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gobuffsgo.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4812532",
+          "name": "Canyon city",
+          "state": "TX",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "westminster": {
+      "name": "Westminster",
+      "nickname": "Griffins",
+      "abbreviation": "WU",
+      "city": "Salt Lake City, Utah",
+      "point": {
+        "lat": 40.7769,
+        "lon": -111.931
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://westminstergriffins.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://westminstergriffins.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4967000",
+          "name": "Salt Lake City city",
+          "state": "UT",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "william-jewell": {
+      "name": "William Jewell",
+      "nickname": "Cardinals",
+      "abbreviation": "WJC",
+      "city": "Liberty, Mo.",
+      "point": {
+        "lat": 39.2413,
+        "lon": -94.4194
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://jewellcardinals.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://jewellcardinals.com/sports/mens-soccer",
+          "accessed": "2026-09-02"
+        },
+        "city": {
+          "source": "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891",
+          "accessed": "2026-09-02"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2942032",
+          "name": "Liberty city",
+          "state": "MO",
+          "accessed": "2023-09-26"
+        }
+      }
+    }
+  }
+}

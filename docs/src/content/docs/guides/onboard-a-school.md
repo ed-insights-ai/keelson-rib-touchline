@@ -76,6 +76,8 @@ years        = [{seasons}]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = false
+city         = "{Town, St.}"
+identity_accessed = "{probe date}"
 ```
 
 `derive_identity` (`pipeline/src/probe.py`) fills the identity fields from
@@ -87,7 +89,10 @@ tail of the description meta once the published name is removed ("The
 official 2026 Men's Soccer schedule for the UIS Prairie Stars"), kept whole
 when the hostname spells it; `aliases` are the published long name and every
 schedule opponent spelling that contains all the words of `name`, minus any
-spelling the collector's identity key already folds onto the name. A mascot
+spelling the collector's identity key already folds onto the name; `city` is
+the town the schedule page prints most often on its home rows, AP style,
+which the programmes reference (`uv run build-programmes`, tl-891) resolves
+to one Gazetteer place, and `identity_accessed` the probe date. A mascot
 the site does not publish becomes a comment line, never an empty value.
 
 Check every field against what the site actually shows (the abbreviation in

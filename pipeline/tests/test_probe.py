@@ -219,6 +219,7 @@ def test_draft_stanza_uses_the_house_layout_with_mascot_and_aliases() -> None:
         platform=PLATFORM_SIDEARM,
         seasons=[2025, 2026],
         mascot="Bulldogs",
+        accessed="2026-09-02",
         aliases=["Truman State University", "Truman State"],
     )
 
@@ -235,6 +236,9 @@ def test_draft_stanza_uses_the_house_layout_with_mascot_and_aliases() -> None:
         'scraper      = "sidearm"\n'
         'data_status  = "unverified"\n'
         "enabled      = false\n"
+        '# city: the schedule page prints no home town; fill by hand as "Town, St."\n'
+        "# city_source: cite where the town was read (default: the schedule page)\n"
+        'identity_accessed = "2026-09-02"\n'
     )
     parsed = tomllib.loads(stanza)["schools"][0]
     assert parsed["mascot"] == "Bulldogs"
@@ -368,3 +372,65 @@ def test_cli_refuses_a_name_count_that_does_not_match_the_urls(capsys) -> None:
     else:
         raise AssertionError("expected argparse to exit")
     assert "--name given 1 times for 2 --url values" in capsys.readouterr().err
+
+
+HOME_ROWS = """
+<ul>
+  <li class="sidearm-schedule-game sidearm-schedule-game-home">
+    <div class="sidearm-schedule-game-location"><span>Alamosa, CO</span><span>ASU Soccer Field</span></div>
+  </li>
+  <li class="sidearm-schedule-game">
+    <div class="sidearm-schedule-game-location"><span>Denver, CO</span></div>
+  </li>
+  <li class="sidearm-schedule-game sidearm-schedule-game-home">
+    <div class="sidearm-schedule-game-location"><span>Alamosa, Colo.</span></div>
+  </li>
+  <li class="sidearm-schedule-game sidearm-schedule-game-home">
+    <div class="sidearm-schedule-game-location"><span>TBA</span></div>
+  </li>
+</ul>
+"""
+
+
+def test_home_town_is_the_majority_of_marked_home_rows_in_ap_style() -> None:
+    from src.probe import _home_town
+
+    assert _home_town(HOME_ROWS) == "Alamosa, Colo."
+
+
+def test_home_town_falls_back_to_every_row_and_needs_a_majority() -> None:
+    from src.probe import _home_town
+
+    unmarked = HOME_ROWS.replace(" sidearm-schedule-game-home", "")
+    assert _home_town(unmarked) == "Alamosa, Colo."
+    split = unmarked.replace("Alamosa, Colo.", "Pueblo, Colo.")
+    assert _home_town(split) == ""
+    assert _home_town("<ul></ul>") == ""
+
+
+def test_draft_stanza_carries_the_town_and_the_accessed_date() -> None:
+    stanza = draft_stanza(
+        name="Adams State",
+        abbreviation="ASU",
+        conference="RMAC",
+        base_url="https://asugrizzlies.com/sports/mens-soccer",
+        gender="men",
+        platform="sidearm",
+        seasons=[2026],
+        mascot="Grizzlies",
+        city="Alamosa, Colo.",
+        accessed="2026-09-02",
+    )
+    assert 'city         = "Alamosa, Colo."' in stanza
+    assert 'identity_accessed = "2026-09-02"' in stanza
+    blank = draft_stanza(
+        name="Adams State",
+        abbreviation="ASU",
+        conference="RMAC",
+        base_url="https://asugrizzlies.com/sports/mens-soccer",
+        gender="men",
+        platform="sidearm",
+        seasons=[2026],
+        accessed="2026-09-02",
+    )
+    assert "# city: the schedule page prints no home town" in blank

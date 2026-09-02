@@ -45,7 +45,9 @@ years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026
 scraper      = "statcrew"
 data_status  = "verified"
 enabled      = true
-
+city         = "Searcy, Ark."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Fort Hays State"
 abbreviation = "FHSU"
@@ -62,7 +64,9 @@ data_status  = "verified"
 enabled      = true
 # Peers print "Fort Hays" (CSU Pueblo 2022, sidearm:csu-pueblo:6569).
 aliases      = ["Fort Hays"]
-
+city         = "Hays, Kan."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Newman"
 abbreviation = "NU"
@@ -76,7 +80,9 @@ years        = [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
-
+city         = "Wichita, Kan."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Northeastern State"
 abbreviation = "NSU"
@@ -93,7 +99,9 @@ scraper      = "sidearm_legacy"
 data_status  = "unverified"
 enabled      = true
 notes        = "Athletics moved to goriverhawksgo.com (standard SideArm; school's primary conference is now MIAA, but 2026 men's soccer is GAC-marked on its own schedule). live_scraper was sidearm_legacy, which has no implemented collector, so every live layer filed a no-collector gap; probed 2026-08-20 and the live site is standard SideArm serving 2016-2026, so the live path is now sidearm. Old domains nsuathletics.com and nsuriverhawks.com are GoDaddy-parked, so the sidearm_legacy historical recipe at base_url is still dead — repoint it before any historical backfill."
-
+city         = "Tahlequah, Okla."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Ouachita Baptist"
 abbreviation = "OBU"
@@ -110,7 +118,9 @@ years        = [2016, 2017, 2018, 2019, 2021, 2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
-
+city         = "Arkadelphia, Ark."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Rogers State"
 abbreviation = "RSU"
@@ -124,7 +134,9 @@ years        = [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
-
+city         = "Claremore, Okla."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Southern Nazarene"
 abbreviation = "SNU"
@@ -138,6 +150,9 @@ years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
+city         = "Bethany, Okla."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # ============================================================
 # WOMEN'S SOCCER — 7 programs
@@ -171,7 +186,9 @@ years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
-
+city         = "Ada, OK"
+city_source  = "schedule-page home venue location, https://ecutigers.com/sports/womens-soccer/schedule/2025"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Northwestern Oklahoma State"
 abbreviation = "NWOSU"
@@ -185,7 +202,9 @@ years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
-
+city         = "Alva, Oklahoma"
+city_source  = "schedule-page home venue location, https://riderangersride.com/sports/womens-soccer/schedule/2025"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Oklahoma Baptist"
 abbreviation = "OKBU"
@@ -199,7 +218,9 @@ years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
-
+city         = "Shawnee, OK"
+city_source  = "schedule-page home venue location, https://obubison.com/sports/womens-soccer/schedule/2025"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Ouachita Baptist"
 abbreviation = "OBUW"
@@ -241,6 +262,9 @@ years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
+city         = "Weatherford, Okla."
+city_source  = "schedule-page home venue location, https://swosuathletics.com/sports/womens-soccer/schedule/2025"
+identity_accessed = "2026-09-02"
 
 # ============================================================
 # LSC MEN'S SOCCER — 13 programmes, backfill window 2022-2026
@@ -267,7 +291,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
-
+city         = "Dallas, Texas"
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Lubbock Christian"
 abbreviation = "LCU"
@@ -279,7 +305,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
-
+city         = "Lubbock, Texas"
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Midwestern State"
 abbreviation = "MSU"
@@ -294,7 +322,9 @@ enabled      = true
 # Westminster 2023 prints a tournament result line as "Midwestern"
 # (sidearm:westminster:12070).
 aliases      = ["Midwestern"]
-
+city         = "Wichita Falls, Texas"
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Oklahoma Christian"
 abbreviation = "OC"
@@ -308,6 +338,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
+city         = "Edmond, Okla."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # Officially "St. Edward's" — the athletics site titles itself "St. Edward's
 # University Athletics" (https://gohilltoppers.com/sports/mens-soccer,
@@ -327,6 +360,9 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
+city         = "Austin, Texas"
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # Officially "St. Mary's" (San Antonio, Texas) — the athletics site titles
 # itself "St. Mary's University Athletics"
@@ -345,6 +381,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
+city         = "San Antonio, Texas"
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # LSC member since 2024-07-01 (from Division III / ASC).
 [[schools]]
@@ -358,7 +397,9 @@ years        = [2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
-
+city         = "Alpine, Texas"
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Texas A&M International"
 abbreviation = "TAMIU"
@@ -372,6 +413,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
+city         = "Laredo, Texas"
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # LSC member since 2025-07-01 (from Division III / ASC; independent 2024).
 [[schools]]
@@ -385,7 +429,9 @@ years        = [2025, 2026]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
-
+city         = "Richardson, Texas"
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "UT Tyler"
 abbreviation = "UTT"
@@ -401,6 +447,9 @@ enabled      = true
 # "The University of Texas at Tyler" (Colorado Christian 2025,
 # sidearm:colorado-christian:7440), which keys to "of texas at tyler".
 aliases      = ["Texas-Tyler", "University of Texas at Tyler"]
+city         = "Tyler, Texas"
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # Archive fixtures derived pre-config carry the alias slug
 # west-texas-a-and-m; the adjudicated alias pass reconciles them.
@@ -417,6 +466,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
+city         = "Canyon, Texas"
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # Men's soccer discontinued December 2024; historical member 2022-2024.
 [[schools]]
@@ -432,6 +484,9 @@ years        = [2022, 2023, 2024]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
+city         = "Portales, N.M."
+city_source  = "schedule-page home venue location, https://goenmu.com/sports/mens-soccer/schedule/2024"
+identity_accessed = "2026-09-02"
 
 # Single-season LSC member (2022 only). First collect 2026-08-12: all four
 # layers complete.
@@ -446,6 +501,9 @@ years        = [2022]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
+city         = "Odessa, TX"
+city_source  = "schedule-page home venue location, https://utpbfalcons.com/sports/mens-soccer/schedule/2022"
+identity_accessed = "2026-09-02"
 
 # ============================================================
 # GSC MEN'S SOCCER — 13 programmes, backfill window 2016-2026
@@ -481,7 +539,9 @@ years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-
+city         = "Huntsville, Ala."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "West Alabama"
 abbreviation = "UWA"
@@ -495,6 +555,9 @@ years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+city         = "Livingston, Ala."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # Renamed Mississippi Christian University effective 2026-06-01. The
 # athletics site titles itself "Mississippi Christian University Athletics"
@@ -518,6 +581,9 @@ years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+city         = "Clinton, Miss."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # leeflames.com answers 403 to every automated request (WAF/bot filter),
 # so the probe could not confirm the layers. Platform assumed SideArm-new
@@ -534,7 +600,9 @@ years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-
+city         = "Cleveland, Tenn."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Christian Brothers"
 abbreviation = "CBU"
@@ -547,6 +615,9 @@ years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+city         = "Memphis, Tenn."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # The GAC's recurring non-conference opponent: Harding or Ouachita Baptist
 # has played Union in every collected season except 2018-2020.
@@ -561,7 +632,9 @@ years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-
+city         = "Jackson, Tenn."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Delta State"
 abbreviation = "DSU"
@@ -573,7 +646,9 @@ years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-
+city         = "Cleveland, Miss."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Montevallo"
 abbreviation = "UM"
@@ -586,6 +661,9 @@ years        = [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+city         = "Montevallo, Ala."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # Absent from the 2020 conference statistics and the site serves no 2020
 # season: the GSC postponed fall 2020 soccer to spring 2021 and Spring
@@ -602,7 +680,9 @@ years        = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-
+city         = "Mobile, Ala."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "AUM"
 abbreviation = "AUM"
@@ -615,7 +695,9 @@ years        = [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-
+city         = "Montgomery, Ala."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Trevecca"
 abbreviation = "TNU"
@@ -628,6 +710,10 @@ years        = [2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+city         = "Nashville, Tenn."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+gazetteer_geoid = "4752006"
+identity_accessed = "2026-09-02"
 
 # Left GSC men's soccer after 2025 (absent from the 2026 standings). Also
 # absent from the 2020 statistics: the conference postponed fall 2020
@@ -644,6 +730,9 @@ years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+city         = "Pensacola, FL"
+city_source  = "schedule-page home venue location, https://goargos.com/sports/mens-soccer/schedule/2025"
+identity_accessed = "2026-09-02"
 
 # Left GSC men's soccer after 2023 (absent from the 2024 statistics);
 # Shorter now competes in Conference Carolinas.
@@ -658,6 +747,9 @@ years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+city         = "Rome, GA"
+city_source  = "schedule-page home venue location, https://shorterhawks.com/sports/mens-soccer/schedule/2023"
+identity_accessed = "2026-09-02"
 
 # ============================================================
 # GLVC MEN'S SOCCER — 15 programmes, backfill window 2022-2026
@@ -701,7 +793,10 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["UIndy", "University of Indianapolis"]
-
+city         = "Indianapolis, Ind."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+gazetteer_geoid = "1836003"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Maryville"
 abbreviation = "MARY"
@@ -714,7 +809,10 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Maryville University"]
-
+city         = "St. Louis, Mo."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+gazetteer_geoid = "2965000"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Missouri S&T"
 abbreviation = "MST"
@@ -727,7 +825,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Missouri University of Science and Technology"]
-
+city         = "Rolla, Mo."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Illinois Springfield"
 abbreviation = "UIS"
@@ -740,7 +840,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Illinois-Springfield", "University of Illinois Springfield"]
-
+city         = "Springfield, Ill."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Lewis"
 abbreviation = "LEW"
@@ -753,7 +855,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Lewis University"]
-
+city         = "Romeoville, Ill."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Rockhurst"
 abbreviation = "RU"
@@ -766,6 +870,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Rockhurst University"]
+city         = "Kansas City, Mo."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # Conference records say "Truman"; opponents (Lincoln 2025) publish
 # "Truman State". The landing page fingerprint is asset-only but every layer
@@ -782,7 +889,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Truman State", "Truman State University"]
-
+city         = "Kirksville, Mo."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "William Jewell"
 abbreviation = "WJC"
@@ -795,7 +904,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["William Jewell College"]
-
+city         = "Liberty, Mo."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Drury"
 abbreviation = "DU"
@@ -808,6 +919,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Drury University"]
+city         = "Springfield, Mo."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # Conference records say "Missouri-St. Louis"; the school brands itself
 # UMSL and opponents also publish "Missouri -St. Louis" and "Mo.-St. Louis".
@@ -823,7 +937,10 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Missouri -St. Louis", "Mo.-St. Louis", "University of Missouri-St. Louis"]
-
+city         = "St. Louis, Mo."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+gazetteer_geoid = "2965000"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Quincy"
 abbreviation = "QU"
@@ -836,7 +953,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Quincy University"]
-
+city         = "Quincy, Ill."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "McKendree"
 abbreviation = "MCK"
@@ -849,6 +968,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["McKendree University"]
+city         = "Lebanon, Ill."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # GLVC member since 2019 (from the MIAA), before the window opens.
 [[schools]]
@@ -863,6 +985,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Southwest Baptist University"]
+city         = "Bolivar, Mo."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # Joined the GLVC for 2023 (absent from the 2022 records).
 [[schools]]
@@ -877,6 +1002,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Upper Iowa University"]
+city         = "Fayette, Iowa"
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # Lincoln University (Jefferson City, Mo.). Joined the GLVC for 2024 from
 # the MIAA (absent from the 2023 records). Not Lincoln Memorial, which the
@@ -899,6 +1027,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Lincoln (Mo.)", "Lincoln University", "Lincoln University of Missouri"]
+city         = "Jefferson City, Mo."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # ============================================================
 # RMAC MEN'S SOCCER — 11 programmes, backfill window 2022-2026
@@ -941,7 +1072,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Adams State University"]
-
+city         = "Alamosa, Colo."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Colorado Christian"
 abbreviation = "CCU"
@@ -954,7 +1087,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Colorado Christian University"]
-
+city         = "Lakewood, Colo."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Colorado Mesa"
 abbreviation = "CMU"
@@ -967,6 +1102,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Colorado Mesa University"]
+city         = "Grand Junction, Colo."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # Conference records say "Colorado School of Mines"; peers also print
 # "Colorado Mines" and the site calls itself "Mines".
@@ -984,6 +1122,9 @@ enabled      = true
 # Box scores print "Colo. Sch. of Mines" (sidearm:colorado-school-of-mines:21603,
 # 24213, 24999), which box-vs-fixture could not resolve until this alias.
 aliases      = ["Colorado Mines", "Mines", "Colo. Sch. of Mines"]
+city         = "Golden, Colo."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # The probe found no mascot where it reads; "ThunderWolves" is the site's
 # own name (gothunderwolves.com).
@@ -999,7 +1140,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Colorado State University Pueblo", "CSU-Pueblo", "Colorado State-Pueblo"]
-
+city         = "Pueblo, Colo."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Fort Lewis"
 abbreviation = "FLC"
@@ -1012,6 +1155,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Fort Lewis College"]
+city         = "Durango, Colo."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # The probe found no mascot and drafted "Metropolitan State University
 # Roadrunners" as an alias (the site's title, mascot included); the alias
@@ -1028,7 +1174,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Metropolitan State University of Denver", "Metro State", "Metropolitan State"]
-
+city         = "Denver, Colo."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Regis"
 abbreviation = "REG"
@@ -1041,7 +1189,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Regis University"]
-
+city         = "Denver, Colo."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "South Dakota Mines"
 abbreviation = "SDM"
@@ -1056,7 +1206,9 @@ enabled      = true
 # CSU Pueblo prints "S.D. Mines" (2022 and 2023, sidearm:csu-pueblo:6579 and
 # 7004), collected as s-d-mines beside the member until this alias.
 aliases      = ["South Dakota School of Mines", "South Dakota School of Mines and Technology", "South Dakota School of Mines & Technology", "S.D. Mines"]
-
+city         = "Rapid City, S.D."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "UCCS"
 abbreviation = "UCCS"
@@ -1069,6 +1221,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["University of Colorado Colorado Springs", "University of Colorado at Colorado Springs", "Colorado-Colorado Springs"]
+city         = "Colorado Springs, Colo."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # Westminster University, Salt Lake City; the RMAC members page still links
 # westminstercollege.edu, the pre-rename host.
@@ -1086,6 +1241,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Westminster University", "Westminster College"]
+city         = "Salt Lake City, Utah"
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # ============================================================
 # SSC MEN'S SOCCER — 11 programmes, backfill window 2022-2026
@@ -1129,7 +1287,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Barry University"]
-
+city         = "Miami Shores, Fla."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Eckerd"
 abbreviation = "EC"
@@ -1142,7 +1302,10 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Eckerd College"]
-
+city         = "St. Petersburg, Fla."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+gazetteer_geoid = "1263000"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Embry-Riddle"
 abbreviation = "ERAU"
@@ -1155,6 +1318,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Embry-Riddle Aeronautical University", "Embry-Riddle University"]
+city         = "Daytona Beach, Fla."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # The probe found no mascot where it reads; "Moccasins" ("Mocs") is the
 # site's own name (fscmocs.com).
@@ -1170,6 +1336,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Florida Southern College"]
+city         = "Lakeland, Fla."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 
 # The probe found no mascot and drafted "Florida Tech Panthers" (the site's
 # title, mascot included) as an alias.
@@ -1185,7 +1354,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Florida Institute of Technology"]
-
+city         = "Melbourne, Fla."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Lynn"
 abbreviation = "LYNN"
@@ -1198,7 +1369,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Lynn University"]
-
+city         = "Boca Raton, Fla."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Nova Southeastern"
 abbreviation = "NSU"
@@ -1211,7 +1384,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Nova Southeastern University"]
-
+city         = "Fort Lauderdale, Fla."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Palm Beach Atlantic"
 abbreviation = "PBA"
@@ -1224,7 +1399,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Palm Beach Atlantic University"]
-
+city         = "West Palm Beach, Fla."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Rollins"
 abbreviation = "ROL"
@@ -1237,7 +1414,9 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Rollins College"]
-
+city         = "Winter Park, Fla."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Saint Leo"
 abbreviation = "SLU"
@@ -1250,6 +1429,10 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Saint Leo University", "St. Leo"]
+city         = "Saint Leo, Fla."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+gazetteer_geoid = "1262775"
+identity_accessed = "2026-09-02"
 
 # tampaspartans.com answers 403 to every automated request and serves
 # PrestoSports to a browser (/sports/msoc/{season}-{yy}/schedule, verified
@@ -1269,3 +1452,6 @@ live_scraper = "prestosports"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["University of Tampa"]
+city         = "Tampa, Fla."
+city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
+identity_accessed = "2026-09-02"

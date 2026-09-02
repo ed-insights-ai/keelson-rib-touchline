@@ -38,6 +38,15 @@ def membership_path() -> Path:
     return reference_dir() / "membership.json"
 
 
+def programmes_path() -> Path:
+    """The data home's mirrored programmes reference — a deployment artifact.
+
+    The source of record is ``packaged_programmes_path()``; collect mirrors
+    it here beside membership.json.
+    """
+    return reference_dir() / "programmes.json"
+
+
 def package_root() -> Path:
     """The rib package root — the parent of pipeline/.
 
@@ -65,3 +74,13 @@ def packaged_membership_path() -> Path:
 
 def errors_dir() -> Path:
     return data_root() / "data" / "errors"
+
+
+def packaged_programmes_path() -> Path:
+    """The rib's built programmes reference — the source of record.
+
+    Built from config/schools.toml by ``uv run build-programmes`` and
+    reviewed in the PR that changes it; package-relative for the same reason
+    ``packaged_membership_path()`` is.
+    """
+    return package_root() / "data" / "reference" / "programmes.json"

@@ -39,6 +39,17 @@ class SchoolConfig:
     # Montgomery") shares no token with a short one ("AUM") and so needs
     # to be stated. Scoped per stanza, which keeps the map gender-correct.
     aliases: list[str] = field(default_factory=list)
+    # The town the programme plays in, as its schedule page prints it
+    # ("Alamosa, Colo.", "Ada, OK"); the programmes reference normalises it to
+    # AP style and resolves it to one Gazetteer place. city_source cites where
+    # the string was read (default: the schedule page's home venue location);
+    # identity_accessed is the date the identity facts were read off the site.
+    city: str = ""
+    city_source: str = ""
+    identity_accessed: str = ""
+    # A GEOID pin for a town the name lookup cannot settle (consolidated
+    # cities, a "St." the programme spells "Saint", two places of one name).
+    gazetteer_geoid: str = ""
     # Namespaces the legacy game_id space (ordinal * 1_000_000 + year * 100 +
     # game_num), so it must be globally unique among the schools that have one.
     # Only the StatCrew lineage builds game_ids; the live collector never reads
@@ -105,6 +116,10 @@ def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
             notes=entry.get("notes", ""),
             mascot=entry.get("mascot", ""),
             aliases=entry.get("aliases", []),
+            city=entry.get("city", ""),
+            city_source=entry.get("city_source", ""),
+            identity_accessed=entry.get("identity_accessed", ""),
+            gazetteer_geoid=entry.get("gazetteer_geoid", ""),
             ordinal=entry.get("ordinal", 0),
             gender=entry.get("gender", "men"),
             scraper=entry.get("scraper", "statcrew"),
