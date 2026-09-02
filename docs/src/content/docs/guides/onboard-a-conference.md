@@ -109,7 +109,7 @@ adds, 2026-09-02, beads tl-clk.5 and tl-891):
    publish, `years` equal to the window, `data_status = "unverified"`, and
    `city` as the schedule page prints the home town (the probe drafts it;
    `enabled = true` once pasted).
-3. `data/reference/programmes.json`: not edited — rebuilt. Run
+3. `data/reference/programmes.json`: not edited but rebuilt. Run
    `uv run --project pipeline build-programmes`; it resolves every stanza's
    `city` to one 2023 Gazetteer place and writes the row with its
    provenance. A town that resolves to none or to two places stops the
@@ -265,7 +265,7 @@ What the GLVC, the fourth conference, actually required, measured on
 | `touchline-ui/src/site.config.ts` | 2 lines: `conferences` +1, `conferenceNames` +1 |
 | journal | one GLVC model call |
 | national page | one regeneration |
-| `programmes.json`, `programme-coordinates.json` | 30 hand-kept reference rows: nickname, town as published, Gazetteer GEOID and centroid — since tl-891 the rows are built in the rib from the stanza's `city` and mirrored to the data home; the site reads that file |
+| `programmes.json`, `programme-coordinates.json` | 30 hand-kept reference rows: nickname, town as published, Gazetteer GEOID and centroid. Since tl-891 the rows are built in the rib from the stanza's `city` and mirrored to the data home; the site reads that file |
 | division fold | a neutral-site rule, the first time two followed conferences shared a tournament match with no agreed home side |
 | roster vocabulary | six published misspellings aliased, two abbreviations added, two non-positions named, one initials rule |
 | copy test | one pairwise threshold, the chart caption marked mechanical |
