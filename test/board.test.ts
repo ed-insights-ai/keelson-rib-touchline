@@ -405,6 +405,22 @@ describe("the data home", () => {
     ]);
   });
 
+  test("a hyphenated conference code survives the season file name round trip", async () => {
+    // G-MAC is the first conference code with a hyphen (batch 2, 2026-09-03):
+    // the file name keeps it and the listing reads it back whole.
+    const root = await tempHome();
+    await bootstrapDataHome(root);
+    expect(seasonFileName(2026, "men", "G-MAC")).toBe("2026-men-g-mac.json");
+    await writeFile(
+      join(root, "data", "fixtures", "2026-men-g-mac.json"),
+      JSON.stringify({ ...base, conference: "G-MAC" }),
+      "utf8",
+    );
+    expect(await listSeasons(root)).toEqual([
+      { season: 2026, gender: "men", conference: "g-mac", hasFixtures: true, hasRosters: false },
+    ]);
+  });
+
   test("legacy filenames are ignored until the data home is migrated", async () => {
     const root = await tempHome();
     await bootstrapDataHome(root);
@@ -1323,6 +1339,25 @@ describe("understanding the ask", () => {
     if (t.kind === "conference") {
       expect(t.slugs).toContain("harding");
       expect(t.slugs.length).toBe(7);
+    }
+  });
+
+  test("the hyphenated G-MAC resolves per season, Trevecca in its earlier window", async () => {
+    // Against the packaged membership file: eleven members in 2026, twelve in
+    // 2023 when Trevecca's first window still names the G-MAC.
+    const now = await resolveTargets("G-MAC", "men", 2026);
+    expect(now.kind).toBe("conference");
+    if (now.kind === "conference") {
+      expect(now.conference).toBe("G-MAC");
+      expect(now.slugs.length).toBe(11);
+      expect(now.slugs).not.toContain("trevecca");
+    }
+    const then = await resolveTargets("G-MAC", "men", 2023);
+    expect(then.kind).toBe("conference");
+    if (then.kind === "conference") {
+      expect(then.conference).toBe("G-MAC");
+      expect(then.slugs.length).toBe(12);
+      expect(then.slugs).toContain("trevecca");
     }
   });
 

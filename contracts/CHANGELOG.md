@@ -4,6 +4,15 @@ One line per change to a published contract, newest first. A fixture change
 without a line here is incomplete; a writer change without a fixture change
 fails `pipeline/tests/test_contracts.py`.
 
+## 2026-09-03
+
+- Membership reference: `PSAC`, `MEC` and `G-MAC` join `conferences`, with
+  one window each (Bloomsburg, Charleston and Ashland, 2022-2026) so the
+  fixture exhibits them (batch 2 membership PR; the fixture's conference
+  list must equal the packaged file's). `G-MAC` is the first conference
+  code with a hyphen: `programme_slug` mints `g-mac`, so its season files
+  are `{season}-{gender}-g-mac.json`.
+
 ## 2026-09-02
 
 - Membership reference: `NE10`, `CACC` and `ECC` join `conferences`, with

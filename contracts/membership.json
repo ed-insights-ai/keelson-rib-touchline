@@ -7,12 +7,15 @@
   "conferences": [
     "CACC",
     "ECC",
+    "G-MAC",
     "GAC",
     "GLVC",
     "GSC",
     "LSC",
+    "MEC",
     "MIAA",
     "NE10",
+    "PSAC",
     "RMAC",
     "SSC",
     "independent",
@@ -30,6 +33,16 @@
         }
       ]
     },
+    "ashland": {
+      "men": [
+        {
+          "conference": "G-MAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Midwest Athletic Conference, 2022 and 2026 Men's Soccer records, https://greatmidwestsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://greatmidwestsports.com/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
     "aum": {
       "men": [
         {
@@ -40,6 +53,16 @@
         }
       ]
     },
+    "bloomsburg": {
+      "men": [
+        {
+          "conference": "PSAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Pennsylvania State Athletic Conference, 2022 and 2026 Men's Soccer records, https://psacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://psacsports.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same thirteen programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
     "caldwell": {
       "men": [
         {
@@ -47,6 +70,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
+    "charleston": {
+      "men": [
+        {
+          "conference": "MEC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Mountain East Conference, 2022 and 2026 Men's Soccer records, https://mountaineast.org/stats.aspx?path=msoc&year=2022&conf=true and https://mountaineast.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes, so nobody arrived at or left across the window's edge."
         }
       ]
     },
