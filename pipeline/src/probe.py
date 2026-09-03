@@ -54,6 +54,10 @@ def classify_platform(html: str) -> tuple[str, list[str]]:
         sidearm_evidence.append("sidearmsports asset or hostname")
     if "sidearmcomponents" in lower:
         sidearm_evidence.append("SideArm component runtime")
+    if "sidearm.nextgen.sites" in lower:
+        # The Nuxt skin's asset bucket, named on every page it serves; the
+        # pages carry no li.sidearm-* markup and no events component.
+        sidearm_evidence.append("SideArm nextgen asset bucket")
     if re.search(r"<li\b[^>]*class=[\"'][^\"']*\bsidearm-", lower):
         sidearm_evidence.append("server-rendered li.sidearm-* markup")
     if any(component.get("type") == "events" for component in _component_objects(html)):

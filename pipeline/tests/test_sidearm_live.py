@@ -18,6 +18,7 @@ from src.sidearm_live import (
     identity_aliases,
     opponent_slug,
     PublishedPage,
+    assert_schedule_proven,
     assert_served_season,
     assert_untrapped_schedule,
     collect_programme,
@@ -2311,3 +2312,202 @@ def test_event_status_reads_the_same_words_on_the_json_path(
         "result": {"status": status, "team_score": 1, "opponent_score": 0},
     }
     assert _event_status(event) == expected
+
+
+# Bead tl-4sg.34: three PSAC hosts read as "no schedule payload and no rendered
+# games" in every season, and one of them listed no players either.  The
+# pipeline's own session receives exactly what a browser does (HTTP 200, same
+# bytes); the pages are two skins the parser had never seen, both of which
+# publish the season as a payload and render nothing server-side.
+
+
+def _fixture_rows(
+    name: str, *, owner_slug: str, base: str
+) -> tuple[str, dict[str, dict[str, object]]]:
+    html = (FIXTURES / name).read_text()
+    fixtures = parse_schedule_page(
+        html,
+        page_url=f"{base}/schedule/2025",
+        year=2025,
+        owner_slug=owner_slug,
+        aliases={},
+    )
+    return html, {str(row["id"]).rsplit(":", 1)[-1]: row for row in fixtures}
+
+
+def test_the_legacy_list_skin_reads_the_season_off_its_vue_data() -> None:
+    """lockhavenathletics.com and shipraiders.com: no events component, no
+    li.sidearm-schedule-game rows, the whole season in one inline object."""
+    from src.sidearm_live import boxscore_links, payload_seasons
+
+    base = "https://www.lockhavenathletics.com/sports/mens-soccer"
+    html, rows = _fixture_rows(
+        "sidearm_lock_haven_schedule_2025.html", owner_slug="lock-haven", base=base
+    )
+    assert set(rows) == {"12970", "12983", "12999"}
+    away_win = rows["12970"]
+    assert (away_win["home"], away_win["away"]) == ("chestnut-hill", "lock-haven")
+    assert (away_win["home_score"], away_win["away_score"]) == (0, 2)
+    assert away_win["status"] == "final"
+    assert away_win["conference_game"] is False
+    assert away_win["time"] == "19:00"
+    assert away_win["venue"] == "Plymouth Meeting, Pa./Plymouth-Whitemarsh High School"
+    # The object spells the flag ``conference``, not ``is_conference``.
+    conference_loss = rows["12983"]
+    assert conference_loss["conference_game"] is True
+    assert (conference_loss["home_score"], conference_loss["away_score"]) == (1, 0)
+    # A division seed ("No. 2E") is a rank prefix, not part of the name.
+    assert rows["12999"]["home"] == "west-chester"
+    # The season the payload names is the served one, and the page counts as
+    # a schedule even though it renders no rows.
+    assert payload_seasons(html) == {2025}
+    assert_schedule_proven(
+        html,
+        year=2025,
+        page_url=f"{base}/schedule/2025",
+        fixtures=list(rows.values()),
+        owner_slug="lock-haven",
+    )
+    # Box-score links ride in the payload, since the skin prints no href.
+    links = boxscore_links(html, f"{base}/schedule/2025")
+    assert links["12983"] == f"{base}/stats/2025/slippery-rock/boxscore/12983"
+    assert set(links) == set(rows)
+
+
+def test_the_nuxt_skin_reads_the_season_off_its_pinia_store() -> None:
+    """millersvilleathletics.com: server-rendered cards, but the data is the
+    devalue-encoded state in #__NUXT_DATA__ and that is what is read."""
+    from src.sidearm_live import boxscore_links
+
+    base = "https://millersvilleathletics.com/sports/mens-soccer"
+    html, rows = _fixture_rows(
+        "sidearm_millersville_schedule_2025.html", owner_slug="millersville", base=base
+    )
+    assert set(rows) == {"10090", "10095", "10107"}
+    home_win = rows["10090"]
+    assert (home_win["home"], home_win["away"]) == ("millersville", "salem")
+    assert (home_win["home_score"], home_win["away_score"]) == (1, 0)
+    assert home_win["venue"] == "Pucillo Field"  # the object's ``facility``
+    assert home_win["conference_game"] is False
+    assert rows["10095"]["conference_game"] is True
+    neutral = rows["10107"]
+    assert neutral["neutral"] is True
+    assert (neutral["home"], neutral["away"]) == ("millersville", "gannon")
+    assert (neutral["home_score"], neutral["away_score"]) == (1, 2)
+    assert_schedule_proven(
+        html,
+        year=2025,
+        page_url=f"{base}/schedule/2025",
+        fixtures=list(rows.values()),
+        owner_slug="millersville",
+    )
+    assert set(boxscore_links(html, f"{base}/schedule/2025")) == set(rows)
+
+
+@pytest.mark.parametrize(
+    "name",
+    [
+        "sidearm_lock_haven_schedule_2025.html",
+        "sidearm_millersville_schedule_2025.html",
+    ],
+)
+def test_a_schedule_object_naming_another_season_is_the_trap(name: str) -> None:
+    """These payloads name the season they are, so one naming 2025 under a
+    2024 URL cannot be 2024 — and there is no DOM to carry 2024 instead."""
+    html = (FIXTURES / name).read_text()
+    with pytest.raises(LiveCollectionError, match="renders the season-2025"):
+        assert_untrapped_schedule(
+            html, 2024, "https://example.test/schedule/2024", [], "owner"
+        )
+
+
+def test_the_nuxt_roster_store_lists_its_players() -> None:
+    players = parse_roster_page(
+        (FIXTURES / "sidearm_millersville_roster_2025.html").read_text(),
+        page_url="https://millersvilleathletics.com/sports/mens-soccer/roster/2025",
+    )
+    assert [p["name"] for p in players] == [
+        "Kieran Finegan",
+        "Quinn McCarty",
+        "Mason Quinton",
+    ]
+    assert players[0] == {
+        "name": "Kieran Finegan",
+        "number": "0",
+        "position": "GK",
+        "height": "6'2\"",
+        "weight": "175 lbs",
+        "hometown": "Camp Hill, Pa.",
+        "class_year": "Freshman",
+        "source_url": (
+            "https://millersvilleathletics.com/sports/mens-soccer/roster/kieran-finegan/12536"
+        ),
+    }
+
+
+def test_the_nuxt_stats_store_reads_both_tables_and_skips_the_totals() -> None:
+    from src.sidearm_live import parse_stats_page
+
+    players, keepers = parse_stats_page(
+        (FIXTURES / "sidearm_millersville_stats_2025.html").read_text(),
+        page_url="https://millersvilleathletics.com/sports/mens-soccer/stats/2025",
+    )
+    assert [p["name"] for p in players] == ["Zander Leik", "Zach Richwine"]
+    leik = players[0]
+    assert (leik["player_id"], leik["number"]) == ("11990", "22")
+    assert leik["bio_url"] == (
+        "https://millersvilleathletics.com/sports/mens-soccer/roster/zander-leik/11990"
+    )
+    assert (leik["gp"], leik["gs"], leik["minutes"]) == (18, 11, 801)
+    assert (leik["goals"], leik["assists"], leik["points"]) == (11, 4, 26)
+    assert (leik["shots"], leik["shot_pct"], leik["sog"], leik["sog_pct"]) == (
+        39,
+        0.282,
+        20,
+        0.513,
+    )
+    assert (leik["game_winners"], leik["yellow"], leik["red"]) == (3, 2, 0)
+    assert (leik["penalty_goals"], leik["penalty_attempts"]) == (0, 0)
+    assert [k["name"] for k in keepers] == ["Kieran Finegan", "Gavin Massimi"]
+    massimi = keepers[1]
+    assert massimi["minutes"] == 1276  # "1276:25" as printed
+    assert (massimi["goals_against"], massimi["gaa"]) == (12, 0.85)
+    assert (massimi["saves"], massimi["save_pct"]) == (48, 0.8)
+    assert (massimi["wins"], massimi["losses"], massimi["ties"]) == (10, 2, 2)
+    assert (massimi["shutouts"], massimi["shots_faced"]) == (5, 133)
+
+
+def test_the_two_team_list_skin_reads_scores_and_dates_off_each_row() -> None:
+    """Bead tl-4sg.29 (daemenwildcats.com): rendered rows, but the date sits
+    in div.sidearm-schedule-game-date and the result is one bare number per
+    team block with the letter as a row class.  Same root: a list variant
+    the DOM reader had never measured."""
+    base = "https://daemenwildcats.com/sports/mens-soccer"
+    _, rows = _fixture_rows(
+        "sidearm_daemen_schedule_2025.html", owner_slug="daemen", base=base
+    )
+    assert set(rows) == {"7851", "7852", "7867"}
+    away_loss = rows["7851"]
+    assert away_loss["date"] == "2025-09-04"
+    assert (away_loss["home"], away_loss["away"]) == ("walsh", "daemen")
+    assert (away_loss["home_score"], away_loss["away_score"]) == (5, 1)
+    assert away_loss["status"] == "final"
+    assert (away_loss["time"], away_loss["venue"]) == ("19:30", "Larry Staudt Field")
+    away_win = rows["7852"]
+    assert (away_win["home_score"], away_win["away_score"]) == (1, 3)
+    home_loss = rows["7867"]
+    assert (home_loss["home"], home_loss["away"]) == ("daemen", "staten-island")
+    assert (home_loss["home_score"], home_loss["away_score"]) == (1, 5)
+    # The theme marks conference games with a bare logo.
+    assert home_loss["conference_game"] is True
+    assert away_loss["conference_game"] is False
+
+
+def test_a_division_seed_is_a_rank_prefix() -> None:
+    from src.sidearm_live import _clean_team_name
+
+    assert (
+        _clean_team_name("No. 2E West Chester (PSAC Quarterfinal)")
+        == "West Chester (PSAC Quarterfinal)"
+    )
+    assert _clean_team_name("2Excellent College") == "2Excellent College"

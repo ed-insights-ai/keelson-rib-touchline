@@ -1,0 +1,37 @@
+<!-- Source: https://www.lockhavenathletics.com/sports/mens-soccer/schedule/2025 fetched 2026-09-03 with the pipeline's own session; trimmed to the head, the schedule_template_3 wrapper and the Vue data script with three games (12970 away win, 12983 conference away loss, 12999 seeded PSAC quarterfinal). The skin renders no li.sidearm-schedule-game rows: the list is built client-side from this object. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>2025 Men's Soccer Schedule - Lock Haven Athletics</title>
+<link rel="stylesheet" href="/less/responsive/schedule.less">
+</head>
+<body>
+<main id="main-content">
+<div class="sidearm-schedule sidearm-schedule-template-3 schedules-page">
+<div id="vue-schedules"><vue-schedules></vue-schedules></div>
+</div>
+<script>
+        var schedule_id = 601;
+
+        
+
+        require([ 'vue','knockout','moment','analytics', 'progressbar', 'components/v-calendar-subscribe'], function (Vue, ko, moment, Analytics, ProgressBar) {
+            Vue.config.devtools = true;
+            Vue.prototype.moment = moment;
+            Vue.prototype.ProgressBar = ProgressBar;
+            Vue.component('vue-schedules', {
+                template: '#vue-schedules-template',
+                data: () => ({
+                    settings : {"schedule_score_display":"standard","opponent_history_page_enabled":true,"seo_accessibility_h2_heading":true},
+                    schedule : {"id":601,"title":"2025 Men's Soccer Schedule","content_template":"schedule_template_3","show_at_vs":true,"hidden":false,"download":null,"print":null,"note":null,"default_view":null,"school_name":"Lock Haven","season":{"id":260,"title":"2025","shortname":"2025","startdate":"2025-01-01T00:00:00"},"sport":{"id":7,"global_id":7,"title":"Men's Soccer","abbreviation":"MSOC","shortname":"msoc","short_display":"MSOC","global_sport_shortname":"msoc","global_sport_name_slug":"mens-soccer","is_a_stat_sport":false,"display_next_event":true,"display_opponent_history":true,"season":{"id":263,"title":"2026","shortname":"2026","startdate":"2026-01-01T00:00:00"}},"conference":{"id":1,"title":"Pennsylvania State Athletic Conference","logo":"/images/logos/new_psac.png","abbreviation":"PSAC","website":"http://www.psacsports.org","notation":"*","prefix":"a"},"record":{"overall":"8-7-4","overall_percentage":".526","conference":"4-3-3","conference_percentage":".550","conference_points":"15","streak":"L3","home":"4-2-2","away":"4-5-2","neutral":"0-0","games_played":19},"games":[{"id":12970,"date":"2025-09-04T19:00:00","enddate":null,"time":"7:00 PM","conference":false,"location":"Plymouth Meeting, Pa./Plymouth-Whitemarsh High School","location_indicator":"A","neutral_hometeam":null,"at_vs":"at","status":"O","noplay_text":null,"type":"R","promotion_link":null,"promotion_image_link":null,"promotion_image":null,"event_image":null,"promotion_caption":null,"is_a_doubleheader":false,"opponent_history_path":"/sports/mens-soccer/opponent-history/chestnut-hill-college/97","display_vsat_indicator":true,"pac_tickets":null,"seatgeek":null,"game_program_link":null,"opponent":{"id":97,"title":"Chestnut Hill","prefix":null,"website":"http://www.griffinathletics.com","website_label":"Chestnut Hill on September 4 7:00 PM","location":"Philadelphia, PA","conference":false,"mascot":"Griffins"},"result":{"status":"W","team_score":"2","opponent_score":"0","prescore_info":null,"postscore_info":null,"boxscore":{"title":"Box Score","url":"/sports/mens-soccer/stats/2025/chestnut-hill/boxscore/12970","label":"Box score of Men's Soccer at Chestnut Hill on September 4, 2025 at 7:00 PM","css_class":null,"rank":0},"recap":{"title":"Recap","url":"/news/2025/9/4/mens-soccer-mens-soccer-soars-to-2-0-victory-at-chestnut-hill-in-season-opener.aspx","label":"Recap for Men's Soccer at Chestnut Hill on September 4, 2025 at 7:00 PM","css_class":null,"rank":0}},"facility":null,"tournament":null,"tournament_startdate":null,"game_program":"Program"},{"id":12983,"date":"2025-10-01T16:00:00","enddate":null,"time":"4:00 PM","conference":true,"location":"Slippery Rock, Pa.","location_indicator":"A","neutral_hometeam":null,"at_vs":"at","status":"O","noplay_text":null,"type":"R","promotion_link":null,"promotion_image_link":null,"promotion_image":null,"event_image":null,"promotion_caption":null,"is_a_doubleheader":false,"opponent_history_path":"/sports/mens-soccer/opponent-history/slippery-rock-university/5","display_vsat_indicator":true,"pac_tickets":null,"seatgeek":null,"game_program_link":null,"opponent":{"id":5,"title":"Slippery Rock","prefix":null,"website":"http://www.rockathletics.com/","website_label":"Slippery Rock on October 1 4:00 PM","location":"Slippery Rock, PA","conference":false,"mascot":"Rock"},"result":{"status":"L","team_score":"0","opponent_score":"1","prescore_info":null,"postscore_info":null,"boxscore":{"title":"Box Score","url":"/sports/mens-soccer/stats/2025/slippery-rock/boxscore/12983","label":"Box score of Men's Soccer at Slippery Rock on October 1, 2025 at 4:00 PM","css_class":null,"rank":0},"recap":{"title":"Recap","url":"/news/2025/10/1/mens-soccer-mens-soccer-drops-1-0-thriller-at-slippery-rock-in-psac-west-opener.aspx","label":"Recap for Men's Soccer at Slippery Rock on October 1, 2025 at 4:00 PM","css_class":null,"rank":0}},"facility":null,"tournament":null,"tournament_startdate":null,"game_program":"Program"},{"id":12999,"date":"2025-11-10T13:00:00","enddate":null,"time":"1:00 PM","conference":false,"location":"West Chester, Pa.","location_indicator":"A","neutral_hometeam":null,"at_vs":"at","status":"O","noplay_text":null,"type":"P","promotion_link":"https://psacsports.org/tournaments/?id=183","promotion_image_link":null,"promotion_image":null,"event_image":null,"promotion_caption":null,"is_a_doubleheader":false,"opponent_history_path":"/sports/mens-soccer/opponent-history/west-chester-university-of-pennsylvania/8","display_vsat_indicator":true,"pac_tickets":null,"seatgeek":null,"game_program_link":null,"opponent":{"id":8,"title":"No. 2E West Chester (PSAC Quarterfinal)","prefix":null,"website":"http://wcupagoldenrams.com/","website_label":"No. 2E West Chester (PSAC Quarterfinal) on November 10 1:00 PM","location":"West Chester, PA","conference":false,"mascot":"Golden Rams"},"result":{"status":"L","team_score":"0","opponent_score":"1","prescore_info":null,"postscore_info":null,"boxscore":{"title":"Box Score","url":"/sports/mens-soccer/stats/2025/no-2e-west-chester-psac-quarterfinal-/boxscore/12999","label":"Box score of Men's Soccer at No. 2E West Chester (PSAC Quarterfinal) on November 10, 2025 at 1:00 PM","css_class":null,"rank":0},"recap":{"title":"Recap","url":"/news/2025/11/10/mens-soccer-msoc-no-3w-lock-haven-edged-at-no-2e-west-chester-in-psac-tournament-quarterfinal.aspx","label":"Recap for Men's Soccer at No. 2E West Chester (PSAC Quarterfinal) on November 10, 2025 at 1:00 PM","css_class":null,"rank":0}},"facility":null,"tournament":{"id":408,"title":"PSAC Tournament","website":"https://psacsports.org/","color":"#3333FF"},"tournament_startdate":null,"game_program":"Program"}],"display_note_on_top":false,"is_a_stat_sport":true,"next_event_enabled":true,"next_streaming_event_enabled":false,"redirect_url":null},
+                    season: null,
+                    view:'list',
+                    loading_stories: true,
+                    game_filter: 'all'
+                }),
+        });
+</script>
+</main>
+</body>
+</html>

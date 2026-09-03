@@ -481,6 +481,24 @@ def test_classify_platform_recognizes_prestosports_from_its_markup() -> None:
     assert "server-rendered PrestoSports schedule markup" in evidence
 
 
+def test_classify_platform_recognizes_the_payload_only_sidearm_skins() -> None:
+    """Bead tl-4sg.34: the legacy list skin and the Nuxt skin render no
+    li.sidearm-* rows and embed no events component; the schedule is a
+    payload, and a Nuxt page names its asset bucket on every layer."""
+    for name in (
+        "sidearm_lock_haven_schedule_2025.html",
+        "sidearm_millersville_schedule_2025.html",
+    ):
+        platform, evidence = classify_platform((FIXTURES / name).read_text())
+        assert platform == PLATFORM_SIDEARM, name
+        assert "server-rendered SideArm schedule markup" in evidence, name
+    platform, evidence = classify_platform(
+        (FIXTURES / "sidearm_millersville_roster_2025.html").read_text()
+    )
+    assert platform == PLATFORM_SIDEARM
+    assert evidence == ["SideArm nextgen asset bucket"]
+
+
 def test_probe_layers_reads_a_prestosports_site_at_its_own_urls() -> None:
     year = 2026
     schedule_url = f"{PRESTO_BASE}/2026-27/schedule"
