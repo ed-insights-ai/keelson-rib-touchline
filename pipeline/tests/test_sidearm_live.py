@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from unittest.mock import MagicMock
 
 import pytest
@@ -11,6 +12,7 @@ from src import coverage
 from src.config import SchoolConfig
 from src.sidearm_live import (
     LiveCollectionError,
+    _event_status,
     _oriented_scores,
     STATE_NO_COLLECTOR,
     identity_aliases,
@@ -2132,3 +2134,88 @@ def test_a_challenge_answer_is_an_unavailable_layer_not_a_retry() -> None:
         "(served a challenge, not the page)"
     )
     assert session.get.call_count == 1
+
+
+FIXTURES = Path(__file__).parent / "fixtures"
+
+
+def _staten_island_2026() -> dict[str, dict[str, object]]:
+    """The trimmed csidolphins.com 2026 schedule, keyed by game id."""
+    fixtures = parse_schedule_page(
+        (FIXTURES / "sidearm_staten_island_schedule_2026.html").read_text(),
+        page_url="https://csidolphins.com/sports/mens-soccer/schedule/2026",
+        year=2026,
+        owner_slug="staten-island",
+        aliases={},
+    )
+    return {str(fixture["id"]).rsplit(":", 1)[-1]: fixture for fixture in fixtures}
+
+
+def test_a_make_up_date_result_cell_is_postponed_not_final() -> None:
+    """The measured miss: Staten Island's Aug 27 row v Assumption.
+
+    The row sits on a past date with the completed class and a result cell
+    reading "Make Up Date TBD". The class alone stored it final with no
+    score, and the fold refused it against Assumption's cancelled record.
+    The status word wins over the class.
+    """
+    row = _staten_island_2026()["12026"]
+    assert row["status"] == "postponed"
+    assert row["date"] == "2026-08-27"
+    assert row["home"] == "staten-island"
+    assert row["away"] == "assumption"
+    assert "home_score" not in row and "away_score" not in row
+
+
+def test_the_other_staten_island_rows_keep_their_statuses() -> None:
+    rows = _staten_island_2026()
+    played = rows["12027"]
+    assert played["status"] == "final"
+    assert (played["home"], played["away"]) == ("staten-island", "saint-anselm")
+    assert (played["home_score"], played["away_score"]) == (2, 3)
+    upcoming = rows["12028"]
+    assert upcoming["status"] == "scheduled"
+    assert (upcoming["home"], upcoming["away"]) == ("georgian-court", "staten-island")
+    assert "home_score" not in upcoming
+
+
+@pytest.mark.parametrize(
+    "result",
+    ["Make Up Date TBD", "MAKEUP TBA", "Make-up date TBD", "PPD", "Postponed"],
+)
+def test_every_spelling_of_a_make_up_beats_the_completed_class(result: str) -> None:
+    rows = _dom_game(
+        game_id="40",
+        opponent="Harding",
+        date="Aug 27 (Thu)",
+        result=result,
+        completed=True,
+    )
+    fixture = parse_schedule_page(
+        _dom_page(rows),
+        page_url="https://example.test/schedule/2026",
+        year=2026,
+        owner_slug="rogers-state",
+        aliases=identity_aliases(_gac(), "men"),
+    )[0]
+    assert fixture["status"] == "postponed"
+    assert "home_score" not in fixture
+
+
+@pytest.mark.parametrize(
+    ("status", "expected"),
+    [
+        ("Make Up Date TBD", "postponed"),
+        ("Makeup TBA", "postponed"),
+        ("PPD", "postponed"),
+        ("Cancelled", "cancelled"),
+        ("Final", "final"),
+    ],
+)
+def test_event_status_reads_the_same_words_on_the_json_path(
+    status: str, expected: str
+) -> None:
+    event = {
+        "result": {"status": status, "team_score": 1, "opponent_score": 0},
+    }
+    assert _event_status(event) == expected
