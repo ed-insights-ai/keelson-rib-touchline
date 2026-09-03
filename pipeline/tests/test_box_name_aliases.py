@@ -39,6 +39,20 @@ BOX_SPELLINGS = [
     ("Midwestern", "midwestern-state"),
     # sidearm:colorado-school-of-mines:21603, 2022-09-04 (box-vs-fixture, unresolved)
     ("Colo. Sch. of Mines", "colorado-school-of-mines"),
+    # The batch 1 alias round (2026-09-03): NE10, CACC and ECC spellings read
+    # off member schedule pages that collected a member as a stranger.
+    # sidearm:bentley:2659, 2022-10-11
+    ("American Int'l", "american-international"),
+    # sidearm:bentley:2663, 2022-10-25 (also box sidearm:southern-new-hampshire:13516)
+    ("Southern Conn. St.", "southern-connecticut"),
+    # sidearm:bentley:2658, 2022-10-08 (also box sidearm:southern-new-hampshire:13516)
+    ("Southern N.H.", "southern-new-hampshire"),
+    # sidearm:american-international:23214, 2022-09-03
+    ("Dist. Columbia", "district-of-columbia"),
+    # sidearm:jefferson:7857, 2026-09-19
+    ("Dominican University of N.Y.", "dominican"),
+    # sidearm:franklin-pierce:22612, 2022-12-03
+    ("Colorado St.-Pueblo", "csu-pueblo"),
 ]
 
 

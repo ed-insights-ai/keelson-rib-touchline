@@ -1139,7 +1139,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Colorado State University Pueblo", "CSU-Pueblo", "Colorado State-Pueblo"]
+# Franklin Pierce prints "Colorado St.-Pueblo" (2022 and 2023,
+# sidearm:franklin-pierce:22612 and 22636).
+aliases      = ["Colorado State University Pueblo", "CSU-Pueblo", "Colorado State-Pueblo", "Colorado St.-Pueblo"]
 city         = "Pueblo, Colo."
 city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
 identity_accessed = "2026-09-02"
@@ -1512,7 +1514,8 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["American International College", "AIC"]
+# Peers print "American Int'l" (Bentley 2022, sidearm:bentley:2659).
+aliases      = ["American International College", "AIC", "American Int'l"]
 city         = "Springfield, Mass."
 city_source  = "schedule-page home venue location, https://aicyellowjackets.com/sports/mens-soccer/schedule/2026"
 identity_accessed = "2026-09-02"
@@ -1637,7 +1640,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Southern Connecticut State University", "Southern Connecticut State"]
+# Peers and the NE10 2024 box print "Southern Conn. St." (Bentley 2022,
+# sidearm:bentley:2663; box sidearm:southern-new-hampshire:13516).
+aliases      = ["Southern Connecticut State University", "Southern Connecticut State", "Southern Conn. St."]
 city         = "New Haven, Conn."
 city_source  = "schedule-page home venue location, https://scsuowls.com/sports/mens-soccer/schedule/2026"
 identity_accessed = "2026-09-02"
@@ -1656,7 +1661,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Southern New Hampshire University"]
+# Peers and the NE10 2024 box print "Southern N.H." (Bentley 2022,
+# sidearm:bentley:2658; box sidearm:southern-new-hampshire:13516).
+aliases      = ["Southern New Hampshire University", "Southern N.H."]
 city         = "Hooksett, N.H."
 city_source  = "schedule-page home venue location, https://snhupenmen.com/sports/mens-soccer/schedule/2026"
 identity_accessed = "2026-09-02"
@@ -1954,7 +1961,9 @@ scraper      = "prestosports"
 live_scraper = "prestosports"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Dominican University New York", "Dominican College", "Dominican (N.Y.)", "Dominican NY"]
+# Jefferson 2026 prints "Dominican University of N.Y." (sidearm:jefferson:7857),
+# which keys to "dominican of n y".
+aliases      = ["Dominican University New York", "Dominican College", "Dominican (N.Y.)", "Dominican NY", "Dominican University of N.Y."]
 city         = "Orangeburg, N.Y."
 city_source  = "design/batch1-membership-2026-09-02.md (campus town; the schedule page prints no home town)"
 identity_accessed = "2026-09-02"
@@ -2158,7 +2167,8 @@ scraper      = "prestosports"
 live_scraper = "prestosports"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["University of the District of Columbia", "UDC"]
+# Peers print "Dist. Columbia" (AIC 2022, sidearm:american-international:23214).
+aliases      = ["University of the District of Columbia", "UDC", "Dist. Columbia"]
 city         = "Washington, D.C."
 city_source  = "design/batch1-membership-2026-09-02.md (campus town; the schedule page prints no home town)"
 identity_accessed = "2026-09-02"
