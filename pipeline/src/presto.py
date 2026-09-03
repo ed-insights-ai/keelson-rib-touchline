@@ -95,6 +95,9 @@ from src.sidearm_live import (
     _dom_result,
     _dom_time,
     _exhibition_marked,
+    hosted_other_match,
+    hosted_skip,
+    own_side_opponent,
     _name_slug_affinity,
     _oriented_scores,
     _play_type,
@@ -480,6 +483,7 @@ def parse_schedule(
     owner_slug: str,
     aliases: dict[str, str],
     members: set[str] | None = None,
+    skips: list[str] | None = None,
 ) -> list[dict[str, object]]:
     """Read a PrestoSports schedule page into fixture rows.
 
@@ -542,6 +546,11 @@ def parse_schedule(
     cell or the mobile ``more`` block's text (the round name), and the date
     by ``_row_date``.  A skin without event ids mints
     ``presto:{owner}:{yyyymmdd}-{opponent slug}``.
+
+    A row whose opponent cell names two other teams ("A vs. B": a match the
+    owner hosted but did not play, bead tl-v1q.14) is not the owner's
+    fixture on any skin: it is never minted, and with a ``skips`` list it
+    is named there for the collect summary, as on SideArm.
     """
     soup = BeautifulSoup(html, "lxml")
     rows = _schedule_rows(soup)
@@ -570,6 +579,16 @@ def parse_schedule(
             outside_parentheses
         ):
             continue
+        hosted = hosted_other_match(
+            opponent_name, owner_slug=owner_slug, aliases=aliases
+        )
+        if hosted is not None:
+            if skips is not None:
+                skips.append(hosted_skip(date, hosted))
+            continue
+        opponent_name = own_side_opponent(
+            opponent_name, owner_slug=owner_slug, aliases=aliases
+        )
         if event_id.startswith("#"):
             event_id = _minted_id(date, opponent_name)
         if event_id in seen:

@@ -1369,3 +1369,104 @@ def test_the_legacy_roster_skin_reads_every_player_by_header_text() -> None:
         "Forward",
     }
     assert all("hometown" in player and "class_year" in player for player in players)
+
+
+# --- Hosted other-match rows (bead tl-v1q.14) ---------------------------------
+# A PrestoSports host publishing the other pair's match of a tournament it
+# staged shows the SideArm shape ("A vs. B" in the opponent cell) on the same
+# skins.  None of the measured pages carries one, so each skin's fixture gains
+# a copy of its first row renamed to two other teams, beside the real rows.
+
+
+def _with_hosted_row(html: str, *, event_id: str | None) -> str:
+    import copy
+
+    from bs4 import BeautifulSoup
+
+    soup = BeautifulSoup(html, "lxml")
+    row = soup.select_one(".event-row[data-event-id]") or soup.select_one(".event-row")
+    assert row is not None
+    clone = copy.copy(row)
+    if event_id is not None:
+        clone["data-event-id"] = event_id
+        clone["id"] = f"event-{event_id}"
+    name = clone.select_one(".team-name")
+    assert name is not None
+    name.clear()
+    name.append("Alpha vs. Bravo")
+    row.insert_before(clone)
+    return str(soup)
+
+
+@pytest.mark.parametrize(
+    ("skin", "html", "url", "owner", "event_id", "count"),
+    [
+        ("card", SCHEDULE, SCHEDULE_URL, "tampa", "hostedrowid00001", 15),
+        (
+            "legacy table",
+            WILMINGTON_SCHEDULE,
+            WILMINGTON_SCHEDULE_URL,
+            "wilmington",
+            None,
+            21,
+        ),
+        (
+            "mobile list",
+            STAC_SCHEDULE,
+            STAC_SCHEDULE_URL,
+            "st-thomas-aquinas",
+            None,
+            17,
+        ),
+        (
+            "table",
+            BRIDGEPORT_SCHEDULE,
+            BRIDGEPORT_SCHEDULE_URL,
+            "bridgeport",
+            "hostedrowid00002",
+            22,
+        ),
+    ],
+)
+def test_every_presto_skin_skips_a_hosted_other_match_and_names_it(
+    skin: str, html: str, url: str, owner: str, event_id: str | None, count: int
+) -> None:
+    skips: list[str] = []
+    rows = parse_schedule(
+        _with_hosted_row(html, event_id=event_id),
+        page_url=url,
+        year=2025,
+        owner_slug=owner,
+        aliases={"alpha": "alpha", "bravo": "bravo"},
+        skips=skips,
+    )
+    assert len(rows) == count, skin
+    assert all(owner in (row["home"], row["away"]) for row in rows), skin
+    assert not any("alpha" in (row["home"], row["away"]) for row in rows), skin
+    assert skips == ["hosted other-match skipped: 2025-09-04, Alpha v Bravo"], skin
+
+
+def test_a_presto_row_naming_the_owner_beside_its_opponent_is_the_owners() -> None:
+    """The owner matched by its alias on one side of "A vs. B" keeps the
+    row, with the other side as the opponent."""
+    html = (
+        '<div class="section-event-month"><div class="month-title">September</div>'
+        '<table><tbody><tr class="event-row home" data-event-id="ownerside0000001">'
+        '<td class="date">Thu. 4</td>'
+        '<td class="opponent"><span class="event-location-badge">vs</span>'
+        '<span class="team-name">Spartans of Tampa vs. Alpha</span></td>'
+        '<td class="status">7:00 PM</td><td class="result"></td>'
+        "</tr></tbody></table></div>"
+    )
+    skips: list[str] = []
+    [row] = parse_schedule(
+        html,
+        page_url=SCHEDULE_URL,
+        year=2025,
+        owner_slug="tampa",
+        aliases={"spartans of tampa": "tampa", "alpha": "alpha"},
+        skips=skips,
+    )
+    assert (row["home"], row["away"]) == ("tampa", "alpha")
+    assert row["id"] == "presto:tampa:ownerside0000001"
+    assert skips == []

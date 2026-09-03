@@ -46,6 +46,11 @@ export const coverageCellSchema = z
      *  was reused, not re-parsed, and the cell says so. A marker, not a
      *  state; `state` is still the layer's outcome. */
     verified: z.literal("unchanged").optional(),
+    /** Rows the page published that the collector read and deliberately did
+     *  not mint, each named ("hosted other-match skipped: 2026-08-27, A v B").
+     *  A sibling of `reason` for a layer that is still complete: it says why
+     *  the page's row count and the fixture count differ, and nothing else. */
+    skips: z.array(z.string().min(1)).optional(),
   })
   .strict();
 export type CoverageCell = z.infer<typeof coverageCellSchema>;

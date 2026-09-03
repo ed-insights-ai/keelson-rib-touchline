@@ -273,6 +273,11 @@ def _fake_programme(
                 count=len(rows),
                 source_url=f"https://{slug}.example/schedule/2026",
                 unchanged=unchanged,
+                # alpha hosted a match it did not play: a named skip, not a
+                # gap, on a cell that is still complete.
+                skips=()
+                if unchanged
+                else ("hosted other-match skipped: 2026-09-05, Delta v Echo",),
             ),
             LAYER_ROSTER: LayerOutcome(
                 LAYER_ROSTER,
@@ -398,6 +403,12 @@ def test_the_run_exercised_what_it_claims_to(collected) -> None:
         coverage.STATE_NO_COLLECTOR,
     }
     assert cells["2026/men/bravo/schedule"]["verified"] == "unchanged"
+    # The named skip rides the cell as a list; a cell without one carries no
+    # key rather than an empty list.
+    assert cells["2026/men/alpha/schedule"]["skips"] == [
+        "hosted other-match skipped: 2026-09-05, Delta v Echo"
+    ]
+    assert "skips" not in cells["2026/men/bravo/schedule"]
     # Every programme here is a SideArm one (or has no recipe at all), so
     # every cell still names the SideArm collector.
     assert {cell["collector"] for cell in cells.values()} == {"sidearm-live"}

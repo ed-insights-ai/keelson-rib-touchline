@@ -23,6 +23,18 @@
       "source_url": "https://cbubucs.com/sports/mens-soccer/roster/2016",
       "state": "complete"
     },
+    "2016/men/christian-brothers/schedule": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-09-02T00:46:50+00:00",
+      "count": 17,
+      "gender": "men",
+      "layer": "schedule",
+      "programme": "christian-brothers",
+      "season": 2016,
+      "skips": ["hosted other-match skipped: 2016-09-03, Alpha v Bravo"],
+      "source_url": "https://cbubucs.com/sports/mens-soccer/schedule/2016",
+      "state": "complete"
+    },
     "2016/men/christian-brothers/stats": {
       "collector": "sidearm-live",
       "confirmed_at": "2026-09-02T00:46:50+00:00",

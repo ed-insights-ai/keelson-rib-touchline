@@ -139,6 +139,10 @@ class LayerOutcome:
     #: stored data was reused: the parse was skipped and the archived bytes
     #: must not be rewritten.
     unchanged: bool = False
+    #: Rows the page published that the parse read and deliberately did not
+    #: mint, each named ("hosted other-match skipped: 2026-08-27, A v B").
+    #: Not a gap: the layer is complete without them.
+    skips: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -737,6 +741,76 @@ def _split_orientation(name: str) -> tuple[str | None, str]:
     return ("at" if word in {"at", "@"} else "vs"), name[match.end() :]
 
 
+# The word between two team names on a row a tournament host publishes for
+# a match it staged but did not play: "0 Colorado Mesa vs 1 Midwestern"
+# (westminstergriffins.com 2023), "Western Oregon University vs Metropolitan
+# State University of Denver" (the same site, 2026).
+_TWO_TEAM_SPLIT = re.compile(r"\s+(?:vs\.?|v\.?)\s+", re.IGNORECASE)
+
+
+def _two_team_names(opponent_name: str) -> tuple[str, str] | None:
+    parts = _TWO_TEAM_SPLIT.split(opponent_name, maxsplit=1)
+    if len(parts) != 2:
+        return None
+    first, second = (_clean_team_name(part) for part in parts)
+    if not first or not second:
+        return None
+    return first, second
+
+
+def hosted_other_match(
+    opponent_name: str, *, owner_slug: str, aliases: dict[str, str]
+) -> tuple[str, str] | None:
+    """The two teams a published row names when the page owner is neither.
+
+    A fixture read from a programme's own schedule page must have that
+    programme as one side.  A tournament host lists the other pair's match
+    on its own page ("A vs B" in the opponent cell, the host's ground as the
+    venue), and minting it as the host's fixture produced a phantom row on
+    the host and a duplicate of the real match, which one of the two named
+    teams publishes on its own page (beads tl-clk.10, tl-5ru).  Each side is
+    folded through the alias-aware identity (``opponent_slug``), never
+    compared as a string, so the owner's own published spellings count.
+
+    Returns the two cleaned names when neither folds to the owner, and
+    ``None`` for every row the owner is in — a single-name row, or a
+    two-team row naming the owner on one side (``own_side_opponent`` then
+    reads the other).
+    """
+    pair = _two_team_names(opponent_name)
+    if pair is None:
+        return None
+    if owner_slug in (
+        opponent_slug(pair[0], aliases),
+        opponent_slug(pair[1], aliases),
+    ):
+        return None
+    return pair
+
+
+def own_side_opponent(
+    opponent_name: str, *, owner_slug: str, aliases: dict[str, str]
+) -> str:
+    """The other side of a row that names the owner beside its opponent.
+
+    "Westminster vs Colorado Mesa" on Westminster's page is a Westminster
+    fixture v Colorado Mesa; a single-name row is returned as it is.
+    """
+    pair = _two_team_names(opponent_name)
+    if pair is None:
+        return opponent_name
+    if opponent_slug(pair[0], aliases) == owner_slug:
+        return pair[1]
+    if opponent_slug(pair[1], aliases) == owner_slug:
+        return pair[0]
+    return opponent_name
+
+
+def hosted_skip(date: str, pair: tuple[str, str]) -> str:
+    """The named skip the collect summary prints for one hosted row."""
+    return f"hosted other-match skipped: {date}, {pair[0]} v {pair[1]}"
+
+
 def _identity_key(name: str) -> str:
     """Normalize a published opponent string toward a comparable identity.
 
@@ -1159,6 +1233,7 @@ def _parse_schedule_dom(
     owner_slug: str,
     aliases: dict[str, str],
     members: set[str] | None = None,
+    skips: list[str] | None = None,
 ) -> list[dict[str, object]]:
     """Read the server-rendered game list.
 
@@ -1235,44 +1310,45 @@ def _parse_schedule_dom(
             location.get_text(" ", strip=True) if location is not None else ""
         )
         exhibition = _exhibition_marked(opponent_raw, location_text)
-        hosted = re.split(r"\s+vs\.?\s+", opponent_name)
-        if len(hosted) == 2:
-            # A tournament host lists other teams' games on its own schedule
-            # ("Southern Nazarene vs. Maryville" on the host's page).  That is
-            # a real fixture between the two named teams at the host's venue —
-            # the owner is not in it.
-            home = opponent_slug(hosted[0], aliases)
-            away = opponent_slug(hosted[1], aliases)
-            owner_is_home = None
-            participant_slugs = (home, away)
-        else:
-            other_slug = opponent_slug(opponent_name, aliases)
-            if neutral:
-                # Neutral rows keep the "vs"/"at" span as the only side
-                # indicator; home/away stay as published, the flag says
-                # neither side hosted.
-                indicator = _first_text(
-                    row, ".sidearm-schedule-game-home, .sidearm-schedule-game-away"
-                )
-                owner_is_home = (
-                    indicator or orientation or "vs"
-                ).strip().lower() != "at"
-            elif "sidearm-schedule-home-game" in classes:
-                owner_is_home = True
-            elif "sidearm-schedule-away-game" in classes:
-                owner_is_home = False
-            else:
-                # No side class: the word in the opponent cell is the only
-                # orientation the row publishes.
-                owner_is_home = orientation == "vs"
-            home, away = (
-                (owner_slug, other_slug) if owner_is_home else (other_slug, owner_slug)
+        # A tournament host lists the other pair's match on its own schedule
+        # ("0 Colorado Mesa vs 1 Midwestern" on westminstergriffins.com
+        # 2023, a neutral row at the host's own ground).  The owner is not
+        # in it, so it is not the owner's fixture: skipped by name, never
+        # minted under the owner's id.
+        hosted = hosted_other_match(
+            opponent_name, owner_slug=owner_slug, aliases=aliases
+        )
+        if hosted is not None:
+            if skips is not None:
+                skips.append(hosted_skip(date, hosted))
+            continue
+        opponent_name = own_side_opponent(
+            opponent_name, owner_slug=owner_slug, aliases=aliases
+        )
+        other_slug = opponent_slug(opponent_name, aliases)
+        if neutral:
+            # Neutral rows keep the "vs"/"at" span as the only side
+            # indicator; home/away stay as published, the flag says
+            # neither side hosted.
+            indicator = _first_text(
+                row, ".sidearm-schedule-game-home, .sidearm-schedule-game-away"
             )
-            participant_slugs = (other_slug,)
+            owner_is_home = (indicator or orientation or "vs").strip().lower() != "at"
+        elif "sidearm-schedule-home-game" in classes:
+            owner_is_home = True
+        elif "sidearm-schedule-away-game" in classes:
+            owner_is_home = False
+        else:
+            # No side class: the word in the opponent cell is the only
+            # orientation the row publishes.
+            owner_is_home = orientation == "vs"
+        home, away = (
+            (owner_slug, other_slug) if owner_is_home else (other_slug, owner_slug)
+        )
 
         result_text = _first_text(row, ".sidearm-schedule-game-result") or ""
-        result = _dom_result(result_text) if owner_is_home is not None else None
-        if result is None and owner_is_home is not None:
+        result = _dom_result(result_text)
+        if result is None:
             result = _dom_two_team_result(row, classes)
         # A played game whose score was never entered (measured on the modern
         # theme, which fills scores client-side: the served DOM carries only a
@@ -1306,9 +1382,7 @@ def _parse_schedule_dom(
         if theme_marks_conference:
             fixture["conference_game"] = conference_marked(row)
         else:
-            fixture["conference_game"] = not exhibition and all(
-                slug in member_slugs for slug in participant_slugs
-            )
+            fixture["conference_game"] = not exhibition and other_slug in member_slugs
             fixture["conference_game_source"] = "derived:membership"
         # Some themes render kickoff in a dedicated element; at least one packs
         # it into the date text ("Aug 27 (Thu) 3:00 p.m.").
@@ -1357,7 +1431,16 @@ def parse_schedule_page(
     owner_slug: str,
     aliases: dict[str, str],
     members: set[str] | None = None,
+    skips: list[str] | None = None,
 ) -> list[dict[str, object]]:
+    """Read a SideArm schedule page into fixture rows.
+
+    The component JSON is authoritative where it speaks; the DOM supplies
+    every game the JSON stub left out, under the same identifiers.  A row
+    naming two other teams (a match the owner hosted but did not play) is
+    never minted; with a ``skips`` list it is named there, one line per
+    row, for the collect summary.
+    """
     events: dict[str, dict[str, object]] = {}
     for title, raw, honest in _payload_events(html):
         date = str(raw.get("date") or "")
@@ -1383,6 +1466,21 @@ def parse_schedule_page(
         opponent_name = _clean_team_name(published_title)
         if not opponent_name:
             continue
+        date_text = str(event.get("date"))
+        # The payload publishes a hosted other-match under the same shape
+        # as the DOM: "Western Oregon University vs Metropolitan State
+        # University of Denver" as the opponent title, location_indicator
+        # "N" (westminstergriffins.com 2026).  Not the owner's fixture.
+        hosted = hosted_other_match(
+            opponent_name, owner_slug=owner_slug, aliases=aliases
+        )
+        if hosted is not None:
+            if skips is not None:
+                skips.append(hosted_skip(date_text[:10], hosted))
+            continue
+        opponent_name = own_side_opponent(
+            opponent_name, owner_slug=owner_slug, aliases=aliases
+        )
         other_slug = opponent_slug(opponent_name, aliases)
         indicator = str(event.get("location_indicator") or "").upper()
         owner_is_home = indicator == "H" or (
@@ -1396,7 +1494,6 @@ def parse_schedule_page(
         team_score = _integer(result_dict.get("team_score"))
         opponent_score = _integer(result_dict.get("opponent_score"))
         status = _event_status(event)
-        date_text = str(event.get("date"))
         # The events component spells the flag ``is_conference``; the schedule
         # objects spell it ``conference`` as a bare boolean (their
         # ``opponent.conference`` is the opponent's own flag, not the game's).
@@ -1469,8 +1566,11 @@ def parse_schedule_page(
         fixtures.append(fixture)
 
     # The component JSON is authoritative where it speaks; the DOM supplies
-    # every game the JSON stub left out, under the same identifiers.
+    # every game the JSON stub left out, under the same identifiers.  A
+    # hosted row both carry is one skip, not two (measured: the host's 2026
+    # page publishes each such row in the payload and in the rendered list).
     json_ids = {str(fixture["id"]) for fixture in fixtures}
+    dom_skips: list[str] = []
     for fixture in _parse_schedule_dom(
         html,
         page_url=page_url,
@@ -1478,9 +1578,12 @@ def parse_schedule_page(
         owner_slug=owner_slug,
         aliases=aliases,
         members=members,
+        skips=dom_skips,
     ):
         if str(fixture["id"]) not in json_ids:
             fixtures.append(fixture)
+    if skips is not None:
+        skips.extend(line for line in dom_skips if line not in skips)
     return sorted(fixtures, key=lambda value: (str(value["date"]), str(value["id"])))
 
 
@@ -2570,6 +2673,7 @@ def collect_programme(
     client = session or build_session()
 
     if LAYER_SCHEDULE in wanted:
+        schedule_skips: list[str] = []
         # The schedule parse reads more than the page: opponent identity comes
         # from the alias map and the conference flag from membership, so both
         # belong to the cached parse's identity, beside the recipe's parsers.
@@ -2607,6 +2711,9 @@ def collect_programme(
                         reason=state.outcome_reason,
                         source_url=state.final_url,
                         unchanged=True,
+                        skips=tuple(
+                            str(skip) for skip in state.parsed.get("skips") or []
+                        ),
                     )
                     page_cache.mark_verified(
                         slug,
@@ -2623,6 +2730,7 @@ def collect_programme(
                         owner_slug=slug,
                         aliases=aliases,
                         members=members,
+                        skips=schedule_skips,
                     )
                     outcomes[LAYER_SCHEDULE] = LayerOutcome(
                         LAYER_SCHEDULE,
@@ -2633,6 +2741,7 @@ def collect_programme(
                         else f"[{year}] the {year} schedule page proved its season but listed no fixtures",
                         source_url=state.final_url,
                         unchanged=True,
+                        skips=tuple(schedule_skips),
                     )
                     page_cache.mark_verified(
                         slug,
@@ -2643,7 +2752,7 @@ def collect_programme(
                         outcome_state=outcomes[LAYER_SCHEDULE].state,
                         outcome_count=len(fixtures),
                         outcome_reason=outcomes[LAYER_SCHEDULE].reason,
-                        parsed={"fixtures": fixtures},
+                        parsed={"fixtures": fixtures, "skips": schedule_skips},
                     )
             else:
                 page = fetched.page
@@ -2657,6 +2766,7 @@ def collect_programme(
                     owner_slug=slug,
                     aliases=aliases,
                     members=members,
+                    skips=schedule_skips,
                 )
                 recipe.assert_schedule_proven(
                     page.html,
@@ -2673,6 +2783,7 @@ def collect_programme(
                     if fixtures
                     else f"[{year}] the {year} schedule page proved its season but listed no fixtures",
                     source_url=page.final_url,
+                    skips=tuple(schedule_skips),
                 )
                 if page_cache is not None and fetched.signature is not None:
                     page_cache.save(
@@ -2687,7 +2798,7 @@ def collect_programme(
                         outcome_state=outcomes[LAYER_SCHEDULE].state,
                         outcome_count=len(fixtures),
                         outcome_reason=outcomes[LAYER_SCHEDULE].reason,
-                        parsed={"fixtures": fixtures},
+                        parsed={"fixtures": fixtures, "skips": schedule_skips},
                     )
         except NoCollector as exc:
             outcomes[LAYER_SCHEDULE] = LayerOutcome(

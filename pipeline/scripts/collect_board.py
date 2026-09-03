@@ -587,6 +587,10 @@ def collect(
                         # A run that legitimately did nothing must be legible
                         # as verified-unchanged, not mistakable for a gap.
                         verified="unchanged" if outcome.unchanged else None,
+                        # Rows read but deliberately not minted (a hosted
+                        # other-match), named so the manifest says why the
+                        # page's count and the fixture count differ.
+                        skips=list(outcome.skips) or None,
                     )
                     if outcome.reason:
                         gaps.append(f"{slug} {layer}: {outcome.reason}")
@@ -1136,6 +1140,24 @@ def _assemble(
     )
 
 
+def named_skips(cells: dict[str, dict[str, object]]) -> list[str]:
+    """Every skip the run's cells recorded, in the gap line's voice.
+
+    A skip is the gap convention's sibling: a row the collector read and
+    deliberately did not mint (a match the programme hosted but did not
+    play), named in the cell as ``skips`` and printed under the summary so
+    the run log says why the page's row count and the fixture count differ.
+    Unlike a gap it does not change the cell's state.
+    """
+    lines: list[str] = []
+    for cell in cells.values():
+        if not isinstance(cell, dict):
+            continue
+        for skip in cell.get("skips") or []:  # type: ignore[union-attr]
+            lines.append(f"{cell.get('programme')} {cell.get('layer')}: {skip}")
+    return lines
+
+
 def widen_to_existing_scope(
     wanted: list[str], *season_paths: Path
 ) -> tuple[list[str], list[str]]:
@@ -1395,6 +1417,15 @@ def main() -> int:
         print(
             f"collapsed {duplicates} duplicate fixture row(s) published by both programmes"
         )
+
+    skips = named_skips(cells)
+    if skips:
+        print(
+            f"\n{len(skips)} named skip(s) — rows a page published that are not "
+            f"that programme's fixtures, read and left unminted:"
+        )
+        for skip in skips:
+            print(f"  SKIP: {skip}")
 
     if errors:
         error_path = data_root / "data" / "errors" / f"collect-board-{season_key}.json"

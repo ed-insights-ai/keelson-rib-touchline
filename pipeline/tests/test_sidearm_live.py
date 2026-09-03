@@ -1183,26 +1183,6 @@ def test_marked_theme_publishes_the_conference_flag() -> None:
     assert all("conference_game_source" not in fixture for fixture in fixtures)
 
 
-def test_a_hosted_tournament_row_belongs_to_the_named_teams() -> None:
-    """A host lists other teams' games on its own page; the host is not in them."""
-    rows = _dom_game(
-        game_id="9",
-        opponent="Southern Nazarene vs. Maryville",
-        date="Aug 27 (Thu)",
-    )
-    fixtures = parse_schedule_page(
-        _dom_page(rows),
-        page_url="https://example.test/schedule/2026",
-        year=2026,
-        owner_slug="rogers-state",
-        aliases=identity_aliases(_gac(), "men"),
-    )
-    assert len(fixtures) == 1
-    assert fixtures[0]["home"] == "southern-nazarene"
-    assert fixtures[0]["away"] == "maryville"
-    assert fixtures[0]["conference_game"] is False
-
-
 def test_postseason_placeholder_rows_are_not_fixtures() -> None:
     rows = (
         _dom_game(game_id="20", opponent="TBA", date="Nov 6 (Fri)")
@@ -2639,3 +2619,356 @@ def test_a_division_seed_is_a_rank_prefix() -> None:
         == "West Chester (PSAC Quarterfinal)"
     )
     assert _clean_team_name("2Excellent College") == "2Excellent College"
+
+
+# --- Hosted other-match rows (beads tl-clk.10, tl-5ru) ------------------------
+# A tournament host lists the other pair's match on its own schedule page.
+# Measured on the host's SideArm site: the 2023 rendered list carries
+# "0 Colorado Mesa vs 1 Midwestern" as the opponent cell of a neutral row at
+# the host's own ground, and the 2026 events payload carries the opponent
+# title "Western Oregon University vs Metropolitan State University of
+# Denver" with location_indicator "N".  Neither names the owner, so neither
+# is the owner's fixture: read, named as a skip, never minted.  The owner is
+# recognised by the alias-aware fold, so its own published spellings count.
+
+_HOST = "hostville"
+_HOST_ALIASES = {
+    "hostville": "hostville",
+    "hostville griffins": "hostville",
+    "alpha": "alpha",
+    "bravo": "bravo",
+}
+
+
+def _clone_row(
+    html: str,
+    *,
+    row_selector: str,
+    name_selector: str,
+    id_attr: str,
+    game_id: str,
+    opponent: str,
+) -> str:
+    """The page with its first row duplicated, renamed and re-identified."""
+    import copy
+
+    from bs4 import BeautifulSoup
+
+    soup = BeautifulSoup(html, "lxml")
+    row = soup.select_one(row_selector)
+    assert row is not None
+    clone = copy.copy(row)
+    clone[id_attr] = game_id
+    name = clone.select_one(name_selector)
+    assert name is not None
+    name.clear()
+    name.append(opponent)
+    row.insert_before(clone)
+    return str(soup)
+
+
+def _ids(fixtures: list[dict[str, object]]) -> set[str]:
+    return {str(row["id"]).rsplit(":", 1)[-1] for row in fixtures}
+
+
+def test_the_events_payload_skips_a_hosted_other_match_and_names_it() -> None:
+    """The 2026 shape: two events on one day, the hosted one under an "N"
+    indicator with both teams in the opponent title."""
+    real = {
+        "id": 13071,
+        "date": "2026-08-27T19:00:00",
+        "location_indicator": "H",
+        "schedule": {"title": "2026 Men's Soccer Schedule"},
+        "opponent": {"title": "Alpha"},
+        "result": {"status": "N"},
+    }
+    hosted = {
+        **real,
+        "id": 13070,
+        "date": "2026-08-27T16:00:00",
+        "location_indicator": "N",
+        "opponent": {"title": "Alpha vs Bravo"},
+    }
+    component = {"type": "events", "data": [hosted, real]}
+    html = (
+        "<html><head><title>2026 Men's Soccer Schedule - Host</title></head>"
+        f"<body><script>\nvar obj = {json.dumps(component)};\n</script></body></html>"
+    )
+    skips: list[str] = []
+    fixtures = parse_schedule_page(
+        html,
+        page_url="https://host.test/sports/mens-soccer/schedule/2026",
+        year=2026,
+        owner_slug=_HOST,
+        aliases=_HOST_ALIASES,
+        skips=skips,
+    )
+    assert [row["id"] for row in fixtures] == ["sidearm:hostville:13071"]
+    assert (fixtures[0]["home"], fixtures[0]["away"]) == ("hostville", "alpha")
+    assert skips == ["hosted other-match skipped: 2026-08-27, Alpha v Bravo"]
+
+
+def test_the_rendered_list_skin_skips_a_hosted_other_match() -> None:
+    """The 2023 shape on a server-rendered list: the opponent cell reads
+    "0 Colorado Mesa vs 1 Midwestern" (scores interleaved, no side span).
+    Here the csidolphins.com page gains such a row beside its real ones."""
+    base = "https://csidolphins.com/sports/mens-soccer"
+    html = _clone_row(
+        (FIXTURES / "sidearm_staten_island_schedule_2026.html").read_text(),
+        row_selector="li.sidearm-schedule-game",
+        name_selector=".sidearm-schedule-game-opponent-name",
+        id_attr="data-game-id",
+        game_id="12099",
+        opponent="0 Alpha vs 1 Bravo",
+    )
+    skips: list[str] = []
+    fixtures = parse_schedule_page(
+        html,
+        page_url=f"{base}/schedule/2026",
+        year=2026,
+        owner_slug="staten-island",
+        aliases={**_HOST_ALIASES, "staten island": "staten-island"},
+        skips=skips,
+    )
+    assert _ids(fixtures) == {"12026", "12027", "12028"}
+    assert all("staten-island" in (row["home"], row["away"]) for row in fixtures)
+    assert skips == ["hosted other-match skipped: 2026-08-27, Alpha v Bravo"]
+
+
+def test_the_legacy_list_skin_skips_a_hosted_other_match() -> None:
+    """The Vue schedule object (lockhavenathletics.com) gains a game whose
+    opponent title names two other teams."""
+    import re
+
+    base = "https://www.lockhavenathletics.com/sports/mens-soccer"
+    lines = (FIXTURES / "sidearm_lock_haven_schedule_2025.html").read_text().split("\n")
+    for index, line in enumerate(lines):
+        match = re.match(r"^(\s*schedule\s*:\s*)(\{.*\})(\s*,?\s*)$", line)
+        if match is None:
+            continue
+        schedule = json.loads(match.group(2))
+        hosted = json.loads(json.dumps(schedule["games"][0]))
+        hosted["id"] = 12998
+        hosted["location_indicator"] = "N"
+        hosted["opponent"]["title"] = "Alpha vs. Bravo"
+        schedule["games"].insert(0, hosted)
+        lines[index] = match.group(1) + json.dumps(schedule) + match.group(3)
+        break
+    else:  # pragma: no cover - the fixture carries the line
+        raise AssertionError("no schedule object line")
+    skips: list[str] = []
+    fixtures = parse_schedule_page(
+        "\n".join(lines),
+        page_url=f"{base}/schedule/2025",
+        year=2025,
+        owner_slug="lock-haven",
+        aliases={**_HOST_ALIASES, "lock haven": "lock-haven"},
+        skips=skips,
+    )
+    assert _ids(fixtures) == {"12970", "12983", "12999"}
+    assert all("lock-haven" in (row["home"], row["away"]) for row in fixtures)
+    assert skips == ["hosted other-match skipped: 2025-09-04, Alpha v Bravo"]
+
+
+def test_the_nuxt_skin_skips_a_hosted_other_match() -> None:
+    """The devalue-encoded Pinia state (millersvilleathletics.com) gains a
+    game: new values are appended to the flat array and the game's index
+    pushed onto the schedule's games list."""
+    from bs4 import BeautifulSoup
+
+    base = "https://millersvilleathletics.com/sports/mens-soccer"
+    html = (FIXTURES / "sidearm_millersville_schedule_2025.html").read_text()
+    element = BeautifulSoup(html, "lxml").find("script", id="__NUXT_DATA__")
+    assert element is not None
+    encoded = element.get_text()
+    values = json.loads(encoded)
+    [games_index] = [
+        value["games"]
+        for value in values
+        if isinstance(value, dict) and "games" in value and "title" in value
+    ]
+    games: list[int] = values[games_index]
+    first: dict[str, int] = dict(values[games[0]])
+    opponent: dict[str, int] = dict(values[first["opponent"]])
+    values.append("Alpha vs Bravo")
+    opponent["title"] = len(values) - 1
+    values.append(opponent)
+    first["opponent"] = len(values) - 1
+    values.append(10999)
+    first["id"] = len(values) - 1
+    values.append(first)
+    games.insert(0, len(values) - 1)
+    html = html.replace(encoded, json.dumps(values))
+
+    skips: list[str] = []
+    fixtures = parse_schedule_page(
+        html,
+        page_url=f"{base}/schedule/2025",
+        year=2025,
+        owner_slug="millersville",
+        aliases={**_HOST_ALIASES, "millersville": "millersville"},
+        skips=skips,
+    )
+    assert _ids(fixtures) == {"10090", "10095", "10107"}
+    assert all("millersville" in (row["home"], row["away"]) for row in fixtures)
+    assert skips == ["hosted other-match skipped: 2025-09-04, Alpha v Bravo"]
+
+
+def test_the_two_team_list_skin_skips_a_hosted_other_match() -> None:
+    """daemenwildcats.com's row blocks name the opponent in their own span;
+    a row whose span names two other teams is not Daemen's."""
+    base = "https://daemenwildcats.com/sports/mens-soccer"
+    html = _clone_row(
+        (FIXTURES / "sidearm_daemen_schedule_2025.html").read_text(),
+        row_selector="li.sidearm-schedule-game",
+        name_selector=".sidearm-schedule-game-opponent-name",
+        id_attr="data-game-id",
+        game_id="7899",
+        opponent="Alpha vs Bravo",
+    )
+    skips: list[str] = []
+    fixtures = parse_schedule_page(
+        html,
+        page_url=f"{base}/schedule/2025",
+        year=2025,
+        owner_slug="daemen",
+        aliases={**_HOST_ALIASES, "daemen": "daemen"},
+        skips=skips,
+    )
+    assert _ids(fixtures) == {"7851", "7852", "7867"}
+    assert all("daemen" in (row["home"], row["away"]) for row in fixtures)
+    # The cloned row is the page's first, the Nov 1 one.
+    assert skips == ["hosted other-match skipped: 2025-11-01, Alpha v Bravo"]
+
+
+def test_a_two_team_row_naming_the_owner_by_alias_is_the_owners_fixture() -> None:
+    """The owner is matched by the alias-aware fold, not the string: a row
+    reading "Hostville Griffins vs Alpha" is Hostville v Alpha, and the
+    same row with the owner second is read the same way."""
+    rows = _dom_game(
+        game_id="31", opponent="Hostville Griffins vs Alpha", date="Aug 27 (Thu)"
+    ) + _dom_game(
+        game_id="32", opponent="Bravo v Hostville Griffins", date="Aug 29 (Sat)"
+    )
+    skips: list[str] = []
+    fixtures = parse_schedule_page(
+        _dom_page(rows),
+        page_url="https://host.test/schedule/2026",
+        year=2026,
+        owner_slug=_HOST,
+        aliases=_HOST_ALIASES,
+        skips=skips,
+    )
+    assert [(row["home"], row["away"]) for row in fixtures] == [
+        ("hostville", "alpha"),
+        ("hostville", "bravo"),
+    ]
+    assert skips == []
+
+
+def test_a_hosted_other_match_is_not_minted_under_the_owners_id() -> None:
+    """The row the old parser minted as a fixture between the two named
+    teams under the host's id (the duplicate of the real match, which one
+    of the two publishes itself) is now the named skip."""
+    rows = _dom_game(
+        game_id="9", opponent="Southern Nazarene vs. Maryville", date="Aug 27 (Thu)"
+    )
+    skips: list[str] = []
+    fixtures = parse_schedule_page(
+        _dom_page(rows),
+        page_url="https://example.test/schedule/2026",
+        year=2026,
+        owner_slug="rogers-state",
+        aliases=identity_aliases(_gac(), "men"),
+        skips=skips,
+    )
+    assert fixtures == []
+    assert skips == [
+        "hosted other-match skipped: 2026-08-27, Southern Nazarene v Maryville"
+    ]
+    # Without a skips list the row is still not minted, just not narrated.
+    assert (
+        parse_schedule_page(
+            _dom_page(rows),
+            page_url="https://example.test/schedule/2026",
+            year=2026,
+            owner_slug="rogers-state",
+            aliases=identity_aliases(_gac(), "men"),
+        )
+        == []
+    )
+
+
+def test_collect_programme_carries_the_skips_on_the_schedule_outcome() -> None:
+    from src.sidearm_live import LAYER_SCHEDULE
+
+    component = {
+        "type": "events",
+        "data": [
+            {
+                "id": 1,
+                "date": "2026-09-05T19:00:00",
+                "location_indicator": "H",
+                "schedule": {"title": "2026 Men's Soccer Schedule"},
+                "opponent": {"title": "Alpha vs Bravo"},
+            },
+            {
+                "id": 2,
+                "date": "2026-09-05T16:00:00",
+                "location_indicator": "H",
+                "schedule": {"title": "2026 Men's Soccer Schedule"},
+                "opponent": {"title": "Bravo"},
+            },
+        ],
+    }
+    response = MagicMock()
+    response.url = "https://example.test/sports/mens-soccer/schedule/2026"
+    response.text = (
+        "<html><head><title>2026 Men's Soccer Schedule - Example</title></head>"
+        f"<body><script>\nvar obj = {json.dumps(component)};\n</script></body></html>"
+    )
+    session = MagicMock()
+    session.get.side_effect = [response]
+
+    result = collect_programme(
+        _school(), 2026, _HOST_ALIASES, session=session, layers=("schedule",)
+    )
+
+    outcome = result.outcomes[LAYER_SCHEDULE]
+    assert outcome.state == "complete"
+    assert outcome.count == 1
+    assert outcome.reason is None
+    assert outcome.skips == ("hosted other-match skipped: 2026-09-05, Alpha v Bravo",)
+    assert [row["id"] for row in result.fixtures] == ["sidearm:harding:2"]
+
+
+def test_a_hosted_row_in_both_the_payload_and_the_dom_is_one_skip() -> None:
+    """The measured 2026 host page carries each hosted row twice, in the
+    events payload and in the rendered list; the summary names it once."""
+    component = {
+        "type": "events",
+        "data": [
+            {
+                "id": 13070,
+                "date": "2026-08-27T16:00:00",
+                "location_indicator": "N",
+                "schedule": {"title": "2026 Men's Soccer Schedule"},
+                "opponent": {"title": "Alpha vs Bravo"},
+            }
+        ],
+    }
+    rows = _dom_game(game_id="13070", opponent="Alpha vs Bravo", date="Aug 27 (Thu)")
+    html = _dom_page(
+        rows, component=f"<script>\nvar obj = {json.dumps(component)};\n</script>"
+    )
+    skips: list[str] = []
+    fixtures = parse_schedule_page(
+        html,
+        page_url="https://host.test/sports/mens-soccer/schedule/2026",
+        year=2026,
+        owner_slug=_HOST,
+        aliases=_HOST_ALIASES,
+        skips=skips,
+    )
+    assert fixtures == []
+    assert skips == ["hosted other-match skipped: 2026-08-27, Alpha v Bravo"]
