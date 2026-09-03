@@ -655,14 +655,32 @@ def _integer(value: object) -> int | None:
         return None
 
 
+def _status_word(text: str) -> str | None:
+    """The status a result cell or status string spells out, if any.
+
+    A status word outranks every other signal on the row: a completed class,
+    a Final span, a score. Staten Island's 2026 schedule carried the Aug 27
+    row v Assumption on a past date with the completed class and a result
+    cell reading "Make Up Date TBD" (archived 2026-09-03); reading the class
+    alone stored it final with no score, and the site's fold refused it
+    against Assumption's cancelled record. Rescheduling is spelled several
+    ways across skins ("Postponed", "PPD", "Make Up Date TBD", "Makeup TBA")
+    and all of them mean postponed.
+    """
+    if re.search(r"cancel", text, re.IGNORECASE):
+        return "cancelled"
+    if re.search(r"postpon|make[\s-]?up|\bppd\b", text, re.IGNORECASE):
+        return "postponed"
+    return None
+
+
 def _event_status(event: dict[str, object]) -> str:
     result = event.get("result")
     result_dict = result if isinstance(result, dict) else {}
     status = str(result_dict.get("status") or event.get("status") or "").lower()
-    if "cancel" in status:
-        return "cancelled"
-    if "postpon" in status:
-        return "postponed"
+    word = _status_word(status)
+    if word is not None:
+        return word
     if event.get("type") == "live" or "live" in status or "progress" in status:
         return "live"
     # A status naming Final outranks the score check: a played game whose
@@ -922,10 +940,9 @@ def _parse_schedule_dom(
             "sidearm-schedule-game-completed" in classes
             or row.select_one(".sidearm-schedule-game-result-final") is not None  # type: ignore[attr-defined]
         )
-        if re.search(r"cancel", result_text, re.IGNORECASE):
-            status = "cancelled"
-        elif re.search(r"postpon", result_text, re.IGNORECASE):
-            status = "postponed"
+        word = _status_word(result_text)
+        if word is not None:
+            status = word
         elif result or completed:
             status = "final"
         else:
