@@ -4,9 +4,32 @@
     "from": 2016,
     "to": 2026
   },
-  "conferences": ["GAC", "GLVC", "GSC", "LSC", "MIAA", "RMAC", "SSC", "independent", "non_member"],
+  "conferences": [
+    "CACC",
+    "ECC",
+    "GAC",
+    "GLVC",
+    "GSC",
+    "LSC",
+    "MIAA",
+    "NE10",
+    "RMAC",
+    "SSC",
+    "independent",
+    "non_member"
+  ],
   "description": "Contract fixture: season-aware conference-membership windows per programme (institution_slug x gender). Each window cites its source. Identity and membership are separate axes.",
   "memberships": {
+    "adelphi": {
+      "men": [
+        {
+          "conference": "NE10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2022 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
     "aum": {
       "men": [
         {
@@ -14,6 +37,16 @@
           "from_season": 2017,
           "to_season": 2026,
           "source": "Auburn Montgomery Warhawks, https://en.wikipedia.org/wiki/Auburn_Montgomery_Warhawks (accessed 2026-08-20)"
+        }
+      ]
+    },
+    "caldwell": {
+      "men": [
+        {
+          "conference": "CACC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
       ]
     },
@@ -38,6 +71,16 @@
           "from_season": 2016,
           "source": "Mid-America Intercollegiate Athletics Association, 2016 and 2025 MIAA Women's Soccer Standings, https://themiaa.com/standings.aspx?standings=50 and https://them",
           "to_season": 2025
+        }
+      ]
+    },
+    "molloy": {
+      "men": [
+        {
+          "conference": "ECC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
         }
       ]
     },

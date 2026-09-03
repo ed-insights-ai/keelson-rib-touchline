@@ -1455,3 +1455,767 @@ aliases      = ["University of Tampa"]
 city         = "Tampa, Fla."
 city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
 identity_accessed = "2026-09-02"
+
+# ============================================================
+# NE10 MEN'S SOCCER - 13 programmes, backfill window 2022-2026
+# ============================================================
+# Source of truth: Northeast-10 Conference per-season records
+# (northeast10.org conference statistics per year, plus the live standings
+# for 2026), verified 2026-09-02. Twelve live sites probed 2026-09-02
+# (uv run probe --name): all SideArm with schedule / roster / stats /
+# matches present and every window season served. One host is dead
+# (Saint Rose); see the comment above its stanza. No collect has run yet,
+# so every stanza is data_status = unverified. No ordinals.
+#
+# Season-aware membership lives in data/reference/membership.json: Le Moyne
+# left after 2022 (to Division I), Saint Rose after 2023 (college closed),
+# New Haven after 2024 (to Division I); Pace's men's soccer window starts
+# 2025 (programme relaunched). 12/11/10/10/10 members 2022-2026. Hosts came
+# from the conference's members page (northeast10.org/members).
+#
+# Names are the conference records' spellings, chosen so programme_slug(name)
+# matches the membership key. The probe's initials-derived abbreviations
+# (A, A, B, FP, P, SA, SM, NH, LM) were replaced with customary initialisms:
+# neither the standings nor the records page prints a short form
+# (northeast10.org/standings.aspx?path=msoc, read 2026-09-02), and SideArm
+# box scores print eight-character truncations ("ASSUMPTI", "STATEN I";
+# assumptiongreyhounds.com 2025 box 13854), not codes. Adelphi keeps AU (its
+# host is aupanthers.com), so Assumption carries ASSUMP. Aliases cover the
+# published long names and the "St." spellings of Anselm and Michael's.
+
+[[schools]]
+name         = "Adelphi"
+abbreviation = "AU"
+conference   = "NE10"
+mascot       = "Panthers"
+gender       = "men"
+base_url     = "https://aupanthers.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Adelphi University"]
+city         = "Garden City, N.Y."
+city_source  = "schedule-page home venue location, https://aupanthers.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-02"
+
+# The probe found no mascot where it reads; "Yellow Jackets" is the site's
+# own name (aicyellowjackets.com).
+[[schools]]
+name         = "American International"
+abbreviation = "AIC"
+conference   = "NE10"
+mascot       = "Yellow Jackets"
+gender       = "men"
+base_url     = "https://aicyellowjackets.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["American International College", "AIC"]
+city         = "Springfield, Mass."
+city_source  = "schedule-page home venue location, https://aicyellowjackets.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-02"
+
+# The probe found no mascot where it reads; "Greyhounds" is the site's own
+# name (assumptiongreyhounds.com).
+[[schools]]
+name         = "Assumption"
+abbreviation = "ASSUMP"
+conference   = "NE10"
+mascot       = "Greyhounds"
+gender       = "men"
+base_url     = "https://assumptiongreyhounds.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Assumption University"]
+city         = "Worcester, Mass."
+city_source  = "schedule-page home venue location, https://assumptiongreyhounds.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-02"
+
+# The probe found no mascot where it reads; "Falcons" is the site's own name
+# (bentleyfalcons.com).
+[[schools]]
+name         = "Bentley"
+abbreviation = "BU"
+conference   = "NE10"
+mascot       = "Falcons"
+gender       = "men"
+base_url     = "https://bentleyfalcons.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Bentley University"]
+city         = "Waltham, Mass."
+city_source  = "schedule-page home venue location, https://bentleyfalcons.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-02"
+
+# The probe found no mascot where it reads; "Ravens" is the site's own name
+# (fpuravens.com).
+# RULING NEEDED (batch 1): the site prints Rindge, N.H., a town the 2023 Census
+# Gazetteer places file does not list (it carries incorporated places and
+# CDPs, not New England towns or New Jersey townships) and a pin cannot name
+# a differently named place. The nearest listed place, Jaffrey CDP (about 5 km north), stands in
+# so the build completes; the printed town is kept in city_source.
+[[schools]]
+name         = "Franklin Pierce"
+abbreviation = "FPU"
+conference   = "NE10"
+mascot       = "Ravens"
+gender       = "men"
+base_url     = "https://fpuravens.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Franklin Pierce University"]
+city         = "Jaffrey, N.H."
+city_source  = "the schedule page prints Rindge, N.H.; the 2023 Gazetteer places file lists no Rindge, so the nearest listed place, Jaffrey CDP, stands in (ruling needed)"
+identity_accessed = "2026-09-02"
+
+# Pace is an institutional NE10 member but fielded no men's soccer from 1991
+# to 2024; the programme relaunched in fall 2025 (paceuathletics.com news
+# 2024/7/23, northeast10.org news 2024/7/25), so the window starts 2025.
+[[schools]]
+name         = "Pace"
+abbreviation = "PU"
+conference   = "NE10"
+mascot       = "Setters"
+gender       = "men"
+base_url     = "https://paceuathletics.com/sports/mens-soccer"
+years        = [2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Pace University"]
+city         = "Pleasantville, N.Y."
+city_source  = "schedule-page home venue location, https://paceuathletics.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-02"
+
+# The campus is in Goffstown (Manchester mailing address); the schedule page
+# prints Manchester, N.H., and that is the town used.
+[[schools]]
+name         = "Saint Anselm"
+abbreviation = "SAC"
+conference   = "NE10"
+mascot       = "Hawks"
+gender       = "men"
+base_url     = "https://saintanselmhawks.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Saint Anselm College", "St. Anselm", "St. Anselm College"]
+city         = "Manchester, N.H."
+city_source  = "schedule-page home venue location, https://saintanselmhawks.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-02"
+
+# The probe found no mascot where it reads; "Purple Knights" is the site's
+# own name (smcathletics.com). The apostrophe mints slug saint-michael-s,
+# which is the membership key.
+# RULING NEEDED (batch 1): the site prints Colchester, Vt., a town the 2023 Census
+# Gazetteer places file does not list (it carries incorporated places and
+# CDPs, not New England towns or New Jersey townships) and a pin cannot name
+# a differently named place. The nearest listed place, Winooski city (adjoining the campus), stands in
+# so the build completes; the printed town is kept in city_source.
+[[schools]]
+name         = "Saint Michael's"
+abbreviation = "SMC"
+conference   = "NE10"
+mascot       = "Purple Knights"
+gender       = "men"
+base_url     = "https://smcathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Saint Michael's College", "St. Michael's", "St. Michael's College"]
+city         = "Winooski, Vt."
+city_source  = "the schedule page prints Colchester, Vt.; the 2023 Gazetteer places file lists no Colchester, so the adjoining listed place, Winooski city, stands in (ruling needed)"
+identity_accessed = "2026-09-02"
+[[schools]]
+name         = "Southern Connecticut"
+abbreviation = "SCSU"
+conference   = "NE10"
+mascot       = "Owls"
+gender       = "men"
+base_url     = "https://scsuowls.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Southern Connecticut State University", "Southern Connecticut State"]
+city         = "New Haven, Conn."
+city_source  = "schedule-page home venue location, https://scsuowls.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-02"
+
+# The probe found no mascot where it reads; "Penmen" is the site's own name
+# (snhupenmen.com). The campus is in Hooksett (Manchester mailing address);
+# the schedule page prints Hooksett, N.H., and that is the town used.
+[[schools]]
+name         = "Southern New Hampshire"
+abbreviation = "SNHU"
+conference   = "NE10"
+mascot       = "Penmen"
+gender       = "men"
+base_url     = "https://snhupenmen.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Southern New Hampshire University"]
+city         = "Hooksett, N.H."
+city_source  = "schedule-page home venue location, https://snhupenmen.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-02"
+
+# Last NE10 season 2024; New Haven accepted a Northeast Conference (Division
+# I) invitation (newhavenchargers.com news 2025/5/6). The site still serves
+# 2025 and 2026, which the window excludes.
+[[schools]]
+name         = "New Haven"
+abbreviation = "UNH"
+conference   = "NE10"
+mascot       = "Chargers"
+gender       = "men"
+base_url     = "https://newhavenchargers.com/sports/mens-soccer"
+years        = [2022, 2023, 2024]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of New Haven"]
+city         = "West Haven, Conn."
+city_source  = "schedule-page home venue location, https://newhavenchargers.com/sports/mens-soccer/schedule/2024"
+identity_accessed = "2026-09-02"
+
+# Last NE10 season 2022; Le Moyne moved to the Northeast Conference (Division
+# I) for 2023-24. The site still serves 2023-2026, which the window excludes.
+# The schedule page prints no home town; the campus is in the town of DeWitt
+# (Syracuse mailing address), which the Census places file spells "De Witt
+# CDP" (design/batch1-membership-2026-09-02.md for the town).
+[[schools]]
+name         = "Le Moyne"
+abbreviation = "LMC"
+conference   = "NE10"
+mascot       = "Dolphins"
+gender       = "men"
+base_url     = "https://lemoynedolphins.com/sports/mens-soccer"
+years        = [2022]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Le Moyne College"]
+city         = "De Witt, N.Y."
+city_source  = "design/batch1-membership-2026-09-02.md (DeWitt campus, Syracuse mailing address; spelled as the 2023 Gazetteer places file spells the CDP)"
+identity_accessed = "2026-09-02"
+
+# Dead host: gogoldenknights.com answers a TLS unrecognized-name error (probe
+# 2026-09-02). The College of Saint Rose closed 2024-06-30 (Middle States
+# Commission on Higher Education FAQ,
+# https://www.msche.org/institutions/the-college-of-saint-rose-frequently-asked-questions-faq/,
+# read 2026-09-02). Last NE10 season 2023. The stanza stays enabled so the
+# programmes reference carries its identity row; every fetch fails and the
+# backfill files the absence, which is the truth.
+[[schools]]
+name         = "Saint Rose"
+abbreviation = "CSR"
+conference   = "NE10"
+mascot       = "Golden Knights"
+gender       = "men"
+# Historic host, dead since at least 2026-09-02; the college closed 2024-06-30.
+base_url     = "https://gogoldenknights.com/sports/mens-soccer"
+years        = [2022, 2023]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["The College of Saint Rose", "College of Saint Rose", "St. Rose"]
+city         = "Albany, N.Y."
+city_source  = "design/batch1-membership-2026-09-02.md (host dead, town not readable from the site)"
+identity_accessed = "2026-09-02"
+
+# ============================================================
+# CACC MEN'S SOCCER - 13 programmes, backfill window 2022-2026
+# ============================================================
+# Source of truth: Central Atlantic Collegiate Conference per-season records
+# (caccathletics.org conference statistics per year, plus the live standings
+# for 2026), verified 2026-09-02. Twelve live sites probed 2026-09-02 (uv run
+# probe --name): nine SideArm with schedule / roster / stats / matches
+# present (Goldey-Beacom without matches, Bloomfield without matches and
+# with a stats error), and three PrestoSports (Bridgeport, Dominican,
+# Wilmington) whose stanzas name that platform for both scrapers. One host
+# is dead (Alliance); see the comment above its stanza. No collect has run
+# yet, so every stanza is data_status = unverified. No ordinals.
+#
+# Season-aware membership lives in data/reference/membership.json: Alliance
+# left after 2022 (university closed), Bloomfield after 2024 (to the USCAA);
+# Bridgeport's first CACC season is 2022. 13/12/12/11/11 members 2022-2026.
+# Hosts came from the conference's members page (caccathletics.org/members).
+#
+# Names are the conference records' spellings, chosen so programme_slug(name)
+# matches the membership key; the records label Nyack "Alliance" in every
+# season and Dominican University New York "Dominican". The probe's
+# initials-derived abbreviations (P, C, F, W, OSB, GC, HFC, TJ, DNY, B) were
+# replaced with customary initialisms: neither the standings nor the
+# records page prints a short form (caccathletics.org/standings.aspx?path=msoc,
+# read 2026-09-02). Aliases cover the published long names and the former
+# names still printed on peers' pages (Dominican College, Nyack).
+
+[[schools]]
+name         = "Post"
+abbreviation = "PU"
+conference   = "CACC"
+mascot       = "Eagles"
+gender       = "men"
+base_url     = "https://posteagles.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Post University"]
+city         = "Waterbury, Conn."
+city_source  = "schedule-page home venue location, https://posteagles.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-02"
+[[schools]]
+name         = "Caldwell"
+abbreviation = "CU"
+conference   = "CACC"
+mascot       = "Cougars"
+gender       = "men"
+base_url     = "https://caldwellathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Caldwell University"]
+city         = "Caldwell, N.J."
+city_source  = "schedule-page home venue location, https://caldwellathletics.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-02"
+[[schools]]
+name         = "Chestnut Hill"
+abbreviation = "CHC"
+conference   = "CACC"
+mascot       = "Griffins"
+gender       = "men"
+base_url     = "https://griffinathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Chestnut Hill College"]
+city         = "Philadelphia, Pa."
+city_source  = "schedule-page home venue location, https://griffinathletics.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-02"
+
+# The probe found no mascot where it reads; "Golden Falcons" is the site's
+# own name (felicianuathletics.com). The probe saw 2024-2026 served; the
+# conference records list Felician every season 2022-2026, so the window is
+# the year-list and the collect reports what the site serves for 2022-2023.
+[[schools]]
+name         = "Felician"
+abbreviation = "FU"
+conference   = "CACC"
+mascot       = "Golden Falcons"
+gender       = "men"
+base_url     = "https://felicianuathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Felician University"]
+city         = "Rutherford, N.J."
+city_source  = "schedule-page home venue location, https://felicianuathletics.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-02"
+
+# PrestoSports (wildcats.athletics.wilmu.edu/sports/msoc). The probe on rib
+# f7c20e9 read no season paths; re-probed 2026-09-02 on fe727b6: schedule /
+# roster / stats / matches present, seasons 2022-2026 served. The schedule
+# page prints no home town; New Castle is the research's town
+# (design/batch1-membership-2026-09-02.md).
+[[schools]]
+name         = "Wilmington"
+abbreviation = "WU"
+conference   = "CACC"
+mascot       = "Wildcats"
+gender       = "men"
+base_url     = "https://wildcats.athletics.wilmu.edu/sports/msoc"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Wilmington University", "Wilmington (Del.)", "WilmU"]
+city         = "New Castle, Del."
+city_source  = "design/batch1-membership-2026-09-02.md (campus town; the schedule page prints no home town)"
+identity_accessed = "2026-09-02"
+
+# PrestoSports behind CloudFront (ubknights.com/sports/msoc); the probe on
+# rib f7c20e9 saw 2026 only, and two re-probes 2026-09-02 on fe727b6 got
+# HTTP 202 on every request (the CloudFront challenge), so the site's
+# served seasons are unconfirmed; the window is the conference's record and
+# the collect will report what the site serves. First CACC
+# season 2022, from the ECC (ubknights.com release 2021-22/20211213ngwsnj).
+# The probe drafted the page title "Official Site of University of
+# Bridgeport" as an alias; dropped. The schedule page prints no home town;
+# Bridgeport is the research's town (design/batch1-membership-2026-09-02.md).
+[[schools]]
+name         = "Bridgeport"
+abbreviation = "UB"
+conference   = "CACC"
+mascot       = "Purple Knights"
+gender       = "men"
+base_url     = "https://ubknights.com/sports/msoc"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Bridgeport"]
+city         = "Bridgeport, Conn."
+city_source  = "design/batch1-membership-2026-09-02.md (campus town; the schedule page prints no home town)"
+identity_accessed = "2026-09-02"
+[[schools]]
+name         = "Georgian Court"
+abbreviation = "GCU"
+conference   = "CACC"
+mascot       = "Lions"
+gender       = "men"
+base_url     = "https://gculions.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Georgian Court University"]
+city         = "Lakewood, N.J."
+city_source  = "schedule-page home venue location, https://gculions.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-02"
+
+# The probe found schedule, roster and stats but no box-score links, so
+# expect match gaps.
+[[schools]]
+name         = "Goldey-Beacom"
+abbreviation = "GBC"
+conference   = "CACC"
+mascot       = "Lightning"
+gender       = "men"
+base_url     = "https://www.gbcathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Goldey-Beacom College", "Goldey Beacom"]
+city         = "Wilmington, Del."
+city_source  = "schedule-page home venue location, https://www.gbcathletics.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-02"
+
+# The schedule page prints the venue only ("Tiger Field", read 2026-09-02),
+# and HFU as the school's short form; Philadelphia is the research's town
+# (design/batch1-membership-2026-09-02.md).
+[[schools]]
+name         = "Holy Family"
+abbreviation = "HFU"
+conference   = "CACC"
+mascot       = "Tigers"
+gender       = "men"
+base_url     = "https://athletics.holyfamily.edu/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Holy Family University"]
+city         = "Philadelphia, Pa."
+city_source  = "design/batch1-membership-2026-09-02.md (campus town; the schedule page prints no home town)"
+identity_accessed = "2026-09-02"
+
+# The probe found no mascot where it reads; "Rams" is the site's own name
+# (jeffersonrams.com). The records label the school "Jefferson" every season.
+[[schools]]
+name         = "Jefferson"
+abbreviation = "TJU"
+conference   = "CACC"
+mascot       = "Rams"
+gender       = "men"
+base_url     = "https://jeffersonrams.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Thomas Jefferson University", "Thomas Jefferson"]
+city         = "Philadelphia, Pa."
+city_source  = "schedule-page home venue location, https://jeffersonrams.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-02"
+
+# PrestoSports (www.chargerathletics.com/sports/msoc); the first probe
+# answered HTTP 202 on every request, the second read five seasons. Dominican
+# College became Dominican University New York in 2022; the records label it
+# "Dominican" throughout and peers still print the former name. The schedule
+# page prints no home town; Orangeburg is the research's town
+# (design/batch1-membership-2026-09-02.md).
+[[schools]]
+name         = "Dominican"
+abbreviation = "DUNY"
+conference   = "CACC"
+mascot       = "Chargers"
+gender       = "men"
+base_url     = "https://www.chargerathletics.com/sports/msoc"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Dominican University New York", "Dominican College", "Dominican (N.Y.)", "Dominican NY"]
+city         = "Orangeburg, N.Y."
+city_source  = "design/batch1-membership-2026-09-02.md (campus town; the schedule page prints no home town)"
+identity_accessed = "2026-09-02"
+
+# Last CACC season 2024; Bloomfield College of Montclair State University
+# moved its athletics to the USCAA (bcbearsathletics.com news 2025/7/15).
+# The SideArm site is still live and serves 2025-2026, which the window
+# excludes; the probe's stats layer errored and no box-score links were
+# found, so expect gaps.
+# RULING NEEDED (batch 1): the site prints Bloomfield, N.J., a town the 2023 Census
+# Gazetteer places file does not list (it carries incorporated places and
+# CDPs, not New England towns or New Jersey townships) and a pin cannot name
+# a differently named place. The nearest listed place, Glen Ridge borough (adjoining), stands in
+# so the build completes; the printed town is kept in city_source.
+[[schools]]
+name         = "Bloomfield"
+abbreviation = "BC"
+conference   = "CACC"
+mascot       = "Bears"
+gender       = "men"
+base_url     = "https://bcbearsathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Bloomfield College", "Bloomfield College of Montclair State University"]
+city         = "Glen Ridge, N.J."
+city_source  = "the schedule page prints Bloomfield, N.J.; the 2023 Gazetteer places file lists no Bloomfield, so the adjoining listed place, Glen Ridge borough, stands in (ruling needed)"
+identity_accessed = "2026-09-02"
+
+# Dead host: athletics.allianceu.edu resets the connection (probe
+# 2026-09-02). Nyack College became Alliance University in 2022 and the
+# university closed 2023-08-31 (Middle States Commission on Higher
+# Education, https://www.msche.org/2023/09/01/alliance-university-accreditation-ceases-august-31-2023/,
+# read 2026-09-02). The records label it "Alliance" in every season, 2021
+# included. Single in-window season 2022. The stanza stays enabled so the
+# programmes reference carries its identity row; every fetch fails and the
+# backfill files the absence, which is the truth.
+[[schools]]
+name         = "Alliance"
+abbreviation = "AU"
+conference   = "CACC"
+mascot       = "Warriors"
+gender       = "men"
+# Historic host, dead since at least 2026-09-02; the university closed 2023-08-31.
+base_url     = "https://athletics.allianceu.edu/sports/mens-soccer"
+years        = [2022]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Alliance University", "Nyack", "Nyack College"]
+city         = "New York, N.Y."
+city_source  = "design/batch1-membership-2026-09-02.md (host dead, town not readable from the site)"
+identity_accessed = "2026-09-02"
+
+# ============================================================
+# ECC MEN'S SOCCER - 9 programmes, backfill window 2022-2026
+# ============================================================
+# Source of truth: East Coast Conference per-season records (eccsports.org
+# conference statistics per year, plus the live standings for 2026),
+# verified 2026-09-02. All 9 sites probed 2026-09-02 (uv run probe --name):
+# seven SideArm with schedule / roster / stats / matches present and every
+# window season served, and two PrestoSports (St. Thomas Aquinas, District
+# of Columbia) whose stanzas name that platform for both scrapers. No
+# collect has run yet, so every stanza is data_status = unverified. No
+# ordinals.
+#
+# Season-aware membership lives in data/reference/membership.json: the same
+# nine programmes appear in every season 2022-2026 (the 2021 records add
+# Bridgeport, which left for the CACC), so every year-list here equals the
+# window. Hosts came from the conference's members page
+# (eccsports.org/members).
+#
+# Names are the conference records' spellings, chosen so programme_slug(name)
+# matches the membership key ("Queens" is CUNY Queens College, "District of
+# Columbia" the University of the District of Columbia). Five members were
+# renamed College to University inside or just before the window (Molloy,
+# Roberts Wesleyan, Mercy, D'Youville, Daemen); `name` never carried either
+# word, so no display_name is needed, and the former names are aliases.
+# The probe's initials-derived abbreviations (M, RW, Q, M, STA, D, DC, D)
+# were replaced with customary initialisms: neither the standings nor the
+# records page prints a short form (eccsports.org/standings.aspx?path=msoc,
+# read 2026-09-02). Molloy and Mercy would both be MU; Molloy keeps it and
+# Mercy carries MERCY, the whole word SideArm box scores print for it.
+
+[[schools]]
+name         = "Molloy"
+abbreviation = "MU"
+conference   = "ECC"
+mascot       = "Lions"
+gender       = "men"
+base_url     = "https://molloylions.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Molloy University", "Molloy College"]
+city         = "Rockville Centre, N.Y."
+city_source  = "schedule-page home venue location, https://molloylions.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-02"
+[[schools]]
+name         = "Roberts Wesleyan"
+abbreviation = "RWU"
+conference   = "ECC"
+mascot       = "Redhawks"
+gender       = "men"
+base_url     = "https://robertsredhawks.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Roberts Wesleyan University", "Roberts Wesleyan College", "Roberts"]
+city         = "Rochester, N.Y."
+city_source  = "schedule-page home venue location, https://robertsredhawks.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-02"
+
+# The probe found no mascot where it reads; "Knights" is the site's own name
+# (queensknights.com). The schedule page prints Flushing, N.Y., a Queens
+# neighbourhood the Census places file does not list and a pin cannot name;
+# the city is the place that contains it, New York city.
+[[schools]]
+name         = "Queens"
+abbreviation = "QC"
+conference   = "ECC"
+mascot       = "Knights"
+gender       = "men"
+base_url     = "https://queensknights.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Queens College", "Queens (N.Y.)", "Queens (NY)", "CUNY Queens"]
+city         = "New York, N.Y."
+city_source  = "the schedule page prints Flushing, N.Y. (Queens); the 2023 Gazetteer places file lists no Flushing, so the containing place, New York city, is used"
+identity_accessed = "2026-09-02"
+[[schools]]
+name         = "Mercy"
+abbreviation = "MERCY"
+conference   = "ECC"
+mascot       = "Mavericks"
+gender       = "men"
+base_url     = "https://mercyathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Mercy University", "Mercy College"]
+city         = "Dobbs Ferry, N.Y."
+city_source  = "schedule-page home venue location, https://mercyathletics.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-02"
+
+# PrestoSports (www.stacathletics.com/sports/msoc). The probe on rib f7c20e9
+# read no season paths, and two re-probes 2026-09-02 on fe727b6 got HTTP 202
+# on every request, so the site's served seasons are unconfirmed; the window
+# is the conference's record and the collect will report what the site
+# serves. The schedule page prints no home town; Sparkill is the research's
+# town (design/batch1-membership-2026-09-02.md).
+[[schools]]
+name         = "St. Thomas Aquinas"
+abbreviation = "STAC"
+conference   = "ECC"
+mascot       = "Spartans"
+gender       = "men"
+base_url     = "https://www.stacathletics.com/sports/msoc"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["St. Thomas Aquinas College", "Saint Thomas Aquinas", "Saint Thomas Aquinas College", "STAC"]
+city         = "Sparkill, N.Y."
+city_source  = "design/batch1-membership-2026-09-02.md (campus town; the schedule page prints no home town)"
+identity_accessed = "2026-09-02"
+
+# The probe found no mascot where it reads; "Saints" is the site's own name
+# (dyusaints.com). The apostrophe mints slug d-youville, which is the
+# membership key.
+[[schools]]
+name         = "D'Youville"
+abbreviation = "DYU"
+conference   = "ECC"
+mascot       = "Saints"
+gender       = "men"
+base_url     = "https://dyusaints.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["D'Youville University", "D'Youville College"]
+city         = "Buffalo, N.Y."
+city_source  = "schedule-page home venue location, https://dyusaints.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-02"
+
+# PrestoSports (www.udcfirebirds.com/sports/msoc). The schedule page prints
+# no home town; Washington is the research's town
+# (design/batch1-membership-2026-09-02.md).
+[[schools]]
+name         = "District of Columbia"
+abbreviation = "UDC"
+conference   = "ECC"
+mascot       = "Firebirds"
+gender       = "men"
+base_url     = "https://www.udcfirebirds.com/sports/msoc"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of the District of Columbia", "UDC"]
+city         = "Washington, D.C."
+city_source  = "design/batch1-membership-2026-09-02.md (campus town; the schedule page prints no home town)"
+identity_accessed = "2026-09-02"
+
+# The schedule page prints Staten Island, N.Y., a borough the Census places
+# file does not list and a pin cannot name; the city is the place that
+# contains it, New York city.
+[[schools]]
+name         = "Staten Island"
+abbreviation = "CSI"
+conference   = "ECC"
+mascot       = "Dolphins"
+gender       = "men"
+base_url     = "https://csidolphins.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["College of Staten Island", "CSI", "CUNY Staten Island"]
+city         = "New York, N.Y."
+city_source  = "the schedule page prints Staten Island, N.Y.; the 2023 Gazetteer places file lists no Staten Island, so the containing place, New York city, is used"
+identity_accessed = "2026-09-02"
+
+# The schedule page prints no home town; Amherst is the research's town
+# (design/batch1-membership-2026-09-02.md).
+# RULING NEEDED (batch 1): the site prints Amherst, N.Y. (per the research), a town the 2023 Census
+# Gazetteer places file does not list (it carries incorporated places and
+# CDPs, not New England towns or New Jersey townships) and a pin cannot name
+# a differently named place. The nearest listed place, Eggertsville CDP (a hamlet of Amherst), stands in
+# so the build completes; the printed town is kept in city_source.
+[[schools]]
+name         = "Daemen"
+abbreviation = "DU"
+conference   = "ECC"
+mascot       = "Wildcats"
+gender       = "men"
+base_url     = "https://daemenwildcats.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Daemen University", "Daemen College"]
+city         = "Eggertsville, N.Y."
+city_source  = "design/batch1-membership-2026-09-02.md gives Amherst, N.Y.; the 2023 Gazetteer places file lists no Amherst, so the nearest listed place, Eggertsville CDP, a hamlet of the town of Amherst, stands in (ruling needed)"
+identity_accessed = "2026-09-02"
