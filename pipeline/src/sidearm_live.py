@@ -715,6 +715,28 @@ def _clean_team_name(name: object) -> str:
     return _RANK_PREFIX.sub("", str(name or "").strip())
 
 
+# The orientation word some skins print inside the opponent cell ("vs
+# Molloy", "at Molloy", "@ Molloy") rather than in a dedicated span.
+_ORIENTATION_PREFIX = re.compile(r"^\s*(vs\.?|v\.?|at|@)\s+", re.IGNORECASE)
+
+
+def _split_orientation(name: str) -> tuple[str | None, str]:
+    """Peel a leading orientation word off a published opponent string.
+
+    Returns the word normalised to ``"vs"`` or ``"at"`` (``None`` when the
+    string carries none) and the remainder.  Measured: the two-team list skin
+    (daemenwildcats.com 2026) prints upcoming rows as ``<span>at</span>``
+    followed by the opponent link inside one ``-opponent-name`` span, so the
+    flattened text reads "at Molloy" and would otherwise be minted as the
+    slug ``at-molloy``; its played rows carry no such word.
+    """
+    match = _ORIENTATION_PREFIX.match(name)
+    if match is None:
+        return None, name
+    word = match.group(1).lower()
+    return ("at" if word in {"at", "@"} else "vs"), name[match.end() :]
+
+
 def _identity_key(name: str) -> str:
     """Normalize a published opponent string toward a comparable identity.
 
@@ -1122,6 +1144,7 @@ def _parse_schedule_dom(
     for row in rows:
         game_id = str(row.get("data-game-id") or "").strip()
         opponent_raw = _first_text(row, ".sidearm-schedule-game-opponent-name") or ""
+        orientation, opponent_raw = _split_orientation(opponent_raw)
         opponent_name = _clean_team_name(opponent_raw)
         # Most skins date the row beside the opponent; the two-team list skin
         # (measured daemenwildcats.com 2025: "Saturday, Nov 1" in
@@ -1175,9 +1198,17 @@ def _parse_schedule_dom(
                 indicator = _first_text(
                     row, ".sidearm-schedule-game-home, .sidearm-schedule-game-away"
                 )
-                owner_is_home = (indicator or "vs").strip().lower() != "at"
+                owner_is_home = (
+                    indicator or orientation or "vs"
+                ).strip().lower() != "at"
+            elif "sidearm-schedule-home-game" in classes:
+                owner_is_home = True
+            elif "sidearm-schedule-away-game" in classes:
+                owner_is_home = False
             else:
-                owner_is_home = "sidearm-schedule-home-game" in classes
+                # No side class: the word in the opponent cell is the only
+                # orientation the row publishes.
+                owner_is_home = orientation == "vs"
             home, away = (
                 (owner_slug, other_slug) if owner_is_home else (other_slug, owner_slug)
             )
