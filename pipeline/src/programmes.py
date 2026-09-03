@@ -8,8 +8,11 @@ stanza that cannot complete a row stops the build naming the slug.
 
 The facts come from ``pipeline/config/schools.toml`` (name, mascot,
 abbreviation, city, city_source, identity_accessed, gazetteer_geoid) and
-the pinned Gazetteer (src/gazetteer.py). The file is rebuilt with
-``uv run build-programmes`` and must equal a fresh build byte for byte.
+the pinned Gazetteer (src/gazetteer.py): the places file first, the county
+subdivisions file only for a town the places file lacks, in which case the
+row's point provenance names that file and carries a note. The document's
+``gazetteer`` block keeps describing the places file. The file is rebuilt
+with ``uv run build-programmes`` and must equal a fresh build byte for byte.
 """
 
 from __future__ import annotations
@@ -23,6 +26,7 @@ from .sidearm_live import programme_slug
 
 PROGRAMMES_SCHEMA = "touchline.programmes/2"
 CITY_SOURCE_SCHEDULE = "schedule-page home venue location"
+COUSUB_NOTE = "county subdivision; the places file has no entry for this town"
 
 DESCRIPTION = (
     "Programme identity that no collected page publishes as data: the nickname "
@@ -57,18 +61,23 @@ def _row(school: SchoolConfig, place: gz.Place, town: gz.Town) -> dict[str, obje
             f"{live}/schedule/{max(school.years)}" if school.years else live
         )
     point_source: dict[str, object] = {
-        "source": gz.GAZETTEER_SOURCE,
-        "url": gz.GAZETTEER_URL,
+        "source": gz.COUSUBS_SOURCE if place.cousub else gz.GAZETTEER_SOURCE,
+        "url": gz.COUSUBS_URL if place.cousub else gz.GAZETTEER_URL,
         "geoid": place.geoid,
         "name": place.name,
         "state": place.state,
-        "accessed": gz.GAZETTEER_FILE_DATE,
+        "accessed": gz.COUSUBS_FILE_DATE if place.cousub else gz.GAZETTEER_FILE_DATE,
     }
+    notes: list[str] = []
     if school.gazetteer_geoid:
-        point_source["note"] = (
+        notes.append(
             f"matched explicitly by GEOID: the programme prints {town.name!r} and the "
             f"Gazetteer lists the place as {place.name!r}"
         )
+    if place.cousub:
+        notes.append(COUSUB_NOTE)
+    if notes:
+        point_source["note"] = "; ".join(notes)
     row: dict[str, object] = {
         "name": school.display(),
         "nickname": school.mascot,

@@ -148,9 +148,11 @@ adds, 2026-09-02, beads tl-clk.5 and tl-891):
    `city` to one 2023 Gazetteer place and writes the row with its
    provenance. A town that resolves to none or to two places stops the
    build naming the slug and the candidates: fix the spelling, or pin the
-   place with `gazetteer_geoid = "<GEOID>"` on the stanza. The offline
-   Gazetteer fixture under `pipeline/data/gazetteer/` is rewritten by the
-   same run.
+   place with `gazetteer_geoid = "<GEOID>"` on the stanza. A town the places
+   file lacks (New England towns, New Jersey townships, New York towns)
+   resolves through the county subdivisions file automatically, and a pin
+   may be either file's GEOID. The offline Gazetteer fixtures under
+   `pipeline/data/gazetteer/` are rewritten by the same run.
 4. `contracts/membership.json` + `contracts/CHANGELOG.md`: the membership
    fixture's conference list must equal the packaged file's, so the
    conference joins it with one window.

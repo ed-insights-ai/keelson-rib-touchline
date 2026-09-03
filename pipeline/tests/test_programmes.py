@@ -2,6 +2,7 @@
 
 import json
 from dataclasses import replace
+from pathlib import Path
 
 import pytest
 
@@ -41,6 +42,68 @@ def test_the_packaged_file_equals_a_fresh_offline_build() -> None:
     assert _offline().trimmed_text(built.used_places) == fixture, (
         "the trimmed Gazetteer fixture is stale — run `uv run build-programmes`"
     )
+    cousubs = gz.TRIMMED_COUSUBS_FIXTURE.read_text(encoding="utf-8")
+    assert _offline().trimmed_cousubs_text(built.used_places) == cousubs, (
+        "the trimmed county-subdivisions fixture is stale: run `uv run build-programmes`"
+    )
+
+
+def test_every_row_from_before_batch1_is_unchanged() -> None:
+    # The coordinator's invariant: the 74 rows that existed before this
+    # branch keep their city, GEOID and point, field by field.
+    before = json.loads(
+        (
+            Path(__file__).parent / "fixtures" / "programmes_before_batch1.json"
+        ).read_text(encoding="utf-8")
+    )["rows"]
+    assert len(before) == 74
+    rows = json.loads(paths.packaged_programmes_path().read_text(encoding="utf-8"))[
+        "programmes"
+    ]
+    for slug, expected in before.items():
+        row = rows[slug]
+        actual = {
+            "city": row["city"],
+            "geoid": row["provenance"]["point"]["geoid"],
+            "lat": row["point"]["lat"],
+            "lon": row["point"]["lon"],
+        }
+        assert actual == expected, slug
+
+
+def test_a_town_the_places_file_lacks_cites_the_county_subdivisions_file() -> None:
+    built = programmes.build(
+        [_school(name="Franklin Pierce", city="Rindge, N.H.")], _offline()
+    )
+    row = built.document["programmes"]["franklin-pierce"]
+    point = row["provenance"]["point"]
+    assert row["city"] == "Rindge, N.H."
+    assert row["point"] == {"lat": 42.7567, "lon": -72.0132}
+    assert point["source"] == gz.COUSUBS_SOURCE
+    assert point["url"] == gz.COUSUBS_URL
+    assert point["accessed"] == gz.COUSUBS_FILE_DATE
+    assert (point["geoid"], point["name"]) == ("3300564580", "Rindge town")
+    assert point["note"] == programmes.COUSUB_NOTE
+    # The document-level block still describes the places file.
+    assert built.document["gazetteer"]["source"] == gz.GAZETTEER_SOURCE
+
+
+def test_the_four_batch1_towns_land_as_the_site_prints_them() -> None:
+    rows = json.loads(paths.packaged_programmes_path().read_text(encoding="utf-8"))[
+        "programmes"
+    ]
+    expected = {
+        "franklin-pierce": ("Rindge, N.H.", "3300564580"),
+        "saint-michael-s": ("Colchester, Vt.", "5000714875"),
+        "bloomfield": ("Bloomfield, N.J.", "3401306260"),
+        "daemen": ("Amherst, N.Y.", "3602902000"),
+    }
+    for slug, (city, geoid) in expected.items():
+        point = rows[slug]["provenance"]["point"]
+        assert rows[slug]["city"] == city, slug
+        assert point["geoid"] == geoid, slug
+        assert point["source"] == gz.COUSUBS_SOURCE, slug
+        assert point["note"] == programmes.COUSUB_NOTE, slug
 
 
 def test_every_enabled_stanza_has_a_row_with_every_fact() -> None:

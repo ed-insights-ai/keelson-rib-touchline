@@ -6,6 +6,10 @@ fails `pipeline/tests/test_contracts.py`.
 
 ## 2026-09-02
 
+- Membership reference: `NE10`, `CACC` and `ECC` join `conferences`, with
+  one window each (Adelphi, Caldwell and Molloy, 2022-2026) so the fixture
+  exhibits them (batch 1 membership PR; the fixture's conference list must
+  equal the packaged file's).
 - `touchline.coverage/1`: `collector` gains the value `presto-live`, written
   on every cell of a programme whose stanza names `live_scraper =
   "prestosports"`; SideArm programmes keep `sidearm-live` (bead tl-v1q.5,

@@ -1,6 +1,19 @@
 {
-  "conferences": ["GAC", "GLVC", "GSC", "LSC", "MIAA", "RMAC", "SSC", "independent", "non_member"],
-  "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2026. Authored from official GAC/MIAA, LSC, GSC, GLVC, RMAC and SSC records; each window cites its source. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
+  "conferences": [
+    "CACC",
+    "ECC",
+    "GAC",
+    "GLVC",
+    "GSC",
+    "LSC",
+    "MIAA",
+    "NE10",
+    "RMAC",
+    "SSC",
+    "independent",
+    "non_member"
+  ],
+  "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2026. Authored from official GAC/MIAA, LSC, GSC, GLVC, RMAC, SSC, NE10, CACC and ECC records; each window cites its source. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
   "memberships": {
     "adams-state": {
       "men": [
@@ -9,6 +22,46 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "adelphi": {
+      "men": [
+        {
+          "conference": "NE10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2022 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
+    "alliance": {
+      "men": [
+        {
+          "conference": "CACC",
+          "from_season": 2022,
+          "to_season": 2022,
+          "source": "Central Atlantic Collegiate Conference, 2022 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true (accessed 2026-09-02); listed there and in the 2021 records (year=2021), under the label Alliance in both (the conference relabelled Nyack College retroactively). Absent from the 2023 records (https://caccathletics.org/stats.aspx?path=msoc&year=2023&conf=true); Alliance University closed 2023-08-31 (https://www.msche.org/2023/09/01/alliance-university-accreditation-ceases-august-31-2023/)."
+        }
+      ]
+    },
+    "american-international": {
+      "men": [
+        {
+          "conference": "NE10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2022 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
+    "assumption": {
+      "men": [
+        {
+          "conference": "NE10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2022 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
       ]
     },
@@ -29,6 +82,56 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "bentley": {
+      "men": [
+        {
+          "conference": "NE10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2022 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
+    "bloomfield": {
+      "men": [
+        {
+          "conference": "CACC",
+          "from_season": 2022,
+          "to_season": 2024,
+          "source": "Central Atlantic Collegiate Conference, 2022 and 2024 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/stats.aspx?path=msoc&year=2024&conf=true (accessed 2026-09-02); listed in both and in 2023. Absent from the 2025 records (https://caccathletics.org/stats.aspx?path=msoc&year=2025&conf=true); Bloomfield College of Montclair State University moved its athletics to the USCAA after 2024-25 (https://bcbearsathletics.com/news/2025/7/15/general-bloomfield-college-of-montclair-state-university-athletics-to-transition-to-uscaa-affiliation.aspx). The 2021 records (year=2021) list it too."
+        }
+      ]
+    },
+    "bridgeport": {
+      "men": [
+        {
+          "conference": "CACC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). Absent from the 2021 records (https://caccathletics.org/stats.aspx?path=msoc&year=2021&conf=true), which list it in the East Coast Conference instead (https://eccsports.org/stats.aspx?path=msoc&year=2021&conf=true); first listed 2022, matching Bridgeport's move from the ECC to the CACC (https://www.ubknights.com/general/2021-22/releases/20211213ngwsnj)."
+        }
+      ]
+    },
+    "caldwell": {
+      "men": [
+        {
+          "conference": "CACC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
+    "chestnut-hill": {
+      "men": [
+        {
+          "conference": "CACC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
       ]
     },
@@ -82,6 +185,26 @@
         }
       ]
     },
+    "d-youville": {
+      "men": [
+        {
+          "conference": "ECC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
+        }
+      ]
+    },
+    "daemen": {
+      "men": [
+        {
+          "conference": "ECC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
+        }
+      ]
+    },
     "dallas-baptist": {
       "men": [
         {
@@ -99,6 +222,26 @@
           "from_season": 2016,
           "to_season": 2026,
           "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both."
+        }
+      ]
+    },
+    "district-of-columbia": {
+      "men": [
+        {
+          "conference": "ECC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
+        }
+      ]
+    },
+    "dominican": {
+      "men": [
+        {
+          "conference": "CACC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
       ]
     },
@@ -149,6 +292,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "felician": {
+      "men": [
+        {
+          "conference": "CACC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
       ]
     },
@@ -206,6 +359,36 @@
         }
       ]
     },
+    "franklin-pierce": {
+      "men": [
+        {
+          "conference": "NE10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2022 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
+    "georgian-court": {
+      "men": [
+        {
+          "conference": "CACC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
+    "goldey-beacom": {
+      "men": [
+        {
+          "conference": "CACC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
     "harding": {
       "men": [
         {
@@ -221,6 +404,16 @@
           "from_season": 2016,
           "source": "Great American Conference, 2016 and 2025 GAC Women's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=68 and https://greatamericanconference.com/standings.aspx?standings=214 (accessed 2026-08-09); Harding is listed in both.",
           "to_season": 2025
+        }
+      ]
+    },
+    "holy-family": {
+      "men": [
+        {
+          "conference": "CACC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
       ]
     },
@@ -241,6 +434,26 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Great Lakes Valley Conference, 2022 and 2026 Men's Soccer records, https://glvcsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://glvcsports.com/standings.aspx?path=msoc (accessed 2026-09-01); listed in both. Listed as 'Indianapolis' in the conference records; the school brands itself UIndy."
+        }
+      ]
+    },
+    "jefferson": {
+      "men": [
+        {
+          "conference": "CACC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
+    "le-moyne": {
+      "men": [
+        {
+          "conference": "NE10",
+          "from_season": 2022,
+          "to_season": 2022,
+          "source": "Northeast-10 Conference, 2022 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true (accessed 2026-09-02); listed there and in the 2021 records (year=2021). Absent from the 2023 records (https://northeast10.org/stats.aspx?path=msoc&year=2023&conf=true); left NE10 men's soccer after 2022 for the Northeast Conference (Division I)."
         }
       ]
     },
@@ -314,6 +527,16 @@
         }
       ]
     },
+    "mercy": {
+      "men": [
+        {
+          "conference": "ECC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
+        }
+      ]
+    },
     "midwestern-state": {
       "men": [
         {
@@ -354,6 +577,16 @@
         }
       ]
     },
+    "molloy": {
+      "men": [
+        {
+          "conference": "ECC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
+        }
+      ]
+    },
     "montevallo": {
       "men": [
         {
@@ -371,6 +604,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "new-haven": {
+      "men": [
+        {
+          "conference": "NE10",
+          "from_season": 2022,
+          "to_season": 2024,
+          "source": "Northeast-10 Conference, 2022 and 2024 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/stats.aspx?path=msoc&year=2024&conf=true (accessed 2026-09-02); listed in both and in 2023. Absent from the 2025 records (https://northeast10.org/stats.aspx?path=msoc&year=2025&conf=true); left NE10 men's soccer after 2024 for the Northeast Conference (Division I) (https://newhavenchargers.com/news/2025/5/6/general-charging-ahead-university-of-new-haven-accepts-northeast-conference-membership-invite.aspx). The 2021 records (year=2021) list it too."
         }
       ]
     },
@@ -500,6 +743,16 @@
         }
       ]
     },
+    "pace": {
+      "men": [
+        {
+          "conference": "NE10",
+          "from_season": 2025,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2025 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2025&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both. Absent from the 2024 records (https://northeast10.org/stats.aspx?path=msoc&year=2024&conf=true) and every earlier season 2021-2023: Pace is an institutional NE10 member that fielded no men's soccer from 1991 to 2024 and relaunched the programme for fall 2025 (https://northeast10.org/news/2024/7/25/pace-to-play-mens-soccer-in-2025.aspx and https://paceuathletics.com/news/2024/7/23/general-pace-university-to-restart-mens-soccer-program-in-2025.aspx); first listed 2025."
+        }
+      ]
+    },
     "palm-beach-atlantic": {
       "men": [
         {
@@ -507,6 +760,26 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "post": {
+      "men": [
+        {
+          "conference": "CACC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
+    "queens": {
+      "men": [
+        {
+          "conference": "ECC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
         }
       ]
     },
@@ -527,6 +800,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "roberts-wesleyan": {
+      "men": [
+        {
+          "conference": "ECC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
         }
       ]
     },
@@ -580,6 +863,16 @@
         }
       ]
     },
+    "saint-anselm": {
+      "men": [
+        {
+          "conference": "NE10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2022 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
     "saint-edwards": {
       "men": [
         {
@@ -610,6 +903,26 @@
         }
       ]
     },
+    "saint-michael-s": {
+      "men": [
+        {
+          "conference": "NE10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2022 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
+    "saint-rose": {
+      "men": [
+        {
+          "conference": "NE10",
+          "from_season": 2022,
+          "to_season": 2023,
+          "source": "Northeast-10 Conference, 2022 and 2023 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/stats.aspx?path=msoc&year=2023&conf=true (accessed 2026-09-02); listed in both. Absent from the 2024 records (https://northeast10.org/stats.aspx?path=msoc&year=2024&conf=true); The College of Saint Rose closed 2024-06-30 (https://www.msche.org/institutions/the-college-of-saint-rose-frequently-asked-questions-faq/). The 2021 records (year=2021) list it too."
+        }
+      ]
+    },
     "shorter": {
       "men": [
         {
@@ -630,6 +943,16 @@
         }
       ]
     },
+    "southern-connecticut": {
+      "men": [
+        {
+          "conference": "NE10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2022 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
     "southern-nazarene": {
       "men": [
         {
@@ -645,6 +968,16 @@
           "from_season": 2016,
           "source": "Great American Conference, 2016 and 2025 GAC Women's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=68 and https://greatamericanconference.com/standings.aspx?standings=214 (accessed 2026-08-09); Southern Nazarene is listed in both.",
           "to_season": 2025
+        }
+      ]
+    },
+    "southern-new-hampshire": {
+      "men": [
+        {
+          "conference": "NE10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2022 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
       ]
     },
@@ -675,6 +1008,26 @@
           "from_season": 2016,
           "to_season": 2026,
           "source": "Gulf South Conference, \"Gulf South Conference Adds Spring Hill College for 2027-28 Season\", https://gscsports.org/news/2026/3/24/gsc-adds-shc-2027-28.aspx (accessed 2026-08-20): \"The Badgers have competed as a GSC affiliate member in men's and women's soccer and women's golf since the 2014-15 academic year.\" Affiliate membership predates this document's 2016 floor, so the window opens at 2016; full membership begins 2027-28, past this document's ceiling. This corrects an earlier reading of the conference statistics pages (https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true), which list only full members and so appeared to show Spring Hill first joining in 2018. Seven member schools' 2016 schedule pages independently flag their Spring Hill fixtures as conference games, while correctly leaving Montevallo, AUM and Trevecca unflagged in the same season. Absent from the 2020 conference statistics: the GSC postponed fall 2020 soccer to spring 2021 (https://goargos.com/news/2020/8/12/general-gsc-statement-on-the-fall-2020-season.aspx). Non-participation, not a membership lapse, so the window stays continuous."
+        }
+      ]
+    },
+    "st-thomas-aquinas": {
+      "men": [
+        {
+          "conference": "ECC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
+        }
+      ]
+    },
+    "staten-island": {
+      "men": [
+        {
+          "conference": "ECC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
         }
       ]
     },
@@ -845,6 +1198,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Great Lakes Valley Conference, 2022 and 2026 Men's Soccer records, https://glvcsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://glvcsports.com/standings.aspx?path=msoc (accessed 2026-09-01); listed in both."
+        }
+      ]
+    },
+    "wilmington": {
+      "men": [
+        {
+          "conference": "CACC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
       ]
     }
