@@ -36,6 +36,20 @@ counts) and one row per check.
 | twin-check | every match collected from both sides (two season files, same date and slugs): unordered score and status must agree; the home side is not compared, since a neutral site differs there honestly |
 | box-vs-fixture | every box score against its fixture by team name, the names resolved through the collector's identity rules; reversed or different scorelines named, a disagreeing stored `home_index` named, unresolved names counted and never passed |
 
+The twin-check leans on one collector rule: a fixture is `final` only when it
+carries both scores. A schedule row whose completed class or "Final" span
+comes with no parsed score (a preseason exhibition whose result was never
+entered, a page fetched before the score was posted, a letter the printed
+numbers contradict) is stored `scheduled` with no score, and the collect log
+names it by fixture id (`page reads final with no score`). A status word
+anywhere on the row wins over both signals: rescheduled, postponed, "PPD",
+"Post.", a make-up date or "suspended" store `postponed`, and "cancelled"
+stores `cancelled`, except that a word printed outside the result cell on a
+row that also prints a score ("Rescheduled from 9/23" beside "L, 2-3") is a
+note on a played make-up date and the score wins. Two collectors of one
+match therefore agree on played-versus-unplayed, which is what the fold on
+the site requires (beads tl-d69, tl-md2).
+
 ## 2. Tell a failed check from a pass
 
 The workflow's rule, stated at the top of the file: every check must alarm

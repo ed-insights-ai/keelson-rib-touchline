@@ -1029,15 +1029,53 @@ def _status_word(text: str) -> str | None:
     against Assumption's cancelled record. Rescheduling is spelled several
     ways across skins ("Postponed", "PPD", "Make Up Date TBD", "Makeup TBA")
     and all of them mean postponed.
+
+    Three more spellings, each measured in the archive (beads tl-d69,
+    tl-md2), join the postponed family: "Rescheduled for 10/21" (eckerd
+    2024, game 8371, result cell), "Post." (barry 2025, game 14613, result
+    cell beside a Final span; the abbreviation needs its period so "Post"
+    in a name stays a name) and "Suspended Due To Lightning" (georgian-court
+    2025, game 6377; also pitt-johnstown 2023, game 5521, "SUSPENDED-TO BE
+    FINISHED 10/30"). A suspended match is unfinished, which is what
+    postponed means here: no score, to be completed on another date.
+
+    The word is read from the whole row, not only the result cell, because
+    the skins print it in different places: daemen 2023, game 7070 (list
+    skin), carries "PPD to 10/25" in a game-cancelled div and no result
+    element; colorado-christian 2025, game 7363, carries "Postponed Due to
+    Inclement Weather" in a promotion span beside a result cell reading
+    "I, -". Outside the cell the word ranks below a parsed score: the
+    reparse of every archived schedule page (2026-09-03, 721 pages) found
+    31 rows where a W/L/T score and such a word share a row, every one a
+    played make-up date still naming the date it was moved from (caldwell
+    2023, game 6141, "rescheduled from 9/23" beside "L, 2-3";
+    florida-southern 2023, game 19817, "Rescheduled from 8/31 due to
+    Hurricane Idalia" beside "L, 2-3"; davis-elkins 2023, game 8463,
+    "Completion of Sept. 10 Suspended Contest" beside "L, 0-1"), and none
+    where the word stood in the result cell itself. So the DOM caller asks
+    the row's other text only when the cell parsed no score.
     """
     if re.search(r"cancel", text, re.IGNORECASE):
         return "cancelled"
-    if re.search(r"postpon|make[\s-]?up|\bppd\b", text, re.IGNORECASE):
+    if re.search(
+        r"postpon|make[\s-]?up|\bppd\b|reschedul|\bpost\.|suspend", text, re.IGNORECASE
+    ):
         return "postponed"
     return None
 
 
 def _event_status(event: dict[str, object]) -> str:
+    """The status the payload's own words derive, before the score check.
+
+    A status naming Final is provisional: ``parse_schedule_page`` demotes a
+    final that stores no oriented score pair to scheduled (beads tl-d69,
+    tl-md2). The earlier reading, that a played game whose score was never
+    entered is final, is retired: two collectors of one match must agree on
+    played-versus-unplayed, the opponent's own page for such a row reads
+    scheduled (newman 2023, game 6929, v Oklahoma Christian; ouachita-baptist
+    2024, game 5655, v Delta State), and the site's fold refuses the
+    contradiction. Final requires scores.
+    """
     result = event.get("result")
     result_dict = result if isinstance(result, dict) else {}
     status = str(result_dict.get("status") or event.get("status") or "").lower()
@@ -1046,9 +1084,6 @@ def _event_status(event: dict[str, object]) -> str:
         return word
     if event.get("type") == "live" or "live" in status or "progress" in status:
         return "live"
-    # A status naming Final outranks the score check: a played game whose
-    # score was never entered (measured on exhibitions) is final, and calling
-    # it scheduled makes the board show a finished game as upcoming.
     if "final" in status:
         return "final"
     if (
@@ -1119,8 +1154,20 @@ def _dom_result(text: str) -> tuple[str, int, int] | None:
     return match.group(1), int(match.group(2)), int(match.group(3))
 
 
+# A shootout decides advancement, not goals: the printed score is the draw
+# and the letter says who went through. Measured: lincoln 2025, game 4402,
+# "W, 1-1 (SO, 4-3)"; delta-state 2020, game 12951, "W, 1-1 (PK-5-4)".
+# Word-bounded so "so" inside a word and "pens" inside a name stay text.
+_SHOOTOUT_MARKER = re.compile(r"\b(?:pks?|so|shootout|penalties|pens)\b", re.IGNORECASE)
+
+
 def _oriented_scores(
-    letter: str | None, first: int, second: int, *, fixture_id: str
+    letter: str | None,
+    first: int,
+    second: int,
+    *,
+    fixture_id: str,
+    result_text: str = "",
 ) -> tuple[int, int] | None:
     """The owner's score and the other side's, in that order, or nothing.
 
@@ -1136,11 +1183,34 @@ def _oriented_scores(
     wins: W means the owner scored more, L less, T the same. A pair the
     letter contradicts is swapped and the swap is logged by fixture id; a T
     beside unequal numbers, or a letter this function does not know, cannot
-    be put right by swapping and is refused — the row keeps its status and
-    stores no score, which the coverage and twin checks name rather than a
-    reversed result nothing would catch.
+    be put right by swapping and is refused: the row stores no score, and
+    since final requires scores (beads tl-d69, tl-md2) the callers store it
+    scheduled and name it, which the coverage and twin checks see rather
+    than a reversed result nothing would catch.
+
+    One exception, decided by ``result_text``: a W or L beside EQUAL numbers
+    is the drawn score of a match settled on penalties when the result text
+    carries a shootout marker (``_SHOOTOUT_MARKER``; lincoln 2025, game
+    4402, "W, 1-1 (SO, 4-3)"; delta-state 2020, game 12951, "W, 1-1
+    (PK-5-4)"). The letter records advancement, the numbers are the goals,
+    and the pair is stored as the draw and logged at info. Without a marker
+    the refusal stands: upper-iowa 2024, game 9017, prints "W, 2-2" with a
+    promotion reading "Win by forfeit" and no shootout anywhere on the row,
+    and a forfeit's scoreline is not a measured result.
     """
-    if letter == "W":
+    if letter in {"W", "L"} and first == second:
+        if _SHOOTOUT_MARKER.search(result_text):
+            _LOG.info(
+                "%s: %s beside a level score %s-%s with a shootout marker (%r); "
+                "stored as the draw",
+                fixture_id,
+                letter,
+                first,
+                second,
+                result_text,
+            )
+            return first, second
+    elif letter == "W":
         if first > second:
             return first, second
         if second > first:
@@ -1182,7 +1252,15 @@ def _oriented_scores(
 # ("Oklahoma Wesleyan (Exhibition)") or the schedule row's location text
 # (measured: "Friendly" beside "Tulsa, Okla." on goriverhawksgo.com 2026).
 # Word boundaries keep "Friends University" from reading as a friendly.
-_EXHIBITION_MARKER = re.compile(r"\bexhib|\bfriendl(?:y|ies)\b", re.IGNORECASE)
+# "Scrimmage" is a third spelling of the same marker (measured: bloomsburg
+# 2022, game 14253, promotion "Scrimmage" beside "Chestnut Hill College",
+# whose own row is stored as an exhibition; south-dakota-mines 2025,
+# "Blue-Grey Scrimmage"); bounded on both sides so a name that merely
+# contains the letters stays a name (no archived opponent name carries the
+# word, checked 2026-09-03).
+_EXHIBITION_MARKER = re.compile(
+    r"\bexhib|\bfriendl(?:y|ies)\b|\bscrimmage\b", re.IGNORECASE
+)
 
 
 def _exhibition_marked(*texts: str) -> bool:
@@ -1350,16 +1428,26 @@ def _parse_schedule_dom(
         result = _dom_result(result_text)
         if result is None:
             result = _dom_two_team_result(row, classes)
-        # A played game whose score was never entered (measured on the modern
-        # theme, which fills scores client-side: the served DOM carries only a
-        # completed class on the row and a Final span whose class the result
-        # selector does not match) is final, not scheduled — leaving it
-        # scheduled makes the board show a finished game as upcoming.
+        # The completed class and the Final span say the row is past, not
+        # that it was played: newman 2023, game 6929 ("Final" beside an
+        # EXHIBITION promotion, empty result spans) and ouachita-baptist 2024,
+        # game 5655, carry both and no score, and their opponents' own pages
+        # read scheduled. The earlier reading, that such a row is a final
+        # whose score was never entered, is retired (beads tl-d69, tl-md2):
+        # two collectors of one match must agree on played-versus-unplayed
+        # or the site's fold throws. A final here is provisional until the
+        # oriented scores below confirm it; a status word in the result cell
+        # (#76's rule) still outranks both signals, and a word elsewhere on
+        # the row counts only when no score was parsed: see _status_word for
+        # the measured rows where a played match still says "Rescheduled
+        # from 9/23" beside its score.
+        final_span = _first_text(row, ".sidearm-schedule-game-result-final")
         completed = (
-            "sidearm-schedule-game-completed" in classes
-            or row.select_one(".sidearm-schedule-game-result-final") is not None  # type: ignore[attr-defined]
+            "sidearm-schedule-game-completed" in classes or final_span is not None
         )
         word = _status_word(result_text)
+        if word is None and result is None:
+            word = _status_word(row.get_text(" ", strip=True))  # type: ignore[attr-defined]
         if word is not None:
             status = word
         elif result or completed:
@@ -1408,7 +1496,11 @@ def _parse_schedule_dom(
                 fixture["venue"] = venue
         oriented = (
             _oriented_scores(
-                result[0], result[1], result[2], fixture_id=str(fixture["id"])
+                result[0],
+                result[1],
+                result[2],
+                fixture_id=str(fixture["id"]),
+                result_text=result_text,
             )
             if result
             else None
@@ -1419,6 +1511,16 @@ def _parse_schedule_dom(
                 fixture["home_score"], fixture["away_score"] = owner_score, other_score
             else:
                 fixture["home_score"], fixture["away_score"] = other_score, owner_score
+        elif status == "final":
+            # Final requires scores (beads tl-d69, tl-md2): a completed class
+            # or Final span with no oriented score pair is stored scheduled
+            # and named, in _oriented_scores' voice.
+            _LOG.warning(
+                "%s: page reads final with no score (%r); stored scheduled, no score",
+                fixture["id"],
+                result_text or final_span or "sidearm-schedule-game-completed",
+            )
+            fixture["status"] = "scheduled"
         fixtures.append(fixture)
     return fixtures
 
@@ -1544,11 +1646,25 @@ def parse_schedule_page(
             # the DOM path; a live match carries no letter yet and is taken
             # as filled.
             letter = str(result_dict.get("status") or "").strip().upper() or None
+            # The payload has no shootout field (measured: no archived events
+            # payload prints W or L beside a level score, and result carries
+            # only status, the two scores, line_scores and the pre/postscore
+            # info strings), so the marker is read from the strings it does
+            # carry, the same rule as the DOM cell.
+            result_text = " ".join(
+                str(result_dict.get(key))
+                for key in ("status", "postscore_info", "prescore_info")
+                if isinstance(result_dict.get(key), str)
+            )
             oriented = (
                 (team_score, opponent_score)
                 if status == "live" and letter is None
                 else _oriented_scores(
-                    letter, team_score, opponent_score, fixture_id=str(fixture["id"])
+                    letter,
+                    team_score,
+                    opponent_score,
+                    fixture_id=str(fixture["id"]),
+                    result_text=result_text,
                 )
             )
             if oriented:
@@ -1563,6 +1679,18 @@ def parse_schedule_page(
                         opponent_score,
                         team_score,
                     )
+        if status == "final" and "home_score" not in fixture:
+            # Final requires scores (beads tl-d69, tl-md2): a result.status of
+            # "Final" over null team_score/opponent_score, or a pair the
+            # letter refused, is stored scheduled and named, in
+            # _oriented_scores' voice. A live match keeps its status: it has
+            # no score yet.
+            _LOG.warning(
+                "%s: page reads final with no score (%r); stored scheduled, no score",
+                fixture["id"],
+                str(result_dict.get("status") or event.get("status") or ""),
+            )
+            fixture["status"] = "scheduled"
         fixtures.append(fixture)
 
     # The component JSON is authoritative where it speaks; the DOM supplies
