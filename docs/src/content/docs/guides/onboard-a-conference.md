@@ -229,6 +229,17 @@ runs one collect node per season. The first collect into a data home whose
 mirror is behind prints `membership reference synced`; that is the mirror
 healing, and expected.
 
+A PrestoSports host answers HTTP 202 with an empty body once a season
+unit's burst trips its CloudFront challenge (Tampa 2026-09-02; five CACC and
+ECC hosts 2026-09-03). The collector paces those hosts itself: 5 seconds
+between requests, a 30-second then 90-second retry on a 202, a 10-minute
+cool-down when the host keeps challenging, and one retry of every challenged
+page after it, all logged as `pacing:` lines. A season unit on a PrestoSports
+host therefore takes minutes rather than seconds, and a unit that hit the
+cool-down takes ten minutes more; that is the run working, not hanging. Hand
+spacing between season units is no longer needed, and a page the run still
+names `HTTP 202` after its retry is re-collected alone on a later run.
+
 Read a backfill's terminal status with care. Its `report` node is a model
 call, so a backend error there marks the run `failed` after every collect
 slot succeeded and wrote its files (RMAC run 6ee3e4c8; bead tl-clk.9).
