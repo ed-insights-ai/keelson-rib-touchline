@@ -10,6 +10,15 @@ share one event-id space, so this module reads the JSON first (it is richer:
 ISO timestamps, typed results, an explicit conference flag) and fills the
 rest from the DOM, without turning an unplayed match into a result.
 
+Two more skins publish the season as a payload only, with no rendered rows
+at all (measured 2026-09-03): the legacy list skin (``schedule_template_3``)
+ships one inline ``schedule : {...}`` object a Vue component renders in the
+browser, and the Nuxt "nextgen" skin ships its whole Pinia state in
+``#__NUXT_DATA__`` — schedule, roster and cumulative statistics alike.  Both
+carry the events component's game contract, and both name the season they
+are, so ``_payload_events`` reads all three payload shapes as one and marks
+which of them can be trusted about the season.
+
 The two sources also disagree about PAST seasons, in opposite directions.
 The embedded payload names the current season no matter which season URL
 served it, so it can never prove — or supply — a past season.  The DOM is
@@ -379,17 +388,146 @@ def _component_objects(html: str) -> list[dict[str, object]]:
     return objects
 
 
-def payload_seasons(html: str) -> set[int]:
-    """Seasons named by the schedule payload itself, not by the page wrapper.
+_VUE_SCHEDULE_LINE = re.compile(r"^\s*schedule\s*:\s*(\{.*\})\s*,?\s*$")
 
-    Measured 2026-08-09: ``/sports/mens-soccer/schedule/2019`` answers 200, keeps
-    ``/2019`` through every redirect, and carries a page title that names 2019 —
-    while every embedded ``events`` component carries
-    ``schedule.title == "2026 Men's Soccer Schedule"``.  The wrapper is honest and
-    the payload is the current season.  ``assert_served_season`` cannot see that,
-    because it only ever reads the wrapper.
+
+def _vue_schedule_objects(html: str) -> list[dict[str, object]]:
+    """Decode the legacy list skin's inline ``schedule : {...}`` object.
+
+    Measured 2026-09-03 on two sites serving ``schedule_template_3`` (the
+    page's own ``content_template`` value): the schedule page carries no
+    ``events`` component and no ``li.sidearm-schedule-game`` rows at all.  The
+    whole season rides as one JSON object on one line of a ``require([...])``
+    script — ``Vue.component('vue-schedules', {data: () => ({settings: ...,
+    schedule : {...games: [...]}})})`` — and a browser renders the list from
+    it.  Each game there has the ``events`` component's shape (id, ISO date,
+    ``location_indicator``, ``opponent.title``, ``result``) and the schedule
+    names ITS OWN season in ``title``: unlike the events stub, a past-season
+    URL serves that past season's object.
     """
-    years: set[int] = set()
+    objects: list[dict[str, object]] = []
+    if "schedule" not in html:
+        return objects
+    for line in html.splitlines():
+        match = _VUE_SCHEDULE_LINE.match(line)
+        if match is None:
+            continue
+        try:
+            value = json.loads(match.group(1))
+        except json.JSONDecodeError:
+            continue
+        if isinstance(value, dict) and isinstance(value.get("games"), list):
+            objects.append(value)
+    return objects
+
+
+_NUXT_REF_WRAPPERS = {"Reactive", "ShallowReactive", "Ref", "ShallowRef", "EmptyRef"}
+
+
+def _nuxt_state(html: str) -> dict[str, object]:
+    """Decode the modern Nuxt skin's ``#__NUXT_DATA__`` state, or ``{}``.
+
+    Measured 2026-09-03 on the SideArm "nextgen" skin: every season page is
+    server-rendered from a Pinia state the page also ships whole in a
+    ``<script type="application/json" id="__NUXT_DATA__">`` element.  The
+    element holds a devalue array — each value sits at an index, and an array
+    or object refers to its members by index — with reactivity wrappers
+    (``["Reactive", 3]``, ``["Ref", 7]``) around the store roots and a few
+    typed holders (``["Set", ...]``, ``["Date", ...]``).  Revived, it is one
+    plain tree whose ``pinia`` branch carries the schedule, roster and
+    cumulative-statistics stores the skin renders from.
+    """
+    if "__NUXT_DATA__" not in html:
+        return {}
+    element = BeautifulSoup(html, "lxml").find("script", id="__NUXT_DATA__")
+    if element is None:
+        return {}
+    try:
+        values = json.loads(element.get_text() or "")
+    except json.JSONDecodeError:
+        return {}
+    if not isinstance(values, list) or not values:
+        return {}
+    revived: dict[int, object] = {}
+
+    def revive(index: object) -> object:
+        if not isinstance(index, int) or isinstance(index, bool):
+            return None
+        if index < 0 or index >= len(values):
+            return None  # devalue's negative holes: undefined, NaN, ±Infinity
+        if index in revived:
+            return revived[index]
+        value = values[index]
+        if isinstance(value, list):
+            if value and isinstance(value[0], str):
+                if value[0] in _NUXT_REF_WRAPPERS:
+                    if len(value) < 2:
+                        revived[index] = None
+                        return None
+                    revived[index] = None  # placeholder breaks a cycle
+                    inner = revive(value[1])
+                    revived[index] = inner
+                    return inner
+                members: list[object] = []
+                revived[index] = members
+                # Typed holders keep their members in order; the first
+                # element names the type and is not data.
+                members.extend(revive(item) for item in value[1:])
+                return members
+            items: list[object] = []
+            revived[index] = items
+            items.extend(revive(item) for item in value)
+            return items
+        if isinstance(value, dict):
+            mapping: dict[str, object] = {}
+            revived[index] = mapping
+            for key, item in value.items():
+                mapping[key] = revive(item)
+            return mapping
+        revived[index] = value
+        return value
+
+    root = revive(0)
+    return root if isinstance(root, dict) else {}
+
+
+def _nuxt_store(html: str, name: str) -> dict[str, object]:
+    """One Pinia store off the Nuxt state, or ``{}``."""
+    pinia = _nuxt_state(html).get("pinia")
+    store = pinia.get(name) if isinstance(pinia, dict) else None
+    return store if isinstance(store, dict) else {}
+
+
+def _nuxt_schedule_objects(html: str) -> list[dict[str, object]]:
+    """Schedule objects (``title`` + ``games``) in the Nuxt schedule store.
+
+    The store keys each season's schedule by sport and year
+    (``schedules-mens-soccer,2025``); the object is the legacy skin's schedule
+    object under another roof, games included.  The store's separate
+    ``nextUpcomingEvents`` and the ``event`` store are the current-season
+    stub the events component carries on other skins, and are not read.
+    """
+    schedules = _nuxt_store(html, "schedule").get("schedules")
+    if not isinstance(schedules, dict):
+        return []
+    return [
+        value
+        for value in schedules.values()
+        if isinstance(value, dict) and isinstance(value.get("games"), list)
+    ]
+
+
+def _payload_events(html: str) -> list[tuple[str, dict[str, object], bool]]:
+    """Every embedded game as ``(schedule title, event, honest)``.
+
+    Three payload shapes carry the same event contract.  The ``events``
+    component's title names the current season whatever URL served it, so
+    those rows come back ``honest=False`` and a caller must filter them by
+    season.  A schedule object — the legacy list skin's inline Vue data or
+    the Nuxt store's schedule — names its own season, so its games are the
+    served season's and come back ``honest=True``.
+    """
+    rows: list[tuple[str, dict[str, object], bool]] = []
     for component in _component_objects(html):
         if component.get("type") != "events":
             continue
@@ -401,30 +539,48 @@ def payload_seasons(html: str) -> set[int]:
                 continue
             schedule = raw.get("schedule")
             schedule_dict = schedule if isinstance(schedule, dict) else {}
-            match = re.search(r"\b(\d{4})\b", str(schedule_dict.get("title") or ""))
-            if match:
-                years.add(int(match.group(1)))
+            rows.append((str(schedule_dict.get("title") or ""), raw, False))
+    for schedule in _vue_schedule_objects(html) + _nuxt_schedule_objects(html):
+        title = str(schedule.get("title") or "")
+        for raw in schedule.get("games") or []:  # type: ignore[union-attr]
+            if isinstance(raw, dict):
+                rows.append((title, raw, True))
+    return rows
+
+
+def payload_seasons(html: str) -> set[int]:
+    """Seasons named by the schedule payload itself, not by the page wrapper.
+
+    Measured 2026-08-09: ``/sports/mens-soccer/schedule/2019`` answers 200, keeps
+    ``/2019`` through every redirect, and carries a page title that names 2019 —
+    while every embedded ``events`` component carries
+    ``schedule.title == "2026 Men's Soccer Schedule"``.  The wrapper is honest and
+    the payload is the current season.  ``assert_served_season`` cannot see that,
+    because it only ever reads the wrapper.  The schedule-object payloads of the
+    legacy list skin and the Nuxt skin name the served season instead.
+    """
+    years: set[int] = set()
+    for title, _, _ in _payload_events(html):
+        match = re.search(r"\b(\d{4})\b", title)
+        if match:
+            years.add(int(match.group(1)))
     return years
 
 
 def _payload_event_ids(html: str, owner_slug: str) -> set[str]:
     """Fixture ids of every embedded event, whatever season the payload claims."""
-    ids: set[str] = set()
-    for component in _component_objects(html):
-        if component.get("type") != "events":
-            continue
-        data = component.get("data")
-        if not isinstance(data, list):
-            continue
-        for raw in data:
-            if isinstance(raw, dict) and raw.get("id"):
-                ids.add(f"sidearm:{owner_slug}:{raw['id']}")
-    return ids
+    return {
+        f"sidearm:{owner_slug}:{raw['id']}"
+        for _, raw, _ in _payload_events(html)
+        if raw.get("id")
+    }
 
 
 def _has_schedule_markup(html: str) -> bool:
     """Whether the page carries any SideArm schedule shape at all."""
     if any(component.get("type") == "events" for component in _component_objects(html)):
+        return True
+    if _vue_schedule_objects(html) or _nuxt_schedule_objects(html):
         return True
     return (
         BeautifulSoup(html, "lxml").select_one("li.sidearm-schedule-game") is not None
@@ -451,6 +607,20 @@ def assert_untrapped_schedule(
     served = payload_seasons(html)
     if year in served:
         return
+    # A schedule object names the season it IS, so one naming another year
+    # under this URL is the trap outright — there is no DOM beside it to
+    # carry the requested season, and no fixtures to overlap.
+    honest = {
+        int(match.group(1))
+        for title, _, honest in _payload_events(html)
+        if honest and (match := re.search(r"\b(\d{4})\b", title))
+    }
+    if honest and year not in honest:
+        listed = ", ".join(str(value) for value in sorted(honest))
+        raise LiveCollectionError(
+            f"[{year}] {page_url} renders the season-{listed} schedule at this "
+            f"season URL, so {year} fixtures cannot be collected from it"
+        )
     overlap = _payload_event_ids(html, owner_slug) & {
         str(fixture["id"]) for fixture in fixtures
     }
@@ -523,7 +693,12 @@ def assert_schedule_proven(
 # string far more often than a rank is an all-caps abbreviation: UT Tyler at
 # 127 rows, MSU Denver at 17, CSU Pueblo and USC Aiken behind them. None of
 # those match.
-_RANK_VALUE = r"(?:rv|\d{1,2})"
+#
+# A conference that seeds its tournament by division writes the division
+# letter onto the seed (measured "No. 2E West Chester (PSAC Quarterfinal)" on
+# lockhavenathletics.com 2025), so a value may carry one trailing letter; the
+# whitespace rule still keeps "2E" from being the start of a word.
+_RANK_VALUE = r"(?:rv|\d{1,2}[a-z]?)"
 _RANK_TOKEN = (
     r"(?:"
     rf"\(\s*{_RANK_VALUE}\s*\)|\[\s*{_RANK_VALUE}\s*\]"
@@ -862,6 +1037,42 @@ def _exhibition_marked(*texts: str) -> bool:
     return any(_EXHIBITION_MARKER.search(text) for text in texts)
 
 
+def _dom_two_team_result(row: object, classes: set[str]) -> tuple[str, int, int] | None:
+    """A result printed as one score per team, the owner's side named.
+
+    The two-team list skin (measured daemenwildcats.com 2025) prints no
+    "W, 2-1" cell.  Each team block carries its own
+    ``.sidearm-schedule-game-result`` holding a bare number, the blocks are
+    told apart by ``-team-opponent`` and ``-team-school``, and the row's
+    class list carries the letter (``W``, ``L`` or ``T``) beside the
+    ``sidearm-schedule-*`` classes.  Returned in the printed contract's
+    order — letter, owner's score, other side's — so ``_oriented_scores``
+    reads it like any other result.  A letter the row does not carry is
+    the comparison the scores themselves make.
+    """
+    own = _first_text(
+        row, ".sidearm-schedule-game-team-school .sidearm-schedule-game-result"
+    )
+    other = _first_text(
+        row, ".sidearm-schedule-game-team-opponent .sidearm-schedule-game-result"
+    )
+    if own is None or other is None:
+        return None
+    own_score, other_score = _integer(own.strip()), _integer(other.strip())
+    if own_score is None or other_score is None:
+        return None
+    letters = classes & {"W", "L", "T"}
+    if len(letters) == 1:
+        letter = next(iter(letters))
+    elif own_score > other_score:
+        letter = "W"
+    elif own_score < other_score:
+        letter = "L"
+    else:
+        letter = "T"
+    return letter, own_score, other_score
+
+
 def _parse_schedule_dom(
     html: str,
     *,
@@ -912,8 +1123,15 @@ def _parse_schedule_dom(
         game_id = str(row.get("data-game-id") or "").strip()
         opponent_raw = _first_text(row, ".sidearm-schedule-game-opponent-name") or ""
         opponent_name = _clean_team_name(opponent_raw)
+        # Most skins date the row beside the opponent; the two-team list skin
+        # (measured daemenwildcats.com 2025: "Saturday, Nov 1" in
+        # div.sidearm-schedule-game-date, no opponent-date element) dates it
+        # in the details column.
         date = _dom_date(
-            _first_text(row, ".sidearm-schedule-game-opponent-date") or "", year
+            _first_text(row, ".sidearm-schedule-game-opponent-date")
+            or _first_text(row, ".sidearm-schedule-game-date")
+            or "",
+            year,
         )
         if not game_id or not opponent_name or not date:
             continue
@@ -967,6 +1185,8 @@ def _parse_schedule_dom(
 
         result_text = _first_text(row, ".sidearm-schedule-game-result") or ""
         result = _dom_result(result_text) if owner_is_home is not None else None
+        if result is None and owner_is_home is not None:
+            result = _dom_two_team_result(row, classes)
         # A played game whose score was never entered (measured on the modern
         # theme, which fills scores client-side: the served DOM carries only a
         # completed class on the row and a Final span whose class the result
@@ -1052,24 +1272,19 @@ def parse_schedule_page(
     members: set[str] | None = None,
 ) -> list[dict[str, object]]:
     events: dict[str, dict[str, object]] = {}
-    for component in _component_objects(html):
-        if component.get("type") != "events":
+    for title, raw, honest in _payload_events(html):
+        date = str(raw.get("date") or "")
+        if not re.search(rf"\b{year}\b", title):
             continue
-        data = component.get("data")
-        if not isinstance(data, list):
+        # The events stub names the current season at every URL, so only its
+        # games dated in the requested year can be that season's.  A schedule
+        # object is the served season whole, spring games of a fall season
+        # included (the COVID 2020 season was played in 2021).
+        if not honest and not date.startswith(str(year)):
             continue
-        for raw in data:
-            if not isinstance(raw, dict):
-                continue
-            schedule = raw.get("schedule")
-            schedule_dict = schedule if isinstance(schedule, dict) else {}
-            title = str(schedule_dict.get("title") or "")
-            date = str(raw.get("date") or "")
-            if not re.search(rf"\b{year}\b", title) or not date.startswith(str(year)):
-                continue
-            event_id = str(raw.get("id") or "")
-            if event_id:
-                events[event_id] = raw
+        event_id = str(raw.get("id") or "")
+        if event_id and date:
+            events[event_id] = raw
 
     fixtures: list[dict[str, object]] = []
     for event_id, event in events.items():
@@ -1095,13 +1310,19 @@ def parse_schedule_page(
         opponent_score = _integer(result_dict.get("opponent_score"))
         status = _event_status(event)
         date_text = str(event.get("date"))
+        # The events component spells the flag ``is_conference``; the schedule
+        # objects spell it ``conference`` as a bare boolean (their
+        # ``opponent.conference`` is the opponent's own flag, not the game's).
+        conference = event.get("is_conference")
+        if conference is None and isinstance(event.get("conference"), bool):
+            conference = event.get("conference")
         fixture: dict[str, object] = {
             "id": f"sidearm:{owner_slug}:{event_id}",
             "date": date_text[:10],
             "home": home,
             "away": away,
             "status": status,
-            "conference_game": bool(event.get("is_conference")),
+            "conference_game": bool(conference),
             "source_url": page_url,
         }
         # The payload's word for a neutral site is the indicator itself
@@ -1110,7 +1331,9 @@ def parse_schedule_page(
         # events component). Same flag as the DOM path, same meaning.
         if indicator == "N":
             fixture["neutral"] = True
-        facility = event.get("game_facility")
+        # The events component names the ground ``game_facility``; the
+        # schedule objects name it ``facility``.
+        facility = event.get("game_facility") or event.get("facility")
         facility_dict = facility if isinstance(facility, dict) else {}
         venue = str(facility_dict.get("title") or event.get("location") or "").strip()
         # The payload has no exhibition field — the site says it in the
@@ -1182,11 +1405,78 @@ def _first_text(node: object, selector: str) -> str | None:
     return text or None
 
 
+def _parse_nuxt_roster(html: str, *, page_url: str) -> list[dict[str, str]]:
+    """Read the Nuxt skin's roster store: the list its cards are rendered from.
+
+    Measured 2026-09-03: the roster page renders ``s-person-card`` blocks
+    from ``pinia.roster.roster[<key>].players``, each player a camelCase
+    record — ``firstName``/``lastName``, ``jerseyNumber``, ``positionShort``,
+    ``heightFeet``/``heightInches``, ``weight`` (a bare number of pounds),
+    ``hometown``, ``academicYearLong`` and the bio path in
+    ``call_to_action``.  The record is the page's own source, so it is read
+    in place of the cards.
+    """
+    players: list[dict[str, str]] = []
+    seen: set[str] = set()
+    rosters = _nuxt_store(html, "roster").get("roster")
+    if not isinstance(rosters, dict):
+        return players
+    for roster in rosters.values():
+        if not isinstance(roster, dict):
+            continue
+        for raw in roster.get("players") or []:  # type: ignore[union-attr]
+            if not isinstance(raw, dict):
+                continue
+            name = " ".join(
+                str(raw.get(key) or "").strip() for key in ("firstName", "lastName")
+            ).strip()
+            path = str(raw.get("call_to_action") or "").strip()
+            player_id = str(
+                raw.get("rosterPlayerId") or raw.get("playerId") or path
+            ).strip()
+            if not name or not player_id or player_id in seen:
+                continue
+            seen.add(player_id)
+            player: dict[str, str] = {"name": name}
+            number = str(raw.get("jerseyNumber") or "").strip()
+            if number:
+                player["number"] = number
+            position = str(
+                raw.get("positionShort") or raw.get("positionLong") or ""
+            ).strip()
+            if position:
+                player["position"] = position
+            feet, inches = (
+                _integer(raw.get("heightFeet")),
+                _integer(raw.get("heightInches")),
+            )
+            if feet is not None and inches is not None:
+                player["height"] = f"{feet}'{inches}\""
+            weight = _integer(raw.get("weight"))
+            if weight is not None:
+                player["weight"] = f"{weight} lbs"
+            hometown = str(raw.get("hometown") or "").strip()
+            if hometown:
+                player["hometown"] = hometown
+            class_year = str(
+                raw.get("academicYearLong") or raw.get("academicYearShort") or ""
+            ).strip()
+            if class_year:
+                player["class_year"] = class_year
+            if path:
+                player["source_url"] = urljoin(page_url, path)
+            players.append(player)
+    return players
+
+
 def parse_roster_page(html: str, *, page_url: str) -> list[dict[str, str]]:
     soup = BeautifulSoup(html, "lxml")
     players: list[dict[str, str]] = []
     seen: set[str] = set()
-    for row in soup.select("li.sidearm-roster-player"):
+    rows = soup.select("li.sidearm-roster-player")
+    if not rows:
+        return _parse_nuxt_roster(html, page_url=page_url)
+    for row in rows:
         player_path = str(row.get("data-player-url") or "")
         player_id = str(row.get("data-player-id") or player_path)
         if not player_id or player_id in seen:
@@ -1279,6 +1569,107 @@ def _stats_player_name(published: str) -> str:
     )
 
 
+def _parse_nuxt_stats(
+    html: str, *, page_url: str
+) -> tuple[list[dict[str, object]], list[dict[str, object]]] | None:
+    """Read the Nuxt skin's cumulative-statistics store, or None without one.
+
+    Measured 2026-09-03: the page renders uncaptioned tables from
+    ``pinia.statsSeason.cumulativeStats[<key>].overallIndividualStats`` —
+    ``individualOffensiveStats`` (or ``individualStats`` on a site that
+    fills that list instead) and ``goalieStats``, each row a camelCase
+    record carrying the same columns the captioned tables print, every
+    value a string, and the Total row flagged ``isAFooterStat``.  Names come
+    as "Last, First" like the tables' anchors, with the bio id in
+    ``playerRosterBioId`` and the bio path in ``playerUrl``.
+    """
+    seasons = _nuxt_store(html, "statsSeason").get("cumulativeStats")
+    if not isinstance(seasons, dict):
+        return None
+
+    def lines(rows: object, fields: dict[str, tuple[str, object]]) -> list[dict]:
+        out: list[dict[str, object]] = []
+        seen: set[str] = set()
+        for raw in rows if isinstance(rows, list) else []:
+            if not isinstance(raw, dict) or raw.get("isAFooterStat"):
+                continue
+            name = _stats_player_name(str(raw.get("playerName") or ""))
+            player_id = str(raw.get("playerRosterBioId") or "").strip()
+            key = player_id or name
+            if not name or key in seen:
+                continue
+            seen.add(key)
+            entry: dict[str, object] = {"name": name}
+            if player_id:
+                entry["player_id"] = player_id
+            number = str(raw.get("playerUniform") or "").strip()
+            if number:
+                entry["number"] = number
+            path = str(raw.get("playerUrl") or "").strip()
+            if path:
+                entry["bio_url"] = urljoin(page_url, path)
+            for source, (field, convert) in fields.items():
+                value = convert(str(raw.get(source) or ""))
+                if value is not None:
+                    entry[field] = value
+            cards = _stat_pair(str(raw.get("yellowCardsRedCards") or ""))
+            if cards:
+                entry["yellow"], entry["red"] = cards
+            penalties = _stat_pair(str(raw.get("penaltyKicksAndAttempts") or ""))
+            if penalties:
+                entry["penalty_goals"], entry["penalty_attempts"] = penalties
+            out.append(entry)
+        return out
+
+    players: list[dict[str, object]] = []
+    keepers: list[dict[str, object]] = []
+    for season in seasons.values():
+        individual = (
+            season.get("overallIndividualStats") if isinstance(season, dict) else None
+        )
+        if not isinstance(individual, dict):
+            continue
+        players.extend(
+            lines(
+                individual.get("individualOffensiveStats")
+                or individual.get("individualStats"),
+                {
+                    "gamesPlayed": ("gp", _stat_int),
+                    "gamesStarted": ("gs", _stat_int),
+                    "minutesPlayed": ("minutes", _stat_minutes),
+                    "goals": ("goals", _stat_int),
+                    "assists": ("assists", _stat_int),
+                    "points": ("points", _stat_int),
+                    "shots": ("shots", _stat_int),
+                    "shotPercentage": ("shot_pct", _stat_float),
+                    "shotsOnGoal": ("sog", _stat_int),
+                    "shotsOnGoalPercentage": ("sog_pct", _stat_float),
+                    "gameWinners": ("game_winners", _stat_int),
+                },
+            )
+        )
+        keepers.extend(
+            lines(
+                individual.get("goalieStats"),
+                {
+                    "gamesPlayed": ("gp", _stat_int),
+                    "gamesStarted": ("gs", _stat_int),
+                    "minutesPlayed": ("minutes", _stat_minutes),
+                    "goalsAllowed": ("goals_against", _stat_int),
+                    "goalsAgainstAverage": ("gaa", _stat_float),
+                    "saves": ("saves", _stat_int),
+                    "savesPercentage": ("save_pct", _stat_float),
+                    "wins": ("wins", _stat_int),
+                    "losses": ("losses", _stat_int),
+                    "ties": ("ties", _stat_int),
+                    "shutouts": ("shutouts", _stat_int),
+                    "shotsFaced": ("shots_faced", _stat_int),
+                },
+            )
+        )
+    return players, keepers
+
+
 def parse_stats_page(
     html: str, *, page_url: str
 ) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
@@ -1294,6 +1685,10 @@ def parse_stats_page(
     schedule pages canonicalise the COVID season.
     """
     soup = BeautifulSoup(html, "lxml")
+    if soup.find("table", recursive=True) is None or soup.find("caption") is None:
+        nuxt = _parse_nuxt_stats(html, page_url=page_url)
+        if nuxt is not None:
+            return nuxt
 
     def rows_of(caption: str) -> list[dict[str, object]]:
         for table in soup.find_all("table"):
@@ -1406,6 +1801,15 @@ def boxscore_links(schedule_html: str, base_url: str) -> dict[str, str]:
     links: dict[str, str] = {}
     for match in re.finditer(r'href="([^"]*?/boxscore/(\d+))"', schedule_html):
         links.setdefault(match.group(2), urljoin(base_url, match.group(1)))
+    # The list skins that render client-side publish no href at all; the
+    # link rides in the payload as ``result.boxscore.url`` beside the score.
+    for _, event, _ in _payload_events(schedule_html):
+        result = event.get("result")
+        boxscore = result.get("boxscore") if isinstance(result, dict) else None
+        url = str(boxscore.get("url") or "") if isinstance(boxscore, dict) else ""
+        match = re.search(r"/boxscore/(\d+)", url)
+        if match:
+            links.setdefault(match.group(1), urljoin(base_url, url))
     return links
 
 
