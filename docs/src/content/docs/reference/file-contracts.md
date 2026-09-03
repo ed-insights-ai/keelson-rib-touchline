@@ -18,8 +18,8 @@ fails validation the same way a missing one does.
 | `touchline.stats/1` | `data/stats/{season}-{gender}-{conference}.json` | `pipeline/scripts/collect_board.py` | `statsFileSchema` in `src/model.ts` |
 | `touchline.matches/1` | `data/matches/{season}-{gender}-{conference}.json` | `pipeline/scripts/collect_board.py` | `matchesFileSchema` in `src/model.ts` |
 | `touchline.digest/1` | `data/scratch/digest-{season}-{gender}-{focus}.json` | `build_digest` in `pipeline/src/digest.py` | `pipeline/src/report.py` and the `touchline-report` gates |
-| `touchline.research/1` | `data/research/{season}-{gender}/research-{slug}.json` | `touchline-report` research nodes | The `validate-research` gate |
-| `touchline.research-verified/1` | `data/research/{season}-{gender}/verified-{slug}.json`, merged into `verified.json` | `touchline-report` verify and merge nodes | The `validate-verified` gate |
+| `touchline.research/1` | `data/research/{season}-{gender}/{conference}/research-{slug}.json` | `touchline-report` research nodes | The `validate-research` gate |
+| `touchline.research-verified/1` | `data/research/{season}-{gender}/{conference}/verified-{slug}.json`, merged into `verified.json` | `touchline-report` verify and merge nodes | The `validate-verified` gate |
 | `touchline.player-findings/1` | `data/research/players/{programme}-{player}.json` | `touchline-player-profile` research node | The workflow's upsert step refuses any other tag |
 | `touchline.report-narrative/4` | `data/reports/narrative-{season}-{gender}-{focus}.json` | `touchline-report` narrative nodes | The `validate-narrative` gate; contract text at the head of `pipeline/src/report.py` |
 | `touchline.player-profile/1` | `data/players/{gender}/{programme}/{player}.json` | `upsert_profile` in `pipeline/src/profile.py` | Re-runs read it back and merge findings additively |

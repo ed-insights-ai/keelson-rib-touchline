@@ -95,7 +95,7 @@ path below is created on demand by its writer.
 |---|---|---|
 | `data/coverage.json` | `pipeline/scripts/collect_board.py` via `pipeline/src/coverage.py` | The `touchline.coverage/1` manifest, merged and never overwritten. |
 | `data/scratch/` | `pipeline/scripts/build_digest.py` and the `touchline-report` workflow | `digest-{season}-{gender}-{focus}.json` and the `report-{season}-{gender}-{focus}/` narrative-core and card files; regenerable intermediates. |
-| `data/research/{season}-{gender}/` | `touchline-report` research, verify, and merge nodes | `research-{slug}.json`, `verified-{slug}.json`, and the merged `verified.json`. |
+| `data/research/{season}-{gender}/{conference}/` | `touchline-report` research, verify, and merge nodes | `research-{slug}.json`, `verified-{slug}.json`, and the merged `verified.json`. `{conference}` is the shard slug of the workflow's `conference` input (lowercased, non-alphanumerics folded to `-`), so each conference's report reads only its own pool. |
 | `data/research/players/` | The `touchline-player-profile` research node | `{programme}-{player}.json` findings files. |
 | `data/reports/` | `touchline-report` and `pipeline/scripts/render_report.py` | `narrative-{season}-{gender}-{focus}.json`, plus `preseason-{season}-{gender}-{focus}.html` and `.pdf` and their `-appendix` pair. |
 | `data/players/{gender}/{programme}/` | `upsert_profile` in `pipeline/src/profile.py` | One accumulating profile per player, filed by `player_key`. |
