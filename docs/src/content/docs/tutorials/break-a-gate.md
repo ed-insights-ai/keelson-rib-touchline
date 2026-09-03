@@ -27,7 +27,7 @@ By the end you can:
 
 - A data home holding a delivered report:
   `data/reports/narrative-{season}-{gender}-{focus}.json` and the research
-  layer under `data/research/{season}-{gender}/`. No report yet?
+  layer under `data/research/{season}-{gender}/{conference}/`. No report yet?
   [Run a scouting report](../../guides/run-a-report/) first.
 - `jq` and `bash`, plus the `grep` and `wc` every POSIX system ships. The
   gates use nothing else.
@@ -39,11 +39,11 @@ once and never written.
 
 ```sh
 cd {data-home}
-mkdir -p {scratch}/data/reports "{scratch}/data/research/{season}-{gender}"
+mkdir -p {scratch}/data/reports "{scratch}/data/research/{season}-{gender}/{conference}"
 cp "data/reports/narrative-{season}-{gender}-{focus}.json" {scratch}/data/reports/
-cp "data/research/{season}-{gender}"/research-*.json \
-   "data/research/{season}-{gender}/verified.json" \
-   "{scratch}/data/research/{season}-{gender}/"
+cp "data/research/{season}-{gender}/{conference}"/research-*.json \
+   "data/research/{season}-{gender}/{conference}/verified.json" \
+   "{scratch}/data/research/{season}-{gender}/{conference}/"
 ```
 
 That mirror is complete because the two gates read nothing else:
@@ -84,7 +84,7 @@ Keep pristine copies for restores between breaks:
 
 ```sh
 N="data/reports/narrative-{season}-{gender}-{focus}.json"
-V="data/research/{season}-{gender}/verified.json"
+V="data/research/{season}-{gender}/{conference}/verified.json"
 cp "$N" narrative.pristine.json
 cp "$V" verified.pristine.json
 ```

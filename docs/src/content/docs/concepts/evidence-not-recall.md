@@ -23,7 +23,7 @@ cannot.
 The unit of research output is the **finding**: one claim plus its source,
 URL, date, and confidence grade. The report workflow's research
 loop writes one file per programme at
-`data/research/{season}-{gender}/research-{slug}.json` under the
+`data/research/{season}-{gender}/{conference}/research-{slug}.json` under the
 `touchline.research/1` schema, and every entry in its `findings` array
 carries `player`, `type`, `text`, `source`, `url`, `date`, and
 `confidence`. A claim believed but not capturable at a URL is never
@@ -158,7 +158,7 @@ claim. The design record behind this standard is
 [The model as reader](../../design/the-model-as-reader/).
 
 Observe it: in a completed archived season's data home, open
-`data/research/{season}-{gender}/verified.json` and read the `dropped`
+`data/research/{season}-{gender}/{conference}/verified.json` and read the `dropped`
 array: each entry names a claim the refute pass killed, and why.
 
 Lab: [Research with receipts](../../tutorials/research-with-receipts/)

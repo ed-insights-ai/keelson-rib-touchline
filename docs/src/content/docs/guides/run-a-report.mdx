@@ -45,7 +45,9 @@ trigger phrases do the same job: "build the preseason report".
    fresh on every run. It is the only source of numbers downstream.
 3. The **research** loop researches one programme per iteration (focus first,
    then alphabetical) in a fresh context each time, writing
-   `data/research/{season}-{gender}/research-{slug}.json`. An `until_bash`
+   `data/research/{season}-{gender}/{conference}/research-{slug}.json` (the
+   conference segment is the shard slug, so two conferences in one season
+   never share a pool). An `until_bash`
    probe ends the loop once every programme has a research file with a coach
    object. A premature "ALL RESEARCHED" reply can also end it, which is why
    the `validate-research` gate re-checks every file afterward.

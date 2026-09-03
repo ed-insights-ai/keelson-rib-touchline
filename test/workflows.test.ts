@@ -7,7 +7,7 @@
 //     http://www.apache.org/licenses/LICENSE-2.0
 
 import { describe, expect, test } from "bun:test";
-import { mkdtemp, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, utimes, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { packageDir } from "../src/datahome.ts";
@@ -27,6 +27,7 @@ interface WorkflowNode {
   trigger_rule?: string;
   bash?: string;
   prompt?: string;
+  loop?: { until_bash?: string; prompt?: string };
 }
 interface Workflow {
   name: string;
@@ -318,5 +319,120 @@ describe("workflows/touchline-backfill.yml", () => {
     });
     expect(r.code).toBe(1);
     expect(r.stdout).toContain("REFUSED: membership resolution failed for NOPE men 2024");
+  });
+});
+
+describe("workflows/touchline-report.yml research pool", () => {
+  // The research pool is conference-scoped: data/research/{season}-{gender}/
+  // {conference-shard}/. Two conferences reported in one season must never
+  // share files, or one report cites the other's findings and the sweep
+  // loop ends on the neighbour's count.
+  const flat = /data\/research\/\$\{KEELSON_INPUTS_season\}-\$\{KEELSON_INPUTS_gender\}"/;
+
+  test("every path into the pool carries the conference shard", async () => {
+    const wf = await loadWorkflow("touchline-report");
+    let seen = 0;
+    for (const n of wf.nodes) {
+      for (const body of [n.bash, n.loop?.until_bash]) {
+        if (!body?.includes("data/research/")) continue;
+        seen++;
+        expect(body, n.id).not.toMatch(flat);
+        expect(body, n.id).toMatch(
+          /D="data\/research\/\$\{KEELSON_INPUTS_season\}-\$\{KEELSON_INPUTS_gender\}\/\$CONF"/,
+        );
+        expect(body, n.id).toContain("$KEELSON_INPUTS_conference");
+      }
+      for (const body of [n.prompt, n.loop?.prompt]) {
+        if (!body?.includes("data/research/$inputs")) continue;
+        seen++;
+        expect(body, n.id).not.toContain("data/research/$inputs.season-$inputs.gender/research");
+        expect(body, n.id).not.toContain("data/research/$inputs.season-$inputs.gender/verified");
+        expect(body, n.id).toContain(
+          "data/research/$inputs.season-$inputs.gender/$conference-shard.output/",
+        );
+      }
+    }
+    expect(seen).toBeGreaterThanOrEqual(8);
+  });
+
+  async function pool(conference: string) {
+    // A data home with a two-programme digest for the focus, a neighbouring
+    // conference's complete flat pool, and nothing yet for this conference.
+    const home = await mkdtemp(join(tmpdir(), "touchline-research-"));
+    await mkdir(join(home, "data", "scratch"), { recursive: true });
+    const digest = join(home, "data", "scratch", "digest-2026-men-alpha.json");
+    await writeFile(digest, JSON.stringify({ programmes: { alpha: {}, beta: {} } }));
+    // bash's -nt compares whole seconds on macOS; date the digest back so
+    // files written moments later count as newer.
+    const past = new Date(Date.now() - 60_000);
+    await utimes(digest, past, past);
+    const research = (slug: string) =>
+      JSON.stringify({ programme: slug, coach: { name: "Coach", status: "returning" } });
+    const flatDir = join(home, "data", "research", "2026-men");
+    await mkdir(flatDir, { recursive: true });
+    for (const slug of ["alpha", "beta", "gamma"]) {
+      await writeFile(join(flatDir, `research-${slug}.json`), research(slug));
+    }
+    const env = {
+      KEELSON_INPUTS_season: "2026",
+      KEELSON_INPUTS_gender: "men",
+      KEELSON_INPUTS_conference: conference,
+      KEELSON_INPUTS_focus: "alpha",
+    };
+    return { home, env, research };
+  }
+
+  test("the sweep probe ignores a neighbouring conference's flat pool", async () => {
+    const wf = await loadWorkflow("touchline-report");
+    const probe = wf.nodes.find((n) => n.id === "research")?.loop?.until_bash ?? "";
+    const gate = wf.nodes.find((n) => n.id === "validate-research")?.bash ?? "";
+    const { home, env, research } = await pool("Test Conf");
+
+    // Flat files alone: the sweep has done nothing, so the loop must continue
+    // and the gate must fail.
+    expect((await run(["bash", "-c", probe], env, home)).code).toBe(1);
+    const alarm = await run(["bash", "-c", gate], env, home);
+    expect(alarm.code).toBe(1);
+    expect(alarm.stdout).toContain("alpha(no-file) beta(no-file)");
+
+    // Files in this conference's own pool (shard slug of the input) satisfy
+    // both, and only the digest's programmes are counted.
+    const scoped = join(home, "data", "research", "2026-men", "test-conf");
+    await mkdir(scoped, { recursive: true });
+    await writeFile(join(scoped, "research-alpha.json"), research("alpha"));
+    expect((await run(["bash", "-c", probe], env, home)).code).toBe(1);
+    await writeFile(join(scoped, "research-beta.json"), research("beta"));
+    expect((await run(["bash", "-c", probe], env, home)).code).toBe(0);
+    const ok = await run(["bash", "-c", gate], env, home);
+    expect(ok.code).toBe(0);
+    expect(ok.stdout).toContain("research OK: 2 programmes");
+  });
+
+  test("merge-verified writes verified.json inside the conference pool", async () => {
+    const wf = await loadWorkflow("touchline-report");
+    const merge = wf.nodes.find((n) => n.id === "merge-verified")?.bash ?? "";
+    const { home, env } = await pool("Test Conf");
+    const scoped = join(home, "data", "research", "2026-men", "test-conf");
+    await mkdir(scoped, { recursive: true });
+    for (const slug of ["alpha", "beta"]) {
+      await writeFile(
+        join(scoped, `verified-${slug}.json`),
+        JSON.stringify({
+          schema: "touchline.research-verified/1",
+          findings: [{ player: null, type: "news", text: slug }],
+          coaches: { [slug]: { name: "Coach", status: "returning" } },
+          dropped: [],
+          attested_uncaptured: [],
+          unswept: [],
+        }),
+      );
+    }
+    const r = await run(["bash", "-c", merge], env, home);
+    expect(r.code, r.stdout + r.stderr).toBe(0);
+    expect(r.stdout).toContain("verified merge: 2 coaches, 2 findings");
+    expect(await Bun.file(join(scoped, "verified.json")).exists()).toBe(true);
+    expect(
+      await Bun.file(join(home, "data", "research", "2026-men", "verified.json")).exists(),
+    ).toBe(false);
   });
 });

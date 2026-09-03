@@ -40,7 +40,7 @@ research loop runs, watch files land, one programme per iteration, the
 focus programme first and then alphabetical:
 
 ```sh
-ls data/research/{season}-{gender}/
+ls data/research/{season}-{gender}/{conference}/
 ```
 
 The loop's honest exit is mechanical: an `until_bash` check in
@@ -54,7 +54,7 @@ if any programme lacks a file or a coach object.
 verify with this command:
 
 ```sh
-jq -r '.schema' data/research/{season}-{gender}/research-*.json | sort -u
+jq -r '.schema' data/research/{season}-{gender}/{conference}/research-*.json | sort -u
 ```
 
 Exactly one line: `touchline.research/1`.
@@ -64,7 +64,7 @@ Exactly one line: `touchline.research/1`.
 Open the focus programme's research file and pick one entry:
 
 ```sh
-jq '.findings[0]' data/research/{season}-{gender}/research-{focus}.json
+jq '.findings[0]' data/research/{season}-{gender}/{conference}/research-{focus}.json
 ```
 
 Read its load-bearing parts: `text` is the claim, `url` is the single page
@@ -89,7 +89,7 @@ of the two arrays; verify with this command:
 jq --arg t "{finding-text}" \
   '{kept: ([.findings[] | select(.text == $t)] | length),
     dropped: ([.dropped[] | select(.text == $t)] | length)}' \
-  data/research/{season}-{gender}/verified.json
+  data/research/{season}-{gender}/{conference}/verified.json
 ```
 
 One count is 1, the other 0. If kept, probe the assembled narrative for
@@ -105,7 +105,7 @@ that leans on the claim without carrying the citation.
 
 ## 3. Try it: read what the run refused
 
-The merged `data/research/{season}-{gender}/verified.json` is the honest
+The merged `data/research/{season}-{gender}/{conference}/verified.json` is the honest
 remainder of the sweep. Read all of it: every `dropped` reason, every
 `unswept` entry (a surface the sweep could not read, with why), and every
 `attested_uncaptured` claim, the dead-letter bucket that never reaches
@@ -119,7 +119,7 @@ arrays; verify with this command:
 
 ```sh
 jq -e '(.dropped | type == "array") and (.attested_uncaptured | type == "array")
-  and (.unswept | type == "array")' data/research/{season}-{gender}/verified.json
+  and (.unswept | type == "array")' data/research/{season}-{gender}/{conference}/verified.json
 ```
 
 Prints `true`, exit code 0.
