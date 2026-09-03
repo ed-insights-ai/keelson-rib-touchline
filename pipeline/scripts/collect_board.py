@@ -45,7 +45,13 @@ from functools import partial
 from pathlib import Path
 
 from src import coverage, paths
-from src.fetch_pool import GatedSession, HostGate
+from src.fetch_pool import (
+    GatedSession,
+    HostGate,
+    PacingPolicy,
+    host_of,
+    is_challenge_reason,
+)
 from src.config import DEFAULT_CONFIG, SchoolConfig, load_schools
 from src.membership import conference_for, load_membership
 from src.page_state import PageStateStore
@@ -431,6 +437,7 @@ def collect(
     workers: int | None = None,
     task_budget: float | None = DEFAULT_TASK_BUDGET,
     matches_checkpoint: Callable[[dict[str, object]], None] | None = None,
+    gate: HostGate | None = None,
 ) -> tuple[
     dict[str, object],
     dict[str, object],
@@ -482,9 +489,16 @@ def collect(
         workers = max(1, min(DEFAULT_WORKERS, len(wanted)))
 
     # One gate for the whole run: the per-host cap of one in-flight request,
-    # with polite spacing, holds across both phases and every worker.
+    # with polite spacing and per-host pacing, holds across both phases and
+    # every worker — so two programmes on one host share one pace.  A
+    # PrestoSports host starts paced (the platform is known to challenge a
+    # burst); any host is paced from its first observed HTTP 202.
     # Sessions are per thread — requests makes no thread-safety promise.
-    gate = HostGate()
+    if gate is None:
+        gate = HostGate(policy=PacingPolicy.from_env())
+    for school in candidates.values():
+        if live_recipe(school.live_collector()) is PRESTO:
+            gate.presume_paced(host_of(school.base_url))
     thread_state = threading.local()
 
     def thread_session():
@@ -602,6 +616,53 @@ def collect(
             on_settled=settle_programme,
         )
 
+        # One more chance for what a challenge refused: after the hosts'
+        # cool-down, each challenged programme is collected again exactly
+        # once, and its retry is kept only when it closed gaps.
+        challenged = [
+            slug
+            for slug in wanted
+            if slug in candidates
+            and any(is_challenge_reason(gap) for gap in programme_errors.get(slug, []))
+        ]
+        if challenged:
+            before = {
+                slug: (
+                    collections.get(slug),
+                    programme_cells[slug],
+                    programme_errors[slug],
+                )
+                for slug in challenged
+            }
+            print(
+                f"pacing: {len(challenged)} programme(s) refused by a challenge; "
+                f"retrying once after the cool-down: {', '.join(challenged)}",
+                flush=True,
+            )
+            gate.wait_out_cooldowns()
+
+            def settle_retry(slug: str, value: object) -> None:
+                settle_programme(slug, value)
+                previous, cells_then, gaps_then = before[slug]
+                if len(programme_errors[slug]) > len(gaps_then):
+                    if previous is None:
+                        collections.pop(slug, None)
+                    else:
+                        collections[slug] = previous
+                    programme_cells[slug] = cells_then
+                    programme_errors[slug] = gaps_then
+                    checkpoint_cells(cells_then)
+
+            _scatter(
+                executor,
+                {
+                    slug: partial(programme_task, candidates[slug])
+                    for slug in challenged
+                },
+                task_budget,
+                on_settled=settle_retry,
+            )
+
         for slug in wanted:
             school = candidates.get(slug)
             if school is None:
@@ -638,6 +699,7 @@ def collect(
             refetch=refetch,
             executor=executor,
             task_budget=task_budget,
+            gate=gate,
             thread_session=thread_session,
             record_into=record_into,
             checkpoint_cells=checkpoint_cells,
@@ -683,6 +745,7 @@ def _assemble(
     refetch: bool,
     executor: ThreadPoolExecutor,
     task_budget: float | None,
+    gate: HostGate,
     thread_session: Callable[[], object],
     record_into: Callable[..., None],
     checkpoint_cells: Callable[[dict[str, dict[str, object]]], None],
@@ -922,6 +985,32 @@ def _assemble(
             on_settled=settle_match,
         )
 
+        # Box scores a challenge refused get one retry after the cool-down.
+        challenged = [
+            fixture_id
+            for fixture_id in planned
+            if isinstance(settled.get(fixture_id), LiveCollectionError)
+            and is_challenge_reason(settled[fixture_id])
+        ]
+        if challenged:
+            print(
+                f"pacing: {len(challenged)} box score(s) refused by a challenge; "
+                f"retrying once after the cool-down",
+                flush=True,
+            )
+            gate.wait_out_cooldowns()
+            settled.update(
+                _scatter(
+                    executor,
+                    {
+                        fixture_id: partial(match_task, *planned[fixture_id])
+                        for fixture_id in challenged
+                    },
+                    task_budget,
+                    on_settled=settle_match,
+                )
+            )
+
         for fixture in fixtures:
             if str(fixture.get("status")) != "final":
                 continue
@@ -1112,7 +1201,11 @@ def main() -> int:
         help=(
             "Fetch tasks in flight at once. Parallelism is across hosts, "
             "never against one — a per-host cap of one politely spaced "
-            "request is enforced regardless of this value. Default: "
+            "request is enforced regardless of this value, and a host that "
+            "challenges (HTTP 202) is paced, backed off and cooled down "
+            "(TOUCHLINE_HOST_SPACING, TOUCHLINE_PACED_SPACING, "
+            "TOUCHLINE_CHALLENGE_BACKOFF, TOUCHLINE_HOST_COOLDOWN, "
+            "TOUCHLINE_PACED_HOSTS). Default: "
             f"min({DEFAULT_WORKERS}, programme count)."
         ),
     )

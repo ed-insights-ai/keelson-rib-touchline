@@ -21,12 +21,20 @@ from datetime import datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
 import requests
 
 from scripts import collect_board
 from src import page_state
 from src.config import SchoolConfig
-from src.fetch_pool import GatedSession, HostGate, host_of
+from src.fetch_pool import (
+    GatedSession,
+    HostCoolingDown,
+    HostGate,
+    PacingPolicy,
+    host_of,
+    is_challenge,
+)
 from src.sidearm_live import (
     DEFAULT_LAYERS,
     LAYER_MATCHES,
@@ -123,7 +131,9 @@ def test_gated_session_holds_the_slot_for_the_whole_request(monkeypatch) -> None
         if acquired:  # pragma: no cover — would mean the gate was not held
             lock.release()
         observed.append((str(url), not acquired))
-        return SimpleNamespace(status_code=200, url=url, text="", headers={})
+        return SimpleNamespace(
+            status_code=200, url=url, text="<html>page</html>", headers={}
+        )
 
     monkeypatch.setattr(requests.Session, "request", fake_request)
     session = GatedSession(gate)
@@ -841,3 +851,267 @@ def test_match_task_failures_keep_the_ruled_message_shape(
     assert payload["matches"] == {}
     assert "refused" in payload["missing"]["sidearm:alpha:1"]
     assert any(error.startswith("match sidearm:alpha:1:") for error in errors)
+
+
+# ---------------------------------------------------------------------------
+# Pacing: a host that challenges (HTTP 202, empty body) is slowed, backed
+# off, cooled down, and retried once — never bypassed, never slept for real.
+# ---------------------------------------------------------------------------
+
+
+class _FakeTime:
+    """An injected clock and sleeper: every wait is recorded, none is real."""
+
+    def __init__(self) -> None:
+        self.value = 0.0
+        self.sleeps: list[float] = []
+
+    def clock(self) -> float:
+        return self.value
+
+    def sleep(self, seconds: float) -> None:
+        self.sleeps.append(round(seconds, 6))
+        self.value += seconds
+
+
+def _fake_gate(**policy) -> tuple[HostGate, _FakeTime, list[str]]:
+    fake = _FakeTime()
+    log: list[str] = []
+    gate = HostGate(
+        policy=PacingPolicy(**policy),
+        clock=fake.clock,
+        sleep=fake.sleep,
+        log=log.append,
+    )
+    return gate, fake, log
+
+
+def _challenge(url: str) -> SimpleNamespace:
+    return SimpleNamespace(status_code=202, url=url, text="", headers={})
+
+
+def _page(url: str) -> SimpleNamespace:
+    return SimpleNamespace(status_code=200, url=url, text="<html>ok</html>", headers={})
+
+
+def test_is_challenge_names_a_202_or_an_empty_2xx_only() -> None:
+    assert is_challenge(_challenge("u"))
+    assert is_challenge(SimpleNamespace(status_code=200, text="   "))
+    assert not is_challenge(_page("u"))
+    assert not is_challenge(SimpleNamespace(status_code=304, text=""))
+    assert not is_challenge(SimpleNamespace(status_code=403, text=""))
+
+
+def test_a_presumed_or_observed_host_is_paced_while_others_keep_polite_spacing() -> (
+    None
+):
+    gate, fake, log = _fake_gate(spacing=0.2, paced_spacing=5.0)
+    gate.presume_paced("presto.example")
+    with gate.slot("presto.example"):
+        pass
+    with gate.slot("presto.example"):
+        pass  # owes the paced interval, not the polite one
+    with gate.slot("sidearm.example"):
+        pass
+    with gate.slot("sidearm.example"):
+        pass  # never challenged: the historical 0.2s
+    gate.observe_challenge("sidearm.example")
+    with gate.slot("sidearm.example"):
+        pass  # learned from the 202: paced from now on
+
+    assert fake.sleeps == [5.0, 0.2, 5.0]
+    assert gate.is_paced("sidearm.example")
+    assert gate.challenged_hosts() == {"sidearm.example"}
+    assert any("waiting 5.0s before asking presto.example" in line for line in log)
+    assert any("sidearm.example answered HTTP 202" in line for line in log)
+
+
+def test_a_challenged_request_backs_off_then_lands(monkeypatch) -> None:
+    gate, fake, log = _fake_gate(backoff=(30.0, 90.0), cooldown=600.0)
+    answers = iter([_challenge, _challenge, _page])
+    served: list[str] = []
+
+    def fake_request(self, method, url, *args, **kwargs):
+        del self, method, args, kwargs
+        served.append(url)
+        return next(answers)(url)
+
+    monkeypatch.setattr(requests.Session, "request", fake_request)
+    session = GatedSession(gate)
+    response = session.get("https://presto.example/schedule")
+
+    assert response.status_code == 200
+    assert len(served) == 3
+    assert fake.sleeps == [30.0, 90.0]
+    assert gate.cooldown_remaining("presto.example") == 0
+    assert [line for line in log if "retrying in" in line] == [
+        "pacing: presto.example answered HTTP 202 (challenge); retrying in 30s "
+        "(retry 1 of 2)",
+        "pacing: presto.example answered HTTP 202 (challenge); retrying in 90s "
+        "(retry 2 of 2)",
+    ]
+
+
+def test_a_host_that_keeps_challenging_cools_down_and_refuses_at_once(
+    monkeypatch,
+) -> None:
+    gate, fake, log = _fake_gate(backoff=(30.0, 90.0), cooldown=600.0)
+    served: list[str] = []
+
+    def fake_request(self, method, url, *args, **kwargs):
+        del self, method, args, kwargs
+        served.append(url)
+        return _challenge(url)
+
+    monkeypatch.setattr(requests.Session, "request", fake_request)
+    session = GatedSession(gate)
+    # The last challenged answer comes back as it was: the fetch seam's body
+    # check names it honestly, nothing is bypassed.
+    response = session.get("https://presto.example/schedule")
+    assert response.status_code == 202
+    assert len(served) == 3
+    assert gate.cooldown_remaining("presto.example") == 600.0
+    assert any("cooling down 600s" in line for line in log)
+
+    # During the cool-down a request is refused immediately, with a reason
+    # every fetch seam files as a named gap — no request is spent, no wait.
+    with pytest.raises(HostCoolingDown, match="cooling down after HTTP 202"):
+        session.get("https://presto.example/roster")
+    assert len(served) == 3
+    # Another host is unaffected.
+    monkeypatch.setattr(
+        requests.Session, "request", lambda self, m, url, *a, **k: _page(url)
+    )
+    assert session.get("https://sidearm.example/roster").status_code == 200
+
+    # After the cool-down the host may be asked again, at its paced interval.
+    fake.value += 600.0
+    assert session.get("https://presto.example/roster").status_code == 200
+    assert gate.wait_out_cooldowns() == 0
+
+
+def test_pacing_policy_reads_operator_knobs_from_the_environment() -> None:
+    env = {
+        "TOUCHLINE_HOST_SPACING": "0.5",
+        "TOUCHLINE_PACED_SPACING": "8",
+        "TOUCHLINE_CHALLENGE_BACKOFF": "10, 20, 40",
+        "TOUCHLINE_HOST_COOLDOWN": "120",
+        "TOUCHLINE_PACED_HOSTS": "www.Tampaspartans.com, ubknights.com",
+    }
+    policy = PacingPolicy.from_env(env.get)
+    assert policy == PacingPolicy(
+        spacing=0.5,
+        paced_spacing=8.0,
+        backoff=(10.0, 20.0, 40.0),
+        cooldown=120.0,
+        paced_hosts=frozenset({"www.tampaspartans.com", "ubknights.com"}),
+    )
+    assert PacingPolicy.from_env(lambda _name: None) == PacingPolicy()
+
+
+def test_a_challenged_programme_is_retried_once_after_the_cool_down(
+    monkeypatch, tmp_path
+) -> None:
+    schools = _schools(2)
+    gate, fake, log = _fake_gate(cooldown=600.0)
+    attempts: dict[str, int] = {}
+
+    def fake_programme(
+        school, season, aliases, *, session=None, layers, members, page_cache=None
+    ):
+        del season, aliases, session, members, page_cache
+        slug = programme_slug(school.name)
+        attempts[slug] = attempts.get(slug, 0) + 1
+        if slug == "bravo" and attempts[slug] == 1:
+            gate.observe_challenge("bravo.example")
+            gate.begin_cooldown("bravo.example")
+            return ProgrammeCollection(
+                slug=slug,
+                name="Bravo",
+                fixtures=[],
+                players=[],
+                outcomes={
+                    LAYER_SCHEDULE: LayerOutcome(
+                        LAYER_SCHEDULE,
+                        STATE_UNAVAILABLE,
+                        reason=(
+                            "[2026] schedule page https://bravo.example/schedule/2026 "
+                            "answered HTTP 202 with an empty body (served a "
+                            "challenge, not the page)"
+                        ),
+                    )
+                },
+            )
+        return _ok_result(slug, layers)
+
+    monkeypatch.setattr(collect_board, "load_schools", lambda _path: schools)
+    monkeypatch.setattr(collect_board, "collect_programme", fake_programme)
+    monkeypatch.setattr(collect_board, "write_raw_pages", lambda *_args: None)
+    monkeypatch.setattr(collect_board.paths, "data_root", lambda: tmp_path)
+
+    cells, errors = collect_board.collect(
+        season=2026,
+        gender="men",
+        conference="GAC",
+        wanted=["alpha", "bravo"],
+        layers=(LAYER_SCHEDULE,),
+        config_path=tmp_path / "schools.toml",
+        membership_extrapolated=False,
+        workers=2,
+        gate=gate,
+    )[4:6]
+
+    assert attempts == {"alpha": 1, "bravo": 2}  # only the challenged one again
+    assert fake.sleeps == [600.0]  # the cool-down, waited through the fake clock
+    assert any("waiting 600s for the cool-down" in line for line in log)
+    assert cells["2026/men/bravo/schedule"]["state"] == STATE_COMPLETE
+    assert errors == []
+
+
+def test_a_challenged_box_score_is_retried_once_after_the_cool_down(
+    monkeypatch, tmp_path
+) -> None:
+    _one_programme_with_finals(monkeypatch, tmp_path)
+    gate, fake, _log = _fake_gate(cooldown=600.0)
+    attempts: dict[str, int] = {}
+
+    def fake_collect_match(session, url, season, fixture):
+        del session, season
+        identity = str(fixture["id"])
+        attempts[identity] = attempts.get(identity, 0) + 1
+        if identity == "sidearm:alpha:1" and attempts[identity] == 1:
+            gate.begin_cooldown(host_of(url))
+            raise LiveCollectionError(
+                f"[2026] {identity}: box-score page {url} answered HTTP 202 "
+                "with an empty body (served a challenge, not the page)",
+                status=202,
+            )
+        return {
+            "source_url": url,
+            "teams": [
+                {"name": "Alpha", "score": fixture["home_score"]},
+                {"name": "Other", "score": fixture["away_score"]},
+            ],
+            "home_index": 0,
+        }
+
+    monkeypatch.setattr(collect_board, "collect_match", fake_collect_match)
+
+    payload, cells, errors = collect_board.collect(
+        season=2026,
+        gender="men",
+        conference="GAC",
+        wanted=["alpha"],
+        layers=(LAYER_SCHEDULE, LAYER_MATCHES),
+        config_path=tmp_path / "schools.toml",
+        membership_extrapolated=False,
+        workers=2,
+        gate=gate,
+    )[3:6]
+
+    assert attempts == {"sidearm:alpha:1": 2, "sidearm:alpha:2": 1}
+    assert fake.sleeps == [600.0]
+    assert set(payload["matches"]) == {"sidearm:alpha:1", "sidearm:alpha:2"}
+    assert "missing" not in payload
+    assert cells["2026/men/alpha/matches"]["state"] == STATE_COMPLETE
+    assert errors == []
