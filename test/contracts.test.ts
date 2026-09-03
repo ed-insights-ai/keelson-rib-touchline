@@ -93,6 +93,7 @@ describe("the fixtures exercise every value the schemas enumerate", () => {
       new Set(["schedule", "roster", "stats", "matches"]),
     );
     expect(cells.some((c) => c.verified === "unchanged")).toBe(true);
+    expect(cells.some((c) => (c.skips?.length ?? 0) > 0)).toBe(true);
   });
 
   test("fixtures: every status the writer can print", () => {

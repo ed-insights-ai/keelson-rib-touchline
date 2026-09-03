@@ -392,3 +392,46 @@ def test_write_raw_pages_skips_layers_verified_unchanged(tmp_path: Path) -> None
     assert (directory / "2026-men-roster.html").read_text(
         encoding="utf-8"
     ) == "<html>fresh roster</html>"
+
+
+def test_a_304_reuses_the_cached_skips_with_the_cached_fixtures(
+    tmp_path: Path,
+) -> None:
+    """A named skip is part of the parse, so it rides the sidecar and comes
+    back with the reused fixtures rather than vanishing on an unchanged page."""
+    store = PageStateStore(tmp_path, 2026, "men")
+    hosted = _schedule_html().replace(
+        '"title": "Southern Nazarene"', '"title": "Southern Nazarene vs Maryville"'
+    )
+    session = MagicMock()
+    session.get.return_value = _response(text=hosted, headers={"ETag": '"h"'})
+    first = collect_programme(
+        _school(),
+        2026,
+        _ALIASES,
+        session=session,
+        layers=(LAYER_SCHEDULE,),
+        page_cache=store,
+    )
+    write_raw_pages(tmp_path, first, 2026, "men")
+    expected = (
+        "hosted other-match skipped: 2026-09-17, Southern Nazarene v Maryville",
+    )
+    assert first.fixtures == []
+    assert first.outcomes[LAYER_SCHEDULE].skips == expected
+    sidecar = json.loads(
+        store.state_path("harding", LAYER_SCHEDULE).read_text(encoding="utf-8")
+    )
+    assert sidecar["parsed"]["skips"] == list(expected)
+
+    session.get.return_value = _response(status=304, text="")
+    second = collect_programme(
+        _school(),
+        2026,
+        _ALIASES,
+        session=session,
+        layers=(LAYER_SCHEDULE,),
+        page_cache=store,
+    )
+    assert second.outcomes[LAYER_SCHEDULE].unchanged is True
+    assert second.outcomes[LAYER_SCHEDULE].skips == expected

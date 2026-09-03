@@ -6,6 +6,14 @@ fails `pipeline/tests/test_contracts.py`.
 
 ## 2026-09-03
 
+- `touchline.coverage/1`: cells gain an optional `skips` array of strings,
+  one line per row the collector read and deliberately did not mint
+  (`hosted other-match skipped: {date}, {A} v {B}`: a tournament match the
+  programme hosted but did not play, listed on its own schedule page; beads
+  tl-clk.10, tl-5ru, tl-v1q.14). A sibling of `reason` on a cell whose
+  `state` is unchanged by it. Same schema version; the site's
+  `coverage.ts` reads it as an optional string array. The fixture exhibits
+  it on one complete schedule cell.
 - Membership reference: `PSAC`, `MEC` and `G-MAC` join `conferences`, with
   one window each (Bloomsburg, Charleston and Ashland, 2022-2026) so the
   fixture exhibits them (batch 2 membership PR; the fixture's conference

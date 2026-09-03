@@ -994,3 +994,28 @@ def test_dedupe_a_neutral_marking_survives_the_merge() -> None:
     merged, _ = _dedupe_fixtures([marked, fuller])
     assert merged[0]["status"] == "final"
     assert merged[0]["neutral"] is True
+
+
+def test_named_skips_are_listed_in_the_gap_lines_voice() -> None:
+    """A skip is printed under the summary like a gap, programme and layer
+    first, and a cell without skips contributes nothing."""
+    cells = {
+        "2026/men/alpha/schedule": {
+            "programme": "alpha",
+            "layer": "schedule",
+            "state": "complete",
+            "skips": [
+                "hosted other-match skipped: 2026-08-27, Delta v Echo",
+                "hosted other-match skipped: 2026-08-29, Echo v Foxtrot",
+            ],
+        },
+        "2026/men/alpha/roster": {
+            "programme": "alpha",
+            "layer": "roster",
+            "state": "complete",
+        },
+    }
+    assert collect_board.named_skips(cells) == [
+        "alpha schedule: hosted other-match skipped: 2026-08-27, Delta v Echo",
+        "alpha schedule: hosted other-match skipped: 2026-08-29, Echo v Foxtrot",
+    ]
