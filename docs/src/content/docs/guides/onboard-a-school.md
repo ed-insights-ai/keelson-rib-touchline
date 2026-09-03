@@ -157,6 +157,13 @@ then validate:
 TOUCHLINE_DATA_DIR={data-home} uv run --project pipeline check-membership
 ```
 
+The windows, not the stanza, are what the collect reads per season. A
+school that changed conference inside the window gets a second window on
+the same slug and keeps one stanza, whose `conference` is its current
+conference and only the default: a season a window covers resolves to that
+window's conference, and the stanza answers only for a season no window
+covers.
+
 ## 6. Enable after verification
 
 Flip `enabled = true` and promote `data_status` only once you have verified

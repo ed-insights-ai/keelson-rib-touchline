@@ -954,6 +954,98 @@ def test_conference_members_is_scoped_by_conference_and_by_gender() -> None:
     }
 
 
+def _with_trevecca() -> list[SchoolConfig]:
+    """The GAC fixture plus Trevecca, whose stanza says its CURRENT conference."""
+    return _gac() + [
+        SchoolConfig(
+            name="Trevecca",
+            abbreviation="TNU",
+            conference="GSC",
+            prefix="tnu",
+            base_url="https://example.test/sports/mens-soccer",
+            gender="men",
+        )
+    ]
+
+
+def _mid_window_mover_document() -> dict:
+    def window(conference: str, from_season: int, to_season: int) -> dict:
+        return {
+            "conference": conference,
+            "from_season": from_season,
+            "to_season": to_season,
+            "source": "test fixture",
+        }
+
+    return {
+        "version": 1,
+        "seasons": {"from": 2022, "to": 2026},
+        "conferences": ["G-MAC", "GSC", "GAC", "independent", "non_member"],
+        "memberships": {
+            "trevecca": {
+                "men": [window("G-MAC", 2022, 2023), window("GSC", 2024, 2026)]
+            },
+            "harding": {"men": [window("GAC", 2022, 2026)]},
+            # Membership-only: a window but no stanza (a dead host).
+            "lee": {"men": [window("GSC", 2022, 2026)]},
+        },
+    }
+
+
+def test_conference_members_resolves_a_mid_window_mover_per_season() -> None:
+    """The stanza names the current conference; the window names the season's."""
+    schools = _with_trevecca()
+    document = _mid_window_mover_document()
+
+    for season in (2022, 2023):
+        members = conference_members(
+            schools, "men", "G-MAC", season=season, document=document
+        )
+        assert members == {"trevecca"}
+        assert "trevecca" not in conference_members(
+            schools, "men", "GSC", season=season, document=document
+        )
+    for season in (2024, 2026):
+        assert "trevecca" in conference_members(
+            schools, "men", "GSC", season=season, document=document
+        )
+        assert (
+            conference_members(
+                schools, "men", "G-MAC", season=season, document=document
+            )
+            == set()
+        )
+
+
+def test_conference_members_with_a_season_keeps_the_stanza_as_the_default() -> None:
+    schools = _with_trevecca()
+    document = _mid_window_mover_document()
+    stanza_only = conference_members(schools, "men", "GAC")
+    # Harding resolves through its window, the rest through their stanza; the
+    # GAC set is the same either way and the women's programmes stay out.
+    assert (
+        conference_members(schools, "men", "GAC", season=2022, document=document)
+        == stanza_only
+    )
+
+
+def test_conference_members_counts_a_membership_only_slug() -> None:
+    schools = _with_trevecca()
+    document = _mid_window_mover_document()
+    members = conference_members(schools, "men", "GSC", season=2025, document=document)
+    assert members == {"trevecca", "lee"}
+    assert "lee" not in conference_members(schools, "men", "GSC")
+
+
+def test_conference_members_without_a_season_is_the_stanza_set() -> None:
+    """Pins the default: no season, no window lookup, byte-for-byte as before."""
+    schools = _with_trevecca()
+    document = _mid_window_mover_document()
+    assert conference_members(schools, "men", "GSC") == {"trevecca"}
+    assert conference_members(schools, "men", "GSC", document=document) == {"trevecca"}
+    assert conference_members(schools, "men", "G-MAC", document=document) == set()
+
+
 def test_membership_derivation_is_one_conference_not_every_school() -> None:
     """A second conference must not turn a cross-conference game into one.
 

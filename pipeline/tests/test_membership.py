@@ -434,3 +434,45 @@ def test_registry_slugs_are_covered(membership_document):
     }
     assert registry_slugs <= set(REGISTRY)
     assert registry_slugs <= covered_slugs
+
+
+def _window(conference: str, from_season: int, to_season: int) -> dict:
+    return {
+        "conference": conference,
+        "from_season": from_season,
+        "to_season": to_season,
+        "source": "test fixture",
+    }
+
+
+def _mid_window_mover_document() -> dict:
+    """Trevecca: G-MAC 2022-2023 then GSC from 2024, on one slug."""
+    return {
+        "version": 1,
+        "seasons": {"from": 2022, "to": 2026},
+        "conferences": ["G-MAC", "GSC", "GAC", "independent", "non_member"],
+        "memberships": {
+            "trevecca": {
+                "men": [_window("G-MAC", 2022, 2023), _window("GSC", 2024, 2026)]
+            },
+            "harding": {"men": [_window("GAC", 2022, 2026)]},
+        },
+    }
+
+
+def test_members_of_resolves_a_mid_window_mover_per_season():
+    document = _mid_window_mover_document()
+    assert membership.members_of("G-MAC", "men", 2022, document=document) == {
+        "trevecca"
+    }
+    assert membership.members_of("G-MAC", "men", 2023, document=document) == {
+        "trevecca"
+    }
+    assert membership.members_of("GSC", "men", 2024, document=document) == {"trevecca"}
+    assert membership.members_of("GSC", "men", 2023, document=document) == set()
+    assert membership.members_of("G-MAC", "men", 2024, document=document) == set()
+    # A one-window slug answers the same for every season it covers.
+    assert membership.members_of("GAC", "men", 2022, document=document) == {"harding"}
+    assert membership.members_of("GAC", "men", 2026, document=document) == {"harding"}
+    # Gender scoping holds: no women's windows are authored here.
+    assert membership.members_of("GAC", "women", 2022, document=document) == set()

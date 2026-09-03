@@ -47,6 +47,7 @@ from pathlib import Path
 from src import coverage, paths
 from src.fetch_pool import GatedSession, HostGate
 from src.config import DEFAULT_CONFIG, SchoolConfig, load_schools
+from src.membership import conference_for, load_membership
 from src.page_state import PageStateStore
 from src.recipes import PRESTO, SIDEARM, NoCollector, Recipe, live_recipe
 from src.sidearm_live import (
@@ -252,6 +253,42 @@ def sync_membership_reference() -> str | None:
     )
 
 
+def _membership_document() -> dict[str, object] | None:
+    """The membership document for one run, or None on an install without it.
+
+    Loaded once rather than per programme.  A missing or unreadable file keeps
+    the run alive on the stanza defaults instead of failing a collect over
+    reference data it never needed before.
+    """
+    try:
+        return load_membership()
+    except (OSError, ValueError):
+        return None
+
+
+def programme_conference(
+    slug: str,
+    school: SchoolConfig,
+    gender: str,
+    season: int,
+    document: dict[str, object] | None,
+) -> str:
+    """The conference a configured programme played in for one season.
+
+    Membership is per season.  The stanza carries one ``conference``, the
+    current one; a programme that changed conference inside the window has a
+    second window on the same slug, and the fixtures file for an earlier
+    season must name the conference it played in then, not the one it plays
+    in now.  The stanza is only the default for a programme with no window
+    covering the season (or no membership document at all).
+    """
+    if document is not None:
+        declared = conference_for(slug, gender, season, document=document)
+        if declared:
+            return declared
+    return school.conference
+
+
 def sync_programmes_reference() -> str | None:
     """Mirror the rib's built programmes.json into the data home (tl-891)."""
     return _sync_reference(
@@ -425,7 +462,12 @@ def collect(
     # sets. Aliases span every configured school so an out-of-conference
     # opponent still gets a canonical slug; membership is one conference, so a
     # cross-conference fixture is not derived into a conference game.
-    members = conference_members(schools, gender, conference)
+    # Membership is per season: the window covering this season decides, the
+    # stanza's conference is only the default for a programme with no window.
+    membership_document = _membership_document()
+    members = conference_members(
+        schools, gender, conference, season=season, document=membership_document
+    )
     results = []
     errors: list[str] = []
     cells: dict[str, dict[str, object]] = {}
@@ -586,6 +628,7 @@ def collect(
             wanted=wanted,
             layers=layers,
             membership_extrapolated=membership_extrapolated,
+            membership_document=membership_document,
             candidates=candidates,
             results=results,
             errors=errors,
@@ -630,6 +673,7 @@ def _assemble(
     wanted: list[str],
     layers: tuple[str, ...],
     membership_extrapolated: bool,
+    membership_document: dict[str, object] | None,
     candidates: dict[str, object],
     results: list,
     errors: list[str],
@@ -683,7 +727,11 @@ def _assemble(
                 "name": candidates[slug].display()
                 if slug in candidates
                 else slug.replace("-", " ").title(),
-                "conference": candidates[slug].conference
+                # Membership is per season: the window wins, the stanza is
+                # the default; a stranger is filed under the collected one.
+                "conference": programme_conference(
+                    slug, candidates[slug], gender, season, membership_document
+                )
                 if slug in candidates
                 else conference,
                 **(
