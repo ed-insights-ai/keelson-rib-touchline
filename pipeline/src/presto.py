@@ -37,6 +37,41 @@ server-rendered schedule rows (``event-row`` cards with ``event-opponent``,
 ``event-result``, ``event-links`` and ``event-details-link``), a sortable
 roster table whose rows carry a ``jersey-number`` cell, and a statistics page
 built from ``stats-container`` tables beside a ``team-stats`` block.
+
+PrestoSports renders a schedule through one of several skins, and a site
+may change skin between seasons.  Every skin marks a row ``event-row``,
+names the opponent in a ``team-name`` span and links the box score from the
+row, so the detector and the parser read those; the rest is skin by skin
+(each measured 2026-09-02 live and kept as a fixture under tests/fixtures):
+
+- card (``prestosports_tampa_schedule_2025.html``): ``div.event-row`` with
+  ``data-event-id``, ``event-opponent-name``, ``event-location-badge``
+  ("vs"/"at"), ``event-dateinfo`` (a day cell under a ``section-event-month``
+  block), ``event-result`` and ``event-links`` labelled by aria-label.
+- table (``prestosports_bridgeport_schedule_2025.html``; the same site's
+  2022-23 and 2026-27 pages match): ``tr.event-row`` with ``data-event-id``
+  under the same month blocks, ``td.date``, ``td.opponent`` carrying the
+  badge and the name, ``td.e_venue``, ``td.status`` (with the conference,
+  postseason and region notations rendered inline), ``td.result`` and
+  ``td.links``.  A "next event" card above the table repeats one row of it
+  without an id and is skipped.
+- legacy table (``prestosports_wilmington_schedule_2025.html``; the same
+  site's 2022-23 page and stacathletics.com's 2022-23 page match): ``tr
+  .event-row`` without any event id, ``td.e_date`` ("Thu. 4"), ``td.e_team``
+  with a ``va`` span ("vs."/"at"), the name, a ``notation`` marker and a
+  ``neutralsite`` span, ``td.e_notes``, ``td.e_result``, ``td.e_status`` and
+  ``td.e_links`` labelled by aria-label; no month blocks, so the date comes
+  from the labels.
+- mobile list (``prestosports_stac_schedule_2025.html``): ``div.event-row``
+  without any event id, ``.date`` ("Sep 4"), ``.opponent`` with the ``va``
+  span and the name, ``.result``, ``.time`` (the status), and a ``.more``
+  block carrying the round name and the links; ``home``/``away``/``conf``/
+  ``postseason`` ride the row as classes.
+
+A skin without event ids identifies a fixture by its date and opponent
+(``{yyyymmdd}-{opponent slug}``), which the box-score join mints the same
+way from the link's filename date and the row's name, so a fixture keeps its
+id from the day it is scheduled to the day its box score is stored.
 """
 
 from __future__ import annotations
@@ -72,6 +107,7 @@ from src.sidearm_live import (
     http_status,
     opponent_slug,
     orient_match,
+    programme_slug,
 )
 
 PLATFORM = "prestosports"
@@ -138,16 +174,21 @@ def team_segment(html: str) -> str | None:
     return None
 
 
+# A schedule row on every skin: an ``event-row`` naming its opponent.
+_SCHEDULE_ROW = ".event-row .team-name, .event-row .event-opponent-name"
+# A roster row on either skin: a ``jersey-number`` cell (card and table
+# skins), or the legacy skin's ``number`` cell beside its ``name`` header cell.
+_ROSTER_ROW = "table tr .jersey-number, table tr td.number + th.name"
+
+
 def has_schedule_markup(html: str) -> bool:
     """Whether the page carries server-rendered PrestoSports schedule rows."""
-    return (
-        BeautifulSoup(html, "lxml").select_one(".event-row .event-opponent") is not None
-    )
+    return BeautifulSoup(html, "lxml").select_one(_SCHEDULE_ROW) is not None
 
 
 def has_roster_markup(html: str) -> bool:
     """Whether the page carries a PrestoSports roster table."""
-    return BeautifulSoup(html, "lxml").select_one("table tr .jersey-number") is not None
+    return BeautifulSoup(html, "lxml").select_one(_ROSTER_ROW) is not None
 
 
 def has_stats_markup(html: str) -> bool:
@@ -305,11 +346,35 @@ _ROUND_NAME = re.compile(
     re.IGNORECASE,
 )
 _PLACEHOLDER = re.compile(r"tbd|tba", re.IGNORECASE)
+_PARENTHETICAL = re.compile(r"\([^)]*\)")
+# A match settled on penalties after a draw: "L by PK, 1-1" beside a status
+# of "Final - PK Alliance University" (ubknights.com, 2022-23).  The match
+# itself is the draw the numbers print; the letter names the shoot-out.
+_BY_PENALTIES = re.compile(r"\b[WLT]\s+by\s+PKs?\s*,?", re.IGNORECASE)
 # The date and kickoff every event link label carries: "Men's Soccer event:
 # September 4 07:00 PM: #13 West Florida vs. Tampa: Box Score".
 _EVENT_LABEL = re.compile(
     r"\bevent:\s*([A-Za-z]+\s+\d{1,2})\s+(\d{1,2}:\d{2}\s*[AP]\.?M)", re.IGNORECASE
 )
+
+
+# Where each field sits on a schedule row, skin by skin (card, table, legacy
+# table, mobile list; see the module docstring).  A selector list is read
+# first match first, so a skin that carries two of the names (the mobile
+# list's ``.result`` beside nothing else; the table's ``td.result``) reads
+# the same field either way.
+_ROW_OPPONENT = ".event-opponent-name, .team-name"
+_ROW_SIDE = ".event-location-badge, .va"
+_ROW_DAY = ".event-dateinfo .date, td.date, td.e_date, .data > .date"
+_ROW_STATUS = ".event-dateinfo .status, td.status, td.e_status, .data > .time"
+_ROW_RESULT = ".event-result, td.result, td.e_result, .data > .result"
+_ROW_NOTES = ".event-notes, td.e_notes, .more"
+_ROW_VENUE = ".event-dateinfo .venue, td.e_venue"
+_ROW_NEUTRAL_SITE = ".event-neutralsite, .neutralsite"
+# Text inside a row cell that is not the cell's value, dropped by
+# ``_value_text``: the notation glyph and its screen-reader name beside a
+# status ("Final * Conference ~ Region"), the narrow-screen label a cell
+# repeats, and the links a mobile ``.more`` block carries after the round.
 
 
 def _text(node: Tag | None, selector: str) -> str:
@@ -320,32 +385,91 @@ def _text(node: Tag | None, selector: str) -> str:
     return " ".join(found.get_text(" ", strip=True).split())
 
 
-def _event_label(card: Tag) -> str:
-    """The "{Month} {day} {kickoff}" the card's event links label, or ""."""
-    for anchor in card.select(".event-links a[aria-label]"):
+def _value_text(row: Tag, selector: str) -> str:
+    """The first ``selector`` match's own text, without its decoration."""
+    found = row.select_one(selector)
+    if found is None:
+        return ""
+    parts: list[str] = []
+    for text in found.find_all(string=True):
+        parent = text.parent
+        while parent is not None and parent is not found and not _decorates(parent):
+            parent = parent.parent
+        if parent is found:
+            parts.append(str(text))
+    return " ".join(" ".join(parts).split())
+
+
+def _decorates(node: Tag) -> bool:
+    classes = set(node.get("class") or [])
+    return node.name == "a" or bool(classes & {"notation", "visually-hidden", "label"})
+
+
+def _event_label(row: Tag) -> str:
+    """The "{Month} {day} {kickoff}" the row's event links label, or ""."""
+    for anchor in row.select("a[aria-label]"):
         match = _EVENT_LABEL.search(str(anchor.get("aria-label") or ""))
         if match:
             return f"{match.group(1)} {match.group(2)}"
     return ""
 
 
-def _card_date(card: Tag, year: int) -> str | None:
-    section = card.find_parent(class_="section-event-month")
+def _row_date(row: Tag, year: int) -> str | None:
+    """The row's date by the skin's own rule.
+
+    Card and table skins print the day under a month block ("September" +
+    "Thu. 4"); the legacy table prints only the day, so its date comes from
+    the event link labels ("September 4 06:30 PM"); the mobile list prints
+    month and day together ("Sep 4").
+    """
+    section = row.find_parent(class_="section-event-month")
     month = _text(section, ".month-title") if section is not None else ""
-    day = re.search(r"\d{1,2}", _text(card, ".event-dateinfo .date"))
+    day_text = _value_text(row, _ROW_DAY)
+    day = re.search(r"\d{1,2}", day_text)
     if month and day:
         return _dom_date(f"{month} {day.group(0)}", year)
-    return _dom_date(_event_label(card), year)
+    return _dom_date(_event_label(row), year) or _dom_date(day_text, year)
 
 
-def _card_venue(card: Tag, notes: str) -> str:
-    facility = _text(card, ".event-dateinfo .venue")
+def _row_venue(row: Tag, notes: str) -> str:
+    facility = _value_text(row, _ROW_VENUE)
     if facility:
-        return facility
-    neutral_site = _text(card, ".event-neutralsite")
+        # The table skin prints "Jess Dow Field | New Haven, Conn.".
+        return facility.split(" | ", 1)[0].strip()
+    neutral_site = _value_text(row, _ROW_NEUTRAL_SITE)
     if neutral_site:
         return re.sub(r"^@\s*", "", neutral_site)
+    # Only the card skin's notes lead with the town; the legacy table's
+    # notes and the mobile list's ``.more`` text are promotions and round
+    # names ("Homecoming", "CACC Tournament - First Round"), never a venue.
+    if row.select_one(".event-notes") is None:
+        return ""
     return notes.split(" / ", 1)[0].strip()
+
+
+def _schedule_rows(soup: BeautifulSoup) -> dict[str, Tag]:
+    """The page's schedule rows keyed by fixture id, first row per id.
+
+    A skin that publishes event ids identifies rows by them, and a row
+    without one on such a page is the "next event" banner repeating a row
+    of the list.  A skin without any identifies a row by its date and
+    opponent (``{yyyymmdd}-{opponent slug}``); the date is resolved later,
+    so the key here is the row's position and the id is minted by the caller.
+    """
+    rows = [row for row in soup.select(".event-row") if row.select_one(_ROW_OPPONENT)]
+    identified: dict[str, Tag] = {}
+    for row in rows:
+        event_id = str(row.get("data-event-id") or "").strip()
+        if event_id and event_id not in identified:
+            identified[event_id] = row
+    if identified:
+        return identified
+    return {f"#{index}": row for index, row in enumerate(rows)}
+
+
+def _minted_id(date: str, opponent_name: str) -> str:
+    """The fixture id a skin without event ids gets: ``20250904-adelphi``."""
+    return f"{date.replace('-', '')}-{programme_slug(opponent_name)}"
 
 
 def parse_schedule(
@@ -408,44 +532,60 @@ def parse_schedule(
     - ``match_type``: an exhibition or friendly marker in the opponent name
       or the notes, as on SideArm.
     - ``source_url``: the page.
+
+    The other skins (table, legacy table, mobile list) are read through the
+    same fields at their own positions (the ``_ROW_*`` selectors above):
+    the opponent is the ``team-name`` span, the side the ``va`` span ("vs."
+    or "at") where there is no badge, the status the ``e_status`` cell or the
+    mobile ``time`` cell, the result the ``e_result``/``result`` cell, the
+    venue the table's ``e_venue`` facility, the notes the legacy ``e_notes``
+    cell or the mobile ``more`` block's text (the round name), and the date
+    by ``_row_date``.  A skin without event ids mints
+    ``presto:{owner}:{yyyymmdd}-{opponent slug}``.
     """
     soup = BeautifulSoup(html, "lxml")
-    cards: dict[str, Tag] = {}
-    for card in soup.select(".event-row[data-event-id]"):
-        event_id = str(card.get("data-event-id") or "").strip()
-        if event_id and event_id not in cards:
-            cards[event_id] = card
+    rows = _schedule_rows(soup)
 
-    def conference_marked(card: Tag) -> bool:
-        return card.select_one(
+    def conference_marked(row: Tag) -> bool:
+        return row.select_one(
             '.notation[title="Conference"]'
-        ) is not None or "conf" in set(card.get("class") or [])
+        ) is not None or "conf" in set(row.get("class") or [])
 
-    theme_marks_conference = any(conference_marked(card) for card in cards.values())
+    theme_marks_conference = any(conference_marked(row) for row in rows.values())
     member_slugs = set(aliases.values()) if members is None else members
 
     fixtures: list[dict[str, object]] = []
-    for event_id, card in cards.items():
-        opponent_raw = _text(card, ".event-opponent-name")
+    seen: set[str] = set()
+    for event_id, row in rows.items():
+        opponent_raw = _text(row, _ROW_OPPONENT)
         opponent_name = _clean_team_name(opponent_raw)
-        date = _card_date(card, year)
+        date = _row_date(row, year)
         if not opponent_name or not date:
             continue
-        if _PLACEHOLDER.fullmatch(opponent_name) or _ROUND_NAME.search(opponent_name):
+        # The table skin names a postseason opponent with its round in
+        # parentheses ("No. 1 Seed Post (CACC Championship)"): a fixture, not
+        # a round placeholder, so the round words are judged outside them.
+        outside_parentheses = _PARENTHETICAL.sub(" ", opponent_name).strip()
+        if _PLACEHOLDER.fullmatch(opponent_name) or _ROUND_NAME.search(
+            outside_parentheses
+        ):
             continue
-        classes = set(card.get("class") or [])
-        owner_is_home = _text(card, ".event-location-badge").lower() != "at"
-        neutral = (
-            "neutral" in classes or card.select_one(".event-neutralsite") is not None
-        )
+        if event_id.startswith("#"):
+            event_id = _minted_id(date, opponent_name)
+        if event_id in seen:
+            continue
+        seen.add(event_id)
+        classes = set(row.get("class") or [])
+        owner_is_home = not _text(row, _ROW_SIDE).lower().startswith("at")
+        neutral = "neutral" in classes or row.select_one(_ROW_NEUTRAL_SITE) is not None
         other_slug = opponent_slug(opponent_name, aliases)
         home, away = (
             (owner_slug, other_slug) if owner_is_home else (other_slug, owner_slug)
         )
-        status_text = _text(card, ".event-dateinfo .status")
-        result_text = _text(card, ".event-result")
-        result = _dom_result(result_text)
-        notes = _text(card, ".event-notes")
+        status_text = _value_text(row, _ROW_STATUS)
+        result_text = _value_text(row, _ROW_RESULT)
+        result = _dom_result(_BY_PENALTIES.sub("T,", result_text))
+        notes = _value_text(row, _ROW_NOTES)
         exhibition = _exhibition_marked(opponent_raw, notes)
         printed = f"{status_text} {result_text}"
         if re.search(r"cancel", printed, re.IGNORECASE):
@@ -472,14 +612,14 @@ def parse_schedule(
         if exhibition:
             fixture["match_type"] = "exhibition"
         if theme_marks_conference:
-            fixture["conference_game"] = conference_marked(card)
+            fixture["conference_game"] = conference_marked(row)
         else:
             fixture["conference_game"] = not exhibition and other_slug in member_slugs
             fixture["conference_game_source"] = "derived:membership"
-        time = _dom_time(status_text) or _dom_time(_event_label(card))
+        time = _dom_time(status_text) or _dom_time(_event_label(row))
         if time:
             fixture["time"] = time
-        venue = _card_venue(card, notes)
+        venue = _row_venue(row, notes)
         if venue:
             fixture["venue"] = venue
         oriented = (
@@ -513,6 +653,7 @@ _ROSTER_COLUMNS = {
     "ht": "height",
     "height": "height",
     "wt": "weight",
+    "wgt": "weight",
     "weight": "weight",
     "cl": "class_year",
     "class": "class_year",
@@ -618,7 +759,7 @@ def parse_roster(html: str, *, page_url: str) -> list[dict[str, str]]:
     players: list[dict[str, str]] = []
     seen: set[str] = set()
     for table in soup.select("table"):
-        if table.select_one("tr .jersey-number") is None:
+        if table.select_one("tr .jersey-number, tr td.number + th.name") is None:
             continue
         columns: dict[int, str] = {}
         for index, header in enumerate(table.select("thead th")):
@@ -880,20 +1021,33 @@ def boxscore_links_by_event(html: str, page_url: str) -> dict[str, str]:
     repeats only the id's first four characters, so the join runs through
     the card, never the filename.  The first card per id wins, as in
     ``parse_schedule``.
+
+    A skin without event ids (legacy table, mobile list) is joined on the id
+    ``parse_schedule`` mints for the row, ``{yyyymmdd}-{opponent slug}``:
+    the date is the box-score filename's (``20250904_j6bo.xml``) and the
+    slug is the row's own ``team-name``, so no season or alias table is
+    needed to rebuild it.
     """
     links: dict[str, str] = {}
-    for card in BeautifulSoup(html, "lxml").select(".event-row[data-event-id]"):
-        event_id = str(card.get("data-event-id") or "").strip()
+    for event_id, row in _schedule_rows(BeautifulSoup(html, "lxml")).items():
         holder = (
-            card
-            if card.has_attr("data-boxscore")
-            else card.select_one("[data-boxscore]")
+            row if row.has_attr("data-boxscore") else row.select_one("[data-boxscore]")
         )
         href = str(holder.get("data-boxscore") or "").strip() if holder else ""
         if not href:
-            anchor = card.select_one('.event-links a[href*="/boxscores/"]')
+            anchor = row.select_one('a[href*="/boxscores/"]')
             href = str(anchor.get("href") or "").strip() if anchor is not None else ""
-        if event_id and href and event_id not in links:
+        if not href:
+            continue
+        if event_id.startswith("#"):
+            stem = _BOX_PATH.search(urlparse(urljoin(page_url, href)).path)
+            opponent = _clean_team_name(_text(row, _ROW_OPPONENT))
+            if stem is None or not opponent:
+                continue
+            played = stem.group(1)
+            date = f"{played[:4]}-{played[4:6]}-{played[6:]}"
+            event_id = _minted_id(date, opponent)
+        if event_id not in links:
             links[event_id] = urljoin(page_url, href)
     return links
 
