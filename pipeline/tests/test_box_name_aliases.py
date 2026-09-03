@@ -53,6 +53,14 @@ BOX_SPELLINGS = [
     ("Dominican University of N.Y.", "dominican"),
     # sidearm:franklin-pierce:22612, 2022-12-03
     ("Colorado St.-Pueblo", "csu-pueblo"),
+    # The tl-kvn sweep (2026-09-03): a formal name the fold now keys to
+    # "texas dallas", and two abbreviations no fold reaches.
+    # sidearm:texas-a-m-international:7792, 2026-09-19
+    ("University of Texas at Dallas", "ut-dallas"),
+    # sidearm:oklahoma-christian:11182, 2022-10-22
+    ("Texas-Permian Basin", "ut-permian-basin"),
+    # sidearm:tiffin:6466, 2022-09-10 (also sidearm:walsh:4241)
+    ("Ky. Wesleyan", "kentucky-wesleyan"),
 ]
 
 

@@ -194,7 +194,10 @@ def test_derive_identity_keeps_the_site_short_form_and_multiword_mascot() -> Non
 
     assert (springfield.abbreviation, springfield.mascot) == ("UIS", "Prairie Stars")
     assert (indianapolis.abbreviation, indianapolis.mascot) == ("UIndy", "Greyhounds")
-    assert indianapolis.aliases == ["University of Indianapolis"]
+    # "University of Indianapolis" folds onto "Indianapolis" (tl-kvn), so the
+    # probe drafts no alias for it; "UMSL" shares no token with its formal
+    # name, so that one is still stated.
+    assert indianapolis.aliases == []
     assert (st_louis.abbreviation, st_louis.mascot) == ("UMSL", "Tritons")
     assert st_louis.aliases == ["University of Missouri - St. Louis"]
 
@@ -619,7 +622,9 @@ def test_derive_identity_reads_the_mascot_off_a_prestosports_title() -> None:
 
     assert identity.name == "Tampa"
     assert identity.mascot == "Spartans"
-    assert identity.aliases == ["University of Tampa"]
+    # "University of Tampa" keys to "tampa" — the fold carries it (tl-kvn),
+    # so it is not worth a stated alias.
+    assert identity.aliases == []
     # PrestoSports rows print no town, and the site publishes no short token,
     # so the city stays blank (the stanza says so) and the abbreviation is
     # the initials fallback the reviewer corrects.
@@ -731,7 +736,8 @@ def test_cli_probes_a_prestosports_site_end_to_end(capsys) -> None:
     assert "Seasons not seen: 2026 (HTTP 404)" in out
     assert 'name         = "Tampa"' in out
     assert 'mascot       = "Spartans"' in out
-    assert 'aliases      = ["University of Tampa"]' in out
+    # The formal name folds onto the plain one, so no alias line is drafted.
+    assert "aliases" not in out
     assert f'base_url     = "{PRESTO_BASE}"' in out
     assert "years        = [2025]" in out
     assert 'scraper      = "prestosports"' in out

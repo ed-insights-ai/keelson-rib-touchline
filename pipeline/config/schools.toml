@@ -429,6 +429,10 @@ years        = [2025, 2026]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
+# Peers print the formal name (TAMIU 2026, sidearm:texas-a-m-international:7792),
+# which the fold keys to "texas dallas"; "UT" is an abbreviation no fold can
+# reach from it, so the formal spelling is stated here (tl-kvn).
+aliases      = ["University of Texas at Dallas"]
 city         = "Richardson, Texas"
 city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
 identity_accessed = "2026-09-02"
@@ -501,6 +505,10 @@ years        = [2022]
 scraper      = "sidearm"
 data_status  = "verified"
 enabled      = true
+# Oklahoma Christian prints "Texas-Permian Basin" (2022,
+# sidearm:oklahoma-christian:11182), a second spelling the fold cannot reach
+# from "UT Permian Basin" (tl-kvn sweep).
+aliases      = ["Texas-Permian Basin"]
 city         = "Odessa, TX"
 city_source  = "schedule-page home venue location, https://utpbfalcons.com/sports/mens-soccer/schedule/2022"
 identity_accessed = "2026-09-02"
@@ -2834,7 +2842,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Kentucky Wesleyan College", "KWC"]
+# Tiffin and Walsh print "Ky. Wesleyan" (2022, sidearm:tiffin:6466,
+# sidearm:walsh:4241), an abbreviation the fold cannot reach (tl-kvn sweep).
+aliases      = ["Kentucky Wesleyan College", "KWC", "Ky. Wesleyan"]
 city         = "Owensboro, Ky."
 city_source  = "schedule-page home venue location, https://kwcpanthers.com/sports/mens-soccer/schedule/2026"
 identity_accessed = "2026-09-03"
