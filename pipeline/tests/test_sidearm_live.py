@@ -2503,6 +2503,44 @@ def test_the_two_team_list_skin_reads_scores_and_dates_off_each_row() -> None:
     assert away_loss["conference_game"] is False
 
 
+def test_the_two_team_list_skin_strips_the_orientation_word_on_upcoming_rows() -> None:
+    """Bead tl-4sg.38 (daemenwildcats.com 2026): upcoming rows print the
+    orientation word as a bare span inside the opponent-name span, so the
+    flattened text reads "at Molloy" / "vs D'Youville".  The word is
+    orientation, never part of the opponent's identity."""
+    base = "https://daemenwildcats.com/sports/mens-soccer"
+    html = (FIXTURES / "sidearm_daemen_schedule_2026.html").read_text()
+    rows = {
+        str(row["id"]).rsplit(":", 1)[-1]: row
+        for row in parse_schedule_page(
+            html,
+            page_url=f"{base}/schedule/2026",
+            year=2026,
+            owner_slug="daemen",
+            aliases={"molloy": "molloy", "dyouville": "d-youville"},
+        )
+    }
+    assert set(rows) == {"8312", "8316"}
+    away = rows["8312"]
+    assert (away["home"], away["away"]) == ("molloy", "daemen")
+    assert (away["date"], away["status"]) == ("2026-09-19", "scheduled")
+    assert away["conference_game"] is True
+    home = rows["8316"]
+    assert (home["home"], home["away"]) == ("daemen", "d-youville")
+    assert home["conference_game"] is False
+    # The payload skins name the opponent in a JSON title and carry the side
+    # in location_indicator, so no orientation word can reach their slugs.
+    for name, owner in (
+        ("sidearm_lock_haven_schedule_2025.html", "lock-haven"),
+        ("sidearm_millersville_schedule_2025.html", "millersville"),
+    ):
+        _, payload_rows = _fixture_rows(name, owner_slug=owner, base=base)
+        assert payload_rows
+        for row in payload_rows.values():
+            for side in (row["home"], row["away"]):
+                assert not str(side).startswith(("vs-", "v-", "at-")), (name, row["id"])
+
+
 def test_a_division_seed_is_a_rank_prefix() -> None:
     from src.sidearm_live import _clean_team_name
 
