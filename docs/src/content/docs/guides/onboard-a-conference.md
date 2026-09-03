@@ -71,6 +71,15 @@ records page; never assume it from memory:
   the gap. Only a records page that lists the school in the seasons either
   side and not in the middle is a real lapse, and none has been seen yet.
 
+A programme that changes conference inside the window (Trevecca, G-MAC
+2022-2023 then GSC from 2024) gets a second window on the same slug and
+keeps ONE stanza in `schools.toml`. The stanza's `conference` is its
+current conference and only the default: the collect resolves each
+programme's conference per season from the windows, both for the member
+set behind the conference-game test and for the `programmes[].conference`
+the fixtures file carries, and falls back to the stanza only for a season
+no window covers.
+
 ## 2. Probe every site and record the verdicts
 
 Take the athletics hosts from the conference site's members page

@@ -59,7 +59,41 @@ def conference_for(
     genders = memberships.get(slug)
     if not isinstance(genders, dict):
         return None
-    windows = genders.get(gender)
+    return _window_conference(genders.get(gender), season_year)
+
+
+def members_of(
+    conference: str,
+    gender: str,
+    season_year: int,
+    *,
+    document: dict[str, Any] | None = None,
+) -> set[str]:
+    """Return every slug whose window for one season names the conference.
+
+    The inverse of ``conference_for``, and the reason the windows exist: a
+    programme can change conference inside the authored span (Trevecca played
+    G-MAC men's soccer in 2022 and 2023 and GSC from 2024), so "who was in this
+    conference" has a different answer per season. A schools.toml stanza
+    carries one conference, the current one; only the windows can answer for
+    an earlier season.
+    """
+    membership_document = document if document is not None else load_membership()
+    memberships = membership_document.get("memberships")
+    if not isinstance(memberships, dict):
+        return set()
+
+    members: set[str] = set()
+    for slug, genders in memberships.items():
+        if not isinstance(slug, str) or not isinstance(genders, dict):
+            continue
+        if _window_conference(genders.get(gender), season_year) == conference:
+            members.add(slug)
+    return members
+
+
+def _window_conference(windows: object, season_year: int) -> str | None:
+    """Walk one programme's windows for the conference covering a season."""
     if not isinstance(windows, list):
         return None
 

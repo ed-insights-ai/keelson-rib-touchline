@@ -178,7 +178,9 @@ def test_collect_emits_schema_v2_and_each_programmes_actual_conference(
     monkeypatch.setattr(collect_board, "load_schools", lambda path: schools)
     monkeypatch.setattr(collect_board, "identity_aliases", lambda schools, gender: {})
     monkeypatch.setattr(
-        collect_board, "conference_members", lambda schools, gender, conference: set()
+        collect_board,
+        "conference_members",
+        lambda schools, gender, conference, **_: set(),
     )
     monkeypatch.setattr(collect_board, "collect_programme", fake_programme)
     monkeypatch.setattr(collect_board, "write_raw_pages", lambda *args: None)
@@ -205,6 +207,119 @@ def test_collect_emits_schema_v2_and_each_programmes_actual_conference(
             "abbr": "LCU",
         },
     ]
+
+
+def _window(conference: str, from_season: int, to_season: int) -> dict:
+    return {
+        "conference": conference,
+        "from_season": from_season,
+        "to_season": to_season,
+        "source": "test fixture",
+    }
+
+
+def test_fixtures_payload_names_the_seasons_conference_not_the_stanzas(
+    monkeypatch,
+    tmp_path: Path,
+) -> None:
+    """A mid-window mover: Trevecca's stanza says GSC, its 2022 window G-MAC."""
+    schools = [
+        SchoolConfig(
+            name="Trevecca",
+            abbreviation="TNU",
+            conference="GSC",
+            prefix="",
+            base_url="https://trevecca.example",
+            enabled=True,
+        ),
+        SchoolConfig(
+            name="Harding",
+            abbreviation="HU",
+            conference="GAC",
+            prefix="",
+            base_url="https://harding.example",
+            enabled=True,
+        ),
+    ]
+    document = {
+        "version": 1,
+        "seasons": {"from": 2022, "to": 2026},
+        "conferences": ["G-MAC", "GSC", "independent", "non_member"],
+        "memberships": {
+            "trevecca": {
+                "men": [_window("G-MAC", 2022, 2023), _window("GSC", 2024, 2026)]
+            },
+        },
+    }
+    seen: dict[str, object] = {}
+
+    def fake_programme(
+        school, season, aliases, *, session=None, layers, members, page_cache=None
+    ):
+        del season, aliases, session, page_cache
+        seen["members"] = members
+        return ProgrammeCollection(
+            slug=programme_slug(school.name),
+            name=school.name,
+            fixtures=[],
+            players=[],
+            outcomes={
+                layer: LayerOutcome(layer=layer, state=STATE_EMPTY) for layer in layers
+            },
+        )
+
+    monkeypatch.setattr(collect_board, "load_schools", lambda path: schools)
+    monkeypatch.setattr(collect_board, "load_membership", lambda: document)
+    monkeypatch.setattr(collect_board, "identity_aliases", lambda schools, gender: {})
+    monkeypatch.setattr(collect_board, "collect_programme", fake_programme)
+    monkeypatch.setattr(collect_board, "write_raw_pages", lambda *args: None)
+    monkeypatch.setattr(collect_board.paths, "data_root", lambda: tmp_path)
+
+    def run(season: int) -> dict[str, str]:
+        fixtures, *_ = collect_board.collect(
+            season=season,
+            gender="men",
+            conference="G-MAC",
+            wanted=["trevecca", "harding", "walsh"],
+            layers=(LAYER_SCHEDULE,),
+            config_path=tmp_path / "schools.toml",
+            membership_extrapolated=False,
+        )
+        return {
+            programme["slug"]: programme["conference"]
+            for programme in fixtures["programmes"]
+        }
+
+    # 2022: the window wins over the stanza; the member set agrees.
+    assert run(2022) == {"trevecca": "G-MAC", "harding": "GAC", "walsh": "G-MAC"}
+    assert seen["members"] == {"trevecca"}
+    # 2024: the second window on the same slug, matching the stanza.
+    assert run(2024) == {"trevecca": "GSC", "harding": "GAC", "walsh": "G-MAC"}
+    assert seen["members"] == set()
+
+
+def test_programme_conference_falls_back_to_the_stanza_without_a_document() -> None:
+    school = SchoolConfig(
+        name="Trevecca",
+        abbreviation="TNU",
+        conference="GSC",
+        prefix="",
+        base_url="https://trevecca.example",
+    )
+    assert (
+        collect_board.programme_conference("trevecca", school, "men", 2022, None)
+        == "GSC"
+    )
+    document = {"memberships": {"trevecca": {"men": [_window("G-MAC", 2022, 2023)]}}}
+    assert (
+        collect_board.programme_conference("trevecca", school, "men", 2022, document)
+        == "G-MAC"
+    )
+    # No window covering the season: the stanza is the default.
+    assert (
+        collect_board.programme_conference("trevecca", school, "men", 2025, document)
+        == "GSC"
+    )
 
 
 def test_display_name_reaches_the_fixtures_payload_but_never_the_slug(

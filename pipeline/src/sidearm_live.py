@@ -59,6 +59,7 @@ from bs4 import BeautifulSoup
 from urllib3.util.retry import Retry
 
 from src.config import SchoolConfig
+from src.membership import conference_for, load_membership, members_of
 from src.page_state import PageState, PageStateStore, content_signature
 from src.tls import TruststoreHTTPAdapter
 
@@ -592,7 +593,12 @@ def identity_aliases(
 
 
 def conference_members(
-    schools: list[SchoolConfig], gender: str, conference: str
+    schools: list[SchoolConfig],
+    gender: str,
+    conference: str,
+    *,
+    season: int | None = None,
+    document: dict[str, object] | None = None,
 ) -> set[str]:
     """Programme slugs belonging to ONE conference, for the conference-game test.
 
@@ -605,12 +611,42 @@ def conference_members(
     Scoped to the conference rather than to the run's requested programmes, since
     a fixture against a member we did not happen to collect is still a conference
     game.
+
+    Membership is per season.  A stanza carries one ``conference``, the current
+    one, but a programme can change conference inside the backfill window:
+    Trevecca played G-MAC men's soccer in 2022 and 2023 and GSC from 2024, and
+    its stanza says GSC.  Read as if it held for every season, the stanza drops
+    Trevecca from the G-MAC's 2022 member set and every Trevecca fixture that
+    year stops being a conference game.  With a ``season`` each school's
+    conference is therefore the membership window covering that season, and the
+    stanza field is only the default for a programme with no window declared
+    for it.  A slug the windows place in the conference but no stanza configures
+    (a dead host recorded membership-only) is a member too: a fixture against it
+    is still a conference game.  Without a ``season`` the set is the stanza
+    field alone, as before.
     """
-    return {
-        programme_slug(school.name)
-        for school in schools
-        if school.gender == gender and school.conference == conference
-    }
+    if season is None:
+        return {
+            programme_slug(school.name)
+            for school in schools
+            if school.gender == gender and school.conference == conference
+        }
+
+    membership_document = document if document is not None else load_membership()
+    members: set[str] = set()
+    for school in schools:
+        if school.gender != gender:
+            continue
+        slug = programme_slug(school.name)
+        resolved = (
+            conference_for(slug, gender, season, document=membership_document)
+            or school.conference
+        )
+        if resolved == conference:
+            members.add(slug)
+    return members | members_of(
+        conference, gender, season, document=membership_document
+    )
 
 
 def opponent_slug(name: str, aliases: dict[str, str]) -> str:
