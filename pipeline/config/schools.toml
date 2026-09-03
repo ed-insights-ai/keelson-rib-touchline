@@ -706,7 +706,9 @@ mascot       = "Trojans"
 aliases      = ["Trevecca Nazarene"]
 gender       = "men"
 base_url     = "https://tnutrojans.com/sports/mens-soccer"
-years        = [2024, 2025, 2026]
+# 2022-2023 were G-MAC seasons: membership.json carries that window on this
+# slug and the collect resolves the conference per season (#78).
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2209,3 +2211,764 @@ aliases      = ["Daemen University", "Daemen College"]
 city         = "Amherst, N.Y."
 city_source  = "design/batch1-membership-2026-09-02.md (campus town; the schedule page prints no home town)"
 identity_accessed = "2026-09-02"
+
+# ============================================================
+# PSAC MEN'S SOCCER - 13 programmes, backfill window 2022-2026
+# ============================================================
+# Source of truth: Pennsylvania State Athletic Conference per-season records
+# (psacsports.org conference statistics per year, plus the live standings
+# for 2026), verified 2026-09-03. All 13 sites probed 2026-09-03 (uv run
+# probe --name): SideArm on every one. Ten served schedule / roster / stats /
+# matches with every window season; Lock Haven and Shippensburg came back
+# with the schedule layer absent and no season paths, Millersville with only
+# the matches layer (its theme differs), and Pitt-Johnstown with a stats
+# error (season not proven), so expect gaps there. The window is the
+# conference's record and the collect reports what each site serves. No
+# collect has run yet, so every stanza is data_status = unverified. No
+# ordinals.
+#
+# Season-aware membership lives in data/reference/membership.json: Mercyhurst
+# left after 2023 (to Division I). 13/13/12/12/12 members 2022-2026. Hosts
+# came from the conference's members page (psacsports.org/members).
+# Lackawanna (invited 2025-06-25, from the NJCAA) is absent from the 2026
+# standings and records, so it has no stanza and no window: a 2027
+# candidate at the earliest.
+#
+# Names are the conference records' spellings, chosen so programme_slug(name)
+# matches the membership key: "California (Pa.)" and "E. Stroudsburg" are
+# what the records print in every season 2021-2026. The probe's
+# initials-derived abbreviations (B, G, M, M, SH, S) were replaced with
+# customary initialisms: neither the standings nor the records page prints
+# a short form (psacsports.org/standings.aspx?path=msoc, read 2026-09-03).
+# Millersville keeps MU, so Mercyhurst carries HURST, its own short form
+# (hurstathletics.com). CUP, LHUP, UPJ, SHIP, SRU and WCUPA are the short
+# forms the probe read off the sites. Aliases cover the published long
+# names, the Commonwealth and PennWest names, and the "Cal U" and "UPJ"
+# spellings peers print.
+
+[[schools]]
+name         = "Bloomsburg"
+abbreviation = "BU"
+conference   = "PSAC"
+mascot       = "Huskies"
+gender       = "men"
+base_url     = "https://bloomsburgathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Bloomsburg University", "Commonwealth University-Bloomsburg"]
+city         = "Bloomsburg, Pa."
+city_source  = "schedule-page home venue location, https://bloomsburgathletics.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+
+# The records print "California (Pa.)" in every season 2021-2026, never
+# "PennWest California", and the site is still titled "California University
+# of Pennsylvania Athletics" (calvulcans.com/sports/mens-soccer, read
+# 2026-09-03), so no display_name. The parenthetical is dropped before
+# opponent matching, which leaves "California".
+[[schools]]
+name         = "California (Pa.)"
+abbreviation = "CUP"
+conference   = "PSAC"
+mascot       = "Vulcans"
+gender       = "men"
+base_url     = "https://calvulcans.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["California University of Pennsylvania", "PennWest California", "Cal U"]
+city         = "California, Pa."
+city_source  = "schedule-page home venue location, https://calvulcans.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+
+# The records print "E. Stroudsburg"; the school prints East Stroudsburg.
+[[schools]]
+name         = "E. Stroudsburg"
+abbreviation = "ESU"
+conference   = "PSAC"
+mascot       = "Warriors"
+gender       = "men"
+base_url     = "https://esuwarriors.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["East Stroudsburg University", "East Stroudsburg"]
+city         = "East Stroudsburg, Pa."
+city_source  = "schedule-page home venue location, https://esuwarriors.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+
+# The probe read "Knights" and an alias with the nickname split off;
+# "Golden Knights" is the site's own name (gannonsports.com).
+[[schools]]
+name         = "Gannon"
+abbreviation = "GU"
+conference   = "PSAC"
+mascot       = "Golden Knights"
+gender       = "men"
+base_url     = "https://gannonsports.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Gannon University"]
+city         = "Erie, Pa."
+city_source  = "schedule-page home venue location, https://gannonsports.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+
+# The probe read no season paths and no home town on this site (schedule
+# layer absent, roster and stats present); the records list Lock Haven in
+# every season 2021-2026, so the window is the year-list. "Bald Eagles" is
+# the site's own name; the probe read "Eagles".
+[[schools]]
+name         = "Lock Haven"
+abbreviation = "LHUP"
+conference   = "PSAC"
+mascot       = "Bald Eagles"
+gender       = "men"
+base_url     = "https://www.lockhavenathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lock Haven University", "Commonwealth University-Lock Haven"]
+city         = "Lock Haven, Pa."
+city_source  = "home venue location on the sport page, https://www.lockhavenathletics.com/sports/mens-soccer (read 2026-09-03)"
+identity_accessed = "2026-09-03"
+
+# The probe read no season paths and no home town (its theme hides the
+# schedule, roster and stats layers; the site title is just "Millersville");
+# the records list Millersville in every season 2021-2026, so the window is
+# the year-list.
+[[schools]]
+name         = "Millersville"
+abbreviation = "MU"
+conference   = "PSAC"
+mascot       = "Marauders"
+gender       = "men"
+base_url     = "https://millersvilleathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Millersville University"]
+city         = "Millersville, Pa."
+city_source  = "home venue location on the sport page, https://millersvilleathletics.com/sports/mens-soccer (read 2026-09-03)"
+identity_accessed = "2026-09-03"
+
+# The probe's stats layer errored (season not proven), so the cumulative
+# statistics page needs a look; "Mountain Cats" is the site's own name (the
+# probe read "Cats"). The records print "Pitt-Johnstown".
+[[schools]]
+name         = "Pitt-Johnstown"
+abbreviation = "UPJ"
+conference   = "PSAC"
+mascot       = "Mountain Cats"
+gender       = "men"
+base_url     = "https://pittjohnstownathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Pittsburgh at Johnstown", "Pitt Johnstown", "UPJ"]
+city         = "Johnstown, Pa."
+city_source  = "schedule-page home venue location, https://pittjohnstownathletics.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+[[schools]]
+name         = "Seton Hill"
+abbreviation = "SHU"
+conference   = "PSAC"
+mascot       = "Griffins"
+gender       = "men"
+base_url     = "https://athletics.setonhill.edu/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Seton Hill University"]
+city         = "Greensburg, Pa."
+city_source  = "schedule-page home venue location, https://athletics.setonhill.edu/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+
+# The only member outside Pennsylvania.
+[[schools]]
+name         = "Shepherd"
+abbreviation = "SU"
+conference   = "PSAC"
+mascot       = "Rams"
+gender       = "men"
+base_url     = "https://shepherdrams.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Shepherd University"]
+city         = "Shepherdstown, W.Va."
+city_source  = "schedule-page home venue location, https://shepherdrams.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+
+# The probe read no season paths and no home town (schedule layer absent,
+# roster and stats present); the records list Shippensburg in every season
+# 2021-2026, so the window is the year-list.
+[[schools]]
+name         = "Shippensburg"
+abbreviation = "SHIP"
+conference   = "PSAC"
+mascot       = "Raiders"
+gender       = "men"
+base_url     = "https://shipraiders.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Shippensburg University"]
+city         = "Shippensburg, Pa."
+city_source  = "home venue location on the sport page, https://shipraiders.com/sports/mens-soccer (read 2026-09-03)"
+identity_accessed = "2026-09-03"
+
+# The probe found no mascot where it reads; "The Rock" is the site's own
+# name (rockathletics.com).
+[[schools]]
+name         = "Slippery Rock"
+abbreviation = "SRU"
+conference   = "PSAC"
+mascot       = "The Rock"
+gender       = "men"
+base_url     = "https://rockathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Slippery Rock University"]
+city         = "Slippery Rock, Pa."
+city_source  = "schedule-page home venue location, https://rockathletics.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+[[schools]]
+name         = "West Chester"
+abbreviation = "WCUPA"
+conference   = "PSAC"
+mascot       = "Golden Rams"
+gender       = "men"
+base_url     = "https://wcupagoldenrams.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["West Chester University"]
+city         = "West Chester, Pa."
+city_source  = "schedule-page home venue location, https://wcupagoldenrams.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+
+# Last PSAC season 2023; Mercyhurst joined the Northeast Conference
+# (Division I) for 2024-25 (psacsports.org news 2024/4/3, mercyhurst.edu/d1).
+# The site still serves 2024-2026, which the window excludes.
+[[schools]]
+name         = "Mercyhurst"
+abbreviation = "HURST"
+conference   = "PSAC"
+mascot       = "Lakers"
+gender       = "men"
+base_url     = "https://hurstathletics.com/sports/mens-soccer"
+years        = [2022, 2023]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Mercyhurst University"]
+city         = "Erie, Pa."
+city_source  = "schedule-page home venue location, https://hurstathletics.com/sports/mens-soccer/schedule/2023"
+identity_accessed = "2026-09-03"
+
+# ============================================================
+# MEC MEN'S SOCCER - 12 programmes, backfill window 2022-2026
+# ============================================================
+# Source of truth: Mountain East Conference per-season records
+# (mountaineast.org conference statistics per year, plus the live standings
+# for 2026), verified 2026-09-03. Ten live sites probed 2026-09-03 (uv run
+# probe --name): all SideArm with schedule / roster / stats / matches
+# present and every window season served. Two hosts are dead (Alderson
+# Broaddus, Notre Dame College); see the comments above their stanzas. No
+# collect has run yet, so every stanza is data_status = unverified. No
+# ordinals.
+#
+# Season-aware membership lives in data/reference/membership.json: Alderson
+# Broaddus left after 2022 (university closed), Notre Dame College after
+# 2023 (college closed); Point Park's window starts 2024 (from the NAIA),
+# Salem's and Shawnee State's 2026 (Salem as a men's soccer associate,
+# Shawnee State from the NAIA). 9/8/8/8/10 members 2022-2026, in North and
+# South divisions from 2026. Hosts came from the conference's members page
+# (mountaineast.org/members). West Virginia State, Fairmont State and
+# Glenville State are members with no men's soccer and have no stanza.
+#
+# Names are the conference records' spellings, chosen so programme_slug(name)
+# matches the membership key ("Charleston" is the University of Charleston;
+# "Davis & Elkins" carries the records' ampersand and mints davis-elkins).
+# The probe's initials-derived abbreviations (C, FS, PP, S, SS, WL) were
+# replaced with customary initialisms: neither the standings nor the
+# records page prints a short form (mountaineast.org/standings.aspx?path=msoc,
+# read 2026-09-03). Wheeling's site still carries the Wheeling Jesuit code
+# WJU; the stanza uses WU for Wheeling University. Davis & Elkins carries
+# D&E, the school's own short form ("D&E Sports" on senatornation.com).
+# Aliases cover the published long names and the "and" spelling of D&E.
+
+[[schools]]
+name         = "Charleston"
+abbreviation = "UCWV"
+conference   = "MEC"
+mascot       = "Golden Eagles"
+gender       = "men"
+base_url     = "https://ucgoldeneagles.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Charleston"]
+city         = "Charleston, W.Va."
+city_source  = "schedule-page home venue location, https://ucgoldeneagles.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+
+# The athletics site prints no home town on the pages read (schedule and
+# roster); Athens is the campus town.
+[[schools]]
+name         = "Concord"
+abbreviation = "CU"
+conference   = "MEC"
+mascot       = "Mountain Lions"
+gender       = "men"
+base_url     = "https://cumountainlions.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Concord University"]
+city         = "Athens, W.Va."
+city_source  = "the university's main site, https://www.concord.edu/ (footer address Vermillion Street, PO Box 1000, Athens, WV 24712, read 2026-09-03); the athletics site prints no home town on its sport, roster or front pages"
+identity_accessed = "2026-09-03"
+
+# The records print "Davis & Elkins"; the site title is "Davis and Elkins
+# College Athletics". The probe read no home town.
+[[schools]]
+name         = "Davis & Elkins"
+abbreviation = "D&E"
+conference   = "MEC"
+mascot       = "Senators"
+gender       = "men"
+base_url     = "https://senatornation.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Davis & Elkins College", "Davis and Elkins", "Davis and Elkins College", "D&E"]
+city         = "Elkins, W.Va."
+city_source  = "home venue location on the sport page, https://senatornation.com/sports/mens-soccer (read 2026-09-03)"
+identity_accessed = "2026-09-03"
+[[schools]]
+name         = "Frostburg State"
+abbreviation = "FSU"
+conference   = "MEC"
+mascot       = "Bobcats"
+gender       = "men"
+base_url     = "https://frostburgsports.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Frostburg State University", "Frostburg"]
+city         = "Frostburg, Md."
+city_source  = "schedule-page home venue location, https://frostburgsports.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+[[schools]]
+name         = "West Liberty"
+abbreviation = "WLU"
+conference   = "MEC"
+mascot       = "Hilltoppers"
+gender       = "men"
+base_url     = "https://hilltoppersports.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["West Liberty University"]
+city         = "West Liberty, W.Va."
+city_source  = "schedule-page home venue location, https://hilltoppersports.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+[[schools]]
+name         = "West Virginia Wesleyan"
+abbreviation = "WVWC"
+conference   = "MEC"
+mascot       = "Bobcats"
+gender       = "men"
+base_url     = "https://wesleyanbobcats.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["West Virginia Wesleyan College", "WV Wesleyan"]
+city         = "Buckhannon, W.Va."
+city_source  = "schedule-page home venue location, https://wesleyanbobcats.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+[[schools]]
+name         = "Wheeling"
+abbreviation = "WU"
+conference   = "MEC"
+mascot       = "Cardinals"
+gender       = "men"
+base_url     = "https://wucardinals.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Wheeling University"]
+city         = "Wheeling, W.Va."
+city_source  = "schedule-page home venue location, https://wucardinals.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+
+# First MEC season 2024: Point Park accepted the conference's invitation on
+# 2024-01-16 and was welcomed as a provisional Division II member on
+# 2024-07-11 (pointparksports.com news 2024/1/16, mountaineast.org news
+# 2024/7/11). The site serves 2022-2023 too, NAIA seasons the window
+# excludes. The probe found no mascot where it reads; "Pioneers" is the
+# site's own name (pointparksports.com).
+[[schools]]
+name         = "Point Park"
+abbreviation = "PPU"
+conference   = "MEC"
+mascot       = "Pioneers"
+gender       = "men"
+base_url     = "https://pointparksports.com/sports/mens-soccer"
+years        = [2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Point Park University"]
+city         = "Pittsburgh, Pa."
+city_source  = "schedule-page home venue location, https://pointparksports.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+
+# Men's soccer associate member from 2026-27 (salemtigers.com news
+# 2026/3/25, mountaineast.org news 2026/3/25); the site serves 2022-2025
+# too, independent seasons the window excludes. The schedule page prints
+# the home venue as Bridgeport, WV; the campus is in Salem (the site's own
+# footer address), and that is the town used.
+[[schools]]
+name         = "Salem"
+abbreviation = "SU"
+conference   = "MEC"
+mascot       = "Tigers"
+gender       = "men"
+base_url     = "https://salemtigers.com/sports/mens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Salem University"]
+city         = "Salem, W.Va."
+city_source  = "site footer address (223 West Main Street, Salem, WV 26426), https://salemtigers.com/sports/mens-soccer/roster (read 2026-09-03); the schedule page prints the home venue as Bridgeport, WV"
+identity_accessed = "2026-09-03"
+
+# First MEC season 2026: Shawnee State accepted the conference's invitation
+# on 2025-06-27 and joined from the NAIA in July 2026 (shawnee.edu news,
+# mountaineast.org news 2025/6/27). The site serves 2022-2025 too, NAIA
+# seasons the window excludes. The probe found no mascot where it reads;
+# "Bears" is the site's own name (ssubears.com).
+[[schools]]
+name         = "Shawnee State"
+abbreviation = "SSU"
+conference   = "MEC"
+mascot       = "Bears"
+gender       = "men"
+base_url     = "https://ssubears.com/sports/mens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Shawnee State University"]
+city         = "Portsmouth, Ohio"
+city_source  = "schedule-page home venue location, https://ssubears.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+
+# Dead host: abbattlers.com opens no TLS session (the egress proxy answers
+# 502 to the CONNECT; research 2026-09-03). Alderson Broaddus University
+# closed in the summer of 2023, just ahead of the 2023-24 season (Mountain
+# East Conference statement of 2023-08-04 on the impending closure,
+# https://mountaineast.org/news/2023/8/4/general-statement-regarding-alderson-broaddus-university.aspx,
+# read 2026-09-03). Single in-window season 2022. The stanza stays enabled
+# so the programmes reference carries its identity row; every fetch fails
+# and the backfill files the absence, which is the truth.
+[[schools]]
+name         = "Alderson Broaddus"
+abbreviation = "AB"
+conference   = "MEC"
+mascot       = "Battlers"
+gender       = "men"
+# Historic host, dead since at least 2026-09-03; the university closed in the summer of 2023.
+base_url     = "https://abbattlers.com/sports/mens-soccer"
+years        = [2022]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Alderson Broaddus University", "AB"]
+city         = "Philippi, W.Va."
+city_source  = "the university's own site as captured by the Wayback Machine on 2023-08-15, https://web.archive.org/web/20230815/https://ab.edu/ (\"Alderson Broaddus University in Philippi, West Virginia\"; 101 College Hill Drive, Philippi WV 26416); host dead, town not readable from the athletics site"
+identity_accessed = "2026-09-03"
+
+# Dead host: ndcfalcons.com opens no TLS session (the egress proxy answers
+# 502 to the CONNECT; research 2026-09-03). Notre Dame College ended
+# in-person instruction at the end of the spring 2024 semester (Mountain
+# East Conference statement of 2024-02-29,
+# https://mountaineast.org/news/2024/2/29/general-statement-regarding-notre-dame-college.aspx,
+# and the college's own "Notre Dame Transitions" notice, captured by the
+# Wayback Machine on 2024-05-01, both read 2026-09-03). Last MEC season
+# 2023. The stanza stays enabled so the programmes reference carries its
+# identity row; every fetch fails and the backfill files the absence, which
+# is the truth.
+[[schools]]
+name         = "Notre Dame College"
+abbreviation = "NDC"
+conference   = "MEC"
+mascot       = "Falcons"
+gender       = "men"
+# Historic host, dead since at least 2026-09-03; the college closed after the spring 2024 semester.
+base_url     = "https://ndcfalcons.com/sports/mens-soccer"
+years        = [2022, 2023]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Notre Dame (Ohio)", "NDC"]
+city         = "South Euclid, Ohio"
+city_source  = "the college's own site as captured by the Wayback Machine on 2024-05-01, https://web.archive.org/web/20240501/https://notredamecollege.edu/ (footer address 4545 College Road, South Euclid, OH 44121); host dead, town not readable from the athletics site"
+identity_accessed = "2026-09-03"
+
+# ============================================================
+# G-MAC MEN'S SOCCER - 11 programmes, backfill window 2022-2026
+# ============================================================
+# 12 in the window, Trevecca's stanza sits in the GSC section: its G-MAC
+# seasons 2022-2023 are a second membership window on the trevecca slug and
+# the collect resolves the conference per season.
+#
+# Source of truth: Great Midwest Athletic Conference per-season records
+# (greatmidwestsports.com conference statistics per year, plus the live
+# standings for 2026), verified 2026-09-03. All 11 sites probed 2026-09-03
+# (uv run probe --name): ten SideArm with schedule / roster / stats /
+# matches present (Lake Erie without matches; Findlay served 2024-2026
+# only), and one PrestoSports (Northwood) whose stanza names that platform
+# for both scrapers. No collect has run yet, so every stanza is
+# data_status = unverified. No ordinals.
+#
+# Season-aware membership lives in data/reference/membership.json: Northwood's
+# first G-MAC season is 2022, Thomas More's 2023 (provisional Division II
+# from 2022-07-14); Trevecca left after 2023 (to the GSC). 11/12/11/11/11
+# members 2022-2026. Hosts came from the conference's members page
+# (greatmidwestsports.com/members). Hillsdale and Ursuline are members with
+# no men's soccer and have no stanza.
+#
+# Names are the conference records' spellings, chosen so programme_slug(name)
+# matches the membership key. The probe's initials-derived abbreviations
+# (A, C, F, LE, M, NAM, OD, TM, T, W) were replaced with customary
+# initialisms: neither the standings nor the records page prints a short
+# form (greatmidwestsports.com/standings.aspx?path=msoc, read 2026-09-03).
+# Aliases cover the published long names and the "KWC" and "ODU" spellings
+# peers print.
+
+# The probe found no mascot where it reads; "Eagles" is the site's own name
+# (goashlandeagles.com).
+[[schools]]
+name         = "Ashland"
+abbreviation = "AU"
+conference   = "G-MAC"
+mascot       = "Eagles"
+gender       = "men"
+base_url     = "https://goashlandeagles.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Ashland University"]
+city         = "Ashland, Ohio"
+city_source  = "schedule-page home venue location, https://goashlandeagles.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+[[schools]]
+name         = "Cedarville"
+abbreviation = "CU"
+conference   = "G-MAC"
+mascot       = "Yellow Jackets"
+gender       = "men"
+base_url     = "https://yellowjackets.cedarville.edu/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Cedarville University"]
+city         = "Cedarville, Ohio"
+city_source  = "schedule-page home venue location, https://yellowjackets.cedarville.edu/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+
+# The probe found no mascot where it reads; "Oilers" is the site's own name
+# (findlayoilers.com). The probe saw 2024-2026 served; the conference
+# records list Findlay every season 2021-2026, so the window is the
+# year-list and the collect reports what the site serves for 2022-2023.
+[[schools]]
+name         = "Findlay"
+abbreviation = "UF"
+conference   = "G-MAC"
+mascot       = "Oilers"
+gender       = "men"
+base_url     = "https://findlayoilers.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Findlay"]
+city         = "Findlay, Ohio"
+city_source  = "schedule-page home venue location, https://findlayoilers.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+[[schools]]
+name         = "Kentucky Wesleyan"
+abbreviation = "KWC"
+conference   = "G-MAC"
+mascot       = "Panthers"
+gender       = "men"
+base_url     = "https://kwcpanthers.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Kentucky Wesleyan College", "KWC"]
+city         = "Owensboro, Ky."
+city_source  = "schedule-page home venue location, https://kwcpanthers.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+
+# The probe found schedule, roster and stats but no box-score links, so
+# expect match gaps; it read no mascot and no home town. "Storm" is the
+# site's own name (lakeeriestorm.com).
+[[schools]]
+name         = "Lake Erie"
+abbreviation = "LEC"
+conference   = "G-MAC"
+mascot       = "Storm"
+gender       = "men"
+base_url     = "https://lakeeriestorm.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lake Erie College"]
+city         = "Painesville, Ohio"
+city_source  = "home venue location on the sport page, https://lakeeriestorm.com/sports/mens-soccer (read 2026-09-03)"
+identity_accessed = "2026-09-03"
+
+# Canton, five miles from Walsh's North Canton: two Gazetteer places, not one.
+[[schools]]
+name         = "Malone"
+abbreviation = "MU"
+conference   = "G-MAC"
+mascot       = "Pioneers"
+gender       = "men"
+base_url     = "https://malonepioneers.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Malone University"]
+city         = "Canton, Ohio"
+city_source  = "schedule-page home venue location, https://malonepioneers.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+
+# PrestoSports (www.gonorthwood.com/sports/msoc; the root 302s to
+# /landing/index and season paths are academic years). Probed 2026-09-03:
+# schedule / roster / stats / matches present, seasons 2022-2026 served.
+# First G-MAC season 2022 (absent from the 2021 records; gonorthwood.com
+# release 2022-06-30). The probe drafted the page title "Northwood
+# University Athletics (Michigan)" as an alias and NAM as the abbreviation;
+# both dropped. The sport page prints no home town; Midland is the campus
+# town. "Timberwolves" is the site's own name.
+[[schools]]
+name         = "Northwood"
+abbreviation = "NU"
+conference   = "G-MAC"
+mascot       = "Timberwolves"
+gender       = "men"
+base_url     = "https://www.gonorthwood.com/sports/msoc"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Northwood University", "Northwood (Mich.)"]
+city         = "Midland, Mich."
+city_source  = "the university's main site, https://www.northwood.edu/ (footer address 4000 Whiting Drive, Midland, MI 48640, read 2026-09-03); the sport page prints no home town"
+identity_accessed = "2026-09-03"
+[[schools]]
+name         = "Ohio Dominican"
+abbreviation = "ODU"
+conference   = "G-MAC"
+mascot       = "Panthers"
+gender       = "men"
+base_url     = "https://ohiodominicanpanthers.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Ohio Dominican University", "ODU"]
+city         = "Columbus, Ohio"
+city_source  = "schedule-page home venue location, https://ohiodominicanpanthers.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+
+# First G-MAC season 2023: Thomas More joined NCAA Division II provisionally
+# on 2022-07-14 with conference competition from 2023-24 (greatmidwestsports.com
+# news 2022/7/14); absent from the 2022 records. The site serves 2022 too, an
+# NAIA season the window excludes. The probe found no mascot where it reads;
+# "Saints" is the site's own name (thomasmoresaints.com).
+[[schools]]
+name         = "Thomas More"
+abbreviation = "TMU"
+conference   = "G-MAC"
+mascot       = "Saints"
+gender       = "men"
+base_url     = "https://thomasmoresaints.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Thomas More University"]
+city         = "Crestview Hills, Ky."
+city_source  = "schedule-page home venue location, https://thomasmoresaints.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+
+# The probe found no mascot where it reads; "Dragons" is the site's own name
+# (gotiffindragons.com).
+[[schools]]
+name         = "Tiffin"
+abbreviation = "TU"
+conference   = "G-MAC"
+mascot       = "Dragons"
+gender       = "men"
+base_url     = "https://gotiffindragons.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Tiffin University"]
+city         = "Tiffin, Ohio"
+city_source  = "schedule-page home venue location, https://gotiffindragons.com/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"
+
+# The probe found no mascot where it reads; "Cavaliers" is the site's own
+# name (athletics.walsh.edu). North Canton is its own Gazetteer place, not
+# Malone's Canton.
+[[schools]]
+name         = "Walsh"
+abbreviation = "WU"
+conference   = "G-MAC"
+mascot       = "Cavaliers"
+gender       = "men"
+base_url     = "https://athletics.walsh.edu/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Walsh University"]
+city         = "North Canton, Ohio"
+city_source  = "schedule-page home venue location, https://athletics.walsh.edu/sports/mens-soccer/schedule/2026"
+identity_accessed = "2026-09-03"

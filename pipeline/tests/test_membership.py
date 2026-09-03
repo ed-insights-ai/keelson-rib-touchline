@@ -11,6 +11,8 @@ import pytest
 from src import membership, paths
 from src.canon import PROGRAMMES, REGISTRY
 from src.config import SchoolConfig
+from src.sidearm_live import programme_slug
+from scripts.migrate_shard import SHARDED_NAME
 
 CANON_PROGRAMMES = {
     (programme["institution_slug"], programme["gender"])
@@ -476,3 +478,36 @@ def test_members_of_resolves_a_mid_window_mover_per_season():
     assert membership.members_of("GAC", "men", 2026, document=document) == {"harding"}
     # Gender scoping holds: no women's windows are authored here.
     assert membership.members_of("GAC", "women", 2022, document=document) == set()
+
+
+def test_a_hyphenated_conference_code_keys_its_season_files():
+    # G-MAC is the first conference code with a hyphen (batch 2, 2026-09-03).
+    # The collect names its shard f"{season}-{gender}-{programme_slug(conference)}"
+    # (scripts/collect_board.py), and the shard regex must read it back whole.
+    assert programme_slug("G-MAC") == "g-mac"
+    season_key = f"{2026}-{'men'}-{programme_slug('G-MAC')}"
+    assert season_key == "2026-men-g-mac"
+    match = SHARDED_NAME.match("2026-men-g-mac.json")
+    assert match is not None
+    assert match.groups() == ("2026", "men", "g-mac")
+
+
+def test_g_mac_resolves_per_season_with_trevecca_in_its_earlier_window(
+    membership_document,
+):
+    # The packaged file: eleven G-MAC members in 2026, twelve in 2023 when
+    # Trevecca's first window still names the G-MAC, and GSC from 2024.
+    now = membership.members_of("G-MAC", "men", 2026, document=membership_document)
+    assert len(now) == 11
+    assert "trevecca" not in now
+    then = membership.members_of("G-MAC", "men", 2023, document=membership_document)
+    assert len(then) == 12
+    assert "trevecca" in then
+    assert (
+        membership.conference_for("trevecca", "men", 2023, document=membership_document)
+        == "G-MAC"
+    )
+    assert (
+        membership.conference_for("trevecca", "men", 2024, document=membership_document)
+        == "GSC"
+    )

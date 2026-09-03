@@ -76,6 +76,40 @@
         }
       }
     },
+    "alderson-broaddus": {
+      "name": "Alderson Broaddus",
+      "nickname": "Battlers",
+      "abbreviation": "AB",
+      "city": "Philippi, W.Va.",
+      "point": {
+        "lat": 39.1473,
+        "lon": -80.0504
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://abbattlers.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://abbattlers.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "the university's own site as captured by the Wayback Machine on 2023-08-15, https://web.archive.org/web/20230815/https://ab.edu/ (\"Alderson Broaddus University in Philippi, West Virginia\"; 101 College Hill Drive, Philippi WV 26416); host dead, town not readable from the athletics site",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "5463292",
+          "name": "Philippi city",
+          "state": "WV",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "alliance": {
       "name": "Alliance",
       "nickname": "Warriors",
@@ -140,6 +174,40 @@
           "geoid": "2567000",
           "name": "Springfield city",
           "state": "MA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "ashland": {
+      "name": "Ashland",
+      "nickname": "Eagles",
+      "abbreviation": "AU",
+      "city": "Ashland, Ohio",
+      "point": {
+        "lat": 40.8671,
+        "lon": -82.3152
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://goashlandeagles.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://goashlandeagles.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://goashlandeagles.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3902568",
+          "name": "Ashland city",
+          "state": "OH",
           "accessed": "2023-09-26"
         }
       }
@@ -315,6 +383,40 @@
         }
       }
     },
+    "bloomsburg": {
+      "name": "Bloomsburg",
+      "nickname": "Huskies",
+      "abbreviation": "BU",
+      "city": "Bloomsburg, Pa.",
+      "point": {
+        "lat": 41.0027,
+        "lon": -76.4566
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://bloomsburgathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://bloomsburgathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://bloomsburgathletics.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4207128",
+          "name": "Bloomsburg town",
+          "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "bridgeport": {
       "name": "Bridgeport",
       "nickname": "Purple Knights",
@@ -379,6 +481,108 @@
           "geoid": "3409250",
           "name": "Caldwell borough",
           "state": "NJ",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "california-pa": {
+      "name": "California (Pa.)",
+      "nickname": "Vulcans",
+      "abbreviation": "CUP",
+      "city": "California, Pa.",
+      "point": {
+        "lat": 40.0667,
+        "lon": -79.912
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://calvulcans.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://calvulcans.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://calvulcans.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4210768",
+          "name": "California borough",
+          "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "cedarville": {
+      "name": "Cedarville",
+      "nickname": "Yellow Jackets",
+      "abbreviation": "CU",
+      "city": "Cedarville, Ohio",
+      "point": {
+        "lat": 39.7484,
+        "lon": -83.8122
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://yellowjackets.cedarville.edu/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://yellowjackets.cedarville.edu/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://yellowjackets.cedarville.edu/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3912784",
+          "name": "Cedarville village",
+          "state": "OH",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "charleston": {
+      "name": "Charleston",
+      "nickname": "Golden Eagles",
+      "abbreviation": "UCWV",
+      "city": "Charleston, W.Va.",
+      "point": {
+        "lat": 38.3487,
+        "lon": -81.6323
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://ucgoldeneagles.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://ucgoldeneagles.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://ucgoldeneagles.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "5414600",
+          "name": "Charleston city",
+          "state": "WV",
           "accessed": "2023-09-26"
         }
       }
@@ -553,6 +757,40 @@
         }
       }
     },
+    "concord": {
+      "name": "Concord",
+      "nickname": "Mountain Lions",
+      "abbreviation": "CU",
+      "city": "Athens, W.Va.",
+      "point": {
+        "lat": 37.4207,
+        "lon": -81.0125
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://cumountainlions.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://cumountainlions.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "the university's main site, https://www.concord.edu/ (footer address Vermillion Street, PO Box 1000, Athens, WV 24712, read 2026-09-03); the athletics site prints no home town on its sport, roster or front pages",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "5403292",
+          "name": "Athens town",
+          "state": "WV",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "csu-pueblo": {
       "name": "CSU Pueblo",
       "nickname": "ThunderWolves",
@@ -690,6 +928,40 @@
         }
       }
     },
+    "davis-elkins": {
+      "name": "Davis & Elkins",
+      "nickname": "Senators",
+      "abbreviation": "D&E",
+      "city": "Elkins, W.Va.",
+      "point": {
+        "lat": 38.9238,
+        "lon": -79.854
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://senatornation.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://senatornation.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "home venue location on the sport page, https://senatornation.com/sports/mens-soccer (read 2026-09-03)",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "5424580",
+          "name": "Elkins city",
+          "state": "WV",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "delta-state": {
       "name": "Delta State",
       "nickname": "Statesmen",
@@ -822,6 +1094,40 @@
           "geoid": "2970000",
           "name": "Springfield city",
           "state": "MO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "e-stroudsburg": {
+      "name": "E. Stroudsburg",
+      "nickname": "Warriors",
+      "abbreviation": "ESU",
+      "city": "East Stroudsburg, Pa.",
+      "point": {
+        "lat": 41.0049,
+        "lon": -75.1715
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://esuwarriors.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://esuwarriors.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://esuwarriors.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4221872",
+          "name": "East Stroudsburg borough",
+          "state": "PA",
           "accessed": "2023-09-26"
         }
       }
@@ -997,6 +1303,40 @@
         }
       }
     },
+    "findlay": {
+      "name": "Findlay",
+      "nickname": "Oilers",
+      "abbreviation": "UF",
+      "city": "Findlay, Ohio",
+      "point": {
+        "lat": 41.0474,
+        "lon": -83.6381
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://findlayoilers.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://findlayoilers.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://findlayoilers.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3927048",
+          "name": "Findlay city",
+          "state": "OH",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "florida-southern": {
       "name": "Florida Southern",
       "nickname": "Moccasins",
@@ -1165,6 +1505,74 @@
           "state": "NH",
           "accessed": "2023-09-26",
           "note": "county subdivision; the places file has no entry for this town"
+        }
+      }
+    },
+    "frostburg-state": {
+      "name": "Frostburg State",
+      "nickname": "Bobcats",
+      "abbreviation": "FSU",
+      "city": "Frostburg, Md.",
+      "point": {
+        "lat": 39.6505,
+        "lon": -78.9268
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://frostburgsports.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://frostburgsports.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://frostburgsports.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2430900",
+          "name": "Frostburg city",
+          "state": "MD",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "gannon": {
+      "name": "Gannon",
+      "nickname": "Golden Knights",
+      "abbreviation": "GU",
+      "city": "Erie, Pa.",
+      "point": {
+        "lat": 42.1166,
+        "lon": -80.0735
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gannonsports.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gannonsports.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://gannonsports.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4224000",
+          "name": "Erie city",
+          "state": "PA",
+          "accessed": "2023-09-26"
         }
       }
     },
@@ -1407,6 +1815,74 @@
         }
       }
     },
+    "kentucky-wesleyan": {
+      "name": "Kentucky Wesleyan",
+      "nickname": "Panthers",
+      "abbreviation": "KWC",
+      "city": "Owensboro, Ky.",
+      "point": {
+        "lat": 37.7571,
+        "lon": -87.1167
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://kwcpanthers.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://kwcpanthers.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://kwcpanthers.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2158620",
+          "name": "Owensboro city",
+          "state": "KY",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "lake-erie": {
+      "name": "Lake Erie",
+      "nickname": "Storm",
+      "abbreviation": "LEC",
+      "city": "Painesville, Ohio",
+      "point": {
+        "lat": 41.7216,
+        "lon": -81.2584
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://lakeeriestorm.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://lakeeriestorm.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "home venue location on the sport page, https://lakeeriestorm.com/sports/mens-soccer (read 2026-09-03)",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3959416",
+          "name": "Painesville city",
+          "state": "OH",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "le-moyne": {
       "name": "Le Moyne",
       "nickname": "Dolphins",
@@ -1543,6 +2019,40 @@
         }
       }
     },
+    "lock-haven": {
+      "name": "Lock Haven",
+      "nickname": "Bald Eagles",
+      "abbreviation": "LHUP",
+      "city": "Lock Haven, Pa.",
+      "point": {
+        "lat": 41.1371,
+        "lon": -77.4532
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.lockhavenathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.lockhavenathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "home venue location on the sport page, https://www.lockhavenathletics.com/sports/mens-soccer (read 2026-09-03)",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4244128",
+          "name": "Lock Haven city",
+          "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "lubbock-christian": {
       "name": "Lubbock Christian",
       "nickname": "Chaparrals",
@@ -1607,6 +2117,40 @@
           "geoid": "1207300",
           "name": "Boca Raton city",
           "state": "FL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "malone": {
+      "name": "Malone",
+      "nickname": "Pioneers",
+      "abbreviation": "MU",
+      "city": "Canton, Ohio",
+      "point": {
+        "lat": 40.8077,
+        "lon": -81.3672
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://malonepioneers.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://malonepioneers.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://malonepioneers.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3912000",
+          "name": "Canton city",
+          "state": "OH",
           "accessed": "2023-09-26"
         }
       }
@@ -1714,6 +2258,40 @@
         }
       }
     },
+    "mercyhurst": {
+      "name": "Mercyhurst",
+      "nickname": "Lakers",
+      "abbreviation": "HURST",
+      "city": "Erie, Pa.",
+      "point": {
+        "lat": 42.1166,
+        "lon": -80.0735
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://hurstathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://hurstathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://hurstathletics.com/sports/mens-soccer/schedule/2023",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4224000",
+          "name": "Erie city",
+          "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "midwestern-state": {
       "name": "Midwestern State",
       "nickname": "Mustangs",
@@ -1744,6 +2322,40 @@
           "geoid": "4879000",
           "name": "Wichita Falls city",
           "state": "TX",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "millersville": {
+      "name": "Millersville",
+      "nickname": "Marauders",
+      "abbreviation": "MU",
+      "city": "Millersville, Pa.",
+      "point": {
+        "lat": 40.0053,
+        "lon": -76.3518
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://millersvilleathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://millersvilleathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "home venue location on the sport page, https://millersvilleathletics.com/sports/mens-soccer (read 2026-09-03)",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4249728",
+          "name": "Millersville borough",
+          "state": "PA",
           "accessed": "2023-09-26"
         }
       }
@@ -2089,6 +2701,74 @@
         }
       }
     },
+    "northwood": {
+      "name": "Northwood",
+      "nickname": "Timberwolves",
+      "abbreviation": "NU",
+      "city": "Midland, Mich.",
+      "point": {
+        "lat": 43.6248,
+        "lon": -84.232
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.gonorthwood.com/sports/msoc",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.gonorthwood.com/sports/msoc",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "the university's main site, https://www.northwood.edu/ (footer address 4000 Whiting Drive, Midland, MI 48640, read 2026-09-03); the sport page prints no home town",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2653780",
+          "name": "Midland city",
+          "state": "MI",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "notre-dame-college": {
+      "name": "Notre Dame College",
+      "nickname": "Falcons",
+      "abbreviation": "NDC",
+      "city": "South Euclid, Ohio",
+      "point": {
+        "lat": 41.524,
+        "lon": -81.5245
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://ndcfalcons.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://ndcfalcons.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "the college's own site as captured by the Wayback Machine on 2024-05-01, https://web.archive.org/web/20240501/https://notredamecollege.edu/ (footer address 4545 College Road, South Euclid, OH 44121); host dead, town not readable from the athletics site",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3973264",
+          "name": "South Euclid city",
+          "state": "OH",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "nova-southeastern": {
       "name": "Nova Southeastern",
       "nickname": "Sharks",
@@ -2119,6 +2799,40 @@
           "geoid": "1224000",
           "name": "Fort Lauderdale city",
           "state": "FL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "ohio-dominican": {
+      "name": "Ohio Dominican",
+      "nickname": "Panthers",
+      "abbreviation": "ODU",
+      "city": "Columbus, Ohio",
+      "point": {
+        "lat": 39.9839,
+        "lon": -82.9849
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://ohiodominicanpanthers.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://ohiodominicanpanthers.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://ohiodominicanpanthers.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3918000",
+          "name": "Columbus city",
+          "state": "OH",
           "accessed": "2023-09-26"
         }
       }
@@ -2289,6 +3003,74 @@
           "geoid": "1276600",
           "name": "West Palm Beach city",
           "state": "FL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "pitt-johnstown": {
+      "name": "Pitt-Johnstown",
+      "nickname": "Mountain Cats",
+      "abbreviation": "UPJ",
+      "city": "Johnstown, Pa.",
+      "point": {
+        "lat": 40.3261,
+        "lon": -78.9191
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://pittjohnstownathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://pittjohnstownathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://pittjohnstownathletics.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4238288",
+          "name": "Johnstown city",
+          "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "point-park": {
+      "name": "Point Park",
+      "nickname": "Pioneers",
+      "abbreviation": "PPU",
+      "city": "Pittsburgh, Pa.",
+      "point": {
+        "lat": 40.4399,
+        "lon": -79.9757
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://pointparksports.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://pointparksports.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://pointparksports.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4261000",
+          "name": "Pittsburgh city",
+          "state": "PA",
           "accessed": "2023-09-26"
         }
       }
@@ -2771,6 +3553,176 @@
         }
       }
     },
+    "salem": {
+      "name": "Salem",
+      "nickname": "Tigers",
+      "abbreviation": "SU",
+      "city": "Salem, W.Va.",
+      "point": {
+        "lat": 39.2849,
+        "lon": -80.5645
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://salemtigers.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://salemtigers.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "site footer address (223 West Main Street, Salem, WV 26426), https://salemtigers.com/sports/mens-soccer/roster (read 2026-09-03); the schedule page prints the home venue as Bridgeport, WV",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "5471380",
+          "name": "Salem city",
+          "state": "WV",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "seton-hill": {
+      "name": "Seton Hill",
+      "nickname": "Griffins",
+      "abbreviation": "SHU",
+      "city": "Greensburg, Pa.",
+      "point": {
+        "lat": 40.3112,
+        "lon": -79.5444
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://athletics.setonhill.edu/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://athletics.setonhill.edu/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://athletics.setonhill.edu/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4231200",
+          "name": "Greensburg city",
+          "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "shawnee-state": {
+      "name": "Shawnee State",
+      "nickname": "Bears",
+      "abbreviation": "SSU",
+      "city": "Portsmouth, Ohio",
+      "point": {
+        "lat": 38.7534,
+        "lon": -82.9495
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://ssubears.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://ssubears.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://ssubears.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3964304",
+          "name": "Portsmouth city",
+          "state": "OH",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "shepherd": {
+      "name": "Shepherd",
+      "nickname": "Rams",
+      "abbreviation": "SU",
+      "city": "Shepherdstown, W.Va.",
+      "point": {
+        "lat": 39.4319,
+        "lon": -77.8047
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://shepherdrams.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://shepherdrams.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://shepherdrams.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "5473468",
+          "name": "Shepherdstown town",
+          "state": "WV",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "shippensburg": {
+      "name": "Shippensburg",
+      "nickname": "Raiders",
+      "abbreviation": "SHIP",
+      "city": "Shippensburg, Pa.",
+      "point": {
+        "lat": 40.0487,
+        "lon": -77.5232
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://shipraiders.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://shipraiders.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "home venue location on the sport page, https://shipraiders.com/sports/mens-soccer (read 2026-09-03)",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4270352",
+          "name": "Shippensburg borough",
+          "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "shorter": {
       "name": "Shorter",
       "nickname": "Hawks",
@@ -2801,6 +3753,40 @@
           "geoid": "1366668",
           "name": "Rome city",
           "state": "GA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "slippery-rock": {
+      "name": "Slippery Rock",
+      "nickname": "The Rock",
+      "abbreviation": "SRU",
+      "city": "Slippery Rock, Pa.",
+      "point": {
+        "lat": 41.0695,
+        "lon": -80.0579
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://rockathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://rockathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://rockathletics.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4271184",
+          "name": "Slippery Rock borough",
+          "state": "PA",
           "accessed": "2023-09-26"
         }
       }
@@ -3213,6 +4199,74 @@
         }
       }
     },
+    "thomas-more": {
+      "name": "Thomas More",
+      "nickname": "Saints",
+      "abbreviation": "TMU",
+      "city": "Crestview Hills, Ky.",
+      "point": {
+        "lat": 39.0243,
+        "lon": -84.5699
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://thomasmoresaints.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://thomasmoresaints.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://thomasmoresaints.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2118442",
+          "name": "Crestview Hills city",
+          "state": "KY",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "tiffin": {
+      "name": "Tiffin",
+      "nickname": "Dragons",
+      "abbreviation": "TU",
+      "city": "Tiffin, Ohio",
+      "point": {
+        "lat": 41.1149,
+        "lon": -83.1805
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gotiffindragons.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gotiffindragons.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://gotiffindragons.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3976778",
+          "name": "Tiffin city",
+          "state": "OH",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "trevecca": {
       "name": "Trevecca",
       "nickname": "Trojans",
@@ -3520,6 +4574,40 @@
         }
       }
     },
+    "walsh": {
+      "name": "Walsh",
+      "nickname": "Cavaliers",
+      "abbreviation": "WU",
+      "city": "North Canton, Ohio",
+      "point": {
+        "lat": 40.8741,
+        "lon": -81.3971
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://athletics.walsh.edu/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://athletics.walsh.edu/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://athletics.walsh.edu/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3956294",
+          "name": "North Canton city",
+          "state": "OH",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "west-alabama": {
       "name": "West Alabama",
       "nickname": "Tigers",
@@ -3550,6 +4638,40 @@
           "geoid": "0143720",
           "name": "Livingston city",
           "state": "AL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "west-chester": {
+      "name": "West Chester",
+      "nickname": "Golden Rams",
+      "abbreviation": "WCUPA",
+      "city": "West Chester, Pa.",
+      "point": {
+        "lat": 39.9599,
+        "lon": -75.6054
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://wcupagoldenrams.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://wcupagoldenrams.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://wcupagoldenrams.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4282704",
+          "name": "West Chester borough",
+          "state": "PA",
           "accessed": "2023-09-26"
         }
       }
@@ -3588,6 +4710,40 @@
         }
       }
     },
+    "west-liberty": {
+      "name": "West Liberty",
+      "nickname": "Hilltoppers",
+      "abbreviation": "WLU",
+      "city": "West Liberty, W.Va.",
+      "point": {
+        "lat": 40.1644,
+        "lon": -80.5971
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://hilltoppersports.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://hilltoppersports.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://hilltoppersports.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "5485876",
+          "name": "West Liberty town",
+          "state": "WV",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "west-texas-a-m": {
       "name": "West Texas A&M",
       "nickname": "Buffaloes",
@@ -3622,6 +4778,40 @@
         }
       }
     },
+    "west-virginia-wesleyan": {
+      "name": "West Virginia Wesleyan",
+      "nickname": "Bobcats",
+      "abbreviation": "WVWC",
+      "city": "Buckhannon, W.Va.",
+      "point": {
+        "lat": 38.9927,
+        "lon": -80.2282
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://wesleyanbobcats.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://wesleyanbobcats.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://wesleyanbobcats.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "5411188",
+          "name": "Buckhannon city",
+          "state": "WV",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "westminster": {
       "name": "Westminster",
       "nickname": "Griffins",
@@ -3652,6 +4842,40 @@
           "geoid": "4967000",
           "name": "Salt Lake City city",
           "state": "UT",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "wheeling": {
+      "name": "Wheeling",
+      "nickname": "Cardinals",
+      "abbreviation": "WU",
+      "city": "Wheeling, W.Va.",
+      "point": {
+        "lat": 40.0738,
+        "lon": -80.696
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://wucardinals.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://wucardinals.com/sports/mens-soccer",
+          "accessed": "2026-09-03"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://wucardinals.com/sports/mens-soccer/schedule/2026",
+          "accessed": "2026-09-03"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "5486452",
+          "name": "Wheeling city",
+          "state": "WV",
           "accessed": "2023-09-26"
         }
       }
