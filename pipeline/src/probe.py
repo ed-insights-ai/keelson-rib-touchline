@@ -225,23 +225,31 @@ def _presto_layers(
 
     # The statistics URL carries the school's own segment, read from a link
     # the site publishes (the schedule page, else the landing page), never
-    # guessed from the school's name.
+    # guessed from the school's name.  A skin that publishes no such link
+    # (the legacy table and mobile list skins) still reveals the segment
+    # through the site's own redirect of ``{y}-{yy}/teams``, the way the
+    # collector finds it (``presto.locate_stats``); the probe then judges
+    # the print template that redirect leads to, which is the page the
+    # collector reads.
     if segment is None and landing_html:
         segment = presto.team_segment(landing_html)
-    if segment is None:
+    if segment is None and schedule_failure is not None:
         layers[LAYER_STATS] = (
             f"{LAYER_ERROR} (team link not read: {failure_detail(schedule_failure)})"
-            if schedule_failure is not None
-            else f"{LAYER_ABSENT} (no team link on the schedule or landing page)"
         )
         return layers
     try:
-        stats = presto.fetch_page(
-            session, presto.stats_url(base_url, year, segment), year, LAYER_STATS
-        )
-        layers[LAYER_STATS] = (
-            LAYER_PRESENT if presto.has_stats_markup(stats.html) else LAYER_ABSENT
-        )
+        if segment is not None:
+            stats = presto.fetch_page(
+                session, presto.stats_url(base_url, year, segment), year, LAYER_STATS
+            )
+            present = presto.has_stats_markup(stats.html)
+        else:
+            stats = presto.fetch_page(
+                session, presto.locate_stats(session, base_url, year), year, LAYER_STATS
+            )
+            present = presto.has_player_stats_markup(stats.html)
+        layers[LAYER_STATS] = LAYER_PRESENT if present else LAYER_ABSENT
     except LiveCollectionError as exc:
         layers[LAYER_STATS] = _layer_error(exc)
     return layers

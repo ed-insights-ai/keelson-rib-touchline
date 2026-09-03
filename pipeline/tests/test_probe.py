@@ -9,6 +9,7 @@ from unittest.mock import MagicMock
 import requests
 
 from scripts import probe as probe_cli
+from src.presto import STATS_TEMPLATE
 from src.probe import (
     LAYER_PRESENT,
     PLATFORM_PRESTOSPORTS,
@@ -718,3 +719,46 @@ def test_cli_probes_a_prestosports_site_end_to_end(capsys) -> None:
     assert 'scraper      = "prestosports"' in out
     assert 'live_scraper = "prestosports"' in out
     assert "# city: the schedule page prints no home town" in out
+
+
+def test_probe_layers_locates_the_statistics_page_through_the_redirect() -> None:
+    """The legacy table skin publishes no team link anywhere (measured
+    2026-09-02 on wildcats.athletics.wilmu.edu and stacathletics.com), so
+    the probe follows the site's own redirect of ``{y}-{yy}/teams``, the way
+    the collector does, and judges the print template it leads to."""
+    base = "https://wildcats.athletics.wilmu.edu/sports/msoc"
+    year = 2025
+    schedule_url = f"{base}/2025-26/schedule"
+    roster_url = f"{base}/2025-26/roster"
+    teams_url = f"{base}/2025-26/teams"
+    stats_url = f"{base}/2025-26/teams/wilmingtondel?tmpl={STATS_TEMPLATE}"
+    redirect = MagicMock()
+    redirect.status_code = 302
+    redirect.headers = {"Location": "/sports/msoc/2025-26/teams/wilmingtondel"}
+    session = _session_by_url(
+        {
+            schedule_url: _response(
+                schedule_url,
+                (FIXTURES / "prestosports_wilmington_schedule_2025.html").read_text(),
+            ),
+            roster_url: _response(
+                roster_url,
+                (FIXTURES / "prestosports_wilmington_roster_2025.html").read_text(),
+            ),
+            teams_url: redirect,
+            stats_url: _response(stats_url, _presto_page("stats_2025")),
+        }
+    )
+
+    assert probe_layers(session, base, year, PLATFORM_PRESTOSPORTS) == {
+        "schedule": LAYER_PRESENT,
+        "roster": LAYER_PRESENT,
+        "stats": LAYER_PRESENT,
+        "matches": LAYER_PRESENT,
+    }
+    assert [call.args[0] for call in session.get.call_args_list] == [
+        schedule_url,
+        roster_url,
+        teams_url,
+        stats_url,
+    ]

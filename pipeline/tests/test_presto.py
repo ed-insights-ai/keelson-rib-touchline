@@ -1141,3 +1141,231 @@ def test_a_challenge_answer_to_a_box_score_is_refused_with_its_status() -> None:
         f"[2025] box-score page {BOX_4ZCL_URL} answered HTTP 202 with an empty "
         "body (served a challenge, not the page)"
     )
+
+
+# --- The other schedule and roster skins -------------------------------------
+#
+# PrestoSports renders a schedule through one of several skins (module
+# docstring of src/presto.py).  Each fixture below was fetched live on
+# 2026-09-02 through the pipeline's own session and cross-checked against a
+# second season of the same site (the 2022-23 pages, and ubknights.com's
+# 2026-27 page), which render the same skin: the facts asserted here hold on
+# both.  Owners and opponents are the fixtures' own, never configuration.
+
+WILMINGTON_BASE = "https://wildcats.athletics.wilmu.edu/sports/msoc"
+STAC_BASE = "https://www.stacathletics.com/sports/msoc"
+BRIDGEPORT_BASE = "https://ubknights.com/sports/msoc"
+WILMINGTON_SCHEDULE = (
+    FIXTURES / "prestosports_wilmington_schedule_2025.html"
+).read_text()
+WILMINGTON_ROSTER = (FIXTURES / "prestosports_wilmington_roster_2025.html").read_text()
+STAC_SCHEDULE = (FIXTURES / "prestosports_stac_schedule_2025.html").read_text()
+BRIDGEPORT_SCHEDULE = (
+    FIXTURES / "prestosports_bridgeport_schedule_2025.html"
+).read_text()
+WILMINGTON_SCHEDULE_URL = f"{WILMINGTON_BASE}/2025-26/schedule"
+STAC_SCHEDULE_URL = f"{STAC_BASE}/2025-26/schedule"
+BRIDGEPORT_SCHEDULE_URL = f"{BRIDGEPORT_BASE}/2025-26/schedule"
+
+
+def _skin_rows(html: str, page_url: str, owner: str) -> list[dict[str, object]]:
+    return parse_schedule(
+        html, page_url=page_url, year=2025, owner_slug=owner, aliases={}
+    )
+
+
+def test_every_skin_is_detected_as_a_schedule_and_proves_its_season() -> None:
+    for html, url in (
+        (WILMINGTON_SCHEDULE, WILMINGTON_SCHEDULE_URL),
+        (STAC_SCHEDULE, STAC_SCHEDULE_URL),
+        (BRIDGEPORT_SCHEDULE, BRIDGEPORT_SCHEDULE_URL),
+    ):
+        assert has_schedule_markup(html), url
+        assert not has_roster_markup(html), url
+        assert not has_stats_markup(html), url
+        assert "server-rendered PrestoSports schedule markup" in is_presto(html), url
+        season_served(url, html, 2025, LAYER_SCHEDULE)
+    assert has_roster_markup(WILMINGTON_ROSTER)
+    assert not has_schedule_markup(WILMINGTON_ROSTER)
+
+
+def test_the_legacy_table_skin_reads_every_row_and_mints_ids() -> None:
+    rows = _skin_rows(WILMINGTON_SCHEDULE, WILMINGTON_SCHEDULE_URL, "wilmington")
+
+    # 21 played rows, 21 box-score links, one for one.
+    assert len(rows) == 21
+    assert all(row["status"] == "final" for row in rows)
+    assert all("home_score" in row and "time" in row for row in rows)
+    assert (rows[0]["date"], rows[-1]["date"]) == ("2025-09-04", "2025-11-23")
+    assert sum(1 for row in rows if row["conference_game"]) == 10
+    assert not any("conference_game_source" in row for row in rows)
+    links = boxscore_links_by_event(WILMINGTON_SCHEDULE, WILMINGTON_SCHEDULE_URL)
+    assert set(links) == {str(row["id"]).rsplit(":", 1)[1] for row in rows}
+    assert (
+        links["20250904-adelphi"]
+        == f"{WILMINGTON_BASE}/2025-26/boxscores/20250904_j6bo.xml"
+    )
+
+    # A neutral-site row: "vs." with a "@ Waterbury, Conn." span, dated
+    # from the event link label ("September 4 06:30 PM").
+    assert rows[0] == {
+        "id": "presto:wilmington:20250904-adelphi",
+        "date": "2025-09-04",
+        "time": "18:30",
+        "home": "wilmington",
+        "away": "adelphi",
+        "neutral": True,
+        "venue": "Waterbury, Conn.",
+        "status": "final",
+        "conference_game": False,
+        "source_url": WILMINGTON_SCHEDULE_URL,
+        "home_score": 1,
+        "away_score": 1,
+    }
+    # An "at" row puts the owner away; the notes cell ("Homecoming", a
+    # round name) is never read as a venue on this skin.
+    [away] = [row for row in rows if row["home"] == "west-chester"]
+    assert (away["away"], away["home_score"], away["away_score"]) == (
+        "wilmington",
+        0,
+        2,
+    )
+    assert "venue" not in away
+    assert not any("Round" in str(row.get("venue", "")) for row in rows)
+
+
+def test_the_mobile_list_skin_reads_every_row_without_kickoffs() -> None:
+    rows = _skin_rows(STAC_SCHEDULE, STAC_SCHEDULE_URL, "st-thomas-aquinas")
+
+    assert len(rows) == 17
+    assert all(row["status"] == "final" and "home_score" in row for row in rows)
+    # The list prints "Final" where a kickoff would be and labels no links.
+    assert not any("time" in row for row in rows)
+    assert sum(1 for row in rows if row["conference_game"]) == 8
+    links = boxscore_links_by_event(STAC_SCHEDULE, STAC_SCHEDULE_URL)
+    assert set(links) == {str(row["id"]).rsplit(":", 1)[1] for row in rows}
+
+    # "at Southern N.H." with "L, 4-2": the letter orients the owner's 2.
+    assert rows[0] == {
+        "id": "presto:st-thomas-aquinas:20250904-southern-n-h",
+        "date": "2025-09-04",
+        "home": "southern-n-h",
+        "away": "st-thomas-aquinas",
+        "status": "final",
+        "conference_game": False,
+        "source_url": STAC_SCHEDULE_URL,
+        "home_score": 4,
+        "away_score": 2,
+    }
+    # A postseason row keeps its opponent; the round name in its ``.more``
+    # block is not a venue.
+    [semifinal] = [row for row in rows if row["date"] == "2025-11-08"]
+    assert (semifinal["home"], semifinal["away"]) == (
+        "roberts-wesleyan",
+        "st-thomas-aquinas",
+    )
+    assert "venue" not in semifinal
+
+
+def test_the_table_skin_reads_ids_venues_and_seeded_postseason_opponents() -> None:
+    rows = _skin_rows(BRIDGEPORT_SCHEDULE, BRIDGEPORT_SCHEDULE_URL, "bridgeport")
+
+    # 22 rows carrying data-event-id, 22 box scores joined on it.
+    assert len(rows) == 22
+    assert all(row["status"] == "final" and "home_score" in row for row in rows)
+    links = boxscore_links_by_event(BRIDGEPORT_SCHEDULE, BRIDGEPORT_SCHEDULE_URL)
+    assert set(links) == {str(row["id"]).rsplit(":", 1)[1] for row in rows}
+    assert sum(1 for row in rows if row["conference_game"]) == 10
+
+    assert rows[0] == {
+        "id": "presto:bridgeport:6hwmyufa4m5s7pt2",
+        "date": "2025-09-04",
+        "time": "18:00",
+        "home": "bridgeport",
+        "away": "franklin-pierce",
+        "venue": "Knights Field",
+        "status": "final",
+        "conference_game": False,
+        "source_url": BRIDGEPORT_SCHEDULE_URL,
+        "home_score": 0,
+        "away_score": 1,
+    }
+    # "Jess Dow Field | New Haven, Conn." keeps the facility; the inline
+    # "~ Region" notation beside "Final" is not part of the status.
+    [away] = [row for row in rows if row["id"] == "presto:bridgeport:c6myqowz4hqnk2jw"]
+    assert (away["venue"], away["status"], away["home"]) == (
+        "Jess Dow Field",
+        "final",
+        "southern-conn-state",
+    )
+    # "No. 1 Seed Post (CACC Championship)" is a fixture against Post, and
+    # "No. 8 Seed Post (NCAA Regional First Round)" sits on a ``neutral`` row.
+    [final] = [row for row in rows if row["id"] == "presto:bridgeport:e6f4c3t69mppjdgj"]
+    assert (final["home"], final["away"]) == ("post", "bridgeport")
+    assert (final["home_score"], final["away_score"]) == (3, 4)
+    [regional] = [
+        row for row in rows if row["id"] == "presto:bridgeport:5jp3o9e9qeqp8t7n"
+    ]
+    assert regional["neutral"] is True
+    assert (regional["home"], regional["away"]) == ("bridgeport", "post")
+    assert regional["venue"] == "Mark A. Ouellette Stadium"
+
+
+def test_a_match_settled_on_penalties_stores_the_drawn_score() -> None:
+    """ubknights.com's 2022-23 page prints "L by PK, 1-1" beside "Final - PK
+    Alliance University" (fetched live 2026-09-02): the match is the draw."""
+    html = (
+        '<div class="section-event-month"><div class="month-title">November</div>'
+        '<table><tbody><tr class="event-row home" data-event-id="fb8fwjet3bpslq33">'
+        '<td class="date">Tue. 1</td>'
+        '<td class="opponent"><span class="event-location-badge">vs</span>'
+        '<span class="team-name">Alliance</span></td>'
+        '<td class="status">Final - PK Alliance University'
+        '<span class="notation" title="Region">~</span></td>'
+        '<td class="result"><span class="text-danger">L</span> by PK, 1-1</td>'
+        "</tr></tbody></table></div>"
+    )
+    [row] = _skin_rows(html, BRIDGEPORT_SCHEDULE_URL, "bridgeport")
+
+    assert (row["status"], row["home_score"], row["away_score"]) == ("final", 1, 1)
+    assert row["date"] == "2025-11-01"
+
+
+def test_a_page_with_event_ids_skips_its_next_event_banner() -> None:
+    """ubknights.com's 2026-27 page (fetched live 2026-09-02) repeats one row
+    above the table as a card without an id; only the identified row counts."""
+    banner = (
+        '<div class="card event-row home"><span class="event-opponent-name">'
+        '<span class="team-name">Mercy</span></span></div>'
+    )
+    rows = _skin_rows(
+        banner + BRIDGEPORT_SCHEDULE, BRIDGEPORT_SCHEDULE_URL, "bridgeport"
+    )
+
+    assert len(rows) == 22
+    assert len({str(row["id"]) for row in rows}) == 22
+
+
+def test_the_legacy_roster_skin_reads_every_player_by_header_text() -> None:
+    players = parse_roster(
+        WILMINGTON_ROSTER, page_url=f"{WILMINGTON_BASE}/2025-26/roster"
+    )
+
+    assert len(players) == 30
+    assert players[0] == {
+        "name": "Will Kiers",
+        "number": "0",
+        "position": "Goalkeeper",
+        "height": "6'2\"",
+        "weight": "180 lbs",
+        "hometown": "Ware, England",
+        "class_year": "Freshman",
+        "source_url": f"{WILMINGTON_BASE}/2025-26/bios/kiers_will_r7fl",
+    }
+    assert {player["position"] for player in players} == {
+        "Goalkeeper",
+        "Defender",
+        "Midfielder",
+        "Forward",
+    }
+    assert all("hometown" in player and "class_year" in player for player in players)
