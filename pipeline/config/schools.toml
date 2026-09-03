@@ -1555,11 +1555,6 @@ identity_accessed = "2026-09-02"
 
 # The probe found no mascot where it reads; "Ravens" is the site's own name
 # (fpuravens.com).
-# RULING NEEDED (batch 1): the site prints Rindge, N.H., a town the 2023 Census
-# Gazetteer places file does not list (it carries incorporated places and
-# CDPs, not New England towns or New Jersey townships) and a pin cannot name
-# a differently named place. The nearest listed place, Jaffrey CDP (about 5 km north), stands in
-# so the build completes; the printed town is kept in city_source.
 [[schools]]
 name         = "Franklin Pierce"
 abbreviation = "FPU"
@@ -1572,8 +1567,8 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Franklin Pierce University"]
-city         = "Jaffrey, N.H."
-city_source  = "the schedule page prints Rindge, N.H.; the 2023 Gazetteer places file lists no Rindge, so the nearest listed place, Jaffrey CDP, stands in (ruling needed)"
+city         = "Rindge, N.H."
+city_source  = "schedule-page home venue location, https://fpuravens.com/sports/mens-soccer/schedule/2026"
 identity_accessed = "2026-09-02"
 
 # Pace is an institutional NE10 member but fielded no men's soccer from 1991
@@ -1616,11 +1611,6 @@ identity_accessed = "2026-09-02"
 # The probe found no mascot where it reads; "Purple Knights" is the site's
 # own name (smcathletics.com). The apostrophe mints slug saint-michael-s,
 # which is the membership key.
-# RULING NEEDED (batch 1): the site prints Colchester, Vt., a town the 2023 Census
-# Gazetteer places file does not list (it carries incorporated places and
-# CDPs, not New England towns or New Jersey townships) and a pin cannot name
-# a differently named place. The nearest listed place, Winooski city (adjoining the campus), stands in
-# so the build completes; the printed town is kept in city_source.
 [[schools]]
 name         = "Saint Michael's"
 abbreviation = "SMC"
@@ -1633,8 +1623,8 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Saint Michael's College", "St. Michael's", "St. Michael's College"]
-city         = "Winooski, Vt."
-city_source  = "the schedule page prints Colchester, Vt.; the 2023 Gazetteer places file lists no Colchester, so the adjoining listed place, Winooski city, stands in (ruling needed)"
+city         = "Colchester, Vt."
+city_source  = "schedule-page home venue location, https://smcathletics.com/sports/mens-soccer/schedule/2026"
 identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Southern Connecticut"
@@ -1974,11 +1964,6 @@ identity_accessed = "2026-09-02"
 # The SideArm site is still live and serves 2025-2026, which the window
 # excludes; the probe's stats layer errored and no box-score links were
 # found, so expect gaps.
-# RULING NEEDED (batch 1): the site prints Bloomfield, N.J., a town the 2023 Census
-# Gazetteer places file does not list (it carries incorporated places and
-# CDPs, not New England towns or New Jersey townships) and a pin cannot name
-# a differently named place. The nearest listed place, Glen Ridge borough (adjoining), stands in
-# so the build completes; the printed town is kept in city_source.
 [[schools]]
 name         = "Bloomfield"
 abbreviation = "BC"
@@ -1991,8 +1976,8 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Bloomfield College", "Bloomfield College of Montclair State University"]
-city         = "Glen Ridge, N.J."
-city_source  = "the schedule page prints Bloomfield, N.J.; the 2023 Gazetteer places file lists no Bloomfield, so the adjoining listed place, Glen Ridge borough, stands in (ruling needed)"
+city         = "Bloomfield, N.J."
+city_source  = "schedule-page home venue location, https://bcbearsathletics.com/sports/mens-soccer/schedule/2024"
 identity_accessed = "2026-09-02"
 
 # Dead host: athletics.allianceu.edu resets the connection (probe
@@ -2199,11 +2184,6 @@ identity_accessed = "2026-09-02"
 
 # The schedule page prints no home town; Amherst is the research's town
 # (design/batch1-membership-2026-09-02.md).
-# RULING NEEDED (batch 1): the site prints Amherst, N.Y. (per the research), a town the 2023 Census
-# Gazetteer places file does not list (it carries incorporated places and
-# CDPs, not New England towns or New Jersey townships) and a pin cannot name
-# a differently named place. The nearest listed place, Eggertsville CDP (a hamlet of Amherst), stands in
-# so the build completes; the printed town is kept in city_source.
 [[schools]]
 name         = "Daemen"
 abbreviation = "DU"
@@ -2216,6 +2196,6 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Daemen University", "Daemen College"]
-city         = "Eggertsville, N.Y."
-city_source  = "design/batch1-membership-2026-09-02.md gives Amherst, N.Y.; the 2023 Gazetteer places file lists no Amherst, so the nearest listed place, Eggertsville CDP, a hamlet of the town of Amherst, stands in (ruling needed)"
+city         = "Amherst, N.Y."
+city_source  = "design/batch1-membership-2026-09-02.md (campus town; the schedule page prints no home town)"
 identity_accessed = "2026-09-02"

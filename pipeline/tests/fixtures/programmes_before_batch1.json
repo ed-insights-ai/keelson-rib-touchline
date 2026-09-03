@@ -1,0 +1,449 @@
+{
+ "description": "Every programme row that existed before the batch-1 branch: slug, city, Gazetteer GEOID and point, cut from data/reference/programmes.json at origin/main fe727b6. The build must reproduce each of these field for field; a change here is a wrong town landing (tl-891).",
+ "rows": {
+  "adams-state": {
+   "city": "Alamosa, Colo.",
+   "geoid": "0801090",
+   "lat": 37.4745,
+   "lon": -105.877
+  },
+  "aum": {
+   "city": "Montgomery, Ala.",
+   "geoid": "0151000",
+   "lat": 32.3485,
+   "lon": -86.2673
+  },
+  "barry": {
+   "city": "Miami Shores, Fla.",
+   "geoid": "1245175",
+   "lat": 25.867,
+   "lon": -80.1783
+  },
+  "christian-brothers": {
+   "city": "Memphis, Tenn.",
+   "geoid": "4748000",
+   "lat": 35.109,
+   "lon": -89.9675
+  },
+  "colorado-christian": {
+   "city": "Lakewood, Colo.",
+   "geoid": "0843000",
+   "lat": 39.6989,
+   "lon": -105.1176
+  },
+  "colorado-mesa": {
+   "city": "Grand Junction, Colo.",
+   "geoid": "0831660",
+   "lat": 39.0891,
+   "lon": -108.5675
+  },
+  "colorado-school-of-mines": {
+   "city": "Golden, Colo.",
+   "geoid": "0830835",
+   "lat": 39.7425,
+   "lon": -105.2106
+  },
+  "csu-pueblo": {
+   "city": "Pueblo, Colo.",
+   "geoid": "0862000",
+   "lat": 38.2692,
+   "lon": -104.6108
+  },
+  "dallas-baptist": {
+   "city": "Dallas, Texas",
+   "geoid": "4819000",
+   "lat": 32.7933,
+   "lon": -96.7665
+  },
+  "delta-state": {
+   "city": "Cleveland, Miss.",
+   "geoid": "2814260",
+   "lat": 33.744,
+   "lon": -90.7285
+  },
+  "drury": {
+   "city": "Springfield, Mo.",
+   "geoid": "2970000",
+   "lat": 37.1942,
+   "lon": -93.2926
+  },
+  "east-central": {
+   "city": "Ada, Okla.",
+   "geoid": "4000200",
+   "lat": 34.7679,
+   "lon": -96.6691
+  },
+  "eastern-new-mexico": {
+   "city": "Portales, N.M.",
+   "geoid": "3559260",
+   "lat": 34.1773,
+   "lon": -103.3551
+  },
+  "eckerd": {
+   "city": "St. Petersburg, Fla.",
+   "geoid": "1263000",
+   "lat": 27.7627,
+   "lon": -82.6441
+  },
+  "embry-riddle": {
+   "city": "Daytona Beach, Fla.",
+   "geoid": "1216525",
+   "lat": 29.1907,
+   "lon": -81.0971
+  },
+  "florida-southern": {
+   "city": "Lakeland, Fla.",
+   "geoid": "1238250",
+   "lat": 28.0555,
+   "lon": -81.9548
+  },
+  "florida-tech": {
+   "city": "Melbourne, Fla.",
+   "geoid": "1243975",
+   "lat": 28.1104,
+   "lon": -80.6627
+  },
+  "fort-hays-state": {
+   "city": "Hays, Kan.",
+   "geoid": "2031100",
+   "lat": 38.8822,
+   "lon": -99.3222
+  },
+  "fort-lewis": {
+   "city": "Durango, Colo.",
+   "geoid": "0822035",
+   "lat": 37.2654,
+   "lon": -107.8782
+  },
+  "harding": {
+   "city": "Searcy, Ark.",
+   "geoid": "0563020",
+   "lat": 35.2411,
+   "lon": -91.7352
+  },
+  "illinois-springfield": {
+   "city": "Springfield, Ill.",
+   "geoid": "1772000",
+   "lat": 39.7911,
+   "lon": -89.6446
+  },
+  "indianapolis": {
+   "city": "Indianapolis, Ind.",
+   "geoid": "1836003",
+   "lat": 39.7767,
+   "lon": -86.1459
+  },
+  "lee": {
+   "city": "Cleveland, Tenn.",
+   "geoid": "4715400",
+   "lat": 35.18,
+   "lon": -84.8713
+  },
+  "lewis": {
+   "city": "Romeoville, Ill.",
+   "geoid": "1765442",
+   "lat": 41.6279,
+   "lon": -88.1012
+  },
+  "lincoln": {
+   "city": "Jefferson City, Mo.",
+   "geoid": "2937000",
+   "lat": 38.5675,
+   "lon": -92.1753
+  },
+  "lubbock-christian": {
+   "city": "Lubbock, Texas",
+   "geoid": "4845000",
+   "lat": 33.5619,
+   "lon": -101.8889
+  },
+  "lynn": {
+   "city": "Boca Raton, Fla.",
+   "geoid": "1207300",
+   "lat": 26.3727,
+   "lon": -80.1037
+  },
+  "maryville": {
+   "city": "St. Louis, Mo.",
+   "geoid": "2965000",
+   "lat": 38.6357,
+   "lon": -90.2446
+  },
+  "mckendree": {
+   "city": "Lebanon, Ill.",
+   "geoid": "1742496",
+   "lat": 38.6007,
+   "lon": -89.8097
+  },
+  "midwestern-state": {
+   "city": "Wichita Falls, Texas",
+   "geoid": "4879000",
+   "lat": 33.9067,
+   "lon": -98.5258
+  },
+  "mississippi-college": {
+   "city": "Clinton, Miss.",
+   "geoid": "2814420",
+   "lat": 32.3544,
+   "lon": -90.3419
+  },
+  "missouri-s-t": {
+   "city": "Rolla, Mo.",
+   "geoid": "2962912",
+   "lat": 37.9459,
+   "lon": -91.7612
+  },
+  "missouri-st-louis": {
+   "city": "St. Louis, Mo.",
+   "geoid": "2965000",
+   "lat": 38.6357,
+   "lon": -90.2446
+  },
+  "montevallo": {
+   "city": "Montevallo, Ala.",
+   "geoid": "0150312",
+   "lat": 33.1261,
+   "lon": -86.8477
+  },
+  "msu-denver": {
+   "city": "Denver, Colo.",
+   "geoid": "0820000",
+   "lat": 39.7619,
+   "lon": -104.8811
+  },
+  "newman": {
+   "city": "Wichita, Kan.",
+   "geoid": "2079000",
+   "lat": 37.6906,
+   "lon": -97.3458
+  },
+  "northeastern-state": {
+   "city": "Tahlequah, Okla.",
+   "geoid": "4072100",
+   "lat": 35.9105,
+   "lon": -94.9777
+  },
+  "northwestern-oklahoma-state": {
+   "city": "Alva, Okla.",
+   "geoid": "4001800",
+   "lat": 36.7896,
+   "lon": -98.6649
+  },
+  "nova-southeastern": {
+   "city": "Fort Lauderdale, Fla.",
+   "geoid": "1224000",
+   "lat": 26.1412,
+   "lon": -80.1467
+  },
+  "oklahoma-baptist": {
+   "city": "Shawnee, Okla.",
+   "geoid": "4066800",
+   "lat": 35.3694,
+   "lon": -96.9564
+  },
+  "oklahoma-christian": {
+   "city": "Edmond, Okla.",
+   "geoid": "4023200",
+   "lat": 35.6738,
+   "lon": -97.4131
+  },
+  "ouachita-baptist": {
+   "city": "Arkadelphia, Ark.",
+   "geoid": "0501870",
+   "lat": 34.1274,
+   "lon": -93.0709
+  },
+  "palm-beach-atlantic": {
+   "city": "West Palm Beach, Fla.",
+   "geoid": "1276600",
+   "lat": 26.7451,
+   "lon": -80.127
+  },
+  "quincy": {
+   "city": "Quincy, Ill.",
+   "geoid": "1762367",
+   "lat": 39.9337,
+   "lon": -91.3793
+  },
+  "regis": {
+   "city": "Denver, Colo.",
+   "geoid": "0820000",
+   "lat": 39.7619,
+   "lon": -104.8811
+  },
+  "rockhurst": {
+   "city": "Kansas City, Mo.",
+   "geoid": "2938000",
+   "lat": 39.1224,
+   "lon": -94.5551
+  },
+  "rogers-state": {
+   "city": "Claremore, Okla.",
+   "geoid": "4014700",
+   "lat": 36.3146,
+   "lon": -95.6083
+  },
+  "rollins": {
+   "city": "Winter Park, Fla.",
+   "geoid": "1278300",
+   "lat": 28.5966,
+   "lon": -81.3457
+  },
+  "saint-edwards": {
+   "city": "Austin, Texas",
+   "geoid": "4805000",
+   "lat": 30.2986,
+   "lon": -97.7541
+  },
+  "saint-leo": {
+   "city": "Saint Leo, Fla.",
+   "geoid": "1262775",
+   "lat": 28.3361,
+   "lon": -82.2582
+  },
+  "saint-marys": {
+   "city": "San Antonio, Texas",
+   "geoid": "4865000",
+   "lat": 29.4628,
+   "lon": -98.5246
+  },
+  "shorter": {
+   "city": "Rome, Ga.",
+   "geoid": "1366668",
+   "lat": 34.2661,
+   "lon": -85.1861
+  },
+  "south-dakota-mines": {
+   "city": "Rapid City, S.D.",
+   "geoid": "4652980",
+   "lat": 44.0711,
+   "lon": -103.2179
+  },
+  "southern-nazarene": {
+   "city": "Bethany, Okla.",
+   "geoid": "4005700",
+   "lat": 35.5072,
+   "lon": -97.6417
+  },
+  "southwest-baptist": {
+   "city": "Bolivar, Mo.",
+   "geoid": "2906976",
+   "lat": 37.6067,
+   "lon": -93.4167
+  },
+  "southwestern-oklahoma-state": {
+   "city": "Weatherford, Okla.",
+   "geoid": "4079450",
+   "lat": 35.539,
+   "lon": -98.685
+  },
+  "spring-hill": {
+   "city": "Mobile, Ala.",
+   "geoid": "0150000",
+   "lat": 30.6684,
+   "lon": -88.1002
+  },
+  "sul-ross-state": {
+   "city": "Alpine, Texas",
+   "geoid": "4802104",
+   "lat": 30.3639,
+   "lon": -103.6645
+  },
+  "tampa": {
+   "city": "Tampa, Fla.",
+   "geoid": "1271000",
+   "lat": 27.9663,
+   "lon": -82.4776
+  },
+  "texas-a-m-international": {
+   "city": "Laredo, Texas",
+   "geoid": "4841464",
+   "lat": 27.5604,
+   "lon": -99.4892
+  },
+  "trevecca": {
+   "city": "Nashville, Tenn.",
+   "geoid": "4752006",
+   "lat": 36.1718,
+   "lon": -86.785
+  },
+  "truman": {
+   "city": "Kirksville, Mo.",
+   "geoid": "2939026",
+   "lat": 40.1982,
+   "lon": -92.5746
+  },
+  "uah": {
+   "city": "Huntsville, Ala.",
+   "geoid": "0137000",
+   "lat": 34.6977,
+   "lon": -86.6767
+  },
+  "uccs": {
+   "city": "Colorado Springs, Colo.",
+   "geoid": "0816000",
+   "lat": 38.8673,
+   "lon": -104.7607
+  },
+  "union": {
+   "city": "Jackson, Tenn.",
+   "geoid": "4737640",
+   "lat": 35.6541,
+   "lon": -88.835
+  },
+  "upper-iowa": {
+   "city": "Fayette, Iowa",
+   "geoid": "1927165",
+   "lat": 42.8418,
+   "lon": -91.8038
+  },
+  "ut-dallas": {
+   "city": "Richardson, Texas",
+   "geoid": "4861796",
+   "lat": 32.9723,
+   "lon": -96.7081
+  },
+  "ut-permian-basin": {
+   "city": "Odessa, Texas",
+   "geoid": "4853388",
+   "lat": 31.8805,
+   "lon": -102.3453
+  },
+  "ut-tyler": {
+   "city": "Tyler, Texas",
+   "geoid": "4874144",
+   "lat": 32.3173,
+   "lon": -95.3059
+  },
+  "west-alabama": {
+   "city": "Livingston, Ala.",
+   "geoid": "0143720",
+   "lat": 32.5955,
+   "lon": -88.1869
+  },
+  "west-florida": {
+   "city": "Pensacola, Fla.",
+   "geoid": "1255925",
+   "lat": 30.441,
+   "lon": -87.1912
+  },
+  "west-texas-a-m": {
+   "city": "Canyon, Texas",
+   "geoid": "4812532",
+   "lat": 34.9903,
+   "lon": -101.919
+  },
+  "westminster": {
+   "city": "Salt Lake City, Utah",
+   "geoid": "4967000",
+   "lat": 40.7769,
+   "lon": -111.931
+  },
+  "william-jewell": {
+   "city": "Liberty, Mo.",
+   "geoid": "2942032",
+   "lat": 39.2413,
+   "lon": -94.4194
+  }
+ }
+}

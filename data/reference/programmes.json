@@ -284,10 +284,10 @@
       "name": "Bloomfield",
       "nickname": "Bears",
       "abbreviation": "BC",
-      "city": "Glen Ridge, N.J.",
+      "city": "Bloomfield, N.J.",
       "point": {
-        "lat": 40.8048,
-        "lon": -74.2046
+        "lat": 40.8091,
+        "lon": -74.1871
       },
       "provenance": {
         "nickname": {
@@ -301,16 +301,17 @@
           "accessed": "2026-09-02"
         },
         "city": {
-          "source": "the schedule page prints Bloomfield, N.J.; the 2023 Gazetteer places file lists no Bloomfield, so the adjoining listed place, Glen Ridge borough, stands in (ruling needed)",
+          "source": "schedule-page home venue location, https://bcbearsathletics.com/sports/mens-soccer/schedule/2024",
           "accessed": "2026-09-02"
         },
         "point": {
-          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
-          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
-          "geoid": "3426610",
-          "name": "Glen Ridge borough",
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (County Subdivisions, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_cousubs_national.zip",
+          "geoid": "3401306260",
+          "name": "Bloomfield township",
           "state": "NJ",
-          "accessed": "2023-09-26"
+          "accessed": "2023-09-26",
+          "note": "county subdivision; the places file has no entry for this town"
         }
       }
     },
@@ -624,10 +625,10 @@
       "name": "Daemen",
       "nickname": "Wildcats",
       "abbreviation": "DU",
-      "city": "Eggertsville, N.Y.",
+      "city": "Amherst, N.Y.",
       "point": {
-        "lat": 42.9665,
-        "lon": -78.8072
+        "lat": 43.0116,
+        "lon": -78.7571
       },
       "provenance": {
         "nickname": {
@@ -641,16 +642,17 @@
           "accessed": "2026-09-02"
         },
         "city": {
-          "source": "design/batch1-membership-2026-09-02.md gives Amherst, N.Y.; the 2023 Gazetteer places file lists no Amherst, so the nearest listed place, Eggertsville CDP, a hamlet of the town of Amherst, stands in (ruling needed)",
+          "source": "design/batch1-membership-2026-09-02.md (campus town; the schedule page prints no home town)",
           "accessed": "2026-09-02"
         },
         "point": {
-          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
-          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
-          "geoid": "3623701",
-          "name": "Eggertsville CDP",
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (County Subdivisions, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_cousubs_national.zip",
+          "geoid": "3602902000",
+          "name": "Amherst town",
           "state": "NY",
-          "accessed": "2023-09-26"
+          "accessed": "2023-09-26",
+          "note": "county subdivision; the places file has no entry for this town"
         }
       }
     },
@@ -1135,10 +1137,10 @@
       "name": "Franklin Pierce",
       "nickname": "Ravens",
       "abbreviation": "FPU",
-      "city": "Jaffrey, N.H.",
+      "city": "Rindge, N.H.",
       "point": {
-        "lat": 42.8114,
-        "lon": -72.0234
+        "lat": 42.7567,
+        "lon": -72.0132
       },
       "provenance": {
         "nickname": {
@@ -1152,16 +1154,17 @@
           "accessed": "2026-09-02"
         },
         "city": {
-          "source": "the schedule page prints Rindge, N.H.; the 2023 Gazetteer places file lists no Rindge, so the nearest listed place, Jaffrey CDP, stands in (ruling needed)",
+          "source": "schedule-page home venue location, https://fpuravens.com/sports/mens-soccer/schedule/2026",
           "accessed": "2026-09-02"
         },
         "point": {
-          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
-          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
-          "geoid": "3338420",
-          "name": "Jaffrey CDP",
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (County Subdivisions, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_cousubs_national.zip",
+          "geoid": "3300564580",
+          "name": "Rindge town",
           "state": "NH",
-          "accessed": "2023-09-26"
+          "accessed": "2023-09-26",
+          "note": "county subdivision; the places file has no entry for this town"
         }
       }
     },
@@ -2703,10 +2706,10 @@
       "name": "Saint Michael's",
       "nickname": "Purple Knights",
       "abbreviation": "SMC",
-      "city": "Winooski, Vt.",
+      "city": "Colchester, Vt.",
       "point": {
-        "lat": 44.4956,
-        "lon": -73.1849
+        "lat": 44.5541,
+        "lon": -73.2255
       },
       "provenance": {
         "nickname": {
@@ -2720,16 +2723,17 @@
           "accessed": "2026-09-02"
         },
         "city": {
-          "source": "the schedule page prints Colchester, Vt.; the 2023 Gazetteer places file lists no Colchester, so the adjoining listed place, Winooski city, stands in (ruling needed)",
+          "source": "schedule-page home venue location, https://smcathletics.com/sports/mens-soccer/schedule/2026",
           "accessed": "2026-09-02"
         },
         "point": {
-          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
-          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
-          "geoid": "5085150",
-          "name": "Winooski city",
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (County Subdivisions, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_cousubs_national.zip",
+          "geoid": "5000714875",
+          "name": "Colchester town",
           "state": "VT",
-          "accessed": "2023-09-26"
+          "accessed": "2023-09-26",
+          "note": "county subdivision; the places file has no entry for this town"
         }
       }
     },

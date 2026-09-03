@@ -1,6 +1,6 @@
 """Rebuild data/reference/programmes.json from schools.toml and the Gazetteer.
 
-    uv run build-programmes          # write the file and the trimmed fixture
+    uv run build-programmes          # write the file and the trimmed fixtures
     uv run build-programmes --check  # exit 1 when either differs from a fresh build
 
 The build fails, naming every slug and reason, when a stanza cannot
@@ -39,6 +39,7 @@ def main(argv: list[str] | None = None) -> int:
     outputs = {
         paths.packaged_programmes_path(): programmes.render(result.document),
         gz.TRIMMED_FIXTURE: gazetteer.trimmed_text(result.used_places),
+        gz.TRIMMED_COUSUBS_FIXTURE: gazetteer.trimmed_cousubs_text(result.used_places),
     }
     changed = []
     for path, text in outputs.items():

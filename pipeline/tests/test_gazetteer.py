@@ -1,4 +1,7 @@
-"""The town resolver: exactly one place, or a failure that names why."""
+"""The town resolver: exactly one place, or a failure that names why.
+
+Places first; the county-subdivisions file only when places has no match.
+"""
 
 import pytest
 
@@ -19,11 +22,31 @@ ROWS = [
 ]
 
 
+# County subdivisions: no LSAD column, lines padded with spaces (as the
+# Census file is). Searcy and Springfield have places rows above; the
+# subdivisions of the same name must never be reached for them.
+COUSUB_ROWS = [
+    "AR\t0514599999\t00000001\tSearcy township\tA\t1\t0\t1\t0\t35.0\t-91.0   ",
+    "IL\t1716799999\t00000002\tSpringfield township\tA\t1\t0\t1\t0\t39.0\t-89.0   ",
+    "NH\t3300564580\t00873707\tRindge town\tA\t96104786\t6962970\t37.106\t2.688\t42.756663\t-72.013247   ",
+    "NJ\t3401306260\t01729714\tBloomfield township\tA\t13822567\t63224\t5.337\t0.024\t40.809141\t-74.187142   ",
+]
+TOWNS_THE_PLACES_FILE_LACKS = [
+    ("Rindge, N.H.", "3300564580", "Rindge town", 42.7567, -72.0132),
+    ("Colchester, Vt.", "5000714875", "Colchester town", 44.5541, -73.2255),
+    ("Bloomfield, N.J.", "3401306260", "Bloomfield township", 40.8091, -74.1871),
+    ("Amherst, N.Y.", "3602902000", "Amherst town", 43.0116, -78.7571),
+]
+
+
 def _gaz() -> gz.Gazetteer:
     return gz.Gazetteer(
         gz.read_places("\n".join([HEADER, *ROWS]) + "\n"),
         header=HEADER,
         fetch_full=False,
+        cousubs=gz.read_cousubs(
+            "\n".join([gz.COUSUBS_HEADER + "   ", *COUSUB_ROWS]) + "\n"
+        ),
     )
 
 
@@ -99,6 +122,55 @@ def test_an_unknown_town_fails_without_fetching_when_offline() -> None:
     with pytest.raises(gz.GazetteerError) as caught:
         _gaz().resolve(gz.parse_town("Nowhere, Ark."))
     assert "no 2023 Gazetteer place in AR" in str(caught.value)
+    assert "places file or the county subdivisions file" in str(caught.value)
+
+
+@pytest.mark.parametrize(
+    ("city", "geoid", "name", "lat", "lon"), TOWNS_THE_PLACES_FILE_LACKS
+)
+def test_a_town_the_places_file_lacks_resolves_through_county_subdivisions(
+    city, geoid, name, lat, lon
+) -> None:
+    # Driven by the committed trimmed fixtures, offline: the four batch-1 towns.
+    town = gz.parse_town(city)
+    place = gz.Gazetteer.load(fetch_full=False).resolve(town)
+    assert (place.geoid, place.name, place.cousub, town.ap) == (geoid, name, True, city)
+    assert (place.lat, place.lon) == (lat, lon)
+    assert place.incorporated
+
+
+def test_a_town_the_places_file_has_never_consults_county_subdivisions(
+    monkeypatch,
+) -> None:
+    g = _gaz()
+
+    def never(_town):
+        raise AssertionError("the county subdivisions file was consulted")
+
+    monkeypatch.setattr(g, "_cousub_candidates", never)
+    monkeypatch.setattr(g, "_widen_cousubs", lambda: never(None))
+    place = g.resolve(gz.parse_town("Searcy, Ark."))
+    assert (place.geoid, place.cousub) == ("0563020", False)
+    # Two places candidates stay an ambiguity naming them, not a fallback.
+    with pytest.raises(gz.GazetteerError) as caught:
+        g.resolve(gz.parse_town("Springfield, Ill."))
+    assert "1772000 Springfield city" in str(caught.value)
+    assert "township" not in str(caught.value)
+
+
+def test_a_ten_digit_pin_resolves_through_county_subdivisions() -> None:
+    place = _gaz().resolve(gz.parse_town("Rindge, N.H."), pin="3300564580")
+    assert (place.geoid, place.name, place.cousub) == (
+        "3300564580",
+        "Rindge town",
+        True,
+    )
+
+
+def test_a_county_subdivision_descriptor_comes_off_the_name() -> None:
+    assert gz._stem("Bloomfield township") == "bloomfield"
+    assert gz._stem("Autaugaville CCD") == "autaugaville"
+    assert gz._stem("Rindge town") == "rindge"
 
 
 def test_trimmed_text_round_trips_the_rows_used() -> None:
@@ -108,3 +180,15 @@ def test_trimmed_text_round_trips_the_rows_used() -> None:
     assert text.splitlines()[0] == HEADER
     assert len(text.splitlines()) == 2
     assert gz.read_places(text)[0].geoid == "0563020"
+
+
+def test_trimmed_cousubs_text_holds_only_the_subdivisions_used_unpadded() -> None:
+    g = _gaz()
+    g.resolve(gz.parse_town("Searcy, Ark."))
+    g.resolve(gz.parse_town("Rindge, N.H."))
+    text = g.trimmed_cousubs_text(g.used)
+    assert text.splitlines() == [
+        gz.COUSUBS_HEADER,
+        "NH\t3300564580\t00873707\tRindge town\tA\t96104786\t6962970\t37.106\t2.688\t42.756663\t-72.013247",
+    ]
+    assert len(g.trimmed_text(g.used).splitlines()) == 2
