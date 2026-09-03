@@ -1840,11 +1840,15 @@ def test_a_boxscore_with_one_team_is_refused_not_persisted(
         sidearm_live.collect_match(session, response.url, 2025, dict(_OT_FIXTURE))
 
 
-def test_a_completed_game_without_a_published_score_is_final() -> None:
-    """Measured on rsuhillcats.com, 2026-08-21: the modern theme fills scores
-    client-side, so a played game's served DOM carries a completed class and a
-    Final span but empty result spans.  Played is final, not scheduled — the
-    board must not show a finished game as upcoming."""
+def test_a_completed_game_without_a_published_score_is_scheduled_and_named(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """The modern theme fills scores client-side, so a served row can carry a
+    completed class and a Final span with empty result spans (measured on
+    rsuhillcats.com, 2026-08-21). That row used to be stored final with no
+    score. Final requires scores (beads tl-d69, tl-md2): the opponent's own
+    page reads scheduled for such a row and the site's fold refuses the
+    contradiction, so it is stored scheduled and named in the log."""
     html = _dom_page(
         _dom_game(
             game_id="7655",
@@ -1853,20 +1857,27 @@ def test_a_completed_game_without_a_published_score_is_final() -> None:
             completed=True,
         )
     )
-    [fixture] = parse_schedule_page(
-        html,
-        page_url="https://example.test/schedule/2026",
-        year=2026,
-        owner_slug="rogers-state",
-        aliases={"oklahoma wesleyan": "oklahoma-wesleyan"},
-    )
-    assert fixture["status"] == "final"
-    assert "home_score" not in fixture
+    with caplog.at_level("WARNING", logger="src.sidearm_live"):
+        [fixture] = parse_schedule_page(
+            html,
+            page_url="https://example.test/schedule/2026",
+            year=2026,
+            owner_slug="rogers-state",
+            aliases={"oklahoma wesleyan": "oklahoma-wesleyan"},
+        )
+    assert fixture["status"] == "scheduled"
+    assert "home_score" not in fixture and "away_score" not in fixture
     assert fixture["match_type"] == "exhibition"
     assert fixture["conference_game"] is False
+    assert (
+        "sidearm:rogers-state:7655: page reads final with no score ('Final'); "
+        "stored scheduled, no score"
+    ) in caplog.text
 
 
-def test_the_payload_marks_an_exhibition_and_a_scoreless_final() -> None:
+def test_the_payload_marks_an_exhibition_and_stores_a_scoreless_final_as_scheduled(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
     event = {
         "id": 77,
         "date": "2026-08-13T19:00:00",
@@ -1877,16 +1888,47 @@ def test_the_payload_marks_an_exhibition_and_a_scoreless_final() -> None:
         "opponent": {"title": "Oklahoma Wesleyan (Exhibition)"},
         "result": {"team_score": None, "opponent_score": None, "status": "Final"},
     }
-    [fixture] = parse_schedule_page(
-        _schedule_html(event),
-        page_url="https://example.test/schedule/2026",
-        year=2026,
-        owner_slug="rogers-state",
-        aliases={"oklahoma wesleyan": "oklahoma-wesleyan"},
-    )
-    assert fixture["status"] == "final"
-    assert "home_score" not in fixture
+    with caplog.at_level("WARNING", logger="src.sidearm_live"):
+        [fixture] = parse_schedule_page(
+            _schedule_html(event),
+            page_url="https://example.test/schedule/2026",
+            year=2026,
+            owner_slug="rogers-state",
+            aliases={"oklahoma wesleyan": "oklahoma-wesleyan"},
+        )
+    assert fixture["status"] == "scheduled"
+    assert "home_score" not in fixture and "away_score" not in fixture
     assert fixture["match_type"] == "exhibition"
+    assert (
+        "sidearm:rogers-state:77: page reads final with no score ('Final'); "
+        "stored scheduled, no score"
+    ) in caplog.text
+
+
+def test_the_payload_stores_a_final_with_scores_as_final(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    event = {
+        "id": 78,
+        "date": "2026-09-13T19:00:00",
+        "location_indicator": "H",
+        "is_conference": True,
+        "type": "completed",
+        "schedule": {"title": "2026 Men's Soccer Schedule"},
+        "opponent": {"title": "Harding"},
+        "result": {"team_score": 2, "opponent_score": 1, "status": "W"},
+    }
+    with caplog.at_level("WARNING", logger="src.sidearm_live"):
+        [fixture] = parse_schedule_page(
+            _schedule_html(event),
+            page_url="https://example.test/schedule/2026",
+            year=2026,
+            owner_slug="rogers-state",
+            aliases={"harding": "harding"},
+        )
+    assert fixture["status"] == "final"
+    assert (fixture["home_score"], fixture["away_score"]) == (2, 1)
+    assert "reads final with no score" not in caplog.text
 
 
 def test_a_league_game_carries_no_match_type() -> None:
@@ -1927,7 +1969,8 @@ def test_a_friendly_said_only_in_the_location_is_an_exhibition() -> None:
     )
     assert fixture["home"] == "oral-roberts"
     assert fixture["away"] == "northeastern-state"
-    assert fixture["status"] == "final"
+    # Scoreless, so scheduled: final requires scores (tl-d69).
+    assert fixture["status"] == "scheduled"
     assert fixture["match_type"] == "exhibition"
     assert fixture["venue"] == "Tulsa, Okla."
 
@@ -1951,7 +1994,8 @@ def test_the_payload_marks_a_friendly_said_only_in_the_location() -> None:
         owner_slug="northeastern-state",
         aliases={"oral roberts": "oral-roberts"},
     )
-    assert fixture["status"] == "final"
+    # Scoreless, so scheduled: final requires scores (tl-d69).
+    assert fixture["status"] == "scheduled"
     assert fixture["match_type"] == "exhibition"
 
 
@@ -2063,7 +2107,8 @@ def test_dom_result_refuses_a_tie_with_unequal_numbers() -> None:
         owner_slug="rogers-state",
         aliases=identity_aliases(_gac(), "men"),
     )[0]
-    assert fixture["status"] == "final"
+    # A refused pair stores no score, and final requires scores (tl-d69).
+    assert fixture["status"] == "scheduled"
     assert "home_score" not in fixture
     assert "away_score" not in fixture
 
@@ -2972,3 +3017,319 @@ def test_a_hosted_row_in_both_the_payload_and_the_dom_is_one_skip() -> None:
     )
     assert fixtures == []
     assert skips == ["hosted other-match skipped: 2026-08-27, Alpha v Bravo"]
+
+
+# Beads tl-d69 and tl-md2: a fixture is final only when it carries a score.
+# The twin-check after the 2026-09-02 GAC re-collect named rows the owner's
+# page marks completed or "Final" with no score while the opponent's own page
+# reads scheduled; the site's fold throws on that split. Each fixture below is
+# one archived row, trimmed, its source and fetch date in the file's header.
+
+
+def _archived_row(name: str, *, year: int, owner_slug: str) -> dict[str, object]:
+    [fixture] = parse_schedule_page(
+        (FIXTURES / name).read_text(),
+        page_url=f"https://example.test/schedule/{year}",
+        year=year,
+        owner_slug=owner_slug,
+        aliases={},
+    )
+    return fixture
+
+
+def test_a_final_span_with_no_score_is_scheduled_and_named(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Shape 1: newman 2023, game 6929. "Aug 26 (Sat) / Final Edmond, OK
+    EXHIBITION at Oklahoma Christian", completed class and Final span, empty
+    result spans; Oklahoma Christian's own page reads scheduled."""
+    with caplog.at_level("WARNING", logger="src.sidearm_live"):
+        row = _archived_row(
+            "sidearm_newman_schedule_2023_6929.html", year=2023, owner_slug="newman"
+        )
+    assert row["id"] == "sidearm:newman:6929"
+    assert row["date"] == "2023-08-26"
+    assert row["away"] == "newman"
+    assert row["status"] == "scheduled"
+    assert "home_score" not in row and "away_score" not in row
+    assert row["match_type"] == "exhibition"
+    assert (
+        "sidearm:newman:6929: page reads final with no score ('Final'); "
+        "stored scheduled, no score"
+    ) in caplog.text
+
+
+@pytest.mark.parametrize(
+    ("name", "year", "owner_slug", "game_id", "date"),
+    [
+        # Result cell "Rescheduled for 10/21" (class text-italic), completed class.
+        (
+            "sidearm_eckerd_schedule_2024_8371.html",
+            2024,
+            "eckerd",
+            "8371",
+            "2024-09-28",
+        ),
+        # Final span beside a result cell reading "Post." (abbreviated).
+        (
+            "sidearm_barry_schedule_2025_14613.html",
+            2025,
+            "barry",
+            "14613",
+            "2025-09-13",
+        ),
+        # Final span beside "Suspended Due To Lightning".
+        (
+            "sidearm_georgian_court_schedule_2025_6377.html",
+            2025,
+            "georgian-court",
+            "6377",
+            "2025-09-06",
+        ),
+        # Two-team list skin: "PPD to 10/25" in a game-cancelled div, no
+        # result element at all, so the word is read from the whole row.
+        (
+            "sidearm_daemen_schedule_2023_7070.html",
+            2023,
+            "daemen",
+            "7070",
+            "2023-09-27",
+        ),
+        # Result cell "SUSPENDED-TO BE FINISHED 10/30" beside a Recap link.
+        (
+            "sidearm_pitt_johnstown_schedule_2023_5521.html",
+            2023,
+            "pitt-johnstown",
+            "5521",
+            "2023-09-09",
+        ),
+    ],
+)
+def test_a_status_word_anywhere_on_a_completed_row_is_postponed(
+    name: str, year: int, owner_slug: str, game_id: str, date: str
+) -> None:
+    """Shape 2: the completed class (and on some, a Final span) beside a row
+    that says the match was not played. Each used to store final, no score."""
+    row = _archived_row(name, year=year, owner_slug=owner_slug)
+    assert row["id"] == f"sidearm:{owner_slug}:{game_id}"
+    assert row["date"] == date
+    assert row["status"] == "postponed"
+    assert "home_score" not in row and "away_score" not in row
+
+
+def test_a_completed_class_alone_is_scheduled_and_named(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Shape 3: the completed class with no result element and no Final span,
+    the shape a page fetched the evening of the match serves (measured
+    nova-southeastern 2026, game 10758, "Game Notes" only, on the 2026-09-02
+    fetch; the 2026-09-03 archive of that page has since moved to "Suspended
+    (NSU 1-0)", which the postponed family reads)."""
+    html = _dom_page(
+        '<li class="sidearm-schedule-game sidearm-schedule-home-game upcoming-game '
+        'sidearm-schedule-game-completed" data-game-id="10758">'
+        '<span class="sidearm-schedule-game-opponent-date"><span>Sep 2 (Wed)</span></span>'
+        '<div class="sidearm-schedule-game-opponent-text">'
+        '<span class="sidearm-schedule-game-home">vs</span>'
+        '<span class="sidearm-schedule-game-opponent-name"><a>Florida Memorial</a></span>'
+        "</div></li>"
+    )
+    with caplog.at_level("WARNING", logger="src.sidearm_live"):
+        [row] = parse_schedule_page(
+            html,
+            page_url="https://example.test/schedule/2026",
+            year=2026,
+            owner_slug="nova-southeastern",
+            aliases={},
+        )
+    assert row["status"] == "scheduled"
+    assert "home_score" not in row
+    assert (
+        "sidearm:nova-southeastern:10758: page reads final with no score "
+        "('sidearm-schedule-game-completed'); stored scheduled, no score"
+    ) in caplog.text
+
+
+@pytest.mark.parametrize(
+    ("name", "year", "owner_slug", "game_id", "printed"),
+    [
+        # "W, 1-1 (SO, 4-3)": a shootout win, the owner at home.
+        (
+            "sidearm_lincoln_schedule_2025_4402.html",
+            2025,
+            "lincoln",
+            "4402",
+            "W, 1-1 (SO, 4-3)",
+        ),
+        # "W, 1-1 (PK-5-4)": a shootout win on a neutral tournament row.
+        (
+            "sidearm_delta_state_schedule_2020_12951.html",
+            2020,
+            "delta-state",
+            "12951",
+            "W, 1-1 (PK-5-4)",
+        ),
+    ],
+)
+def test_a_shootout_win_beside_a_level_score_is_stored_as_the_draw(
+    name: str,
+    year: int,
+    owner_slug: str,
+    game_id: str,
+    printed: str,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """The letter records advancement, the numbers are the goals: with a
+    shootout marker in the result text the level pair is the drawn score,
+    stored final, and the row is logged at info by fixture id."""
+    with caplog.at_level("INFO", logger="src.sidearm_live"):
+        row = _archived_row(name, year=year, owner_slug=owner_slug)
+    assert row["id"] == f"sidearm:{owner_slug}:{game_id}"
+    assert row["status"] == "final"
+    assert (row["home_score"], row["away_score"]) == (1, 1)
+    assert (
+        f"sidearm:{owner_slug}:{game_id}: W beside a level score 1-1 with a "
+        f"shootout marker ({printed!r}); stored as the draw"
+    ) in caplog.text
+    assert "reads final with no score" not in caplog.text
+
+
+def test_a_level_score_without_a_shootout_marker_is_refused_and_scheduled(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """upper-iowa 2024, game 9017: "W, 2-2" beside a promotion reading "Win by
+    forfeit" and no shootout marker anywhere on the row. The letter rule
+    refuses the pair, and a final with no score is a contradiction, so the
+    row is scheduled and named twice: once for the refusal, once for the
+    demotion."""
+    with caplog.at_level("INFO", logger="src.sidearm_live"):
+        row = _archived_row(
+            "sidearm_upper_iowa_schedule_2024_9017.html",
+            year=2024,
+            owner_slug="upper-iowa",
+        )
+    assert row["id"] == "sidearm:upper-iowa:9017"
+    assert row["status"] == "scheduled"
+    assert "home_score" not in row
+    assert "sidearm:upper-iowa:9017: result letter 'W' contradicts 2-2" in caplog.text
+    assert (
+        "sidearm:upper-iowa:9017: page reads final with no score ('W, 2-2'); "
+        "stored scheduled, no score"
+    ) in caplog.text
+    assert "shootout marker" not in caplog.text
+
+
+@pytest.mark.parametrize(
+    ("postscore_info", "expected_status"),
+    [("(SO, 4-3)", "final"), (None, "scheduled")],
+)
+def test_the_payload_reads_the_shootout_marker_from_its_score_info(
+    postscore_info: str | None, expected_status: str
+) -> None:
+    """The events payload carries no shootout field, so the marker is read
+    from the strings result does carry (status, postscore_info,
+    prescore_info); the same rule as the DOM cell, refused without it."""
+    event = {
+        "id": 4402,
+        "date": "2025-11-23T15:00:00",
+        "location_indicator": "H",
+        "is_conference": False,
+        "type": "completed",
+        "schedule": {"title": "2025 Men's Soccer Schedule"},
+        "opponent": {"title": "Tiffin"},
+        "result": {
+            "team_score": 1,
+            "opponent_score": 1,
+            "status": "W",
+            "postscore_info": postscore_info,
+        },
+    }
+    [fixture] = parse_schedule_page(
+        _schedule_html(event, title="2025 Men's Soccer Schedule"),
+        page_url="https://example.test/schedule/2025",
+        year=2025,
+        owner_slug="lincoln",
+        aliases={},
+    )
+    assert fixture["status"] == expected_status
+    if expected_status == "final":
+        assert (fixture["home_score"], fixture["away_score"]) == (1, 1)
+    else:
+        assert "home_score" not in fixture
+
+
+def test_a_played_row_with_a_score_stays_final(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """The control pinned beside the demotions: the completed class with a
+    parsed "W, 2-0" is final, scored, and not named."""
+    html = _dom_page(
+        _dom_game(
+            game_id="41",
+            opponent="Harding",
+            date="Sep 20 (Sat)",
+            result="W, 2-0",
+            completed=True,
+        )
+    )
+    with caplog.at_level("WARNING", logger="src.sidearm_live"):
+        [row] = parse_schedule_page(
+            html,
+            page_url="https://example.test/schedule/2026",
+            year=2026,
+            owner_slug="rogers-state",
+            aliases={"harding": "harding"},
+        )
+    assert row["status"] == "final"
+    assert (row["home_score"], row["away_score"]) == (2, 0)
+    assert "reads final with no score" not in caplog.text
+
+
+def test_a_parsed_score_beats_a_status_word_outside_the_result_cell() -> None:
+    """Measured on the archive reparse (2026-09-03): 31 played make-up dates
+    still name the date they were moved from beside their score (caldwell
+    2023, game 6141, "rescheduled from 9/23" beside "L, 2-3"). The word
+    outside the cell is a note, not a status, when the cell holds a score."""
+    html = _dom_page(
+        _dom_game(
+            game_id="6141",
+            opponent="Chestnut Hill College",
+            date="Oct 25 (Wed)",
+            result="L, 2-3",
+            promotion="rescheduled from 9/23",
+            completed=True,
+        )
+    )
+    [row] = parse_schedule_page(
+        html,
+        page_url="https://example.test/schedule/2023",
+        year=2023,
+        owner_slug="caldwell",
+        aliases={},
+    )
+    assert row["status"] == "final"
+    assert (row["home_score"], row["away_score"]) == (2, 3)
+
+
+def test_a_scrimmage_is_an_exhibition() -> None:
+    """bloomsburg 2022, game 14253: promotion "Scrimmage" beside "vs Chestnut
+    Hill College", no exhibition mark stored, while Chestnut Hill's own row
+    is marked exhibition. "Scrimmage" is the third spelling of the marker."""
+    row = _archived_row(
+        "sidearm_bloomsburg_schedule_2022_14253.html",
+        year=2022,
+        owner_slug="bloomsburg",
+    )
+    assert row["id"] == "sidearm:bloomsburg:14253"
+    assert row["date"] == "2022-08-23"
+    assert row["home"] == "bloomsburg"
+    assert row["status"] == "scheduled"
+    assert row["match_type"] == "exhibition"
+
+
+def test_the_scrimmage_marker_keeps_its_word_boundary() -> None:
+    from src.sidearm_live import _exhibition_marked
+
+    assert _exhibition_marked("Blue-Grey Scrimmage")
+    assert _exhibition_marked("Drexel University (scrimmage)")
+    assert not _exhibition_marked("Scrimmagers FC")

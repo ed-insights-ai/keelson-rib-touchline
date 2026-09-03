@@ -307,8 +307,11 @@ Run all four, in any order:
    conference is modified.
 4. **Finished seasons carrying `status: scheduled` rows** are usually
    unpublished-result exhibitions against non-Division II sides, a
-   cancelled fixture, or a tournament placeholder opponent. Note them; they
-   are not collect gaps.
+   cancelled fixture, or a tournament placeholder opponent. A row the page
+   marks completed or "Final" with no score is stored `scheduled` too,
+   since final requires scores, and the collect log names it by fixture id
+   (`page reads final with no score`). Note them; they are not collect
+   gaps.
 
 Then commit and push the data home. It is the durable record and consumer
 data, not rib code; its message records the per-season counts and the gap
