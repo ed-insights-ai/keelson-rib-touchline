@@ -16,6 +16,7 @@ from src.sidearm_live import (
     _oriented_scores,
     STATE_NO_COLLECTOR,
     identity_aliases,
+    identity_fold_rules,
     opponent_slug,
     PublishedPage,
     assert_schedule_proven,
@@ -547,7 +548,96 @@ def test_aliases_stay_scoped_to_their_own_gender() -> None:
     ]
     mens = identity_aliases(womens_only, "men")
     assert mens == {}
-    assert opponent_slug("University of Montevallo", mens) == "of-montevallo"
+    # No alias reached the men's map; the fold alone carries the formal name
+    # to the plain one (it used to leave "of-montevallo", tl-kvn).
+    assert opponent_slug("University of Montevallo", mens) == "montevallo"
+
+
+def test_an_institutional_prefix_folds_onto_the_plain_name() -> None:
+    """ "University of X" is X, not "of X".
+
+    Dropping "university" alone left the preposition standing, and the data
+    home filed "of-tampa" beside "tampa", "of-findlay" beside "findlay",
+    "of-texas-at-dallas" beside "ut-dallas" (tl-kvn: thirty-odd of- slugs
+    across the fixture files). The prefix forms all reduce to the same key,
+    and a leading "the" or a doubled "of the" goes with them.
+    """
+    aliases = identity_aliases(_gac(), "men")
+    for published in (
+        "University of Tampa",
+        "The University of Tampa",
+        "Tampa University",
+        "Tampa",
+    ):
+        assert opponent_slug(published, aliases) == "tampa"
+    assert opponent_slug("College of the Ozarks", aliases) == "ozarks"
+    assert opponent_slug("University of the Southwest", aliases) == "southwest"
+    # Only a LEADING "of" is residue; inside a name it is the name.
+    assert (
+        opponent_slug("Colorado School of Mines", aliases) == "colorado-school-of-mines"
+    )
+
+
+def test_a_locative_joiner_folds_onto_the_hyphenated_spelling() -> None:
+    """ "Texas at Dallas" and "Texas-Dallas" are one spelling.
+
+    Peers print the formal "University of Texas at Tyler" and the wire-style
+    "Texas-Tyler" for one programme (CSU Pueblo 2024, Colorado Christian
+    2025); the same for Alabama-Huntsville and Auburn Montgomery. The
+    preposition between two words joins nothing an identity needs.
+    """
+    aliases = identity_aliases(_gac(), "men")
+    assert (
+        opponent_slug("University of Texas at Tyler", aliases)
+        == opponent_slug("The University of Texas at Tyler", aliases)
+        == opponent_slug("Texas-Tyler", aliases)
+        == "texas-tyler"
+    )
+    assert (
+        opponent_slug("University of Alabama in Huntsville", aliases)
+        == opponent_slug("Alabama-Huntsville", aliases)
+        == "alabama-huntsville"
+    )
+    assert (
+        opponent_slug("Auburn University at Montgomery", aliases)
+        == opponent_slug("Auburn University Montgomery", aliases)
+        == "auburn-montgomery"
+    )
+    # A leading "at" is an orientation word, not a joiner; it is not eaten.
+    assert opponent_slug("at Molloy", aliases) == "at-molloy"
+
+
+def test_the_fold_names_the_rules_that_fired() -> None:
+    assert identity_fold_rules("University of Texas at Dallas") == (
+        "institution-word",
+        "of-prefix",
+        "locative-joiner",
+    )
+    assert identity_fold_rules("Fort Hays St.") == ()
+    assert identity_fold_rules("Lewis University") == ("institution-word",)
+
+
+def test_an_abbreviated_member_still_needs_its_stated_alias() -> None:
+    """The fold reaches "texas dallas"; only an alias reaches "UT Dallas"."""
+    schools = [
+        SchoolConfig(
+            name="UT Dallas",
+            abbreviation="UTD",
+            conference="LSC",
+            prefix="utd",
+            base_url="https://example.test/sports/mens-soccer",
+            gender="men",
+            aliases=["University of Texas at Dallas"],
+        )
+    ]
+    aliases = identity_aliases(schools, "men")
+    for published in (
+        "University of Texas at Dallas",
+        "The University of Texas at Dallas",
+        "Texas-Dallas",
+        "UT Dallas",
+    ):
+        assert opponent_slug(published, aliases) == "ut-dallas"
 
 
 def test_unconfigured_opponents_fold_on_the_normalized_key() -> None:

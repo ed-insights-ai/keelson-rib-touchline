@@ -70,6 +70,22 @@ no gaps, no overlaps, every configured programme covered.
 - **Inputs**: none; reads `data/reference/membership.json`.
 - **Exit**: 0 valid; 1 one line per violation.
 
+### sweep-opponent-slugs
+
+Read-only sweep of every fixture file in the data home for one fixture filed
+under two opponent slugs: two rows on one date sharing a slug on one side
+with two different slugs on the other (`ut-dallas` beside
+`of-texas-at-dallas`). Each pair is re-folded through the collector's
+current identity rules and labelled `FOLD` (a fold rule joins them, named),
+`ALIAS` (a stanza alias joins them) or `APART` (still two identities, or a
+host meeting two visitors in one day). Every conference file is swept;
+nothing names a conference.
+
+- **Inputs**: `TOUCHLINE_DATA_DIR`; reads `data/fixtures/*.json` only.
+- **Output**: one line per pair, then one JSON verdict line (`ok` with no
+  pairs, `warn` otherwise).
+- **Exit**: always 0.
+
 ## Analysis and reports (offline)
 
 ### build-digest

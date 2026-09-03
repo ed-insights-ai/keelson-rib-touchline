@@ -750,14 +750,70 @@ def _identity_key(name: str) -> str:
     Saint ("St. Edward's", "Missouri-St. Louis"). Expanding it to State
     unconditionally corrupted every Saint school in the archive, and the Lone
     Star Conference alone brings two more.
+
+    The institutional words are dropped in two steps, and the order matters.
+    Dropping "university" and "college" alone left the preposition behind:
+    "University of Texas at Dallas" keyed to "of texas at dallas" and was
+    filed beside "UT Dallas" as a second programme (tl-kvn; the data home
+    held thirty-odd such of- slugs, "of-tampa" beside "tampa", "of-findlay"
+    beside "findlay"). So a leading "of" — the residue of "University of",
+    "College of" and "The University of the" — goes too, and a locative
+    "at"/"in" between two words ("Texas at Dallas", "Alabama in Huntsville",
+    "Auburn at Montgomery") folds onto the hyphenated spelling peers use
+    ("Texas-Dallas", "Alabama-Huntsville", "Auburn Montgomery"). Only a
+    leading "of" is dropped: "Colorado School of Mines" and "Dominican
+    University of N.Y." keep theirs, since there the preposition sits inside
+    the name rather than in front of it.
     """
+    return _identity_fold(name)[0]
+
+
+# The words the fold removes, each named so a sweep can say which rule folded
+# a pair (scripts/sweep_opponent_slugs.py).
+FOLD_INSTITUTION = "institution-word"
+FOLD_OF_PREFIX = "of-prefix"
+FOLD_LOCATIVE = "locative-joiner"
+
+_INSTITUTION_WORDS = re.compile(r"\buniv(?:ersity)?\b|\bcollege\b|\bthe\b")
+_OF_PREFIX = re.compile(r"^(?:of\s+)+")
+_LOCATIVE_JOINER = re.compile(r"(?<=[a-z0-9])\s+(?:at|in)\s+(?=[a-z0-9])")
+
+
+def _identity_fold(name: str) -> tuple[str, tuple[str, ...]]:
+    """The identity key of a published string, with the fold rules that fired.
+
+    The key is what ``_identity_key`` returns; the rules are the names above,
+    in the order applied, for every rewrite that changed the string.
+    """
+    rules: list[str] = []
     text = _clean_team_name(name).lower().replace("&", " and ")
     text = re.sub(r"\([^)]*\)", " ", text)
     text = text.replace("'", "").replace("’", "")
     text = re.sub(r"\bst\.?\s*$", " state", text)
     text = re.sub(r"\b(?:st\.\s*|st\s+)(?=[a-z])", "saint ", text)
-    text = re.sub(r"\buniv(?:ersity)?\b|\bcollege\b|\bthe\b", " ", text)
-    return re.sub(r"[^a-z0-9]+", " ", text).strip()
+    text = re.sub(r"[^a-z0-9]+", " ", text).strip()
+
+    stripped = re.sub(r"\s+", " ", _INSTITUTION_WORDS.sub(" ", text)).strip()
+    if stripped != text:
+        rules.append(FOLD_INSTITUTION)
+    text = stripped
+
+    stripped = _OF_PREFIX.sub("", text)
+    if stripped != text:
+        rules.append(FOLD_OF_PREFIX)
+    text = stripped
+
+    stripped = _LOCATIVE_JOINER.sub(" ", text)
+    if stripped != text:
+        rules.append(FOLD_LOCATIVE)
+    text = stripped
+
+    return re.sub(r"\s+", " ", text).strip(), tuple(rules)
+
+
+def identity_fold_rules(name: str) -> tuple[str, ...]:
+    """Which fold rules rewrite ``name`` on the way to its identity key."""
+    return _identity_fold(name)[1]
 
 
 def identity_aliases(
