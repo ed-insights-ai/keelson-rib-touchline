@@ -9,6 +9,7 @@
     "ECC",
     "G-MAC",
     "GAC",
+    "GLIAC",
     "GLVC",
     "GSC",
     "LSC",
@@ -114,6 +115,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
+        }
+      ]
+    },
+    "purdue-northwest": {
+      "men": [
+        {
+          "conference": "GLIAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Intercollegiate Athletic Conference, 2022 and 2026 Men's Soccer records, https://gliac.org/stats.aspx?path=msoc&year=2022&conf=true and https://gliac.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
       ]
     },

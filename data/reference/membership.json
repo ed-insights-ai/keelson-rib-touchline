@@ -4,6 +4,7 @@
     "ECC",
     "G-MAC",
     "GAC",
+    "GLIAC",
     "GLVC",
     "GSC",
     "LSC",
@@ -16,7 +17,7 @@
     "independent",
     "non_member"
   ],
-  "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2026. Authored from official GAC/MIAA, LSC, GSC, GLVC, RMAC, SSC, NE10, CACC, ECC, PSAC, MEC and G-MAC records; each window cites its source. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
+  "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2026. Authored from official GAC/MIAA, LSC, GSC, GLVC, RMAC, SSC, NE10, CACC, ECC, PSAC, MEC, G-MAC and GLIAC (gliac.org) records; each window cites its source. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
   "memberships": {
     "adams-state": {
       "men": [
@@ -285,6 +286,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Lone Star Conference, 2022 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12); listed in both."
+        }
+      ]
+    },
+    "davenport": {
+      "men": [
+        {
+          "conference": "GLIAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Intercollegiate Athletic Conference, 2022 and 2026 Men's Soccer records, https://gliac.org/stats.aspx?path=msoc&year=2022&conf=true and https://gliac.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
       ]
     },
@@ -854,6 +865,16 @@
         }
       ]
     },
+    "northern-michigan": {
+      "men": [
+        {
+          "conference": "GLIAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Intercollegiate Athletic Conference, 2022 and 2026 Men's Soccer records, https://gliac.org/stats.aspx?path=msoc&year=2022&conf=true and https://gliac.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
     "northwestern-oklahoma-state": {
       "women": [
         {
@@ -1006,6 +1027,16 @@
         }
       ]
     },
+    "purdue-northwest": {
+      "men": [
+        {
+          "conference": "GLIAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Intercollegiate Athletic Conference, 2022 and 2026 Men's Soccer records, https://gliac.org/stats.aspx?path=msoc&year=2022&conf=true and https://gliac.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
     "queens": {
       "men": [
         {
@@ -1093,6 +1124,26 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "roosevelt": {
+      "men": [
+        {
+          "conference": "GLIAC",
+          "from_season": 2024,
+          "to_season": 2026,
+          "source": "Great Lakes Intercollegiate Athletic Conference, 2024 and 2026 Men's Soccer records, https://gliac.org/stats.aspx?path=msoc&year=2024&conf=true and https://gliac.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both and in 2025. Absent from the 2023 records (https://gliac.org/stats.aspx?path=msoc&year=2023&conf=true) and from 2022 and 2021: Roosevelt joined the GLIAC as its 11th member on 2024-07-01 with competition from fall 2024 (https://gliac.org/news/2024/6/25/general-roosevelt.aspx and https://www.roosevelt.edu/stories/news/lakers-officially-join-great-lakes-intercollegiate-athletic-conference-gliac); first listed 2024, as a plain row, and the 2024 standings (https://gliac.org/standings.aspx?standings=307) mark it a regular-season champion, so its seasons count from 2024 although NCAA championships stayed closed to it until its active Division II membership on 2026-09-01 (https://gliac.org/news/2026/7/8/general-ncaa-approves-roosevelt-as-full-time-ncaa-division-ii-member.aspx)."
+        }
+      ]
+    },
+    "saginaw-valley-state": {
+      "men": [
+        {
+          "conference": "GLIAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Intercollegiate Athletic Conference, 2022 and 2026 Men's Soccer records, https://gliac.org/stats.aspx?path=msoc&year=2022&conf=true and https://gliac.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
       ]
     },
@@ -1304,6 +1355,16 @@
         }
       ]
     },
+    "st-cloud-state": {
+      "men": [
+        {
+          "conference": "GLIAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Intercollegiate Athletic Conference, 2022 and 2026 Men's Soccer records, https://gliac.org/stats.aspx?path=msoc&year=2022&conf=true and https://gliac.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too: St. Cloud State men's soccer joined the GLIAC as an affiliate member for 2021-22, its first Division II season (https://scsuhuskies.com/news/2021/4/27/mens-soccer-mens-soccer-accepted-into-gliac), so it did not arrive across the window's edge."
+        }
+      ]
+    },
     "st-thomas-aquinas": {
       "men": [
         {
@@ -1432,6 +1493,12 @@
     },
     "upper-iowa": {
       "men": [
+        {
+          "conference": "GLIAC",
+          "from_season": 2022,
+          "to_season": 2022,
+          "source": "Great Lakes Intercollegiate Athletic Conference, 2022 Men's Soccer records, https://gliac.org/stats.aspx?path=msoc&year=2022&conf=true (accessed 2026-09-04); listed there and in the 2021 records (year=2021), in both years as a row with no gliac.org team page. Absent from the 2023 records (https://gliac.org/stats.aspx?path=msoc&year=2023&conf=true); Upper Iowa joined the Great Lakes Valley Conference with regular-season competition and championship eligibility from 2023-24 (https://glvcsports.com/news/2022/11/29/general-glvc-admits-upper-iowa-university-as-full-time-member.aspx), and the GLVC's 2023 records list it (https://glvcsports.com/stats.aspx?path=msoc&year=2023&conf=true)."
+        },
         {
           "conference": "GLVC",
           "from_season": 2023,
@@ -1577,6 +1644,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
+    "wisconsin-parkside": {
+      "men": [
+        {
+          "conference": "GLIAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Lakes Intercollegiate Athletic Conference, 2022 and 2026 Men's Soccer records, https://gliac.org/stats.aspx?path=msoc&year=2022&conf=true and https://gliac.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both under the label Parkside, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
       ]
     }

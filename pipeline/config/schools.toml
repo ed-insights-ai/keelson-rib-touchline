@@ -1007,7 +1007,10 @@ conference   = "GLVC"
 mascot       = "Peacocks"
 gender       = "men"
 base_url     = "https://uiupeacocks.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+# 2022 was a GLIAC season (the 2021 and 2022 GLIAC records list Upper Iowa,
+# the 2023 records do not): membership.json carries that window on this slug
+# and the collect resolves the conference per season.
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2982,3 +2985,191 @@ aliases      = ["Walsh University"]
 city         = "North Canton, Ohio"
 city_source  = "schedule-page home venue location, https://athletics.walsh.edu/sports/mens-soccer/schedule/2026"
 identity_accessed = "2026-09-03"
+
+# ============================================================
+# GLIAC MEN'S SOCCER - 7 programmes, backfill window 2022-2026
+# ============================================================
+# 8 windows in the depth: the eighth is Upper Iowa's 2022 season, a second
+# membership window on the upper-iowa slug whose stanza sits in the GLVC
+# section; the collect resolves the conference per season.
+#
+# Source of truth: Great Lakes Intercollegiate Athletic Conference per-season
+# records (gliac.org conference statistics per year, plus the live standings
+# for 2026), verified 2026-09-04. All 8 sites probed 2026-09-04 (uv run probe
+# --name): SideArm on every one, schedule / roster / stats / matches present
+# and 2022-2026 served. St. Cloud State is the nextgen theme (the fingerprint
+# carries only the asset evidence and the probe read no home town). No collect
+# has run yet, so every stanza is data_status = unverified. No ordinals.
+#
+# Season-aware membership lives in data/reference/membership.json: Upper Iowa
+# left after 2022 (to the GLVC) and Roosevelt arrived 2024 (11th member from
+# 2024-07-01; it counted while NCAA-provisional: a plain row on the 2024
+# records page and a 2024 regular-season co-champion on the standings).
+# 7/6/7/7/7 members 2022-2026. Northwood is on the 2021 records page and
+# absent from every GLIAC records page 2022-2026, so its G-MAC stanza and
+# window stand. Ferris State, Grand Valley State, Lake Superior State,
+# Michigan Tech and Wayne State are members with no men's soccer and have
+# no stanza. Hosts came from the school links on the standings page.
+#
+# Names are the conference records' spellings, chosen so programme_slug(name)
+# matches the membership key, except Wisconsin-Parkside: the records print
+# "Parkside", the school's own name is carried and "Parkside" is an alias
+# (the data home already holds both spellings from opponents' pages). The
+# probe's initials-derived abbreviations (D, NOMI, PN, R, SVS, SCS) were
+# replaced: DU, NMU, PNW and RU are what the gliac.org member JSON prints
+# (embedded in standings.aspx?path=msoc, read 2026-09-04; it prints
+# "Parkside" and "SaginawValleyState" for those two and omits the affiliate
+# St. Cloud State), and SVSU, UWP and SCSU are the schools' own initialisms
+# from their own sites. Aliases cover the published long names, the records
+# and box-score spellings, and the data home's opponent spellings.
+
+# The probe found no mascot where it reads; "Panthers" is the site's own name
+# (dupanthers.com) and the gliac.org member JSON's. Home matches print
+# "Caledonia, Mich.", the venue town; Grand Rapids is the university's address.
+[[schools]]
+name         = "Davenport"
+abbreviation = "DU"
+conference   = "GLIAC"
+mascot       = "Panthers"
+gender       = "men"
+base_url     = "https://dupanthers.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Davenport University", "DU"]
+city         = "Grand Rapids, Mich."
+city_source  = "the university's main site, https://www.davenport.edu/ (footer address 6191 Kraft Ave SE, Grand Rapids, MI 49512, read 2026-09-04), and the gliac.org member JSON (Grand Rapids, MI); the schedule page prints Caledonia, Mich., the venue town, for home matches"
+identity_accessed = "2026-09-04"
+
+# The probe found no mascot where it reads; "Wildcats" is the site's own name
+# (nmuwildcats.com) and the gliac.org member JSON's.
+[[schools]]
+name         = "Northern Michigan"
+abbreviation = "NMU"
+conference   = "GLIAC"
+mascot       = "Wildcats"
+gender       = "men"
+base_url     = "https://nmuwildcats.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Northern Michigan University", "NMU"]
+city         = "Marquette, Mich."
+city_source  = "schedule-page home venue location, https://nmuwildcats.com/sports/mens-soccer/schedule/2026 (Marquette, MI); the gliac.org member JSON prints Marquette, MI (read 2026-09-04)"
+identity_accessed = "2026-09-04"
+
+# The probe found no mascot where it reads; "Pride" is the site's own name
+# (pnwathletics.com, "PNW Pride").
+[[schools]]
+name         = "Purdue Northwest"
+abbreviation = "PNW"
+conference   = "GLIAC"
+mascot       = "Pride"
+gender       = "men"
+base_url     = "https://pnwathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Purdue University Northwest", "PNW"]
+city         = "Hammond, Ind."
+city_source  = "schedule-page home venue location, https://pnwathletics.com/sports/mens-soccer/schedule/2026 (Hammond, IN); the gliac.org member JSON prints Hammond, Ind. (read 2026-09-04)"
+identity_accessed = "2026-09-04"
+
+# First GLIAC season 2024: Roosevelt joined as the conference's 11th member
+# on 2024-07-01 with competition from fall 2024 (gliac.org news 2024/6/25 and
+# roosevelt.edu news 2024-07-03), absent from the 2023 records. The probe
+# found no mascot where it reads; "Lakers" is the site's own name
+# (rooseveltlakers.com) and the gliac.org member JSON's. Home matches print
+# "Arlington Heights, Ill.", the venue town; Chicago is the university's
+# address. The landing page still embeds a stale NAIA/CCAC config block: never
+# read the conference off the school site.
+[[schools]]
+name         = "Roosevelt"
+abbreviation = "RU"
+conference   = "GLIAC"
+mascot       = "Lakers"
+gender       = "men"
+base_url     = "https://rooseveltlakers.com/sports/mens-soccer"
+years        = [2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Roosevelt University", "Roosevelt (Ill.)"]
+city         = "Chicago, Ill."
+city_source  = "the university's main site, https://www.roosevelt.edu/ (Chicago Campus, 430 S. Michigan Ave, Chicago, IL 60605, read 2026-09-04), and the NCAA directory, https://web3.ncaa.org/directory/orgDetail?id=2807 (same address); the schedule page prints Arlington Heights, Ill., the venue town, for home matches"
+identity_accessed = "2026-09-04"
+
+# The site and the gliac.org member JSON print "University Center, Mich."
+# (7400 Bay Road, University Center, MI 48710), a mailing-address community
+# that is not a 2023 Gazetteer place in Michigan (the only University Center
+# CDP is in Virginia), so the pin rule cannot take it. The campus is in
+# Kochville Township, Saginaw County (svsu.edu newsroom 2019-10-30, "SVSU's
+# first leaders chose Kochville Township as the campus home"; kochville.gov,
+# "Kochville Township is proud to be the home of Saginaw Valley State
+# University"), and the county-subdivisions file carries it as Kochville
+# township, GEOID 2614543800.
+[[schools]]
+name         = "Saginaw Valley State"
+abbreviation = "SVSU"
+conference   = "GLIAC"
+mascot       = "Cardinals"
+gender       = "men"
+base_url     = "https://svsucardinals.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Saginaw Valley State University", "Saginaw Valley", "SVSU"]
+city         = "Kochville, Mich."
+city_source  = "the township the campus is in: https://www.svsu.edu/newsroom/news/2019/october/kochvilletownshipscardinalsquare/ and https://www.kochville.gov/information/universities.php (read 2026-09-04); the schedule page and the gliac.org member JSON print University Center, Mich., the campus mailing address, which the 2023 Gazetteer does not list"
+gazetteer_geoid = "2614543800"
+identity_accessed = "2026-09-04"
+
+# A GLIAC affiliate for men's soccer only: the programme joined the GLIAC as
+# an affiliate member for 2021-22, its first Division II season (scsuhuskies.com
+# news 2021-04-27), while the institution is a Northern Sun member
+# (northernsun.org member JSON) and absent from the gliac.org member JSON.
+# SideArm nextgen theme: the probe read no home town; "St. Cloud, Minn." is
+# what the schedule page prints for home matches. Opponents' pages minted
+# saint-cloud-state (17 data-home rows), hence the "Saint Cloud State" alias;
+# the gliac.org box-score titles print "St. Cloud St.".
+[[schools]]
+name         = "St. Cloud State"
+abbreviation = "SCSU"
+conference   = "GLIAC"
+mascot       = "Huskies"
+gender       = "men"
+base_url     = "https://scsuhuskies.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["St. Cloud State University", "St. Cloud St.", "Saint Cloud State", "SCSU"]
+city         = "St. Cloud, Minn."
+city_source  = "schedule-page home venue location, https://scsuhuskies.com/sports/mens-soccer/schedule (St. Cloud, Minn., read by hand 2026-09-04); the northernsun.org member JSON prints St. Cloud, MN"
+identity_accessed = "2026-09-04"
+
+# The records and standings print "Parkside" in every season 2021-2026; the
+# school's own name is carried (uwp.edu, "University of Wisconsin-Parkside")
+# and "Parkside" is an alias, so opponent text keeps folding onto this slug.
+# The data home already holds wisconsin-parkside (6 rows) and parkside (20
+# rows) from opponents' pages; the alias round folds the rest. St. Cloud
+# State's schedule prints "UW-Parkside".
+[[schools]]
+name         = "Wisconsin-Parkside"
+abbreviation = "UWP"
+conference   = "GLIAC"
+mascot       = "Rangers"
+gender       = "men"
+base_url     = "https://parksiderangers.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Wisconsin-Parkside", "Parkside", "UW-Parkside"]
+city         = "Kenosha, Wis."
+city_source  = "schedule-page home venue location, https://parksiderangers.com/sports/mens-soccer/schedule/2026 (Kenosha, WI); the gliac.org member JSON prints Kenosha, WI and uwp.edu's footer address is 900 Wood Road, Kenosha, WI 53141 (read 2026-09-04)"
+identity_accessed = "2026-09-04"
