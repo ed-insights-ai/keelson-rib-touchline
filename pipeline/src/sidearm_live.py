@@ -1179,6 +1179,29 @@ def _dom_time(text: str) -> str | None:
     return f"{hour:02d}:{int(match.group(2) or 0):02d}"
 
 
+def _dom_aria_time(row: object) -> str | None:
+    """Read the kickoff a completed game-list row publishes only in aria-labels.
+
+    Measured csidolphins.com 2026: an upcoming row prints its time in
+    ``span.sidearm-schedule-game-time`` ("2:30 PM") and repeats it in the
+    opponent link's aria-label ("Dominican University (N.Y.) on September 5
+    2:30 PM"); every one of the twelve rows carrying both agrees.  A completed
+    row (12026, "Make Up Date TBD"; 12027, final) renders no time element at
+    all, so its kickoff, "Assumption University on August 27 1:00 PM" and
+    matching Assumption's own 13:00, is read from the labels in document
+    order, the opponent link first.  The label is the page's own local-time
+    wording, so it is parsed as rendered text, never shifted.
+    """
+    for link in row.select("a[aria-label]"):  # type: ignore[attr-defined]
+        label = str(link.get("aria-label") or "")
+        if not re.search(r"\b(?:on|at)\b", label):
+            continue
+        time = _dom_time(label)
+        if time:
+            return time
+    return None
+
+
 def _dom_result(text: str) -> tuple[str, int, int] | None:
     """Parse a result like ``W, 2-0`` or ``T, 1-1 (2OT)`` as it is printed.
 
@@ -1510,10 +1533,15 @@ def _parse_schedule_dom(
             fixture["conference_game"] = not exhibition and other_slug in member_slugs
             fixture["conference_game_source"] = "derived:membership"
         # Some themes render kickoff in a dedicated element; at least one packs
-        # it into the date text ("Aug 27 (Thu) 3:00 p.m.").
-        time = _dom_time(
-            _first_text(row, ".sidearm-schedule-game-time") or ""
-        ) or _dom_time(_first_text(row, ".sidearm-schedule-game-opponent-date") or "")
+        # it into the date text ("Aug 27 (Thu) 3:00 p.m.").  The game-list
+        # skin drops the time element once a row is completed, and the
+        # kickoff then survives only in the row's link aria-labels (bead
+        # tl-4sg.31).
+        time = (
+            _dom_time(_first_text(row, ".sidearm-schedule-game-time") or "")
+            or _dom_time(_first_text(row, ".sidearm-schedule-game-opponent-date") or "")
+            or _dom_aria_time(row)
+        )
         if time:
             fixture["time"] = time
         if location is not None:
