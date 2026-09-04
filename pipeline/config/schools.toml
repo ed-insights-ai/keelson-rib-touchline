@@ -28,6 +28,10 @@
 # a rename (Mississippi College → Mississippi Christian). display_name is what
 # reader-facing surfaces show; leave it unset when `name` is already the
 # published name. Cite the school's own site when setting it.
+# Two enabled stanzas of one gender may not mint the same slug: the loader
+# refuses the pair. A second institution of the same name qualifies `name`
+# ("Lincoln Memorial" beside "Lincoln") and keeps its published name in
+# display_name.
 #
 # data_status values:
 #   verified   — URL confirmed live, sport confirmed present, scraper confirmed working

@@ -447,6 +447,9 @@ def collect(
     list[str],
     int,
 ]:
+    # load_schools has refused any two enabled stanzas of one gender that mint
+    # the same slug, so the dicts below cannot drop a programme by keeping the
+    # later stanza; a same-named institution reaches here under its own slug.
     schools = load_schools(config_path)
     # `enabled = false` records a programme whose site we have no working recipe
     # for.  Attempting it anyway spends a request to produce a failure we already

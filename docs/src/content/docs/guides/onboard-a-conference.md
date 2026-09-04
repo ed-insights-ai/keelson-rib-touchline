@@ -65,6 +65,25 @@ records page; never assume it from memory:
   appears in the sport's records gets no window at all.
 - **Renamed** (Mississippi College became Mississippi Christian 2026-06-01).
   `name` keeps minting the old slug; `display_name` carries the new name.
+- **Same-named as a programme already in the rib.** The slug `name` mints
+  keys every per-programme map (the collect's candidates, coverage cells,
+  membership windows, the programmes reference), so two enabled stanzas of
+  one gender may not mint the same slug: `load_schools` refuses the pair,
+  naming both stanzas, before any collect or build runs. There is no
+  separate slug field. Disambiguation lives in the words, the way opponent
+  text already mints it (the GAC archive carries `lincoln-memorial` beside
+  the GLVC's `lincoln`): give the newcomer a qualified `name` ("Lincoln
+  Pennsylvania", say, minting `lincoln-pennsylvania`) and key its
+  membership windows by the qualified slug. The programme already in the
+  rib keeps its slug; slugs never rename. Identity is the separate check:
+  every spelling a stanza claims, `display_name` included, resolves
+  opponent text, and a parenthetical is dropped before matching, so the
+  newcomer's `display_name` must be a form only it claims ("Lincoln
+  University (Pa.)" reduces to a key the incumbent does not hold; "Lincoln
+  (Pa.)" reduces to `lincoln` and `check-membership` refuses it). The bare
+  "Lincoln" keeps resolving to the incumbent, and peer schedules that print
+  only the bare name for the newcomer are the alias round's problem, not
+  the loader's.
 - **Non-participation is not a membership break.** Spring Hill and West
   Florida are absent from the GSC's 2020 statistics because the conference
   postponed the season; their windows stay continuous and the collect names

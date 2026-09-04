@@ -2,12 +2,22 @@
 
 from __future__ import annotations
 
+import re
 import tomllib
 from dataclasses import dataclass, field
 from pathlib import Path
 
 DEFAULT_CONFIG = Path(__file__).resolve().parent.parent / "config" / "schools.toml"
 DEFAULT_LIVE_COLLECTOR = "sidearm"
+
+
+def programme_slug(name: str) -> str:
+    """The institution slug a published name mints: lower-case ASCII words
+    joined by hyphens ("Lincoln Memorial" -> "lincoln-memorial"). Every slug
+    the archive carries, a stanza's and an opponent's alike, comes from this
+    one function, so disambiguation is always carried in the words themselves
+    and never in a separate key."""
+    return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
 
 
 @dataclass
@@ -27,6 +37,12 @@ class SchoolConfig:
     # the school renames (slugs never rename). ``display_name`` carries the
     # published spelling for reader-facing surfaces; empty means ``name`` is
     # already the published name. Use ``display()`` to resolve.
+    # The slug is also the identity of every map the collect keys by
+    # programme, so two enabled stanzas of one gender may not mint the same
+    # one: load_schools refuses the pair. A same-named institution (a second
+    # "Lincoln") qualifies ``name`` the way opponent text already does
+    # ("Lincoln Memorial" beside "Lincoln"), minting its own slug, and keeps
+    # the published spelling in ``display_name``.
     display_name: str = ""
     years: list[int] = field(default_factory=list)
     enabled: bool = False
@@ -105,7 +121,9 @@ def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
     """Load school configurations from a TOML file.
 
     Raises ``FileNotFoundError`` if the file doesn't exist.
-    Raises ``ValueError`` if an enabled school has an empty ``base_url``.
+    Raises ``ValueError`` if an enabled school has an empty ``base_url``, if
+    two schools share an assigned ordinal, or if two enabled stanzas of one
+    gender mint the same programme slug.
     """
     config_path = Path(path)
     if not config_path.exists():
@@ -167,5 +185,29 @@ def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
                 f"StatCrew lineage never reads."
             )
         seen_ordinals[s.ordinal] = s.abbreviation
+
+    # The slug ``name`` mints keys every per-programme map the collect builds
+    # (candidates, coverage cells, membership windows, the programmes
+    # reference), each of them a dict that would keep the later stanza and
+    # drop the earlier one without a word. A men's and a women's stanza of one
+    # school share a slug on purpose, so the identity is (gender, slug), and a
+    # disabled stanza takes part in no map, so only enabled ones are checked.
+    seen_slugs: dict[tuple[str, str], SchoolConfig] = {}
+    for s in schools:
+        if not s.enabled:
+            continue
+        key = (s.gender, programme_slug(s.name))
+        if key in seen_slugs:
+            other = seen_slugs[key]
+            raise ValueError(
+                f"Duplicate programme slug '{key[1]}' ({s.gender}): "
+                f"'{s.name}' ({s.abbreviation}, {s.conference}) and "
+                f"'{other.name}' ({other.abbreviation}, {other.conference}) "
+                f"both mint it. Two institutions of one name each need their "
+                f"own slug: qualify name the way opponent text already does "
+                f'("Lincoln Memorial" beside "Lincoln") and carry the '
+                f"published spelling in display_name."
+            )
+        seen_slugs[key] = s
 
     return schools
