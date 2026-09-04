@@ -70,6 +70,37 @@ def conference_for(
     return _window_conference(genders.get(gender), season_year)
 
 
+def division_for(
+    slug: str,
+    gender: str,
+    season_year: int,
+    *,
+    document: dict[str, Any] | None = None,
+) -> str | None:
+    """Return the division the programme's window names for one season.
+
+    A division is the conference's own grouping of its members, spelled the
+    way the conference prints it ("East", "Northwest", "Southwest" for
+    Conference Carolinas from 2023). It is optional on a window and absent
+    for every conference that publishes one table; a programme that moves
+    between divisions has one window per division, the Trevecca shape with
+    the conference unchanged. ``None`` when no window covers the season or
+    the covering window carries no division.
+    """
+    membership_document = document if document is not None else load_membership()
+    memberships = membership_document.get("memberships")
+    if not isinstance(memberships, dict):
+        return None
+
+    genders = memberships.get(slug)
+    if not isinstance(genders, dict):
+        return None
+    window = _window_for(genders.get(gender), season_year)
+    if window is None:
+        return None
+    return _window_division(window)
+
+
 def members_of(
     conference: str,
     gender: str,
@@ -100,8 +131,40 @@ def members_of(
     return members
 
 
-def _window_conference(windows: object, season_year: int) -> str | None:
-    """Walk one programme's windows for the conference covering a season."""
+def divisions_of(
+    conference: str,
+    gender: str,
+    season_year: int,
+    *,
+    document: dict[str, Any] | None = None,
+) -> dict[str, str]:
+    """Return each member's division for one conference-season, by slug.
+
+    The divisional companion of ``members_of``: only members whose window
+    carries a division appear, so the map is empty for a conference that
+    publishes one table and, once ``validate`` has passed, either empty or
+    complete for any conference-season (the all-or-none rule).
+    """
+    membership_document = document if document is not None else load_membership()
+    memberships = membership_document.get("memberships")
+    if not isinstance(memberships, dict):
+        return {}
+
+    divisions: dict[str, str] = {}
+    for slug, genders in memberships.items():
+        if not isinstance(slug, str) or not isinstance(genders, dict):
+            continue
+        window = _window_for(genders.get(gender), season_year)
+        if window is None or window.get("conference") != conference:
+            continue
+        division = _window_division(window)
+        if division is not None:
+            divisions[slug] = division
+    return divisions
+
+
+def _window_for(windows: object, season_year: int) -> dict[str, Any] | None:
+    """Walk one programme's windows for the one covering a season."""
     if not isinstance(windows, list):
         return None
 
@@ -110,15 +173,25 @@ def _window_conference(windows: object, season_year: int) -> str | None:
             continue
         from_season = window.get("from_season")
         to_season = window.get("to_season")
-        conference = window.get("conference")
         if (
             _is_year(from_season)
             and _is_year(to_season)
             and from_season <= season_year <= to_season
-            and isinstance(conference, str)
+            and isinstance(window.get("conference"), str)
         ):
-            return conference
+            return window
     return None
+
+
+def _window_conference(windows: object, season_year: int) -> str | None:
+    """Walk one programme's windows for the conference covering a season."""
+    window = _window_for(windows, season_year)
+    return None if window is None else window["conference"]
+
+
+def _window_division(window: dict[str, Any]) -> str | None:
+    division = window.get("division")
+    return division if isinstance(division, str) and division.strip() else None
 
 
 def is_conference_member(
@@ -284,6 +357,14 @@ def _validate_windows(
         if not isinstance(source, str) or not source.strip():
             errors.append(f"{label} must have a non-empty source citation")
 
+        if "division" in window:
+            division = window.get("division")
+            if not isinstance(division, str) or not division.strip():
+                errors.append(
+                    f"{label} division must be a non-empty string, "
+                    "spelled as the conference prints it"
+                )
+
         from_season = window.get("from_season")
         to_season = window.get("to_season")
         if not _is_year(from_season):
@@ -332,6 +413,59 @@ def _validate_windows(
         overlaps = [year for year, count in season_counts.items() if count > 1]
         if overlaps:
             errors.append(f"{programme} has overlapping windows at seasons {overlaps}")
+
+
+def _validate_divisions(
+    document: dict[str, Any],
+    errors: list[str],
+    *,
+    span: tuple[int, int] | None,
+) -> None:
+    """Hold every conference-season to the all-or-none division rule.
+
+    A conference that prints divisions prints them for every member, so
+    within one (conference, gender, season) either every resolving window
+    carries a ``division`` or none does. A mix means an authoring slip (one
+    window split for the move, its neighbours not yet labelled), and it is
+    refused here naming the conference-season and the odd members, because
+    the site groups a standings table by division only when the season's
+    membership is wholly divisional.
+    """
+    if span is None:
+        return
+    memberships = document.get("memberships")
+    if not isinstance(memberships, dict):
+        return
+
+    seasons: dict[tuple[str, str, int], dict[str, str | None]] = {}
+    for slug, genders in memberships.items():
+        if not isinstance(slug, str) or not isinstance(genders, dict):
+            continue
+        for gender, windows in genders.items():
+            if not isinstance(gender, str):
+                continue
+            for year in range(span[0], span[1] + 1):
+                window = _window_for(windows, year)
+                if window is None:
+                    continue
+                members = seasons.setdefault((window["conference"], gender, year), {})
+                members[slug] = _window_division(window)
+
+    for (conference, gender, year), members in sorted(seasons.items()):
+        labelled = sorted(slug for slug, division in members.items() if division)
+        unlabelled = sorted(slug for slug, division in members.items() if not division)
+        if not labelled or not unlabelled:
+            continue
+        odd, wording = (
+            (unlabelled, "without a division")
+            if len(unlabelled) <= len(labelled)
+            else (labelled, "carrying a division alone")
+        )
+        errors.append(
+            f"{conference} {gender} {year} mixes divisions: every member's "
+            "window must carry a division or none may; "
+            f"{wording}: {odd}"
+        )
 
 
 def validate(
@@ -400,6 +534,8 @@ def validate(
                 span=span,
                 declared=declared,
             )
+
+    _validate_divisions(document, errors, span=span)
 
     covered = covered_programmes(document)
     missing = sorted(configured_programmes - covered)

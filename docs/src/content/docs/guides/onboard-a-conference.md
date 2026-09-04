@@ -125,6 +125,24 @@ set behind the conference-game test and for the `programmes[].conference`
 the fixtures file carries, and falls back to the stanza only for a season
 no window covers.
 
+A conference that prints its standings in **divisions** (Conference
+Carolinas: East, Northwest and Southwest from 2023) puts the division on
+each window as an optional `division` string, spelled exactly as the
+conference's standings page prints it (source 1), never abbreviated or
+normalised. A division change splits the window the way a conference
+change does: North Greenville is one window `Southwest` for 2023 and a
+second `Northwest` from 2024, same conference, same slug. The rule is
+all-or-none per conference-season: for every conference, gender and
+season, either every member's window carries a division or none does, and
+`check-membership` refuses a mix naming the conference-season and the odd
+members. A conference that publishes one table carries no `division`
+anywhere. The resolvers carry it through (`division_for` and
+`divisions_of` in `pipeline/src/membership.py`, `divisions` on
+`resolveConference` in `src/membership.ts`, `bin/resolve-membership.ts
+divisions`), and the fixtures file's `programmes[]` entries carry it beside
+`conference`, which is how the site groups a standings table without any
+per-conference configuration.
+
 ## 2. Probe every site and record the verdicts
 
 Take the athletics hosts from the conference site's members page

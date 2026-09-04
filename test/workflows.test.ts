@@ -92,6 +92,20 @@ describe("bin/resolve-membership.ts", () => {
     expect(slugs?.split(",")).toHaveLength(15);
   });
 
+  test("divisions mode prints slug=division pairs, and nothing for a one-table conference", async () => {
+    const { conference, season } = await sampleConference();
+    const expected = await resolveConference(conference, "men", season);
+    const r = await run(["bun", resolver, "divisions", conference, "men", String(season)]);
+    expect(r.code).toBe(0);
+    const pairs = Object.entries(expected.divisions)
+      .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+      .map(([slug, division]) => `${slug}=${division}`);
+    expect(r.stdout).toBe(`${pairs.join(" ")}\n`);
+    // The conference line keeps its two-token shape whatever the divisions say.
+    const line = await run(["bun", resolver, "conference", conference, "men", String(season)]);
+    expect(line.stdout.trim().split(" ")).toHaveLength(2);
+  });
+
   test("an unknown conference exits 1 naming the known ones", async () => {
     const r = await run(["bun", resolver, "conference", "NOPE", "men", "2024"]);
     expect(r.code).toBe(1);

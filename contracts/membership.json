@@ -147,6 +147,24 @@
           "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
       ]
+    },
+    "contract-example-divisional": {
+      "men": [
+        {
+          "conference": "SSC",
+          "division": "Southwest",
+          "from_season": 2023,
+          "to_season": 2023,
+          "source": "Contract fixture, synthetic: the divisional window shape (bead tl-4sg.40, ruling 2026-09-04), the Conference Carolinas move of North Greenville from its Southwest division (2023) to Northwest (2024 onward) restamped onto the SSC code, because the fixture's conference list must equal the packaged file's and CC lands with its batch 4 windows. A division change splits the window with the conference unchanged; division is the string the conference prints."
+        },
+        {
+          "conference": "SSC",
+          "division": "Northwest",
+          "from_season": 2024,
+          "to_season": 2026,
+          "source": "Contract fixture, synthetic: the second window of the divisional split above; see that window's sentence."
+        }
+      ]
     }
   },
   "standings_archives": {

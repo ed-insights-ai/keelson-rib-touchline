@@ -29,13 +29,20 @@ import { packageDir } from "./datahome.ts";
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** One authored window: a programme's conference over an inclusive season
- *  range, with the citation that supports it. */
+ *  range, with the citation that supports it. `division` is the
+ *  conference's own grouping of the programme, spelled as the conference
+ *  prints it ("East", "Northwest", "Southwest" for Conference Carolinas
+ *  from 2023); optional, and a change of division splits the window the way
+ *  a change of conference does. check-membership holds each
+ *  conference-season to all-or-none: every member's window carries one or
+ *  none does. */
 export const membershipWindowSchema = z
   .object({
     conference: z.string().min(1),
     from_season: z.number().int(),
     to_season: z.number().int(),
     source: z.string().min(1),
+    division: z.string().min(1).optional(),
   })
   .strict();
 export type Window = z.infer<typeof membershipWindowSchema>;
@@ -103,6 +110,10 @@ export interface Resolution {
   gender: string;
   season: number;
   slugs: string[];
+  /** Each member's division for the season, by slug, read off the window
+   *  that resolved it; a slug is absent when its window names none. Empty
+   *  for a conference that publishes one table. */
+  divisions: Record<string, string>;
   /** True when `season` is past the last authored window and the most recent
    *  membership had to be carried forward. The caller must surface this: a
    *  carried-forward roster is a well-founded guess, not a cited fact. */
@@ -146,11 +157,14 @@ export async function resolveConference(
   const effective = extrapolated ? authoredThrough : season;
 
   const slugs: string[] = [];
+  const divisions: Record<string, string> = {};
   for (const [slug, byGender] of Object.entries(file.memberships)) {
     const windows = byGender[gender];
     if (!windows?.length) continue;
     const hit = windows.find((w) => effective >= w.from_season && effective <= w.to_season);
-    if (hit && hit.conference.toUpperCase() === wanted) slugs.push(slug);
+    if (!hit || hit.conference.toUpperCase() !== wanted) continue;
+    slugs.push(slug);
+    if (hit.division) divisions[slug] = hit.division;
   }
   slugs.sort();
 
@@ -159,6 +173,7 @@ export async function resolveConference(
     gender,
     season,
     slugs,
+    divisions,
     extrapolated,
     authoredThrough,
     known,

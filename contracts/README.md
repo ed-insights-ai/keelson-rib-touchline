@@ -57,5 +57,14 @@ The fixtures promise what the writer *can* emit, not only what it has:
   away row is restamped from a real away win with the 1-0 convention the
   collector writes when the page prints no score.
 
+- `membership.json` carries `contract-example-divisional`, a synthetic
+  slug whose two windows exhibit the divisional split (a `division` string
+  spelled as the conference prints it; `Southwest` 2023, then `Northwest`
+  from 2024, conference unchanged). The shape is Conference Carolinas'
+  (North Greenville, batch 4), restamped onto the `SSC` code because the
+  fixture's conference list must equal the packaged file's and CC lands
+  with its windows. `fixtures-2.json` carries the same `division` on one
+  `programmes[]` entry. No packaged window names a division yet.
+
 All were restamped from real rows and are called out here so nobody goes
 looking for the page they came from.
