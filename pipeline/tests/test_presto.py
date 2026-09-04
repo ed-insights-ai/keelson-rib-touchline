@@ -1470,3 +1470,87 @@ def test_a_presto_row_naming_the_owner_beside_its_opponent_is_the_owners() -> No
     assert (row["home"], row["away"]) == ("tampa", "alpha")
     assert row["id"] == "presto:tampa:ownerside0000001"
     assert skips == []
+
+
+# --- Doubled-number and datatables roster skins (beads tl-4sg.32, tl-4sg.30) --
+# Two fixtures trimmed from archived 2025-26 pages (title, header row, first
+# three body rows).  udcfirebirds.com prints the number column twice on each
+# row under one header, which slid every value one column left; the
+# chargerathletics.com table carries no ``jersey-number`` class, so it was not
+# a roster at all.  gonorthwood.com renders the UDC skin.
+
+UDC_BASE = "https://www.udcfirebirds.com/sports/msoc"
+DOMINICAN_BASE = "https://www.chargerathletics.com/sports/msoc"
+UDC_ROSTER = (FIXTURES / "prestosports_udc_roster_2025.html").read_text()
+DOMINICAN_ROSTER = (FIXTURES / "prestosports_dominican_roster_2025.html").read_text()
+UDC_ROSTER_URL = f"{UDC_BASE}/2025-26/roster"
+DOMINICAN_ROSTER_URL = f"{DOMINICAN_BASE}/2025-26/roster"
+
+
+def test_the_doubled_number_skin_folds_both_number_cells_under_one_header() -> None:
+    assert has_roster_markup(UDC_ROSTER)
+    assert not has_schedule_markup(UDC_ROSTER)
+    season_served(UDC_ROSTER_URL, UDC_ROSTER, 2025, LAYER_ROSTER)
+
+    players = parse_roster(UDC_ROSTER, page_url=UDC_ROSTER_URL)
+
+    assert [player["name"] for player in players] == [
+        "Benicio Lopez",
+        "Sergio Becerra",
+        "Niaza Tamini",
+    ]
+    assert players[0] == {
+        "name": "Benicio Lopez",
+        "number": "0",
+        "position": "Goalkeeper",
+        "height": "5'10",
+        "weight": "165 lbs",
+        "class_year": "Freshman",
+        "source_url": f"{UDC_BASE}/2025-26/bios/lopez_benicio_6vnb",
+    }
+    # The site spells its positions and classes out; the wide-screen number
+    # cell, not the narrow-screen badge, is the one read.
+    assert [(p["number"], p["position"], p["class_year"]) for p in players] == [
+        ("0", "Goalkeeper", "Freshman"),
+        ("1", "Goalkeeper", "Senior"),
+        ("2", "Defense", "Junior"),
+    ]
+    assert all("hometown" not in player for player in players)
+
+
+def test_the_datatables_skin_is_a_roster_by_its_data_field_cells() -> None:
+    assert has_roster_markup(DOMINICAN_ROSTER)
+    assert not has_schedule_markup(DOMINICAN_ROSTER)
+    assert "server-rendered PrestoSports roster table" in is_presto(DOMINICAN_ROSTER)
+    season_served(DOMINICAN_ROSTER_URL, DOMINICAN_ROSTER, 2025, LAYER_ROSTER)
+
+    players = parse_roster(DOMINICAN_ROSTER, page_url=DOMINICAN_ROSTER_URL)
+
+    assert [player["name"] for player in players] == [
+        "Miguel Hernandez",
+        "Johnny Corby",
+        "David Arteaga",
+    ]
+    # The screen and print copies of the bio link are one player.
+    assert players[0] == {
+        "name": "Miguel Hernandez",
+        "number": "00",
+        "position": "Goalkeeper",
+        "height": "5'10\"",
+        "weight": "163 lbs",
+        "class_year": "Junior",
+        "source_url": f"{DOMINICAN_BASE}/2025-26/bios/hernandez_miguel_31o4",
+    }
+    assert [(p["number"], p["position"], p["class_year"]) for p in players] == [
+        ("00", "Goalkeeper", "Junior"),
+        ("0", "Goalkeeper", "Freshman"),
+        ("1", "Goalkeeper", "Junior"),
+    ]
+
+
+def test_a_single_number_cell_row_is_read_as_before() -> None:
+    # The fold only joins two adjacent ``jersey-number`` cells; the card and
+    # table skins' single cell keeps its header index.
+    players = parse_roster(ROSTER, page_url=ROSTER_URL)
+    assert players[0]["name"] == "Alex Hare"
+    assert players[0]["number"] == "1"

@@ -179,9 +179,15 @@ def team_segment(html: str) -> str | None:
 
 # A schedule row on every skin: an ``event-row`` naming its opponent.
 _SCHEDULE_ROW = ".event-row .team-name, .event-row .event-opponent-name"
-# A roster row on either skin: a ``jersey-number`` cell (card and table
-# skins), or the legacy skin's ``number`` cell beside its ``name`` header cell.
-_ROSTER_ROW = "table tr .jersey-number, table tr td.number + th.name"
+# A roster row on any skin: a ``jersey-number`` cell (card, table and
+# doubled-number skins), the legacy skin's ``number`` cell beside its ``name``
+# header cell, or the datatables skin's ``data-field="number"`` cell beside
+# the name header cell it marks with ``data-field`` too.
+_ROSTER_CELLS = (
+    "tr .jersey-number, tr td.number + th.name, "
+    "tr td[data-field='number'] + th[data-field]"
+)
+_ROSTER_ROW = ", ".join(f"table {selector}" for selector in _ROSTER_CELLS.split(", "))
 
 
 def has_schedule_markup(html: str) -> bool:
@@ -751,6 +757,28 @@ def _column_key(label: str) -> str:
     return re.sub(r"[.\s]+$", "", label.strip().lower())
 
 
+def _roster_row_cells(row: Tag) -> list[Tag]:
+    """The row's cells, one per header column.
+
+    The doubled-number skin prints the jersey number twice in a row, a
+    narrow-screen badge cell and a wide-screen cell side by side, both
+    marked ``jersey-number``; the header names the column once, so the two
+    fold into the wide-screen one (the badge is dropped) and the header
+    index lines up with the rest of the row.
+    """
+    cells: list[Tag] = []
+    for cell in row.find_all(["td", "th"], recursive=False):
+        if (
+            cells
+            and "jersey-number" in cell.get("class", [])
+            and "jersey-number" in cells[-1].get("class", [])
+        ):
+            cells[-1] = cell
+            continue
+        cells.append(cell)
+    return cells
+
+
 def parse_roster(html: str, *, page_url: str) -> list[dict[str, str]]:
     """Read a PrestoSports roster table into player rows.
 
@@ -773,12 +801,28 @@ def parse_roster(html: str, *, page_url: str) -> list[dict[str, str]]:
     copy of the same link in the cell is the same player, so rows are
     deduplicated by bio URL (a row without one, by number and name), as the
     SideArm parser deduplicates by player id.
+
+    Two further skins are read by the same header rule.  The doubled-number
+    skin (udcfirebirds.com and gonorthwood.com, every season 2022-2026)
+    prints the number column twice on each body row, a narrow-screen badge
+    (``jersey-number d-md-none``) beside the wide-screen cell, under one
+    "No." header, so the body row carries one cell more than the header
+    names; ``_roster_row_cells`` folds the two into one before the header
+    index is applied, otherwise every value lands one column to the left
+    (the number as the name, the name as the position).  The datatables
+    skin (chargerathletics.com, every season 2022-2026) carries no
+    ``jersey-number`` class at all: its number cell is
+    ``td[data-field="number"]`` and its name cell the ``th`` beside it, so
+    that pair is the third row marker.  Its headers repeat their labels in
+    ``data-field-label`` with a leading space (" No."), which the column key
+    strips.  Neither skin's "Hometown/High School" header is a column the
+    row shape names, so those rosters carry no hometown.
     """
     soup = BeautifulSoup(html, "lxml")
     players: list[dict[str, str]] = []
     seen: set[str] = set()
     for table in soup.select("table"):
-        if table.select_one("tr .jersey-number, tr td.number + th.name") is None:
+        if table.select_one(_ROSTER_CELLS) is None:
             continue
         columns: dict[int, str] = {}
         for index, header in enumerate(table.select("thead th")):
@@ -793,7 +837,7 @@ def parse_roster(html: str, *, page_url: str) -> list[dict[str, str]]:
         for row in table.select("tbody tr"):
             values: dict[str, str] = {}
             link: Tag | None = None
-            for index, cell in enumerate(row.find_all(["td", "th"], recursive=False)):
+            for index, cell in enumerate(_roster_row_cells(row)):
                 field = columns.get(index)
                 if field is None:
                     continue
