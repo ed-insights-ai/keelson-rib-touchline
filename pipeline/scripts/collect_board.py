@@ -363,6 +363,13 @@ def _dedupe_fixtures(
         for field in ("time", "venue", "match_type", "neutral"):
             if field not in winner and field in loser:
                 winner[field] = loser[field]
+        # A forfeit is one side's published word too, and it names a side,
+        # so it crosses a reversed home/away pair by flipping (bead tl-wyv).
+        if "forfeit" not in winner and "forfeit" in loser:
+            side = str(loser["forfeit"])
+            if loser["home"] != winner["home"]:
+                side = "away" if side == "home" else "home"
+            winner["forfeit"] = side
         # Two finals can tie on lifecycle rank when one side published a
         # score and the other published only completion; the detail count
         # must never decide a published score pair away.  Finals only — a

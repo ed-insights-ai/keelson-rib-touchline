@@ -103,6 +103,17 @@ def test_fixtures_fixture_exercises_every_status_and_marking() -> None:
     assert contracts.values(document, contracts.FIXTURES, (*row, "match_type")) == {
         "exhibition"
     }
+    # A forfeit names the awarded side; the writer may emit either, so the
+    # fixture must carry both (bead tl-wyv).
+    assert contracts.values(document, contracts.FIXTURES, (*row, "forfeit")) == {
+        "home",
+        "away",
+    }
+    assert all(
+        fixture["status"] == "final" and "home_score" in fixture
+        for fixture in document["fixtures"]
+        if "forfeit" in fixture
+    )
     assert contracts.values(
         document, contracts.FIXTURES, (*row, "conference_game_source")
     ) == {"derived:membership"}
@@ -460,6 +471,7 @@ OPTIONAL_FIXTURE_FIELDS = (
     "venue",
     "match_type",
     "neutral",
+    "forfeit",
     "conference_game_source",
     "home_score",
     "away_score",

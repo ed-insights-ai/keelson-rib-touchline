@@ -50,6 +50,17 @@ note on a played make-up date and the score wins. Two collectors of one
 match therefore agree on played-versus-unplayed, which is what the fold on
 the site requires (beads tl-d69, tl-md2).
 
+A forfeit is the one final without a measured scoreline. A row whose result
+cell or promotion says forfeit ("Win by forfeit", "Loss by forfeit",
+"forfeited") is stored `final` with `forfeit` naming the awarded side,
+`home` or `away`, read from the letter: W on a programme's own page awards
+that programme's slot, L the opponent's. The scores are the printed ones
+when the host prints them (Upper Iowa 2024, "W, 2-2" beside "Win by
+forfeit", is stored 2-2 with `forfeit: "home"`), else 1-0 to the awarded
+side; a row without the word never carries `forfeit`, and a level score
+beside a W or L with neither a shootout nor a forfeit word is still refused
+(bead tl-wyv).
+
 ## 2. Tell a failed check from a pass
 
 The workflow's rule, stated at the top of the file: every check must alarm

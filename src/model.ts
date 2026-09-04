@@ -67,6 +67,13 @@ export const fixtureSchema = z
      *  page published them; this says neither side hosted. Absence means the
      *  page published no marker, not that the site was someone's home. */
     neutral: z.literal(true).optional(),
+    /** Present only when the schedule row itself says forfeit ("Win by
+     *  forfeit", "Loss by forfeit"); names the side the match was awarded
+     *  to. Status stays final. The scores are the printed ones when the host
+     *  prints them (Upper Iowa 2024: "W, 2-2" beside "Win by forfeit"), else
+     *  the sport's 1-0 convention to the awarded side; neither is a measured
+     *  scoreline. Absence means the page published no forfeit. */
+    forfeit: z.enum(["home", "away"]).optional(),
     /** Whether the result counts in the conference table. */
     conference_game: z.boolean().optional(),
     /** Present only when the flag was NOT published by a schedule page —

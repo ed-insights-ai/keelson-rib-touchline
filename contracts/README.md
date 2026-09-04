@@ -50,6 +50,12 @@ The fixtures promise what the writer *can* emit, not only what it has:
   caught one.
 - `matches-1.json` carries a card of `type: "unknown"`. The box-score parser
   emits it when the phrasing names neither colour.
+- `fixtures-2.json` carries a `forfeit: "away"` row (an optional field
+  naming the side a forfeit was awarded to, `home` or `away`; status stays
+  `final`). The one archived forfeit, Upper Iowa 2024 game 9017, is the
+  `forfeit: "home"` row beside it, scores 2-2 as the host printed them; the
+  away row is restamped from a real away win with the 1-0 convention the
+  collector writes when the page prints no score.
 
-Both were restamped from real rows and are called out here so nobody goes
+All were restamped from real rows and are called out here so nobody goes
 looking for the page they came from.
