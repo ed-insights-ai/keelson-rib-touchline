@@ -532,8 +532,8 @@ identity_accessed = "2026-09-02"
 # Source of truth: GSC per-season records (gscsports.org conference
 # statistics per year, plus the live standings for 2026), verified
 # 2026-08-20. Twelve of the 13 sites probed 2026-08-20 (uv run probe):
-# SideArm-new, schedule and roster present on every one; Lee is
-# WAF-blocked and unprobed. No collect has run yet, so every stanza is
+# SideArm-new, schedule and roster present on every one; Lee was probed
+# 2026-09-04 at its real host leeuflames.com (see its stanza). No collect has run yet, so every stanza is
 # data_status = unverified — promote to verified once a collect confirms
 # the layers end to end. No ordinals: the StatCrew legacy lineage never
 # reads these.
@@ -606,17 +606,20 @@ city         = "Clinton, Miss."
 city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
 identity_accessed = "2026-09-02"
 
-# leeflames.com answers 403 to every automated request (WAF/bot filter),
-# so the probe could not confirm the layers. Platform assumed SideArm-new
-# from the URL shape; collection will file a named gap until the block is
-# resolved.
+# leeflames.com is not Lee's athletics site: it is an Adobe Portfolio fan
+# page ("Official Unofficial Site") that answers 403 on every path for
+# every client, which is why every GSC board 2016-2026 showed Lee 403.
+# The real SideArm site is leeuflames.com; probed 2026-09-04: sidearm,
+# schedule, roster, stats and matches present, seasons 2016-2026 all
+# served. Second source: research-lee.json (2026-08-22) already cites
+# leeuflames.com for the coaches page.
 [[schools]]
 name         = "Lee"
 abbreviation = "LEE"
 conference   = "GSC"
 mascot       = "Flames"
 gender       = "men"
-base_url     = "https://leeflames.com/sports/mens-soccer"
+base_url     = "https://leeuflames.com/sports/mens-soccer"
 years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
