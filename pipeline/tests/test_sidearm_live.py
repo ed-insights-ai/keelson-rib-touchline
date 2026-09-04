@@ -2388,6 +2388,72 @@ def test_the_other_staten_island_rows_keep_their_statuses() -> None:
 
 
 @pytest.mark.parametrize(
+    ("game_id", "time", "status"),
+    [
+        # Result cell "Make Up Date TBD"; the opponent link's aria-label reads
+        # "Assumption University on August 27 1:00 PM", Assumption's own
+        # record of the match says 13:00.
+        ("12026", "13:00", "postponed"),
+        # Final, L 2-3; the box-score link's aria-label reads "... on
+        # August 29, 2026 at 2:00 PM".
+        ("12027", "14:00", "final"),
+    ],
+)
+def test_a_completed_list_row_keeps_the_kickoff_its_aria_labels_publish(
+    game_id: str, time: str, status: str
+) -> None:
+    """Bead tl-4sg.31, measured csidolphins.com 2026.
+
+    The game-list skin drops span.sidearm-schedule-game-time once a row is
+    completed, so its played and postponed rows stored no kickoff at all.
+    The page still publishes the time in the row's link aria-labels, local
+    and as rendered: that is the stored kickoff.  (The filed reading, an hour
+    gained, did not reproduce: every upcoming row's element and label agree.)
+    """
+    (row,) = parse_schedule_page(
+        (FIXTURES / f"sidearm_staten_island_schedule_2026_{game_id}.html").read_text(),
+        page_url="https://csidolphins.com/sports/mens-soccer/schedule/2026",
+        year=2026,
+        owner_slug="staten-island",
+        aliases={},
+    )
+    assert row["id"] == f"sidearm:staten-island:{game_id}"
+    assert row["status"] == status
+    assert row["time"] == time
+
+
+def test_the_time_element_outranks_the_aria_label() -> None:
+    """An upcoming row prints its kickoff in the element; the label is read
+    only when no element exists, so a label that disagrees never wins."""
+    html = _dom_game(
+        game_id="12099", opponent="Alpha", date="Aug 30 (Sun)", time="2:30 PM"
+    ).replace("<a>Alpha</a>", '<a aria-label="Alpha on August 30 3:30 PM">Alpha</a>')
+    (row,) = parse_schedule_page(
+        _dom_page(html),
+        page_url="https://example.com/sports/mens-soccer/schedule/2026",
+        year=2026,
+        owner_slug="owner",
+        aliases={},
+    )
+    assert row["time"] == "14:30"
+
+
+def test_a_label_without_a_clock_stores_no_kickoff() -> None:
+    """A row whose links say only "History vs X" publishes no time."""
+    html = _dom_game(game_id="12099", opponent="Alpha", date="Aug 30 (Sun)").replace(
+        "<a>Alpha</a>", '<a aria-label="History vs Alpha">Alpha</a>'
+    )
+    (row,) = parse_schedule_page(
+        _dom_page(html),
+        page_url="https://example.com/sports/mens-soccer/schedule/2026",
+        year=2026,
+        owner_slug="owner",
+        aliases={},
+    )
+    assert "time" not in row
+
+
+@pytest.mark.parametrize(
     "result",
     ["Make Up Date TBD", "MAKEUP TBA", "Make-up date TBD", "PPD", "Postponed"],
 )
