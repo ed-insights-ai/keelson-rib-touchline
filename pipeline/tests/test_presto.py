@@ -70,6 +70,12 @@ TEAM_URL = f"{BASE}/2025-26/teams/tampa"
 STATS_URL = f"{TEAM_URL}?tmpl={STATS_TEMPLATE}"
 BOX_4ZCL_URL = f"{BASE}/2025-26/boxscores/20250906_4zcl.xml"
 BOX_FJLO_URL = f"{BASE}/2025-26/boxscores/20250911_fjlo.xml"
+# The 2026 skin's two play-by-play flavours: rvya abbreviates the sides
+# (UT, AUM) that its keeper lines spell out, jdlp spells them out everywhere.
+BOX_RVYA = (FIXTURES / "prestosports_tampa_box_rvyaoly2aiqu23s2.html").read_text()
+BOX_JDLP = (FIXTURES / "prestosports_tampa_box_jdlp1av2o4p3e3ql.html").read_text()
+BOX_RVYA_URL = f"{BASE}/2026-27/boxscores/20260829_rvya.xml"
+BOX_JDLP_URL = f"{BASE}/2026-27/boxscores/20260903_jdlp.xml"
 
 
 def test_season_path_is_the_academic_year() -> None:
@@ -1064,6 +1070,137 @@ def test_a_draw_with_the_owner_as_visitor_orients_by_name() -> None:
     assert detail["attendance"] == 617
     # The owner's own name resolves the draw: served first, so home_index 0.
     assert detail["home_index"] == 0
+
+
+def _names_on_the_record(detail: dict[str, object]) -> list[str]:
+    names: list[str] = []
+    for team in detail["teams"]:
+        names += [line["name"] for line in team.get("players", [])]
+        names += [line["name"] for line in team.get("keepers", [])]
+    names += [entry["scorer"] for entry in detail["scoring"]]
+    names += [entry["assist"] for entry in detail["scoring"] if "assist" in entry]
+    names += [card["player"] for card in detail["cards"]]
+    return names
+
+
+def test_abbreviated_play_tokens_are_learned_from_every_line() -> None:
+    """tl-agt: the keeper lines say "Tampa" and "AUM", every other line says
+    "UT" and "AUM", so the token has to be read off the lines that pair it
+    with a lineup name, not off the keeper line alone."""
+    detail = parse_boxscore(BOX_RVYA, page_url=BOX_RVYA_URL)
+    tampa, aum = detail["teams"]
+    assert (tampa["name"], tampa["abbr"]) == ("Tampa", "Tampa")
+    assert (aum["name"], aum["abbr"]) == ("Auburn-Montgomery", "AUM")
+
+    plays = detail["plays"]
+    assert len(plays) == 113
+    assert sum("team" in play for play in plays) == 100
+    # What is left names nobody: "Corner kick [01:59]." and the period markers.
+    assert {play.get("type") for play in plays if "team" not in play} == {
+        "corner",
+        "period",
+    }
+    assert all(
+        play["team"] == 0
+        for play in plays
+        if play["text"].startswith("UT substitution:")
+        or " by UT " in play["text"]
+        or " on UT " in play["text"]
+    )
+    assert all(play["team"] == 1 for play in plays if " by AUM " in play["text"])
+    # A foul names only its player; the lineup says whose he is.
+    [foul] = [play for play in plays if play["text"] == "Foul on Hoffman, Benjamin."][
+        :1
+    ]
+    assert foul["team"] == 1
+    # Tampa's 39:13 goal is on the strip, in Tampa's lane, with its score.
+    goals = [play for play in plays if play.get("type") == "goal"]
+    assert [(goal["clock"], goal["team"], goal["score"]) for goal in goals] == [
+        ("39:13", 0, [1, 0]),
+        ("65:53", 1, [1, 1]),
+        ("81:28", 1, [1, 2]),
+    ]
+    assert goals[0]["text"].startswith("GOAL by UT Carmona, Manuel")
+    # No name on the record carries a side token.
+    assert not [
+        name
+        for name in _names_on_the_record(detail)
+        if {"UT", "AUM"} & set(name.split())
+    ]
+
+
+def test_spelled_out_play_tokens_still_resolve() -> None:
+    detail = parse_boxscore(BOX_JDLP, page_url=BOX_JDLP_URL)
+    plays = detail["plays"]
+    assert len(plays) == 130
+    assert sum("team" in play for play in plays) == 128
+    assert {play["text"] for play in plays if "team" not in play} == {
+        "Free kick awarded to Clayton St..",
+        "Free kick awarded to Tampa.",
+    }
+    assert not [
+        name
+        for name in _names_on_the_record(detail)
+        if {"UT", "AUM"} & set(name.split())
+    ]
+
+
+def test_card_sides_resolve_per_row() -> None:
+    """tl-agt: the Penalty Summary's offscreen label repeats one side's name
+    on every row; the row's badge and the play-by-play say whose card it is."""
+    detail = parse_boxscore(BOX_RVYA, page_url=BOX_RVYA_URL)
+    assert [
+        (card["player"], card["time"], card["team"]) for card in detail["cards"]
+    ] == [
+        ("Tommaso Polidori", "33:58", 0),
+        ("Enrico Zanelli", "57:11", 1),
+        ("Kosi Mafela", "64:14", 0),
+        ("Manuel Carmona", "76:27", 0),
+    ]
+    detail = parse_boxscore(BOX_JDLP, page_url=BOX_JDLP_URL)
+    assert [
+        (card["player"], card["time"], card["team"]) for card in detail["cards"]
+    ] == [
+        ("Manuel Carmona", "36:27", 1),
+        ("William Waters", "90:00", 1),
+        ("Adrian Lopez", "90:00", 0),
+    ]
+    # A trimmed page without badges resolves through the play-by-play card
+    # lines: "Yellow card on Tampa Loc Kanku." beside four AUM cards.
+    detail = parse_boxscore(BOX_4ZCL, page_url=BOX_4ZCL_URL)
+    assert [(card["player"], card["team"]) for card in detail["cards"]] == [
+        ("Joseph Arnette", 0),
+        ("Sean O'Donnell", 0),
+        ("Loc Kanku", 1),
+        ("Benjamin Hoffman", 0),
+        ("Cole McNulty", 0),
+    ]
+    detail = parse_boxscore(BOX_FJLO, page_url=BOX_FJLO_URL)
+    assert [card["team"] for card in detail["cards"]] == [1, 0, 0, 0, 0, 0, 0]
+
+
+def test_an_unnamed_scorer_is_kept_as_the_teams_goal() -> None:
+    """tl-agt: "  (0) (unassisted)" beside "GOAL by AUM TEAM." is a goal on
+    the record, not a dropped row; a 2-1 shows three goals."""
+    detail = parse_boxscore(BOX_RVYA, page_url=BOX_RVYA_URL)
+    assert detail["scoring"] == [
+        {
+            "time": "39:13",
+            "team": 0,
+            "scorer": "Manuel Carmona",
+            "season_total": 1,
+            "assist": "Dagur Hafthorsson",
+        },
+        {
+            "time": "65:53",
+            "team": 1,
+            "scorer": "Benjamin Hoffman",
+            "season_total": 1,
+            "assist": "Fabio Guerreiro",
+        },
+        {"time": "81:28", "team": 1, "scorer": "TEAM", "season_total": 0},
+    ]
+    assert len(detail["scoring"]) == sum(team["score"] for team in detail["teams"])
 
 
 @pytest.mark.parametrize(
