@@ -125,6 +125,13 @@ slugs opponent text already minted). The probe reads the rest off the site:
 from the schedule page's description ("Prairie Stars", "Tritons"), and
 `aliases` from the published long name and the opponent spellings that
 contain every word of the name. Each stanza arrives in the house layout.
+A PrestoSports URL may be given as `/sports/msoc` or `/sports/msoc/index`
+(`wsoc` likewise); the probe treats both as the same landing page and
+drafts the bare form. A one-letter abbreviation guess is refused: the
+stanza prints `abbreviation = ""` with a comment, the summary lists the
+host under "hand edits still needed: abbreviation", and the short form is
+set by hand from the conference's own records (batch 4 minted "C" for five
+hosts and "L" for Lee).
 
 The draft is a starting point, not yet a paste (measured on the RMAC and
 SSC probes, bead tl-clk.7). Expect to correct, per stanza: an

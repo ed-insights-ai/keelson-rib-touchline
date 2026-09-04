@@ -11,6 +11,7 @@ import requests
 from scripts import probe as probe_cli
 from src.presto import STATS_TEMPLATE
 from src.probe import (
+    ABBREVIATION_BY_HAND,
     LAYER_PRESENT,
     PLATFORM_PRESTOSPORTS,
     PLATFORM_SIDEARM,
@@ -213,7 +214,8 @@ def test_derive_identity_falls_back_to_the_published_name_without_name() -> None
     identity = derive_identity(name="", pages=[html])
 
     assert identity.name == "Example University"
-    assert identity.abbreviation == "E"
+    # One initial is no short form; the guess is refused, not padded.
+    assert identity.abbreviation == ""
     assert identity.mascot == "Owls"
     assert identity.aliases == []
 
@@ -355,6 +357,10 @@ def test_cli_prints_report_without_writing_to_data_home(
     assert "Platform: sidearm" in output
     assert "[[schools]]" in output
     assert 'name         = "Example"' in output
+    # "Example University" yields one initial (university is filler), which
+    # is refused and named in the summary rather than drafted.
+    assert 'abbreviation = ""' in output
+    assert output.endswith("hand edits still needed: abbreviation\n  example.test\n")
     assert 'mascot       = "Owls"' in output
     # "Example University" keys identically to "Example", so no alias line.
     assert "aliases" not in output
@@ -626,10 +632,10 @@ def test_derive_identity_reads_the_mascot_off_a_prestosports_title() -> None:
     # so it is not worth a stated alias.
     assert identity.aliases == []
     # PrestoSports rows print no town, and the site publishes no short token,
-    # so the city stays blank (the stanza says so) and the abbreviation is
-    # the initials fallback the reviewer corrects.
+    # so the city stays blank (the stanza says so) and the one-letter initial
+    # is refused: the abbreviation is left for the reviewer to set.
     assert identity.city == ""
-    assert identity.abbreviation == "T"
+    assert identity.abbreviation == ""
 
 
 def test_draft_stanza_for_prestosports_names_both_scrapers() -> None:
@@ -682,7 +688,9 @@ def test_cli_reports_what_http_said_when_the_site_refuses(capsys) -> None:
     assert "403" in err
 
 
-def test_cli_probes_a_prestosports_site_end_to_end(capsys) -> None:
+def _presto_session() -> MagicMock:
+    """Tampa as the probe sees it: the landing page answers at the bare
+    sport URL, 2026 is refused and 2025 is served."""
     landing = f"""
     <html>
       <head>
@@ -698,7 +706,7 @@ def test_cli_probes_a_prestosports_site_end_to_end(capsys) -> None:
     schedule_2025 = f"{PRESTO_BASE}/2025-26/schedule"
     roster_url = f"{PRESTO_BASE}/2026-27/roster"
     teams_url = f"{PRESTO_BASE}/2026-27/teams/tampa"
-    session = _session_by_url(
+    return _session_by_url(
         {
             PRESTO_BASE: _response(f"{PRESTO_BASE}/index", landing),
             f"{PRESTO_BASE}/2026-27/schedule": _refused(
@@ -709,6 +717,10 @@ def test_cli_probes_a_prestosports_site_end_to_end(capsys) -> None:
             schedule_2025: _response(schedule_2025, _presto_page("schedule_2025")),
         }
     )
+
+
+def test_cli_probes_a_prestosports_site_end_to_end(capsys) -> None:
+    session = _presto_session()
 
     exit_code = probe_cli.main(
         [
@@ -743,6 +755,68 @@ def test_cli_probes_a_prestosports_site_end_to_end(capsys) -> None:
     assert 'scraper      = "prestosports"' in out
     assert 'live_scraper = "prestosports"' in out
     assert "# city: the schedule page prints no home town" in out
+    # The site prints no short form and "Tampa" has one initial: refused.
+    assert "Hand edits still needed: abbreviation" in out
+    assert 'abbreviation = ""\n' + ABBREVIATION_BY_HAND in out
+    assert out.endswith(
+        "hand edits still needed: abbreviation\n  www.tampaspartans.com\n"
+    )
+
+
+def test_cli_accepts_the_prestosports_index_landing_form(capsys) -> None:
+    """Bead tl-4an.29: ``/sports/msoc/index`` is the same landing page as
+    ``/sports/msoc``; both forms draft one identical stanza at the bare URL."""
+    outputs: list[str] = []
+    fetched: list[list[str]] = []
+    for given in (f"{PRESTO_BASE}/index", f"{PRESTO_BASE}/index/", PRESTO_BASE):
+        session = _presto_session()
+        exit_code = probe_cli.main(
+            ["--url", given, "--name", "Tampa", "--conference", "SSC"]
+            + ["--seasons", "2025-2026"],
+            session=session,
+        )
+        assert exit_code == 0, given
+        outputs.append(capsys.readouterr().out)
+        fetched.append([call.args[0] for call in session.get.call_args_list])
+
+    assert outputs[0] == outputs[1] == outputs[2]
+    assert fetched[0] == fetched[1] == fetched[2]
+    assert fetched[0][0] == PRESTO_BASE
+    assert f"URL: {PRESTO_BASE}\n" in outputs[0]
+    assert f'base_url     = "{PRESTO_BASE}"' in outputs[0]
+    assert "/index" not in outputs[0].replace(f"{PRESTO_BASE}/index", "")
+    # Women's soccer takes the same form.
+    assert probe_cli._landing_url("https://x.test/sports/wsoc/index") == (
+        "https://x.test/sports/wsoc"
+    )
+
+
+def test_draft_stanza_refuses_a_one_letter_abbreviation() -> None:
+    def draft(abbreviation: str) -> str:
+        return draft_stanza(
+            name="Lee",
+            abbreviation=abbreviation,
+            conference="GSC",
+            base_url="https://leeuflames.com/sports/mens-soccer",
+            gender="men",
+            platform=PLATFORM_SIDEARM,
+            seasons=[2026],
+            accessed="2026-09-04",
+        )
+
+    refused = draft("L")
+    assert (
+        'name         = "Lee"\n'
+        'abbreviation = ""\n'
+        "# hand abbreviation required: the site prints no short form the probe "
+        "could read\n"
+        'conference   = "GSC"\n'
+    ) in refused
+    assert tomllib.loads(refused)["schools"][0]["abbreviation"] == ""
+    assert draft("") == refused
+    kept = draft("LEE")
+    assert 'abbreviation = "LEE"\n' in kept
+    assert "hand abbreviation required" not in kept
 
 
 def test_probe_layers_locates_the_statistics_page_through_the_redirect() -> None:

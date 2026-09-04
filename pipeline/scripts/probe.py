@@ -35,6 +35,20 @@ def _season_range(value: str) -> list[int]:
     return list(range(high, low - 1, -1))
 
 
+def _landing_url(raw_url: str) -> str:
+    """Normalise a sport URL to its landing page.
+
+    PrestoSports links the sport as ``/sports/msoc/index`` and as the bare
+    ``/sports/msoc``; both are the same landing page, so the trailing
+    ``/index`` is dropped before the platform is judged and the season
+    paths are built, and the drafted stanza records the bare form.
+    """
+    url = raw_url.rstrip("/")
+    if url.lower().endswith("/index"):
+        url = url[: -len("/index")].rstrip("/")
+    return url
+
+
 def _gender_from_url(url: str) -> str:
     sport_slug = urlparse(url).path.rstrip("/").rsplit("/", 1)[-1].lower()
     if sport_slug.startswith("mens-") or sport_slug == "msoc":
@@ -92,7 +106,7 @@ def main(
     reports: list[ProbeReport] = []
     had_error = False
     for index, raw_url in enumerate(args.url):
-        url = raw_url.rstrip("/")
+        url = _landing_url(raw_url)
         parsed = urlparse(url)
         if parsed.scheme not in {"http", "https"} or not parsed.netloc:
             print(f"{raw_url}: expected an absolute HTTP(S) URL", file=sys.stderr)
@@ -143,6 +157,9 @@ def main(
         identity = derive_identity(
             name=args.name[index] if args.name else "", pages=pages, url=url
         )
+        # A one-letter guess is refused (bead tl-4an.29): the stanza prints
+        # an empty abbreviation and the summary names the host.
+        hand_edits = [] if len(identity.abbreviation) > 1 else ["abbreviation"]
         stanza = draft_stanza(
             name=identity.name,
             abbreviation=identity.abbreviation,
@@ -165,6 +182,7 @@ def main(
                 stanza=stanza,
                 not_seen=not_seen,
                 season_errors=survey.errors,
+                hand_edits=hand_edits,
             )
         )
 
@@ -177,7 +195,25 @@ def main(
             if index:
                 print()
             print(report.render(), end="")
+        summary = _hand_edit_summary(reports)
+        if summary:
+            print()
+            print(summary, end="")
     return 1 if had_error else 0
+
+
+def _hand_edit_summary(reports: list[ProbeReport]) -> str:
+    """List, per field still needing a hand edit, the hosts that need it."""
+    hosts_by_field: dict[str, list[str]] = {}
+    for report in reports:
+        host = urlparse(report.url).netloc
+        for field in report.hand_edits:
+            hosts_by_field.setdefault(field, []).append(host)
+    lines: list[str] = []
+    for field, hosts in hosts_by_field.items():
+        lines.append(f"hand edits still needed: {field}")
+        lines.extend(f"  {host}" for host in hosts)
+    return "\n".join(lines) + "\n" if lines else ""
 
 
 if __name__ == "__main__":
