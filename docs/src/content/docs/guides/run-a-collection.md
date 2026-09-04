@@ -42,6 +42,8 @@ TOUCHLINE_DATA_DIR={data-home} uv run --project {package-dir}/pipeline collect-b
   --layers schedule,roster,stats,matches
 ```
 
+Pass `refetch: true` to append `--refetch`, which re-fetches every stored box score and page instead of reusing the ones whose fixture results are unchanged (for a parser change); `touchline-backfill` takes the same `refetch` input.
+
 The subprocess budget scales with the fleet the run can become
 (`collectTimeoutMs` in `src/season.ts`), because a one-programme ask can
 widen (the scope widening below).
