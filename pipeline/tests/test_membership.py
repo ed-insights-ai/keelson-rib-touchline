@@ -569,3 +569,189 @@ def test_g_mac_resolves_per_season_with_trevecca_in_its_earlier_window(
         membership.conference_for("trevecca", "men", 2024, document=membership_document)
         == "GSC"
     )
+
+
+# ── standings-archive evidence (a conference with no records pages) ──────────
+
+FIXTURES = Path(__file__).resolve().parent / "fixtures"
+
+# Per-season member counts from the batch 4 research (bead tl-4an.29): the
+# SAC's site answers "no statistics available" for every records page, so
+# the standings archive by id is the evidence, and these are what it lists.
+SAC_STANDINGS = {
+    2021: ("sidearm_sac_standings_2021_72.html", 12),
+    2022: ("sidearm_sac_standings_2022_73.html", 12),
+    2023: ("sidearm_sac_standings_2023_74.html", 12),
+    2024: ("sidearm_sac_standings_2024_75.html", 12),
+    2025: ("sidearm_sac_standings_2025_178.html", 11),
+    2026: ("sidearm_sac_standings_2026_live.html", 11),
+}
+
+
+def _sac_page(season: int) -> str:
+    return (FIXTURES / SAC_STANDINGS[season][0]).read_text(encoding="utf-8")
+
+
+def test_standings_archive_url_is_data_not_code(membership_document):
+    # The id-to-season map lives on the packaged file; the template and the
+    # id compose the page the source sentence cites.
+    assert (
+        membership.standings_archive_url("SAC", 2022, document=membership_document)
+        == "https://www.thesac.com/standings.aspx?standings=73"
+    )
+    assert (
+        membership.standings_archive_url("SAC", 2025, document=membership_document)
+        == "https://www.thesac.com/standings.aspx?standings=178"
+    )
+    # A season the archive does not name, and a records-page conference, get
+    # nothing: their evidence is the records page the window already cites.
+    assert (
+        membership.standings_archive_url("SAC", 2019, document=membership_document)
+        is None
+    )
+    assert (
+        membership.standings_archive_url("PSAC", 2022, document=membership_document)
+        is None
+    )
+    assert "PSAC" not in membership_document["standings_archives"]
+
+
+@pytest.mark.parametrize("season", sorted(SAC_STANDINGS))
+def test_sac_standings_pages_reproduce_the_research_counts(season):
+    page = membership.parse_standings_page(_sac_page(season))
+    assert page.season == season
+    assert page.gender == "men"
+    assert len(page.names) == SAC_STANDINGS[season][1]
+    assert len(set(page.names)) == len(page.names)
+
+
+def test_the_2021_boundary_page_lists_queens_nc():
+    # 2021 is the season before the window opens: twelve programmes, Queens
+    # (NC) among them, who left for Division I before 2022.
+    names = membership.parse_standings_page(_sac_page(2021)).names
+    assert len(names) == 12
+    assert "Queens NC" in names
+    assert "Emory & Henry" not in names
+    assert "Emory & Henry" in membership.parse_standings_page(_sac_page(2022)).names
+
+
+def _sac_case(season: int) -> tuple[dict, list[SchoolConfig]]:
+    """A document and stanzas authored from what the page lists."""
+    names = membership.parse_standings_page(_sac_page(season)).names
+    schools = [_school(name, "SAC") for name in names]
+    document = {
+        "version": 1,
+        "seasons": {"from": 2022, "to": 2026},
+        "conferences": ["SAC", "independent", "non_member"],
+        "standings_archives": {
+            "SAC": {
+                "url_template": "https://www.thesac.com/standings.aspx?standings={id}",
+                "seasons": {str(season): "73"},
+            }
+        },
+        "memberships": {
+            programme_slug(name): {"men": [_window("SAC", 2022, 2026)]}
+            for name in names
+        },
+    }
+    return document, schools
+
+
+def test_verify_standings_holds_a_page_against_the_windows():
+    document, schools = _sac_case(2022)
+    verdict = membership.verify_standings(
+        _sac_page(2022), "SAC", "men", 2022, document=document, schools=schools
+    )
+    assert verdict.url == "https://www.thesac.com/standings.aspx?standings=73"
+    assert verdict.agrees
+    assert len(verdict.expected) == 12
+    assert verdict.slugs["Emory & Henry"] == programme_slug("Emory & Henry")
+
+    # A window the page does not support, and a name no window claims, are
+    # both named rather than folded into a count.
+    document["memberships"]["queens"] = {"men": [_window("SAC", 2022, 2026)]}
+    del document["memberships"]["coker"]
+    verdict = membership.verify_standings(
+        _sac_page(2022), "SAC", "men", 2022, document=document, schools=schools
+    )
+    assert not verdict.agrees
+    assert verdict.missing == {"queens"}
+    assert verdict.strangers == {"coker"}
+
+
+def test_verify_standings_mints_through_the_stanza_aliases():
+    # The page prints "Queens NC"; a stanza named Queens claiming that
+    # spelling resolves it to the stanza's slug, the way opponent text does.
+    document, schools = _sac_case(2021)
+    document["seasons"] = {"from": 2021, "to": 2026}
+    document["memberships"] = {
+        slug: {"men": [_window("SAC", 2021, 2026)]}
+        for slug in document["memberships"]
+        if slug != programme_slug("Queens NC")
+    }
+    document["memberships"]["queens"] = {"men": [_window("SAC", 2021, 2026)]}
+    schools = [school for school in schools if school.name != "Queens NC"]
+    schools.append(replace(_school("Queens", "SAC"), aliases=["Queens NC"]))
+    verdict = membership.verify_standings(
+        _sac_page(2021), "SAC", "men", 2021, document=document, schools=schools
+    )
+    assert verdict.slugs["Queens NC"] == "queens"
+    assert verdict.agrees
+
+
+def test_verify_standings_refuses_a_page_for_another_season():
+    document, schools = _sac_case(2022)
+    with pytest.raises(ValueError, match="2022 season, not 2023"):
+        membership.verify_standings(
+            _sac_page(2022), "SAC", "men", 2023, document=document, schools=schools
+        )
+    with pytest.raises(ValueError, match="men's soccer, not women's"):
+        membership.verify_standings(
+            _sac_page(2022), "SAC", "women", 2022, document=document, schools=schools
+        )
+
+
+def test_validate_checks_the_standings_archive_shape():
+    document, schools = _multi_conference_case()
+    assert membership.validate(document, schools=schools) == []
+
+    document["standings_archives"] = {
+        "GAC": {
+            "url_template": "https://greatamericanconference.com/standings.aspx?standings={id}",
+            "seasons": {"2022": "140"},
+        }
+    }
+    assert membership.validate(document, schools=schools) == []
+
+    document["standings_archives"] = {
+        "GAC": {
+            "url_template": "https://greatamericanconference.com/standings.aspx",
+            "seasons": {"22": "140", "2030": "141", "2023": ""},
+        }
+    }
+    errors = membership.validate(document, schools=schools)
+    assert any("url_template must be a URL carrying '{id}'" in e for e in errors)
+    assert any("season key '22' must be a 4-digit year" in e for e in errors)
+    assert any("season 2030 falls outside 2019-2026" in e for e in errors)
+    assert any("season 2023 id must be a non-empty string" in e for e in errors)
+
+
+def test_check_membership_cli_reads_a_captured_standings_page(capsys):
+    from scripts.check_membership import main
+
+    # Bare: the validation the script always did.
+    assert main([]) == 0
+    assert "membership valid" in capsys.readouterr().out
+
+    # With a page: the packaged file names the SAC archive but authors no SAC
+    # window yet (batch 4 prep), so the page's twelve names are strangers and
+    # the verdict says so, naming the archive page it read against.
+    page = str(FIXTURES / SAC_STANDINGS[2022][0])
+    assert main(["--standings", page, "--conference", "SAC", "--season", "2022"]) == 1
+    captured = capsys.readouterr()
+    assert "https://www.thesac.com/standings.aspx?standings=73" in captured.out
+    assert "page lists 12 teams" in captured.out
+    assert "on page, no window: wingate" in captured.err
+
+    # The flags travel together.
+    assert main(["--standings", page]) == 2

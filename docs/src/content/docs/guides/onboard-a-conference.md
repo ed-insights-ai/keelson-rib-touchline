@@ -45,6 +45,32 @@ with the live season's roster on `standings.aspx?path=msoc` when the
 statistics page is still empty. Write down every school named, per season.
 That list is the count the rib must reproduce later, so keep it.
 
+A conference site with no records pages (the South Atlantic Conference:
+`thesac.com/stats.aspx?path=msoc&year={season}&conf=true` answers "no
+statistics available" for every year 2021-2026) keeps its per-season
+member list in a standings archive instead, one opaque page id per season
+(`https://www.thesac.com/standings.aspx?standings=73` is 2022). Read the
+ids off the site's standings index, save them as data, not in a script:
+the `standings_archives` block of `data/reference/membership.json`, keyed
+by conference code, carries `url_template` (with `{id}`) and the id per
+season, and every `source` sentence for that conference names the archived
+page the same way a records-page sentence names its `year=`. Capture each
+page and reproduce the count offline before authoring the windows:
+
+```bash
+uv run --project pipeline check-membership \
+  --standings sac-standings-2022.html --conference SAC --season 2022
+```
+
+reads the team names off the captured `standings.aspx` page, mints them
+the way opponent text is minted (the gender's stanza aliases, then
+`programme_slug`), holds them against the members the windows resolve for
+that season, and refuses a page served for another season or gender. A
+name the windows do not claim, or a window the page does not list, is
+printed by slug. The same command reproduces the count for a records-page
+conference from a captured `standings.aspx?path=msoc` too; nothing about
+those conferences changes.
+
 Then run the **realignment-trap checklist**. Verify each item against a
 records page; never assume it from memory:
 

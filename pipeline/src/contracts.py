@@ -125,7 +125,14 @@ MEMBERSHIP = Contract(
     name="membership",
     filename="membership.json",
     schema=None,
-    records=frozenset({("memberships",), ("memberships", KEY)}),
+    records=frozenset(
+        {
+            ("memberships",),
+            ("memberships", KEY),
+            ("standings_archives",),
+            ("standings_archives", KEY, "seasons"),
+        }
+    ),
     enums=frozenset(),
 )
 
