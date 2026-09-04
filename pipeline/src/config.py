@@ -39,6 +39,14 @@ class SchoolConfig:
     # Montgomery") shares no token with a short one ("AUM") and so needs
     # to be stated. Scoped per stanza, which keeps the map gender-correct.
     aliases: list[str] = field(default_factory=list)
+    # Whether ``abbreviation`` also resolves opponent text. The identity map
+    # is one table per gender across every stanza, last stanza wins, so a
+    # bare initialism two stanzas share ("BU", "RU", "SCSU") would silently
+    # re-point one school's spelling to another's; such a stanza sets this
+    # false and its abbreviation stays display-only (coverage cells, the
+    # programmes reference) while only its name and aliases resolve.
+    # check-membership refuses any spelling two stanzas of one gender claim.
+    abbreviation_resolves: bool = True
     # The town the programme plays in, as its schedule page prints it
     # ("Alamosa, Colo.", "Ada, OK"); the programmes reference normalises it to
     # AP style and resolves it to one Gazetteer place. city_source cites where
@@ -121,6 +129,7 @@ def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
             notes=entry.get("notes", ""),
             mascot=entry.get("mascot", ""),
             aliases=entry.get("aliases", []),
+            abbreviation_resolves=entry.get("abbreviation_resolves", True),
             city=entry.get("city", ""),
             city_source=entry.get("city_source", ""),
             identity_accessed=entry.get("identity_accessed", ""),

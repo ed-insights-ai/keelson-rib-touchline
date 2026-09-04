@@ -4,14 +4,20 @@ from __future__ import annotations
 
 import copy
 import json
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
 
 from src import membership, paths
 from src.canon import PROGRAMMES, REGISTRY
-from src.config import SchoolConfig
-from src.sidearm_live import programme_slug
+from src.config import SchoolConfig, load_schools
+from src.sidearm_live import (
+    identity_aliases,
+    identity_collisions,
+    opponent_slug,
+    programme_slug,
+)
 from scripts.migrate_shard import SHARDED_NAME
 
 CANON_PROGRAMMES = {
@@ -415,6 +421,58 @@ def test_missing_structural_sentinel_fails():
         "structural codes" in error
         for error in membership.validate(document, schools=schools)
     )
+
+
+def test_a_spelling_two_stanzas_claim_is_refused():
+    # RU is Rockhurst's abbreviation and Roosevelt's: gender-wide,
+    # last-stanza-wins, so the collect would hand every "RU" to Roosevelt.
+    document, schools = _multi_conference_case()
+    for slug, conference in (("rockhurst", "GAC"), ("roosevelt", "LSC")):
+        document["memberships"][slug] = {
+            "men": [
+                {
+                    "conference": conference,
+                    "from_season": 2019,
+                    "to_season": 2026,
+                    "source": "t",
+                }
+            ]
+        }
+    rockhurst = replace(_school("Rockhurst", "GAC"), abbreviation="RU")
+    roosevelt = replace(_school("Roosevelt", "LSC"), abbreviation="RU")
+    errors = membership.validate(document, schools=[*schools, rockhurst, roosevelt])
+    assert errors == [
+        "identity collision (men): 'ru' is claimed by rockhurst (abbreviation) "
+        "and roosevelt (abbreviation); drop the alias or set "
+        "abbreviation_resolves = false on the stanzas that share the initialism"
+    ]
+
+    # An alias that is another stanza's name collides the same way.
+    aliased = replace(roosevelt, abbreviation="ROO", aliases=["Rockhurst"])
+    errors = membership.validate(document, schools=[*schools, rockhurst, aliased])
+    assert len(errors) == 1
+    assert (
+        "'rockhurst' is claimed by rockhurst (name) and roosevelt (alias)" in errors[0]
+    )
+
+    # Display-only abbreviations settle it; the map then resolves neither RU.
+    settled = [
+        replace(rockhurst, abbreviation_resolves=False),
+        replace(roosevelt, abbreviation_resolves=False),
+    ]
+    assert membership.validate(document, schools=[*schools, *settled]) == []
+    aliases = identity_aliases([*schools, *settled], "men")
+    assert "ru" not in aliases
+    assert opponent_slug("Roosevelt", aliases) == "roosevelt"
+    assert opponent_slug("Rockhurst", aliases) == "rockhurst"
+
+    # Women's stanzas are another table: the same initialism there is no
+    # collision with a men's one.
+    assert identity_collisions([rockhurst, replace(roosevelt, gender="women")]) == []
+
+
+def test_the_shipped_config_claims_no_spelling_twice():
+    assert identity_collisions(load_schools()) == []
 
 
 def test_missing_configured_programme_fails():

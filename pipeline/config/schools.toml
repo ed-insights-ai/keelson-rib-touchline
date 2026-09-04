@@ -14,6 +14,13 @@
 # to sidearm_legacy/statcrew when the live site has no implemented collector;
 # collection then files no-collector rather than a fetch error.
 #
+# abbreviation_resolves = false keeps an abbreviation display-only. The
+# identity map is one table per gender across every stanza, last stanza
+# wins, so a bare initialism two stanzas share ("BU", "RU", "SCSU") would
+# silently re-point one school's spelling to another's; every stanza in
+# such a set carries the flag and only its name and aliases resolve.
+# check-membership refuses any spelling two stanzas of one gender claim.
+#
 # display_name carries the school's published name when it differs from `name`.
 # `name` mints the institution slug (programme_slug in src/sidearm_live.py) that
 # keys membership.json, canon.json and every coverage cell, so it stays
@@ -70,6 +77,7 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Newman"
 abbreviation = "NU"
+abbreviation_resolves = false  # "NU" is also Northwood's
 conference   = "GAC"
 mascot       = "Jets"
 gender       = "men"
@@ -86,6 +94,7 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Northeastern State"
 abbreviation = "NSU"
+abbreviation_resolves = false  # "NSU" is also Nova Southeastern's
 conference   = "GAC"
 mascot       = "RiverHawks"
 gender       = "men"
@@ -749,6 +758,7 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Shorter"
 abbreviation = "SU"
+abbreviation_resolves = false  # "SU" is also Salem and Shepherd's
 conference   = "GSC"
 mascot       = "Hawks"
 gender       = "men"
@@ -871,6 +881,7 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Rockhurst"
 abbreviation = "RU"
+abbreviation_resolves = false  # "RU" is also Roosevelt's
 conference   = "GLVC"
 mascot       = "Hawks"
 gender       = "men"
@@ -920,6 +931,7 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Drury"
 abbreviation = "DU"
+abbreviation_resolves = false  # "DU" is also Daemen and Davenport's
 conference   = "GLVC"
 mascot       = "Panthers"
 gender       = "men"
@@ -1247,6 +1259,7 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Westminster"
 abbreviation = "WU"
+abbreviation_resolves = false  # "WU" is also Walsh and Wheeling and Wilmington's
 conference   = "RMAC"
 mascot       = "Griffins"
 gender       = "men"
@@ -1293,6 +1306,7 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Barry"
 abbreviation = "BU"
+abbreviation_resolves = false  # "BU" is also Bentley and Bloomsburg's
 conference   = "SSC"
 mascot       = "Buccaneers"
 gender       = "men"
@@ -1390,6 +1404,7 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Nova Southeastern"
 abbreviation = "NSU"
+abbreviation_resolves = false  # "NSU" is also Northeastern State's
 conference   = "SSC"
 mascot       = "Sharks"
 gender       = "men"
@@ -1501,6 +1516,7 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Adelphi"
 abbreviation = "AU"
+abbreviation_resolves = false  # "AU" is also Alliance and Ashland's
 conference   = "NE10"
 mascot       = "Panthers"
 gender       = "men"
@@ -1556,6 +1572,7 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Bentley"
 abbreviation = "BU"
+abbreviation_resolves = false  # "BU" is also Barry and Bloomsburg's
 conference   = "NE10"
 mascot       = "Falcons"
 gender       = "men"
@@ -1593,6 +1610,7 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Pace"
 abbreviation = "PU"
+abbreviation_resolves = false  # "PU" is also Post's
 conference   = "NE10"
 mascot       = "Setters"
 gender       = "men"
@@ -1645,6 +1663,7 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Southern Connecticut"
 abbreviation = "SCSU"
+abbreviation_resolves = false  # "SCSU" is also St. Cloud State's
 conference   = "NE10"
 mascot       = "Owls"
 gender       = "men"
@@ -1775,6 +1794,7 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Post"
 abbreviation = "PU"
+abbreviation_resolves = false  # "PU" is also Pace's
 conference   = "CACC"
 mascot       = "Eagles"
 gender       = "men"
@@ -1790,6 +1810,7 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Caldwell"
 abbreviation = "CU"
+abbreviation_resolves = false  # "CU" is also Cedarville and Concord's
 conference   = "CACC"
 mascot       = "Cougars"
 gender       = "men"
@@ -1846,6 +1867,7 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Wilmington"
 abbreviation = "WU"
+abbreviation_resolves = false  # "WU" is also Walsh and Westminster and Wheeling's
 conference   = "CACC"
 mascot       = "Wildcats"
 gender       = "men"
@@ -2013,6 +2035,7 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Alliance"
 abbreviation = "AU"
+abbreviation_resolves = false  # "AU" is also Adelphi and Ashland's
 conference   = "CACC"
 mascot       = "Warriors"
 gender       = "men"
@@ -2060,6 +2083,7 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Molloy"
 abbreviation = "MU"
+abbreviation_resolves = false  # "MU" is also Malone and Millersville's
 conference   = "ECC"
 mascot       = "Lions"
 gender       = "men"
@@ -2210,6 +2234,7 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Daemen"
 abbreviation = "DU"
+abbreviation_resolves = false  # "DU" is also Davenport and Drury's
 conference   = "ECC"
 mascot       = "Wildcats"
 gender       = "men"
@@ -2260,6 +2285,7 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Bloomsburg"
 abbreviation = "BU"
+abbreviation_resolves = false  # "BU" is also Barry and Bentley's
 conference   = "PSAC"
 mascot       = "Huskies"
 gender       = "men"
@@ -2356,6 +2382,7 @@ identity_accessed = "2026-09-03"
 [[schools]]
 name         = "Millersville"
 abbreviation = "MU"
+abbreviation_resolves = false  # "MU" is also Malone and Molloy's
 conference   = "PSAC"
 mascot       = "Marauders"
 gender       = "men"
@@ -2407,6 +2434,7 @@ identity_accessed = "2026-09-03"
 [[schools]]
 name         = "Shepherd"
 abbreviation = "SU"
+abbreviation_resolves = false  # "SU" is also Salem and Shorter's
 conference   = "PSAC"
 mascot       = "Rams"
 gender       = "men"
@@ -2544,6 +2572,7 @@ identity_accessed = "2026-09-03"
 [[schools]]
 name         = "Concord"
 abbreviation = "CU"
+abbreviation_resolves = false  # "CU" is also Caldwell and Cedarville's
 conference   = "MEC"
 mascot       = "Mountain Lions"
 gender       = "men"
@@ -2622,6 +2651,7 @@ identity_accessed = "2026-09-03"
 [[schools]]
 name         = "Wheeling"
 abbreviation = "WU"
+abbreviation_resolves = false  # "WU" is also Walsh and Westminster and Wilmington's
 conference   = "MEC"
 mascot       = "Cardinals"
 gender       = "men"
@@ -2665,6 +2695,7 @@ identity_accessed = "2026-09-03"
 [[schools]]
 name         = "Salem"
 abbreviation = "SU"
+abbreviation_resolves = false  # "SU" is also Shepherd and Shorter's
 conference   = "MEC"
 mascot       = "Tigers"
 gender       = "men"
@@ -2787,6 +2818,7 @@ identity_accessed = "2026-09-03"
 [[schools]]
 name         = "Ashland"
 abbreviation = "AU"
+abbreviation_resolves = false  # "AU" is also Adelphi and Alliance's
 conference   = "G-MAC"
 mascot       = "Eagles"
 gender       = "men"
@@ -2802,6 +2834,7 @@ identity_accessed = "2026-09-03"
 [[schools]]
 name         = "Cedarville"
 abbreviation = "CU"
+abbreviation_resolves = false  # "CU" is also Caldwell and Concord's
 conference   = "G-MAC"
 mascot       = "Yellow Jackets"
 gender       = "men"
@@ -2875,6 +2908,7 @@ identity_accessed = "2026-09-03"
 [[schools]]
 name         = "Malone"
 abbreviation = "MU"
+abbreviation_resolves = false  # "MU" is also Millersville and Molloy's
 conference   = "G-MAC"
 mascot       = "Pioneers"
 gender       = "men"
@@ -2899,6 +2933,7 @@ identity_accessed = "2026-09-03"
 [[schools]]
 name         = "Northwood"
 abbreviation = "NU"
+abbreviation_resolves = false  # "NU" is also Newman's
 conference   = "G-MAC"
 mascot       = "Timberwolves"
 gender       = "men"
@@ -2973,6 +3008,7 @@ identity_accessed = "2026-09-03"
 [[schools]]
 name         = "Walsh"
 abbreviation = "WU"
+abbreviation_resolves = false  # "WU" is also Westminster and Wheeling and Wilmington's
 conference   = "G-MAC"
 mascot       = "Cavaliers"
 gender       = "men"
@@ -3020,8 +3056,11 @@ identity_accessed = "2026-09-03"
 # (embedded in standings.aspx?path=msoc, read 2026-09-04; it prints
 # "Parkside" and "SaginawValleyState" for those two and omits the affiliate
 # St. Cloud State), and SVSU, UWP and SCSU are the schools' own initialisms
-# from their own sites. Aliases cover the published long names, the records
-# and box-score spellings, and the data home's opponent spellings.
+# from their own sites. RU, DU and SCSU are also Rockhurst's, Drury's and
+# Daemen's, and Southern Connecticut's, so those three stanzas carry
+# abbreviation_resolves = false (coordinator's ruling 2026-09-04). Aliases
+# cover the published long names, the records and box-score spellings, and
+# the data home's opponent spellings.
 
 # The probe found no mascot where it reads; "Panthers" is the site's own name
 # (dupanthers.com) and the gliac.org member JSON's. Home matches print
@@ -3029,6 +3068,7 @@ identity_accessed = "2026-09-03"
 [[schools]]
 name         = "Davenport"
 abbreviation = "DU"
+abbreviation_resolves = false  # "DU" is also Daemen and Drury's
 conference   = "GLIAC"
 mascot       = "Panthers"
 gender       = "men"
@@ -3037,7 +3077,7 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Davenport University", "DU"]
+aliases      = ["Davenport University"]
 city         = "Grand Rapids, Mich."
 city_source  = "the university's main site, https://www.davenport.edu/ (footer address 6191 Kraft Ave SE, Grand Rapids, MI 49512, read 2026-09-04), and the gliac.org member JSON (Grand Rapids, MI); the schedule page prints Caledonia, Mich., the venue town, for home matches"
 identity_accessed = "2026-09-04"
@@ -3089,6 +3129,7 @@ identity_accessed = "2026-09-04"
 [[schools]]
 name         = "Roosevelt"
 abbreviation = "RU"
+abbreviation_resolves = false  # "RU" is also Rockhurst's
 conference   = "GLIAC"
 mascot       = "Lakers"
 gender       = "men"
@@ -3140,6 +3181,7 @@ identity_accessed = "2026-09-04"
 [[schools]]
 name         = "St. Cloud State"
 abbreviation = "SCSU"
+abbreviation_resolves = false  # "SCSU" is also Southern Connecticut's
 conference   = "GLIAC"
 mascot       = "Huskies"
 gender       = "men"
@@ -3148,7 +3190,7 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["St. Cloud State University", "St. Cloud St.", "Saint Cloud State", "SCSU"]
+aliases      = ["St. Cloud State University", "St. Cloud St.", "Saint Cloud State"]
 city         = "St. Cloud, Minn."
 city_source  = "schedule-page home venue location, https://scsuhuskies.com/sports/mens-soccer/schedule (St. Cloud, Minn., read by hand 2026-09-04); the northernsun.org member JSON prints St. Cloud, MN"
 identity_accessed = "2026-09-04"

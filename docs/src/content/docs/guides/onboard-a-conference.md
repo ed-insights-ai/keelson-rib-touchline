@@ -117,7 +117,12 @@ an alias that is the page title with the mascot still in it; and aliases
 printed between conference and gender rather than last. Peer spellings
 ("CSU-Pueblo", "Colorado Mines", "Westminster University") come from a scan
 of the other members' schedule pages, which the probe does not do; add
-them by hand now or in the alias round after the first collect.
+them by hand now or in the alias round after the first collect. Every
+spelling a stanza claims (name, `display_name`, `abbreviation`, `aliases`)
+must be claimed by one stanza per gender: `check-membership` refuses a
+collision naming the pair and the spelling, and a bare initialism two
+schools share ("RU", "SCSU") stays display-only on every stanza that
+carries it with `abbreviation_resolves = false`.
 
 Expect a guessed hostname or two to fail name resolution (two of fifteen did
 for the GLVC); correct them and re-probe rather than trusting a guess. A
