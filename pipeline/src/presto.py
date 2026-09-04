@@ -1248,22 +1248,119 @@ def _play_side(
     return None if best is None or tie else best[1]
 
 
+_SUBSTITUTION_LINE = re.compile(r"^(?P<team>.+?)\s+substitution:\s*(?P<rest>.*)$", re.I)
+_LINEUP_LINE = re.compile(r"^FOR\s+(?P<team>[^:]+?)\s*:(?P<rest>.*)$")
+_PRINTED_NAME = re.compile(r"(?P<last>[A-Z][^,;]*?)\s*,\s*(?P<first>[A-Z][\w'-]*)")
+_VERB_TOKEN = re.compile(rf"\b{_TEAM_VERBS}\s+(?=[A-Z])")
+
+
+def _candidate_tokens(text: str) -> list[tuple[str, str]]:
+    """Every (team token, printed player name) pair a play could be read as.
+
+    "Shot by UT Judge, Mason." offers ("UT", "Judge, Mason"); "Goal kick by
+    Clayton St. Kuisma,Kalle." offers ("Clayton", "St. Kuisma,Kalle") and
+    ("Clayton St.", "Kuisma,Kalle").  The caller keeps the pair whose name
+    the lineup lists.
+    """
+    pairs: list[tuple[str, str]] = []
+    for match in _VERB_TOKEN.finditer(text):
+        rest = text[match.end() :]
+        words = rest.split()
+        for count in range(1, min(3, len(words)) + 1):
+            token = " ".join(words[:count])
+            tail = rest[len(token) :].lstrip()
+            named = _PRINTED_NAME.match(tail)
+            if named is not None:
+                pairs.append((token, named.group(0)))
+    return pairs
+
+
+_COMMA_FIRST = re.compile(r",\s*(?P<first>[A-Z][\w'-]*)")
+
+
+def _printed_people(text: str) -> list[str]:
+    """Every "Last, First" a line could be naming: for each comma followed
+    by a capitalised word, the one to three words before it.  "Foul on
+    Bacar Said, Mikayil." offers "Said, Mikayil", "Bacar Said, Mikayil" and
+    "on Bacar Said, Mikayil"; the caller keeps the one the lineup lists."""
+    people: list[str] = []
+    for match in _COMMA_FIRST.finditer(text):
+        before = [
+            word
+            for word in text[: match.start()].split()
+            if not word.startswith("#") and not word.isdigit()
+        ]
+        for count in range(1, min(3, len(before)) + 1):
+            people.append(f"{' '.join(before[-count:])}, {match.group('first')}")
+    return people
+
+
+def _plausible_token(token: str) -> bool:
+    """One to three capitalised words with no digit or comma, and not the
+    side's own "TEAM" row."""
+    words = token.strip(" .:;").split()
+    return (
+        0 < len(words) <= 3
+        and "," not in token
+        and all(word[0].isupper() for word in words)
+        and not any(ch.isdigit() for ch in token)
+        and " ".join(words).upper() != "TEAM"
+    )
+
+
 def _learn_play_tokens(
     texts: list[str], names_by_side: dict[str, int], tokens: list[set[str]]
 ) -> None:
-    """Read each side's play-by-play token off its keeper's opening line.
+    """Read each side's play-by-play token off every line that pairs a
+    token with a lineup name.
 
     "Rosenkrantz, Viktor at goalie for AUM." names the keeper the lineup
-    lists for one side and the token every later line uses for that side,
-    so the token is learned from the page rather than guessed from a name.
+    lists for one side and the token every later line uses for that side.
+    The keeper's line is not enough on its own: one skin flavour names a
+    side in full there ("Hare, Alex at goalie for Tampa") and abbreviates it
+    everywhere else ("Shot by UT Judge, Mason.", "UT substitution: Tovar,
+    Julian for Koerner, Tassilo.", "FOR UT : , #1 Hare, Alex, ..."), so the
+    token is learned wherever a lineup name follows it.  A token both sides
+    claim teaches nothing.
     """
+    claims: dict[str, set[int]] = {}
+
+    def claim(token: str, name: str) -> None:
+        index = names_by_side.get(_person(name).lower())
+        if index is not None and _plausible_token(token):
+            claims.setdefault(token.strip(), set()).add(index)
+
     for text in texts:
-        match = _GOALIE_LINE.match(text)
-        if match is None:
+        goalie = _GOALIE_LINE.match(text)
+        if goalie is not None:
+            claim(goalie.group("team"), goalie.group("name"))
             continue
-        index = names_by_side.get(_person(match.group("name")).lower())
+        listed = _LINEUP_LINE.match(text) or _SUBSTITUTION_LINE.match(text)
+        if listed is not None:
+            for name in _printed_people(listed.group("rest")):
+                claim(listed.group("team"), name)
+            continue
+        for token, name in _candidate_tokens(text):
+            claim(token, name)
+    for token, sides in claims.items():
+        if len(sides) == 1:
+            tokens[next(iter(sides))].add(token)
+
+
+def _named_side(text: str, names_by_side: dict[str, int]) -> int | None:
+    """The side of a play that names no team but names lineup players
+    ("Foul on Hoffman, Benjamin."): their side when they share one, else
+    nobody."""
+    sides: set[int] = set()
+    lowered = " ".join(text.split()).lower()
+    for name in _printed_people(text):
+        index = names_by_side.get(_person(name).lower())
         if index is not None:
-            tokens[index].add(match.group("team").strip())
+            sides.add(index)
+    for name, index in names_by_side.items():
+        if re.search(rf"(?<![\w'-]){re.escape(name)}(?![\w'-])", lowered):
+            sides.add(index)
+    return next(iter(sides)) if len(sides) == 1 else None
 
 
 def _period_name(caption: str) -> str:
@@ -1291,6 +1388,52 @@ def _lineup_reference(caption: Tag) -> tuple[str, bool]:
     return re.sub(r"\s*goalies?\s*$", "", text, flags=re.IGNORECASE), goalies
 
 
+_LOGO_URL = re.compile(r"url\((['\"]?)(?P<url>[^'\")]+)\1\)", re.I)
+
+
+def _logo_url(holder: Tag | None) -> str:
+    """The badge a ``team-logo`` holder shows: its background image, else
+    its ``img``; a trimmed page shows none."""
+    if holder is None:
+        return ""
+    match = _LOGO_URL.search(str(holder.get("style") or ""))
+    if match:
+        return match.group("url").strip()
+    image = holder.find("img")
+    return str(image.get("src") or "").strip() if image is not None else ""
+
+
+def _row_side_label(header: Tag | None) -> str:
+    """The side a summary row's header names: the offscreen span beside its
+    badge, else the header text without its trailing period."""
+    if header is None:
+        return ""
+    return _text(header, ".offscreen") or re.sub(
+        r"\s+\S+$", "", header.get_text(" ", strip=True)
+    )
+
+
+def _carded_side(
+    plays: list[dict[str, object]], clock: str, printed: str
+) -> int | None:
+    """The side of the play-by-play card line at ``clock`` that names the
+    carded player as the summary prints them ("Polidori, Tommaso" beside
+    "Yellow card on UT Polidori, Tommaso.")."""
+    words = {word for word in re.split(r"[\s,]+", printed.lower()) if word}
+    if not words:
+        return None
+    for play in plays:
+        if play.get("type") not in {"yellow", "red"} or play.get("clock") != clock:
+            continue
+        text = str(play["text"]).lower()
+        if "team" in play and all(
+            re.search(rf"(?<![\w'-]){re.escape(word)}(?![\w'-])", text)
+            for word in words
+        ):
+            return int(play["team"])
+    return None
+
+
 def parse_boxscore(html: str, *, page_url: str) -> dict[str, object]:
     """Read one match's published detail off its box-score page.
 
@@ -1314,16 +1457,27 @@ def parse_boxscore(html: str, *, page_url: str) -> dict[str, object]:
       bio links, so no line carries a player id.
     - ``scoring``: the Scoring Summary rows, each headed by the scoring side
       (an offscreen span beside its logo) and its period, with the clock and
-      "Scorer (season total) (assist)".
+      "Scorer (season total) (assist)".  A row whose scorer cell is empty
+      (the play-by-play's "GOAL by AUM TEAM.") is the side's own goal and is
+      kept with the scorer ``TEAM``, the lineup's word for the side.
     - ``cards``: the Penalty Summary rows, "Yellow card - Name" under the
       side and period; a card the page words some other way is ``unknown``.
+      The rows' offscreen labels all repeat one side's name on every page
+      measured, so a row's side is its logo (matched to the head's visitor
+      and home badges and the scoring rows'), else the play-by-play card
+      line at its clock naming its player, else the label only when the
+      labels differ from row to row.
     - ``plays``: every play-by-play row, per period table ("1st", "2nd";
       overtime and shootout captions map onto the SideArm period names).
       A row's side is the team identifier its text names after "by", "on",
-      "against" or "for", or leads with ("Tampa substitution: …"); the
+      "against" or "for", or leads with ("Tampa substitution: ..."); the
       identifiers are the linescore names, the Open Graph abbreviations and
-      the tokens the keepers' opening lines teach.  A goal row's running
-      score (visitor, home) is stored in ``teams`` order.
+      the tokens the play-by-play itself teaches, off every line that pairs
+      a token with a lineup name (the keeper's opening line, "Shot by UT
+      Judge, Mason.", "UT substitution: ...", "FOR UT : ...").  A row that
+      names no side but names lineup players ("Foul on Hoffman, Benjamin.")
+      is theirs when they share a side.  A goal row's running score
+      (visitor, home) is stored in ``teams`` order.
     - ``stadium``, ``attendance``, ``kickoff`` and the labelled officials
       from the Game Information table.
     """
@@ -1408,6 +1562,27 @@ def parse_boxscore(html: str, *, page_url: str) -> dict[str, object]:
             names_by_side.setdefault(name.lower(), index)
         teams[index]["keepers" if goalies else "players"] = lines
 
+    # The linescore, the Open Graph title and the lineup panels all list the
+    # visitor first; the panel labels say which side that is.
+    visitor = 0
+    label = soup.select_one('.player-stats [data-panel-for="team-label-v"] .team-name')
+    if label is not None:
+        found = side(label.get_text(" ", strip=True))
+        if found is not None:
+            visitor = found
+    home = 1 - visitor if len(teams) == 2 else None
+
+    # Each side's logo, keyed by URL: the head's visitor and home badges,
+    # then every scoring row's badge beside the side its label resolves to.
+    logos: dict[str, int] = {}
+    for holder, index in (
+        (soup.select_one(".head .team.visitor .team-logo"), visitor),
+        (soup.select_one(".head .team.home .team-logo"), home),
+    ):
+        logo = _logo_url(holder)
+        if logo and index is not None:
+            logos.setdefault(logo, index)
+
     scoring: list[dict[str, object]] = []
     for row in soup.select(".stats-box.scoring-summary tbody tr"):
         header = row.find("th")
@@ -1418,16 +1593,16 @@ def parse_boxscore(html: str, *, page_url: str) -> dict[str, object]:
         clock = _text(row, "td.time")
         if clock:
             entry["time"] = clock
-        index = side(
-            _text(header, ".offscreen")
-            or re.sub(r"\s+\S+$", "", header.get_text(" ", strip=True))
-        )
+        index = side(_row_side_label(header))
         if index is not None:
             entry["team"] = index
-        scorer = _person(text.split("(", 1)[0])
-        if not scorer:
-            continue
-        entry["scorer"] = scorer
+            logo = _logo_url(header.select_one(".team-logo"))
+            if logo:
+                logos.setdefault(logo, index)
+        # An empty scorer cell ("  (0) (unassisted)" beside the play-by-play's
+        # "GOAL by AUM TEAM.") is the side's own goal credit, not a dropped
+        # row: the goal stays on the record under the lineup's word for it.
+        entry["scorer"] = _person(text.split("(", 1)[0]) or "TEAM"
         for part in re.findall(r"\(([^)]*)\)", text):
             note = part.strip()
             if note.isdigit():
@@ -1439,41 +1614,6 @@ def parse_boxscore(html: str, *, page_url: str) -> dict[str, object]:
             elif note:
                 entry["assist"] = _person(note)
         scoring.append(entry)
-
-    cards: list[dict[str, object]] = []
-    for row in soup.select(".stats-box.penalty-summary tbody tr"):
-        header = row.find("th")
-        cell = row.find("td", class_="text")
-        if header is None or cell is None:
-            continue
-        text = " ".join(cell.get_text(" ", strip=True).split())
-        kind = next(
-            (name for name, pattern in _CARD_KINDS if pattern.search(text)), None
-        )
-        player = _person(_CARD_PHRASE.sub("", text))
-        if not player:
-            continue
-        entry = {"type": kind or "unknown", "player": player}
-        clock = _text(row, "td.time")
-        if clock:
-            entry["time"] = clock
-        index = side(
-            _text(header, ".offscreen")
-            or re.sub(r"\s+\S+$", "", header.get_text(" ", strip=True))
-        )
-        if index is not None:
-            entry["team"] = index
-        cards.append(entry)
-
-    # The linescore, the Open Graph title and the lineup panels all list the
-    # visitor first; the panel labels say which side that is.
-    visitor = 0
-    label = soup.select_one('.player-stats [data-panel-for="team-label-v"] .team-name')
-    if label is not None:
-        found = side(label.get_text(" ", strip=True))
-        if found is not None:
-            visitor = found
-    home = 1 - visitor if len(teams) == 2 else None
 
     narrated: list[tuple[str, str, str, list[int] | None]] = []
     for table in soup.select("#pbp-tabpanel table, .plays table"):
@@ -1502,6 +1642,8 @@ def parse_boxscore(html: str, *, page_url: str) -> dict[str, object]:
         if re.fullmatch(r"\d+:\d{2}", clock):
             play["clock"] = clock
         index = _play_side(text, teams, tokens)
+        if index is None:
+            index = _named_side(text, names_by_side)
         if index is not None:
             play["team"] = index
         kind = _play_type(text)
@@ -1510,6 +1652,41 @@ def parse_boxscore(html: str, *, page_url: str) -> dict[str, object]:
         if score is not None:
             play["score"] = score
         plays.append(play)
+
+    # The Penalty Summary's offscreen label repeats one side's name on every
+    # row (every page measured: AUM on all five of 20250906_4zcl, AUM on all
+    # four of 20260829_rvya, Clayton State on all three of 20260903_jdlp),
+    # while the row's own badge is the right side's.  So a card's side is its
+    # badge, else the play-by-play card line at its clock naming its player,
+    # else the label only when the labels differ from row to row.
+    rows = soup.select(".stats-box.penalty-summary tbody tr")
+    labels = {_row_side_label(row.find("th")) for row in rows if row.find("th")}
+    cards: list[dict[str, object]] = []
+    for row in rows:
+        header = row.find("th")
+        cell = row.find("td", class_="text")
+        if header is None or cell is None:
+            continue
+        text = " ".join(cell.get_text(" ", strip=True).split())
+        kind = next(
+            (name for name, pattern in _CARD_KINDS if pattern.search(text)), None
+        )
+        printed = _CARD_PHRASE.sub("", text)
+        player = _person(printed)
+        if not player:
+            continue
+        entry = {"type": kind or "unknown", "player": player}
+        clock = _text(row, "td.time")
+        if clock:
+            entry["time"] = clock
+        index = logos.get(_logo_url(header.select_one(".team-logo")))
+        if index is None:
+            index = _carded_side(plays, clock, printed)
+        if index is None and len(labels) > 1:
+            index = side(_row_side_label(header))
+        if index is not None:
+            entry["team"] = index
+        cards.append(entry)
 
     detail: dict[str, object] = {"source_url": page_url, "teams": teams}
     if scoring:
