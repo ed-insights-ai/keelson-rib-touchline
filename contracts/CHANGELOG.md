@@ -6,6 +6,31 @@ fails `pipeline/tests/test_contracts.py`.
 
 ## 2026-09-04
 
+- Membership reference: a window may carry `division`, a string spelled
+  exactly as the conference prints it ("East", "Northwest", "Southwest"
+  for Conference Carolinas from 2023), the conference's own grouping of
+  its members. Optional; absent for every conference that publishes one
+  table. A division change splits the window with the conference
+  unchanged (North Greenville: Southwest 2023, then Northwest from 2024;
+  the Trevecca shape on one slug), and `check-membership` holds each
+  conference-season to all-or-none: every member's window carries a
+  division or none does, a mix being refused naming the conference-season
+  and the odd members. `conference_for`'s sibling `division_for`,
+  `members_of`'s sibling `divisions_of`, the TypeScript `resolveConference`
+  (`divisions`, by slug) and `bin/resolve-membership.ts divisions` expose
+  it. Same untagged reference; the site's `membership.ts` reads it as an
+  optional string. The fixture exhibits a synthetic split (called out in
+  the README); no packaged window carries one until the batch 4 CC windows
+  land (bead tl-4sg.40, coordinator's ruling 2026-09-04).
+
+- `touchline.fixtures/2`: a `programmes[]` entry may carry `division`
+  beside `conference`, the string the programme's membership window names
+  for the season, so the site can group a standings table by division when
+  every programme of the conference-season carries one. Absent otherwise;
+  never read off a stanza. Same schema version: an optional field the
+  site's `model.ts` reads as an optional string, the same widening as
+  `abbr` (bead tl-4sg.40).
+
 - Membership reference: an optional top-level `standings_archives` map,
   keyed by conference code, each entry `{url_template, seasons}`: the
   archived standings page a conference with no per-season records pages

@@ -538,6 +538,147 @@ def test_members_of_resolves_a_mid_window_mover_per_season():
     assert membership.members_of("GAC", "women", 2022, document=document) == set()
 
 
+def _divisional_window(
+    conference: str, division: str, from_season: int, to_season: int
+) -> dict:
+    return {**_window(conference, from_season, to_season), "division": division}
+
+
+def _divisional_document() -> dict:
+    """The Conference Carolinas shape (bead tl-4sg.40): three divisions from
+    2023, North Greenville moving Southwest to Northwest across 2023/2024 on
+    one slug, and a one-table conference beside it."""
+    return {
+        "version": 1,
+        "seasons": {"from": 2022, "to": 2026},
+        "conferences": ["CC", "GAC", "independent", "non_member"],
+        "memberships": {
+            "north-greenville": {
+                "men": [
+                    _divisional_window("CC", "Southwest", 2023, 2023),
+                    _divisional_window("CC", "Northwest", 2024, 2026),
+                ]
+            },
+            "belmont-abbey": {"men": [_divisional_window("CC", "East", 2023, 2026)]},
+            "mount-olive": {"men": [_divisional_window("CC", "East", 2023, 2026)]},
+            "harding": {"men": [_window("GAC", 2022, 2026)]},
+        },
+    }
+
+
+def _divisional_schools() -> list[SchoolConfig]:
+    return [
+        _school("North Greenville", "CC"),
+        _school("Belmont Abbey", "CC"),
+        _school("Mount Olive", "CC"),
+        _school("Harding", "GAC"),
+    ]
+
+
+def test_a_window_with_a_division_resolves_and_carries_it():
+    document = _divisional_document()
+    assert (
+        membership.conference_for("belmont-abbey", "men", 2024, document=document)
+        == "CC"
+    )
+    assert (
+        membership.division_for("belmont-abbey", "men", 2024, document=document)
+        == "East"
+    )
+    # A one-table conference names none, and neither does an uncovered season.
+    assert membership.division_for("harding", "men", 2024, document=document) is None
+    assert (
+        membership.division_for("belmont-abbey", "men", 2022, document=document) is None
+    )
+
+
+def test_a_split_window_resolves_its_division_per_season():
+    document = _divisional_document()
+    for season, division in (
+        (2023, "Southwest"),
+        (2024, "Northwest"),
+        (2026, "Northwest"),
+    ):
+        assert (
+            membership.conference_for(
+                "north-greenville", "men", season, document=document
+            )
+            == "CC"
+        )
+        assert (
+            membership.division_for(
+                "north-greenville", "men", season, document=document
+            )
+            == division
+        )
+    # members_of is unchanged by the split: one slug, both seasons.
+    assert membership.members_of("CC", "men", 2023, document=document) == {
+        "north-greenville",
+        "belmont-abbey",
+        "mount-olive",
+    }
+    assert membership.divisions_of("CC", "men", 2023, document=document) == {
+        "north-greenville": "Southwest",
+        "belmont-abbey": "East",
+        "mount-olive": "East",
+    }
+    assert (
+        membership.divisions_of("CC", "men", 2024, document=document)[
+            "north-greenville"
+        ]
+        == "Northwest"
+    )
+    assert membership.divisions_of("GAC", "men", 2024, document=document) == {}
+
+
+def test_all_or_none_divisions_pass_on_a_divisional_and_a_plain_season():
+    document = _divisional_document()
+    assert membership.validate(document, schools=_divisional_schools()) == []
+
+
+def test_the_shipped_conferences_carry_no_divisions(membership_document):
+    # Every existing conference publishes one table: the all-or-none rule
+    # holds on the shipped file with nothing labelled.
+    span = membership_document["seasons"]
+    for conference in membership_document["conferences"]:
+        for gender in ("men", "women"):
+            for season in range(span["from"], span["to"] + 1):
+                assert (
+                    membership.divisions_of(
+                        conference, gender, season, document=membership_document
+                    )
+                    == {}
+                )
+
+
+def test_a_mix_of_divisions_fails_naming_the_odd_member():
+    document = _divisional_document()
+    del document["memberships"]["mount-olive"]["men"][0]["division"]
+    errors = membership.validate(document, schools=_divisional_schools())
+    assert len(errors) == 4, errors
+    for season, error in zip(range(2023, 2027), errors, strict=True):
+        assert error == (
+            f"CC men {season} mixes divisions: every member's window must carry "
+            "a division or none may; without a division: ['mount-olive']"
+        )
+    # The minority side is the odd one whichever way the mix falls.
+    lone = _divisional_document()
+    for slug in ("belmont-abbey", "mount-olive"):
+        del lone["memberships"][slug]["men"][0]["division"]
+    errors = membership.validate(lone, schools=_divisional_schools())
+    assert errors[0] == (
+        "CC men 2023 mixes divisions: every member's window must carry "
+        "a division or none may; carrying a division alone: ['north-greenville']"
+    )
+
+
+def test_a_blank_division_is_refused():
+    document = _divisional_document()
+    document["memberships"]["mount-olive"]["men"][0]["division"] = " "
+    errors = membership.validate(document, schools=_divisional_schools())
+    assert any("division must be a non-empty string" in error for error in errors)
+
+
 def test_a_hyphenated_conference_code_keys_its_season_files():
     # G-MAC is the first conference code with a hyphen (batch 2, 2026-09-03).
     # The collect names its shard f"{season}-{gender}-{programme_slug(conference)}"

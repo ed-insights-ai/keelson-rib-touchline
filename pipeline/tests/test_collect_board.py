@@ -338,6 +338,87 @@ def test_fixtures_payload_names_the_seasons_conference_not_the_stanzas(
     assert seen["members"] == set()
 
 
+def test_fixtures_payload_carries_the_windows_division_and_omits_it_otherwise(
+    monkeypatch,
+    tmp_path: Path,
+) -> None:
+    """Conference Carolinas shape: divisional windows export a division beside
+    the conference; a one-table conference's programmes carry no key."""
+    schools = [
+        SchoolConfig(
+            name="North Greenville",
+            abbreviation="NGU",
+            conference="CC",
+            prefix="",
+            base_url="https://ngu.example",
+            enabled=True,
+        ),
+        SchoolConfig(
+            name="Harding",
+            abbreviation="HU",
+            conference="GAC",
+            prefix="",
+            base_url="https://harding.example",
+            enabled=True,
+        ),
+    ]
+    document = {
+        "version": 1,
+        "seasons": {"from": 2022, "to": 2026},
+        "conferences": ["CC", "GAC", "independent", "non_member"],
+        "memberships": {
+            "north-greenville": {
+                "men": [
+                    {**_window("CC", 2023, 2023), "division": "Southwest"},
+                    {**_window("CC", 2024, 2026), "division": "Northwest"},
+                ]
+            },
+            "harding": {"men": [_window("GAC", 2022, 2026)]},
+        },
+    }
+
+    def fake_programme(
+        school, season, aliases, *, session=None, layers, members, page_cache=None
+    ):
+        del season, aliases, session, page_cache, members
+        return ProgrammeCollection(
+            slug=programme_slug(school.name),
+            name=school.name,
+            fixtures=[],
+            players=[],
+            outcomes={
+                layer: LayerOutcome(layer=layer, state=STATE_EMPTY) for layer in layers
+            },
+        )
+
+    monkeypatch.setattr(collect_board, "load_schools", lambda path: schools)
+    monkeypatch.setattr(collect_board, "load_membership", lambda: document)
+    monkeypatch.setattr(collect_board, "identity_aliases", lambda schools, gender: {})
+    monkeypatch.setattr(collect_board, "collect_programme", fake_programme)
+    monkeypatch.setattr(collect_board, "write_raw_pages", lambda *args: None)
+    monkeypatch.setattr(collect_board.paths, "data_root", lambda: tmp_path)
+
+    def run(season: int) -> dict[str, dict[str, object]]:
+        fixtures, *_ = collect_board.collect(
+            season=season,
+            gender="men",
+            conference="CC",
+            wanted=["north-greenville", "harding"],
+            layers=(LAYER_SCHEDULE,),
+            config_path=tmp_path / "schools.toml",
+            membership_extrapolated=False,
+        )
+        return {programme["slug"]: programme for programme in fixtures["programmes"]}
+
+    then = run(2023)
+    assert then["north-greenville"]["conference"] == "CC"
+    assert then["north-greenville"]["division"] == "Southwest"
+    assert "division" not in then["harding"]
+    now = run(2024)
+    assert now["north-greenville"]["division"] == "Northwest"
+    assert "division" not in now["harding"]
+
+
 def test_programme_conference_falls_back_to_the_stanza_without_a_document() -> None:
     school = SchoolConfig(
         name="Trevecca",

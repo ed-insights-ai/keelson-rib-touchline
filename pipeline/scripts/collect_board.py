@@ -53,7 +53,7 @@ from src.fetch_pool import (
     is_challenge_reason,
 )
 from src.config import DEFAULT_CONFIG, SchoolConfig, load_schools
-from src.membership import conference_for, load_membership
+from src.membership import conference_for, division_for, load_membership
 from src.page_state import PageStateStore
 from src.recipes import PRESTO, SIDEARM, NoCollector, Recipe, live_recipe
 from src.sidearm_live import (
@@ -293,6 +293,26 @@ def programme_conference(
         if declared:
             return declared
     return school.conference
+
+
+def programme_division(
+    slug: str,
+    gender: str,
+    season: int,
+    document: dict[str, object] | None,
+) -> str | None:
+    """The division the programme's window names for one season, if any.
+
+    Divisions are the conference's own grouping of its members (Conference
+    Carolinas prints East, Northwest and Southwest from 2023), optional on a
+    window and never on a stanza, so the fixtures file carries one beside
+    ``conference`` only when the window covering the season names it. The
+    site groups a standings table by division when every programme of the
+    conference-season carries one; ``check-membership`` refuses a mix.
+    """
+    if document is None:
+        return None
+    return division_for(slug, gender, season, document=document)
 
 
 def sync_programmes_reference() -> str | None:
@@ -814,6 +834,15 @@ def _assemble(
                 **(
                     {"abbr": candidates[slug].abbreviation}
                     if slug in candidates and candidates[slug].abbreviation
+                    else {}
+                ),
+                **(
+                    {"division": division}
+                    if (
+                        division := programme_division(
+                            slug, gender, season, membership_document
+                        )
+                    )
                     else {}
                 ),
             }

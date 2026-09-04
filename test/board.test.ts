@@ -154,6 +154,47 @@ describe("membership resolution", () => {
     expect(gac.slugs.length).toBe(7);
   });
 
+  test("a divisional window carries its division, split per season, and a plain one carries none", async () => {
+    // Conference Carolinas shape (tl-4sg.40): three divisions from 2023,
+    // North Greenville moving Southwest to Northwest on one slug.
+    const window = (division: string, from_season: number, to_season: number) => ({
+      conference: "CC",
+      division,
+      from_season,
+      to_season,
+      source: "test fixture",
+    });
+    const membership: MembershipFile = {
+      conferences: ["CC", "GAC", "independent", "non_member"],
+      memberships: {
+        "north-greenville": {
+          men: [window("Southwest", 2023, 2023), window("Northwest", 2024, 2026)],
+        },
+        "belmont-abbey": { men: [window("East", 2023, 2026)] },
+        harding: {
+          men: [{ conference: "GAC", from_season: 2022, to_season: 2026, source: "test fixture" }],
+        },
+      },
+    };
+    _setMembershipCache(membership);
+    try {
+      const then = await resolveConference("CC", "men", 2023);
+      expect(then.slugs).toEqual(["belmont-abbey", "north-greenville"]);
+      expect(then.divisions).toEqual({ "belmont-abbey": "East", "north-greenville": "Southwest" });
+      const now = await resolveConference("CC", "men", 2024);
+      expect(now.divisions["north-greenville"]).toBe("Northwest");
+      // Carried forward past the horizon, the division travels with the window.
+      const later = await resolveConference("CC", "men", 2027);
+      expect(later.extrapolated).toBe(true);
+      expect(later.divisions["north-greenville"]).toBe("Northwest");
+      const plain = await resolveConference("GAC", "men", 2024);
+      expect(plain.slugs).toEqual(["harding"]);
+      expect(plain.divisions).toEqual({});
+    } finally {
+      _resetMembershipCache();
+    }
+  });
+
   test("an unknown conference resolves to nothing rather than guessing", async () => {
     const res = await resolveConference("NOT-A-CONFERENCE", "men", 2025);
     expect(res.slugs).toEqual([]);

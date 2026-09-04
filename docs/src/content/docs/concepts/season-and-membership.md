@@ -5,7 +5,7 @@ sidebar:
   order: 10
 ---
 
-In Touchline, season is an axis of every fact, and conference is a value that varies along it. A school does not have a conference the way it has a name. A programme holds **membership windows**: dated intervals of `{conference, from_season, to_season, source}`, authored by hand and validated by contract. The law behind the modeling is short: conference is configuration, never identity. `pipeline/CLAUDE.md` states it as a component rule, and the header of `src/membership.ts` draws the consequence: conference membership is data, not code, and nothing in the rib may hardcode a member list.
+In Touchline, season is an axis of every fact, and conference is a value that varies along it. A school does not have a conference the way it has a name. A programme holds **membership windows**: dated intervals of `{conference, from_season, to_season, source}` (plus an optional `division`, the conference's own grouping spelled as it prints it), authored by hand and validated by contract. The law behind the modeling is short: conference is configuration, never identity. `pipeline/CLAUDE.md` states it as a component rule, and the header of `src/membership.ts` draws the consequence: conference membership is data, not code, and nothing in the rib may hardcode a member list.
 
 ## Windows, citations, and authored absence
 

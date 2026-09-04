@@ -47,6 +47,7 @@ filename shard.
 | `conference_game_source` (fixture) | Present only when the flag was not published by a schedule page (for example `derived:membership`). Absence means the publisher's own marking. |
 | `conference_game_source` (file) | How the run determined flags; `pipeline/scripts/collect_board.py` writes `published:schedule-page`. |
 | `membership_extrapolated` | True when membership had to be carried past its authored windows. `resolveConference` in `src/membership.ts` flags the carried-forward result as a well-founded guess, not a cited fact. |
+| `programmes[].conference`, `programmes[].division` | The conference the programme played in that season, resolved from its membership window (the stanza is only the default), and the conference's own grouping of it when the window names one (`division`, spelled as the conference prints it; absent otherwise). The site groups the standings table by division when every programme of the conference-season carries one. |
 | `date`, `time` | ISO date local to the venue; no timezone is invented. Kickoff is `HH:MM`, absent when the source published no time. |
 | `missing` | Programmes whose schedule could not be collected. Never omitted silently. |
 
