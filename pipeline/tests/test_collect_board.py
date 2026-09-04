@@ -12,6 +12,8 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 from scripts import collect_board
 from scripts.collect_board import (
     _dedupe_fixtures,
@@ -128,6 +130,44 @@ def test_no_collector_schedule_propagates_to_matches(
     match_cell = cells["2026/men/northeastern-state/matches"]
     assert match_cell["state"] == STATE_NO_COLLECTOR
     assert match_cell["reason"] == reason
+
+
+def test_two_enabled_stanzas_of_one_slug_stop_the_collect_before_a_fetch(
+    tmp_path: Path,
+) -> None:
+    """The candidates map is keyed by slug; the loader refuses a colliding pair
+    so the map can never keep one stanza and drop the other silently."""
+    config = tmp_path / "schools.toml"
+    config.write_text(
+        "\n".join(
+            [
+                "[[schools]]",
+                'name = "Lincoln"',
+                'abbreviation = "LU"',
+                'conference = "GLVC"',
+                "enabled = true",
+                'base_url = "https://a.example/sports/mens-soccer"',
+                "",
+                "[[schools]]",
+                'name = "Lincoln"',
+                'abbreviation = "LUP"',
+                'conference = "OTHER"',
+                "enabled = true",
+                'base_url = "https://b.example/sports/mens-soccer"',
+            ]
+        )
+    )
+
+    with pytest.raises(ValueError, match="Duplicate programme slug 'lincoln'"):
+        collect_board.collect(
+            season=2026,
+            gender="men",
+            conference="GLVC",
+            wanted=["lincoln"],
+            layers=(),
+            config_path=config,
+            membership_extrapolated=False,
+        )
 
 
 def test_a_malformed_file_is_ignored_rather_than_fatal(tmp_path: Path) -> None:

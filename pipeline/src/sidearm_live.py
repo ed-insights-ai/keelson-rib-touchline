@@ -67,7 +67,7 @@ import requests
 from bs4 import BeautifulSoup
 from urllib3.util.retry import Retry
 
-from src.config import SchoolConfig
+from src.config import SchoolConfig, programme_slug
 from src.membership import conference_for, load_membership, members_of
 from src.page_state import PageState, PageStateStore, content_signature
 from src.tls import TruststoreHTTPAdapter
@@ -182,11 +182,6 @@ def build_session(session: requests.Session | None = None) -> requests.Session:
     session.mount("https://", adapter)
     session.mount("http://", adapter)
     return session
-
-
-def programme_slug(name: str) -> str:
-    text = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
-    return text
 
 
 def layer_url(base_url: str, year: int, kind: str) -> str:
