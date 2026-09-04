@@ -148,5 +148,18 @@
         }
       ]
     }
+  },
+  "standings_archives": {
+    "SAC": {
+      "url_template": "https://www.thesac.com/standings.aspx?standings={id}",
+      "seasons": {
+        "2021": "72",
+        "2022": "73",
+        "2023": "74",
+        "2024": "75",
+        "2025": "178",
+        "2026": "191"
+      }
+    }
   }
 }

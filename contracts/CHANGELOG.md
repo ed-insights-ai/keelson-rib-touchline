@@ -6,6 +6,19 @@ fails `pipeline/tests/test_contracts.py`.
 
 ## 2026-09-04
 
+- Membership reference: an optional top-level `standings_archives` map,
+  keyed by conference code, each entry `{url_template, seasons}`: the
+  archived standings page a conference with no per-season records pages
+  keeps its member lists in (`url_template` carries `{id}`, `seasons` maps
+  each four-digit season to that page's id). Evidence for the `source`
+  sentences and for `check-membership --standings <captured html>
+  --conference <code> --season <year>`, which reads a captured page back
+  against the windows; the resolver never reads it. The fixture and the
+  packaged file carry the one real entry, the SAC (thesac.com answers "no
+  statistics available" for every year 2021-2026; ids 72-75, 178 and 191
+  per the batch 4 research; bead tl-4an.29). Same untagged reference; the
+  site's `membership.ts` reads the map as optional.
+
 - `touchline.fixtures/2`: a fixture may carry `forfeit`, `"home"` or
   `"away"`, the side a forfeited match was awarded to, set only when the
   schedule row itself says forfeit ("Win by forfeit", "Loss by forfeit",

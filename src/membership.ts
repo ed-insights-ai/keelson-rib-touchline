@@ -40,6 +40,20 @@ export const membershipWindowSchema = z
   .strict();
 export type Window = z.infer<typeof membershipWindowSchema>;
 
+/** Where a conference with no per-season records pages keeps its member
+ *  lists: a standings archive addressed by an opaque page id, one id per
+ *  season. Evidence for the `source` sentences and for `check-membership
+ *  --standings`, not membership itself; the resolver never reads it. */
+export const standingsArchiveSchema = z
+  .object({
+    /** The page URL with `{id}` where the season's id goes. */
+    url_template: z.string().min(1),
+    /** Season (four digits) to page id. */
+    seasons: z.record(z.string().regex(/^\d{4}$/), z.string().min(1)),
+  })
+  .strict();
+export type StandingsArchive = z.infer<typeof standingsArchiveSchema>;
+
 /** The membership reference's contract. It carries no `schema` tag: the file
  *  predates the tagged season files and is authored, not collected. The
  *  sample at contracts/membership.json is the shape both this loader and
@@ -52,6 +66,9 @@ export const membershipFileSchema = z
     conferences: z.array(z.string().min(1)),
     description: z.string().optional(),
     memberships: z.record(z.string(), z.record(z.string(), z.array(membershipWindowSchema))),
+    /** Keyed by conference code; optional, and absent for every conference
+     *  whose records pages are the evidence. */
+    standings_archives: z.record(z.string().min(1), standingsArchiveSchema).optional(),
   })
   .strict();
 export type MembershipFile = z.infer<typeof membershipFileSchema>;

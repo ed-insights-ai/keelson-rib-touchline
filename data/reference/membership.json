@@ -17,7 +17,7 @@
     "independent",
     "non_member"
   ],
-  "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2026. Authored from official GAC/MIAA, LSC, GSC, GLVC, RMAC, SSC, NE10, CACC, ECC, PSAC, MEC, G-MAC and GLIAC (gliac.org) records; each window cites its source. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
+  "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2026. Authored from official GAC/MIAA, LSC, GSC, GLVC, RMAC, SSC, NE10, CACC, ECC, PSAC, MEC, G-MAC and GLIAC (gliac.org) records; each window cites its source. standings_archives names, per conference code, the standings archive a conference with no per-season records pages keeps its member lists in (url_template with {id}, and the page id per season), so a source sentence can cite the page and check-membership --standings can read a captured copy of it back. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
   "memberships": {
     "adams-state": {
       "men": [
@@ -1661,6 +1661,19 @@
   "seasons": {
     "from": 2016,
     "to": 2026
+  },
+  "standings_archives": {
+    "SAC": {
+      "url_template": "https://www.thesac.com/standings.aspx?standings={id}",
+      "seasons": {
+        "2021": "72",
+        "2022": "73",
+        "2023": "74",
+        "2024": "75",
+        "2025": "178",
+        "2026": "191"
+      }
+    }
   },
   "version": 1
 }
