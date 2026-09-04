@@ -556,7 +556,12 @@ def derive_identity(
                 abbreviation = _initials(candidate)
                 break
     if not abbreviation:
-        abbreviation = _initials(name) or "TBD"
+        abbreviation = _initials(name)
+    # A single letter is no short form anyone prints (batch 4 minted "C"
+    # for five hosts and "L" for Lee, bead tl-4an.29); it is refused rather
+    # than padded into an initialism the site never used.
+    if len(abbreviation) <= 1:
+        abbreviation = ""
 
     name_key = _identity_key(name)
     name_tokens = set(name_key.split())
@@ -573,6 +578,12 @@ def derive_identity(
     return SchoolIdentity(
         name=name, abbreviation=abbreviation, mascot=mascot, aliases=aliases, city=city
     )
+
+
+#: The comment a draft carries in place of a one-letter abbreviation.
+ABBREVIATION_BY_HAND = (
+    "# hand abbreviation required: the site prints no short form the probe could read"
+)
 
 
 def _toml_line(key: str, value: object) -> str:
@@ -597,19 +608,22 @@ def draft_stanza(
 
     Keys pad to the width the hand-authored stanzas use so the draft pastes
     beside them unchanged.  A mascot the site did not yield becomes a comment
-    naming the gap rather than an empty value.  For PrestoSports, ``base_url``
-    is the sport landing page and both ``scraper`` and ``live_scraper`` name
-    the platform.
+    naming the gap rather than an empty value; an abbreviation of one letter
+    (or none) is written empty with a comment saying the short form must be
+    set by hand, never padded into an initialism.  For PrestoSports,
+    ``base_url`` is the sport landing page and both ``scraper`` and
+    ``live_scraper`` name the platform.
     """
     scraper = platform
     live_scraper = platform
     alias_list = list(aliases)
-    lines = [
-        "[[schools]]",
-        _toml_line("name", name),
-        _toml_line("abbreviation", abbreviation),
-        _toml_line("conference", conference),
-    ]
+    lines = ["[[schools]]", _toml_line("name", name)]
+    if len(abbreviation) > 1:
+        lines.append(_toml_line("abbreviation", abbreviation))
+    else:
+        lines.append(_toml_line("abbreviation", ""))
+        lines.append(ABBREVIATION_BY_HAND)
+    lines.append(_toml_line("conference", conference))
     if mascot:
         lines.append(_toml_line("mascot", mascot))
     else:
@@ -667,6 +681,8 @@ class ProbeReport:
     not_seen: str = ""
     #: Candidate seasons whose schedule fetch was refused, with what HTTP said.
     season_errors: dict[int, str] = field(default_factory=dict)
+    #: Stanza fields the probe could not fill and a person must ("abbreviation").
+    hand_edits: list[str] = field(default_factory=list)
 
     def render(self) -> str:
         if self.not_seen:
@@ -694,6 +710,8 @@ class ProbeReport:
                     f"{year} ({detail})" for year, detail in self.season_errors.items()
                 )
             )
+        if self.hand_edits:
+            lines.append("Hand edits still needed: " + ", ".join(self.hand_edits))
         lines.extend(
             [
                 "",
