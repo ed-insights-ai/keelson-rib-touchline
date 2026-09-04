@@ -7,7 +7,8 @@ came from and when it was read. Nothing here is guessed from a slug: a
 stanza that cannot complete a row stops the build naming the slug.
 
 The facts come from ``pipeline/config/schools.toml`` (name, mascot,
-abbreviation, city, city_source, identity_accessed, gazetteer_geoid) and
+abbreviation, city, city_source, identity_accessed, gazetteer_geoid,
+gazetteer_note) and
 the pinned Gazetteer (src/gazetteer.py): the places file first, the county
 subdivisions file only for a town the places file lacks, in which case the
 row's point provenance names that file and carries a note. The document's
@@ -76,6 +77,8 @@ def _row(school: SchoolConfig, place: gz.Place, town: gz.Town) -> dict[str, obje
         )
     if place.cousub:
         notes.append(COUSUB_NOTE)
+    if school.gazetteer_note:
+        notes.append(school.gazetteer_note.strip())
     if notes:
         point_source["note"] = "; ".join(notes)
     row: dict[str, object] = {
@@ -136,7 +139,9 @@ def build(schools: list[SchoolConfig], gazetteer: gz.Gazetteer) -> Build:
             )
             continue
         try:
-            place = gazetteer.resolve(town, pin=school.gazetteer_geoid)
+            place = gazetteer.resolve(
+                town, pin=school.gazetteer_geoid, note=school.gazetteer_note
+            )
         except gz.GazetteerError as error:
             problems.append(f"{slug}: {error}")
             continue

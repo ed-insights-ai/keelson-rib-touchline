@@ -3487,7 +3487,7 @@
       "name": "Saginaw Valley State",
       "nickname": "Cardinals",
       "abbreviation": "SVSU",
-      "city": "Kochville, Mich.",
+      "city": "University Center, Mich.",
       "point": {
         "lat": 43.5056,
         "lon": -83.9852
@@ -3504,7 +3504,7 @@
           "accessed": "2026-09-04"
         },
         "city": {
-          "source": "the township the campus is in: https://www.svsu.edu/newsroom/news/2019/october/kochvilletownshipscardinalsquare/ and https://www.kochville.gov/information/universities.php (read 2026-09-04); the schedule page and the gliac.org member JSON print University Center, Mich., the campus mailing address, which the 2023 Gazetteer does not list",
+          "source": "schedule-page home venue location, https://svsucardinals.com/sports/mens-soccer/schedule/2026 (University Center, Mich.); the gliac.org member JSON prints University Center, MI (read 2026-09-04)",
           "accessed": "2026-09-04"
         },
         "point": {
@@ -3514,7 +3514,7 @@
           "name": "Kochville township",
           "state": "MI",
           "accessed": "2023-09-26",
-          "note": "matched explicitly by GEOID: the programme prints 'Kochville' and the Gazetteer lists the place as 'Kochville township'; county subdivision; the places file has no entry for this town"
+          "note": "matched explicitly by GEOID: the programme prints 'University Center' and the Gazetteer lists the place as 'Kochville township'; county subdivision; the places file has no entry for this town; University Center is an unincorporated community inside Kochville township, Saginaw County, with no 2023 Gazetteer row of its own: the campus at 7400 Bay Road is in the township (https://www.svsu.edu/newsroom/news/2019/october/kochvilletownshipscardinalsquare/ and https://www.kochville.gov/information/universities.php, read 2026-09-04)"
         }
       }
     },

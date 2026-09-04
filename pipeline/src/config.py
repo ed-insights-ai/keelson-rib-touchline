@@ -50,6 +50,11 @@ class SchoolConfig:
     # A GEOID pin for a town the name lookup cannot settle (consolidated
     # cities, a "St." the programme spells "Saint", two places of one name).
     gazetteer_geoid: str = ""
+    # Why a pin's Gazetteer row is not named for the town the school prints:
+    # the printed town is an unincorporated community inside the pinned
+    # place. Required for such a pin (the build refuses a name mismatch
+    # without it); written through to the programmes row's point provenance.
+    gazetteer_note: str = ""
     # Namespaces the legacy game_id space (ordinal * 1_000_000 + year * 100 +
     # game_num), so it must be globally unique among the schools that have one.
     # Only the StatCrew lineage builds game_ids; the live collector never reads
@@ -120,6 +125,7 @@ def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
             city_source=entry.get("city_source", ""),
             identity_accessed=entry.get("identity_accessed", ""),
             gazetteer_geoid=entry.get("gazetteer_geoid", ""),
+            gazetteer_note=entry.get("gazetteer_note", ""),
             ordinal=entry.get("ordinal", 0),
             gender=entry.get("gender", "men"),
             scraper=entry.get("scraper", "statcrew"),

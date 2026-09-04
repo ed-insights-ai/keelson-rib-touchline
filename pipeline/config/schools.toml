@@ -3105,12 +3105,12 @@ identity_accessed = "2026-09-04"
 # The site and the gliac.org member JSON print "University Center, Mich."
 # (7400 Bay Road, University Center, MI 48710), a mailing-address community
 # that is not a 2023 Gazetteer place in Michigan (the only University Center
-# CDP is in Virginia), so the pin rule cannot take it. The campus is in
-# Kochville Township, Saginaw County (svsu.edu newsroom 2019-10-30, "SVSU's
-# first leaders chose Kochville Township as the campus home"; kochville.gov,
+# CDP is in Virginia) nor a county subdivision. The campus is in Kochville
+# Township, Saginaw County (svsu.edu newsroom 2019-10-30, "SVSU's first
+# leaders chose Kochville Township as the campus home"; kochville.gov,
 # "Kochville Township is proud to be the home of Saginaw Valley State
-# University"), and the county-subdivisions file carries it as Kochville
-# township, GEOID 2614543800.
+# University"), so the point is pinned to Kochville township, GEOID
+# 2614543800, and gazetteer_note says why the row's name differs.
 [[schools]]
 name         = "Saginaw Valley State"
 abbreviation = "SVSU"
@@ -3123,9 +3123,10 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Saginaw Valley State University", "Saginaw Valley", "SVSU"]
-city         = "Kochville, Mich."
-city_source  = "the township the campus is in: https://www.svsu.edu/newsroom/news/2019/october/kochvilletownshipscardinalsquare/ and https://www.kochville.gov/information/universities.php (read 2026-09-04); the schedule page and the gliac.org member JSON print University Center, Mich., the campus mailing address, which the 2023 Gazetteer does not list"
+city         = "University Center, Mich."
+city_source  = "schedule-page home venue location, https://svsucardinals.com/sports/mens-soccer/schedule/2026 (University Center, Mich.); the gliac.org member JSON prints University Center, MI (read 2026-09-04)"
 gazetteer_geoid = "2614543800"
+gazetteer_note = "University Center is an unincorporated community inside Kochville township, Saginaw County, with no 2023 Gazetteer row of its own: the campus at 7400 Bay Road is in the township (https://www.svsu.edu/newsroom/news/2019/october/kochvilletownshipscardinalsquare/ and https://www.kochville.gov/information/universities.php, read 2026-09-04)"
 identity_accessed = "2026-09-04"
 
 # A GLIAC affiliate for men's soccer only: the programme joined the GLIAC as
