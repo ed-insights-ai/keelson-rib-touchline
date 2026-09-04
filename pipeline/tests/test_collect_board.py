@@ -1036,6 +1036,42 @@ def test_dedupe_a_neutral_marking_survives_the_merge() -> None:
     assert merged[0]["neutral"] is True
 
 
+def test_dedupe_a_forfeit_survives_the_merge_and_flips_with_the_sides() -> None:
+    # Only the forfeiting pair's own pages say forfeit (bead tl-wyv). The
+    # awarded side names a slot, not a programme, so when the fuller record
+    # files the pair the other way round the slot flips with it.
+    marked = _fx(
+        id="sidearm:rogers-state:1",
+        status="final",
+        home_score=1,
+        away_score=0,
+        forfeit="home",
+    )
+    fuller = _fx(
+        id="sidearm:rogers-state:9",
+        home="rogers-state",
+        away="harding",
+        status="final",
+        time="19:00",
+        venue="Claremore, Okla.",
+        home_score=0,
+        away_score=1,
+    )
+    merged, _ = _dedupe_fixtures([marked, fuller])
+    assert merged[0]["home"] == "rogers-state"
+    assert merged[0]["forfeit"] == "away"
+    same_way = _fx(
+        id="sidearm:rogers-state:9",
+        status="final",
+        time="19:00",
+        venue="Searcy, Ark.",
+        home_score=1,
+        away_score=0,
+    )
+    merged, _ = _dedupe_fixtures([marked, same_way])
+    assert merged[0]["forfeit"] == "home"
+
+
 def test_named_skips_are_listed_in_the_gap_lines_voice() -> None:
     """A skip is printed under the summary like a gap, programme and layer
     first, and a cell without skips contributes nothing."""

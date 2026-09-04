@@ -84,6 +84,7 @@ FIXTURES = Contract(
             ("conference_game_source",),
             ("fixtures", ITEM, "status"),
             ("fixtures", ITEM, "match_type"),
+            ("fixtures", ITEM, "forfeit"),
             ("fixtures", ITEM, "conference_game_source"),
         }
     ),

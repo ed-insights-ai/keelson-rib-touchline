@@ -1242,6 +1242,38 @@ def _dom_result(text: str) -> tuple[str, int, int] | None:
 # Word-bounded so "so" inside a word and "pens" inside a name stay text.
 _SHOOTOUT_MARKER = re.compile(r"\b(?:pks?|so|shootout|penalties|pens)\b", re.IGNORECASE)
 
+# A forfeit is a decided match with no measured scoreline. The one archived
+# form (upper-iowa 2024, game 9017; every archived schedule page grepped
+# 2026-09-04, two hits, both that row's mobile and desktop renders) is a
+# promotion reading "Win by forfeit" beside a result cell of "W, 2-2". The
+# rule also admits "Loss by forfeit", "forfeited" and a bare "(forfeit)".
+# Word bounded so a name never carries it.
+_FORFEIT_MARKER = re.compile(r"\bforfeit(?:ed|s)?\b", re.IGNORECASE)
+
+
+def _forfeit_marked(*texts: str) -> bool:
+    return any(_FORFEIT_MARKER.search(text) for text in texts)
+
+
+def _forfeit_side(letter: str | None, *, owner_is_home: bool) -> str | None:
+    """The side a forfeit was awarded to, ``home`` or ``away``, from the letter.
+
+    W on the owner's page awards the owner's side, L the opponent's. A row
+    carrying the word with no letter names no side, so no forfeit is set and
+    the row falls to the ordinary refusal (bead tl-wyv: never a forfeit
+    without the word, never a side the page did not award).
+    """
+    if letter == "W":
+        return "home" if owner_is_home else "away"
+    if letter == "L":
+        return "away" if owner_is_home else "home"
+    return None
+
+
+def _forfeit_scores(side: str) -> tuple[int, int]:
+    """The sport's 1-0 convention as a (home_score, away_score) pair."""
+    return (1, 0) if side == "home" else (0, 1)
+
 
 def _oriented_scores(
     letter: str | None,
@@ -1250,6 +1282,7 @@ def _oriented_scores(
     *,
     fixture_id: str,
     result_text: str = "",
+    forfeit: bool = False,
 ) -> tuple[int, int] | None:
     """The owner's score and the other side's, in that order, or nothing.
 
@@ -1275,16 +1308,32 @@ def _oriented_scores(
     carries a shootout marker (``_SHOOTOUT_MARKER``; lincoln 2025, game
     4402, "W, 1-1 (SO, 4-3)"; delta-state 2020, game 12951, "W, 1-1
     (PK-5-4)"). The letter records advancement, the numbers are the goals,
-    and the pair is stored as the draw and logged at info. Without a marker
-    the refusal stands: upper-iowa 2024, game 9017, prints "W, 2-2" with a
-    promotion reading "Win by forfeit" and no shootout anywhere on the row,
-    and a forfeit's scoreline is not a measured result.
+    and the pair is stored as the draw and logged at info.
+
+    The second exception is ``forfeit``, which the callers set when the row
+    carries the word (``_FORFEIT_MARKER``): upper-iowa 2024, game 9017,
+    prints "W, 2-2" with a promotion reading "Win by forfeit". A forfeit's
+    scoreline is not a measured result, so the letter is not asked to agree
+    with it: the level pair is stored as printed and logged at info, and the
+    caller records the awarded side in the fixture's ``forfeit`` field (bead
+    tl-wyv, closing tl-49e). Without either marker the refusal stands.
     """
     if letter in {"W", "L"} and first == second:
         if _SHOOTOUT_MARKER.search(result_text):
             _LOG.info(
                 "%s: %s beside a level score %s-%s with a shootout marker (%r); "
                 "stored as the draw",
+                fixture_id,
+                letter,
+                first,
+                second,
+                result_text,
+            )
+            return first, second
+        if forfeit:
+            _LOG.info(
+                "%s: %s beside a level score %s-%s on a forfeit row (%r); "
+                "stored as printed",
                 fixture_id,
                 letter,
                 first,
@@ -1347,6 +1396,23 @@ _EXHIBITION_MARKER = re.compile(
 
 def _exhibition_marked(*texts: str) -> bool:
     return any(_EXHIBITION_MARKER.search(text) for text in texts)
+
+
+def _dom_bare_letter(result_text: str, classes: set[str]) -> str | None:
+    """The result letter of a row whose cell parsed no score.
+
+    A lone W, L or T printed in the cell ("W (forfeit)"), else the single
+    letter class the game-list skin stamps on the row (upper-iowa 2024, game
+    9017: ``class="... upcoming-game W sidearm-schedule-game-completed"``).
+    Nothing when neither speaks, or the classes disagree.
+    """
+    match = re.search(r"\b([WLT])\b", result_text)
+    if match:
+        return match.group(1)
+    letters = classes & {"W", "L", "T"}
+    if len(letters) == 1:
+        return next(iter(letters))
+    return None
 
 
 def _dom_two_team_result(row: object, classes: set[str]) -> tuple[str, int, int] | None:
@@ -1527,12 +1593,23 @@ def _parse_schedule_dom(
         completed = (
             "sidearm-schedule-game-completed" in classes or final_span is not None
         )
+        row_text = row.get_text(" ", strip=True)  # type: ignore[attr-defined]
         word = _status_word(result_text)
         if word is None and result is None:
-            word = _status_word(row.get_text(" ", strip=True))  # type: ignore[attr-defined]
+            word = _status_word(row_text)
+        # A forfeit is read from the whole row because the theme prints the
+        # word in a promotion div, not the result cell (upper-iowa 2024, game
+        # 9017: "Win by forfeit" beside "W, 2-2"). The letter that awards the
+        # side is the result cell's, else a bare letter printed there ("W
+        # (forfeit)"), else the row's own W/L class, which the same theme
+        # stamps beside its sidearm-schedule-* classes.
+        forfeit_side: str | None = None
+        if _forfeit_marked(row_text):
+            letter = result[0] if result else _dom_bare_letter(result_text, classes)
+            forfeit_side = _forfeit_side(letter, owner_is_home=owner_is_home)
         if word is not None:
             status = word
-        elif result or completed:
+        elif result or completed or forfeit_side:
             status = "final"
         else:
             status = "scheduled"
@@ -1588,16 +1665,28 @@ def _parse_schedule_dom(
                 result[2],
                 fixture_id=str(fixture["id"]),
                 result_text=result_text,
+                forfeit=forfeit_side is not None,
             )
             if result
             else None
         )
+        if status == "final" and forfeit_side is not None:
+            fixture["forfeit"] = forfeit_side
         if oriented:
             owner_score, other_score = oriented
             if owner_is_home:
                 fixture["home_score"], fixture["away_score"] = owner_score, other_score
             else:
                 fixture["home_score"], fixture["away_score"] = other_score, owner_score
+        elif status == "final" and forfeit_side is not None:
+            # A forfeit the page did not score takes the sport's 1-0
+            # convention to the awarded side (bead tl-wyv).
+            fixture["home_score"], fixture["away_score"] = _forfeit_scores(forfeit_side)
+            _LOG.info(
+                "%s: forfeit awarded to the %s side with no printed score; stored 1-0",
+                fixture["id"],
+                forfeit_side,
+            )
         elif status == "final":
             # Final requires scores (beads tl-d69, tl-md2): a completed class
             # or Final span with no oriented score pair is stored scheduled
@@ -1683,6 +1772,30 @@ def parse_schedule_page(
         team_score = _integer(result_dict.get("team_score"))
         opponent_score = _integer(result_dict.get("opponent_score"))
         status = _event_status(event)
+        # The letter (result.status) decides orientation and, on a forfeit
+        # row, the awarded side. The payload has no forfeit field; the word
+        # is read from the strings it does carry (the result's status and
+        # pre/postscore info, the event's promotion, noplay_text and status),
+        # the same rule as the DOM row. A forfeit with a letter is final even
+        # when the payload prints no score.
+        letter = str(result_dict.get("status") or "").strip().upper() or None
+        result_text = " ".join(
+            str(result_dict.get(key))
+            for key in ("status", "postscore_info", "prescore_info")
+            if isinstance(result_dict.get(key), str)
+        )
+        forfeit_side: str | None = None
+        if _forfeit_marked(
+            result_text,
+            *(
+                str(event.get(key))
+                for key in ("promotion", "noplay_text", "status")
+                if isinstance(event.get(key), str)
+            ),
+        ):
+            forfeit_side = _forfeit_side(letter, owner_is_home=owner_is_home)
+            if forfeit_side is not None and status == "scheduled":
+                status = "final"
         # The events component spells the flag ``is_conference``; the schedule
         # objects spell it ``conference`` as a bare boolean (their
         # ``opponent.conference`` is the opponent's own flag, not the game's).
@@ -1731,18 +1844,11 @@ def parse_schedule_page(
             # the same site that prints the winner first in the DOM fills
             # them the same way. The letter (result.status) decides, as in
             # the DOM path; a live match carries no letter yet and is taken
-            # as filled.
-            letter = str(result_dict.get("status") or "").strip().upper() or None
-            # The payload has no shootout field (measured: no archived events
-            # payload prints W or L beside a level score, and result carries
-            # only status, the two scores, line_scores and the pre/postscore
-            # info strings), so the marker is read from the strings it does
-            # carry, the same rule as the DOM cell.
-            result_text = " ".join(
-                str(result_dict.get(key))
-                for key in ("status", "postscore_info", "prescore_info")
-                if isinstance(result_dict.get(key), str)
-            )
+            # as filled. The payload has no shootout field (measured: no
+            # archived events payload prints W or L beside a level score, and
+            # result carries only status, the two scores, line_scores and the
+            # pre/postscore info strings), so the marker is read from the
+            # strings it does carry, the same rule as the DOM cell.
             oriented = (
                 (team_score, opponent_score)
                 if status == "live" and letter is None
@@ -1752,6 +1858,7 @@ def parse_schedule_page(
                     opponent_score,
                     fixture_id=str(fixture["id"]),
                     result_text=result_text,
+                    forfeit=forfeit_side is not None,
                 )
             )
             if oriented:
@@ -1766,6 +1873,20 @@ def parse_schedule_page(
                         opponent_score,
                         team_score,
                     )
+        if status == "final" and forfeit_side is not None:
+            fixture["forfeit"] = forfeit_side
+            if "home_score" not in fixture:
+                # A forfeit the payload did not score takes the sport's 1-0
+                # convention to the awarded side (bead tl-wyv).
+                fixture["home_score"], fixture["away_score"] = _forfeit_scores(
+                    forfeit_side
+                )
+                _LOG.info(
+                    "%s: forfeit awarded to the %s side with no printed score; "
+                    "stored 1-0",
+                    fixture["id"],
+                    forfeit_side,
+                )
         if status == "final" and "home_score" not in fixture:
             # Final requires scores (beads tl-d69, tl-md2): a result.status of
             # "Final" over null team_score/opponent_score, or a pair the

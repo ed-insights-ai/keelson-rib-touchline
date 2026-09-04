@@ -42,6 +42,7 @@ filename shard.
 |---|---|
 | `home_score`, `away_score` | Nullable integers: null until played, never 0, which is a real scoreline. `isPlayed` in `src/model.ts` is `status === "final"`, and a played game may still carry no score, so anything score-dependent guards on the numbers, never on played-ness alone. |
 | `match_type` | The single value `exhibition`, present only when the site itself printed the marking. Absence means a countable game. |
+| `forfeit` | `home` or `away`, the side a forfeited match was awarded to; present only when the schedule row itself says forfeit. Status stays `final`. The scores are the printed ones when the host prints them (Upper Iowa 2024: "W, 2-2" beside "Win by forfeit"), else 1-0 to the awarded side; neither is a measured scoreline, so goal tallies and player stats leave them out. |
 | `conference_game` | Whether the result counts in the conference table. |
 | `conference_game_source` (fixture) | Present only when the flag was not published by a schedule page (for example `derived:membership`). Absence means the publisher's own marking. |
 | `conference_game_source` (file) | How the run determined flags; `pipeline/scripts/collect_board.py` writes `published:schedule-page`. |

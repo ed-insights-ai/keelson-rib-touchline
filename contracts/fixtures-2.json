@@ -208,6 +208,32 @@
       "away_score": 0
     },
     {
+      "id": "sidearm:upper-iowa:9017",
+      "date": "2024-09-05",
+      "home": "upper-iowa",
+      "away": "roosevelt",
+      "status": "final",
+      "source_url": "https://uiupeacocks.com/sports/mens-soccer/schedule/2024",
+      "forfeit": "home",
+      "conference_game": false,
+      "venue": "Harms-Eischeid Stadium",
+      "home_score": 2,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:ouachita-baptist:2437-forfeit",
+      "date": "2016-09-02",
+      "home": "southwest-baptist",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "source_url": "https://obutigers.com/sports/mens-soccer/schedule/2016",
+      "forfeit": "away",
+      "conference_game": false,
+      "venue": "Bolivar, Mo.",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
       "id": "sidearm:harding:3840-live",
       "date": "2016-09-01",
       "home": "dallas-baptist",

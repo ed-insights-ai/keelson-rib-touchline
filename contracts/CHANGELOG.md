@@ -6,6 +6,17 @@ fails `pipeline/tests/test_contracts.py`.
 
 ## 2026-09-04
 
+- `touchline.fixtures/2`: a fixture may carry `forfeit`, `"home"` or
+  `"away"`, the side a forfeited match was awarded to, set only when the
+  schedule row itself says forfeit ("Win by forfeit", "Loss by forfeit",
+  "forfeited"). Status stays `final`; the scores are the printed ones when
+  the host prints them (upper-iowa 2024, game 9017: "W, 2-2" beside "Win by
+  forfeit", stored 2-2 with `forfeit: "home"`), else the sport's 1-0
+  convention to the awarded side. The collector stops refusing such rows
+  (beads tl-wyv, closing tl-49e; owner's ruling 2026-09-04). Same schema
+  version: an optional field the site's `model.ts` reads as an optional
+  enum, the same widening as `neutral`. The fixture exhibits both values.
+
 - Membership reference: `GLIAC` joins `conferences`, with one window
   (Purdue Northwest, 2022-2026) so the fixture exhibits it (batch 3
   membership PR; the fixture's conference list must equal the packaged

@@ -3328,14 +3328,14 @@ def test_a_shootout_win_beside_a_level_score_is_stored_as_the_draw(
     assert "reads final with no score" not in caplog.text
 
 
-def test_a_level_score_without_a_shootout_marker_is_refused_and_scheduled(
+def test_a_forfeit_printed_as_a_level_score_is_final_with_the_awarded_side(
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     """upper-iowa 2024, game 9017: "W, 2-2" beside a promotion reading "Win by
-    forfeit" and no shootout marker anywhere on the row. The letter rule
-    refuses the pair, and a final with no score is a contradiction, so the
-    row is scheduled and named twice: once for the refusal, once for the
-    demotion."""
+    forfeit", the owner at home. The forfeit rule (bead tl-wyv, closing
+    tl-49e) stores the printed pair as printed, keeps the row final, and
+    names the awarded side: W on the owner's page is the owner's slot. The
+    word stays out of every other field."""
     with caplog.at_level("INFO", logger="src.sidearm_live"):
         row = _archived_row(
             "sidearm_upper_iowa_schedule_2024_9017.html",
@@ -3343,14 +3343,200 @@ def test_a_level_score_without_a_shootout_marker_is_refused_and_scheduled(
             owner_slug="upper-iowa",
         )
     assert row["id"] == "sidearm:upper-iowa:9017"
+    assert row["status"] == "final"
+    assert (row["home"], row["away"]) == ("upper-iowa", "roosevelt")
+    assert (row["home_score"], row["away_score"]) == (2, 2)
+    assert row["forfeit"] == "home"
+    assert row["venue"] == "Harms-Eischeid Stadium"
+    assert not any(
+        "forfeit" in str(value).lower()
+        for key, value in row.items()
+        if key != "forfeit"
+    )
+    assert (
+        "sidearm:upper-iowa:9017: W beside a level score 2-2 on a forfeit row "
+        "('W, 2-2'); stored as printed"
+    ) in caplog.text
+    assert "contradicts" not in caplog.text
+    assert "reads final with no score" not in caplog.text
+
+
+def test_a_level_score_without_a_shootout_or_forfeit_word_is_still_refused(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """The rib #85 rule stands where no word explains the letter: "W, 2-2"
+    with the completed class and nothing saying forfeit or shootout is
+    refused, scheduled, named twice, and carries no forfeit."""
+    html = _dom_page(
+        _dom_game(
+            game_id="9018",
+            opponent="Roosevelt University",
+            date="Sep 5 (Thu)",
+            result="W, 2-2",
+            completed=True,
+        )
+    )
+    with caplog.at_level("INFO", logger="src.sidearm_live"):
+        [row] = parse_schedule_page(
+            html,
+            page_url="https://example.test/schedule/2024",
+            year=2024,
+            owner_slug="upper-iowa",
+            aliases={},
+        )
     assert row["status"] == "scheduled"
     assert "home_score" not in row
-    assert "sidearm:upper-iowa:9017: result letter 'W' contradicts 2-2" in caplog.text
+    assert "forfeit" not in row
+    assert "sidearm:upper-iowa:9018: result letter 'W' contradicts 2-2" in caplog.text
     assert (
-        "sidearm:upper-iowa:9017: page reads final with no score ('W, 2-2'); "
+        "sidearm:upper-iowa:9018: page reads final with no score ('W, 2-2'); "
         "stored scheduled, no score"
     ) in caplog.text
-    assert "shootout marker" not in caplog.text
+
+
+@pytest.mark.parametrize(
+    ("side", "result", "promotion", "row_class", "expected"),
+    [
+        # "Loss by forfeit" as a promotion with the letter as a row class and
+        # empty result spans: the opponent's slot is awarded, 0-1 at home.
+        ("home", "", "Loss by forfeit", "L", ("away", 0, 1)),
+        # The same, the owner away: the opponent is the home slot.
+        ("away", "", "Loss by forfeit", "L", ("home", 1, 0)),
+        # A bare letter in the result cell with the word in parentheses.
+        ("home", "W (forfeit)", "", "", ("home", 1, 0)),
+        # "Forfeited" in the cell, the letter on the row.
+        ("away", "Forfeited", "", "W", ("away", 0, 1)),
+        # The Upper Iowa shape with a decisive printed score keeps it.
+        ("home", "W, 3-0", "Win by forfeit", "W", ("home", 3, 0)),
+    ],
+)
+def test_a_forfeit_with_no_printed_score_takes_the_one_nil_convention(
+    side: str,
+    result: str,
+    promotion: str,
+    row_class: str,
+    expected: tuple[str, int, int],
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """A forfeit the page did not score is final, 1-0 to the awarded side, the
+    side read from the letter (W the owner's slot, L the opponent's); a
+    printed score is kept as printed. The forms are the spellings the rule
+    admits beside the one measured ("Win by forfeit", upper-iowa 2024)."""
+    html = _dom_page(
+        _dom_game(
+            game_id="77",
+            opponent="Roosevelt University",
+            date="Sep 5 (Thu)",
+            side=side,
+            result=result,
+            promotion=promotion,
+            completed=True,
+        )
+    )
+    if row_class:
+        html = html.replace("upcoming-game", f"upcoming-game {row_class}", 1)
+    with caplog.at_level("INFO", logger="src.sidearm_live"):
+        [row] = parse_schedule_page(
+            html,
+            page_url="https://example.test/schedule/2024",
+            year=2024,
+            owner_slug="upper-iowa",
+            aliases={},
+        )
+    awarded, home_score, away_score = expected
+    assert row["status"] == "final"
+    assert row["forfeit"] == awarded
+    assert (row["home_score"], row["away_score"]) == (home_score, away_score)
+    assert row["away" if side == "home" else "home"] == "roosevelt"
+    assert "reads final with no score" not in caplog.text
+    if "-" not in result:
+        assert (
+            f"sidearm:upper-iowa:77: forfeit awarded to the {awarded} side with no "
+            "printed score; stored 1-0"
+        ) in caplog.text
+
+
+def test_a_forfeit_word_with_no_letter_names_no_side_and_is_refused(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """The word without a letter awards nobody: no forfeit is set, and the
+    row falls to the ordinary final-requires-scores refusal."""
+    html = _dom_page(
+        _dom_game(
+            game_id="78",
+            opponent="Roosevelt University",
+            date="Sep 5 (Thu)",
+            promotion="Forfeit",
+            completed=True,
+        )
+    )
+    with caplog.at_level("WARNING", logger="src.sidearm_live"):
+        [row] = parse_schedule_page(
+            html,
+            page_url="https://example.test/schedule/2024",
+            year=2024,
+            owner_slug="upper-iowa",
+            aliases={},
+        )
+    assert row["status"] == "scheduled"
+    assert "forfeit" not in row
+    assert "home_score" not in row
+    assert "sidearm:upper-iowa:78: page reads final with no score" in caplog.text
+
+
+@pytest.mark.parametrize(
+    ("result", "promotion", "expected"),
+    [
+        # The Upper Iowa shape in the payload: the level pair stays printed.
+        (
+            {"team_score": 2, "opponent_score": 2, "status": "W"},
+            "Win by forfeit",
+            ("home", 2, 2),
+        ),
+        # The word in the result's own info string, no score printed.
+        (
+            {
+                "team_score": None,
+                "opponent_score": None,
+                "status": "L",
+                "postscore_info": "(forfeit)",
+            },
+            None,
+            ("away", 0, 1),
+        ),
+    ],
+)
+def test_the_payload_reads_the_forfeit_word_from_its_own_strings(
+    result: dict[str, object],
+    promotion: str | None,
+    expected: tuple[str, int, int],
+) -> None:
+    """The events payload has no forfeit field; the word is read from the
+    result's status and info strings and the event's promotion, the letter
+    (result.status) awards the side, and a null score pair takes 1-0."""
+    event = {
+        "id": 9017,
+        "date": "2024-09-05T19:00:00",
+        "location_indicator": "H",
+        "is_conference": False,
+        "type": "completed",
+        "promotion": promotion,
+        "schedule": {"title": "2024 Men's Soccer Schedule"},
+        "opponent": {"title": "Roosevelt University"},
+        "result": result,
+    }
+    [fixture] = parse_schedule_page(
+        _schedule_html(event, title="2024 Men's Soccer Schedule"),
+        page_url="https://example.test/schedule/2024",
+        year=2024,
+        owner_slug="upper-iowa",
+        aliases={},
+    )
+    awarded, home_score, away_score = expected
+    assert fixture["status"] == "final"
+    assert fixture["forfeit"] == awarded
+    assert (fixture["home_score"], fixture["away_score"]) == (home_score, away_score)
+    assert fixture["away"] == "roosevelt"
 
 
 @pytest.mark.parametrize(
