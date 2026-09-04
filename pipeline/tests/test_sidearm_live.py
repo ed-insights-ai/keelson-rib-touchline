@@ -2666,6 +2666,74 @@ def test_a_division_seed_is_a_rank_prefix() -> None:
     assert _clean_team_name("2Excellent College") == "2Excellent College"
 
 
+# --- Rank forms the first grammar let through (bead tl-cgb) --------------------
+# The ECC files held sidearm:queens:6816 (2023-09-23) under away=5-mercy and
+# sidearm:queens:7618 (2025-09-27) under away=8-mercy beside Mercy's own rows
+# under mercy: the theme prints two poll slots with the first empty ("/#5"),
+# and a prefix that had to start with a token never matched it. A scan of the
+# 755 archived schedule pages found the rest of the family below.
+
+
+@pytest.mark.parametrize(
+    ("published", "name"),
+    [
+        # queensknights.com 2023 game 6816, 2025 game 7618, plus 9-adelphi.
+        ("/#5 Mercy College", "Mercy College"),
+        ("/#8 Mercy University", "Mercy University"),
+        ("/#9 Adelphi University", "Adelphi University"),
+        ("/No. 10 East Stroudsburg University", "East Stroudsburg University"),
+        # Two polls joined by a pipe, and a tied rank.
+        ("#17 | #3 Seed Fort Lewis", "Fort Lewis"),
+        ("#T-15 | #3 seed CSU Pueblo", "CSU Pueblo"),
+        # A bracketed seed with its own marker, its "Seed" word, or a
+        # division letter, before or after a poll rank.
+        ("#7 (#1 Seed) Florida Tech", "Florida Tech"),
+        ("#1 seed (#8) Midwestern State", "Midwestern State"),
+        ("(#3A) Christian Brothers University", "Christian Brothers University"),
+        ("(#7) Cedarville University", "Cedarville University"),
+        # A lone dash between the prefix and the name.
+        ("No. 1/ No. 1 seed - Lynn University", "Lynn University"),
+        # The seed-word and no-NN forms the runbook names (tl-4sg.22).
+        ("#5 Seed Maryville University", "Maryville University"),
+        ("No. 12 Maryville", "Maryville"),
+        ("3-seed Drury", "Drury"),
+        # Real names that lead with a numeral, a letter-dash, or a dash keep
+        # every character: a token must end in whitespace and a dash only
+        # follows a rank.
+        ("2Excellent College", "2Excellent College"),
+        ("T-Bird College", "T-Bird College"),
+        ("Lynn - University", "Lynn - University"),
+        ("UT Tyler", "UT Tyler"),
+        (
+            "2023 DII Men's Soccer Selection Show",
+            "2023 DII Men's Soccer Selection Show",
+        ),
+    ],
+)
+def test_every_leading_rank_form_in_the_archive_is_stripped(
+    published: str, name: str
+) -> None:
+    from src.sidearm_live import _clean_team_name
+
+    assert _clean_team_name(published) == name
+
+
+def test_a_rank_with_an_empty_first_poll_slot_is_not_in_the_slug() -> None:
+    """queens 2023, game 6816: "<span>/#5</span> Mercy College", a home win for
+    Mercy, 1-3.  Stored as away=5-mercy; the slug is mercy."""
+    row = _archived_row(
+        "sidearm_queens_schedule_2023_6816.html", year=2023, owner_slug="queens"
+    )
+    assert row["id"] == "sidearm:queens:6816"
+    assert row["date"] == "2023-09-23"
+    assert (row["home"], row["away"]) == ("queens", "mercy")
+    assert (row["home_score"], row["away_score"]) == (1, 3)
+    assert row["status"] == "final"
+    # The payload path reads the same title through the same helper.
+    assert opponent_slug("/#5 Mercy College", {}) == "mercy"
+    assert opponent_slug("/#8 Mercy University", {}) == "mercy"
+
+
 # --- Hosted other-match rows (beads tl-clk.10, tl-5ru) ------------------------
 # A tournament host lists the other pair's match on its own schedule page.
 # Measured on the host's SideArm site: the 2023 rendered list carries

@@ -682,8 +682,25 @@ def assert_schedule_proven(
 #   RV/#11  #4/#5               ranked in two polls at once, slash-joined
 #   (1) #3   #17 [7]   (5) RV   a bracketed seed in front of a second rank
 #
+# A second scan (bead tl-cgb, 755 archived pages) found the forms that grammar
+# still let through, each minting a ranked twin of a real slug:
+#
+#   /#5  /No. 10                two polls with the first slot empty: the
+#                               theme prints "<span>/#5</span>" before the
+#                               link (measured "/#5 Mercy College" on
+#                               queensknights.com 2023 game 6816 and "/#8
+#                               Mercy University" 2025 game 7618, filed as
+#                               5-mercy and 8-mercy beside mercy; "/#9
+#                               Adelphi University" is 9-adelphi)
+#   #17 | #3 Seed               two polls joined by a pipe
+#   #T-15                       a tied rank
+#   #7 (#1 Seed)  (#3A)  (#7)   a bracketed seed carrying its own marker,
+#                               its "Seed" word, or a division letter
+#   No. 1/ No. 1 seed - Lynn    a lone dash between the prefix and the name
+#
 # So a token is a value carrying an optional marker or bracket, tokens may be
-# slash-joined, and the whole prefix repeats.
+# slash- or pipe-joined with the first slot allowed empty, the whole prefix
+# repeats, and a lone dash after it belongs to the prefix.
 #
 # Two limits stop it eating real names. Two digits is the whole range a poll
 # uses, and every token must be followed by whitespace — which is why
@@ -697,16 +714,21 @@ def assert_schedule_proven(
 # letter onto the seed (measured "No. 2E West Chester (PSAC Quarterfinal)" on
 # lockhavenathletics.com 2025), so a value may carry one trailing letter; the
 # whitespace rule still keeps "2E" from being the start of a word.
-_RANK_VALUE = r"(?:rv|\d{1,2}[a-z]?)"
+_RANK_VALUE = r"(?:rv|t-\d{1,2}|\d{1,2}[a-z]?)"
+_RANK_MARKER = r"(?:#|no\.?)?"
+_RANK_BRACKETED = rf"{_RANK_MARKER}\s*{_RANK_VALUE}(?:\s*seed)?"
 _RANK_TOKEN = (
     r"(?:"
-    rf"\(\s*{_RANK_VALUE}\s*\)|\[\s*{_RANK_VALUE}\s*\]"
-    r"|(?:#|no\.?)?\s*\d{1,2}(?:st|nd|rd|th)?[-\s]seed"
-    rf"|(?:#|no\.?)?\s*{_RANK_VALUE}"
+    rf"\(\s*{_RANK_BRACKETED}\s*\)|\[\s*{_RANK_BRACKETED}\s*\]"
+    rf"|{_RANK_MARKER}\s*\d{{1,2}}(?:st|nd|rd|th)?[-\s]seed"
+    rf"|{_RANK_MARKER}\s*{_RANK_VALUE}"
     r")"
 )
+_RANK_JOINER = r"\s*[/|]\s*"
 _RANK_PREFIX = re.compile(
-    rf"^(?:{_RANK_TOKEN}(?:\s*/\s*{_RANK_TOKEN})*\s+)+", re.IGNORECASE
+    rf"^(?:{_RANK_JOINER})?(?:{_RANK_TOKEN}(?:{_RANK_JOINER}{_RANK_TOKEN})*\s+)+"
+    r"(?:-\s+)?",
+    re.IGNORECASE,
 )
 
 

@@ -421,6 +421,7 @@ What the GLVC, the fourth conference, actually required, measured on
 | GLVC 2024-2026 | re-collected after merge and restart so the twins fold |
 | other conferences' files | keep `missouri-s-and-t`, `uindy`, `of-missouri-saint-louis` until their own re-collect; the stanzas now resolve all three |
 | tournament pages | `seed-` and `no-NN-` prefixes reach slugs; collector bug filed (tl-4sg.22) |
+| ranked rows | the collector strips a leading poll rank or seed in every published form ("#5", "No. 8", "/#5", "(#1 Seed)", "#T-15", "RV") before the opponent slug (tl-cgb); `5-mercy` and `9-adelphi` in the ECC files fold on their re-collect |
 
 **What collapses, with a cost each** (filed as beads under tl-4sg):
 
