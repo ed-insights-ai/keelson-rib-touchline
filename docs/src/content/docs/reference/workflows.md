@@ -43,7 +43,7 @@ The resolver behind `resolve-programmes` is also a command line for anything out
 
 ## touchline-backfill
 
-Collects one conference over a season range into the data home, one collect node per season, under the same exclusive lock as `touchline-collect`. Inputs: `conference`, `gender`, `from_season`, `to_season` (required, inclusive, at most 8 seasons per run); `layers` (optional, defaults to all four).
+Collects one conference over a season range into the data home, one collect node per season, under the same exclusive lock as `touchline-collect`. Inputs: `conference`, `gender`, `from_season`, `to_season` (required, inclusive, at most 8 seasons per run); `layers` (optional, defaults to all four); `refetch` (optional, `true` re-fetches every stored box score and page instead of reusing the ones whose fixture results are unchanged, for a parser change; every collect slot then passes `--refetch`).
 
 | Node | Kind | Contract |
 |---|---|---|

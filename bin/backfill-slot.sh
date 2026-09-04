@@ -10,6 +10,7 @@
 # Environment (the workflow's bash-node contract):
 #   SLOT                                1-based slot number
 #   KEELSON_INPUTS_conference / _gender / _from_season / _to_season / _layers
+#   KEELSON_INPUTS_refetch              "true" to pass --refetch to collect-board
 #   KEELSON_NODE_resolve_pipeline_OUTPUT  the pipeline directory, last line
 #   cwd                                 the Touchline data home
 #
@@ -57,10 +58,16 @@ if [ "$EXTRAPOLATED" = "true" ]; then
   EXTRA="--membership-extrapolated"
   printf 'NOTE: %s %s membership is carried forward past its last authored season (extrapolated).\n' "$CONF" "$SEASON"
 fi
+# Stored box scores are reused whenever a fixture's result is unchanged, so a
+# parser change never reaches them unless the run asks to re-fetch (tl-ir6).
+if [ "${KEELSON_INPUTS_refetch:-}" = "true" ]; then
+  EXTRA="$EXTRA --refetch"
+  printf 'NOTE: refetch requested; every stored page and box score is fetched and parsed again.\n'
+fi
 
 printf 'season %s: %s %s -> %s\n' "$SEASON" "$CONF" "$GENDER" "$PROGRAMMES"
 
-# shellcheck disable=SC2086 # EXTRA is a single controlled flag or empty.
+# shellcheck disable=SC2086 # EXTRA is a short list of controlled flags or empty.
 TOUCHLINE_DATA_DIR="$PWD" uv run --project "$PIPELINE_DIR" collect-board \
   --conference "$CONF" \
   --gender "$GENDER" \

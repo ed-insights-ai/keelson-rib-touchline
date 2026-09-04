@@ -279,6 +279,12 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
         .string()
         .optional()
         .describe("Keelson project to collect into. Defaults to the surface's selected project."),
+      refetch: z
+        .boolean()
+        .optional()
+        .describe(
+          "Re-fetch every stored box score and page instead of reusing unchanged ones, for a parser change.",
+        ),
     }),
     state_changing: true,
     execute: guarded(async (input, tctx) => {
@@ -288,6 +294,7 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
         gender: string;
         season?: number;
         project?: string;
+        refetch?: boolean;
       };
       const picked = pickProject(projects(), args.project);
       if (!picked.ok) return emit(tctx, picked.message, true);
@@ -362,6 +369,9 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
       ];
       command.push("--layers", plan.attempted.join(","));
       if (target.extrapolated) command.push("--membership-extrapolated");
+      // Stored box scores are reused whenever a fixture's result is unchanged,
+      // so a parser change never reaches them without this flag (tl-ir6).
+      if (args.refetch === true) command.push("--refetch");
       // Budgeted for the fleet the run can BECOME, not the fleet requested:
       // a one-programme ask against a home already holding this conference-
       // season widens to refresh the whole unit.

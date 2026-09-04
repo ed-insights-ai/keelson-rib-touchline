@@ -245,6 +245,42 @@ describe("workflows/touchline-backfill.yml", () => {
       expect(wf.inputs.find((i) => i.name === name)?.required).toBe(true);
     }
     expect(wf.inputs.find((i) => i.name === "layers")?.required).toBe(false);
+    expect(wf.inputs.find((i) => i.name === "refetch")?.required).toBe(false);
+  });
+
+  test("a slot passes --refetch to collect-board only when the refetch input is true", async () => {
+    // Stored box scores are reused whenever a fixture's result is unchanged,
+    // so a parser change never reaches them unless the run asks to re-fetch.
+    // A fake `uv` ahead on PATH records the collect-board command instead of
+    // running the pipeline.
+    const { conference, season } = await sampleConference();
+    const binDir = await mkdtemp(join(tmpdir(), "touchline-fake-uv-"));
+    await writeFile(join(binDir, "uv"), '#!/bin/sh\nprintf "UV %s\\n" "$*"\n', { mode: 0o755 });
+    const base = {
+      SLOT: "1",
+      PATH: `${binDir}:${process.env.PATH ?? ""}`,
+      KEELSON_INPUTS_conference: conference,
+      KEELSON_INPUTS_gender: "men",
+      KEELSON_INPUTS_from_season: String(season),
+      KEELSON_INPUTS_to_season: String(season),
+      KEELSON_NODE_resolve_pipeline_OUTPUT: join(pkg, "pipeline"),
+    };
+
+    const on = await run(["sh", slotScript], { ...base, KEELSON_INPUTS_refetch: "true" });
+    expect(on.code).toBe(0);
+    const onCommand = on.stdout.split("\n").find((l) => l.startsWith("UV "));
+    expect(onCommand).toContain(" collect-board ");
+    expect(onCommand?.split(" ")).toContain("--refetch");
+    expect(on.stdout).toContain("NOTE: refetch requested");
+
+    for (const env of [base, { ...base, KEELSON_INPUTS_refetch: "false" }]) {
+      const off = await run(["sh", slotScript], env);
+      expect(off.code).toBe(0);
+      const offCommand = off.stdout.split("\n").find((l) => l.startsWith("UV "));
+      expect(offCommand).toContain(" collect-board ");
+      expect(offCommand).not.toContain("--refetch");
+      expect(off.stdout).not.toContain("NOTE: refetch requested");
+    }
   });
 
   test("preflight refuses a range longer than the wired slots, and an inverted one", async () => {

@@ -33,6 +33,12 @@ inputs:
       Comma-separated layers to collect for every season: schedule, roster,
       stats, matches. Defaults to all four.
     required: false
+  - name: refetch
+    description: >-
+      true to re-fetch every stored box score and page instead of reusing
+      the ones whose fixture results are unchanged, for a parser change.
+      Passed to every season's collect as --refetch. Defaults to false.
+    required: false
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Runs with cwd = the consumer's Touchline data directory. Git is not required.
@@ -93,6 +99,7 @@ nodes:
       fi
       printf 'data home OK: %s\n' "$PWD"
       printf 'layers: %s\n' "${KEELSON_INPUTS_layers:-schedule,roster,stats,matches}"
+      printf 'refetch: %s\n' "${KEELSON_INPUTS_refetch:-false}"
       printf 'range: %s %s %s-%s (%s seasons, %s slots)\n' \
         "$KEELSON_INPUTS_conference" "$KEELSON_INPUTS_gender" \
         "$KEELSON_INPUTS_from_season" "$KEELSON_INPUTS_to_season" "$COUNT" "$MAX_SEASONS"

@@ -354,6 +354,70 @@ describe("first-contact commands", () => {
   });
 });
 
+describe("collecting a season", () => {
+  // The collector reuses a stored box score whenever the fixture's result is
+  // unchanged, so a parser change never reaches stored boxes unless the call
+  // asks to re-fetch. The tool must pass --refetch through exactly when asked.
+  async function collectCommand(
+    label: string,
+    extra: Record<string, unknown>,
+  ): Promise<string[] | undefined> {
+    const workspace = await tempRoot(`collect-${label}`);
+    process.env.KEELSON_WORKSPACE = workspace;
+    process.env.TOUCHLINE_CONFIG_PATH = join(workspace, "config.json");
+    const projects: Project[] = [];
+    const base = fakeContext(projects);
+    let command: string[] | undefined;
+    const ctx: RibContext = {
+      ...base,
+      getExec: () => ({
+        ...base.getExec(),
+        runText: async (cmd, args, opts) => {
+          if (cmd === "uv" && args[0] === "run") {
+            command = args;
+            return { ok: true as const, data: "collected", exitCode: 0 };
+          }
+          return base.getExec().runText(cmd, args, opts);
+        },
+      }),
+    };
+    const home = await initTouchlineHome(`collect-${label}`, ctx);
+    if (!home.ok) throw new Error(home.error);
+    const collect = makeTouchlineTools({ ctx, refreshBoard: () => undefined }).find(
+      (t) => t.name === "touchline_collect",
+    );
+    expect(collect).toBeDefined();
+    let report = "";
+    await collect?.execute(
+      { target: "GAC", gender: "men", season: 2026, project: `collect-${label}`, ...extra },
+      {
+        emit: (chunk: { content?: string }) => {
+          report += chunk.content ?? "";
+        },
+      } as never,
+    );
+    expect(report).toContain("Board now showing");
+    return command;
+  }
+
+  test("refetch: true passes --refetch to collect-board", async () => {
+    const command = await collectCommand("on", { refetch: true });
+    expect(command).toContain("collect-board");
+    expect(command).toContain("--refetch");
+  });
+
+  test("refetch false or absent leaves --refetch off", async () => {
+    for (const [label, extra] of [
+      ["off", { refetch: false }],
+      ["absent", {}],
+    ] as const) {
+      const command = await collectCommand(label, extra);
+      expect(command).toContain("collect-board");
+      expect(command).not.toContain("--refetch");
+    }
+  });
+});
+
 describe("removing a data home", () => {
   async function home(name: string): Promise<{ root: string; ctx: RibContext; ps: Project[] }> {
     const workspace = await tempRoot(`rm-${name}`);
