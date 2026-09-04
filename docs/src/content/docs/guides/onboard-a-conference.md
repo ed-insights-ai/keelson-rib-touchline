@@ -145,13 +145,19 @@ carries it with `abbreviation_resolves = false`.
 
 Expect a guessed hostname or two to fail name resolution (two of fifteen did
 for the GLVC); correct them and re-probe rather than trusting a guess. A
-site that refuses the probe (Lee, GSC, answers 403 to every request; Tampa,
-SSC, did on 2026-09-02) comes back with what HTTP said on every line: the
+site that refuses the probe (Tampa, SSC, did on 2026-09-02) comes back with
+what HTTP said on every line: the
 platform line reads `unknown` with the status and the URL, every layer reads
 `error (HTTP 403)`, the candidate seasons are listed as not seen with their
 status, and a stanza is still drafted (bead tl-v1q.6). Re-probe on another
 day before naming the platform by hand: Tampa answered 200 to the pipeline's
 own session on the next run, and the probe read PrestoSports off its markup.
+A 403 on every path for every client on every day is a different signal:
+the host is not the athletics site at all. Lee (GSC) showed 403 on every
+board 2016-2026 because `leeflames.com` is an Adobe Portfolio fan page; the
+real SideArm site is `leeuflames.com`, and the probe read every layer and
+season off it on 2026-09-04 (bead tl-rqz). Check the site root in a browser
+before filing a WAF gap.
 A PrestoSports site is probed at its sport landing page
 (`https://{host}/sports/msoc`), its seasons are academic-year paths
 (`/sports/msoc/2025-26/schedule` is the 2025 season), and its stanza sets
