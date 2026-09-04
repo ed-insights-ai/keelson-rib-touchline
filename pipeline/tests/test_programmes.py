@@ -162,6 +162,30 @@ def test_the_city_is_normalised_to_ap_style_and_cites_its_page() -> None:
     assert city["accessed"] == "2026-09-02"
 
 
+def test_a_pin_named_for_another_place_needs_the_stanza_to_say_why() -> None:
+    # University Center, Mich. is a mailing-address community inside Kochville
+    # township with no Gazetteer row of its own. The pin is refused until the
+    # stanza says so, and then the city stays the town the school prints.
+    stanza = _school(
+        name="Saginaw Valley State",
+        city="University Center, Mich.",
+        gazetteer_geoid="2614543800",
+    )
+    with pytest.raises(programmes.ProgrammeError) as caught:
+        programmes.build([stanza], _offline())
+    assert "gazetteer_note" in str(caught.value)
+    assert "Kochville township" in str(caught.value)
+
+    why = "University Center is an unincorporated community inside Kochville township"
+    built = programmes.build([replace(stanza, gazetteer_note=why)], _offline())
+    row = built.document["programmes"]["saginaw-valley-state"]
+    point = row["provenance"]["point"]
+    assert row["city"] == "University Center, Mich."
+    assert (point["geoid"], point["name"]) == ("2614543800", "Kochville township")
+    assert row["point"] == {"lat": 43.5056, "lon": -83.9852}
+    assert why in point["note"] and programmes.COUSUB_NOTE in point["note"]
+
+
 def test_a_pinned_place_carries_a_note_in_its_provenance() -> None:
     built = programmes.build(
         [_school(name="Saint Leo", city="Saint Leo, Fla.", gazetteer_geoid="1262775")],

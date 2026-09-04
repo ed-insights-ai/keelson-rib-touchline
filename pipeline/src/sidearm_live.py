@@ -907,16 +907,58 @@ def identity_aliases(
         if gender is not None and school.gender != gender:
             continue
         slug = programme_slug(school.name)
-        for candidate in (
-            school.name,
-            school.display_name,
-            school.abbreviation,
-            *school.aliases,
-        ):
+        for candidate in _identity_spellings(school):
             key = _identity_key(candidate)
             if key:
                 aliases[key] = slug
     return aliases
+
+
+def _identity_spellings(school: SchoolConfig) -> list[str]:
+    """The published spellings one stanza claims for its slug.
+
+    The abbreviation is claimed only while the stanza says it resolves: a
+    bare initialism two stanzas share identifies nobody, and the map above
+    would otherwise hand it to whichever stanza comes last in the file.
+    """
+    spellings = [school.name, school.display_name, *school.aliases]
+    if school.abbreviation_resolves:
+        spellings.append(school.abbreviation)
+    return spellings
+
+
+def identity_collisions(
+    schools: list[SchoolConfig],
+) -> list[tuple[str, str, list[tuple[str, str]]]]:
+    """Every spelling two stanzas of one gender both claim.
+
+    One entry per (gender, key): the identity key and the (slug, field)
+    pairs that claim it, in file order. ``identity_aliases`` would resolve
+    such a key to the last stanza only, silently; check-membership refuses
+    the config instead, so the collision is settled in the data (an alias
+    dropped, or ``abbreviation_resolves = false`` on the stanzas that share
+    an initialism).
+    """
+    claims: dict[tuple[str, str], dict[str, list[tuple[str, str]]]] = {}
+    for school in schools:
+        slug = programme_slug(school.name)
+        fields = [("name", school.name), ("display_name", school.display_name)]
+        if school.abbreviation_resolves:
+            fields.append(("abbreviation", school.abbreviation))
+        fields.extend(("alias", alias) for alias in school.aliases)
+        for label, candidate in fields:
+            key = _identity_key(candidate)
+            if not key:
+                continue
+            owners = claims.setdefault((school.gender, key), {})
+            owners.setdefault(slug, []).append((slug, label))
+    collisions = []
+    for (gender, key), owners in claims.items():
+        if len(owners) > 1:
+            collisions.append(
+                (gender, key, [pair for pairs in owners.values() for pair in pairs])
+            )
+    return collisions
 
 
 def conference_members(

@@ -329,7 +329,7 @@ class Gazetteer:
                 return hit
         return None
 
-    def _resolve_pin(self, town: Town, pin: str) -> Place:
+    def _resolve_pin(self, town: Town, pin: str, note: str = "") -> Place:
         hit = self._find_pin(pin)
         if hit is None:
             self._widen()
@@ -342,10 +342,22 @@ class Gazetteer:
                 f"{town.ap}: pinned GEOID {pin} is not in the {GAZETTEER_VINTAGE} Gazetteer "
                 "(neither the places file nor the county subdivisions file)"
             )
-        if hit.state != town.usps or not _prefix_matches(_norm(town.name), hit.name):
+        if hit.state != town.usps:
             raise GazetteerError(
                 f"{town.ap}: pinned GEOID {pin} names {hit.name!r} ({hit.state}), "
                 "not the town in the city string"
+            )
+        # A pinned row named for another place is accepted only when the
+        # stanza says why: the printed town is an unincorporated community
+        # inside the pinned place (University Center, Mich. lies in Kochville
+        # township). The note travels to the row's point provenance, so the
+        # reader-facing city stays the town the school prints.
+        if not _prefix_matches(_norm(town.name), hit.name) and not note.strip():
+            raise GazetteerError(
+                f"{town.ap}: pinned GEOID {pin} names {hit.name!r} ({hit.state}), "
+                "not the town in the city string; if the printed town is an "
+                "unincorporated community inside that place, say so in "
+                "gazetteer_note"
             )
         return hit
 
@@ -354,10 +366,13 @@ class Gazetteer:
         incorporated = [p for p in found if p.incorporated]
         return incorporated or found
 
-    def resolve(self, town: Town, *, pin: str = "") -> Place:
-        """Exactly one place for the town, or a GazetteerError that names why."""
+    def resolve(self, town: Town, *, pin: str = "", note: str = "") -> Place:
+        """Exactly one place for the town, or a GazetteerError that names why.
+
+        ``note`` accompanies a pin whose row is not named for the town.
+        """
         if pin:
-            hit = self._resolve_pin(town, pin)
+            hit = self._resolve_pin(town, pin, note)
             self.used[hit.geoid] = hit
             return hit
         # Places first: the fixture, then the full file. Only when neither

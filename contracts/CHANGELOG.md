@@ -4,6 +4,15 @@ One line per change to a published contract, newest first. A fixture change
 without a line here is incomplete; a writer change without a fixture change
 fails `pipeline/tests/test_contracts.py`.
 
+## 2026-09-04
+
+- Membership reference: `GLIAC` joins `conferences`, with one window
+  (Purdue Northwest, 2022-2026) so the fixture exhibits it (batch 3
+  membership PR; the fixture's conference list must equal the packaged
+  file's). The packaged file carries eight GLIAC windows on seven new slugs
+  plus a second window on `upper-iowa` (GLIAC 2022 before its GLVC
+  2023-2026), the Trevecca shape.
+
 ## 2026-09-03
 
 - `touchline.coverage/1`: cells gain an optional `skips` array of strings,

@@ -293,7 +293,17 @@ def validate(
 
     if schools is None:
         schools = load_schools()
-    from src.sidearm_live import programme_slug
+    from src.sidearm_live import identity_collisions, programme_slug
+
+    # Identity is gender-wide and last-stanza-wins, so a spelling two stanzas
+    # claim is refused here rather than resolved silently at collect time.
+    for gender, key, claimants in identity_collisions(schools):
+        named = " and ".join(f"{slug} ({label})" for slug, label in claimants)
+        errors.append(
+            f"identity collision ({gender}): {key!r} is claimed by {named}; "
+            "drop the alias or set abbreviation_resolves = false on the "
+            "stanzas that share the initialism"
+        )
 
     configured_programmes = {
         (programme_slug(school.name), school.gender) for school in schools

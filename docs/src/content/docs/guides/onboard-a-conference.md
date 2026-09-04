@@ -117,7 +117,12 @@ an alias that is the page title with the mascot still in it; and aliases
 printed between conference and gender rather than last. Peer spellings
 ("CSU-Pueblo", "Colorado Mines", "Westminster University") come from a scan
 of the other members' schedule pages, which the probe does not do; add
-them by hand now or in the alias round after the first collect.
+them by hand now or in the alias round after the first collect. Every
+spelling a stanza claims (name, `display_name`, `abbreviation`, `aliases`)
+must be claimed by one stanza per gender: `check-membership` refuses a
+collision naming the pair and the spelling, and a bare initialism two
+schools share ("RU", "SCSU") stays display-only on every stanza that
+carries it with `abbreviation_resolves = false`.
 
 Expect a guessed hostname or two to fail name resolution (two of fifteen did
 for the GLVC); correct them and re-probe rather than trusting a guess. A
@@ -160,7 +165,13 @@ adds, 2026-09-02, beads tl-clk.5 and tl-891):
    place with `gazetteer_geoid = "<GEOID>"` on the stanza. A town the places
    file lacks (New England towns, New Jersey townships, New York towns)
    resolves through the county subdivisions file automatically, and a pin
-   may be either file's GEOID. The offline Gazetteer fixtures under
+   may be either file's GEOID. A pinned row must be named for the town in
+   the city string, unless the stanza also carries `gazetteer_note`
+   saying the printed town is an unincorporated community inside the
+   pinned place (University Center, Mich. inside Kochville township): then
+   the row keeps the town the school prints as its `city`, takes the
+   pinned place's point, and the note lands in the point's provenance.
+   The offline Gazetteer fixtures under
    `pipeline/data/gazetteer/` are rewritten by the same run.
 4. `contracts/membership.json` + `contracts/CHANGELOG.md`: the membership
    fixture's conference list must equal the packaged file's, so the
@@ -536,6 +547,36 @@ stranger or another conference's canonical slug.
    (tl-v1q.7), so the shortfall is named, not inferred.
 4. **Opponent slugs without status words, "of" residue or event
    placeholders** (tl-v1q.8).
+
+### 8.3 GLIAC, batch 3 (2026-09-04)
+
+Authored from this page on 2026-09-04; not yet merged or collected, so
+this is the rib half of the ledger. Seven programmes, all SideArm, no dead
+hosts, no PrestoSports host, 2022-2026 with churn inside the window: the
+7/6/7/7/7 count hides two moves (Upper Iowa out after 2022, Roosevelt in
+from 2024), and only the per-season lists catch both.
+
+**Rib (batch 3 membership PR)**
+
+| touchpoint | change |
+|---|---|
+| `data/reference/membership.json` | `GLIAC` added; 8 windows on 7 new slugs plus a second window on the existing `upper-iowa` slug (GLIAC 2022 before GLVC 2023-2026, the Trevecca shape); `description` names gliac.org |
+| `pipeline/config/schools.toml` | 7 stanzas from the probe, then hand-corrected: six initials abbreviations, four missing mascots, `enabled` flipped, aliases last, `city_source` on every one; Upper Iowa's existing GLVC stanza gains 2022 in `years` with a comment, no new stanza |
+| `data/reference/programmes.json` | rebuilt: 7 new rows, 152 in all; the 145 existing rows unchanged |
+| `contracts/membership.json`, `contracts/CHANGELOG.md` | `GLIAC` joins the fixture with one window (Purdue Northwest) |
+| tests | none touched |
+
+**Where this page was wrong or silent**
+
+| finding | what happened |
+|---|---|
+| a name the records never print | the records and standings print "Parkside" in every season; the stanza carries the school's own name "Wisconsin-Parkside" (the data home already held both spellings from opponents' pages) and "Parkside" is an alias, so the membership key is `wisconsin-parkside`, not the records label |
+| a records label with punctuation | "St. Cloud State" mints `st-cloud-state`; opponents' pages had minted `saint-cloud-state` in 17 rows, so "Saint Cloud State" is an alias for the alias round |
+| a provisional member | Roosevelt was NCAA-provisional for 2024 and 2025 and still counted: a plain row on the 2024 records page and a regular-season co-champion on the 2024 standings (`standings.aspx?standings=307`), so the window starts 2024. The `year=` parameter on `standings.aspx` is ignored; past standings live under an id |
+| a mid-window mover already in the rib | Upper Iowa was a men's soccer affiliate on the 2021 and 2022 GLIAC records pages with no gliac.org team page, and is in the GLVC from 2023. Step 1's checklist reads as if a mover were new to the rib; here the slug, stanza and GLVC window existed, so the change is a second window before the first and one `years` entry |
+| a town the Gazetteer does not have | Saginaw Valley State plays at "University Center, Mich.", a mailing-address community with no 2023 Gazetteer place in Michigan and no matching county subdivision. Step 3's pin needed the pinned row's name to start with the city string, so a pin to Kochville township (the county subdivision the campus is in) was refused under "University Center". The rule now accepts such a pin when the stanza carries `gazetteer_note` saying why, so the row keeps "University Center, Mich." as its city over the township's point, with the note in the point's provenance (a fifth file, `pipeline/src/gazetteer.py`, plus `config.py` and `programmes.py`, changed for it) |
+| a second source for every written fact | the coordinator's rule for this batch: no single-sourced fact lands in a comment, a `source` sentence, a city or a nickname. It cost fourteen paced fetches (conference releases, school main sites, the NCAA directory, the NSIC member JSON, a township site) on top of the records pages, and it caught one claim the research had wrong: Davenport's roster page prints "Grand Rapids, Mich." only as player hometowns, so the city's second source is the gliac.org member JSON, not the roster |
+| abbreviations across conferences | RU, DU and SCSU are the gliac.org and school short forms for Roosevelt, Davenport and St. Cloud State, and also Rockhurst's, Drury's and Daemen's, and Southern Connecticut's. `identity_aliases` is one map per gender across every stanza, last stanza wins, so a bare "RU" or "SCSU" on any men's schedule now resolves to the GLIAC programme. The Drury/Daemen pair already had this shape; a per-conference scope for bare initialisms is the fix if it bites |
 
 Between the two ledgers, the rib's two-file add measured on the GLVC held
 for the SSC once tl-clk.5 was known; the operations cost is now dominated

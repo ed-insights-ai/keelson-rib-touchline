@@ -928,6 +928,40 @@
         }
       }
     },
+    "davenport": {
+      "name": "Davenport",
+      "nickname": "Panthers",
+      "abbreviation": "DU",
+      "city": "Grand Rapids, Mich.",
+      "point": {
+        "lat": 42.9612,
+        "lon": -85.6556
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://dupanthers.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://dupanthers.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "the university's main site, https://www.davenport.edu/ (footer address 6191 Kraft Ave SE, Grand Rapids, MI 49512, read 2026-09-04), and the gliac.org member JSON (Grand Rapids, MI); the schedule page prints Caledonia, Mich., the venue town, for home matches",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2634000",
+          "name": "Grand Rapids city",
+          "state": "MI",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "davis-elkins": {
       "name": "Davis & Elkins",
       "nickname": "Senators",
@@ -2667,6 +2701,40 @@
         }
       }
     },
+    "northern-michigan": {
+      "name": "Northern Michigan",
+      "nickname": "Wildcats",
+      "abbreviation": "NMU",
+      "city": "Marquette, Mich.",
+      "point": {
+        "lat": 46.5507,
+        "lon": -87.3958
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://nmuwildcats.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://nmuwildcats.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://nmuwildcats.com/sports/mens-soccer/schedule/2026 (Marquette, MI); the gliac.org member JSON prints Marquette, MI (read 2026-09-04)",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2651900",
+          "name": "Marquette city",
+          "state": "MI",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "northwestern-oklahoma-state": {
       "name": "Northwestern Oklahoma State",
       "nickname": "Rangers",
@@ -3109,6 +3177,40 @@
         }
       }
     },
+    "purdue-northwest": {
+      "name": "Purdue Northwest",
+      "nickname": "Pride",
+      "abbreviation": "PNW",
+      "city": "Hammond, Ind.",
+      "point": {
+        "lat": 41.6187,
+        "lon": -87.4949
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://pnwathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://pnwathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://pnwathletics.com/sports/mens-soccer/schedule/2026 (Hammond, IN); the gliac.org member JSON prints Hammond, Ind. (read 2026-09-04)",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1831000",
+          "name": "Hammond city",
+          "state": "IN",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "queens": {
       "name": "Queens",
       "nickname": "Knights",
@@ -3344,6 +3446,75 @@
           "name": "Winter Park city",
           "state": "FL",
           "accessed": "2023-09-26"
+        }
+      }
+    },
+    "roosevelt": {
+      "name": "Roosevelt",
+      "nickname": "Lakers",
+      "abbreviation": "RU",
+      "city": "Chicago, Ill.",
+      "point": {
+        "lat": 41.837,
+        "lon": -87.6849
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://rooseveltlakers.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://rooseveltlakers.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "the university's main site, https://www.roosevelt.edu/ (Chicago Campus, 430 S. Michigan Ave, Chicago, IL 60605, read 2026-09-04), and the NCAA directory, https://web3.ncaa.org/directory/orgDetail?id=2807 (same address); the schedule page prints Arlington Heights, Ill., the venue town, for home matches",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1714000",
+          "name": "Chicago city",
+          "state": "IL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "saginaw-valley-state": {
+      "name": "Saginaw Valley State",
+      "nickname": "Cardinals",
+      "abbreviation": "SVSU",
+      "city": "University Center, Mich.",
+      "point": {
+        "lat": 43.5056,
+        "lon": -83.9852
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://svsucardinals.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://svsucardinals.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://svsucardinals.com/sports/mens-soccer/schedule/2026 (University Center, Mich.); the gliac.org member JSON prints University Center, MI (read 2026-09-04)",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (County Subdivisions, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_cousubs_national.zip",
+          "geoid": "2614543800",
+          "name": "Kochville township",
+          "state": "MI",
+          "accessed": "2023-09-26",
+          "note": "matched explicitly by GEOID: the programme prints 'University Center' and the Gazetteer lists the place as 'Kochville township'; county subdivision; the places file has no entry for this town; University Center is an unincorporated community inside Kochville township, Saginaw County, with no 2023 Gazetteer row of its own: the campus at 7400 Bay Road is in the township (https://www.svsu.edu/newsroom/news/2019/october/kochvilletownshipscardinalsquare/ and https://www.kochville.gov/information/universities.php, read 2026-09-04)"
         }
       }
     },
@@ -4025,6 +4196,40 @@
           "geoid": "0150000",
           "name": "Mobile city",
           "state": "AL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "st-cloud-state": {
+      "name": "St. Cloud State",
+      "nickname": "Huskies",
+      "abbreviation": "SCSU",
+      "city": "St. Cloud, Minn.",
+      "point": {
+        "lat": 45.5267,
+        "lon": -94.171
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://scsuhuskies.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://scsuhuskies.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://scsuhuskies.com/sports/mens-soccer/schedule (St. Cloud, Minn., read by hand 2026-09-04); the northernsun.org member JSON prints St. Cloud, MN",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2756896",
+          "name": "St. Cloud city",
+          "state": "MN",
           "accessed": "2023-09-26"
         }
       }
@@ -4944,6 +5149,40 @@
           "geoid": "1050800",
           "name": "New Castle city",
           "state": "DE",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "wisconsin-parkside": {
+      "name": "Wisconsin-Parkside",
+      "nickname": "Rangers",
+      "abbreviation": "UWP",
+      "city": "Kenosha, Wis.",
+      "point": {
+        "lat": 42.5875,
+        "lon": -87.88
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://parksiderangers.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://parksiderangers.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://parksiderangers.com/sports/mens-soccer/schedule/2026 (Kenosha, WI); the gliac.org member JSON prints Kenosha, WI and uwp.edu's footer address is 900 Wood Road, Kenosha, WI 53141 (read 2026-09-04)",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "5539225",
+          "name": "Kenosha city",
+          "state": "WI",
           "accessed": "2023-09-26"
         }
       }
