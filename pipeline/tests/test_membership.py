@@ -636,19 +636,41 @@ def test_all_or_none_divisions_pass_on_a_divisional_and_a_plain_season():
     assert membership.validate(document, schools=_divisional_schools()) == []
 
 
-def test_the_shipped_conferences_carry_no_divisions(membership_document):
-    # Every existing conference publishes one table: the all-or-none rule
-    # holds on the shipped file with nothing labelled.
+def test_the_shipped_conferences_carry_divisions_only_where_printed(
+    membership_document,
+):
+    # Every shipped conference publishes one table except Conference
+    # Carolinas, which prints three divisions from 2023 (batch 4): the
+    # all-or-none rule holds on the shipped file, nothing labelled anywhere
+    # else, and every CC member labelled from 2023 on.
     span = membership_document["seasons"]
     for conference in membership_document["conferences"]:
         for gender in ("men", "women"):
             for season in range(span["from"], span["to"] + 1):
-                assert (
-                    membership.divisions_of(
+                divisions = membership.divisions_of(
+                    conference, gender, season, document=membership_document
+                )
+                if conference == "CC" and gender == "men" and season >= 2023:
+                    members = membership.members_of(
                         conference, gender, season, document=membership_document
                     )
-                    == {}
-                )
+                    assert set(divisions) == set(members)
+                    assert set(divisions.values()) == {"East", "Northwest", "Southwest"}
+                else:
+                    assert divisions == {}
+    # The one split on a slug with the conference unchanged.
+    assert (
+        membership.division_for(
+            "north-greenville", "men", 2023, document=membership_document
+        )
+        == "Southwest"
+    )
+    assert (
+        membership.division_for(
+            "north-greenville", "men", 2024, document=membership_document
+        )
+        == "Northwest"
+    )
 
 
 def test_a_mix_of_divisions_fails_naming_the_odd_member():
@@ -884,15 +906,17 @@ def test_check_membership_cli_reads_a_captured_standings_page(capsys):
     assert main([]) == 0
     assert "membership valid" in capsys.readouterr().out
 
-    # With a page: the packaged file names the SAC archive but authors no SAC
-    # window yet (batch 4 prep), so the page's twelve names are strangers and
-    # the verdict says so, naming the archive page it read against.
+    # With a page: the packaged file names the SAC archive and, since batch
+    # 4, authors the twelve 2022 windows, so the page and the windows agree
+    # and the verdict names the archive page it read against.
     page = str(FIXTURES / SAC_STANDINGS[2022][0])
-    assert main(["--standings", page, "--conference", "SAC", "--season", "2022"]) == 1
+    assert main(["--standings", page, "--conference", "SAC", "--season", "2022"]) == 0
     captured = capsys.readouterr()
     assert "https://www.thesac.com/standings.aspx?standings=73" in captured.out
     assert "page lists 12 teams" in captured.out
-    assert "on page, no window: wingate" in captured.err
+    assert "windows resolve 12 members" in captured.out
+    assert "agreement" in captured.out
+    assert captured.err == ""
 
     # The flags travel together.
     assert main(["--standings", page]) == 2
