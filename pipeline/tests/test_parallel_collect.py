@@ -34,6 +34,7 @@ from src.fetch_pool import (
     PacingPolicy,
     host_of,
     is_challenge,
+    is_challenge_reason,
 )
 from src.sidearm_live import (
     DEFAULT_LAYERS,
@@ -900,6 +901,19 @@ def test_is_challenge_names_a_202_or_an_empty_2xx_only() -> None:
     assert not is_challenge(_page("u"))
     assert not is_challenge(SimpleNamespace(status_code=304, text=""))
     assert not is_challenge(SimpleNamespace(status_code=403, text=""))
+    # The rate answer measured on run 7d7fe964 is a challenge; no other 4xx is.
+    assert is_challenge(_rate_challenge("u"))
+    assert not is_challenge(SimpleNamespace(status_code=429, text=""))
+    assert is_challenge_reason(
+        "[2024] x: failed to fetch box score https://h/b.xml: 459 Client Error: "
+        "unknown for url: https://h/b.xml"
+    )
+    assert is_challenge_reason("host h is cooling down after HTTP 459 challenges")
+    assert not is_challenge_reason("403 Client Error: Forbidden for url: x")
+
+
+def _rate_challenge(url: str) -> SimpleNamespace:
+    return SimpleNamespace(status_code=459, url=url, text="", headers={})
 
 
 def test_a_presumed_or_observed_host_is_paced_while_others_keep_polite_spacing() -> (
@@ -917,18 +931,54 @@ def test_a_presumed_or_observed_host_is_paced_while_others_keep_polite_spacing()
         pass  # never challenged: the historical 0.2s
     gate.observe_challenge("sidearm.example")
     with gate.slot("sidearm.example"):
-        pass  # learned from the 202: paced from now on
+        pass  # learned from the 202: the challenged interval from now on
 
-    assert fake.sleeps == [5.0, 0.2, 5.0]
+    assert fake.sleeps == [5.0, 0.2, 12.0]
     assert gate.is_paced("sidearm.example")
     assert gate.challenged_hosts() == {"sidearm.example"}
     assert any("waiting 5.0s before asking presto.example" in line for line in log)
-    assert any("sidearm.example answered HTTP 202" in line for line in log)
+    assert any(
+        "sidearm.example challenged with HTTP 202 (challenge); spacing widened to "
+        "12.0s for the rest of the run" in line
+        for line in log
+    )
+
+
+def test_a_presumed_host_widens_to_the_challenged_spacing_on_its_first_202() -> None:
+    """Measured on the batch 4 SAC backfill 2026-09-05 (run 7d7fe964): the
+    presumed 5 s still drew 202s on every PrestoSports host, 12 s read every
+    page at 200.  A host is 5 s apart until its first 202 and 12 s after;
+    another host is unaffected; a second 202 widens nothing further."""
+    gate, fake, log = _fake_gate(
+        spacing=0.2, paced_spacing=5.0, challenged_spacing=12.0
+    )
+    gate.presume_paced("cneagles.example")
+    gate.presume_paced("coker.example")
+    with gate.slot("cneagles.example"):
+        pass
+    with gate.slot("cneagles.example"):
+        pass  # presumed: 5 s
+    gate.observe_challenge("cneagles.example")
+    with gate.slot("cneagles.example"):
+        pass  # challenged: 12 s from now on
+    gate.observe_challenge("cneagles.example")
+    with gate.slot("cneagles.example"):
+        pass  # still 12 s, logged once
+    with gate.slot("coker.example"):
+        pass
+    with gate.slot("coker.example"):
+        pass  # never challenged: still 5 s
+
+    assert fake.sleeps == [5.0, 12.0, 12.0, 5.0]
+    assert [line for line in log if "widened" in line] == [
+        "pacing: cneagles.example challenged with HTTP 202 (challenge); spacing "
+        "widened to 12.0s for the rest of the run"
+    ]
 
 
 def test_a_challenged_request_backs_off_then_lands(monkeypatch) -> None:
     gate, fake, log = _fake_gate(backoff=(30.0, 90.0), cooldown=600.0)
-    answers = iter([_challenge, _challenge, _page])
+    answers = iter([_challenge, _challenge, _page, _page])
     served: list[str] = []
 
     def fake_request(self, method, url, *args, **kwargs):
@@ -944,12 +994,110 @@ def test_a_challenged_request_backs_off_then_lands(monkeypatch) -> None:
     assert len(served) == 3
     assert fake.sleeps == [30.0, 90.0]
     assert gate.cooldown_remaining("presto.example") == 0
+    # The retries ran inside one slot; the host's next request rides the
+    # widened spacing, not the presumed 5 s.
+    session.get("https://presto.example/roster")
+    assert fake.sleeps == [30.0, 90.0, 12.0]
+    assert [line for line in log if "widened" in line] == [
+        "pacing: presto.example challenged with HTTP 202 (challenge); spacing "
+        "widened to 12.0s for the rest of the run"
+    ]
     assert [line for line in log if "retrying in" in line] == [
         "pacing: presto.example answered HTTP 202 (challenge); retrying in 30s "
         "(retry 1 of 2)",
         "pacing: presto.example answered HTTP 202 (challenge); retrying in 90s "
         "(retry 2 of 2)",
     ]
+
+
+def test_a_459_rate_answer_is_backed_off_once_then_the_page_lands(
+    monkeypatch,
+) -> None:
+    """Run 7d7fe964 lost 60 SAC boxes to HTTP 459, raised by raise_for_status
+    and retried by nothing.  The gate reads the status off the response
+    first: a 459 is a rate challenge, backed off like the empty 202, and it
+    widens the host."""
+    gate, fake, log = _fake_gate(
+        paced_spacing=5.0, challenged_spacing=12.0, backoff=(30.0, 90.0)
+    )
+    gate.presume_paced("cneagles.example")
+    answers = iter([_rate_challenge, _page, _page])
+    served: list[str] = []
+
+    def fake_request(self, method, url, *args, **kwargs):
+        del self, method, args, kwargs
+        served.append(url)
+        return next(answers)(url)
+
+    monkeypatch.setattr(requests.Session, "request", fake_request)
+    session = GatedSession(gate)
+    response = session.get("https://cneagles.example/boxscores/20240901_a.xml")
+
+    assert response.status_code == 200
+    assert len(served) == 2
+    assert fake.sleeps == [30.0]
+    assert gate.challenged_hosts() == {"cneagles.example"}
+    assert [line for line in log if "459" in line] == [
+        "pacing: cneagles.example challenged with HTTP 459 (rate challenge); "
+        "spacing widened to 12.0s for the rest of the run",
+        "pacing: cneagles.example answered HTTP 459 (rate challenge); retrying "
+        "in 30s (retry 1 of 2)",
+    ]
+    session.get("https://cneagles.example/boxscores/20240905_b.xml")
+    assert fake.sleeps == [30.0, 12.0]
+
+
+def test_a_host_that_keeps_answering_459_cools_down_with_that_status(
+    monkeypatch,
+) -> None:
+    gate, fake, log = _fake_gate(backoff=(30.0, 90.0), cooldown=600.0)
+    served: list[str] = []
+
+    def fake_request(self, method, url, *args, **kwargs):
+        del self, method, args, kwargs
+        served.append(url)
+        return _rate_challenge(url)
+
+    monkeypatch.setattr(requests.Session, "request", fake_request)
+    session = GatedSession(gate)
+    # The last 459 comes back as it was, for the fetch seam's
+    # raise_for_status to name.
+    response = session.get("https://tusculum.example/boxscores/20240901_a.xml")
+    assert response.status_code == 459
+    assert len(served) == 3
+    assert fake.sleeps == [30.0, 90.0]
+    assert gate.cooldown_remaining("tusculum.example") == 600.0
+    assert any(
+        "still answering HTTP 459 (rate challenge) after 2 retries; cooling down "
+        "600s" in line
+        for line in log
+    )
+    with pytest.raises(HostCoolingDown, match="cooling down after HTTP 459") as refused:
+        session.get("https://tusculum.example/boxscores/20240905_b.xml")
+    assert refused.value.status == 459
+    assert is_challenge_reason(str(refused.value))
+    assert len(served) == 3
+
+
+def test_a_403_is_not_a_challenge_and_is_never_retried(monkeypatch) -> None:
+    gate, fake, log = _fake_gate(backoff=(30.0, 90.0))
+    served: list[str] = []
+
+    def fake_request(self, method, url, *args, **kwargs):
+        del self, method, args, kwargs
+        served.append(url)
+        return SimpleNamespace(status_code=403, url=url, text="", headers={})
+
+    monkeypatch.setattr(requests.Session, "request", fake_request)
+    session = GatedSession(gate)
+    response = session.get("https://sidearm.example/schedule/2026")
+
+    assert response.status_code == 403
+    assert len(served) == 1
+    assert fake.sleeps == []
+    assert gate.challenged_hosts() == frozenset()
+    assert not gate.is_paced("sidearm.example")
+    assert log == []
 
 
 def test_a_host_that_keeps_challenging_cools_down_and_refuses_at_once(
@@ -994,6 +1142,7 @@ def test_pacing_policy_reads_operator_knobs_from_the_environment() -> None:
     env = {
         "TOUCHLINE_HOST_SPACING": "0.5",
         "TOUCHLINE_PACED_SPACING": "8",
+        "TOUCHLINE_CHALLENGED_SPACING": "20",
         "TOUCHLINE_CHALLENGE_BACKOFF": "10, 20, 40",
         "TOUCHLINE_HOST_COOLDOWN": "120",
         "TOUCHLINE_PACED_HOSTS": "www.Tampaspartans.com, ubknights.com",
@@ -1002,6 +1151,7 @@ def test_pacing_policy_reads_operator_knobs_from_the_environment() -> None:
     assert policy == PacingPolicy(
         spacing=0.5,
         paced_spacing=8.0,
+        challenged_spacing=20.0,
         backoff=(10.0, 20.0, 40.0),
         cooldown=120.0,
         paced_hosts=frozenset({"www.tampaspartans.com", "ubknights.com"}),

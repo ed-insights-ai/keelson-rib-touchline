@@ -29,6 +29,25 @@ challenge is learned from observed 202s; a host can also be presumed paced
 up front (the board collector presumes every PrestoSports host, and
 ``TOUCHLINE_PACED_HOSTS`` names more), but no host list is the mechanism.
 
+The pace is adaptive per host, and a challenge has two shapes.  Measured
+on the batch 4 SAC backfill, 2026-09-05, run 7d7fe964: the presumed 5 s
+spacing still drew empty 202s on all five PrestoSports hosts (cneagles.com
+7 first retries and 3 second, tusculumpioneers.com 9 and 5,
+marshilllions.com 7 and 3, cokercobras.com 6, gowasps.com 5), and every box
+score the run lost was an HTTP 459 answer, not a 202: the GAP lines read
+"failed to fetch box score ... 459 Client Error" on 60 boxes across the five
+hosts (cneagles 23, marshill 13, coker 13, gowasps 6, tusculum 5), raised by
+``raise_for_status``, which neither the gate (202 only, then) nor the
+session's ``Retry`` (5xx only) ever retried.  The same URLs answer 200 with
+the collector's own User-Agent at 12 s spacing, so 459 is a rate answer, not
+a block.  So an HTTP 459 counts as a challenge exactly like the empty 202,
+read off the response status before ``raise_for_status`` would raise: a
+host's first challenge of either shape widens its spacing to
+``challenged_spacing`` (12 s) for the rest of the run, before the backoff
+retries run, and the last challenged answer comes back as it was.  A host
+that never challenges keeps its 5 s or 0.2 s, and no other 4xx is ever
+retried.
+
 Sessions are never shared between threads (``requests`` makes no
 thread-safety promise); the gate is the one object every worker's session
 shares, and it is safe by construction.
@@ -54,6 +73,10 @@ DEFAULT_HOST_SPACING = 0.2
 #: (schedule, roster, stats and up to twenty box pages) well under the burst
 #: rate that earned the 202s, and costs a paced host about two minutes.
 DEFAULT_PACED_SPACING = 5.0
+#: The interval for a host that has actually challenged this run: the 12 s
+#: the curl pass kept on the SAC hosts (module docstring) and got every
+#: page at 200 first time, where the presumed 5 s still drew 202s.
+DEFAULT_CHALLENGED_SPACING = 12.0
 #: Waits before each retry of a challenged request: a 202 is retried after
 #: 30s, then after a further 90s.  Two retries, growing gaps.
 DEFAULT_CHALLENGE_BACKOFF: tuple[float, ...] = (30.0, 90.0)
@@ -63,10 +86,14 @@ DEFAULT_CHALLENGE_BACKOFF: tuple[float, ...] = (30.0, 90.0)
 #: host refused once after it.
 DEFAULT_HOST_COOLDOWN = 600.0
 
-#: The phrase every challenge-shaped reason carries, so a coverage cell or a
-#: gap line can be recognised as "the host challenged" without a status code.
+#: The phrases a challenge-shaped reason carries, so a coverage cell or a
+#: gap line can be recognised as "the host challenged" without parsing it:
+#: the fetch seam's refusal of an empty 202, the ``raise_for_status`` text
+#: of a rate answer, and the gate's own cool-down refusal.
 CHALLENGE_MARKER = "served a challenge"
-COOLDOWN_MARKER = "cooling down after HTTP 202"
+RATE_CHALLENGE_STATUS = 459
+RATE_CHALLENGE_MARKER = "459 Client Error"
+COOLDOWN_MARKER = "cooling down after HTTP"
 
 
 def host_of(url: str) -> str:
@@ -74,10 +101,22 @@ def host_of(url: str) -> str:
     return urlparse(str(url)).netloc.lower()
 
 
+def challenge_label(status: int) -> str:
+    """How a log line names a challenge of this status."""
+    if status == RATE_CHALLENGE_STATUS:
+        return f"HTTP {status} (rate challenge)"
+    return f"HTTP {status} (challenge)"
+
+
 def is_challenge(response: requests.Response) -> bool:
-    """A 2xx that is not the page: HTTP 202, or any 2xx with nothing in it."""
+    """An answer that is not the page and is worth waiting out: HTTP 202, any
+    2xx with nothing in it, or HTTP 459 (the rate answer).  No other 4xx."""
     status = getattr(response, "status_code", None)
-    if not isinstance(status, int) or not 200 <= status < 300:
+    if not isinstance(status, int):
+        return False
+    if status == RATE_CHALLENGE_STATUS:
+        return True
+    if not 200 <= status < 300:
         return False
     if status != 200:
         return True
@@ -87,7 +126,11 @@ def is_challenge(response: requests.Response) -> bool:
 def is_challenge_reason(reason: object) -> bool:
     """Whether a recorded gap reason names a challenge or a cool-down refusal."""
     text = str(reason or "")
-    return CHALLENGE_MARKER in text or COOLDOWN_MARKER in text
+    return (
+        CHALLENGE_MARKER in text
+        or RATE_CHALLENGE_MARKER in text
+        or COOLDOWN_MARKER in text
+    )
 
 
 class HostCoolingDown(requests.RequestException):
@@ -97,11 +140,12 @@ class HostCoolingDown(requests.RequestException):
     failed fetch — as a named gap carrying this message — with no bypass.
     """
 
-    def __init__(self, host: str, remaining: float) -> None:
+    def __init__(self, host: str, remaining: float, status: int = 202) -> None:
         self.host = host
         self.remaining = remaining
+        self.status = status
         super().__init__(
-            f"host {host} is {COOLDOWN_MARKER} challenges "
+            f"host {host} is {COOLDOWN_MARKER} {status} challenges "
             f"({remaining:.0f}s of cool-down remain)"
         )
 
@@ -118,6 +162,7 @@ class PacingPolicy:
 
     spacing: float = DEFAULT_HOST_SPACING
     paced_spacing: float = DEFAULT_PACED_SPACING
+    challenged_spacing: float = DEFAULT_CHALLENGED_SPACING
     backoff: tuple[float, ...] = DEFAULT_CHALLENGE_BACKOFF
     cooldown: float = DEFAULT_HOST_COOLDOWN
     paced_hosts: frozenset[str] = field(default_factory=frozenset)
@@ -142,6 +187,9 @@ class PacingPolicy:
         return cls(
             spacing=seconds("TOUCHLINE_HOST_SPACING", DEFAULT_HOST_SPACING),
             paced_spacing=seconds("TOUCHLINE_PACED_SPACING", DEFAULT_PACED_SPACING),
+            challenged_spacing=seconds(
+                "TOUCHLINE_CHALLENGED_SPACING", DEFAULT_CHALLENGED_SPACING
+            ),
             backoff=backoff,
             cooldown=seconds("TOUCHLINE_HOST_COOLDOWN", DEFAULT_HOST_COOLDOWN),
             paced_hosts=frozenset(
@@ -180,6 +228,7 @@ class HostGate:
             policy = PacingPolicy(
                 spacing=spacing,
                 paced_spacing=max(spacing, policy.paced_spacing),
+                challenged_spacing=max(spacing, policy.challenged_spacing),
                 backoff=policy.backoff,
                 cooldown=policy.cooldown,
                 paced_hosts=policy.paced_hosts,
@@ -194,6 +243,7 @@ class HostGate:
         self._paced: set[str] = set(policy.paced_hosts)
         self._challenged: set[str] = set()
         self._cooling: dict[str, float] = {}
+        self._cooling_status: dict[str, int] = {}
 
     # -- what the gate knows about the fleet -----------------------------
 
@@ -237,32 +287,43 @@ class HostGate:
             self._sleep(wait)
         return wait
 
-    def observe_challenge(self, host: str) -> None:
-        """Learn that a host challenges: it is paced from now on."""
+    def observe_challenge(self, host: str, status: int = 202) -> None:
+        """Learn that a host challenges: its spacing widens for the run.
+
+        A presumed pace is a guess; a 202 or a 459 is the host's own word.
+        The first challenge from a host, presumed paced or not, widens its
+        interval to the challenged spacing for the rest of the run, and the
+        retry that follows already rides it.
+        """
         host = host.lower()
         with self._registry:
-            fresh = host not in self._paced
+            widened = host not in self._challenged
             self._paced.add(host)
             self._challenged.add(host)
-        if fresh:
+        if widened:
             self._log(
-                f"pacing: {host} answered HTTP 202 (challenge); its requests are "
-                f"now {self.policy.paced_spacing:g}s apart"
+                f"pacing: {host} challenged with {challenge_label(status)}; "
+                f"spacing widened to {self.policy.challenged_spacing:.1f}s for "
+                f"the rest of the run"
             )
 
-    def begin_cooldown(self, host: str) -> None:
+    def begin_cooldown(self, host: str, status: int = 202) -> None:
         host = host.lower()
         with self._registry:
             self._cooling[host] = self._clock() + self.policy.cooldown
+            self._cooling_status[host] = status
         self._log(
-            f"pacing: {host} still challenging after "
+            f"pacing: {host} still answering {challenge_label(status)} after "
             f"{len(self.policy.backoff)} retries; cooling down "
             f"{self.policy.cooldown:g}s before it is asked again"
         )
 
     def _spacing_for(self, host: str) -> float:
         with self._registry:
+            challenged = host in self._challenged
             paced = host in self._paced
+        if challenged:
+            return self.policy.challenged_spacing
         return self.policy.paced_spacing if paced else self.policy.spacing
 
     # -- the slot ---------------------------------------------------------
@@ -277,7 +338,9 @@ class HostGate:
         with self._lock_for(host):
             remaining = self.cooldown_remaining(host)
             if remaining > 0:
-                raise HostCoolingDown(host, remaining)
+                with self._registry:
+                    status = self._cooling_status.get(host, 202)
+                raise HostCoolingDown(host, remaining, status)
             last = self._last.get(host)
             if last is not None:
                 wait = self._spacing_for(host) - (self._clock() - last)
@@ -297,19 +360,19 @@ class HostGate:
                 lock = self._locks[host] = threading.Lock()
             return lock
 
-    def backoff_wait(self, host: str, attempt: int) -> bool:
+    def backoff_wait(self, host: str, attempt: int, status: int = 202) -> bool:
         """Wait before retry ``attempt`` (0-based) of a challenged request.
 
         Returns False when the backoff is exhausted — the host then enters
         its cool-down and the caller stops retrying.
         """
         if attempt >= len(self.policy.backoff):
-            self.begin_cooldown(host)
+            self.begin_cooldown(host, status)
             return False
         wait = self.policy.backoff[attempt]
         self._log(
-            f"pacing: {host} answered HTTP 202 (challenge); retrying in {wait:g}s "
-            f"(retry {attempt + 1} of {len(self.policy.backoff)})"
+            f"pacing: {host} answered {challenge_label(status)}; retrying in "
+            f"{wait:g}s (retry {attempt + 1} of {len(self.policy.backoff)})"
         )
         self._sleep(wait)
         return True
@@ -325,10 +388,14 @@ class GatedSession(requests.Session):
     rare, and the conservative direction: it can only over-serialize a
     host, never under-serialize one.)
 
-    A challenge (HTTP 202, or an empty 2xx) is retried inside the slot after
-    the gate's growing waits; once the backoff is exhausted the host cools
-    down and the last challenged response is returned as it was, so the
-    fetch seam's body check names it honestly.  Nothing is bypassed.
+    A challenge (HTTP 202, an empty 2xx, or HTTP 459) is recognised on the
+    response status here, before any ``raise_for_status`` in the fetch seam
+    could turn the 459 into an exception nothing retries, and is retried
+    inside the slot after the gate's growing waits; once the backoff is
+    exhausted the host cools down and the last challenged response is
+    returned as it was, so the fetch seam names it honestly (the body check
+    for a 202, ``raise_for_status`` for a 459).  No other 4xx is retried.
+    Nothing is bypassed.
     """
 
     def __init__(self, gate: HostGate) -> None:
@@ -343,7 +410,14 @@ class GatedSession(requests.Session):
                 response = super().request(method, url, *args, **kwargs)
                 if not is_challenge(response):
                     return response
-                self._gate.observe_challenge(host)
-                if not self._gate.backoff_wait(host, attempt):
+                status = int(response.status_code)
+                self._gate.observe_challenge(host, status)
+                # When the last backoff retry is also challenged,
+                # ``backoff_wait`` begins the host's cool-down right here,
+                # inside this same request, and logs it ("still challenging
+                # after N retries; cooling down"); the challenged answer is
+                # then returned as it was.  A run log with no such line had
+                # no host fail its last retry: every second retry landed.
+                if not self._gate.backoff_wait(host, attempt, status):
                     return response
                 attempt += 1
