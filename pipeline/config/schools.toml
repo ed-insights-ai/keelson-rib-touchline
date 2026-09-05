@@ -1125,7 +1125,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Colorado Christian University"]
+# Boxes in the West print "Colo. Christian" (GNAC 2023-2025 and PacWest 2026,
+# six boxes, e.g. sidearm:saint-martins:5531 and sidearm:concordia-irvine:15031).
+aliases      = ["Colorado Christian University", "Colo. Christian"]
 city         = "Lakewood, Colo."
 city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
 identity_accessed = "2026-09-02"
@@ -1261,7 +1263,10 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["University of Colorado Colorado Springs", "University of Colorado at Colorado Springs", "Colorado-Colorado Springs"]
+# Boxes in the West print "UC-Colo. Springs" (four, 2022-2024, e.g.
+# sidearm:cal-state-san-marcos:5973); Hawaii Hilo prints "UCCS Mountain Lions"
+# (2025 and 2026, sidearm:hawaii-hilo:7305 and 7831).
+aliases      = ["University of Colorado Colorado Springs", "University of Colorado at Colorado Springs", "Colorado-Colorado Springs", "UC-Colo. Springs", "UCCS Mountain Lions"]
 city         = "Colorado Springs, Colo."
 city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
 identity_accessed = "2026-09-02"
@@ -1282,7 +1287,8 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Westminster University", "Westminster College"]
+# Hawaii Hilo prints "Westminster Griffins" (2022, sidearm:hawaii-hilo:6156).
+aliases      = ["Westminster University", "Westminster College", "Westminster Griffins"]
 city         = "Salt Lake City, Utah"
 city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
 identity_accessed = "2026-09-02"
@@ -4145,7 +4151,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["CSU Dominguez Hills", "Dominguez Hills"]
+# Boxes print "Cal St. Dom. Hills" (108 across the CCAA, PacWest and GNAC
+# 2022-2026, e.g. sidearm:cal-state-dominguez-hills:12905).
+aliases      = ["CSU Dominguez Hills", "Dominguez Hills", "Cal St. Dom. Hills"]
 city         = "Carson, Calif."
 city_source  = "schedule-page home venue location, https://gotoros.com/sports/mens-soccer/schedule/2026 (Carson, for every 2026 home match, read 2026-09-05); the goccaa.org member JSON prints Carson, Calif."
 identity_accessed = "2026-09-05"
@@ -4186,7 +4194,12 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Cal State Los Angeles", "Cal State L.A.", "CSU Los Angeles"]
+# Peers print "California State University, Los Angeles" (Dominguez Hills
+# 2025, sidearm:cal-state-dominguez-hills:13523 and 13529; Fresno Pacific
+# 2024 and 2025, 8356 and 9045) and Simon Fraser 2022 "California State,
+# Los Angeles" (sidearm:simon-fraser:3710), the same key; both were
+# collected as california-state-los-angeles beside the member.
+aliases      = ["Cal State Los Angeles", "Cal State L.A.", "CSU Los Angeles", "California State University, Los Angeles"]
 city         = "Los Angeles, Calif."
 city_source  = "schedule-page home venue location, https://lagoldeneagles.com/sports/mens-soccer/schedule/2026 (Los Angeles, University Stadium, for every 2026 home match; footer address 5151 State University Dr, Los Angeles, CA 90032; read 2026-09-05); the goccaa.org member JSON prints Los Angeles"
 identity_accessed = "2026-09-05"
@@ -4221,7 +4234,11 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["CSU San Bernardino"]
+# Fresno Pacific 2025 prints "California State University, San Bernardino"
+# (sidearm:fresno-pacific:9048); boxes print "Cal St. San B'dino" (38, 2022
+# and 2023, e.g. sidearm:cal-state-san-bernardino:4366) and "Cal St. San
+# Bernardino" (sidearm:cal-state-monterey-bay:9015, 2025).
+aliases      = ["CSU San Bernardino", "California State University, San Bernardino", "Cal St. San B'dino", "Cal St. San Bernardino"]
 city         = "San Bernardino, Calif."
 city_source  = "schedule-page home venue location, https://csusbathletics.com/sports/mens-soccer (San Bernardino, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints San Bernardino, Calif."
 identity_accessed = "2026-09-05"
@@ -4349,7 +4366,8 @@ years        = [2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Menlo College"]
+# Hawaii Hilo prints "Menlo Oaks" (2024 and 2025, sidearm:hawaii-hilo:6792 and 7232).
+aliases      = ["Menlo College", "Menlo Oaks"]
 city         = "Atherton, Calif."
 city_source  = "schedule-page home venue location, https://menloathletics.com/sports/mens-soccer (Atherton, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints Atherton, Calif., and the goccaa.org release of 2025-11-25 is datelined Atherton, Calif."
 identity_accessed = "2026-09-05"
@@ -4396,7 +4414,9 @@ years        = [2022, 2023, 2024]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["San Francisco State University", "SF State"]
+# Boxes print "San Fran. St." (37 across the CCAA and PacWest 2022-2024,
+# e.g. sidearm:san-francisco-state:6484).
+aliases      = ["San Francisco State University", "SF State", "San Fran. St."]
 city         = "San Francisco, Calif."
 city_source  = "schedule-page home venue location, https://sfstategators.com/sports/mens-soccer/schedule/2024 (San Francisco, Cox Stadium, for every 2024 home match; footer address 1600 Holloway Ave, San Francisco, CA 94132; read 2026-09-05); the goccaa.org member JSON prints San Francisco"
 identity_accessed = "2026-09-05"
@@ -4471,7 +4491,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Biola University"]
+# Hawaii Hilo prints "Biola Eagles" (one row a season 2022-2026, e.g.
+# sidearm:hawaii-hilo:6167).
+aliases      = ["Biola University", "Biola Eagles"]
 city         = "La Mirada, Calif."
 city_source  = "schedule-page home venue location, https://athletics.biola.edu/sports/mens-soccer (La Mirada, Calif., read by the probe 2026-09-05); the thepacwest.com member JSON prints La Mirada, Calif."
 identity_accessed = "2026-09-05"
@@ -4491,7 +4513,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Chaminade University", "Chaminade University of Honolulu", "Chaminade of Honolulu"]
+# Hawaii Hilo prints "Chaminade Silverswords" (two rows a season 2022-2026,
+# e.g. sidearm:hawaii-hilo:6160).
+aliases      = ["Chaminade University", "Chaminade University of Honolulu", "Chaminade of Honolulu", "Chaminade Silverswords"]
 city         = "Honolulu, Hawaii"
 city_source  = "schedule-page home venue location, https://goswords.com/sports/mens-soccer/schedule/2026 (Honolulu, Saint Louis Field, for every 2026 home match, read 2026-09-05); the thepacwest.com member JSON prints Honolulu"
 gazetteer_geoid = "1571550"
@@ -4517,7 +4541,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Concordia University Irvine"]
+# Hawaii Hilo prints "Concordia Golden Eagles" (2025 and 2026,
+# sidearm:hawaii-hilo:7303 and 7828).
+aliases      = ["Concordia University Irvine", "Concordia Golden Eagles"]
 member_aliases = ["Concordia"]
 city         = "Irvine, Calif."
 city_source  = "schedule-page home venue location, https://cuigoldeneagles.com/sports/mens-soccer (Irvine, Calif., read by the probe 2026-09-05); the thepacwest.com member JSON prints Irvine, Calif."
@@ -4548,7 +4574,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Dominican California"]
+# Hawaii Hilo prints "Dominican Penguins" (one row a season 2022-2026, e.g.
+# sidearm:hawaii-hilo:6161).
+aliases      = ["Dominican California", "Dominican Penguins"]
 member_aliases = ["Dominican"]
 city         = "San Rafael, Calif."
 city_source  = "schedule-page home venue location, https://dominicanathletics.com/sports/mens-soccer (San Rafael, Calif., read by the probe 2026-09-05); the thepacwest.com member JSON prints San Rafael, Calif."
@@ -4574,7 +4602,12 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["UH Hilo", "University of Hawai'i at Hilo", "University of Hawaii at Hilo", "Hawaii-Hilo"]
+# Dominguez Hills prints "Hawai`i Hilo" with a backtick for the okina (2023
+# and 2024, sidearm:cal-state-dominguez-hills:12905 and 13139). The fold
+# drops an apostrophe but treats the backtick as a separator, so the
+# spelling keyed to hawai-i-hilo beside the member; the left single quote
+# Hilo's own page prints keys the same way and this alias covers both.
+aliases      = ["UH Hilo", "University of Hawai'i at Hilo", "University of Hawaii at Hilo", "Hawaii-Hilo", "Hawai`i Hilo"]
 city         = "Hilo, Hawaii"
 city_source  = "schedule-page home venue location, https://hiloathletics.com/sports/mens-soccer/schedule/2026 (Hilo, Hawai'i, for every 2026 home match, read 2026-09-05); the thepacwest.com member JSON prints Hilo, Hawaii"
 identity_accessed = "2026-09-05"
@@ -4601,7 +4634,12 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Hawaii Pacific University", "Hawai'i Pacific University"]
+# Dominguez Hills 2024 and Chico State 2026 print "Hawai`i Pacific" with a
+# backtick for the okina (sidearm:cal-state-dominguez-hills:13140,
+# sidearm:chico-state:7002), keyed to hawai-i-pacific beside the member;
+# Hawaii Hilo prints "HPU Sharks" (two rows a season 2022-2026, e.g.
+# sidearm:hawaii-hilo:6159).
+aliases      = ["Hawaii Pacific University", "Hawai'i Pacific University", "Hawai`i Pacific", "HPU Sharks"]
 city         = "Honolulu, Hawaii"
 city_source  = "the university's main site, https://www.hpu.edu/ (1 Aloha Tower Drive, Honolulu, HI 96813, read 2026-09-05), and the NCAA directory, https://web3.ncaa.org/directory/orgDetail?id=2696 (same address); the 2026 schedule page prints the venue only (Waipio Stadium) for home matches and the thepacwest.com member JSON prints Kaneohe, Hawaii"
 gazetteer_geoid = "1571550"
@@ -4627,7 +4665,9 @@ years        = [2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Jessup University", "William Jessup", "William Jessup University"]
+# Hawaii Hilo prints "Jessup Warriors" (2024-2026, sidearm:hawaii-hilo:6785,
+# 7225 and 7819).
+aliases      = ["Jessup University", "William Jessup", "William Jessup University", "Jessup Warriors"]
 city         = "Rocklin, Calif."
 city_source  = "schedule-page home venue location, https://jessupathletics.com/sports/mens-soccer (Rocklin, Calif., read by the probe 2026-09-05); the thepacwest.com member JSON prints Rocklin, CA"
 identity_accessed = "2026-09-05"
@@ -4670,7 +4710,10 @@ years        = [2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Vanguard University", "VU"]
+# Hawaii Hilo prints "Vanguard Lions" (2024-2026, e.g. sidearm:hawaii-hilo:6786);
+# Hawaii Pacific misspells it "Vangaurd" (2025 and 2026,
+# sidearm:hawaii-pacific:10907 and 11368), collected as vangaurd beside the member.
+aliases      = ["Vanguard University", "VU", "Vanguard Lions", "Vangaurd"]
 city         = "Costa Mesa, Calif."
 city_source  = "schedule-page home venue location, https://vanguardlions.com/sports/mens-soccer (Costa Mesa, Calif., read by the probe 2026-09-05); the thepacwest.com member JSON prints Costa Mesa, CA"
 identity_accessed = "2026-09-05"
@@ -4693,7 +4736,9 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Westmont College"]
+# Hawaii Hilo prints "Westmont Warriors" (2023, 2024 and 2026, e.g.
+# sidearm:hawaii-hilo:6500).
+aliases      = ["Westmont College", "Westmont Warriors"]
 city         = "Santa Barbara, Calif."
 city_source  = "the college's main site, https://www.westmont.edu/ (955 La Paz Road, Santa Barbara, CA 93108, read 2026-09-05), and the thepacwest.com member JSON (Santa Barbara, CA); the schedule page prints no home town"
 identity_accessed = "2026-09-05"
@@ -4743,7 +4788,8 @@ years        = [2022, 2023, 2024]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Academy of Art University"]
+# Hawaii Pacific 2024 prints "Academy of Arts" (sidearm:hawaii-pacific:10364).
+aliases      = ["Academy of Art University", "Academy of Arts"]
 city         = "San Francisco, Calif."
 city_source  = "schedule-page home venue location, https://artuathletics.com/sports/mens-soccer/schedule/2024 (San Francisco, for every 2024 home match, read 2026-09-05); the university's main site, https://www.academyart.edu/, prints 79 New Montgomery St., San Francisco, CA 94105"
 identity_accessed = "2026-09-05"
@@ -4854,7 +4900,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Western Washington University"]
+# Boxes print "Western Wash." (33 across the GNAC, CCAA and PacWest
+# 2022-2025, e.g. sidearm:sonoma-state:12040).
+aliases      = ["Western Washington University", "Western Wash."]
 city         = "Bellingham, Wash."
 city_source  = "schedule-page home venue location, https://wwuvikings.com/sports/mens-soccer (Bellingham, Wash., read by the probe 2026-09-05); the gnacsports.com member JSON prints Bellingham, WA"
 identity_accessed = "2026-09-05"
@@ -4931,7 +4979,10 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Western Oregon University"]
+# Boxes print "Western Ore." (76 across the GNAC, CCAA and PacWest
+# 2022-2026, ranked "#10 Western Ore." included, e.g.
+# sidearm:northwest-nazarene:8314).
+aliases      = ["Western Oregon University", "Western Ore."]
 city         = "Monmouth, Ore."
 city_source  = "schedule-page home venue location, https://wouwolves.com/sports/mens-soccer (Monmouth, Ore., read by the probe 2026-09-05); the gnacsports.com member JSON prints Monmouth, OR"
 identity_accessed = "2026-09-05"
@@ -4971,7 +5022,9 @@ years        = [2022, 2023, 2024]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["MSU Billings", "Montana State University Billings", "Montana State-Billings"]
+# Boxes print "Mont. St. Billings" (38 in the GNAC 2022-2024, e.g.
+# sidearm:montana-state-billings:9112).
+aliases      = ["MSU Billings", "Montana State University Billings", "Montana State-Billings", "Mont. St. Billings"]
 city         = "Billings, Mont."
 city_source  = "schedule-page home venue location, https://msubsports.com/sports/mens-soccer (Billings, Mont., read by the probe 2026-09-05); the gnacsports.com member JSON prints Billings, Mont."
 identity_accessed = "2026-09-05"
