@@ -29,6 +29,15 @@ challenge is learned from observed 202s; a host can also be presumed paced
 up front (the board collector presumes every PrestoSports host, and
 ``TOUCHLINE_PACED_HOSTS`` names more), but no host list is the mechanism.
 
+The pace is adaptive per host.  Measured on the batch 4 SAC backfill,
+2026-09-05, run 7d7fe964: the presumed 5 s spacing still drew challenges on
+all five PrestoSports hosts (cneagles.com 7 first retries and 3 second,
+tusculumpioneers.com 9 and 5, marshilllions.com 7 and 3, cokercobras.com 6,
+gowasps.com 5), while a curl pass 12 s apart read every page at 200 first
+time.  So a host's first 202 widens its spacing to ``challenged_spacing``
+(12 s) for the rest of the run, before the backoff retries run; a host that
+never challenges keeps its 5 s or 0.2 s.
+
 Sessions are never shared between threads (``requests`` makes no
 thread-safety promise); the gate is the one object every worker's session
 shares, and it is safe by construction.
@@ -54,6 +63,10 @@ DEFAULT_HOST_SPACING = 0.2
 #: (schedule, roster, stats and up to twenty box pages) well under the burst
 #: rate that earned the 202s, and costs a paced host about two minutes.
 DEFAULT_PACED_SPACING = 5.0
+#: The interval for a host that has actually challenged this run: the 12 s
+#: the curl pass kept on the SAC hosts (module docstring) and got every
+#: page at 200 first time, where the presumed 5 s still drew 202s.
+DEFAULT_CHALLENGED_SPACING = 12.0
 #: Waits before each retry of a challenged request: a 202 is retried after
 #: 30s, then after a further 90s.  Two retries, growing gaps.
 DEFAULT_CHALLENGE_BACKOFF: tuple[float, ...] = (30.0, 90.0)
@@ -118,6 +131,7 @@ class PacingPolicy:
 
     spacing: float = DEFAULT_HOST_SPACING
     paced_spacing: float = DEFAULT_PACED_SPACING
+    challenged_spacing: float = DEFAULT_CHALLENGED_SPACING
     backoff: tuple[float, ...] = DEFAULT_CHALLENGE_BACKOFF
     cooldown: float = DEFAULT_HOST_COOLDOWN
     paced_hosts: frozenset[str] = field(default_factory=frozenset)
@@ -142,6 +156,9 @@ class PacingPolicy:
         return cls(
             spacing=seconds("TOUCHLINE_HOST_SPACING", DEFAULT_HOST_SPACING),
             paced_spacing=seconds("TOUCHLINE_PACED_SPACING", DEFAULT_PACED_SPACING),
+            challenged_spacing=seconds(
+                "TOUCHLINE_CHALLENGED_SPACING", DEFAULT_CHALLENGED_SPACING
+            ),
             backoff=backoff,
             cooldown=seconds("TOUCHLINE_HOST_COOLDOWN", DEFAULT_HOST_COOLDOWN),
             paced_hosts=frozenset(
@@ -180,6 +197,7 @@ class HostGate:
             policy = PacingPolicy(
                 spacing=spacing,
                 paced_spacing=max(spacing, policy.paced_spacing),
+                challenged_spacing=max(spacing, policy.challenged_spacing),
                 backoff=policy.backoff,
                 cooldown=policy.cooldown,
                 paced_hosts=policy.paced_hosts,
@@ -238,16 +256,22 @@ class HostGate:
         return wait
 
     def observe_challenge(self, host: str) -> None:
-        """Learn that a host challenges: it is paced from now on."""
+        """Learn that a host challenges: its spacing widens for the run.
+
+        A presumed pace is a guess; a 202 is the host's own word.  The first
+        challenge from a host, presumed paced or not, widens its interval to
+        the challenged spacing for the rest of the run, and the retry that
+        follows already rides it.
+        """
         host = host.lower()
         with self._registry:
-            fresh = host not in self._paced
+            widened = host not in self._challenged
             self._paced.add(host)
             self._challenged.add(host)
-        if fresh:
+        if widened:
             self._log(
-                f"pacing: {host} answered HTTP 202 (challenge); its requests are "
-                f"now {self.policy.paced_spacing:g}s apart"
+                f"pacing: {host} challenged; spacing widened to "
+                f"{self.policy.challenged_spacing:.1f}s for the rest of the run"
             )
 
     def begin_cooldown(self, host: str) -> None:
@@ -262,7 +286,10 @@ class HostGate:
 
     def _spacing_for(self, host: str) -> float:
         with self._registry:
+            challenged = host in self._challenged
             paced = host in self._paced
+        if challenged:
+            return self.policy.challenged_spacing
         return self.policy.paced_spacing if paced else self.policy.spacing
 
     # -- the slot ---------------------------------------------------------
@@ -344,6 +371,12 @@ class GatedSession(requests.Session):
                 if not is_challenge(response):
                     return response
                 self._gate.observe_challenge(host)
+                # When the last backoff retry is also challenged,
+                # ``backoff_wait`` begins the host's cool-down right here,
+                # inside this same request, and logs it ("still challenging
+                # after N retries; cooling down"); the challenged answer is
+                # then returned as it was.  A run log with no such line had
+                # no host fail its last retry: every second retry landed.
                 if not self._gate.backoff_wait(host, attempt):
                     return response
                 attempt += 1

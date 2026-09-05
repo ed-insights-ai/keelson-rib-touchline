@@ -103,12 +103,17 @@ legitimacy together.
   The gate slows down instead, per host and shared by every programme in
   the run: a PrestoSports host starts *paced* at 5 seconds between
   requests, and any host that answers a 202 becomes paced from that moment.
-  A 202 is retried after 30 seconds and again after 90; a host still
+  A host's first 202 also widens its own spacing to 12 seconds for the rest
+  of the run, before the retries below: on the batch 4 SAC backfill of
+  2026-09-05 (run 7d7fe964) the presumed 5 seconds still drew challenges on
+  all five PrestoSports hosts, while a read 12 seconds apart got every page
+  at 200 first time. A 202 is retried after 30 seconds and again after 90; a host still
   challenging after that *cools down* for 10 minutes, during which its
   requests are refused at once with a named reason rather than spent. After
   the cool-down the collector retries what was challenged exactly once. Every
   wait is a `pacing:` line in the run log. `TOUCHLINE_HOST_SPACING`,
-  `TOUCHLINE_PACED_SPACING`, `TOUCHLINE_CHALLENGE_BACKOFF` (comma-separated
+  `TOUCHLINE_PACED_SPACING`, `TOUCHLINE_CHALLENGED_SPACING`,
+  `TOUCHLINE_CHALLENGE_BACKOFF` (comma-separated
   seconds), `TOUCHLINE_HOST_COOLDOWN` and `TOUCHLINE_PACED_HOSTS`
   (comma-separated hosts presumed to challenge) tune it; no host list is
   the mechanism.
