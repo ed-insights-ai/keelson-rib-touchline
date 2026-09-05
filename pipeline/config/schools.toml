@@ -27,7 +27,9 @@
 # ASCII-plain and never changes — not for punctuation ("St. Mary's") and not for
 # a rename (Mississippi College → Mississippi Christian). display_name is what
 # reader-facing surfaces show; leave it unset when `name` is already the
-# published name. Cite the school's own site when setting it.
+# published name. Cite the school's own site when setting it. display_name
+# never resolves opponent text and never enters check-membership's identity
+# check; a spelling that should resolve is an alias.
 # Two enabled stanzas of one gender may not mint the same slug: the loader
 # refuses the pair. A second institution of the same name qualifies `name`
 # ("Lincoln Memorial" beside "Lincoln") and keeps its published name in
@@ -2001,8 +2003,8 @@ name         = "Dominican"
 # Dominican University of California joined the rib in batch 5 as
 # dominican-of-california; this stanza keeps the bare name and slug, and
 # display_name carries the parenthetical the site shows (the coordinator's
-# ruling, tl-4an.30: identity strips the parenthetical, so the bare
-# "Dominican" keeps resolving here).
+# ruling, tl-4an.30). display_name never enters identity (tl-4an.31); the
+# bare "Dominican" keeps resolving here by name.
 display_name = "Dominican (N.Y.)"
 abbreviation = "DUNY"
 conference   = "CACC"
@@ -4522,15 +4524,16 @@ identity_accessed = "2026-09-05"
 # Dominican University New York, whose stanza keeps the bare "Dominican"
 # name and slug. `name` mints dominican-of-california, the one opponent
 # slug the fixtures already carry for this school; display_name is the
-# published name (dominicanathletics.com). The parenthetical forms
-# "Dominican (Calif.)" and "Dominican (CA)" reduce to the bare word before
-# matching, which the incumbent claims, so they are not carried (the
-# coordinator's display_name "Dominican (Calif.)" fails check-membership
-# for the same reason; see the batch 5 ledger). The probe minted "DC"; DUC
-# is the member JSON's short form and its own scoreboard's.
+# coordinator's ruling for the same-name pair, "Dominican (Calif.)" beside
+# the CACC's "Dominican (N.Y.)" (tl-4an.31: display_name is reader-facing
+# and never enters identity). The parenthetical forms "Dominican (Calif.)"
+# and "Dominican (CA)" reduce to the bare word before matching, which the
+# incumbent claims, so they are not carried as aliases (tl-4sg.9). The
+# probe minted "DC"; DUC is the member JSON's short form and its own
+# scoreboard's.
 [[schools]]
 name         = "Dominican of California"
-display_name = "Dominican University of California"
+display_name = "Dominican (Calif.)"
 abbreviation = "DUC"
 conference   = "PACWEST"
 mascot       = "Penguins"

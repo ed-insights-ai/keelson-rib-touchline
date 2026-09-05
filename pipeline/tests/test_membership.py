@@ -475,6 +475,59 @@ def test_the_shipped_config_claims_no_spelling_twice():
     assert identity_collisions(load_schools()) == []
 
 
+def test_a_display_name_is_never_an_identity_claim():
+    """display_name is reader-facing (tl-4an.31): a same-name pair prints
+    "Dominican (N.Y.)" beside "Dominican (Calif.)", each of which folds to
+    the other's key, and neither is a collision, in either file order. Name
+    and alias collisions are still refused, and the map resolves by name
+    and aliases only, so the display name never re-points the bare word."""
+    incumbent = replace(
+        _school("Dominican", "CACC"),
+        abbreviation="DUNY",
+        display_name="Dominican (N.Y.)",
+    )
+    newcomer = replace(
+        _school("Dominican of California", "PACWEST"),
+        abbreviation="DUC",
+        display_name="Dominican (Calif.)",
+        aliases=["Dominican California"],
+    )
+    assert identity_collisions([incumbent, newcomer]) == []
+    assert identity_collisions([newcomer, incumbent]) == []
+
+    # A display_name that is another stanza's exact name is not a claim
+    # either: only name, aliases and a resolving abbreviation collide.
+    exact = replace(newcomer, display_name="Dominican")
+    assert identity_collisions([incumbent, exact]) == []
+    claimed = replace(newcomer, aliases=["Dominican"])
+    assert identity_collisions([incumbent, claimed]) == [
+        (
+            "men",
+            "dominican",
+            [("dominican", "name"), ("dominican-of-california", "alias")],
+        )
+    ]
+
+    aliases = identity_aliases([incumbent, newcomer], "men")
+    assert opponent_slug("Dominican", aliases) == "dominican"
+    assert opponent_slug("Dominican California", aliases) == "dominican-of-california"
+    # The fold still drops the parenthetical, so the printed "Dominican
+    # (Calif.)" lands on the incumbent until tl-4sg.9 keeps the qualifier;
+    # the display name plays no part in that either way.
+    assert opponent_slug("Dominican (Calif.)", aliases) == "dominican"
+
+
+def test_the_shipped_dominican_pair_carries_both_display_names():
+    by_slug = {programme_slug(s.name): s for s in load_schools() if s.gender == "men"}
+    assert by_slug["dominican"].display() == "Dominican (N.Y.)"
+    assert by_slug["dominican-of-california"].display() == "Dominican (Calif.)"
+    aliases = identity_aliases(load_schools(), "men")
+    assert opponent_slug("Dominican", aliases) == "dominican"
+    assert opponent_slug("Dominican University of California", aliases) == (
+        "dominican-of-california"
+    )
+
+
 def test_missing_configured_programme_fails():
     document, schools = _multi_conference_case()
     schools.append(_school("Missing School", "LSC"))

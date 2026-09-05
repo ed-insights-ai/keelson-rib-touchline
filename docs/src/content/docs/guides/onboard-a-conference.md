@@ -102,14 +102,19 @@ records page; never assume it from memory:
   Pennsylvania", say, minting `lincoln-pennsylvania`) and key its
   membership windows by the qualified slug. The programme already in the
   rib keeps its slug; slugs never rename. Identity is the separate check:
-  every spelling a stanza claims, `display_name` included, resolves
-  opponent text, and a parenthetical is dropped before matching, so the
-  newcomer's `display_name` must be a form only it claims ("Lincoln
-  University (Pa.)" reduces to a key the incumbent does not hold; "Lincoln
-  (Pa.)" reduces to `lincoln` and `check-membership` refuses it). The bare
-  "Lincoln" keeps resolving to the incumbent, and peer schedules that print
-  only the bare name for the newcomer are the alias round's problem, not
-  the loader's.
+  every spelling a stanza claims (`name`, `aliases`, a resolving
+  `abbreviation`) resolves opponent text, and a parenthetical is dropped
+  before matching. `display_name` is not among them: it is reader-facing
+  and never an identity claim, so the newcomer's display name may carry
+  the qualifier the site prints ("Lincoln (Pa.)" beside the incumbent's
+  "Lincoln"), even though it folds to `lincoln`, the incumbent's own key.
+  That is the whole point of the field: the pair reads apart on the site
+  while the bare "Lincoln" keeps resolving to the incumbent by name. A
+  qualified spelling that should also resolve opponent text is stated as
+  an alias, and there the fold does apply: "Lincoln (Pa.)" as an alias
+  reduces to `lincoln` and `check-membership` refuses it. Peer schedules
+  that print only the bare name for the newcomer are the alias round's
+  problem, not the loader's.
 - **Non-participation is not a membership break.** Spring Hill and West
   Florida are absent from the GSC's 2020 statistics because the conference
   postponed the season; their windows stay continuous and the collect names
@@ -188,7 +193,8 @@ printed between conference and gender rather than last. Peer spellings
 ("CSU-Pueblo", "Colorado Mines", "Westminster University") come from a scan
 of the other members' schedule pages, which the probe does not do; add
 them by hand now or in the alias round after the first collect. Every
-spelling a stanza claims (name, `display_name`, `abbreviation`, `aliases`)
+spelling a stanza claims (name, `abbreviation`, `aliases`; never
+`display_name`, which is reader-facing only)
 must be claimed by one stanza per gender: `check-membership` refuses a
 collision naming the pair and the spelling, and a bare initialism two
 schools share ("RU", "SCSU") stays display-only on every stanza that
@@ -727,7 +733,7 @@ conference's per-season count is unchanged before and after.
 
 | finding | what happened |
 |---|---|
-| a display name the identity check refuses | the ruling wanted `display_name = "Dominican (Calif.)"` on the newcomer; a parenthetical drops before matching, the key `dominican` is the CACC incumbent's name, and `check-membership` refuses the pair, exactly as step 1 warns for "Lincoln (Pa.)". The stanza carries the published name "Dominican University of California" instead, and the same rule drops the aliases "Dominican (Calif.)", "Dominican (CA)" and "Concordia (CA)" (which reduces to the bare polluted "Concordia"). Step 1's other example, "Lincoln University (Pa.)", reduces to `lincoln` too, since "University" is an institution word: a qualified display name must add a word that survives the fold |
+| a display name the identity check refuses | the ruling wanted `display_name = "Dominican (Calif.)"` on the newcomer; a parenthetical drops before matching, the key `dominican` is the CACC incumbent's name, and `check-membership` refuses the pair, exactly as step 1 warns for "Lincoln (Pa.)". The stanza carries the published name "Dominican University of California" instead, and the same rule drops the aliases "Dominican (Calif.)", "Dominican (CA)" and "Concordia (CA)" (which reduces to the bare polluted "Concordia"). Step 1's other example, "Lincoln University (Pa.)", reduces to `lincoln` too, since "University" is an institution word: a qualified display name must add a word that survives the fold. Superseded by tl-4an.31: `display_name` no longer enters the identity check, the stanza carries "Dominican (Calif.)", and step 1 now says so |
 | a town outside the Gazetteer | Simon Fraser prints "Burnaby, B.C.", which parses to no US state. Step 3's pin could not help (no GEOID exists), so the stanza `point` above was added, second-sourced to the CGNDB entry and the university's address. The row's city is carried as printed, not AP-normalised |
 | a home ground the site names without a town | Hawai'i Pacific's schedule prints the venue only for home matches (Waipio Stadium, in Waipahu by Chaminade's schedule) and Honolulu only for the away match at Chaminade; the member JSON prints Kaneohe. The town used is the university's own address (Honolulu, hpu.edu and the NCAA directory), with the other two in the stanza comment |
 | the probe reads the first fixture's venue as the home town | three CCAA drafts carried the away venue of the first 2026 fixture (Dallas, Kansas City twice); the schedule page's home rows and the member JSON settled Hayward (address, since the 2026 home venue is in Alameda), Los Angeles and San Marcos |
