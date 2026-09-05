@@ -103,11 +103,15 @@ legitimacy together.
   The gate slows down instead, per host and shared by every programme in
   the run: a PrestoSports host starts *paced* at 5 seconds between
   requests, and any host that answers a 202 becomes paced from that moment.
-  A host's first 202 also widens its own spacing to 12 seconds for the rest
-  of the run, before the retries below: on the batch 4 SAC backfill of
-  2026-09-05 (run 7d7fe964) the presumed 5 seconds still drew challenges on
-  all five PrestoSports hosts, while a read 12 seconds apart got every page
-  at 200 first time. A 202 is retried after 30 seconds and again after 90; a host still
+  An HTTP 459 answer is a challenge too, a rate answer read off the
+  response status before it could become an exception nothing retries: on
+  the batch 4 SAC backfill of 2026-09-05 (run 7d7fe964) the presumed 5
+  seconds still drew empty 202s on all five PrestoSports hosts, and every
+  one of the 60 box scores the run lost was a 459 on those hosts, while the
+  same URLs answer 200 to the collector's own User-Agent 12 seconds apart.
+  So a host's first challenge of either shape widens its own spacing to 12
+  seconds for the rest of the run, before the retries below; no other 4xx
+  is ever retried. A challenge is retried after 30 seconds and again after 90; a host still
   challenging after that *cools down* for 10 minutes, during which its
   requests are refused at once with a named reason rather than spent. After
   the cool-down the collector retries what was challenged exactly once. Every
