@@ -366,15 +366,12 @@ class Gazetteer:
         incorporated = [p for p in found if p.incorporated]
         return incorporated or found
 
-    def resolve(self, town: Town, *, pin: str = "", note: str = "") -> Place:
-        """Exactly one place for the town, or a GazetteerError that names why.
-
-        ``note`` accompanies a pin whose row is not named for the town.
-        """
-        if pin:
-            hit = self._resolve_pin(town, pin, note)
-            self.used[hit.geoid] = hit
-            return hit
+    def candidates(self, town: Town) -> list[Place]:
+        """Every place the town would resolve among, widened the way
+        ``resolve`` widens, never raising: empty when the Gazetteer covers no
+        such town, one row when it settles, several when a pin is needed.
+        The build asks this before honouring a stanza's own ``point``, which
+        is admitted only when the answer is empty."""
         # Places first: the fixture, then the full file. Only when neither
         # has a single candidate does the county-subdivisions file get read.
         chosen = self._choose(self._candidates(town))
@@ -386,6 +383,18 @@ class Gazetteer:
             if not chosen:
                 self._widen_cousubs()
                 chosen = self._choose(self._cousub_candidates(town))
+        return chosen
+
+    def resolve(self, town: Town, *, pin: str = "", note: str = "") -> Place:
+        """Exactly one place for the town, or a GazetteerError that names why.
+
+        ``note`` accompanies a pin whose row is not named for the town.
+        """
+        if pin:
+            hit = self._resolve_pin(town, pin, note)
+            self.used[hit.geoid] = hit
+            return hit
+        chosen = self.candidates(town)
         if len(chosen) == 1:
             self.used[chosen[0].geoid] = chosen[0]
             return chosen[0]

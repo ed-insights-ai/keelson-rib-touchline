@@ -7,16 +7,19 @@
   "conferences": [
     "CACC",
     "CC",
+    "CCAA",
     "ECC",
     "G-MAC",
     "GAC",
     "GLIAC",
     "GLVC",
+    "GNAC",
     "GSC",
     "LSC",
     "MEC",
     "MIAA",
     "NE10",
+    "PACWEST",
     "PBC",
     "PSAC",
     "RMAC",
@@ -57,6 +60,16 @@
         }
       ]
     },
+    "biola": {
+      "men": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2022 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Biola, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
+        }
+      ]
+    },
     "bloomsburg": {
       "men": [
         {
@@ -64,6 +77,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Pennsylvania State Athletic Conference, 2022 and 2026 Men's Soccer records, https://psacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://psacsports.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same thirteen programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "cal-poly-pomona": {
+      "men": [
+        {
+          "conference": "CCAA",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Cal Poly Pomona, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
         }
       ]
     },
@@ -185,6 +208,16 @@
         }
       ]
     },
+    "seattle-pacific": {
+      "men": [
+        {
+          "conference": "GNAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Northwest Athletic Conference, 2022 and 2026 Men's Soccer standings, https://gnacsports.com/standings.aspx?standings=45 (the archived 2022 table) and https://gnacsports.com/standings.aspx?path=msoc (the live 2026 table) (accessed 2026-09-05); listed in both under the label Seattle Pacific, and in every season between (https://gnacsports.com/standings.aspx?standings=46, 96 and 127). The 2021 standings (https://gnacsports.com/standings.aspx?standings=44) list it too, so it did not arrive across the window's edge. The GNAC publishes no records table before 2024 (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for 2021-2023 and carries no table for 2026), so the standings archive is source 1 (standings_archives.GNAC); the 2024 and 2025 records pages (https://gnacsports.com/stats.aspx?path=msoc&year=2024&conf=true and https://gnacsports.com/stats.aspx?path=msoc&year=2025&conf=true) list the same members."
+        }
+      ]
+    },
     "wingate": {
       "men": [
         {
@@ -215,6 +248,16 @@
     }
   },
   "standings_archives": {
+    "GNAC": {
+      "url_template": "https://gnacsports.com/standings.aspx?standings={id}",
+      "seasons": {
+        "2021": "44",
+        "2022": "45",
+        "2023": "46",
+        "2024": "96",
+        "2025": "127"
+      }
+    },
     "SAC": {
       "url_template": "https://www.thesac.com/standings.aspx?standings={id}",
       "seasons": {

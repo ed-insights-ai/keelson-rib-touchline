@@ -121,7 +121,10 @@ def test_every_enabled_stanza_has_a_row_with_every_fact() -> None:
             assert row["provenance"][fact]["accessed"], (
                 f"{slug} {fact} has no accessed date"
             )
-        assert row["provenance"]["point"]["geoid"], slug
+        point = row["provenance"]["point"]
+        # Every point is the Gazetteer's, named by GEOID, except a stanza's
+        # own point for a town the Gazetteer covers nowhere, which says so.
+        assert point.get("geoid") or point.get("note") == programmes.POINT_NOTE, slug
 
 
 def test_a_stanza_without_a_town_stops_the_build_naming_the_slug() -> None:
@@ -194,3 +197,49 @@ def test_a_pinned_place_carries_a_note_in_its_provenance() -> None:
     point = built.document["programmes"]["saint-leo"]["provenance"]["point"]
     assert point["geoid"] == "1262775" and "St. Leo town" in point["note"]
     assert point["accessed"] == gz.GAZETTEER_FILE_DATE
+
+
+def test_a_point_on_a_gazetteer_resolvable_city_is_refused() -> None:
+    # Searcy, Ark. is a Gazetteer place; a stanza point there would override
+    # a real place in silence, so the build refuses it naming the place.
+    stanza = _school(point=(35.0, -91.0), point_source="a test pin")
+    with pytest.raises(programmes.ProgrammeError) as caught:
+        programmes.build([stanza], _offline())
+    message = str(caught.value)
+    assert "harding: point refused" in message
+    assert "0563020 Searcy city" in message
+    assert "gazetteer_geoid" in message
+
+
+def test_a_point_carries_a_town_the_gazetteer_covers_nowhere() -> None:
+    # Burnaby, B.C. parses to no US state and the Gazetteer has no row for
+    # it, so the stanza's own point lands with its source and no GEOID; the
+    # city stays as the stanza prints it.
+    stanza = _school(
+        name="Simon Fraser",
+        city="Burnaby, B.C.",
+        point=(49.242778, -122.972778),
+        point_source="Natural Resources Canada, CGNDB entry JAEBN for Burnaby",
+    )
+    built = programmes.build([stanza], _offline())
+    row = built.document["programmes"]["simon-fraser"]
+    assert row["city"] == "Burnaby, B.C."
+    assert row["point"] == {"lat": 49.242778, "lon": -122.972778}
+    point = row["provenance"]["point"]
+    assert point == {
+        "source": "Natural Resources Canada, CGNDB entry JAEBN for Burnaby",
+        "accessed": "2026-09-02",
+        "note": programmes.POINT_NOTE,
+    }
+    assert built.used_places == {}
+
+
+def test_the_shipped_simon_fraser_row_carries_the_stanza_point() -> None:
+    rows = json.loads(paths.packaged_programmes_path().read_text(encoding="utf-8"))[
+        "programmes"
+    ]
+    row = rows["simon-fraser"]
+    assert row["city"] == "Burnaby, B.C."
+    assert row["point"] == {"lat": 49.242778, "lon": -122.972778}
+    assert row["provenance"]["point"]["note"] == programmes.POINT_NOTE
+    assert "geoid" not in row["provenance"]["point"]

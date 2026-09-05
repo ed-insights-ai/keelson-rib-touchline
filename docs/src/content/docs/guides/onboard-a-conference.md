@@ -247,6 +247,13 @@ adds, 2026-09-02, beads tl-clk.5 and tl-891):
    pinned place (University Center, Mich. inside Kochville township): then
    the row keeps the town the school prints as its `city`, takes the
    pinned place's point, and the note lands in the point's provenance.
+   A town the Gazetteer covers nowhere (Simon Fraser plays in Burnaby,
+   B.C.; the Gazetteer is US-only) takes a `point = { lat, lon }` on the
+   stanza with a `point_source` naming where the pair was read, and the
+   row's point provenance cites that source with no GEOID. The build
+   honours a `point` only when the Gazetteer resolves the city to nothing
+   at all and refuses one on a city it does resolve, so a pin can never
+   silently override a real place.
    The offline Gazetteer fixtures under
    `pipeline/data/gazetteer/` are rewritten by the same run.
 4. `contracts/membership.json` + `contracts/CHANGELOG.md`: the membership
@@ -689,6 +696,44 @@ conference's per-season count is unchanged before and after.
 | the town on a PrestoSports site | the probe reads no home town off a PrestoSports schedule page. The five towns came from the schools' own schedule pages (footer address or home rows) with the thesac.com member JSON as the second source; Tusculum's own page prints Greeneville, not the Wikipedia town |
 | short forms | the standings pages print no abbreviations. The SideArm root page JSON carries `home_short_name` / `away_short_name` for every scoreboard row, so each abbreviation was read off the school's own scoreboard or a peer's; WU, AU, TU and LMC are other stanzas' and carry `abbreviation_resolves = false`, and Lander carries LAN over LU (Lincoln's) |
 | a slug the records would not mint | the Peach Belt prints "USCA" and "Middle Georgia"; opponents' pages had minted `usc-aiken` and `middle-georgia-state`, so the stanzas carry the schools' names and the records labels are aliases |
+
+### 8.5 CCAA, PacWest and GNAC, batch 5 (2026-09-05)
+
+Authored from this page on 2026-09-05; not yet merged or collected, so this
+is the rib half of the ledger. Three conferences in one PR, 2022-2026, the
+first batch in the west: 35 programmes (CCAA 15, PacWest 15, GNAC 7, with
+Fresno Pacific and Menlo counted once), 37 windows, every host SideArm,
+one dead host (Holy Names), two movers crossing two conferences of the
+same batch (Fresno Pacific and Menlo, PacWest to CCAA for 2026), five
+windows ending inside the depth with the host alive (Sonoma State, San
+Francisco State, Academy of Art, Montana State Billings after 2024; Azusa
+Pacific after 2025), and the first programme outside the United States
+(Simon Fraser, placed by a stanza `point`). Counts 12/12/12/11/13,
+11/11/14/13/10 and 7/7/7/6/6 reproduce through the resolver; every other
+conference's per-season count is unchanged before and after.
+
+**Rib (batch 5 membership PR)**
+
+| touchpoint | change |
+|---|---|
+| `data/reference/membership.json` | `CCAA`, `PACWEST`, `GNAC` added; 37 windows on 35 new slugs, two each on `fresno-pacific` and `menlo`; `standings_archives.GNAC` (ids 44, 45, 46, 96, 127), the GNAC having no records table before 2024; `description` names the three authorities |
+| `pipeline/config/schools.toml` | 35 stanzas in three sections after the PBC: 34 from the probe, hand-corrected (fourteen initials or missing abbreviations, seven missing or short mascots, three misread towns, `enabled` flipped, aliases last, `city_source` on every one), plus a dead-host stanza for Holy Names in the Limestone shape; the CACC's Dominican stanza gains `display_name = "Dominican (N.Y.)"` |
+| `data/reference/programmes.json` | rebuilt: 35 new rows, 220 in all; the 185 existing rows unchanged; Simon Fraser's row carries the stanza point with no GEOID |
+| `pipeline/src/config.py`, `pipeline/src/programmes.py`, `pipeline/src/gazetteer.py` | a stanza `point` with `point_source`, validated at load (shape, range, source, never beside a GEOID pin) and honoured by the build only where the Gazetteer resolves nothing; `Gazetteer.candidates` is the lookup `resolve` and the build now share |
+| `contracts/membership.json`, `contracts/CHANGELOG.md` | the three join the fixture with one window each and the GNAC archive; no row shape changes |
+| tests | the point is refused on a Gazetteer-resolvable city and carried for Burnaby; the loader's point validation; the shipped Simon Fraser row. A fifth file: `test/contracts.test.ts` asserted a GEOID on every packaged row and tripped on Simon Fraser's, the tl-clk.6 lesson again; it now accepts the stanza-point note |
+
+**Where this page was wrong or silent**
+
+| finding | what happened |
+|---|---|
+| a display name the identity check refuses | the ruling wanted `display_name = "Dominican (Calif.)"` on the newcomer; a parenthetical drops before matching, the key `dominican` is the CACC incumbent's name, and `check-membership` refuses the pair, exactly as step 1 warns for "Lincoln (Pa.)". The stanza carries the published name "Dominican University of California" instead, and the same rule drops the aliases "Dominican (Calif.)", "Dominican (CA)" and "Concordia (CA)" (which reduces to the bare polluted "Concordia"). Step 1's other example, "Lincoln University (Pa.)", reduces to `lincoln` too, since "University" is an institution word: a qualified display name must add a word that survives the fold |
+| a town outside the Gazetteer | Simon Fraser prints "Burnaby, B.C.", which parses to no US state. Step 3's pin could not help (no GEOID exists), so the stanza `point` above was added, second-sourced to the CGNDB entry and the university's address. The row's city is carried as printed, not AP-normalised |
+| a home ground the site names without a town | Hawai'i Pacific's schedule prints the venue only for home matches (Waipio Stadium, in Waipahu by Chaminade's schedule) and Honolulu only for the away match at Chaminade; the member JSON prints Kaneohe. The town used is the university's own address (Honolulu, hpu.edu and the NCAA directory), with the other two in the stanza comment |
+| the probe reads the first fixture's venue as the home town | three CCAA drafts carried the away venue of the first 2026 fixture (Dallas, Kansas City twice); the schedule page's home rows and the member JSON settled Hayward (address, since the 2026 home venue is in Alameda), Los Angeles and San Marcos |
+| a school site that refuses every fetch | www.sonoma.edu and calstate.edu answer 403 to a browser User-Agent; the NCAA directory (web3.ncaa.org/directory/orgDetail) was the second source for Rohnert Park, Hayward, Honolulu and San Diego |
+| a town whose Census row is a CCD | "Honolulu, Hawaii" matched nothing in the places file (the Census carries "Urban Honolulu CDP") and fell through to the county subdivisions, where "Honolulu CCD" spans the whole county to the Northwestern Hawaiian Islands and centres in the open ocean (27.79 N, 175.85 W). The build accepted it without a word, since one row matched. Chaminade and Hawai'i Pacific pin the Urban Honolulu CDP (1571550) with a `gazetteer_note`; read the point of every new row before committing, not only the failures |
+| SideArm conference sites answer 404 pages that still embed the member JSON | thepacwest.com/members is a 404 whose body carries the members component; the JSON is read off the standings page instead |
 
 Between the two ledgers, the rib's two-file add measured on the GLVC held
 for the SSC once tl-clk.5 was known; the operations cost is now dominated

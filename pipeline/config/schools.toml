@@ -1998,6 +1998,12 @@ identity_accessed = "2026-09-02"
 # (design/batch1-membership-2026-09-02.md).
 [[schools]]
 name         = "Dominican"
+# Dominican University of California joined the rib in batch 5 as
+# dominican-of-california; this stanza keeps the bare name and slug, and
+# display_name carries the parenthetical the site shows (the coordinator's
+# ruling, tl-4an.30: identity strips the parenthetical, so the bare
+# "Dominican" keeps resolving here).
+display_name = "Dominican (N.Y.)"
 abbreviation = "DUNY"
 conference   = "CACC"
 mascot       = "Chargers"
@@ -4035,3 +4041,928 @@ aliases      = ["Lander University"]
 city         = "Greenwood, S.C."
 city_source  = "schedule-page home venue location, https://landerbearcats.com/sports/mens-soccer (Greenwood, S.C., read by the probe 2026-09-04); the peachbeltconference.org member JSON prints Greenwood, S.C."
 identity_accessed = "2026-09-04"
+
+# ============================================================
+# CCAA MEN'S SOCCER - 15 programmes, backfill window 2022-2026
+# ============================================================
+# 17 windows in the depth on 15 slugs: Fresno Pacific and Menlo each carry
+# a PacWest window before their 2026 CCAA window (PacWest 2022-2025 and
+# 2024-2025, the Young Harris shape), so two of the PacWest section's
+# windows live on stanzas here and the collect resolves the conference per
+# season. Sonoma State (2022-2024) and San Francisco State (2022-2024) end
+# inside the depth with their hosts alive.
+#
+# Source of truth: California Collegiate Athletic Association per-season
+# records (goccaa.org conference statistics per year 2021-2025, plus the
+# live standings for 2026, whose records page carries no table yet),
+# verified 2026-09-05; the standings archive (standings.aspx?standings=279,
+# 288, 297, 308, 320 for 2021-2025) agrees with the records everywhere.
+# goccaa.org is SideArm, not PrestoSports: the Presto-shaped path
+# /sports/msoc/{Y}-{yy}/standings answers the same live page for every
+# year and proves nothing. 12/12/12/11/13 members 2022-2026: Sonoma State
+# and San Francisco State out after 2024, UC Merced in from 2025, Fresno
+# Pacific and Menlo in from 2026; the count alone hides all five moves.
+# Hosts, short forms and towns came from the member JSON embedded in the
+# standings page (var component = {"type":"members"}), which lists San
+# Francisco State (a member without men's soccer) and omits Sonoma State.
+#
+# Sites: all 15 hosts probed 2026-09-05 (uv run probe --name): SideArm on
+# every one (every host in this batch is SideArm), schedule / roster /
+# stats / matches present and the window seasons served; Sonoma State's
+# and San Francisco State's sites serve 2022-2024 and no later season
+# (the programmes ended), UC Merced's serves earlier NAIA seasons the
+# window excludes. Six roots answer a splash page (humboldtathletics.com,
+# broncoathletics.com, eastbaypioneers.com, menloathletics.com); the sport
+# path is unaffected. No collect has run yet, so every stanza is
+# data_status = unverified. No ordinals.
+#
+# Names are the records' spellings, chosen so programme_slug(name) matches
+# the membership key; the data home already carries every one of them as
+# an opponent slug except stanislaus-state and sonoma-state, and carries
+# both cal-state-la and cal-state-los-angeles (the sweep is the alias
+# round's, tl-clk.11). Abbreviations are the goccaa.org member JSON's
+# short forms (HUM, CPP, CSUDH, CSUEB, CSULA, CSUMB, CSUSB, CSUSM, CHICO,
+# FPU, MEN, SFSU, STAN, UCM; read 2026-09-05) and, for Sonoma State, which
+# the JSON omits, its own scoreboard's SSU. FPU is also Franklin Pierce's
+# and SSU Shawnee State's, so those two carry abbreviation_resolves =
+# false. The probe misread three towns (Cal State East Bay "Dallas,
+# Texas", Cal State LA "Kansas City, Mo.", Cal State San Marcos "Kansas
+# City, Kan.": the away venue of the first 2026 fixture); each is corrected
+# from the school's own page with the member JSON as the second source.
+# Aliases cover the published long names, the CSU forms and the label
+# variants peers print.
+
+# The conference prints "Cal Poly Humboldt" on every page, the 2021 records
+# included (Humboldt State University became Cal Poly Humboldt on
+# 2022-01-26: goccaa.org news 2022/1/26, humboldt.edu/polytechnic), so the
+# slug is the current name and the former name is an alias for the peers
+# whose older pages still print it. Peers' scoreboards print "HSU"
+# (dominicanathletics.com, nnusports.com) beside the JSON's HUM.
+[[schools]]
+name         = "Cal Poly Humboldt"
+abbreviation = "HUM"
+conference   = "CCAA"
+mascot       = "Lumberjacks"
+gender       = "men"
+base_url     = "https://humboldtathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Cal Poly Humboldt University", "Humboldt State", "Humboldt", "HSU"]
+city         = "Arcata, Calif."
+city_source  = "schedule-page home venue location, https://humboldtathletics.com/sports/mens-soccer (Arcata, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints Arcata, Calif."
+identity_accessed = "2026-09-05"
+
+[[schools]]
+name         = "Cal Poly Pomona"
+abbreviation = "CPP"
+conference   = "CCAA"
+mascot       = "Broncos"
+gender       = "men"
+base_url     = "https://broncoathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Cal Poly-Pomona"]
+city         = "Pomona, Calif."
+city_source  = "schedule-page home venue location, https://broncoathletics.com/sports/mens-soccer (Pomona, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints Pomona, Calif."
+identity_accessed = "2026-09-05"
+
+# The probe read no home town; the 2026 schedule prints Carson for every
+# home match (Toro Stadium, Dignity Health Sports Park).
+[[schools]]
+name         = "Cal State Dominguez Hills"
+abbreviation = "CSUDH"
+conference   = "CCAA"
+mascot       = "Toros"
+gender       = "men"
+base_url     = "https://gotoros.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["CSU Dominguez Hills", "Dominguez Hills"]
+city         = "Carson, Calif."
+city_source  = "schedule-page home venue location, https://gotoros.com/sports/mens-soccer/schedule/2026 (Carson, for every 2026 home match, read 2026-09-05); the goccaa.org member JSON prints Carson, Calif."
+identity_accessed = "2026-09-05"
+
+# The probe drafted "Dallas, Texas", the away venue of the first 2026
+# fixture. The 2026 schedule prints Alameda, CA (the Oakland Roots training
+# facility) for every home match, the venue town; the campus is in Hayward
+# (the university's address, 25800 Carlos Bee Blvd, Hayward, CA 94542),
+# and that is the town used, the Davenport shape.
+[[schools]]
+name         = "Cal State East Bay"
+abbreviation = "CSUEB"
+conference   = "CCAA"
+mascot       = "Pioneers"
+gender       = "men"
+base_url     = "https://eastbaypioneers.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["CSU East Bay", "East Bay"]
+city         = "Hayward, Calif."
+city_source  = "the NCAA directory, https://web3.ncaa.org/directory/orgDetail?id=98 (25800 Carlos Bee Blvd., Hayward, CA 94542, read 2026-09-05), and the goccaa.org member JSON (Hayward, Calif.); the 2026 schedule page prints Alameda, CA, the venue town, for home matches"
+identity_accessed = "2026-09-05"
+
+# The probe drafted "Kansas City, Mo.", the away venue of the first 2026
+# fixture. The records print "Cal State LA"; the data home carries both
+# cal-state-la and cal-state-los-angeles from opponents' pages (the sweep
+# is the alias round's).
+[[schools]]
+name         = "Cal State LA"
+abbreviation = "CSULA"
+conference   = "CCAA"
+mascot       = "Golden Eagles"
+gender       = "men"
+base_url     = "https://lagoldeneagles.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Cal State Los Angeles", "Cal State L.A.", "CSU Los Angeles"]
+city         = "Los Angeles, Calif."
+city_source  = "schedule-page home venue location, https://lagoldeneagles.com/sports/mens-soccer/schedule/2026 (Los Angeles, University Stadium, for every 2026 home match; footer address 5151 State University Dr, Los Angeles, CA 90032; read 2026-09-05); the goccaa.org member JSON prints Los Angeles"
+identity_accessed = "2026-09-05"
+
+[[schools]]
+name         = "Cal State Monterey Bay"
+abbreviation = "CSUMB"
+conference   = "CCAA"
+mascot       = "Otters"
+gender       = "men"
+base_url     = "https://otterathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["CSU Monterey Bay", "Monterey Bay"]
+city         = "Seaside, Calif."
+city_source  = "schedule-page home venue location, https://otterathletics.com/sports/mens-soccer (Seaside, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints Seaside, Calif."
+identity_accessed = "2026-09-05"
+
+# The probe found no mascot where it reads; "Coyotes" is the site's own
+# name (csusbathletics.com) and the goccaa.org member JSON's. The probe
+# drafted the page title with the mascot as an alias; dropped.
+[[schools]]
+name         = "Cal State San Bernardino"
+abbreviation = "CSUSB"
+conference   = "CCAA"
+mascot       = "Coyotes"
+gender       = "men"
+base_url     = "https://csusbathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["CSU San Bernardino"]
+city         = "San Bernardino, Calif."
+city_source  = "schedule-page home venue location, https://csusbathletics.com/sports/mens-soccer (San Bernardino, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints San Bernardino, Calif."
+identity_accessed = "2026-09-05"
+
+# The probe drafted "Kansas City, Kan.", the away venue of the first 2026
+# fixture; the 2026 schedule prints San Marcos (The Cage) for every home
+# match.
+[[schools]]
+name         = "Cal State San Marcos"
+abbreviation = "CSUSM"
+conference   = "CCAA"
+mascot       = "Cougars"
+gender       = "men"
+base_url     = "https://csusmcougars.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["CSU San Marcos", "San Marcos"]
+city         = "San Marcos, Calif."
+city_source  = "schedule-page home venue location, https://csusmcougars.com/sports/mens-soccer/schedule/2026 (San Marcos, for every 2026 home match, read 2026-09-05); the goccaa.org member JSON prints San Marcos, Calif."
+identity_accessed = "2026-09-05"
+
+# The probe minted "CS"; CHICO is the goccaa.org member JSON's short form
+# and what the site's own scoreboard prints.
+[[schools]]
+name         = "Chico State"
+abbreviation = "CHICO"
+conference   = "CCAA"
+mascot       = "Wildcats"
+gender       = "men"
+base_url     = "https://chicowildcats.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Cal State Chico", "CSU Chico", "Chico"]
+city         = "Chico, Calif."
+city_source  = "schedule-page home venue location, https://chicowildcats.com/sports/mens-soccer (Chico, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints Chico, Calif."
+identity_accessed = "2026-09-05"
+
+# The probe minted "SS" for both Stanislaus State and Sonoma State; STAN is
+# the goccaa.org member JSON's short form and what the site's own
+# scoreboard prints.
+[[schools]]
+name         = "Stanislaus State"
+abbreviation = "STAN"
+conference   = "CCAA"
+mascot       = "Warriors"
+gender       = "men"
+base_url     = "https://warriorathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Cal State Stanislaus", "CSU Stanislaus", "Stanislaus"]
+city         = "Turlock, Calif."
+city_source  = "schedule-page home venue location, https://warriorathletics.com/sports/mens-soccer (Turlock, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints Turlock, Calif."
+identity_accessed = "2026-09-05"
+
+# First CCAA season 2025, while NCAA-provisional (the 2025 standings print
+# "UC Merced *"): goccaa.org news 2023/11/13 (dated 2023-11-14) and
+# ucmercedbobcats.com news 2024/7/11. The site serves 2022 and 2024 as
+# well; those are NAIA seasons and are not requested. The probe found no
+# mascot where it reads; "Bobcats" is the site's own name
+# (ucmercedbobcats.com) and the goccaa.org member JSON's.
+[[schools]]
+name         = "UC Merced"
+abbreviation = "UCM"
+conference   = "CCAA"
+mascot       = "Bobcats"
+gender       = "men"
+base_url     = "https://ucmercedbobcats.com/sports/mens-soccer"
+years        = [2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of California, Merced", "Merced"]
+city         = "Merced, Calif."
+city_source  = "schedule-page home venue location, https://ucmercedbobcats.com/sports/mens-soccer (Merced, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints Merced, Calif."
+identity_accessed = "2026-09-05"
+
+# Two windows on one slug: PacWest 2022-2025 (the PacWest records list
+# Fresno Pacific every year 2021-2025 with a '#' team link; absent from the
+# 2026 PacWest standings), then CCAA from 2026 (goccaa.org news 2025/6/11,
+# news.fresno.edu 2025-06-12). membership.json carries both and the collect
+# resolves the conference per season; `years` covers both windows. The
+# probe read the mascot as "Sunbird"; "Sunbirds" is the site's own name
+# (fpusunbirds.com) and the goccaa.org member JSON's. FPU is also Franklin
+# Pierce's, so it stays display-only here.
+[[schools]]
+name         = "Fresno Pacific"
+abbreviation = "FPU"
+abbreviation_resolves = false  # "FPU" is also Franklin Pierce's
+conference   = "CCAA"
+mascot       = "Sunbirds"
+gender       = "men"
+base_url     = "https://www.fpusunbirds.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Fresno Pacific University"]
+city         = "Fresno, Calif."
+city_source  = "schedule-page home venue location, https://www.fpusunbirds.com/sports/mens-soccer (Fresno, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints Fresno, Calif."
+identity_accessed = "2026-09-05"
+
+# Two windows on one slug: PacWest 2024-2025 (the PacWest records list
+# Menlo in 2024 and 2025 with a '#' team link, not in 2023; absent from
+# the 2026 PacWest standings), then CCAA from 2026 (goccaa.org news
+# 2025/11/25; menloathletics.com news 2024/8/1 for the inaugural PacWest
+# season). membership.json carries both and the collect resolves the
+# conference per season; `years` covers both windows. The site serves 2022
+# and 2023 as well; those are NAIA GSAC seasons and are not requested. The
+# probe found no mascot or short form where it reads; "Oaks" and MEN are
+# the goccaa.org member JSON's, and peers' pages print "Menlo Oaks".
+[[schools]]
+name         = "Menlo"
+abbreviation = "MEN"
+conference   = "CCAA"
+mascot       = "Oaks"
+gender       = "men"
+base_url     = "https://menloathletics.com/sports/mens-soccer"
+years        = [2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Menlo College"]
+city         = "Atherton, Calif."
+city_source  = "schedule-page home venue location, https://menloathletics.com/sports/mens-soccer (Atherton, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints Atherton, Calif., and the goccaa.org release of 2025-11-25 is datelined Atherton, Calif."
+identity_accessed = "2026-09-05"
+
+# Last CCAA season 2024: Sonoma State suspended intercollegiate athletics
+# after 2024-25 (news.sonoma.edu, athletics-launch-fall-2027; goccaa.org
+# news 2026/7/27, "a two-year hiatus"). The host is ALIVE and still serves
+# 2022-2024, so liveness will not detect the departure; the stanza stays
+# enabled with `years` trimmed to the window. The conference rows never
+# link a teamstats page ('#'). The probe minted "SS"; SSU is what the
+# site's own scoreboard prints (the goccaa.org member JSON omits Sonoma
+# State), and SSU is also Shawnee State's, so it stays display-only here.
+[[schools]]
+name         = "Sonoma State"
+abbreviation = "SSU"
+abbreviation_resolves = false  # "SSU" is also Shawnee State's
+conference   = "CCAA"
+mascot       = "Seawolves"
+gender       = "men"
+base_url     = "https://sonomaseawolves.com/sports/mens-soccer"
+years        = [2022, 2023, 2024]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Sonoma State University"]
+city         = "Rohnert Park, Calif."
+city_source  = "schedule-page home venue location, https://sonomaseawolves.com/sports/mens-soccer (Rohnert Park, Calif., read by the probe 2026-09-05, and the site's footer address); the NCAA directory, https://web3.ncaa.org/directory/orgDetail?id=645, prints 1801 East Cotati Avenue, Rohnert Park, CA 94928 (read 2026-09-05)"
+identity_accessed = "2026-09-05"
+
+# Last CCAA men's soccer season 2024: San Francisco State eliminated men's
+# soccer as of 2025-07-01 (sfstategators.com news 2025/3/6) while staying
+# a CCAA member (still in the 2026 member JSON), so a member-driven count
+# reads 14 where the 2026 table has 13. The host is alive and still serves
+# 2022-2024; the stanza stays enabled with `years` trimmed to the window.
+# The probe drafted the host name as an alias; dropped.
+[[schools]]
+name         = "San Francisco State"
+abbreviation = "SFSU"
+conference   = "CCAA"
+mascot       = "Gators"
+gender       = "men"
+base_url     = "https://sfstategators.com/sports/mens-soccer"
+years        = [2022, 2023, 2024]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["San Francisco State University", "SF State"]
+city         = "San Francisco, Calif."
+city_source  = "schedule-page home venue location, https://sfstategators.com/sports/mens-soccer/schedule/2024 (San Francisco, Cox Stadium, for every 2024 home match; footer address 1600 Holloway Ave, San Francisco, CA 94132; read 2026-09-05); the goccaa.org member JSON prints San Francisco"
+identity_accessed = "2026-09-05"
+
+# ============================================================
+# PACWEST MEN'S SOCCER - 13 programmes, backfill window 2022-2026
+# ============================================================
+# 15 windows in the depth on 15 slugs: two of them, Fresno Pacific's
+# 2022-2025 and Menlo's 2024-2025, sit on stanzas in the CCAA section (the
+# schools moved to the CCAA for 2026, the Young Harris shape) and the
+# collect resolves the conference per season. Five windows end inside the
+# depth: Holy Names 2022 (dead host), Academy of Art 2022-2024 and Azusa
+# Pacific 2022-2025 (hosts alive), plus the two movers.
+#
+# Source of truth: Pacific West Conference per-season records
+# (thepacwest.com conference statistics per year 2021-2025, plus the live
+# standings for 2026, whose records page answers "no statistics
+# available"), verified 2026-09-05; the standings archive
+# (standings.aspx?standings=163, 175, 183, 193, 202 for 2021-2025) agrees
+# with the records everywhere. 11/11/14/13/10 members 2022-2026: Holy Names
+# out after 2022, Westmont in from 2023, Menlo, Jessup and Vanguard in from
+# 2024, Academy of Art out after 2024, Azusa Pacific, Fresno Pacific and
+# Menlo out after 2025. Five members' records rows never link a teamstats
+# page ('#': Azusa Pacific, Fresno Pacific, Academy of Art, Holy Names,
+# Menlo); a parser keyed on school= misses them. Hosts, short forms and
+# towns came from the member JSON embedded in the standings page (the 2026
+# ten; mascots only for Biola, Chaminade and Concordia).
+#
+# Sites: the 14 live hosts probed 2026-09-05 (uv run probe --name):
+# SideArm on every one (Westmont too: the batch plan's Mascot Media note
+# is stale), schedule / roster / stats / matches present and the window
+# seasons served; Academy of Art's site serves 2022-2024 and no later
+# season, Westmont's, Jessup's, Vanguard's and Menlo's serve earlier NAIA
+# seasons the windows exclude, Azusa Pacific's keeps publishing (Division
+# III from 2026). One host is dead (Holy Names); see the comment above its
+# stanza. The three Hawaii hosts are in UTC-10 with no daylight saving and
+# print kickoff times inconsistently (Chaminade tags every row HST, Hilo
+# tags rows PT under an HST note, Hawaii Pacific prints no zone): the
+# collector's concern, a separate bead. No collect has run yet, so every
+# stanza is data_status = unverified. No ordinals.
+#
+# Names are the records' spellings except where the label would mint a
+# slug the data home does not use or collide with a followed programme:
+# "Dominican" is the CACC's Dominican University New York, so this stanza
+# carries "Dominican of California" (the one opponent slug the fixtures
+# already hold for it); "Concordia" is a polluted opponent slug (at least
+# two other Concordias in the data home), so the stanza carries "Concordia
+# Irvine" and never aliases the bare word; "Hawai'i Hilo" and "Hawai'i
+# Pacific" would mint hawai-i-* slugs where the fixtures carry hawaii-hilo
+# and hawaii-pacific, so the names drop the okina and the labels are
+# aliases. Abbreviations are the thepacwest.com member JSON's short forms
+# (BU, CUH, CUI, DUC, UHH, HPU, JES, PLNU, VAN, WC; read 2026-09-05) and,
+# for the three the JSON no longer lists, the school's own scoreboard
+# (APU) or hand initials kept display-only (AAU, HNU). BU is also
+# Bentley's, Barry's and Bloomsburg's, so Biola carries
+# abbreviation_resolves = false. Aliases cover the published long names,
+# the okina and apostrophe spellings and the label variants peers print;
+# a parenthetical form ("Dominican (Calif.)", "Concordia (CA)") reduces to
+# the bare word before matching and is not carried.
+
+# The probe found no short form where it reads; BU is the thepacwest.com
+# member JSON's, and its own scoreboard prints "BU" and "BIO".
+[[schools]]
+name         = "Biola"
+abbreviation = "BU"
+abbreviation_resolves = false  # "BU" is also Bentley's, Barry's and Bloomsburg's
+conference   = "PACWEST"
+mascot       = "Eagles"
+gender       = "men"
+base_url     = "https://athletics.biola.edu/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Biola University"]
+city         = "La Mirada, Calif."
+city_source  = "schedule-page home venue location, https://athletics.biola.edu/sports/mens-soccer (La Mirada, Calif., read by the probe 2026-09-05); the thepacwest.com member JSON prints La Mirada, Calif."
+identity_accessed = "2026-09-05"
+
+# The probe found no short form or home town where it reads; CUH is the
+# thepacwest.com member JSON's, and the 2026 schedule prints Honolulu
+# (Saint Louis Field) for every home match. Every schedule row carries an
+# HST tag ("ALL TIMES HAWAI'I STANDARD").
+[[schools]]
+name         = "Chaminade"
+abbreviation = "CUH"
+conference   = "PACWEST"
+mascot       = "Silverswords"
+gender       = "men"
+base_url     = "https://goswords.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Chaminade University", "Chaminade University of Honolulu", "Chaminade of Honolulu"]
+city         = "Honolulu, Hawaii"
+city_source  = "schedule-page home venue location, https://goswords.com/sports/mens-soccer/schedule/2026 (Honolulu, Saint Louis Field, for every 2026 home match, read 2026-09-05); the thepacwest.com member JSON prints Honolulu"
+gazetteer_geoid = "1571550"
+gazetteer_note = "Honolulu is the consolidated City and County of Honolulu, which the 2023 Gazetteer places file carries only as the Urban Honolulu CDP (the county-subdivisions file's Honolulu CCD spans the whole county out to the Northwestern Hawaiian Islands and its centroid lies in the open ocean): the pin is the CDP the campus and the home ground sit in"
+identity_accessed = "2026-09-05"
+
+# Concordia University Irvine; the records print "Concordia", which mints
+# the polluted opponent slug concordia (Concordia Selma 2016, Concordia
+# Texas 2022-2024 in the data home), so the name is qualified and the bare
+# word is never an alias. The member JSON links cuieagles.com, which 301s
+# to cuigoldeneagles.com. The probe read the mascot as "Eagles"; "Golden
+# Eagles" is the site's own name and the member JSON's.
+[[schools]]
+name         = "Concordia Irvine"
+abbreviation = "CUI"
+conference   = "PACWEST"
+mascot       = "Golden Eagles"
+gender       = "men"
+base_url     = "https://cuigoldeneagles.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Concordia University Irvine"]
+city         = "Irvine, Calif."
+city_source  = "schedule-page home venue location, https://cuigoldeneagles.com/sports/mens-soccer (Irvine, Calif., read by the probe 2026-09-05); the thepacwest.com member JSON prints Irvine, Calif."
+identity_accessed = "2026-09-05"
+
+# Dominican University of California (San Rafael), not the CACC's
+# Dominican University New York, whose stanza keeps the bare "Dominican"
+# name and slug. `name` mints dominican-of-california, the one opponent
+# slug the fixtures already carry for this school; display_name is the
+# published name (dominicanathletics.com). The parenthetical forms
+# "Dominican (Calif.)" and "Dominican (CA)" reduce to the bare word before
+# matching, which the incumbent claims, so they are not carried (the
+# coordinator's display_name "Dominican (Calif.)" fails check-membership
+# for the same reason; see the batch 5 ledger). The probe minted "DC"; DUC
+# is the member JSON's short form and its own scoreboard's.
+[[schools]]
+name         = "Dominican of California"
+display_name = "Dominican University of California"
+abbreviation = "DUC"
+conference   = "PACWEST"
+mascot       = "Penguins"
+gender       = "men"
+base_url     = "https://dominicanathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Dominican California"]
+city         = "San Rafael, Calif."
+city_source  = "schedule-page home venue location, https://dominicanathletics.com/sports/mens-soccer (San Rafael, Calif., read by the probe 2026-09-05); the thepacwest.com member JSON prints San Rafael, Calif."
+identity_accessed = "2026-09-05"
+
+# University of Hawai'i at Hilo. The records print "Hawai'i Hilo" (an
+# ASCII apostrophe), which would mint hawai-i-hilo; the fixtures carry
+# hawaii-hilo, so `name` drops the okina and display_name carries the
+# conference's spelling. The probe found no mascot or home town where it
+# reads; "Vulcans" is the site's own name (hiloathletics.com; Chaminade's
+# site prints it too) and the 2026 schedule prints Hilo, Hawai'i for every
+# home match. The schedule tags rows "PT" under a "HAWAI'I STANDARD TIME"
+# note: the collector must decide which zone the row carries.
+[[schools]]
+name         = "Hawaii Hilo"
+display_name = "Hawai'i Hilo"
+abbreviation = "UHH"
+conference   = "PACWEST"
+mascot       = "Vulcans"
+gender       = "men"
+base_url     = "https://hiloathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["UH Hilo", "University of Hawai'i at Hilo", "University of Hawaii at Hilo", "Hawaii-Hilo"]
+city         = "Hilo, Hawaii"
+city_source  = "schedule-page home venue location, https://hiloathletics.com/sports/mens-soccer/schedule/2026 (Hilo, Hawai'i, for every 2026 home match, read 2026-09-05); the thepacwest.com member JSON prints Hilo, Hawaii"
+identity_accessed = "2026-09-05"
+
+# Hawai'i Pacific University. The records print "Hawai'i Pacific", which
+# would mint hawai-i-pacific; the fixtures carry hawaii-pacific, so `name`
+# drops the okina and display_name carries the conference's spelling. The
+# probe read no home town: the 2026 schedule prints the venue only for
+# home matches (Waipio Stadium, which Chaminade's schedule places in
+# Waipahu, O'ahu) and "Honolulu, HI" only for the away match at Chaminade.
+# The university's own site and the NCAA directory print the downtown
+# campus, 1 Aloha Tower Drive, Honolulu, and that is the town used; the
+# thepacwest.com member JSON prints Kaneohe, Hawaii (the Hawai'i Loa
+# campus). The schedule prints kickoff times with no zone tag.
+[[schools]]
+name         = "Hawaii Pacific"
+display_name = "Hawai'i Pacific"
+abbreviation = "HPU"
+conference   = "PACWEST"
+mascot       = "Sharks"
+gender       = "men"
+base_url     = "https://hpusharks.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Hawaii Pacific University", "Hawai'i Pacific University"]
+city         = "Honolulu, Hawaii"
+city_source  = "the university's main site, https://www.hpu.edu/ (1 Aloha Tower Drive, Honolulu, HI 96813, read 2026-09-05), and the NCAA directory, https://web3.ncaa.org/directory/orgDetail?id=2696 (same address); the 2026 schedule page prints the venue only (Waipio Stadium) for home matches and the thepacwest.com member JSON prints Kaneohe, Hawaii"
+gazetteer_geoid = "1571550"
+gazetteer_note = "Honolulu is the consolidated City and County of Honolulu, which the 2023 Gazetteer places file carries only as the Urban Honolulu CDP (the county-subdivisions file's Honolulu CCD spans the whole county out to the Northwestern Hawaiian Islands and its centroid lies in the open ocean): the pin is the CDP the campus and the home ground sit in"
+identity_accessed = "2026-09-05"
+
+# First PacWest season 2024, from the NAIA Golden State Athletic
+# Conference (thepacwest.com news 2023/7/21; jessupathletics.com news
+# 2024/7/23, "year one as a member of the PacWest Conference"); absent from
+# the 2023 records. William Jessup University became Jessup University in
+# 2023 and peers still print the former name. The site serves 2022 and
+# 2023 as well; those are NAIA seasons and are not requested. The probe
+# found no short form where it reads; JES is the member JSON's (its own
+# scoreboard prints "JSP").
+[[schools]]
+name         = "Jessup"
+abbreviation = "JES"
+conference   = "PACWEST"
+mascot       = "Warriors"
+gender       = "men"
+base_url     = "https://jessupathletics.com/sports/mens-soccer"
+years        = [2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Jessup University", "William Jessup", "William Jessup University"]
+city         = "Rocklin, Calif."
+city_source  = "schedule-page home venue location, https://jessupathletics.com/sports/mens-soccer (Rocklin, Calif., read by the probe 2026-09-05); the thepacwest.com member JSON prints Rocklin, CA"
+identity_accessed = "2026-09-05"
+
+# Point Loma Nazarene University; the records print "Point Loma". The
+# probe minted "PLN" and read no home town (the schedule prints the venue,
+# PLNU Soccer Field, for home matches); PLNU is the member JSON's short
+# form and the site's own. Peers' schedules print "Sea Lions" (Hilo 2026).
+[[schools]]
+name         = "Point Loma"
+abbreviation = "PLNU"
+conference   = "PACWEST"
+mascot       = "Sea Lions"
+gender       = "men"
+base_url     = "https://plnusealions.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Point Loma Nazarene", "Point Loma Nazarene University"]
+city         = "San Diego, Calif."
+city_source  = "the NCAA directory, https://web3.ncaa.org/directory/orgDetail?id=30149 (3900 Lomaland Drive, San Diego, CA 92106, read 2026-09-05), and the thepacwest.com member JSON (San Diego); the schedule page prints the venue only for home matches"
+identity_accessed = "2026-09-05"
+
+# First PacWest season 2024, from the NAIA Golden State Athletic
+# Conference (thepacwest.com news 2023/7/21; vanguardlions.com news
+# 2024/11/7, "their first PacWest season"); absent from the 2023 records.
+# The site serves 2022 and 2023 as well; those are NAIA seasons and are
+# not requested. The probe found no mascot or short form where it reads;
+# "Lions" is the site's own name (vanguardlions.com), VAN is the member
+# JSON's short form and its own scoreboard prints "VU" and "VAN".
+[[schools]]
+name         = "Vanguard"
+abbreviation = "VAN"
+conference   = "PACWEST"
+mascot       = "Lions"
+gender       = "men"
+base_url     = "https://vanguardlions.com/sports/mens-soccer"
+years        = [2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Vanguard University", "VU"]
+city         = "Costa Mesa, Calif."
+city_source  = "schedule-page home venue location, https://vanguardlions.com/sports/mens-soccer (Costa Mesa, Calif., read by the probe 2026-09-05); the thepacwest.com member JSON prints Costa Mesa, CA"
+identity_accessed = "2026-09-05"
+
+# First PacWest season 2023, from the NAIA Golden State Athletic
+# Conference (thepacwest.com news 2022/7/14; westmont.edu news 2023-07-13);
+# absent from the 2022 records. The site serves 2022 as well, a GSAC
+# season the window excludes. SideArm (23 sidearmsports strings on the
+# root, probed with all four layers); the batch plan's Mascot Media note
+# is stale. The probe found no short form or home town where it reads; WC
+# is the member JSON's short form and its own scoreboard's.
+[[schools]]
+name         = "Westmont"
+abbreviation = "WC"
+conference   = "PACWEST"
+mascot       = "Warriors"
+gender       = "men"
+base_url     = "https://athletics.westmont.edu/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Westmont College"]
+city         = "Santa Barbara, Calif."
+city_source  = "the college's main site, https://www.westmont.edu/ (955 La Paz Road, Santa Barbara, CA 93108, read 2026-09-05), and the thepacwest.com member JSON (Santa Barbara, CA); the schedule page prints no home town"
+identity_accessed = "2026-09-05"
+
+# Last PacWest season 2025: Azusa Pacific is reclassifying to NCAA
+# Division III and the SCIAC (athletics.apu.edu news 2026/1/20), absent
+# from the 2026 standings. The host is ALIVE and keeps publishing men's
+# soccer, so liveness will not detect the departure; the stanza stays
+# enabled with `years` trimmed to the window (2026 is a SCIAC season). The
+# conference rows never link a teamstats page ('#'). The member JSON no
+# longer lists it; APU is its own scoreboard's short form.
+[[schools]]
+name         = "Azusa Pacific"
+abbreviation = "APU"
+conference   = "PACWEST"
+mascot       = "Cougars"
+gender       = "men"
+base_url     = "https://athletics.apu.edu/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Azusa Pacific University"]
+city         = "Azusa, Calif."
+city_source  = "schedule-page home venue location, https://athletics.apu.edu/sports/mens-soccer (Azusa, Calif., read by the probe 2026-09-05); the site's own releases are datelined Azusa, Calif. (athletics.apu.edu news 2026/1/20)"
+identity_accessed = "2026-09-05"
+
+# Last PacWest season 2024: Academy of Art University discontinued
+# intercollegiate athletics at the end of 2024-25 (artuathletics.com news
+# 2025/4/4), absent from the 2025 records. The host is ALIVE and still
+# serves 2022-2024, so liveness will not detect the departure; the stanza
+# stays enabled with `years` trimmed to the window. The conference rows
+# never link a teamstats page ('#'). The probe read the mascot as
+# "Knights"; "Urban Knights" is the site's own name (artuathletics.com)
+# and the university's (academyart.edu). The member JSON no longer lists
+# it and its own scoreboard prints "AAU-SB", so AAU is hand initials kept
+# display-only.
+[[schools]]
+name         = "Academy of Art"
+abbreviation = "AAU"
+abbreviation_resolves = false  # hand initials; the scoreboard prints "AAU-SB"
+conference   = "PACWEST"
+mascot       = "Urban Knights"
+gender       = "men"
+base_url     = "https://artuathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Academy of Art University"]
+city         = "San Francisco, Calif."
+city_source  = "schedule-page home venue location, https://artuathletics.com/sports/mens-soccer/schedule/2024 (San Francisco, for every 2024 home match, read 2026-09-05); the university's main site, https://www.academyart.edu/, prints 79 New Montgomery St., San Francisco, CA 94105"
+identity_accessed = "2026-09-05"
+
+# Dead host: hnuhawks.com 301s to https://hnu.edu/resources/hnu-athletics/,
+# a WordPress page with no SideArm strings (read 2026-09-05). On the
+# PacWest records and standings in 2021 and 2022 (standings=163 and 175;
+# 5-5 in ten conference matches in 2022) and absent from 2023 (records
+# year=2023, standings=183). Holy Names University announced on 2022-12-19
+# that it would close after the spring 2023 semester and cancel its NCAA
+# sports programs (hnu.edu news, holy-names-university-in-oakland-to-close-
+# after-spring-semester-in-may-2023). Single in-window season 2022. The
+# stanza stays enabled so the programmes reference carries its identity
+# row; every fetch fails and the backfill files the absence, which is the
+# truth. No captured scoreboard names it; HNU is the initialism the hnu.edu
+# athletics page titles itself with ("HNU Athletics") and is kept
+# display-only. "Hawks" is that page's own name.
+[[schools]]
+name         = "Holy Names"
+abbreviation = "HNU"
+abbreviation_resolves = false  # hand initials from the hnu.edu page title, read from no scoreboard
+conference   = "PACWEST"
+mascot       = "Hawks"
+gender       = "men"
+# Historic host, dead since at least 2026-09-05; the university closed after the spring 2023 semester.
+base_url     = "https://hnuhawks.com/sports/mens-soccer"
+years        = [2022]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Holy Names University"]
+city         = "Oakland, Calif."
+city_source  = "the university's closure release, https://hnu.edu/news/holy-names-university-in-oakland-to-close-after-spring-semester-in-may-2023/ (3500 Mountain Boulevard, Oakland, CA, read 2026-09-05), and the hnu.edu athletics page the dead host redirects to (same address); the athletics host is dead and prints no town"
+identity_accessed = "2026-09-05"
+
+# ============================================================
+# GNAC MEN'S SOCCER - 7 programmes, backfill window 2022-2026
+# ============================================================
+# 7 windows in the depth on 7 slugs; Montana State Billings (2022-2024)
+# ends inside the depth with its host alive, and Simon Fraser is the first
+# programme outside the United States (Burnaby, B.C.), placed by the
+# stanza's own `point` rather than the Gazetteer.
+#
+# Source of truth: the Great Northwest Athletic Conference standings
+# archive. The GNAC publishes no records table before 2024
+# (gnacsports.com/stats.aspx?path=msoc answers "no statistics available"
+# for 2021-2023 and carries no table for 2026), so source 1 is
+# https://gnacsports.com/standings.aspx?standings={id} per season (ids 44,
+# 45, 46, 96, 127 for 2021-2025; standings_archives.GNAC in
+# data/reference/membership.json) and, for 2026, the live table
+# https://gnacsports.com/standings.aspx?path=msoc, whose select lists no id
+# for the live year; the 2024 and 2025 records tables corroborate.
+# Reproduced offline with check-membership --standings on the captured
+# pages. 7/7/7/6/6 members 2022-2026: Montana State Billings out after
+# 2024; Western Oregon's window starts at the depth's first year because
+# the programme began in 2022 (absent from 44, on 45), a real edge. Alaska
+# Anchorage, Alaska Fairbanks and Central Washington are members with no
+# men's soccer on any table and have no stanza. Hosts, short forms,
+# mascots and towns came from the member JSON embedded in the standings
+# page.
+#
+# Sites: all 7 hosts probed 2026-09-05 (uv run probe --name): SideArm on
+# every one (wouwolves.com carries two stray prestosports strings, the
+# Ferrum shape; athletics.sfu.ca is a .ca host), schedule / roster / stats
+# / matches present and the window seasons served; Montana State
+# Billings's site serves 2022-2024 and answers 404 on the 2026 roster (the
+# programme ended). No collect has run yet, so every stanza is data_status
+# = unverified. No ordinals.
+#
+# Names are the standings labels, chosen so programme_slug(name) matches
+# the membership key, except Saint Martin's: the label mints
+# saint-martin-s and the fixtures carry saint-martins (9 rows), so the
+# stanza carries "Saint Martins" with the published spelling in
+# display_name, the St. Mary's precedent. The data home carries both
+# montana-state-billings and msu-billings from opponents' pages (the sweep
+# is the alias round's, tl-clk.11). Abbreviations are the gnacsports.com
+# member JSON's short forms (MSUB, NNU, SMU, SPU, SFU, WOU, WWU; read
+# 2026-09-05), which the schools' own scoreboards print too. Aliases cover
+# the published long names and the label variants peers print.
+
+# The probe drafted "#10", a poll rank read off a schedule row; dropped.
+[[schools]]
+name         = "Seattle Pacific"
+abbreviation = "SPU"
+conference   = "GNAC"
+mascot       = "Falcons"
+gender       = "men"
+base_url     = "https://spufalcons.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Seattle Pacific University"]
+city         = "Seattle, Wash."
+city_source  = "schedule-page home venue location, https://spufalcons.com/sports/mens-soccer (Seattle, Wash., read by the probe 2026-09-05); the gnacsports.com member JSON prints Seattle, WA"
+identity_accessed = "2026-09-05"
+
+# The probe minted "WW"; WWU is the member JSON's short form and its own
+# scoreboard's.
+[[schools]]
+name         = "Western Washington"
+abbreviation = "WWU"
+conference   = "GNAC"
+mascot       = "Vikings"
+gender       = "men"
+base_url     = "https://wwuvikings.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Western Washington University"]
+city         = "Bellingham, Wash."
+city_source  = "schedule-page home venue location, https://wwuvikings.com/sports/mens-soccer (Bellingham, Wash., read by the probe 2026-09-05); the gnacsports.com member JSON prints Bellingham, WA"
+identity_accessed = "2026-09-05"
+
+# Simon Fraser University, Burnaby, British Columbia: the NCAA's only
+# member outside the United States and the rib's first, so the 2023
+# Census Gazetteer has no place for its town and the stanza carries its
+# own `point` (the build honours one only where the Gazetteer resolves
+# nothing). The coordinates are the Natural Resources Canada CGNDB entry
+# for the City of Burnaby (JAEBN, 49.242778 N, 122.972778 W); the
+# university's published address places the campus in Burnaby (8888
+# University Drive, Burnaby, BC V5A 1S6, sfu.ca/campuses/burnaby). The
+# probe minted "SFUCA" from the host name and read no mascot or home town;
+# SFU is the member JSON's short form and its own scoreboard's, "Red
+# Leafs" is the site's own name and the member JSON's, and the 2026
+# schedule prints "Burnaby, B.C." for every home match (31 times on the
+# page). Its 2026 season is its last in the GNAC (gnacsports.com news
+# 2025/11/26: through 2026-27), outside the depth.
+[[schools]]
+name         = "Simon Fraser"
+abbreviation = "SFU"
+conference   = "GNAC"
+mascot       = "Red Leafs"
+gender       = "men"
+base_url     = "https://athletics.sfu.ca/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Simon Fraser University"]
+city         = "Burnaby, B.C."
+city_source  = "schedule-page home venue location, https://athletics.sfu.ca/sports/mens-soccer/schedule/2026 (Burnaby, B.C., SFU Stadium at Terry Fox Field, for every 2026 home match, read 2026-09-05); the gnacsports.com member JSON prints Burnaby, British Columbia, and the university's own site prints 8888 University Drive, Burnaby, BC V5A 1S6 (https://www.sfu.ca/campuses/burnaby.html)"
+point        = { lat = 49.242778, lon = -122.972778 }
+point_source = "Natural Resources Canada, Canadian Geographical Names Database, entry JAEBN 'Burnaby' (CITY, British Columbia), https://geogratis.gc.ca/services/geoname/en/geonames?q=Burnaby&concise=CITY (read 2026-09-05); the university's published address, 8888 University Drive, Burnaby, BC V5A 1S6 (https://www.sfu.ca/campuses/burnaby.html), places the campus in that city"
+identity_accessed = "2026-09-05"
+
+# Saint Martin's University (Lacey, Wash.). The standings label "Saint
+# Martin's" mints saint-martin-s; the fixtures carry saint-martins (9
+# rows), so `name` drops the apostrophe, the St. Mary's precedent, and
+# display_name carries the published spelling. The probe minted "SM"; SMU
+# is the member JSON's short form and its own scoreboard's (not the Texas
+# SMU, which peers print "SMU-TX").
+[[schools]]
+name         = "Saint Martins"
+display_name = "Saint Martin's"
+abbreviation = "SMU"
+conference   = "GNAC"
+mascot       = "Saints"
+gender       = "men"
+base_url     = "https://smusaints.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["St. Martin's", "Saint Martin's University", "St. Martin's University"]
+city         = "Lacey, Wash."
+city_source  = "schedule-page home venue location, https://smusaints.com/sports/mens-soccer (Lacey, Wash., read by the probe 2026-09-05); the gnacsports.com member JSON prints Lacey, WA"
+identity_accessed = "2026-09-05"
+
+# The programme began in fall 2022 (wouwolves.com news 2021/7/13, "add
+# men's soccer ... beginning in the fall of 2022"): absent from the 2021
+# standings (standings=44), 1-10-1 on the 2022 table (standings=45). The
+# window's first year is therefore a real edge, not a boundary artefact.
+# The root carries two stray prestosports strings; the fingerprint is
+# SideArm.
+[[schools]]
+name         = "Western Oregon"
+abbreviation = "WOU"
+conference   = "GNAC"
+mascot       = "Wolves"
+gender       = "men"
+base_url     = "https://wouwolves.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Western Oregon University"]
+city         = "Monmouth, Ore."
+city_source  = "schedule-page home venue location, https://wouwolves.com/sports/mens-soccer (Monmouth, Ore., read by the probe 2026-09-05); the gnacsports.com member JSON prints Monmouth, OR"
+identity_accessed = "2026-09-05"
+
+[[schools]]
+name         = "Northwest Nazarene"
+abbreviation = "NNU"
+conference   = "GNAC"
+mascot       = "Nighthawks"
+gender       = "men"
+base_url     = "https://nnusports.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Northwest Nazarene University"]
+city         = "Nampa, Idaho"
+city_source  = "schedule-page home venue location, https://nnusports.com/sports/mens-soccer (Nampa, Idaho, read by the probe 2026-09-05); the gnacsports.com member JSON prints Nampa, ID"
+identity_accessed = "2026-09-05"
+
+# Last GNAC season 2024: MSU Billings discontinued men's soccer after
+# 2024-25 (msubsports.com news 2024/11/19), absent from the 2025 standings
+# (standings=127). The host is ALIVE and still serves 2022-2024 (the 2026
+# roster path answers 404), so liveness will not detect the departure; the
+# stanza stays enabled with `years` trimmed to the window. The standings
+# label is "Montana State Billings"; the data home also carries
+# msu-billings from opponents' pages. The probe minted "MSB"; MSUB is the
+# member JSON's short form and its own scoreboard's.
+[[schools]]
+name         = "Montana State Billings"
+abbreviation = "MSUB"
+conference   = "GNAC"
+mascot       = "Yellowjackets"
+gender       = "men"
+base_url     = "https://msubsports.com/sports/mens-soccer"
+years        = [2022, 2023, 2024]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["MSU Billings", "Montana State University Billings", "Montana State-Billings"]
+city         = "Billings, Mont."
+city_source  = "schedule-page home venue location, https://msubsports.com/sports/mens-soccer (Billings, Mont., read by the probe 2026-09-05); the gnacsports.com member JSON prints Billings, Mont."
+identity_accessed = "2026-09-05"
