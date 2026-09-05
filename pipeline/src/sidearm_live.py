@@ -56,6 +56,7 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import math
 import re
 import threading
 from collections.abc import Callable, Mapping, Sequence
@@ -804,8 +805,8 @@ def hosted_other_match(
     if pair is None:
         return None
     if owner_slug in (
-        opponent_slug(pair[0], aliases, scope=scope),
-        opponent_slug(pair[1], aliases, scope=scope),
+        opponent_slug(pair[0], aliases, scope=scope, owner=owner_slug),
+        opponent_slug(pair[1], aliases, scope=scope, owner=owner_slug),
     ):
         return None
     return pair
@@ -826,9 +827,9 @@ def own_side_opponent(
     pair = _two_team_names(opponent_name)
     if pair is None:
         return opponent_name
-    if opponent_slug(pair[0], aliases, scope=scope) == owner_slug:
+    if opponent_slug(pair[0], aliases, scope=scope, owner=owner_slug) == owner_slug:
         return pair[1]
-    if opponent_slug(pair[1], aliases, scope=scope) == owner_slug:
+    if opponent_slug(pair[1], aliases, scope=scope, owner=owner_slug) == owner_slug:
         return pair[0]
     return opponent_name
 
@@ -1078,7 +1079,19 @@ class ResolutionScope:
     season: int
     members: frozenset[str]
     claims: Mapping[str, str]
-    _notes: dict[str, tuple[str, str]] = dataclass_field(
+    # An AMBIGUOUS key and every programme of the gender that claims it: one
+    # by name, alias or resolving abbreviation and another by a member alias
+    # (two stanzas claiming one spelling gender-wide is a collision the
+    # config refuses, so every entry here involves a member alias). Only keys
+    # with two or more claimants are kept. When no member of the collecting
+    # conference claims such a key, the claimant whose point is nearest the
+    # collecting school's decides (tl-4sg.9.1).
+    claimants: Mapping[str, frozenset[str]] = dataclass_field(default_factory=dict)
+    # Every programme's point by slug, from programmes.json, loaded once per
+    # collect. A claimant or a collecting school with no point sends the key
+    # to the gender-wide rule instead.
+    points: Mapping[str, tuple[float, float]] = dataclass_field(default_factory=dict)
+    _notes: dict[str, str] = dataclass_field(
         default_factory=dict, compare=False, repr=False
     )
     _lock: threading.Lock = dataclass_field(
@@ -1087,25 +1100,88 @@ class ResolutionScope:
 
     def note(self, printed: str, chosen: str, otherwise: str) -> None:
         """Record that ``printed`` read as ``chosen``, not ``otherwise``."""
+        self._record(
+            printed,
+            f"resolution: {printed!r} read as {chosen}, a {self.conference} "
+            f"{self.season} member, not {otherwise}",
+        )
+
+    def note_distance(
+        self, printed: str, owner: str, ranked: Sequence[tuple[str, float]]
+    ) -> None:
+        """Record that ``printed`` on ``owner``'s page read as the nearest claimant."""
+        chosen, nearest = ranked[0]
+        others = ", ".join(f"{slug} ({km:,.0f} km)" for slug, km in ranked[1:])
+        self._record(
+            printed,
+            f"resolution: {printed!r} on {owner}'s page read as {chosen} "
+            f"({nearest:,.0f} km) over {others}",
+        )
+
+    def _record(self, printed: str, line: str) -> None:
         with self._lock:
-            self._notes.setdefault(printed, (chosen, otherwise))
+            self._notes.setdefault(printed, line)
 
     def notes(self) -> list[str]:
         """One run-log line per distinct printed text the scope re-pointed."""
         with self._lock:
-            return [
-                f"resolution: {printed!r} read as {chosen}, a {self.conference} "
-                f"{self.season} member, not {otherwise}"
-                for printed, (chosen, otherwise) in self._notes.items()
-            ]
+            return list(self._notes.values())
 
-    def fingerprint(self) -> dict[str, object]:
-        """What of the scope shapes a parse, for ``parse_fingerprint``."""
-        return {
+    def nearest_claimant(self, key: str, owner: str) -> list[tuple[str, float]] | None:
+        """The claimants of an ambiguous ``key`` ranked by distance from ``owner``.
+
+        None when the key is not ambiguous, or when the owner or any claimant
+        has no point: the tiebreak then never applies and the gender-wide
+        rule answers as it always has.
+        """
+        claimants = self.claimants.get(key)
+        if not claimants:
+            return None
+        origin = self.points.get(owner)
+        if origin is None:
+            return None
+        ranked: list[tuple[str, float]] = []
+        for slug in claimants:
+            point = self.points.get(slug)
+            if point is None:
+                return None
+            ranked.append((slug, haversine_km(origin, point)))
+        ranked.sort(key=lambda pair: (pair[1], pair[0]))
+        return ranked
+
+    def fingerprint(self, owner: str | None = None) -> dict[str, object]:
+        """What of the scope shapes a parse, for ``parse_fingerprint``.
+
+        The tiebreak reads the claimants' points and the collecting school's,
+        so both enter the fingerprint, but only while a key is ambiguous:
+        a scope with none is fingerprinted exactly as before.
+        """
+        fingerprint: dict[str, object] = {
             "conference": self.conference,
             "season": self.season,
             "claims": dict(sorted(self.claims.items())),
         }
+        if self.claimants:
+            fingerprint["tiebreak"] = {
+                key: {slug: self.points.get(slug) for slug in sorted(slugs)}
+                for key, slugs in sorted(self.claimants.items())
+            }
+            fingerprint["origin"] = None if owner is None else self.points.get(owner)
+        return fingerprint
+
+
+def haversine_km(a: tuple[float, float], b: tuple[float, float]) -> float:
+    """Great-circle distance in kilometres between two (lat, lon) points."""
+    lat1, lon1 = math.radians(a[0]), math.radians(a[1])
+    lat2, lon2 = math.radians(b[0]), math.radians(b[1])
+    half = (
+        math.sin((lat2 - lat1) / 2) ** 2
+        + math.cos(lat1) * math.cos(lat2) * math.sin((lon2 - lon1) / 2) ** 2
+    )
+    return 2 * EARTH_RADIUS_KM * math.asin(math.sqrt(half))
+
+
+EARTH_RADIUS_KM = 6371.0088
 
 
 def resolution_scope(
@@ -1115,29 +1191,41 @@ def resolution_scope(
     *,
     conference: str,
     season: int,
+    points: Mapping[str, tuple[float, float]] | None = None,
 ) -> ResolutionScope:
     """The scope one collect resolves inside: ``members`` and their claims.
 
     ``members`` is the membership resolver's answer for the conference-season
     (``conference_members``), never a conference literal; a member with no
     stanza (a dead host recorded membership-only) claims nothing.
+
+    ``points`` is every programme's point by slug (``programme_points`` over
+    the loaded programmes.json), read once per collect; with it the scope can
+    break an ambiguous key no member claims by distance. Without it the
+    tiebreak never applies.
     """
     claims: dict[str, str] = {}
+    claimed: dict[str, set[str]] = {}
     for school in schools:
         if school.gender != gender:
             continue
         slug = programme_slug(school.name)
-        if slug not in members:
-            continue
         for candidate in (*_identity_spellings(school), *school.member_aliases):
             key = _identity_key(candidate)
-            if key:
+            if not key:
+                continue
+            claimed.setdefault(key, set()).add(slug)
+            if slug in members:
                 claims[key] = slug
     return ResolutionScope(
         conference=conference,
         season=season,
         members=frozenset(members),
         claims=claims,
+        claimants={
+            key: frozenset(slugs) for key, slugs in claimed.items() if len(slugs) > 1
+        },
+        points=dict(points or {}),
     )
 
 
@@ -1179,7 +1267,11 @@ def member_alias_collisions(
 
 
 def opponent_slug(
-    name: str, aliases: dict[str, str], *, scope: ResolutionScope | None = None
+    name: str,
+    aliases: dict[str, str],
+    *,
+    scope: ResolutionScope | None = None,
+    owner: str | None = None,
 ) -> str:
     """Resolve a published opponent string to a stable identity, or record it.
 
@@ -1188,6 +1280,17 @@ def opponent_slug(
     programme, and the scope notes the re-pointing when the gender-wide map
     would have read it otherwise. Without one, or for every key no member
     claims, the gender-wide rule below applies unchanged.
+
+    One exception sits between the two (tl-4sg.9.1): an AMBIGUOUS key, one
+    that folds to one programme's name or aliases and to another's member
+    aliases, which no member of the collecting conference claims. A CCAA
+    page prints "Dominican" for Dominican of California, a non-conference
+    opponent, and the gender-wide map reads the CACC's Dominican. Such a key
+    resolves to the claimant whose point (programmes.json) is nearest the
+    collecting school's, ``owner``; the scope logs the re-pointing once per
+    printed text. With no ``owner``, or when the owner or any claimant has
+    no point, the key falls to the gender-wide rule. A key with a single
+    claimant is never touched.
 
     The fallback is deliberately conservative. A bare substring test treats a
     PREFIX as an identity — "Southwestern" sits inside "southwestern oklahoma
@@ -1211,6 +1314,13 @@ def opponent_slug(
         if chosen != otherwise:
             scope.note(_clean_team_name(name), chosen, otherwise)
         return chosen
+    if scope is not None and owner is not None:
+        ranked = scope.nearest_claimant(key, owner)
+        if ranked is not None:
+            chosen = ranked[0][0]
+            if chosen != _unscoped_slug(key, aliases):
+                scope.note_distance(_clean_team_name(name), owner, ranked)
+            return chosen
     return _unscoped_slug(key, aliases)
 
 
@@ -1714,7 +1824,9 @@ def _parse_schedule_dom(
         opponent_name = own_side_opponent(
             opponent_name, owner_slug=owner_slug, aliases=aliases, scope=scope
         )
-        other_slug = opponent_slug(opponent_name, aliases, scope=scope)
+        other_slug = opponent_slug(
+            opponent_name, aliases, scope=scope, owner=owner_slug
+        )
         if neutral:
             # Neutral rows keep the "vs"/"at" span as the only side
             # indicator; home/away stay as published, the flag says
@@ -1925,7 +2037,9 @@ def parse_schedule_page(
         opponent_name = own_side_opponent(
             opponent_name, owner_slug=owner_slug, aliases=aliases, scope=scope
         )
-        other_slug = opponent_slug(opponent_name, aliases, scope=scope)
+        other_slug = opponent_slug(
+            opponent_name, aliases, scope=scope, owner=owner_slug
+        )
         indicator = str(event.get("location_indicator") or "").upper()
         owner_is_home = indicator == "H" or (
             indicator == "N" and bool(event.get("neutral_hometeam"))
@@ -3188,7 +3302,7 @@ def collect_programme(
             # A scope re-points what its members claim, so it is part of the
             # parse's identity when there is one; without one the inputs are
             # exactly what they were.
-            *(() if scope is None else (scope.fingerprint(),)),
+            *(() if scope is None else (scope.fingerprint(slug),)),
             *recipe.parse_identity,
         )
         state = (

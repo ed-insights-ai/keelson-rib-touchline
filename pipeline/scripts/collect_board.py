@@ -55,6 +55,7 @@ from src.fetch_pool import (
 from src.config import DEFAULT_CONFIG, SchoolConfig, load_schools
 from src.membership import conference_for, division_for, load_membership
 from src.page_state import PageStateStore
+from src.programmes import load_programmes, programme_points
 from src.recipes import PRESTO, SIDEARM, NoCollector, Recipe, live_recipe
 from src.sidearm_live import (
     DEFAULT_LAYERS,
@@ -271,6 +272,19 @@ def _membership_document() -> dict[str, object] | None:
         return load_membership()
     except (OSError, ValueError):
         return None
+
+
+def _programme_points() -> dict[str, tuple[float, float]]:
+    """Every programme's point for one run, or none on an install without them.
+
+    Loaded once rather than per programme, like the membership document. A
+    missing or unreadable programmes.json leaves the distance tiebreak
+    unarmed, so every ambiguous name falls to the gender-wide rule.
+    """
+    try:
+        return programme_points(load_programmes())
+    except (OSError, ValueError):
+        return {}
 
 
 def programme_conference(
@@ -509,9 +523,16 @@ def collect(
     # Opponent text is written for the collecting conference's readers, so
     # a printed name a member claims resolves to the member before any other
     # programme (tl-b3v). One scope per collect, built from the member set
-    # above, applied to every row of every page in it.
+    # above, applied to every row of every page in it. The programmes
+    # reference is read once here too: an ambiguous name no member claims
+    # breaks by distance to the collecting school (tl-4sg.9.1).
     scope = resolution_scope(
-        schools, gender, members, conference=conference, season=season
+        schools,
+        gender,
+        members,
+        conference=conference,
+        season=season,
+        points=_programme_points(),
     )
     results = []
     errors: list[str] = []
