@@ -61,9 +61,10 @@ def test_two_enabled_stanzas_minting_one_slug_refuse_the_load(tmp_path):
 
 
 def test_a_qualified_name_disambiguates_and_loads(tmp_path):
-    """The path the error names: qualify ``name``, keep a published spelling
-    only this stanza claims in ``display_name`` (identity is check-membership's
-    question, not the loader's); both stanzas load under their own slug."""
+    """The path the error names: qualify ``name`` and keep the published
+    spelling in ``display_name``, which is reader-facing and never an
+    identity claim (tl-4an.31), so it may fold to the incumbent's key; both
+    stanzas load under their own slug."""
     config = _write(
         tmp_path,
         _entry("Lincoln", "LU", conference="GLVC"),
@@ -71,7 +72,7 @@ def test_a_qualified_name_disambiguates_and_loads(tmp_path):
             "Lincoln Pennsylvania",
             "LUP",
             conference="OTHER",
-            display_name="Lincoln University (Pa.)",
+            display_name="Lincoln (Pa.)",
         ),
     )
 
@@ -81,7 +82,7 @@ def test_a_qualified_name_disambiguates_and_loads(tmp_path):
         "lincoln",
         "lincoln-pennsylvania",
     ]
-    assert [s.display() for s in schools] == ["Lincoln", "Lincoln University (Pa.)"]
+    assert [s.display() for s in schools] == ["Lincoln", "Lincoln (Pa.)"]
 
 
 def test_a_disabled_twin_does_not_participate(tmp_path):

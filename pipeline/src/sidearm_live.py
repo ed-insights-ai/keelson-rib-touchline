@@ -937,8 +937,13 @@ def _identity_spellings(school: SchoolConfig) -> list[str]:
     The abbreviation is claimed only while the stanza says it resolves: a
     bare initialism two stanzas share identifies nobody, and the map above
     would otherwise hand it to whichever stanza comes last in the file.
+    ``display_name`` is never claimed: it is the reader-facing spelling, not
+    an identity, so a same-name pair may print "Dominican (N.Y.)" beside
+    "Dominican (Calif.)" while the bare "Dominican" resolves by name and
+    aliases alone (tl-4an.31). A published spelling that should resolve is
+    stated as an alias.
     """
-    spellings = [school.name, school.display_name, *school.aliases]
+    spellings = [school.name, *school.aliases]
     if school.abbreviation_resolves:
         spellings.append(school.abbreviation)
     return spellings
@@ -954,12 +959,13 @@ def identity_collisions(
     such a key to the last stanza only, silently; check-membership refuses
     the config instead, so the collision is settled in the data (an alias
     dropped, or ``abbreviation_resolves = false`` on the stanzas that share
-    an initialism).
+    an initialism). The fields checked are exactly the ones
+    ``_identity_spellings`` claims; ``display_name`` is not among them.
     """
     claims: dict[tuple[str, str], dict[str, list[tuple[str, str]]]] = {}
     for school in schools:
         slug = programme_slug(school.name)
-        fields = [("name", school.name), ("display_name", school.display_name)]
+        fields = [("name", school.name)]
         if school.abbreviation_resolves:
             fields.append(("abbreviation", school.abbreviation))
         fields.extend(("alias", alias) for alias in school.aliases)

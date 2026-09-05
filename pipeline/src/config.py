@@ -36,7 +36,12 @@ class SchoolConfig:
     # punctuation ("St. Mary's" → name "Saint Marys", slug "saint-marys") or
     # the school renames (slugs never rename). ``display_name`` carries the
     # published spelling for reader-facing surfaces; empty means ``name`` is
-    # already the published name. Use ``display()`` to resolve.
+    # already the published name. Use ``display()`` to resolve. It is never
+    # an identity claim: opponent resolution and check-membership's
+    # collision check read ``name`` and ``aliases`` (and a resolving
+    # abbreviation) only, so a display name may carry a qualifier that
+    # folds to another stanza's key ("Dominican (Calif.)" beside the
+    # incumbent "Dominican"). A spelling that should resolve is an alias.
     # The slug is also the identity of every map the collect keys by
     # programme, so two enabled stanzas of one gender may not mint the same
     # one: load_schools refuses the pair. A same-named institution (a second
