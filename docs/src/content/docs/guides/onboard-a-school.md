@@ -120,7 +120,11 @@ tail of the description meta once the published name is removed ("The
 official 2026 Men's Soccer schedule for the UIS Prairie Stars"), kept whole
 when the hostname spells it; `aliases` are the published long name and every
 schedule opponent spelling that contains all the words of `name`, minus any
-spelling the collector's identity key already folds onto the name; `city` is
+spelling the collector's identity key already folds onto the name (a short
+name the school's conference peers print that is another stanza's whole
+name, "Dominican" for Dominican of California, goes in `member_aliases`
+instead, where it resolves only inside a collect of the school's own
+conference); `city` is
 the town the schedule page prints most often on its home rows, AP style,
 which the programmes reference (`uv run build-programmes`, tl-891) resolves
 to one Gazetteer place, and `identity_accessed` the probe date. A mascot

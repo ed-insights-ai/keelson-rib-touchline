@@ -68,6 +68,18 @@ class SchoolConfig:
     # programmes reference) while only its name and aliases resolve.
     # check-membership refuses any spelling two stanzas of one gender claim.
     abbreviation_resolves: bool = True
+    # Published spellings that identify this programme only among its
+    # conference peers. A peer's schedule page prints the short name the
+    # conference uses ("Dominican" for Dominican of California on Chaminade's
+    # page, "Concordia" for Concordia Irvine), and that short name may be
+    # another stanza's whole name in another conference, so it cannot be a
+    # gender-wide alias without colliding. A member alias enters no
+    # gender-wide map: it resolves only during a collect of a conference this
+    # programme is a member of that season (the membership windows decide),
+    # where the collecting conference's members are preferred over every
+    # other programme. check-membership refuses a member alias that another
+    # stanza of the same conference and gender claims.
+    member_aliases: list[str] = field(default_factory=list)
     # The town the programme plays in, as its schedule page prints it
     # ("Alamosa, Colo.", "Ada, OK"); the programmes reference normalises it to
     # AP style and resolves it to one Gazetteer place. city_source cites where
@@ -204,6 +216,7 @@ def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
             mascot=entry.get("mascot", ""),
             aliases=entry.get("aliases", []),
             abbreviation_resolves=entry.get("abbreviation_resolves", True),
+            member_aliases=entry.get("member_aliases", []),
             city=entry.get("city", ""),
             city_source=entry.get("city_source", ""),
             identity_accessed=entry.get("identity_accessed", ""),

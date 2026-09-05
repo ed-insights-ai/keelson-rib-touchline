@@ -4503,7 +4503,9 @@ identity_accessed = "2026-09-05"
 # Texas 2022-2024 in the data home), so the name is qualified and the bare
 # word is never an alias. The member JSON links cuieagles.com, which 301s
 # to cuigoldeneagles.com. The probe read the mascot as "Eagles"; "Golden
-# Eagles" is the site's own name and the member JSON's.
+# Eagles" is the site's own name and the member JSON's. PacWest peers print
+# the bare "Concordia" (goswords.com 2025, 2026-09-05), a member alias:
+# it resolves here only inside a PacWest collect (tl-b3v).
 [[schools]]
 name         = "Concordia Irvine"
 abbreviation = "CUI"
@@ -4516,6 +4518,7 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Concordia University Irvine"]
+member_aliases = ["Concordia"]
 city         = "Irvine, Calif."
 city_source  = "schedule-page home venue location, https://cuigoldeneagles.com/sports/mens-soccer (Irvine, Calif., read by the probe 2026-09-05); the thepacwest.com member JSON prints Irvine, Calif."
 identity_accessed = "2026-09-05"
@@ -4528,9 +4531,11 @@ identity_accessed = "2026-09-05"
 # the CACC's "Dominican (N.Y.)" (tl-4an.31: display_name is reader-facing
 # and never enters identity). The parenthetical forms "Dominican (Calif.)"
 # and "Dominican (CA)" reduce to the bare word before matching, which the
-# incumbent claims, so they are not carried as aliases (tl-4sg.9). The
-# probe minted "DC"; DUC is the member JSON's short form and its own
-# scoreboard's.
+# incumbent claims, so they are not carried as aliases (tl-4sg.9). The bare
+# "Dominican" PacWest peers print (goswords.com 2025, game 8132, 2026-09-05)
+# is a member alias instead: it resolves here only inside a PacWest collect,
+# and to the incumbent everywhere else (tl-b3v). The probe minted "DC"; DUC
+# is the member JSON's short form and its own scoreboard's.
 [[schools]]
 name         = "Dominican of California"
 display_name = "Dominican (Calif.)"
@@ -4544,6 +4549,7 @@ scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Dominican California"]
+member_aliases = ["Dominican"]
 city         = "San Rafael, Calif."
 city_source  = "schedule-page home venue location, https://dominicanathletics.com/sports/mens-soccer (San Rafael, Calif., read by the probe 2026-09-05); the thepacwest.com member JSON prints San Rafael, Calif."
 identity_accessed = "2026-09-05"

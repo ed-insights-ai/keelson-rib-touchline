@@ -89,6 +89,7 @@ from src.sidearm_live import (
     LAYER_STATS,
     LiveCollectionError,
     PublishedPage,
+    ResolutionScope,
     _clean_team_name,
     _DOM_MONTHS,
     _dom_date,
@@ -490,6 +491,7 @@ def parse_schedule(
     aliases: dict[str, str],
     members: set[str] | None = None,
     skips: list[str] | None = None,
+    scope: ResolutionScope | None = None,
 ) -> list[dict[str, object]]:
     """Read a PrestoSports schedule page into fixture rows.
 
@@ -586,14 +588,14 @@ def parse_schedule(
         ):
             continue
         hosted = hosted_other_match(
-            opponent_name, owner_slug=owner_slug, aliases=aliases
+            opponent_name, owner_slug=owner_slug, aliases=aliases, scope=scope
         )
         if hosted is not None:
             if skips is not None:
                 skips.append(hosted_skip(date, hosted))
             continue
         opponent_name = own_side_opponent(
-            opponent_name, owner_slug=owner_slug, aliases=aliases
+            opponent_name, owner_slug=owner_slug, aliases=aliases, scope=scope
         )
         if event_id.startswith("#"):
             event_id = _minted_id(date, opponent_name)
@@ -603,7 +605,7 @@ def parse_schedule(
         classes = set(row.get("class") or [])
         owner_is_home = not _text(row, _ROW_SIDE).lower().startswith("at")
         neutral = "neutral" in classes or row.select_one(_ROW_NEUTRAL_SITE) is not None
-        other_slug = opponent_slug(opponent_name, aliases)
+        other_slug = opponent_slug(opponent_name, aliases, scope=scope)
         home, away = (
             (owner_slug, other_slug) if owner_is_home else (other_slug, owner_slug)
         )

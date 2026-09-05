@@ -487,7 +487,11 @@ def validate(
 
     if schools is None:
         schools = load_schools()
-    from src.sidearm_live import identity_collisions, programme_slug
+    from src.sidearm_live import (
+        identity_collisions,
+        member_alias_collisions,
+        programme_slug,
+    )
 
     # Identity is gender-wide and last-stanza-wins, so a spelling two stanzas
     # claim is refused here rather than resolved silently at collect time.
@@ -497,6 +501,15 @@ def validate(
             f"identity collision ({gender}): {key!r} is claimed by {named}; "
             "drop the alias or set abbreviation_resolves = false on the "
             "stanzas that share the initialism"
+        )
+    # A member alias resolves only inside its conference's scope, so the one
+    # spelling it may not share is a fellow member's.
+    for gender, conference, key, claimants in member_alias_collisions(schools):
+        named = " and ".join(f"{slug} ({label})" for slug, label in claimants)
+        errors.append(
+            f"member alias collision ({gender}, {conference}): {key!r} is "
+            f"claimed by {named}; a member alias may not be a spelling another "
+            "member of the same conference claims"
         )
 
     configured_programmes = {

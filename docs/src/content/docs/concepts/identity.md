@@ -92,6 +92,27 @@ platform audit found the same class of error in the historical derivation
 when it ran gender-blind. Scoping the map is cheaper than detecting the
 corruption afterwards.
 
+## The collecting conference's members come first
+
+A collect also resolves inside the conference-season it is reading for:
+when a printed name folds to more than one programme, a member of the
+collecting conference in that season is preferred over every other
+programme, and a name no member claims resolves exactly as before. The
+member set is the membership resolver's (`conference_members`, read from the
+windows in `membership.json`), never a conference literal, and one
+`ResolutionScope` built from it in `collect_board.py` applies to every row
+of every page in the collect, conference and non-conference alike. The case
+that forced it (tl-b3v): PacWest peers print "Dominican" for Dominican of
+California and "Concordia" for Concordia Irvine, and the gender-wide map
+read the first as the CACC's Dominican, whose whole name it is, so each
+match landed in the PacWest file twice under two slugs. Such a short name
+is a stanza's `member_aliases` entry, a spelling that enters no gender-wide
+map and resolves only while the programme is a member of the collecting
+conference; `check-membership` refuses one that a fellow member also claims,
+and `display_name` still plays no part. Each printed text the scope
+re-points is named once in the run log ("resolution: 'Dominican' read as
+dominican-of-california, a PACWEST 2025 member, not dominican").
+
 ## Adjudication: the human in the loop
 
 Some strings no grammar can decide. "OU" could be Oklahoma, Ouachita, or

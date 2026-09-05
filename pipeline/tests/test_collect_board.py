@@ -202,9 +202,17 @@ def test_collect_emits_schema_v2_and_each_programmes_actual_conference(
     ]
 
     def fake_programme(
-        school, season, aliases, *, session=None, layers, members, page_cache=None
+        school,
+        season,
+        aliases,
+        *,
+        session=None,
+        layers,
+        members,
+        page_cache=None,
+        scope=None,
     ):
-        del season, aliases, session, members, page_cache
+        del season, aliases, session, members, page_cache, scope
         return ProgrammeCollection(
             slug=programme_slug(school.name),
             name=school.name,
@@ -294,7 +302,15 @@ def test_fixtures_payload_names_the_seasons_conference_not_the_stanzas(
     seen: dict[str, object] = {}
 
     def fake_programme(
-        school, season, aliases, *, session=None, layers, members, page_cache=None
+        school,
+        season,
+        aliases,
+        *,
+        session=None,
+        layers,
+        members,
+        page_cache=None,
+        scope=None,
     ):
         del season, aliases, session, page_cache
         seen["members"] = members
@@ -378,9 +394,17 @@ def test_fixtures_payload_carries_the_windows_division_and_omits_it_otherwise(
     }
 
     def fake_programme(
-        school, season, aliases, *, session=None, layers, members, page_cache=None
+        school,
+        season,
+        aliases,
+        *,
+        session=None,
+        layers,
+        members,
+        page_cache=None,
+        scope=None,
     ):
-        del season, aliases, session, page_cache, members
+        del season, aliases, session, page_cache, members, scope
         return ProgrammeCollection(
             slug=programme_slug(school.name),
             name=school.name,
@@ -470,9 +494,17 @@ def test_display_name_reaches_the_fixtures_payload_but_never_the_slug(
     )
 
     def fake_programme(
-        school, season, aliases, *, session=None, layers, members, page_cache=None
+        school,
+        season,
+        aliases,
+        *,
+        session=None,
+        layers,
+        members,
+        page_cache=None,
+        scope=None,
     ):
-        del season, aliases, session, members, page_cache
+        del season, aliases, session, members, page_cache, scope
         return ProgrammeCollection(
             slug=programme_slug(school.name),
             name=school.name,

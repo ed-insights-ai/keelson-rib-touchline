@@ -225,9 +225,17 @@ def _rows(slug: str, opponent: str) -> list[dict[str, object]]:
 
 
 def _fake_programme(
-    school, season, aliases, *, session=None, layers, members, page_cache=None
+    school,
+    season,
+    aliases,
+    *,
+    session=None,
+    layers,
+    members,
+    page_cache=None,
+    scope=None,
 ):
-    del season, aliases, session, members, page_cache
+    del season, aliases, session, members, page_cache, scope
     slug = programme_slug(school.name)
     if slug == "charlie":
         # A programme whose pages could not be read: every layer is a named gap.
