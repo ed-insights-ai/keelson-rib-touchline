@@ -61,6 +61,66 @@ BOX_SPELLINGS = [
     ("Texas-Permian Basin", "ut-permian-basin"),
     # sidearm:tiffin:6466, 2022-09-10 (also sidearm:walsh:4241)
     ("Ky. Wesleyan", "kentucky-wesleyan"),
+    # The batch 5 alias round (tl-9vm, 2026-09-05): CCAA, PacWest and GNAC
+    # spellings. First the box vocabulary the box-vs-fixture check could not
+    # resolve, then the peer schedule spellings collected as strangers: a
+    # backtick standing in for the okina, the long "California State
+    # University, X" forms, and Hawaii Hilo's mascot-suffixed opponent names.
+    # sidearm:cal-state-dominguez-hills:12905, 2023-09-18 (108 boxes)
+    ("Cal St. Dom. Hills", "cal-state-dominguez-hills"),
+    # sidearm:cal-state-san-bernardino:4366, 2022 (38 boxes)
+    ("Cal St. San B'dino", "cal-state-san-bernardino"),
+    # sidearm:cal-state-monterey-bay:9015, 2025
+    ("Cal St. San Bernardino", "cal-state-san-bernardino"),
+    # sidearm:san-francisco-state:6484, 2022 (37 boxes)
+    ("San Fran. St.", "san-francisco-state"),
+    # sidearm:montana-state-billings:9112, 2022 (38 boxes)
+    ("Mont. St. Billings", "montana-state-billings"),
+    # sidearm:northwest-nazarene:8314, 2024 (76 boxes, ranked form included)
+    ("Western Ore.", "western-oregon"),
+    ("#10 Western Ore.", "western-oregon"),
+    # sidearm:sonoma-state:12040, 2023 (33 boxes)
+    ("Western Wash.", "western-washington"),
+    # sidearm:saint-martins:5531, 2023 (six boxes)
+    ("Colo. Christian", "colorado-christian"),
+    # sidearm:cal-state-san-marcos:5973, 2022 (four boxes)
+    ("UC-Colo. Springs", "uccs"),
+    # sidearm:cal-state-dominguez-hills:12905, 2023-09-18 (schedule row)
+    ("Hawai`i Hilo", "hawaii-hilo"),
+    # sidearm:cal-state-dominguez-hills:13140, 2024-09-07
+    ("Hawai`i Pacific", "hawaii-pacific"),
+    # sidearm:cal-state-dominguez-hills:13523, 2025-09-27
+    ("California State University, Los Angeles", "cal-state-la"),
+    # sidearm:simon-fraser:3710, 2022-08-27
+    ("California State, Los Angeles", "cal-state-la"),
+    # sidearm:fresno-pacific:9048, 2025-09-21
+    ("California State University, San Bernardino", "cal-state-san-bernardino"),
+    # sidearm:hawaii-pacific:10364, 2024-10-06
+    ("Academy of Arts", "academy-of-art"),
+    # sidearm:hawaii-pacific:10907, 2025-10-09 (the page's misspelling)
+    ("Vangaurd", "vanguard"),
+    # sidearm:hawaii-hilo:6167, 2022-10-22
+    ("Biola Eagles", "biola"),
+    # sidearm:hawaii-hilo:6160, 2022-09-23
+    ("Chaminade Silverswords", "chaminade"),
+    # sidearm:hawaii-hilo:7303, 2025-10-25
+    ("Concordia Golden Eagles", "concordia-irvine"),
+    # sidearm:hawaii-hilo:6161, 2022-09-26
+    ("Dominican Penguins", "dominican-of-california"),
+    # sidearm:hawaii-hilo:6159, 2022-09-17
+    ("HPU Sharks", "hawaii-pacific"),
+    # sidearm:hawaii-hilo:6785, 2024-10-12
+    ("Jessup Warriors", "jessup"),
+    # sidearm:hawaii-hilo:6792, 2024-10-15
+    ("Menlo Oaks", "menlo"),
+    # sidearm:hawaii-hilo:6786, 2024-10-19
+    ("Vanguard Lions", "vanguard"),
+    # sidearm:hawaii-hilo:6500, 2023-10-19
+    ("Westmont Warriors", "westmont"),
+    # sidearm:hawaii-hilo:7305, 2025-09-17
+    ("UCCS Mountain Lions", "uccs"),
+    # sidearm:hawaii-hilo:6156, 2022-09-09
+    ("Westminster Griffins", "westminster"),
 ]
 
 
