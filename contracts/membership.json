@@ -6,6 +6,7 @@
   },
   "conferences": [
     "CACC",
+    "CC",
     "ECC",
     "G-MAC",
     "GAC",
@@ -16,8 +17,10 @@
     "MEC",
     "MIAA",
     "NE10",
+    "PBC",
     "PSAC",
     "RMAC",
+    "SAC",
     "SSC",
     "independent",
     "non_member"
@@ -108,6 +111,16 @@
         }
       ]
     },
+    "lander": {
+      "men": [
+        {
+          "conference": "PBC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Peach Belt Conference, 2022 and 2026 Men's Soccer records, https://peachbeltconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://peachbeltconference.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both under the label Lander, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
     "molloy": {
       "men": [
         {
@@ -115,6 +128,30 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
+        }
+      ]
+    },
+    "north-greenville": {
+      "men": [
+        {
+          "conference": "CC",
+          "from_season": 2022,
+          "to_season": 2022,
+          "source": "Conference Carolinas, 2022 Men's Soccer records, https://conferencecarolinas.com/stats.aspx?path=msoc&year=2022&conf=true (accessed 2026-09-04); listed there under the label North Greenville, and in the 2021 records (year=2021). The 2022 standings (https://conferencecarolinas.com/standings.aspx?standings=111) print one table with no divisions; from 2023 the conference prints three divisions (East, Northwest, Southwest), so this window closes at 2022 and the divisional window on this slug follows it."
+        },
+        {
+          "conference": "CC",
+          "division": "Southwest",
+          "from_season": 2023,
+          "to_season": 2023,
+          "source": "Conference Carolinas, 2023 Men's Soccer records, https://conferencecarolinas.com/stats.aspx?path=msoc&year=2023&conf=true (accessed 2026-09-04); listed there under the label North Greenville. Division Southwest as printed on the 2023 standings (https://conferencecarolinas.com/standings.aspx?standings=125); the 2024 standings (https://conferencecarolinas.com/standings.aspx?standings=140) print it in the Northwest, so the divisional window splits here with the conference unchanged."
+        },
+        {
+          "conference": "CC",
+          "division": "Northwest",
+          "from_season": 2024,
+          "to_season": 2026,
+          "source": "Conference Carolinas, 2024 and 2026 Men's Soccer records, https://conferencecarolinas.com/stats.aspx?path=msoc&year=2024&conf=true and https://conferencecarolinas.com/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2025) under the label North Greenville. Division Northwest as printed on the standings pages https://conferencecarolinas.com/standings.aspx?standings=125 (2023), https://conferencecarolinas.com/standings.aspx?standings=140 (2024), https://conferencecarolinas.com/standings.aspx?standings=160 (2025) and the live 2026 table (https://conferencecarolinas.com/standings.aspx?path=msoc, archive id 173). Printed in the Southwest on the 2023 standings (https://conferencecarolinas.com/standings.aspx?standings=125) and in the Northwest from 2024, the season Shorter joined the Southwest."
         }
       ]
     },
@@ -145,6 +182,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "wingate": {
+      "men": [
+        {
+          "conference": "SAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "South Atlantic Conference, 2022 and 2026 Men's Soccer standings, https://thesac.com/standings.aspx?standings=73 (the archived 2022 table) and https://thesac.com/standings.aspx?path=msoc (the live 2026 table, archive id 191) (accessed 2026-09-04); listed in both under the label Wingate, and in every season between (https://thesac.com/standings.aspx?standings=74, 75 and 178). The 2021 standings (https://thesac.com/standings.aspx?standings=72) list it too, so it did not arrive across the window's edge. The SAC publishes no per-season records pages (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for every year 2021-2026), so the standings archive is source 1 (standings_archives.SAC)."
         }
       ]
     },

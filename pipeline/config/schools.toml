@@ -770,7 +770,12 @@ conference   = "GSC"
 mascot       = "Hawks"
 gender       = "men"
 base_url     = "https://goshorterhawks.com/sports/mens-soccer"
-years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]
+# 2024-2026 are Conference Carolinas seasons (Southwest division; the CC
+# 2024 records list Shorter, the 2023 records do not): membership.json
+# carries that window on this slug and the collect resolves the conference
+# per season. Same host, same platform; the probe read all four layers and
+# 2022-2026 served on 2026-09-04.
+years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3222,4 +3227,811 @@ enabled      = true
 aliases      = ["University of Wisconsin-Parkside", "Parkside", "UW-Parkside"]
 city         = "Kenosha, Wis."
 city_source  = "schedule-page home venue location, https://parksiderangers.com/sports/mens-soccer/schedule/2026 (Kenosha, WI); the gliac.org member JSON prints Kenosha, WI and uwp.edu's footer address is 900 Wood Road, Kenosha, WI 53141 (read 2026-09-04)"
+identity_accessed = "2026-09-04"
+
+# ============================================================
+# SAC MEN'S SOCCER - 12 programmes, backfill window 2022-2026
+# ============================================================
+# 12 windows in the depth, one of them on a dead host: Limestone (SAC
+# 2022-2024) is on the 2024 standings (standings=75) and absent from the
+# 2025 table (standings=178), and golimestonesaints.com answers HTTP 404 at
+# the root and at /sports/mens-soccer (read 2026-09-04 and 2026-09-05). Its
+# stanza stays enabled in the Alliance and Alderson Broaddus shape so the
+# programmes reference carries its identity row; check-membership refuses a
+# window whose slug has no stanza, so "no stanza" was not an option.
+# Queens University of Charlotte's last SAC season was 2021 (standings=72,
+# label "Queens NC"), outside the depth: no window, no stanza, no alias;
+# the ECC's queens keeps its slug.
+#
+# Source of truth: the South Atlantic Conference standings archive. The SAC
+# publishes no per-season records pages (thesac.com/stats.aspx?path=msoc
+# answers "no statistics available" for every year 2021-2026), so source 1
+# is https://thesac.com/standings.aspx?standings={id} per season (ids 72-75
+# for 2021-2024, 178 for 2025, 191 for 2026; standings_archives.SAC in
+# data/reference/membership.json) and, for 2026, the live table
+# https://thesac.com/standings.aspx?path=msoc, which is the second source
+# for id 191. Reproduced offline with check-membership --standings on the
+# captured pages. 12/12/12/11/11 members 2022-2026: Limestone out after
+# 2024. Emory & Henry is absent from the 2021 table and on every table
+# from 2022 (its first SAC season; emoryhenry.edu news 2022-07-05). UVA Wise
+# is a member with no men's soccer on any table and has no stanza. Hosts
+# came from the member JSON embedded in the standings page.
+#
+# Sites: the 11 live hosts probed 2026-09-04 (uv run probe --name). Six are SideArm
+# (Wingate, Anderson, Catawba, Lincoln Memorial, Lenoir-Rhyne, Newberry):
+# schedule / roster / stats / matches present, 2022-2026 served. Five are
+# PrestoSports (Mars Hill, Carson-Newman, Coker, Emory & Henry, Tusculum),
+# written the way the SSC's Tampa and the CACC's Presto stanzas are. Coker,
+# Emory & Henry and Tusculum answered an empty HTTP 202 to the probe's
+# first burst (the CloudFront challenge); Carson-Newman and Tusculum were
+# settled by a paced curl pass on 2026-09-05 (see their stanzas). No
+# collect has run yet, so every stanza is data_status = unverified. No
+# ordinals.
+#
+# Names are the standings labels, chosen so programme_slug(name) matches
+# the membership key; the data home already carries every one of them as
+# an opponent slug except emory-henry. "Lincoln Memorial" mints
+# lincoln-memorial beside the GLVC's lincoln and never aliases "Lincoln".
+# Abbreviations are the schools' own short forms as their SideArm
+# scoreboards print them (home_short_name / away_short_name in the root
+# page JSON, captured 2026-09-04), read off the school's own site where it
+# prints one and off a peer's scoreboard otherwise; the standings pages
+# print no short forms. WU, AU and TU are also other stanzas' (Walsh,
+# Westminster, Wheeling, Wilmington; Adelphi, Alliance, Ashland; Tiffin), so
+# those three carry abbreviation_resolves = false. Aliases cover the
+# published long names and the label variants peers print.
+
+# The site's own scoreboard prints "WU" (and "WIN"); peers print "WIN".
+[[schools]]
+name         = "Wingate"
+abbreviation = "WU"
+abbreviation_resolves = false  # "WU" is also Walsh, Westminster, Wheeling and Wilmington's
+conference   = "SAC"
+mascot       = "Bulldogs"
+gender       = "men"
+base_url     = "https://wingatebulldogs.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Wingate University", "WIN"]
+city         = "Wingate, N.C."
+city_source  = "schedule-page home venue location, https://wingatebulldogs.com/sports/mens-soccer (Wingate, N.C., read by the probe 2026-09-04); the thesac.com member JSON prints Wingate, NC"
+identity_accessed = "2026-09-04"
+
+# The site's own scoreboard prints "AU" (and "AND"); peers print "AND".
+[[schools]]
+name         = "Anderson"
+abbreviation = "AU"
+abbreviation_resolves = false  # "AU" is also Adelphi, Alliance and Ashland's
+conference   = "SAC"
+mascot       = "Trojans"
+gender       = "men"
+base_url     = "https://autrojans.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Anderson University", "Anderson (S.C.)", "Anderson (SC)", "AND"]
+city         = "Anderson, S.C."
+city_source  = "schedule-page home venue location, https://autrojans.com/sports/mens-soccer (Anderson, S.C., read by the probe 2026-09-04); the thesac.com member JSON prints Anderson, SC"
+identity_accessed = "2026-09-04"
+
+# PrestoSports (marshilllions.com/sports/msoc): the probe read all four
+# layers and 2022-2026 served on 2026-09-04. The probe found no mascot or
+# home town where it reads; "Lions" is the site's own name
+# (marshilllions.com). Peers' scoreboards print "MHU" (Emmanuel's "MH").
+[[schools]]
+name         = "Mars Hill"
+abbreviation = "MH"
+conference   = "SAC"
+mascot       = "Lions"
+gender       = "men"
+base_url     = "https://marshilllions.com/sports/msoc"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Mars Hill University", "MHU"]
+city         = "Mars Hill, N.C."
+city_source  = "the site's own schedule page, https://marshilllions.com/sports/msoc/2026-27/schedule (Mars Hill, N.C., 28754 in the footer address, read 2026-09-05); the thesac.com member JSON prints Mars Hill, NC"
+identity_accessed = "2026-09-05"
+
+# The probe found no mascot where it reads; "Indians" is the site's own
+# name (catawbaathletics.com). Its scoreboard prints "CAT".
+[[schools]]
+name         = "Catawba"
+abbreviation = "CAT"
+conference   = "SAC"
+mascot       = "Indians"
+gender       = "men"
+base_url     = "https://catawbaathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Catawba College"]
+city         = "Salisbury, N.C."
+city_source  = "schedule-page home venue location, https://catawbaathletics.com/sports/mens-soccer (Salisbury, N.C., read by the probe 2026-09-04); the thesac.com member JSON prints Salisbury, NC"
+identity_accessed = "2026-09-04"
+
+# PrestoSports behind CloudFront, and the sport path differs from the other
+# Presto hosts: the site keys men's soccer under m-soccer (women's under
+# w-soccer); /sports/msoc answers the site's own 404 page. The probe cannot
+# read it (it refuses the m-soccer slug and reports the 202 burst as a 404;
+# bead tl-7lu). Settled by a paced curl pass on 2026-09-05 (browser
+# User-Agent, 12 s apart, every page HTTP 200 first time): the card skin
+# (div.card.event-row), box-score links on every season, and seasons
+# 2022-2026 all served (titles "2022 Carson-Newman Men's Soccer Schedule"
+# through 2026); saved as batch4-raw/reprobe/cneagles.com-{year}-schedule.html.
+# The host answers an empty HTTP 202 to bursts: a 202 is the CloudFront
+# challenge, not a dead host. "Eagles" is the site's own name (cneagles.com).
+# Peers' scoreboards print "C-N" and "CNU".
+[[schools]]
+name         = "Carson-Newman"
+abbreviation = "CN"
+conference   = "SAC"
+mascot       = "Eagles"
+gender       = "men"
+base_url     = "https://cneagles.com/sports/m-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Carson-Newman University", "Carson Newman", "C-N", "CNU"]
+city         = "Jefferson City, Tenn."
+city_source  = "the site's own schedule page, https://cneagles.com/sports/m-soccer/2026-27/schedule (Jefferson City, Tenn. for home matches and Jefferson City, TN 37760 in the footer, read 2026-09-05); the thesac.com member JSON prints Jefferson City, TN"
+identity_accessed = "2026-09-05"
+
+# PrestoSports (cokercobras.com/sports/msoc); the probe's first run answered
+# an empty HTTP 202 on every page (the CloudFront challenge, not a dead
+# host) and the 60 s retry read all four layers on 2026-09-04. The site
+# serves 2023-2026 only: the probe proved no 2022 season, and on 2026-09-05
+# the /sports/msoc/2022-23/schedule path answered a page titled "2023 Men's
+# Soccer Schedule", so 2022 is not requested; the window still starts 2022
+# (standings=73). "Cobras" is the site's own name (cokercobras.com). Francis
+# Marion's scoreboard prints "COK".
+[[schools]]
+name         = "Coker"
+abbreviation = "COK"
+conference   = "SAC"
+mascot       = "Cobras"
+gender       = "men"
+base_url     = "https://cokercobras.com/sports/msoc"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Coker University", "Coker College"]
+city         = "Hartsville, S.C."
+city_source  = "the site's own schedule page, https://cokercobras.com/sports/msoc/2026-27/schedule (Hartsville, S.C. for home matches and Hartsville, SC 29550 in the footer, read 2026-09-05); the thesac.com member JSON prints Hartsville, SC"
+identity_accessed = "2026-09-05"
+
+# PrestoSports (gowasps.com/sports/msoc); the probe's first run answered an
+# empty HTTP 202 on every page (the CloudFront challenge, not a dead host)
+# and the 60 s retry read schedule, roster and matches with 2022-2026
+# served; the stats layer was absent on that one run (2026-09-04), which
+# the collect will confirm or not. First SAC season 2022 (absent from
+# standings=72; emoryhenry.edu news 2022-07-05). "Wasps" is the site's own
+# name (gowasps.com). Peers' scoreboards print "E&H" and "EHC".
+[[schools]]
+name         = "Emory & Henry"
+abbreviation = "E&H"
+conference   = "SAC"
+mascot       = "Wasps"
+gender       = "men"
+base_url     = "https://gowasps.com/sports/msoc"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Emory & Henry University", "Emory & Henry College", "Emory and Henry", "EHC"]
+city         = "Emory, Va."
+city_source  = "the site's own schedule page, https://gowasps.com/sports/msoc/2026-27/schedule (Emory, VA 24327 in the footer address, read 2026-09-05); the thesac.com member JSON prints Emory, VA"
+identity_accessed = "2026-09-05"
+
+# Lincoln Memorial University (Harrogate, Tenn.), not the GLVC's Lincoln:
+# the data home already carries lincoln-memorial (27 rows) beside lincoln.
+# Never alias the bare "Lincoln". The site's own scoreboard prints "LMU";
+# two Conference Carolinas peers print "LMU" for Lees-McRae, which keeps
+# LMC here.
+[[schools]]
+name         = "Lincoln Memorial"
+abbreviation = "LMU"
+conference   = "SAC"
+mascot       = "Railsplitters"
+gender       = "men"
+base_url     = "https://lmurailsplitters.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lincoln Memorial University"]
+city         = "Harrogate, Tenn."
+city_source  = "schedule-page home venue location, https://lmurailsplitters.com/sports/mens-soccer (Harrogate, Tenn., read by the probe 2026-09-04); the thesac.com member JSON prints Harrogate, TN"
+identity_accessed = "2026-09-04"
+
+# The site's own scoreboard prints "LR" and "LRU"; peers print "LR".
+[[schools]]
+name         = "Lenoir-Rhyne"
+abbreviation = "LR"
+conference   = "SAC"
+mascot       = "Bears"
+gender       = "men"
+base_url     = "https://lrbears.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lenoir-Rhyne University", "Lenoir Rhyne", "L-R", "LRU"]
+city         = "Hickory, N.C."
+city_source  = "schedule-page home venue location, https://lrbears.com/sports/mens-soccer (Hickory, N.C., read by the probe 2026-09-04); the thesac.com member JSON prints Hickory, N.C."
+identity_accessed = "2026-09-04"
+
+# PrestoSports behind CloudFront (tusculumpioneers.com/sports/msoc); the
+# probe answered an empty HTTP 202 on every page on both runs 2026-09-04.
+# Settled by a paced curl pass on 2026-09-05 (browser User-Agent, 12 s
+# apart, every page HTTP 200 first time): the table skin (tr.event-row),
+# box-score links on every season, and seasons 2022-2026 all served
+# (titles "2022 Tusculum Men's Soccer Schedule" through 2026); saved as
+# batch4-raw/reprobe/tusculumpioneers.com-{year}-schedule.html. The host
+# answers an empty HTTP 202 to bursts: a 202 is the CloudFront challenge,
+# not a dead host. "Pioneers" is the site's own name (tusculumpioneers.com).
+# Its 2025 schedule prints "TU", as does Lander's scoreboard.
+[[schools]]
+name         = "Tusculum"
+abbreviation = "TU"
+abbreviation_resolves = false  # "TU" is also Tiffin's
+conference   = "SAC"
+mascot       = "Pioneers"
+gender       = "men"
+base_url     = "https://tusculumpioneers.com/sports/msoc"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Tusculum University"]
+city         = "Greeneville, Tenn."
+city_source  = "the site's own schedule page, https://tusculumpioneers.com/sports/msoc/2026-27/schedule (Greeneville, TN 37745 in the footer address, read 2026-09-05); the thesac.com member JSON prints Greeneville, TN"
+identity_accessed = "2026-09-05"
+
+# The site's own scoreboard prints "NEW" (and "Newb"); peers print "NEW".
+[[schools]]
+name         = "Newberry"
+abbreviation = "NEW"
+conference   = "SAC"
+mascot       = "Wolves"
+gender       = "men"
+base_url     = "https://newberrywolves.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Newberry College"]
+city         = "Newberry, S.C."
+city_source  = "schedule-page home venue location, https://newberrywolves.com/sports/mens-soccer (Newberry, S.C., read by the probe 2026-09-04); the thesac.com member JSON prints Newberry, SC"
+identity_accessed = "2026-09-04"
+
+# Dead host: golimestonesaints.com answers an Incapsula-fronted HTTP 404 at
+# the root and at /sports/mens-soccer (read 2026-09-04 and 2026-09-05). On
+# the SAC standings 2021-2024 (standings=72 to 75; 9-1-1 and first in 2024)
+# and absent from 2025 (standings=178) and 2026. In-window seasons
+# 2022-2024. The stanza stays enabled so the programmes reference carries
+# its identity row; every fetch fails and the backfill files the absence,
+# which is the truth. No page printed a short form for it (the host is
+# dead and no captured scoreboard names it), so LIM is hand initials kept
+# display-only. "Saints" is the host's own name (golimestonesaints.com).
+[[schools]]
+name         = "Limestone"
+abbreviation = "LIM"
+abbreviation_resolves = false  # hand initials, read from no page
+conference   = "SAC"
+mascot       = "Saints"
+gender       = "men"
+# Historic host, dead since at least 2026-09-04.
+base_url     = "https://golimestonesaints.com/sports/mens-soccer"
+years        = [2022, 2023, 2024]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Limestone University", "Limestone College"]
+city         = "Gaffney, S.C."
+city_source  = "the university's main site, https://www.limestone.edu/ (title 'Limestone University | Gaffney, SC' and footer address Gaffney, SC 29340-3799, read 2026-09-05); the athletics host is dead and prints no town"
+identity_accessed = "2026-09-05"
+
+# ============================================================
+# CC MEN'S SOCCER - 14 programmes, backfill window 2022-2026
+# ============================================================
+# 28 windows in the depth on 15 slugs: the fifteenth is Shorter, whose
+# stanza sits in the GSC section (GSC 2016-2023, then CC 2024-2026 as a
+# second window on the shorter slug, the Trevecca shape). Young Harris's
+# stanza is here and its 2022 season is a Peach Belt window on the
+# young-harris slug; the collect resolves the conference per season.
+#
+# Source of truth: Conference Carolinas per-season records
+# (conferencecarolinas.com conference statistics per year 2021-2025, plus
+# the live standings for 2026, which has no records table yet), verified
+# 2026-09-04. 12/13/14/15/15 members 2022-2026: Young Harris in from 2023
+# (from the Peach Belt), Shorter from 2024 (from the GSC), Ferrum from 2025
+# (from Division III). UNC Pembroke is a member with no men's soccer on any
+# records page and has no stanza. Hosts came from the school links on the
+# standings page.
+#
+# The first divisional conference in the rib. From 2023 the standings print
+# three tables headed exactly "East", "Northwest" and "Southwest"
+# (standings=125, 140, 160 and the live 2026 table); 2022 (standings=111)
+# prints one table. Every member's 2022 window carries no division and its
+# windows from 2023 carry one; North Greenville has three windows on one
+# slug (2022 none, 2023 Southwest, 2024-2026 Northwest). The division sits
+# on the window in data/reference/membership.json, never on a stanza.
+#
+# Sites: all 14 probed 2026-09-04 (uv run probe --name): SideArm on every
+# one, schedule / roster / stats / matches present and 2022-2026 served
+# (Ferrum's and Young Harris's earlier seasons belong to other
+# conferences; see their stanzas). No collect has run yet, so every stanza
+# is data_status = unverified. No ordinals.
+#
+# Names are the records' spellings, chosen so programme_slug(name) matches
+# the membership key; the data home already carries barton, chowan,
+# belmont-abbey, north-greenville, lees-mcrae, francis-marion,
+# southern-wesleyan, mount-olive, king, emmanuel and young-harris as
+# opponent slugs. Abbreviations are the schools' own short forms as their
+# SideArm scoreboards print them (home_short_name / away_short_name in the
+# root page JSON, captured 2026-09-04), read off the school's own site where
+# it prints one and off a peer's otherwise; the five one-letter probe
+# drafts (Catawba, Carson-Newman, Coker, Chowan, Converse) were replaced
+# the same way. LMC is also Le Moyne's, so Lees-McRae carries
+# abbreviation_resolves = false. Aliases cover the published long names,
+# the conference JSON spellings and the label variants peers print.
+
+# The probe found no mascot where it reads; "Patriots" is the site's own
+# name (fmupatriots.com). Its scoreboard prints "FMU".
+[[schools]]
+name         = "Francis Marion"
+abbreviation = "FMU"
+conference   = "CC"
+mascot       = "Patriots"
+gender       = "men"
+base_url     = "https://fmupatriots.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Francis Marion University"]
+city         = "Florence, S.C."
+city_source  = "schedule-page home venue location, https://fmupatriots.com/sports/mens-soccer (Florence, S.C., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Florence, SC"
+identity_accessed = "2026-09-04"
+
+# First Conference Carolinas season 2025 (absent from the 2024 records):
+# Ferrum moved from Division III's ODAC with conference competition from
+# fall 2025 (ferrumpanthers.com news 2024/4/5; conferencecarolinas.com news
+# 2025/6/25). The site serves 2022-2024 as well; those are ODAC seasons and
+# are not requested. Its scoreboard prints "FER" (and "FC"); Catawba's
+# prints "FER".
+[[schools]]
+name         = "Ferrum"
+abbreviation = "FER"
+conference   = "CC"
+mascot       = "Panthers"
+gender       = "men"
+base_url     = "https://ferrumpanthers.com/sports/mens-soccer"
+years        = [2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Ferrum College"]
+city         = "Ferrum, Va."
+city_source  = "schedule-page home venue location, https://ferrumpanthers.com/sports/mens-soccer (Ferrum, Va., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Ferrum, VA"
+identity_accessed = "2026-09-04"
+
+# The probe found no mascot where it reads; "Bulldogs" is the site's own
+# name (bartonbulldogs.com, whose root serves a splash page). Wingate's and
+# Newberry's scoreboards print "BAR" (Lees-McRae's "BC", which is
+# Bloomfield's here).
+[[schools]]
+name         = "Barton"
+abbreviation = "BAR"
+conference   = "CC"
+mascot       = "Bulldogs"
+gender       = "men"
+base_url     = "https://bartonbulldogs.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Barton College"]
+city         = "Wilson, N.C."
+city_source  = "schedule-page home venue location, https://bartonbulldogs.com/sports/mens-soccer (Wilson, N.C., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Wilson, NC"
+identity_accessed = "2026-09-04"
+
+# The probe found no mascot where it reads; "Trojans" is the site's own
+# name (umotrojans.com, whose root serves a splash page). USC Aiken's
+# scoreboard prints "UMO".
+[[schools]]
+name         = "Mount Olive"
+abbreviation = "UMO"
+conference   = "CC"
+mascot       = "Trojans"
+gender       = "men"
+base_url     = "https://umotrojans.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Mount Olive", "Mt. Olive"]
+city         = "Mount Olive, N.C."
+city_source  = "schedule-page home venue location, https://umotrojans.com/sports/mens-soccer (Mount Olive, N.C., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Mount Olive, NC"
+identity_accessed = "2026-09-04"
+
+# The site's own scoreboard prints "CHO" (and "CHOWAN").
+[[schools]]
+name         = "Chowan"
+abbreviation = "CHO"
+conference   = "CC"
+mascot       = "Hawks"
+gender       = "men"
+base_url     = "https://gocuhawks.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Chowan University"]
+city         = "Murfreesboro, N.C."
+city_source  = "schedule-page home venue location, https://gocuhawks.com/sports/mens-soccer (Murfreesboro, N.C., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Murfreesboro, NC"
+identity_accessed = "2026-09-04"
+
+# The site's own scoreboard prints "LMC"; North Georgia's prints "LMC" too.
+[[schools]]
+name         = "Lees-McRae"
+abbreviation = "LMC"
+abbreviation_resolves = false  # "LMC" is also Le Moyne's
+conference   = "CC"
+mascot       = "Bobcats"
+gender       = "men"
+base_url     = "https://lmcbobcats.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lees-McRae College", "Lees McRae"]
+city         = "Banner Elk, N.C."
+city_source  = "schedule-page home venue location, https://lmcbobcats.com/sports/mens-soccer (Banner Elk, N.C., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Banner Elk, NC"
+identity_accessed = "2026-09-04"
+
+# The probe found no mascot where it reads; "Crusaders" is the site's own
+# name (abbeyathletics.com). The probe drafted "Greensboro, N.C.", the
+# venue town the 2026 schedule prints for most home matches; the campus
+# town is Belmont, N.C. Its scoreboard prints "BAC"; so do four peers'.
+[[schools]]
+name         = "Belmont Abbey"
+abbreviation = "BAC"
+conference   = "CC"
+mascot       = "Crusaders"
+gender       = "men"
+base_url     = "https://abbeyathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Belmont Abbey College"]
+city         = "Belmont, N.C."
+city_source  = "the site's own footer address, https://abbeyathletics.com/sports/mens-soccer/schedule/2026 (Belmont, NC 28012, read 2026-09-04); the conferencecarolinas.com member JSON prints Belmont, NC; the schedule page prints Greensboro, N.C., a venue town, for most 2026 home matches"
+identity_accessed = "2026-09-04"
+
+# The probe found no mascot where it reads; "Valkyries" is the site's own
+# name (govalkyries.com, whose root serves a splash page). Wingate's,
+# Newberry's and Lander's scoreboards print "CON".
+[[schools]]
+name         = "Converse"
+abbreviation = "CON"
+conference   = "CC"
+mascot       = "Valkyries"
+gender       = "men"
+base_url     = "https://govalkyries.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Converse University", "Converse College"]
+city         = "Spartanburg, S.C."
+city_source  = "schedule-page home venue location, https://govalkyries.com/sports/mens-soccer (Spartanburg, S.C., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Spartanburg, S.C."
+identity_accessed = "2026-09-04"
+
+# Three windows on one slug: CC 2022 (one table), CC 2023 Southwest
+# (standings=125), CC 2024-2026 Northwest (standings=140, 160 and the live
+# table); the division change splits the window with the conference
+# unchanged. The probe found no mascot where it reads; "Trailblazers" is
+# what the site's own news teasers print ("The North Greenville
+# Trailblazers", nguathletics.com/sports/mens-soccer, read 2026-09-05).
+# Its scoreboard prints "NGU".
+[[schools]]
+name         = "North Greenville"
+abbreviation = "NGU"
+conference   = "CC"
+mascot       = "Trailblazers"
+gender       = "men"
+base_url     = "https://nguathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["North Greenville University"]
+city         = "Tigerville, S.C."
+city_source  = "schedule-page home venue location, https://nguathletics.com/sports/mens-soccer (Tigerville, S.C., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Tigerville, S.C."
+identity_accessed = "2026-09-05"
+
+# King University (Bristol, Tenn.). The probe found no mascot where it
+# reads; "Tornado" is the site's own name (kingtornado.com). Its scoreboard
+# prints "KING".
+[[schools]]
+name         = "King"
+abbreviation = "KING"
+conference   = "CC"
+mascot       = "Tornado"
+gender       = "men"
+base_url     = "https://kingtornado.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["King University", "King (Tenn.)", "King (TN)"]
+city         = "Bristol, Tenn."
+city_source  = "schedule-page home venue location, https://kingtornado.com/sports/mens-soccer (Bristol, Tenn., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Bristol, Tenn."
+identity_accessed = "2026-09-04"
+
+# The probe found no mascot where it reads; "Warriors" is the site's own
+# name (swuathletics.com). Its scoreboard prints "SWU"; the thesac.com
+# member JSON prints "Southern Wesleyan University (S.C.)".
+[[schools]]
+name         = "Southern Wesleyan"
+abbreviation = "SWU"
+conference   = "CC"
+mascot       = "Warriors"
+gender       = "men"
+base_url     = "https://swuathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Southern Wesleyan University", "Southern Wesleyan University (S.C.)"]
+city         = "Central, S.C."
+city_source  = "schedule-page home venue location, https://swuathletics.com/sports/mens-soccer (Central, S.C., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Central, S.C."
+identity_accessed = "2026-09-04"
+
+# Joined Conference Carolinas for 2023 (absent from the 2022 records;
+# conferencecarolinas.com news 2023/6/29, yhcathletics.com news 2023/7/1).
+# 2022 was a Peach Belt season (the 2021 and 2022 PBC records list Young
+# Harris, the 2023 records do not): membership.json carries that window on
+# this slug and the collect resolves the conference per season. The probe
+# read the mascot as "Lions"; "Mountain Lions" is the site's own name
+# (yhcathletics.com). Its scoreboard prints "YHC".
+[[schools]]
+name         = "Young Harris"
+abbreviation = "YHC"
+conference   = "CC"
+mascot       = "Mountain Lions"
+gender       = "men"
+base_url     = "https://yhcathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Young Harris College"]
+city         = "Young Harris, Ga."
+city_source  = "schedule-page home venue location, https://yhcathletics.com/sports/mens-soccer (Young Harris, Ga., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Young Harris, Ga."
+identity_accessed = "2026-09-04"
+
+# The probe read the mascot as "Fleet"; "Flying Fleet" is the site's own
+# name (erskinesports.com). Its scoreboard prints "ERS".
+[[schools]]
+name         = "Erskine"
+abbreviation = "ERS"
+conference   = "CC"
+mascot       = "Flying Fleet"
+gender       = "men"
+base_url     = "https://erskinesports.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Erskine College"]
+city         = "Due West, S.C."
+city_source  = "schedule-page home venue location, https://erskinesports.com/sports/mens-soccer (Due West, S.C., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Due West, SC"
+identity_accessed = "2026-09-04"
+
+# Emmanuel (Franklin Springs, Ga.); the conference standings still link
+# goeclions.com, which 301s to goeulions.com. The records print "Emmanuel";
+# the site prints "Emmanuel University" and the thesac.com member JSON
+# "Emmanuel (Ga.)", both aliases. The probe found no mascot where it reads;
+# "Lions" is the site's own name (goeulions.com). Its scoreboard prints
+# "EU" (and "EMM").
+[[schools]]
+name         = "Emmanuel"
+abbreviation = "EU"
+conference   = "CC"
+mascot       = "Lions"
+gender       = "men"
+base_url     = "https://goeulions.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Emmanuel University", "Emmanuel College", "Emmanuel (Ga.)", "Emmanuel (GA)", "EMM"]
+city         = "Franklin Springs, Ga."
+city_source  = "schedule-page home venue location, https://goeulions.com/sports/mens-soccer (Franklin Springs, Ga., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Franklin Springs, GA"
+identity_accessed = "2026-09-04"
+
+# ============================================================
+# PBC MEN'S SOCCER - 7 programmes, backfill window 2022-2026
+# ============================================================
+# 8 windows in the depth: the eighth is Young Harris's 2022 season, a Peach
+# Belt window on the young-harris slug whose stanza sits in the CC section;
+# the collect resolves the conference per season.
+#
+# Source of truth: Peach Belt Conference per-season records
+# (peachbeltconference.org conference statistics per year 2021-2025, plus
+# the live standings for 2026, whose records page says "no statistics
+# available"), verified 2026-09-04. 7/6/6/7/7 members 2022-2026: Young
+# Harris out after 2022 (to Conference Carolinas), Middle Georgia State in
+# from 2025; the count alone hides both moves. Augusta, Columbus State,
+# Georgia College and USC Beaufort are members with no men's soccer on any
+# records page and have no stanza. Hosts came from the school links on the
+# standings page.
+#
+# Sites: all 7 probed 2026-09-04 (uv run probe --name): SideArm on every
+# one, schedule / roster / stats / matches present and 2022-2026 served
+# (Middle Georgia State's earlier seasons are NAIA; see its stanza). No
+# collect has run yet, so every stanza is data_status = unverified. No
+# ordinals.
+#
+# Names are the records' spellings except where the label would mint a slug
+# the data home does not use: the records print "USCA" (mints usca) and
+# "Middle Georgia" (mints middle-georgia), and opponents' pages had already
+# minted usc-aiken and middle-georgia-state, so the stanzas carry "USC
+# Aiken" and "Middle Georgia State" with the records labels as aliases.
+# Abbreviations are the schools' own short forms as their SideArm
+# scoreboards print them (home_short_name / away_short_name in the root
+# page JSON, captured 2026-09-04) except GSW, the conference's own team key
+# on the records pages (teamstats.aspx?school=gsw). Lander's scoreboard
+# prints both "LU" and "LAN"; LU is Lincoln's here, so LAN is carried.
+# Aliases cover the published long names and the label variants peers print.
+
+# The site's own scoreboard prints "CSU". The probe drafted the alias
+# "#13", a poll rank read off a schedule row; dropped.
+[[schools]]
+name         = "Clayton State"
+abbreviation = "CSU"
+conference   = "PBC"
+mascot       = "Lakers"
+gender       = "men"
+base_url     = "https://claytonstatesports.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Clayton State University", "Clayton St."]
+city         = "Morrow, Ga."
+city_source  = "schedule-page home venue location, https://claytonstatesports.com/sports/mens-soccer (Morrow, Ga., read by the probe 2026-09-04); the peachbeltconference.org member JSON prints Morrow, Ga."
+identity_accessed = "2026-09-04"
+
+# The probe read the mascot as "Nighthawk"; "Nighthawks" is the site's own
+# name (ungathletics.com). The landing page prints no home town; the 2026
+# schedule page prints Dahlonega, Ga. for every home match. Its scoreboard
+# prints "UNG".
+[[schools]]
+name         = "North Georgia"
+abbreviation = "UNG"
+conference   = "PBC"
+mascot       = "Nighthawks"
+gender       = "men"
+base_url     = "https://ungathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of North Georgia"]
+city         = "Dahlonega, Ga."
+city_source  = "schedule-page home venue location, https://ungathletics.com/sports/mens-soccer/schedule/2026 (Dahlonega, Ga., 24 home rows, read 2026-09-04); the peachbeltconference.org member JSON prints Dahlonega, Ga."
+identity_accessed = "2026-09-04"
+
+# The site's own scoreboard prints "FLG" (and "Flag", "FC").
+[[schools]]
+name         = "Flagler"
+abbreviation = "FLG"
+conference   = "PBC"
+mascot       = "Saints"
+gender       = "men"
+base_url     = "https://flaglerathletics.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Flagler College"]
+city         = "St. Augustine, Fla."
+city_source  = "schedule-page home venue location, https://flaglerathletics.com/sports/mens-soccer (St. Augustine, Fla., read by the probe 2026-09-04); the peachbeltconference.org member JSON prints St. Augustine, Fla."
+identity_accessed = "2026-09-04"
+
+# University of South Carolina Aiken. The records print "USCA" (mints usca);
+# "USC Aiken" mints the usc-aiken slug opponents' pages already carry. The
+# schedule page prints the town in capitals ("AIKEN, S.C."). The site's own
+# scoreboard prints "USCA".
+[[schools]]
+name         = "USC Aiken"
+abbreviation = "USCA"
+conference   = "PBC"
+mascot       = "Pacers"
+gender       = "men"
+base_url     = "https://pacersports.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of South Carolina Aiken", "South Carolina Aiken", "USC-Aiken"]
+city         = "Aiken, S.C."
+city_source  = "schedule-page home venue location, https://pacersports.com/sports/mens-soccer (AIKEN, S.C., read by the probe 2026-09-04, case normalised); the peachbeltconference.org member JSON prints Aiken, S.C."
+identity_accessed = "2026-09-04"
+
+# The probe found no mascot where it reads and minted "GSSU"; "Hurricanes"
+# is the site's own name (gswcanes.com) and GSW is the conference's team key
+# (peachbeltconference.org teamstats.aspx?school=gsw).
+[[schools]]
+name         = "Georgia Southwestern"
+abbreviation = "GSW"
+conference   = "PBC"
+mascot       = "Hurricanes"
+gender       = "men"
+base_url     = "https://gswcanes.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Georgia Southwestern State University", "Georgia Southwestern State"]
+city         = "Americus, Ga."
+city_source  = "schedule-page home venue location, https://gswcanes.com/sports/mens-soccer (Americus, Ga., read by the probe 2026-09-04); the peachbeltconference.org member JSON prints Americus, Ga."
+identity_accessed = "2026-09-04"
+
+# First Peach Belt season 2025 (absent from the 2024 records): the
+# conference invited Middle Georgia State with competition from fall 2025
+# (mgaknights.com news 2024/1/10). The records print "Middle Georgia" (mints
+# middle-georgia); "Middle Georgia State" mints the middle-georgia-state
+# slug opponents' pages already carry. The site serves 2022-2024 as well;
+# those are NAIA seasons and are not requested. The probe found no mascot
+# where it reads; "Knights" is the site's own name (mgaknights.com). Its
+# scoreboard prints "MGA".
+[[schools]]
+name         = "Middle Georgia State"
+abbreviation = "MGA"
+conference   = "PBC"
+mascot       = "Knights"
+gender       = "men"
+base_url     = "https://mgaknights.com/sports/mens-soccer"
+years        = [2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Middle Georgia State University", "Middle Georgia"]
+city         = "Cochran, Ga."
+city_source  = "schedule-page home venue location, https://mgaknights.com/sports/mens-soccer (Cochran, Ga., read by the probe 2026-09-04); the peachbeltconference.org member JSON prints Cochran, Ga."
+identity_accessed = "2026-09-04"
+
+# The site's own scoreboard prints "LAN" and "LU"; Wingate's prints "LAN".
+[[schools]]
+name         = "Lander"
+abbreviation = "LAN"
+conference   = "PBC"
+mascot       = "Bearcats"
+gender       = "men"
+base_url     = "https://landerbearcats.com/sports/mens-soccer"
+years        = [2022, 2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lander University"]
+city         = "Greenwood, S.C."
+city_source  = "schedule-page home venue location, https://landerbearcats.com/sports/mens-soccer (Greenwood, S.C., read by the probe 2026-09-04); the peachbeltconference.org member JSON prints Greenwood, S.C."
 identity_accessed = "2026-09-04"

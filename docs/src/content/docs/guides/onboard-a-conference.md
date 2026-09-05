@@ -655,6 +655,41 @@ from 2024), and only the per-season lists catch both.
 | a second source for every written fact | the coordinator's rule for this batch: no single-sourced fact lands in a comment, a `source` sentence, a city or a nickname. It cost fourteen paced fetches (conference releases, school main sites, the NCAA directory, the NSIC member JSON, a township site) on top of the records pages, and it caught one claim the research had wrong: Davenport's roster page prints "Grand Rapids, Mich." only as player hometowns, so the city's second source is the gliac.org member JSON, not the roster |
 | abbreviations across conferences | RU, DU and SCSU are the gliac.org and school short forms for Roosevelt, Davenport and St. Cloud State, and also Rockhurst's, Drury's and Daemen's, and Southern Connecticut's. `identity_aliases` is one map per gender across every stanza, last stanza wins, so a bare "RU" or "SCSU" on any men's schedule now resolves to the GLIAC programme. The Drury/Daemen pair already had this shape; a per-conference scope for bare initialisms is the fix if it bites |
 
+### 8.4 SAC, Conference Carolinas and the Peach Belt, batch 4 (2026-09-05)
+
+Authored from this page on 2026-09-05; not yet merged or collected, so this
+is the rib half of the ledger. Three conferences in one PR, 2022-2026: 33
+programmes (SAC 12, Conference Carolinas 14 new beside the GSC's Shorter,
+Peach Belt 7 with Young Harris counted once), 48 windows, the first
+conference in the region the site is about, the first with divisions, the
+first with a dead host inside the depth, and the first where a mover
+crosses two conferences of the same batch. Counts 12/12/12/11/11,
+12/13/14/15/15 and 7/6/6/7/7 reproduce through the resolver; every other
+conference's per-season count is unchanged before and after.
+
+**Rib (batch 4 membership PR)**
+
+| touchpoint | change |
+|---|---|
+| `data/reference/membership.json` | `SAC`, `CC`, `PBC` added; 48 windows: 12 SAC citing the standings archive by id, 28 CC (every 2022 window undivided, every window from 2023 carrying `division`), 8 PBC; a second window on `shorter` (CC 2024-2026 Southwest) and a PBC 2022 window on `young-harris` before its CC window; `description` names the three authorities |
+| `pipeline/config/schools.toml` | 33 stanzas in three sections after the GLIAC: 32 from the probe, hand-corrected (fourteen initials abbreviations, thirteen missing mascots, two mascots read short, `enabled` flipped, aliases last, `city_source` on every one), plus a dead-host stanza for Limestone; Shorter's GSC stanza gains 2024-2026 in `years` with a comment, no new stanza; five PrestoSports stanzas in the Tampa shape |
+| `data/reference/programmes.json` | rebuilt: 33 new rows, 185 in all; the 152 existing rows unchanged; no Gazetteer pin needed |
+| `contracts/membership.json`, `contracts/CHANGELOG.md` | the three join the fixture with one window each; North Greenville's is the first packaged divisional window |
+| `pipeline/tests/test_membership.py` | a fifth file: two tests asserted the pre-batch-4 shipped file (no packaged division anywhere; the SAC archive page reading against no SAC window), and both tripped the day the data landed, the tl-clk.6 lesson again. They now assert the divisional shape and the agreement |
+
+**Where this page was wrong or silent**
+
+| finding | what happened |
+|---|---|
+| a window with no stanza | the plan wanted Limestone (host dead) as a window only. `check-membership` refuses a window whose slug has no stanza (`unknown institution slug`), so the batch 1 shape stands: an enabled stanza on the dead host, every fetch failing, the absence filed. Step 1's "never sponsored" bullet should say so |
+| the standings archive as source 1 | the SAC's twelve windows cite `standings.aspx?standings={id}` for their edge seasons and the live table for 2026; `check-membership --standings` reproduced 12/12/12/11/11 from the captured pages before a line was authored |
+| the first divisional conference | the CC 2022 tables print no division and 2023 on print three, so every member in from 2022 has two windows, and North Greenville three (Southwest 2023, Northwest from 2024). `resolve-membership divisions` prints nothing for 2022 and the three names from 2023 |
+| PrestoSports hosts that answer 202 | five SAC hosts are PrestoSports. Three answered an empty HTTP 202 to the probe's first burst and read on the 60 s retry; two (Carson-Newman, Tusculum) never read and were settled by a paced curl pass with a browser User-Agent the next day. Carson-Newman keys men's soccer under `m-soccer`, not `msoc`, which the probe refuses (bead tl-7lu). Each such stanza carries a line saying a 202 is the challenge, not a dead host |
+| a season the site labels wrongly | Coker's `/sports/msoc/2022-23/schedule` answers a page titled "2023 Men's Soccer Schedule", so the probe proves no 2022 season and `years` starts 2023 while the window starts 2022; the collect will name the gap |
+| the town on a PrestoSports site | the probe reads no home town off a PrestoSports schedule page. The five towns came from the schools' own schedule pages (footer address or home rows) with the thesac.com member JSON as the second source; Tusculum's own page prints Greeneville, not the Wikipedia town |
+| short forms | the standings pages print no abbreviations. The SideArm root page JSON carries `home_short_name` / `away_short_name` for every scoreboard row, so each abbreviation was read off the school's own scoreboard or a peer's; WU, AU, TU and LMC are other stanzas' and carry `abbreviation_resolves = false`, and Lander carries LAN over LU (Lincoln's) |
+| a slug the records would not mint | the Peach Belt prints "USCA" and "Middle Georgia"; opponents' pages had minted `usc-aiken` and `middle-georgia-state`, so the stanzas carry the schools' names and the records labels are aliases |
+
 Between the two ledgers, the rib's two-file add measured on the GLVC held
 for the SSC once tl-clk.5 was known; the operations cost is now dominated
 by the alias vocabulary and by any site the pipeline cannot read. The

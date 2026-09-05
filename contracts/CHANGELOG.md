@@ -4,6 +4,22 @@ One line per change to a published contract, newest first. A fixture change
 without a line here is incomplete; a writer change without a fixture change
 fails `pipeline/tests/test_contracts.py`.
 
+## 2026-09-05
+
+- Membership reference: `SAC`, `CC` and `PBC` join `conferences`, with one
+  window each (Wingate, SAC 2022-2026; North Greenville, whose three CC
+  windows carry the first packaged `division` strings, `Southwest` 2023
+  then `Northwest` 2024-2026 after an undivided 2022; Lander, PBC
+  2022-2026) so the fixture exhibits them (batch 4 membership PR; the
+  fixture's conference list must equal the packaged file's). The packaged
+  file carries 48 new windows on 33 new slugs plus a second window on
+  `shorter` (GSC 2016-2023, then CC 2024-2026 Southwest) and a Peach Belt
+  2022 window before Young Harris's CC 2023-2026 Southwest window, the
+  Trevecca shape across two conferences of the same batch. Every SAC
+  window's `source` names the `standings_archives.SAC` page for its
+  seasons, the SAC having no records pages. The synthetic
+  `contract-example-divisional` slug stays until a later cleanup.
+
 ## 2026-09-04
 
 - Membership reference: a window may carry `division`, a string spelled

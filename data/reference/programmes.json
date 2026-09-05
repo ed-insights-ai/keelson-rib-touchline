@@ -178,6 +178,40 @@
         }
       }
     },
+    "anderson": {
+      "name": "Anderson",
+      "nickname": "Trojans",
+      "abbreviation": "AU",
+      "city": "Anderson, S.C.",
+      "point": {
+        "lat": 34.5215,
+        "lon": -82.6435
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://autrojans.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://autrojans.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://autrojans.com/sports/mens-soccer (Anderson, S.C., read by the probe 2026-09-04); the thesac.com member JSON prints Anderson, SC",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4501360",
+          "name": "Anderson city",
+          "state": "SC",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "ashland": {
       "name": "Ashland",
       "nickname": "Eagles",
@@ -310,6 +344,74 @@
           "geoid": "1245175",
           "name": "Miami Shores village",
           "state": "FL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "barton": {
+      "name": "Barton",
+      "nickname": "Bulldogs",
+      "abbreviation": "BAR",
+      "city": "Wilson, N.C.",
+      "point": {
+        "lat": 35.7315,
+        "lon": -77.9308
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://bartonbulldogs.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://bartonbulldogs.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://bartonbulldogs.com/sports/mens-soccer (Wilson, N.C., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Wilson, NC",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3774540",
+          "name": "Wilson city",
+          "state": "NC",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "belmont-abbey": {
+      "name": "Belmont Abbey",
+      "nickname": "Crusaders",
+      "abbreviation": "BAC",
+      "city": "Belmont, N.C.",
+      "point": {
+        "lat": 35.2213,
+        "lon": -81.0411
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://abbeyathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://abbeyathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "the site's own footer address, https://abbeyathletics.com/sports/mens-soccer/schedule/2026 (Belmont, NC 28012, read 2026-09-04); the conferencecarolinas.com member JSON prints Belmont, NC; the schedule page prints Greensboro, N.C., a venue town, for most 2026 home matches",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3704840",
+          "name": "Belmont city",
+          "state": "NC",
           "accessed": "2023-09-26"
         }
       }
@@ -519,6 +621,74 @@
         }
       }
     },
+    "carson-newman": {
+      "name": "Carson-Newman",
+      "nickname": "Eagles",
+      "abbreviation": "CN",
+      "city": "Jefferson City, Tenn.",
+      "point": {
+        "lat": 36.1208,
+        "lon": -83.4833
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://cneagles.com/sports/m-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://cneagles.com/sports/m-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "the site's own schedule page, https://cneagles.com/sports/m-soccer/2026-27/schedule (Jefferson City, Tenn. for home matches and Jefferson City, TN 37760 in the footer, read 2026-09-05); the thesac.com member JSON prints Jefferson City, TN",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4737960",
+          "name": "Jefferson City city",
+          "state": "TN",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "catawba": {
+      "name": "Catawba",
+      "nickname": "Indians",
+      "abbreviation": "CAT",
+      "city": "Salisbury, N.C.",
+      "point": {
+        "lat": 35.6655,
+        "lon": -80.4889
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://catawbaathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://catawbaathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://catawbaathletics.com/sports/mens-soccer (Salisbury, N.C., read by the probe 2026-09-04); the thesac.com member JSON prints Salisbury, NC",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3758860",
+          "name": "Salisbury city",
+          "state": "NC",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "cedarville": {
       "name": "Cedarville",
       "nickname": "Yellow Jackets",
@@ -621,6 +791,40 @@
         }
       }
     },
+    "chowan": {
+      "name": "Chowan",
+      "nickname": "Hawks",
+      "abbreviation": "CHO",
+      "city": "Murfreesboro, N.C.",
+      "point": {
+        "lat": 36.442,
+        "lon": -77.0977
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gocuhawks.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gocuhawks.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://gocuhawks.com/sports/mens-soccer (Murfreesboro, N.C., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Murfreesboro, NC",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3745640",
+          "name": "Murfreesboro town",
+          "state": "NC",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "christian-brothers": {
       "name": "Christian Brothers",
       "nickname": "Buccaneers",
@@ -651,6 +855,74 @@
           "geoid": "4748000",
           "name": "Memphis city",
           "state": "TN",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "clayton-state": {
+      "name": "Clayton State",
+      "nickname": "Lakers",
+      "abbreviation": "CSU",
+      "city": "Morrow, Ga.",
+      "point": {
+        "lat": 33.5783,
+        "lon": -84.3356
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://claytonstatesports.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://claytonstatesports.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://claytonstatesports.com/sports/mens-soccer (Morrow, Ga., read by the probe 2026-09-04); the peachbeltconference.org member JSON prints Morrow, Ga.",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1353004",
+          "name": "Morrow city",
+          "state": "GA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "coker": {
+      "name": "Coker",
+      "nickname": "Cobras",
+      "abbreviation": "COK",
+      "city": "Hartsville, S.C.",
+      "point": {
+        "lat": 34.366,
+        "lon": -80.0833
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://cokercobras.com/sports/msoc",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://cokercobras.com/sports/msoc",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "the site's own schedule page, https://cokercobras.com/sports/msoc/2026-27/schedule (Hartsville, S.C. for home matches and Hartsville, SC 29550 in the footer, read 2026-09-05); the thesac.com member JSON prints Hartsville, SC",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4532560",
+          "name": "Hartsville city",
+          "state": "SC",
           "accessed": "2023-09-26"
         }
       }
@@ -787,6 +1059,40 @@
           "geoid": "5403292",
           "name": "Athens town",
           "state": "WV",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "converse": {
+      "name": "Converse",
+      "nickname": "Valkyries",
+      "abbreviation": "CON",
+      "city": "Spartanburg, S.C.",
+      "point": {
+        "lat": 34.9456,
+        "lon": -81.9259
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://govalkyries.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://govalkyries.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://govalkyries.com/sports/mens-soccer (Spartanburg, S.C., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Spartanburg, S.C.",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4568290",
+          "name": "Spartanburg city",
+          "state": "SC",
           "accessed": "2023-09-26"
         }
       }
@@ -1303,6 +1609,108 @@
         }
       }
     },
+    "emmanuel": {
+      "name": "Emmanuel",
+      "nickname": "Lions",
+      "abbreviation": "EU",
+      "city": "Franklin Springs, Ga.",
+      "point": {
+        "lat": 34.2834,
+        "lon": -83.1461
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://goeulions.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://goeulions.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://goeulions.com/sports/mens-soccer (Franklin Springs, Ga., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Franklin Springs, GA",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1331320",
+          "name": "Franklin Springs city",
+          "state": "GA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "emory-henry": {
+      "name": "Emory & Henry",
+      "nickname": "Wasps",
+      "abbreviation": "E&H",
+      "city": "Emory, Va.",
+      "point": {
+        "lat": 36.7798,
+        "lon": -81.8274
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gowasps.com/sports/msoc",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gowasps.com/sports/msoc",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "the site's own schedule page, https://gowasps.com/sports/msoc/2026-27/schedule (Emory, VA 24327 in the footer address, read 2026-09-05); the thesac.com member JSON prints Emory, VA",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "5125792",
+          "name": "Emory CDP",
+          "state": "VA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "erskine": {
+      "name": "Erskine",
+      "nickname": "Flying Fleet",
+      "abbreviation": "ERS",
+      "city": "Due West, S.C.",
+      "point": {
+        "lat": 34.3348,
+        "lon": -82.3903
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://erskinesports.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://erskinesports.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://erskinesports.com/sports/mens-soccer (Due West, S.C., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Due West, SC",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4521040",
+          "name": "Due West town",
+          "state": "SC",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "felician": {
       "name": "Felician",
       "nickname": "Golden Falcons",
@@ -1337,6 +1745,40 @@
         }
       }
     },
+    "ferrum": {
+      "name": "Ferrum",
+      "nickname": "Panthers",
+      "abbreviation": "FER",
+      "city": "Ferrum, Va.",
+      "point": {
+        "lat": 36.9385,
+        "lon": -79.995
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://ferrumpanthers.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://ferrumpanthers.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://ferrumpanthers.com/sports/mens-soccer (Ferrum, Va., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Ferrum, VA",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "5127712",
+          "name": "Ferrum CDP",
+          "state": "VA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "findlay": {
       "name": "Findlay",
       "nickname": "Oilers",
@@ -1367,6 +1809,40 @@
           "geoid": "3927048",
           "name": "Findlay city",
           "state": "OH",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "flagler": {
+      "name": "Flagler",
+      "nickname": "Saints",
+      "abbreviation": "FLG",
+      "city": "St. Augustine, Fla.",
+      "point": {
+        "lat": 29.8962,
+        "lon": -81.3111
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://flaglerathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://flaglerathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://flaglerathletics.com/sports/mens-soccer (St. Augustine, Fla., read by the probe 2026-09-04); the peachbeltconference.org member JSON prints St. Augustine, Fla.",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1262500",
+          "name": "St. Augustine city",
+          "state": "FL",
           "accessed": "2023-09-26"
         }
       }
@@ -1507,6 +1983,40 @@
         }
       }
     },
+    "francis-marion": {
+      "name": "Francis Marion",
+      "nickname": "Patriots",
+      "abbreviation": "FMU",
+      "city": "Florence, S.C.",
+      "point": {
+        "lat": 34.1789,
+        "lon": -79.7922
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://fmupatriots.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://fmupatriots.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://fmupatriots.com/sports/mens-soccer (Florence, S.C., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Florence, SC",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4525810",
+          "name": "Florence city",
+          "state": "SC",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "franklin-pierce": {
       "name": "Franklin Pierce",
       "nickname": "Ravens",
@@ -1606,6 +2116,40 @@
           "geoid": "4224000",
           "name": "Erie city",
           "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "georgia-southwestern": {
+      "name": "Georgia Southwestern",
+      "nickname": "Hurricanes",
+      "abbreviation": "GSW",
+      "city": "Americus, Ga.",
+      "point": {
+        "lat": 32.0744,
+        "lon": -84.2228
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gswcanes.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gswcanes.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://gswcanes.com/sports/mens-soccer (Americus, Ga., read by the probe 2026-09-04); the peachbeltconference.org member JSON prints Americus, Ga.",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1302116",
+          "name": "Americus city",
+          "state": "GA",
           "accessed": "2023-09-26"
         }
       }
@@ -1883,6 +2427,40 @@
         }
       }
     },
+    "king": {
+      "name": "King",
+      "nickname": "Tornado",
+      "abbreviation": "KING",
+      "city": "Bristol, Tenn.",
+      "point": {
+        "lat": 36.5585,
+        "lon": -82.217
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://kingtornado.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://kingtornado.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://kingtornado.com/sports/mens-soccer (Bristol, Tenn., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Bristol, Tenn.",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4708540",
+          "name": "Bristol city",
+          "state": "TN",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "lake-erie": {
       "name": "Lake Erie",
       "nickname": "Storm",
@@ -1913,6 +2491,40 @@
           "geoid": "3959416",
           "name": "Painesville city",
           "state": "OH",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "lander": {
+      "name": "Lander",
+      "nickname": "Bearcats",
+      "abbreviation": "LAN",
+      "city": "Greenwood, S.C.",
+      "point": {
+        "lat": 34.1954,
+        "lon": -82.1537
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://landerbearcats.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://landerbearcats.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://landerbearcats.com/sports/mens-soccer (Greenwood, S.C., read by the probe 2026-09-04); the peachbeltconference.org member JSON prints Greenwood, S.C.",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4530895",
+          "name": "Greenwood city",
+          "state": "SC",
           "accessed": "2023-09-26"
         }
       }
@@ -1985,6 +2597,74 @@
         }
       }
     },
+    "lees-mcrae": {
+      "name": "Lees-McRae",
+      "nickname": "Bobcats",
+      "abbreviation": "LMC",
+      "city": "Banner Elk, N.C.",
+      "point": {
+        "lat": 36.1587,
+        "lon": -81.8676
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://lmcbobcats.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://lmcbobcats.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://lmcbobcats.com/sports/mens-soccer (Banner Elk, N.C., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Banner Elk, NC",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3703500",
+          "name": "Banner Elk town",
+          "state": "NC",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "lenoir-rhyne": {
+      "name": "Lenoir-Rhyne",
+      "nickname": "Bears",
+      "abbreviation": "LR",
+      "city": "Hickory, N.C.",
+      "point": {
+        "lat": 35.7401,
+        "lon": -81.3218
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://lrbears.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://lrbears.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://lrbears.com/sports/mens-soccer (Hickory, N.C., read by the probe 2026-09-04); the thesac.com member JSON prints Hickory, N.C.",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3731060",
+          "name": "Hickory city",
+          "state": "NC",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "lewis": {
       "name": "Lewis",
       "nickname": "Flyers",
@@ -2019,6 +2699,40 @@
         }
       }
     },
+    "limestone": {
+      "name": "Limestone",
+      "nickname": "Saints",
+      "abbreviation": "LIM",
+      "city": "Gaffney, S.C.",
+      "point": {
+        "lat": 35.0736,
+        "lon": -81.6615
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://golimestonesaints.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://golimestonesaints.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "the university's main site, https://www.limestone.edu/ (title 'Limestone University | Gaffney, SC' and footer address Gaffney, SC 29340-3799, read 2026-09-05); the athletics host is dead and prints no town",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4528060",
+          "name": "Gaffney city",
+          "state": "SC",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "lincoln": {
       "name": "Lincoln",
       "nickname": "Blue Tigers",
@@ -2049,6 +2763,40 @@
           "geoid": "2937000",
           "name": "Jefferson City city",
           "state": "MO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "lincoln-memorial": {
+      "name": "Lincoln Memorial",
+      "nickname": "Railsplitters",
+      "abbreviation": "LMU",
+      "city": "Harrogate, Tenn.",
+      "point": {
+        "lat": 36.5752,
+        "lon": -83.6462
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://lmurailsplitters.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://lmurailsplitters.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://lmurailsplitters.com/sports/mens-soccer (Harrogate, Tenn., read by the probe 2026-09-04); the thesac.com member JSON prints Harrogate, TN",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4732640",
+          "name": "Harrogate city",
+          "state": "TN",
           "accessed": "2023-09-26"
         }
       }
@@ -2189,6 +2937,40 @@
         }
       }
     },
+    "mars-hill": {
+      "name": "Mars Hill",
+      "nickname": "Lions",
+      "abbreviation": "MH",
+      "city": "Mars Hill, N.C.",
+      "point": {
+        "lat": 35.8282,
+        "lon": -82.5486
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://marshilllions.com/sports/msoc",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://marshilllions.com/sports/msoc",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "the site's own schedule page, https://marshilllions.com/sports/msoc/2026-27/schedule (Mars Hill, N.C., 28754 in the footer address, read 2026-09-05); the thesac.com member JSON prints Mars Hill, NC",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3741620",
+          "name": "Mars Hill town",
+          "state": "NC",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "maryville": {
       "name": "Maryville",
       "nickname": "Saints",
@@ -2322,6 +3104,40 @@
           "geoid": "4224000",
           "name": "Erie city",
           "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "middle-georgia-state": {
+      "name": "Middle Georgia State",
+      "nickname": "Knights",
+      "abbreviation": "MGA",
+      "city": "Cochran, Ga.",
+      "point": {
+        "lat": 32.3873,
+        "lon": -83.3514
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://mgaknights.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://mgaknights.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://mgaknights.com/sports/mens-soccer (Cochran, Ga., read by the probe 2026-09-04); the peachbeltconference.org member JSON prints Cochran, Ga.",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1317328",
+          "name": "Cochran city",
+          "state": "GA",
           "accessed": "2023-09-26"
         }
       }
@@ -2565,6 +3381,40 @@
         }
       }
     },
+    "mount-olive": {
+      "name": "Mount Olive",
+      "nickname": "Trojans",
+      "abbreviation": "UMO",
+      "city": "Mount Olive, N.C.",
+      "point": {
+        "lat": 35.1998,
+        "lon": -78.0661
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://umotrojans.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://umotrojans.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://umotrojans.com/sports/mens-soccer (Mount Olive, N.C., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Mount Olive, NC",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3745100",
+          "name": "Mount Olive town",
+          "state": "NC",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "msu-denver": {
       "name": "MSU Denver",
       "nickname": "Roadrunners",
@@ -2633,6 +3483,40 @@
         }
       }
     },
+    "newberry": {
+      "name": "Newberry",
+      "nickname": "Wolves",
+      "abbreviation": "NEW",
+      "city": "Newberry, S.C.",
+      "point": {
+        "lat": 34.2823,
+        "lon": -81.6015
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://newberrywolves.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://newberrywolves.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://newberrywolves.com/sports/mens-soccer (Newberry, S.C., read by the probe 2026-09-04); the thesac.com member JSON prints Newberry, SC",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4549570",
+          "name": "Newberry city",
+          "state": "SC",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "newman": {
       "name": "Newman",
       "nickname": "Jets",
@@ -2663,6 +3547,74 @@
           "geoid": "2079000",
           "name": "Wichita city",
           "state": "KS",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "north-georgia": {
+      "name": "North Georgia",
+      "nickname": "Nighthawks",
+      "abbreviation": "UNG",
+      "city": "Dahlonega, Ga.",
+      "point": {
+        "lat": 34.5299,
+        "lon": -83.9796
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://ungathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://ungathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://ungathletics.com/sports/mens-soccer/schedule/2026 (Dahlonega, Ga., 24 home rows, read 2026-09-04); the peachbeltconference.org member JSON prints Dahlonega, Ga.",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1321240",
+          "name": "Dahlonega city",
+          "state": "GA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "north-greenville": {
+      "name": "North Greenville",
+      "nickname": "Trailblazers",
+      "abbreviation": "NGU",
+      "city": "Tigerville, S.C.",
+      "point": {
+        "lat": 35.0651,
+        "lon": -82.3699
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://nguathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://nguathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://nguathletics.com/sports/mens-soccer (Tigerville, S.C., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Tigerville, S.C.",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4571890",
+          "name": "Tigerville CDP",
+          "state": "SC",
           "accessed": "2023-09-26"
         }
       }
@@ -4098,6 +5050,40 @@
         }
       }
     },
+    "southern-wesleyan": {
+      "name": "Southern Wesleyan",
+      "nickname": "Warriors",
+      "abbreviation": "SWU",
+      "city": "Central, S.C.",
+      "point": {
+        "lat": 34.7234,
+        "lon": -82.7747
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://swuathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://swuathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://swuathletics.com/sports/mens-soccer (Central, S.C., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Central, S.C.",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4513015",
+          "name": "Central town",
+          "state": "SC",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "southwest-baptist": {
       "name": "Southwest Baptist",
       "nickname": "Bearcats",
@@ -4541,6 +5527,40 @@
         }
       }
     },
+    "tusculum": {
+      "name": "Tusculum",
+      "nickname": "Pioneers",
+      "abbreviation": "TU",
+      "city": "Greeneville, Tenn.",
+      "point": {
+        "lat": 36.168,
+        "lon": -82.8197
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://tusculumpioneers.com/sports/msoc",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://tusculumpioneers.com/sports/msoc",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "the site's own schedule page, https://tusculumpioneers.com/sports/msoc/2026-27/schedule (Greeneville, TN 37745 in the footer address, read 2026-09-05); the thesac.com member JSON prints Greeneville, TN",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4730980",
+          "name": "Greeneville town",
+          "state": "TN",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "uah": {
       "name": "UAH",
       "nickname": "Chargers",
@@ -4673,6 +5693,40 @@
           "geoid": "1927165",
           "name": "Fayette city",
           "state": "IA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "usc-aiken": {
+      "name": "USC Aiken",
+      "nickname": "Pacers",
+      "abbreviation": "USCA",
+      "city": "Aiken, S.C.",
+      "point": {
+        "lat": 33.5316,
+        "lon": -81.7251
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://pacersports.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://pacersports.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://pacersports.com/sports/mens-soccer (AIKEN, S.C., read by the probe 2026-09-04, case normalised); the peachbeltconference.org member JSON prints Aiken, S.C.",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4500550",
+          "name": "Aiken city",
+          "state": "SC",
           "accessed": "2023-09-26"
         }
       }
@@ -5153,6 +6207,40 @@
         }
       }
     },
+    "wingate": {
+      "name": "Wingate",
+      "nickname": "Bulldogs",
+      "abbreviation": "WU",
+      "city": "Wingate, N.C.",
+      "point": {
+        "lat": 34.986,
+        "lon": -80.4474
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://wingatebulldogs.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://wingatebulldogs.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://wingatebulldogs.com/sports/mens-soccer (Wingate, N.C., read by the probe 2026-09-04); the thesac.com member JSON prints Wingate, NC",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3774760",
+          "name": "Wingate town",
+          "state": "NC",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "wisconsin-parkside": {
       "name": "Wisconsin-Parkside",
       "nickname": "Rangers",
@@ -5183,6 +6271,40 @@
           "geoid": "5539225",
           "name": "Kenosha city",
           "state": "WI",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "young-harris": {
+      "name": "Young Harris",
+      "nickname": "Mountain Lions",
+      "abbreviation": "YHC",
+      "city": "Young Harris, Ga.",
+      "point": {
+        "lat": 34.9346,
+        "lon": -83.8477
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://yhcathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://yhcathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-04"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://yhcathletics.com/sports/mens-soccer (Young Harris, Ga., read by the probe 2026-09-04); the conferencecarolinas.com member JSON prints Young Harris, Ga.",
+          "accessed": "2026-09-04"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1384960",
+          "name": "Young Harris city",
+          "state": "GA",
           "accessed": "2023-09-26"
         }
       }
