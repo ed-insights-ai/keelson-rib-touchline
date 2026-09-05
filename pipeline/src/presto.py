@@ -605,7 +605,9 @@ def parse_schedule(
         classes = set(row.get("class") or [])
         owner_is_home = not _text(row, _ROW_SIDE).lower().startswith("at")
         neutral = "neutral" in classes or row.select_one(_ROW_NEUTRAL_SITE) is not None
-        other_slug = opponent_slug(opponent_name, aliases, scope=scope)
+        other_slug = opponent_slug(
+            opponent_name, aliases, scope=scope, owner=owner_slug
+        )
         home, away = (
             (owner_slug, other_slug) if owner_is_home else (other_slug, owner_slug)
         )

@@ -113,6 +113,17 @@ and `display_name` still plays no part. Each printed text the scope
 re-points is named once in the run log ("resolution: 'Dominican' read as
 dominican-of-california, a PACWEST 2025 member, not dominican").
 
+When a printed name is ambiguous, folding to one programme's name or aliases
+and to another's `member_aliases`, and no member of the collecting conference
+claims it (a CCAA page printing "Dominican" for a non-conference game against
+Dominican of California), the claimant whose `programmes.json` point is
+nearest the collecting school's wins, by great-circle distance; if the
+collecting school or any claimant has no point, the gender-wide rule answers
+as before, and a name with a single claimant is never touched. Each such
+re-point is logged once per printed text with both candidates and their
+distances ("resolution: 'Dominican' on cal-state-east-bay's page read as
+dominican-of-california (53 km) over dominican (4,107 km)").
+
 ## Adjudication: the human in the loop
 
 Some strings no grammar can decide. "OU" could be Oklahoma, Ouachita, or

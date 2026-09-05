@@ -420,3 +420,246 @@ def test_collect_threads_one_scope_built_from_the_seasons_members(
     scope = seen[0]
     assert scope.members == frozenset()
     assert scope.claims == {}
+
+
+# ── an ambiguous name no member claims breaks by distance (tl-4sg.9.1) ─────
+#
+# After the member-first rule the CCAA and RMAC files still carried bare
+# "dominican" rows for non-conference games against Dominican of
+# California: under those scopes neither Dominican is a member, so the
+# gender-wide map answered with the CACC's. The ruling: a printed text that
+# folds to one programme's name or aliases AND to another's member aliases
+# (at least two claimants), with no member of the collecting conference
+# claiming it, resolves to the claimant whose programmes.json point is
+# nearest the collecting school's. Any claimant or owner without a point,
+# or a single claimant, falls to today's rule.
+
+from src.programmes import load_programmes, programme_points  # noqa: E402
+from src.sidearm_live import haversine_km  # noqa: E402
+
+POINTS = programme_points(load_programmes())
+
+
+def _scope_with_points(conference: str, season: int):
+    members = conference_members(
+        SCHOOLS, "men", conference, season=season, document=MEMBERSHIP
+    )
+    return resolution_scope(
+        SCHOOLS,
+        "men",
+        members,
+        conference=conference,
+        season=season,
+        points=POINTS,
+    )
+
+
+def _page(owner_title: str, *opponents: str) -> str:
+    """One member's 2025 page, events-component shape, non-conference rows."""
+    events = [
+        {
+            "id": 9000 + index,
+            "date": f"2025-09-{1 + index:02d}T12:30:00",
+            "opponent": {"title": opponent},
+            "location_indicator": "H",
+            "is_conference": False,
+            "schedule": {"title": "2025 Men's Soccer Schedule"},
+            "result": {"status": "W", "team_score": 2, "opponent_score": 1},
+        }
+        for index, opponent in enumerate(opponents)
+    ]
+    component = {"type": "events", "data": events}
+    return (
+        f"<html><head><title>2025 Men's Soccer Schedule - {owner_title}</title>"
+        f"</head><body><script>\nvar obj = {json.dumps(component)};\n</script>"
+        "</body></html>"
+    )
+
+
+def test_haversine_km_is_the_great_circle_distance() -> None:
+    hayward = (37.6268, -122.104)
+    san_rafael = (37.981, -122.5069)
+    assert haversine_km(hayward, hayward) == 0.0
+    assert 50 < haversine_km(hayward, san_rafael) < 56
+    assert haversine_km(hayward, san_rafael) == haversine_km(san_rafael, hayward)
+    # London to Paris, a textbook pair: 343 to 344 km.
+    assert round(haversine_km((51.5074, -0.1278), (48.8566, 2.3522))) in (343, 344)
+
+
+def test_every_shipped_programme_has_a_point() -> None:
+    # Rib #100 gave every row coordinates (Simon Fraser via the stanza
+    # point), so the tiebreak can never fall through for a shipped slug.
+    document = load_programmes()
+    assert set(POINTS) == set(document["programmes"])
+    assert POINTS["simon-fraser"] == (49.242778, -122.972778)
+
+
+def test_the_only_ambiguous_key_in_the_shipped_config_is_dominican() -> None:
+    # "Concordia" has one claimant, Concordia Irvine's member alias: the
+    # word is unambiguous by the ruling's definition, so the tiebreak never
+    # sees it, and outside a PacWest collect it stays the unresolved key.
+    scope = _scope_with_points("CCAA", 2025)
+    assert dict(scope.claimants) == {
+        "dominican": frozenset({"dominican", "dominican-of-california"})
+    }
+
+
+def test_dominican_on_a_ccaa_2025_page_is_the_nearer_dominican() -> None:
+    scope = _scope_with_points("CCAA", 2025)
+    assert "dominican" not in scope.claims
+    assert opponent_slug("Dominican", MEN, scope=scope, owner="cal-state-east-bay") == (
+        "dominican-of-california"
+    )
+    assert opponent_slug(
+        "Dominican (Calif.)", MEN, scope=scope, owner="cal-state-east-bay"
+    ) == ("dominican-of-california")
+    # One line per distinct printed text, as #102's notes are keyed.
+    assert scope.notes() == [
+        "resolution: 'Dominican' on cal-state-east-bay's page read as "
+        "dominican-of-california (53 km) over dominican (4,107 km)",
+        "resolution: 'Dominican (Calif.)' on cal-state-east-bay's page read as "
+        "dominican-of-california (53 km) over dominican (4,107 km)",
+    ]
+
+
+def test_dominican_on_an_rmac_2025_page_is_the_californian() -> None:
+    scope = _scope_with_points("RMAC", 2025)
+    assert opponent_slug("Dominican", MEN, scope=scope, owner="colorado-mesa") == (
+        "dominican-of-california"
+    )
+    assert scope.notes() == [
+        "resolution: 'Dominican' on colorado-mesa's page read as "
+        "dominican-of-california (1,217 km) over dominican (2,935 km)"
+    ]
+
+
+def test_dominican_on_cacc_and_ecc_2025_pages_stays_the_new_yorker() -> None:
+    # CACC: a member claims it, so the member-first rule answers first.
+    cacc = _scope_with_points("CACC", 2025)
+    assert opponent_slug("Dominican", MEN, scope=cacc, owner="bridgeport") == (
+        "dominican"
+    )
+    assert cacc.notes() == []
+    # ECC: no member claims it, both claimants have points, and Orangeburg
+    # is the nearer one, which is also today's answer, so nothing is noted.
+    ecc = _scope_with_points("ECC", 2025)
+    assert opponent_slug("Dominican", MEN, scope=ecc, owner="molloy") == "dominican"
+    assert ecc.notes() == []
+
+
+def test_concordia_has_a_single_claimant_and_is_untouched() -> None:
+    # Concordia Irvine's member alias is the word's only claim, so the
+    # tiebreak never applies: on a CCAA page and on an LSC page alike the
+    # word resolves exactly as today, to the unresolved key.
+    for conference, owner in (
+        ("CCAA", "cal-state-east-bay"),
+        ("LSC", "dallas-baptist"),
+    ):
+        scope = _scope_with_points(conference, 2025)
+        assert opponent_slug("Concordia", MEN, scope=scope, owner=owner) == (
+            opponent_slug("Concordia", MEN)
+        )
+        assert opponent_slug("Concordia", MEN, scope=scope, owner=owner) == "concordia"
+        assert scope.notes() == []
+
+
+def test_a_single_claimant_name_resolves_exactly_as_before() -> None:
+    scope = _scope_with_points("CCAA", 2025)
+    for published in ("Chaminade", "Harding", "Delta St.", "DBU", "Point Loma"):
+        assert opponent_slug(
+            published, MEN, scope=scope, owner="cal-state-east-bay"
+        ) == opponent_slug(published, MEN), published
+    assert scope.notes() == []
+
+
+def test_without_an_owner_or_points_the_tiebreak_never_applies() -> None:
+    with_points = _scope_with_points("CCAA", 2025)
+    assert opponent_slug("Dominican", MEN, scope=with_points) == "dominican"
+    without_points = _scope("CCAA", 2025)
+    assert opponent_slug(
+        "Dominican", MEN, scope=without_points, owner="cal-state-east-bay"
+    ) == ("dominican")
+    assert with_points.notes() == without_points.notes() == []
+
+
+def test_a_claimant_or_owner_with_no_point_falls_to_todays_rule() -> None:
+    incumbent = _school("Dominican", "CACC")
+    newcomer = _school(
+        "Dominican of California", "PACWEST", member_aliases=["Dominican"]
+    )
+    host = _school("Cal State East Bay", "CCAA")
+    schools = [incumbent, newcomer, host]
+    aliases = identity_aliases(schools, "men")
+    points = {
+        "dominican": (41.0487, -73.9408),
+        "dominican-of-california": (37.981, -122.5069),
+        "cal-state-east-bay": (37.6268, -122.104),
+    }
+
+    def scope(**overrides: tuple[float, float]):
+        kept = {**points, **overrides}
+        kept = {slug: point for slug, point in kept.items() if point is not None}
+        return resolution_scope(
+            schools,
+            "men",
+            {"cal-state-east-bay"},
+            conference="CCAA",
+            season=2025,
+            points=kept,
+        )
+
+    complete = scope()
+    assert opponent_slug(
+        "Dominican", aliases, scope=complete, owner="cal-state-east-bay"
+    ) == ("dominican-of-california")
+    for missing in ("dominican", "dominican-of-california", "cal-state-east-bay"):
+        partial = scope(**{missing: None})
+        assert opponent_slug(
+            "Dominican", aliases, scope=partial, owner="cal-state-east-bay"
+        ) == ("dominican"), missing
+        assert partial.notes() == []
+
+
+def test_a_ccaa_page_mints_the_match_under_the_nearer_slug() -> None:
+    scope = _scope_with_points("CCAA", 2025)
+    fixtures = parse_schedule_page(
+        _page("Cal State East Bay", "Dominican"),
+        page_url="https://eastbaypioneers.com/sports/mens-soccer/schedule/2025",
+        year=2025,
+        owner_slug="cal-state-east-bay",
+        aliases=MEN,
+        members=set(scope.members),
+        scope=scope,
+    )
+    assert [(f["home"], f["away"], f["conference_game"]) for f in fixtures] == [
+        ("cal-state-east-bay", "dominican-of-california", False)
+    ]
+    assert len(scope.notes()) == 1
+
+
+def test_the_tiebreak_enters_the_fingerprint_only_while_a_key_is_ambiguous():
+    scope = _scope_with_points("CCAA", 2025)
+    assert set(scope.fingerprint("cal-state-east-bay")) == {
+        "conference",
+        "season",
+        "claims",
+        "tiebreak",
+        "origin",
+    }
+    assert scope.fingerprint("cal-state-east-bay") != scope.fingerprint("chico-state")
+    plain = resolution_scope(
+        [_school("Harding", "GAC")], "men", {"harding"}, conference="GAC", season=2025
+    )
+    assert set(plain.fingerprint("harding")) == {"conference", "season", "claims"}
+
+
+def test_collect_reads_the_points_once_and_survives_their_absence(monkeypatch):
+    from scripts import collect_board
+
+    assert collect_board._programme_points() == POINTS
+
+    def missing():
+        raise FileNotFoundError("no programmes.json")
+
+    monkeypatch.setattr(collect_board, "load_programmes", missing)
+    assert collect_board._programme_points() == {}

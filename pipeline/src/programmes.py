@@ -22,8 +22,10 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass, field
+from pathlib import Path
 
 from . import gazetteer as gz
+from . import paths
 from .config import SchoolConfig
 from .sidearm_live import programme_slug
 
@@ -48,6 +50,53 @@ DESCRIPTION = (
 
 class ProgrammeError(ValueError):
     """A stanza that cannot complete a row."""
+
+
+def load_programmes(path: str | Path | None = None) -> dict[str, object]:
+    """Load the built programmes reference.
+
+    With no explicit ``path`` the rib's packaged copy is preferred, as
+    ``load_membership`` prefers its packaged membership.json, and the data
+    home's mirror is the fallback for an install that ships no packaged data
+    tree.
+    """
+    if path is not None:
+        programmes_path = Path(path)
+        if not programmes_path.exists():
+            raise FileNotFoundError(f"Programmes file not found: {programmes_path}")
+    else:
+        packaged = paths.packaged_programmes_path()
+        programmes_path = packaged if packaged.exists() else paths.programmes_path()
+        if not programmes_path.exists():
+            raise FileNotFoundError(
+                "Programmes file not found: no packaged copy at "
+                f"{packaged} and no data home copy at {programmes_path}"
+            )
+    with programmes_path.open(encoding="utf-8") as programmes_file:
+        document = json.load(programmes_file)
+    if not isinstance(document, dict):
+        raise ValueError("programmes.json root must be a JSON object")
+    return document
+
+
+def programme_points(document: dict[str, object]) -> dict[str, tuple[float, float]]:
+    """Every programme's point, by slug, as (lat, lon) in decimal degrees.
+
+    A row with no usable point is left out rather than guessed, so a lookup
+    that misses says the programme has no point.
+    """
+    rows = document.get("programmes")
+    points: dict[str, tuple[float, float]] = {}
+    if not isinstance(rows, dict):
+        return points
+    for slug, row in rows.items():
+        point = row.get("point") if isinstance(row, dict) else None
+        if not isinstance(point, dict):
+            continue
+        lat, lon = point.get("lat"), point.get("lon")
+        if isinstance(lat, (int, float)) and isinstance(lon, (int, float)):
+            points[str(slug)] = (float(lat), float(lon))
+    return points
 
 
 @dataclass
