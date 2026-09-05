@@ -6,6 +6,24 @@ fails `pipeline/tests/test_contracts.py`.
 
 ## 2026-09-05
 
+- Membership reference: `CCAA`, `PACWEST` and `GNAC` join `conferences`,
+  with one window each (Cal Poly Pomona, CCAA 2022-2026; Biola, PacWest
+  2022-2026; Seattle Pacific, GNAC 2022-2026) so the fixture exhibits them
+  (batch 5 membership PR; the fixture's conference list must equal the
+  packaged file's). The packaged file carries 37 new windows on 35 new
+  slugs: Fresno Pacific (PacWest 2022-2025, then CCAA 2026) and Menlo
+  (PacWest 2024-2025, then CCAA 2026) each carry two, the Young Harris
+  shape across two conferences of the same batch. `standings_archives`
+  gains `GNAC` (ids 44, 45, 46, 96 and 127 for 2021-2025; the live 2026
+  table carries no id), the GNAC publishing no records table before 2024,
+  and every GNAC window's `source` names that archive. No row shape
+  changes: the programmes reference's Simon Fraser row carries a point
+  read from the stanza rather than the Gazetteer, its point provenance
+  citing `point_source` with a note and no GEOID, which
+  `touchline.programmes/2` already admits (geoid optional).
+
+## 2026-09-05 (batch 4)
+
 - Membership reference: `SAC`, `CC` and `PBC` join `conferences`, with one
   window each (Wingate, SAC 2022-2026; North Greenville, whose three CC
   windows carry the first packaged `division` strings, `Southwest` 2023

@@ -116,3 +116,61 @@ def test_the_shipped_config_mints_one_slug_per_enabled_programme():
     schools = load_schools()
     keys = [(s.gender, programme_slug(s.name)) for s in schools if s.enabled]
     assert len(keys) == len(set(keys))
+
+
+def _point_entry(extra: str) -> str:
+    return _entry("Simon Fraser", "SFU") + "\n" + extra
+
+
+def test_a_point_loads_as_a_lat_lon_pair_with_its_source(tmp_path):
+    config = _write(
+        tmp_path,
+        _point_entry(
+            "point = { lat = 49.242778, lon = -122.972778 }\n"
+            'point_source = "Natural Resources Canada, CGNDB entry JAEBN"'
+        ),
+    )
+    (school,) = load_schools(config)
+    assert school.point == (49.242778, -122.972778)
+    assert school.point_source == "Natural Resources Canada, CGNDB entry JAEBN"
+
+
+def test_a_point_without_a_source_is_refused(tmp_path):
+    config = _write(tmp_path, _point_entry("point = { lat = 49.24, lon = -122.97 }"))
+    with pytest.raises(ValueError, match="point_source"):
+        load_schools(config)
+
+
+@pytest.mark.parametrize(
+    "point",
+    [
+        "point = { lat = 49.24 }",
+        'point = { lat = "49.24", lon = -122.97 }',
+        "point = 3",
+    ],
+)
+def test_a_malformed_point_is_refused(tmp_path, point):
+    config = _write(tmp_path, _point_entry(point + '\npoint_source = "x"'))
+    with pytest.raises(ValueError, match="point must be a table"):
+        load_schools(config)
+
+
+def test_a_point_outside_decimal_degrees_is_refused(tmp_path):
+    config = _write(
+        tmp_path,
+        _point_entry('point = { lat = 149.24, lon = -122.97 }\npoint_source = "x"'),
+    )
+    with pytest.raises(ValueError, match="outside the range"):
+        load_schools(config)
+
+
+def test_a_point_beside_a_geoid_pin_is_refused(tmp_path):
+    config = _write(
+        tmp_path,
+        _point_entry(
+            'point = { lat = 49.24, lon = -122.97 }\npoint_source = "x"\n'
+            'gazetteer_geoid = "0563020"'
+        ),
+    )
+    with pytest.raises(ValueError, match="alternatives"):
+        load_schools(config)

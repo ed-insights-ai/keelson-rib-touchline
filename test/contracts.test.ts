@@ -57,9 +57,16 @@ describe("every published contract fixture parses under the rib's strict schema"
     const fixture = programmesFileSchema.parse(read("programmes-2.json"));
     expect(fixture.schema).toBe(PROGRAMMES_SCHEMA);
     const packaged = programmesFileSchema.parse(JSON.parse(readFileSync(programmesPath(), "utf8")));
-    // Every row carries all four facts with a dated provenance each.
+    // Every row carries all four facts with a dated provenance each. The
+    // point is the Gazetteer's, named by GEOID, except a stanza's own point
+    // for a town the Gazetteer covers nowhere (Simon Fraser, Burnaby, B.C.),
+    // whose provenance says so in its note instead.
     for (const [slug, row] of Object.entries(packaged.programmes)) {
-      expect(row.provenance.point.geoid, slug).toBeTruthy();
+      const point = row.provenance.point;
+      expect(
+        point.geoid ?? (point.note?.startsWith("stanza point") ? point.note : undefined),
+        slug,
+      ).toBeTruthy();
       expect(row.city, slug).toMatch(/, /);
     }
     expect(Object.keys(packaged.programmes).length).toBeGreaterThan(0);

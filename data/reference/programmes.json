@@ -8,6 +8,40 @@
     "license": "Public domain (work of the U.S. federal government)"
   },
   "programmes": {
+    "academy-of-art": {
+      "name": "Academy of Art",
+      "nickname": "Urban Knights",
+      "abbreviation": "AAU",
+      "city": "San Francisco, Calif.",
+      "point": {
+        "lat": 37.7272,
+        "lon": -123.0322
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://artuathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://artuathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://artuathletics.com/sports/mens-soccer/schedule/2024 (San Francisco, for every 2024 home match, read 2026-09-05); the university's main site, https://www.academyart.edu/, prints 79 New Montgomery St., San Francisco, CA 94105",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0667000",
+          "name": "San Francisco city",
+          "state": "CA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "adams-state": {
       "name": "Adams State",
       "nickname": "Grizzlies",
@@ -314,6 +348,40 @@
         }
       }
     },
+    "azusa-pacific": {
+      "name": "Azusa Pacific",
+      "nickname": "Cougars",
+      "abbreviation": "APU",
+      "city": "Azusa, Calif.",
+      "point": {
+        "lat": 34.1385,
+        "lon": -117.9123
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://athletics.apu.edu/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://athletics.apu.edu/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://athletics.apu.edu/sports/mens-soccer (Azusa, Calif., read by the probe 2026-09-05); the site's own releases are datelined Azusa, Calif. (athletics.apu.edu news 2026/1/20)",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0603386",
+          "name": "Azusa city",
+          "state": "CA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "barry": {
       "name": "Barry",
       "nickname": "Buccaneers",
@@ -450,6 +518,40 @@
         }
       }
     },
+    "biola": {
+      "name": "Biola",
+      "nickname": "Eagles",
+      "abbreviation": "BU",
+      "city": "La Mirada, Calif.",
+      "point": {
+        "lat": 33.902,
+        "lon": -118.009
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://athletics.biola.edu/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://athletics.biola.edu/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://athletics.biola.edu/sports/mens-soccer (La Mirada, Calif., read by the probe 2026-09-05); the thepacwest.com member JSON prints La Mirada, Calif.",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0640032",
+          "name": "La Mirada city",
+          "state": "CA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "bloomfield": {
       "name": "Bloomfield",
       "nickname": "Bears",
@@ -549,6 +651,278 @@
           "geoid": "0908000",
           "name": "Bridgeport city",
           "state": "CT",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "cal-poly-humboldt": {
+      "name": "Cal Poly Humboldt",
+      "nickname": "Lumberjacks",
+      "abbreviation": "HUM",
+      "city": "Arcata, Calif.",
+      "point": {
+        "lat": 40.8623,
+        "lon": -124.075
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://humboldtathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://humboldtathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://humboldtathletics.com/sports/mens-soccer (Arcata, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints Arcata, Calif.",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0602476",
+          "name": "Arcata city",
+          "state": "CA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "cal-poly-pomona": {
+      "name": "Cal Poly Pomona",
+      "nickname": "Broncos",
+      "abbreviation": "CPP",
+      "city": "Pomona, Calif.",
+      "point": {
+        "lat": 34.0585,
+        "lon": -117.7611
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://broncoathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://broncoathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://broncoathletics.com/sports/mens-soccer (Pomona, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints Pomona, Calif.",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0658072",
+          "name": "Pomona city",
+          "state": "CA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "cal-state-dominguez-hills": {
+      "name": "Cal State Dominguez Hills",
+      "nickname": "Toros",
+      "abbreviation": "CSUDH",
+      "city": "Carson, Calif.",
+      "point": {
+        "lat": 33.8404,
+        "lon": -118.2496
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gotoros.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gotoros.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://gotoros.com/sports/mens-soccer/schedule/2026 (Carson, for every 2026 home match, read 2026-09-05); the goccaa.org member JSON prints Carson, Calif.",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0611530",
+          "name": "Carson city",
+          "state": "CA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "cal-state-east-bay": {
+      "name": "Cal State East Bay",
+      "nickname": "Pioneers",
+      "abbreviation": "CSUEB",
+      "city": "Hayward, Calif.",
+      "point": {
+        "lat": 37.6268,
+        "lon": -122.104
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://eastbaypioneers.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://eastbaypioneers.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "the NCAA directory, https://web3.ncaa.org/directory/orgDetail?id=98 (25800 Carlos Bee Blvd., Hayward, CA 94542, read 2026-09-05), and the goccaa.org member JSON (Hayward, Calif.); the 2026 schedule page prints Alameda, CA, the venue town, for home matches",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0633000",
+          "name": "Hayward city",
+          "state": "CA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "cal-state-la": {
+      "name": "Cal State LA",
+      "nickname": "Golden Eagles",
+      "abbreviation": "CSULA",
+      "city": "Los Angeles, Calif.",
+      "point": {
+        "lat": 34.0194,
+        "lon": -118.4108
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://lagoldeneagles.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://lagoldeneagles.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://lagoldeneagles.com/sports/mens-soccer/schedule/2026 (Los Angeles, University Stadium, for every 2026 home match; footer address 5151 State University Dr, Los Angeles, CA 90032; read 2026-09-05); the goccaa.org member JSON prints Los Angeles",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0644000",
+          "name": "Los Angeles city",
+          "state": "CA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "cal-state-monterey-bay": {
+      "name": "Cal State Monterey Bay",
+      "nickname": "Otters",
+      "abbreviation": "CSUMB",
+      "city": "Seaside, Calif.",
+      "point": {
+        "lat": 36.6251,
+        "lon": -121.8178
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://otterathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://otterathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://otterathletics.com/sports/mens-soccer (Seaside, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints Seaside, Calif.",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0670742",
+          "name": "Seaside city",
+          "state": "CA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "cal-state-san-bernardino": {
+      "name": "Cal State San Bernardino",
+      "nickname": "Coyotes",
+      "abbreviation": "CSUSB",
+      "city": "San Bernardino, Calif.",
+      "point": {
+        "lat": 34.1411,
+        "lon": -117.2946
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://csusbathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://csusbathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://csusbathletics.com/sports/mens-soccer (San Bernardino, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints San Bernardino, Calif.",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0665000",
+          "name": "San Bernardino city",
+          "state": "CA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "cal-state-san-marcos": {
+      "name": "Cal State San Marcos",
+      "nickname": "Cougars",
+      "abbreviation": "CSUSM",
+      "city": "San Marcos, Calif.",
+      "point": {
+        "lat": 33.1326,
+        "lon": -117.1699
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://csusmcougars.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://csusmcougars.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://csusmcougars.com/sports/mens-soccer/schedule/2026 (San Marcos, for every 2026 home match, read 2026-09-05); the goccaa.org member JSON prints San Marcos, Calif.",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0668196",
+          "name": "San Marcos city",
+          "state": "CA",
           "accessed": "2023-09-26"
         }
       }
@@ -723,6 +1097,41 @@
         }
       }
     },
+    "chaminade": {
+      "name": "Chaminade",
+      "nickname": "Silverswords",
+      "abbreviation": "CUH",
+      "city": "Honolulu, Hawaii",
+      "point": {
+        "lat": 21.3243,
+        "lon": -157.8476
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://goswords.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://goswords.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://goswords.com/sports/mens-soccer/schedule/2026 (Honolulu, Saint Louis Field, for every 2026 home match, read 2026-09-05); the thepacwest.com member JSON prints Honolulu",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1571550",
+          "name": "Urban Honolulu CDP",
+          "state": "HI",
+          "accessed": "2023-09-26",
+          "note": "matched explicitly by GEOID: the programme prints 'Honolulu' and the Gazetteer lists the place as 'Urban Honolulu CDP'; Honolulu is the consolidated City and County of Honolulu, which the 2023 Gazetteer places file carries only as the Urban Honolulu CDP (the county-subdivisions file's Honolulu CCD spans the whole county out to the Northwestern Hawaiian Islands and its centroid lies in the open ocean): the pin is the CDP the campus and the home ground sit in"
+        }
+      }
+    },
     "charleston": {
       "name": "Charleston",
       "nickname": "Golden Eagles",
@@ -787,6 +1196,40 @@
           "geoid": "4260000",
           "name": "Philadelphia city",
           "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "chico-state": {
+      "name": "Chico State",
+      "nickname": "Wildcats",
+      "abbreviation": "CHICO",
+      "city": "Chico, Calif.",
+      "point": {
+        "lat": 39.759,
+        "lon": -121.8177
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://chicowildcats.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://chicowildcats.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://chicowildcats.com/sports/mens-soccer (Chico, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints Chico, Calif.",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0613014",
+          "name": "Chico city",
+          "state": "CA",
           "accessed": "2023-09-26"
         }
       }
@@ -1059,6 +1502,40 @@
           "geoid": "5403292",
           "name": "Athens town",
           "state": "WV",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "concordia-irvine": {
+      "name": "Concordia Irvine",
+      "nickname": "Golden Eagles",
+      "abbreviation": "CUI",
+      "city": "Irvine, Calif.",
+      "point": {
+        "lat": 33.6784,
+        "lon": -117.7713
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://cuigoldeneagles.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://cuigoldeneagles.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://cuigoldeneagles.com/sports/mens-soccer (Irvine, Calif., read by the probe 2026-09-05); the thepacwest.com member JSON prints Irvine, Calif.",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0636770",
+          "name": "Irvine city",
+          "state": "CA",
           "accessed": "2023-09-26"
         }
       }
@@ -1371,7 +1848,7 @@
       }
     },
     "dominican": {
-      "name": "Dominican",
+      "name": "Dominican (N.Y.)",
       "nickname": "Chargers",
       "abbreviation": "DUNY",
       "city": "Orangeburg, N.Y.",
@@ -1400,6 +1877,40 @@
           "geoid": "3655167",
           "name": "Orangeburg CDP",
           "state": "NY",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "dominican-of-california": {
+      "name": "Dominican University of California",
+      "nickname": "Penguins",
+      "abbreviation": "DUC",
+      "city": "San Rafael, Calif.",
+      "point": {
+        "lat": 37.981,
+        "lon": -122.5069
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://dominicanathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://dominicanathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://dominicanathletics.com/sports/mens-soccer (San Rafael, Calif., read by the probe 2026-09-05); the thepacwest.com member JSON prints San Rafael, Calif.",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0668364",
+          "name": "San Rafael city",
+          "state": "CA",
           "accessed": "2023-09-26"
         }
       }
@@ -2052,6 +2563,40 @@
         }
       }
     },
+    "fresno-pacific": {
+      "name": "Fresno Pacific",
+      "nickname": "Sunbirds",
+      "abbreviation": "FPU",
+      "city": "Fresno, Calif.",
+      "point": {
+        "lat": 36.7827,
+        "lon": -119.7934
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.fpusunbirds.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.fpusunbirds.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://www.fpusunbirds.com/sports/mens-soccer (Fresno, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints Fresno, Calif.",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0627000",
+          "name": "Fresno city",
+          "state": "CA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "frostburg-state": {
       "name": "Frostburg State",
       "nickname": "Bobcats",
@@ -2256,6 +2801,75 @@
         }
       }
     },
+    "hawaii-hilo": {
+      "name": "Hawai'i Hilo",
+      "nickname": "Vulcans",
+      "abbreviation": "UHH",
+      "city": "Hilo, Hawaii",
+      "point": {
+        "lat": 19.6887,
+        "lon": -155.0829
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://hiloathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://hiloathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://hiloathletics.com/sports/mens-soccer/schedule/2026 (Hilo, Hawai'i, for every 2026 home match, read 2026-09-05); the thepacwest.com member JSON prints Hilo, Hawaii",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1514650",
+          "name": "Hilo CDP",
+          "state": "HI",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "hawaii-pacific": {
+      "name": "Hawai'i Pacific",
+      "nickname": "Sharks",
+      "abbreviation": "HPU",
+      "city": "Honolulu, Hawaii",
+      "point": {
+        "lat": 21.3243,
+        "lon": -157.8476
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://hpusharks.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://hpusharks.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "the university's main site, https://www.hpu.edu/ (1 Aloha Tower Drive, Honolulu, HI 96813, read 2026-09-05), and the NCAA directory, https://web3.ncaa.org/directory/orgDetail?id=2696 (same address); the 2026 schedule page prints the venue only (Waipio Stadium) for home matches and the thepacwest.com member JSON prints Kaneohe, Hawaii",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1571550",
+          "name": "Urban Honolulu CDP",
+          "state": "HI",
+          "accessed": "2023-09-26",
+          "note": "matched explicitly by GEOID: the programme prints 'Honolulu' and the Gazetteer lists the place as 'Urban Honolulu CDP'; Honolulu is the consolidated City and County of Honolulu, which the 2023 Gazetteer places file carries only as the Urban Honolulu CDP (the county-subdivisions file's Honolulu CCD spans the whole county out to the Northwestern Hawaiian Islands and its centroid lies in the open ocean): the pin is the CDP the campus and the home ground sit in"
+        }
+      }
+    },
     "holy-family": {
       "name": "Holy Family",
       "nickname": "Tigers",
@@ -2286,6 +2900,40 @@
           "geoid": "4260000",
           "name": "Philadelphia city",
           "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "holy-names": {
+      "name": "Holy Names",
+      "nickname": "Hawks",
+      "abbreviation": "HNU",
+      "city": "Oakland, Calif.",
+      "point": {
+        "lat": 37.7698,
+        "lon": -122.2257
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://hnuhawks.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://hnuhawks.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "the university's closure release, https://hnu.edu/news/holy-names-university-in-oakland-to-close-after-spring-semester-in-may-2023/ (3500 Mountain Boulevard, Oakland, CA, read 2026-09-05), and the hnu.edu athletics page the dead host redirects to (same address); the athletics host is dead and prints no town",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0653000",
+          "name": "Oakland city",
+          "state": "CA",
           "accessed": "2023-09-26"
         }
       }
@@ -2389,6 +3037,40 @@
           "geoid": "4260000",
           "name": "Philadelphia city",
           "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "jessup": {
+      "name": "Jessup",
+      "nickname": "Warriors",
+      "abbreviation": "JES",
+      "city": "Rocklin, Calif.",
+      "point": {
+        "lat": 38.8069,
+        "lon": -121.2497
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://jessupathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://jessupathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://jessupathletics.com/sports/mens-soccer (Rocklin, Calif., read by the probe 2026-09-05); the thepacwest.com member JSON prints Rocklin, CA",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0662364",
+          "name": "Rocklin city",
+          "state": "CA",
           "accessed": "2023-09-26"
         }
       }
@@ -3040,6 +3722,40 @@
         }
       }
     },
+    "menlo": {
+      "name": "Menlo",
+      "nickname": "Oaks",
+      "abbreviation": "MEN",
+      "city": "Atherton, Calif.",
+      "point": {
+        "lat": 37.4571,
+        "lon": -122.2011
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://menloathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://menloathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://menloathletics.com/sports/mens-soccer (Atherton, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints Atherton, Calif., and the goccaa.org release of 2025-11-25 is datelined Atherton, Calif.",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0603092",
+          "name": "Atherton town",
+          "state": "CA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "mercy": {
       "name": "Mercy",
       "nickname": "Mavericks",
@@ -3343,6 +4059,40 @@
           "geoid": "3663264",
           "name": "Rockville Centre village",
           "state": "NY",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "montana-state-billings": {
+      "name": "Montana State Billings",
+      "nickname": "Yellowjackets",
+      "abbreviation": "MSUB",
+      "city": "Billings, Mont.",
+      "point": {
+        "lat": 45.7885,
+        "lon": -108.5525
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://msubsports.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://msubsports.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://msubsports.com/sports/mens-soccer (Billings, Mont., read by the probe 2026-09-05); the gnacsports.com member JSON prints Billings, Mont.",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3006550",
+          "name": "Billings city",
+          "state": "MT",
           "accessed": "2023-09-26"
         }
       }
@@ -3683,6 +4433,40 @@
           "geoid": "2651900",
           "name": "Marquette city",
           "state": "MI",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "northwest-nazarene": {
+      "name": "Northwest Nazarene",
+      "nickname": "Nighthawks",
+      "abbreviation": "NNU",
+      "city": "Nampa, Idaho",
+      "point": {
+        "lat": 43.5855,
+        "lon": -116.5656
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://nnusports.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://nnusports.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://nnusports.com/sports/mens-soccer (Nampa, Idaho, read by the probe 2026-09-05); the gnacsports.com member JSON prints Nampa, ID",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1656260",
+          "name": "Nampa city",
+          "state": "ID",
           "accessed": "2023-09-26"
         }
       }
@@ -4057,6 +4841,40 @@
           "geoid": "4238288",
           "name": "Johnstown city",
           "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "point-loma": {
+      "name": "Point Loma",
+      "nickname": "Sea Lions",
+      "abbreviation": "PLNU",
+      "city": "San Diego, Calif.",
+      "point": {
+        "lat": 32.815,
+        "lon": -117.1356
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://plnusealions.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://plnusealions.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "the NCAA directory, https://web3.ncaa.org/directory/orgDetail?id=30149 (3900 Lomaland Drive, San Diego, CA 92106, read 2026-09-05), and the thepacwest.com member JSON (San Diego); the schedule page prints the venue only for home matches",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0666000",
+          "name": "San Diego city",
+          "state": "CA",
           "accessed": "2023-09-26"
         }
       }
@@ -4573,6 +5391,40 @@
         }
       }
     },
+    "saint-martins": {
+      "name": "Saint Martin's",
+      "nickname": "Saints",
+      "abbreviation": "SMU",
+      "city": "Lacey, Wash.",
+      "point": {
+        "lat": 47.0431,
+        "lon": -122.7982
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://smusaints.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://smusaints.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://smusaints.com/sports/mens-soccer (Lacey, Wash., read by the probe 2026-09-05); the gnacsports.com member JSON prints Lacey, WA",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "5336745",
+          "name": "Lacey city",
+          "state": "WA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "saint-marys": {
       "name": "St. Mary's",
       "nickname": "Rattlers",
@@ -4706,6 +5558,74 @@
           "geoid": "5471380",
           "name": "Salem city",
           "state": "WV",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "san-francisco-state": {
+      "name": "San Francisco State",
+      "nickname": "Gators",
+      "abbreviation": "SFSU",
+      "city": "San Francisco, Calif.",
+      "point": {
+        "lat": 37.7272,
+        "lon": -123.0322
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://sfstategators.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://sfstategators.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://sfstategators.com/sports/mens-soccer/schedule/2024 (San Francisco, Cox Stadium, for every 2024 home match; footer address 1600 Holloway Ave, San Francisco, CA 94132; read 2026-09-05); the goccaa.org member JSON prints San Francisco",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0667000",
+          "name": "San Francisco city",
+          "state": "CA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "seattle-pacific": {
+      "name": "Seattle Pacific",
+      "nickname": "Falcons",
+      "abbreviation": "SPU",
+      "city": "Seattle, Wash.",
+      "point": {
+        "lat": 47.6193,
+        "lon": -122.3515
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://spufalcons.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://spufalcons.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://spufalcons.com/sports/mens-soccer (Seattle, Wash., read by the probe 2026-09-05); the gnacsports.com member JSON prints Seattle, WA",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "5363000",
+          "name": "Seattle city",
+          "state": "WA",
           "accessed": "2023-09-26"
         }
       }
@@ -4880,6 +5800,37 @@
         }
       }
     },
+    "simon-fraser": {
+      "name": "Simon Fraser",
+      "nickname": "Red Leafs",
+      "abbreviation": "SFU",
+      "city": "Burnaby, B.C.",
+      "point": {
+        "lat": 49.242778,
+        "lon": -122.972778
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://athletics.sfu.ca/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://athletics.sfu.ca/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://athletics.sfu.ca/sports/mens-soccer/schedule/2026 (Burnaby, B.C., SFU Stadium at Terry Fox Field, for every 2026 home match, read 2026-09-05); the gnacsports.com member JSON prints Burnaby, British Columbia, and the university's own site prints 8888 University Drive, Burnaby, BC V5A 1S6 (https://www.sfu.ca/campuses/burnaby.html)",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "Natural Resources Canada, Canadian Geographical Names Database, entry JAEBN 'Burnaby' (CITY, British Columbia), https://geogratis.gc.ca/services/geoname/en/geonames?q=Burnaby&concise=CITY (read 2026-09-05); the university's published address, 8888 University Drive, Burnaby, BC V5A 1S6 (https://www.sfu.ca/campuses/burnaby.html), places the campus in that city",
+          "accessed": "2026-09-05",
+          "note": "stanza point: the Gazetteer covers no place for this town, so the point is the stanza's own, read from point_source"
+        }
+      }
+    },
     "slippery-rock": {
       "name": "Slippery Rock",
       "nickname": "The Rock",
@@ -4910,6 +5861,40 @@
           "geoid": "4271184",
           "name": "Slippery Rock borough",
           "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "sonoma-state": {
+      "name": "Sonoma State",
+      "nickname": "Seawolves",
+      "abbreviation": "SSU",
+      "city": "Rohnert Park, Calif.",
+      "point": {
+        "lat": 38.3476,
+        "lon": -122.7009
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://sonomaseawolves.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://sonomaseawolves.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://sonomaseawolves.com/sports/mens-soccer (Rohnert Park, Calif., read by the probe 2026-09-05, and the site's footer address); the NCAA directory, https://web3.ncaa.org/directory/orgDetail?id=645, prints 1801 East Cotati Avenue, Rohnert Park, CA 94928 (read 2026-09-05)",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0662546",
+          "name": "Rohnert Park city",
+          "state": "CA",
           "accessed": "2023-09-26"
         }
       }
@@ -5250,6 +6235,40 @@
           "geoid": "3670068",
           "name": "Sparkill CDP",
           "state": "NY",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "stanislaus-state": {
+      "name": "Stanislaus State",
+      "nickname": "Warriors",
+      "abbreviation": "STAN",
+      "city": "Turlock, Calif.",
+      "point": {
+        "lat": 37.5055,
+        "lon": -120.8593
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://warriorathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://warriorathletics.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://warriorathletics.com/sports/mens-soccer (Turlock, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints Turlock, Calif.",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0680812",
+          "name": "Turlock city",
+          "state": "CA",
           "accessed": "2023-09-26"
         }
       }
@@ -5595,6 +6614,40 @@
         }
       }
     },
+    "uc-merced": {
+      "name": "UC Merced",
+      "nickname": "Bobcats",
+      "abbreviation": "UCM",
+      "city": "Merced, Calif.",
+      "point": {
+        "lat": 37.3057,
+        "lon": -120.4779
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://ucmercedbobcats.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://ucmercedbobcats.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://ucmercedbobcats.com/sports/mens-soccer (Merced, Calif., read by the probe 2026-09-05); the goccaa.org member JSON prints Merced, Calif.",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0646898",
+          "name": "Merced city",
+          "state": "CA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "uccs": {
       "name": "UCCS",
       "nickname": "Mountain Lions",
@@ -5829,6 +6882,40 @@
           "geoid": "4874144",
           "name": "Tyler city",
           "state": "TX",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "vanguard": {
+      "name": "Vanguard",
+      "nickname": "Lions",
+      "abbreviation": "VAN",
+      "city": "Costa Mesa, Calif.",
+      "point": {
+        "lat": 33.6659,
+        "lon": -117.9123
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://vanguardlions.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://vanguardlions.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://vanguardlions.com/sports/mens-soccer (Costa Mesa, Calif., read by the probe 2026-09-05); the thepacwest.com member JSON prints Costa Mesa, CA",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0616532",
+          "name": "Costa Mesa city",
+          "state": "CA",
           "accessed": "2023-09-26"
         }
       }
@@ -6071,6 +7158,74 @@
         }
       }
     },
+    "western-oregon": {
+      "name": "Western Oregon",
+      "nickname": "Wolves",
+      "abbreviation": "WOU",
+      "city": "Monmouth, Ore.",
+      "point": {
+        "lat": 44.8513,
+        "lon": -123.2286
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://wouwolves.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://wouwolves.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://wouwolves.com/sports/mens-soccer (Monmouth, Ore., read by the probe 2026-09-05); the gnacsports.com member JSON prints Monmouth, OR",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4149550",
+          "name": "Monmouth city",
+          "state": "OR",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "western-washington": {
+      "name": "Western Washington",
+      "nickname": "Vikings",
+      "abbreviation": "WWU",
+      "city": "Bellingham, Wash.",
+      "point": {
+        "lat": 48.7534,
+        "lon": -122.4702
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://wwuvikings.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://wwuvikings.com/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://wwuvikings.com/sports/mens-soccer (Bellingham, Wash., read by the probe 2026-09-05); the gnacsports.com member JSON prints Bellingham, WA",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "5305280",
+          "name": "Bellingham city",
+          "state": "WA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "westminster": {
       "name": "Westminster",
       "nickname": "Griffins",
@@ -6101,6 +7256,40 @@
           "geoid": "4967000",
           "name": "Salt Lake City city",
           "state": "UT",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "westmont": {
+      "name": "Westmont",
+      "nickname": "Warriors",
+      "abbreviation": "WC",
+      "city": "Santa Barbara, Calif.",
+      "point": {
+        "lat": 34.4036,
+        "lon": -119.7137
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://athletics.westmont.edu/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://athletics.westmont.edu/sports/mens-soccer",
+          "accessed": "2026-09-05"
+        },
+        "city": {
+          "source": "the college's main site, https://www.westmont.edu/ (955 La Paz Road, Santa Barbara, CA 93108, read 2026-09-05), and the thepacwest.com member JSON (Santa Barbara, CA); the schedule page prints no home town",
+          "accessed": "2026-09-05"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0669070",
+          "name": "Santa Barbara city",
+          "state": "CA",
           "accessed": "2023-09-26"
         }
       }

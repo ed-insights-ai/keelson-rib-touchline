@@ -79,6 +79,14 @@ class SchoolConfig:
     # place. Required for such a pin (the build refuses a name mismatch
     # without it); written through to the programmes row's point provenance.
     gazetteer_note: str = ""
+    # A point for a town the Gazetteer does not cover at all (Simon Fraser
+    # plays in Burnaby, B.C.; the Gazetteer is US-only): (lat, lon) in
+    # decimal degrees, with point_source saying where the pair was read. The
+    # programmes build honours it only when the Gazetteer resolves the city
+    # to nothing, and refuses it on a city the Gazetteer does resolve, so a
+    # pin can never silently override a real place. Never beside a GEOID pin.
+    point: tuple[float, float] | None = None
+    point_source: str = ""
     # Namespaces the legacy game_id space (ordinal * 1_000_000 + year * 100 +
     # game_num), so it must be globally unique among the schools that have one.
     # Only the StatCrew lineage builds game_ids; the live collector never reads
@@ -117,13 +125,56 @@ class SchoolConfig:
         return self.live_scraper or DEFAULT_LIVE_COLLECTOR
 
 
+def _read_point(entry: dict) -> tuple[float, float] | None:
+    """The stanza's ``point`` table as (lat, lon), validated at load.
+
+    A point is a coordinate pair for a town the Gazetteer does not cover;
+    the loader checks its shape and range, and that the stanza says where
+    the pair was read, so a malformed pin never reaches the build. Whether
+    the Gazetteer does cover the town is the build's question, not this one.
+    """
+    raw = entry.get("point")
+    if raw is None:
+        return None
+    label = f"School '{entry.get('name', '?')}' ({entry.get('abbreviation', '?')})"
+    if (
+        not isinstance(raw, dict)
+        or set(raw) != {"lat", "lon"}
+        or any(
+            isinstance(raw[k], bool) or not isinstance(raw[k], (int, float))
+            for k in raw
+        )
+    ):
+        raise ValueError(
+            f"{label}: point must be a table {{ lat = <float>, lon = <float> }} "
+            "in decimal degrees"
+        )
+    lat, lon = float(raw["lat"]), float(raw["lon"])
+    if not (-90.0 <= lat <= 90.0 and -180.0 <= lon <= 180.0):
+        raise ValueError(
+            f"{label}: point ({lat}, {lon}) is outside the range of decimal degrees"
+        )
+    if not str(entry.get("point_source", "")).strip():
+        raise ValueError(
+            f"{label}: point needs point_source saying where the coordinates were read"
+        )
+    if entry.get("gazetteer_geoid"):
+        raise ValueError(
+            f"{label}: point and gazetteer_geoid are alternatives: a GEOID pin "
+            "names a Gazetteer place, a point stands in for a town the "
+            "Gazetteer does not cover"
+        )
+    return (lat, lon)
+
+
 def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
     """Load school configurations from a TOML file.
 
     Raises ``FileNotFoundError`` if the file doesn't exist.
     Raises ``ValueError`` if an enabled school has an empty ``base_url``, if
-    two schools share an assigned ordinal, or if two enabled stanzas of one
-    gender mint the same programme slug.
+    two schools share an assigned ordinal, if two enabled stanzas of one
+    gender mint the same programme slug, or if a stanza's ``point`` is
+    malformed, out of range, unsourced, or beside a GEOID pin.
     """
     config_path = Path(path)
     if not config_path.exists():
@@ -153,6 +204,8 @@ def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
             identity_accessed=entry.get("identity_accessed", ""),
             gazetteer_geoid=entry.get("gazetteer_geoid", ""),
             gazetteer_note=entry.get("gazetteer_note", ""),
+            point=_read_point(entry),
+            point_source=entry.get("point_source", ""),
             ordinal=entry.get("ordinal", 0),
             gender=entry.get("gender", "men"),
             scraper=entry.get("scraper", "statcrew"),

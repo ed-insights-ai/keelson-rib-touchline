@@ -2,16 +2,19 @@
   "conferences": [
     "CACC",
     "CC",
+    "CCAA",
     "ECC",
     "G-MAC",
     "GAC",
     "GLIAC",
     "GLVC",
+    "GNAC",
     "GSC",
     "LSC",
     "MEC",
     "MIAA",
     "NE10",
+    "PACWEST",
     "PBC",
     "PSAC",
     "RMAC",
@@ -20,8 +23,18 @@
     "independent",
     "non_member"
   ],
-  "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2026. Authored from official GAC/MIAA, LSC, GSC, GLVC, RMAC, SSC, NE10, CACC, ECC, PSAC, MEC, G-MAC, GLIAC (gliac.org), SAC (the thesac.com standings archive), Conference Carolinas (conferencecarolinas.com) and Peach Belt (peachbeltconference.org) records; each window cites its source. standings_archives names, per conference code, the standings archive a conference with no per-season records pages keeps its member lists in (url_template with {id}, and the page id per season), so a source sentence can cite the page and check-membership --standings can read a captured copy of it back. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
+  "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2026. Authored from official GAC/MIAA, LSC, GSC, GLVC, RMAC, SSC, NE10, CACC, ECC, PSAC, MEC, G-MAC, GLIAC (gliac.org), SAC (the thesac.com standings archive), Conference Carolinas (conferencecarolinas.com), Peach Belt (peachbeltconference.org), CCAA (goccaa.org), PacWest (thepacwest.com) and GNAC (the gnacsports.com standings archive) records; each window cites its source. standings_archives names, per conference code, the standings archive a conference with no per-season records pages keeps its member lists in (url_template with {id}, and the page id per season), so a source sentence can cite the page and check-membership --standings can read a captured copy of it back. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
   "memberships": {
+    "academy-of-art": {
+      "men": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2022,
+          "to_season": 2024,
+          "source": "Pacific West Conference, 2022 and 2024 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true and https://thepacwest.com/stats.aspx?path=msoc&year=2024&conf=true (accessed 2026-09-05); listed in both under the label Academy of Art, and in 2023 (year=2023) and 2021 (year=2021), every year as a row whose team link is '#' (no thepacwest.com team page). Absent from the 2025 records (https://thepacwest.com/stats.aspx?path=msoc&year=2025&conf=true) and from the live 2026 standings (https://thepacwest.com/standings.aspx?path=msoc); Academy of Art University discontinued intercollegiate athletics at the end of 2024-25 (https://artuathletics.com/news/2025/4/4/academy-of-art-university-announces-discontinuation-of-intercollegiate-sports-programs.aspx, 2025-04-04)."
+        }
+      ]
+    },
     "adams-state": {
       "men": [
         {
@@ -112,6 +125,16 @@
         }
       ]
     },
+    "azusa-pacific": {
+      "men": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2022,
+          "to_season": 2025,
+          "source": "Pacific West Conference, 2022 and 2025 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true and https://thepacwest.com/stats.aspx?path=msoc&year=2025&conf=true (accessed 2026-09-05); listed in both under the label Azusa Pacific, and in 2023 (year=2023), 2024 (year=2024) and 2021 (year=2021), every year as a row whose team link is '#' (no thepacwest.com team page). Absent from the live 2026 standings (https://thepacwest.com/standings.aspx?path=msoc); Azusa Pacific is reclassifying to NCAA Division III and the SCIAC (https://athletics.apu.edu/news/2026/1/20/mens-soccer-a-bold-new-chapter-azusa-pacific-mens-soccer-set-for-sciac-transition.aspx, 2026-01-20, 'After years of competing at the NCAA Division II level in the PacWest Conference, the Cougars are officially beginning their transition to NCAA Division III'). The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
+        }
+      ]
+    },
     "barry": {
       "men": [
         {
@@ -166,6 +189,16 @@
         }
       ]
     },
+    "biola": {
+      "men": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2022 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Biola, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
+        }
+      ]
+    },
     "bloomfield": {
       "men": [
         {
@@ -193,6 +226,86 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). Absent from the 2021 records (https://caccathletics.org/stats.aspx?path=msoc&year=2021&conf=true), which list it in the East Coast Conference instead (https://eccsports.org/stats.aspx?path=msoc&year=2021&conf=true); first listed 2022, matching Bridgeport's move from the ECC to the CACC (https://www.ubknights.com/general/2021-22/releases/20211213ngwsnj)."
+        }
+      ]
+    },
+    "cal-poly-humboldt": {
+      "men": [
+        {
+          "conference": "CCAA",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Cal Poly Humboldt, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages. The conference prints the label Cal Poly Humboldt on every page including the 2021 records, a retroactive relabelling: Humboldt State University became Cal Poly Humboldt on 2022-01-26 (https://goccaa.org/news/2022/1/26/general-humboldt-state-university-is-now-cal-poly-humboldt.aspx and https://www.humboldt.edu/polytechnic)."
+        }
+      ]
+    },
+    "cal-poly-pomona": {
+      "men": [
+        {
+          "conference": "CCAA",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Cal Poly Pomona, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
+        }
+      ]
+    },
+    "cal-state-dominguez-hills": {
+      "men": [
+        {
+          "conference": "CCAA",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Cal State Dominguez Hills, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
+        }
+      ]
+    },
+    "cal-state-east-bay": {
+      "men": [
+        {
+          "conference": "CCAA",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Cal State East Bay, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
+        }
+      ]
+    },
+    "cal-state-la": {
+      "men": [
+        {
+          "conference": "CCAA",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Cal State LA, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
+        }
+      ]
+    },
+    "cal-state-monterey-bay": {
+      "men": [
+        {
+          "conference": "CCAA",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Cal State Monterey Bay, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
+        }
+      ]
+    },
+    "cal-state-san-bernardino": {
+      "men": [
+        {
+          "conference": "CCAA",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Cal State San Bernardino, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
+        }
+      ]
+    },
+    "cal-state-san-marcos": {
+      "men": [
+        {
+          "conference": "CCAA",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Cal State San Marcos, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
         }
       ]
     },
@@ -246,6 +359,16 @@
         }
       ]
     },
+    "chaminade": {
+      "men": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2022 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Chaminade, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
+        }
+      ]
+    },
     "charleston": {
       "men": [
         {
@@ -263,6 +386,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
+    "chico-state": {
+      "men": [
+        {
+          "conference": "CCAA",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Chico State, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
         }
       ]
     },
@@ -350,6 +483,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Mountain East Conference, 2022 and 2026 Men's Soccer records, https://mountaineast.org/stats.aspx?path=msoc&year=2022&conf=true and https://mountaineast.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "concordia-irvine": {
+      "men": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2022 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Concordia, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
         }
       ]
     },
@@ -457,6 +600,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
+    "dominican-of-california": {
+      "men": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2022 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Dominican, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
         }
       ]
     },
@@ -686,6 +839,22 @@
         }
       ]
     },
+    "fresno-pacific": {
+      "men": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2022,
+          "to_season": 2025,
+          "source": "Pacific West Conference, 2022 and 2025 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true and https://thepacwest.com/stats.aspx?path=msoc&year=2025&conf=true (accessed 2026-09-05); listed in both under the label Fresno Pacific, and in 2023 (year=2023), 2024 (year=2024) and 2021 (year=2021), every year as a row whose team link is '#' (no thepacwest.com team page). Absent from the live 2026 standings (https://thepacwest.com/standings.aspx?path=msoc); Fresno Pacific joined the CCAA for 2026-27 after fourteen PacWest years (https://goccaa.org/news/2025/6/11/general-fresno-pacific-university-joins-the-california-collegiate-athletic-association.aspx, 2025-06-11, 'It will begin competing in the CCAA in Fall 2026' and 'will leave the PacWest Conference in 2026'; https://news.fresno.edu/article/06/12/2025/fresno-pacific-university-join-california-collegiate-athletic-association, 2025-06-12, 'FPU will continue as full members of the PacWest Conference through the 2025-26 academic year'). The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
+        },
+        {
+          "conference": "CCAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2026 Men's Soccer standings, https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed there under the label Fresno Pacific. Absent from the 2025 records (https://goccaa.org/stats.aspx?path=msoc&year=2025&conf=true) and every earlier CCAA page; Fresno Pacific joined the CCAA for 2026-27 after fourteen PacWest years (https://goccaa.org/news/2025/6/11/general-fresno-pacific-university-joins-the-california-collegiate-athletic-association.aspx, 2025-06-11, 'It will begin competing in the CCAA in Fall 2026' and 'will leave the PacWest Conference in 2026'; https://news.fresno.edu/article/06/12/2025/fresno-pacific-university-join-california-collegiate-athletic-association, 2025-06-12, 'FPU will continue as full members of the PacWest Conference through the 2025-26 academic year'). The 2026 records page (year=2026) carries no table yet."
+        }
+      ]
+    },
     "frostburg-state": {
       "men": [
         {
@@ -754,6 +923,26 @@
         }
       ]
     },
+    "hawaii-hilo": {
+      "men": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2022 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Hawai'i Hilo, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
+        }
+      ]
+    },
+    "hawaii-pacific": {
+      "men": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2022 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Hawai'i Pacific, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
+        }
+      ]
+    },
     "holy-family": {
       "men": [
         {
@@ -761,6 +950,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
+    "holy-names": {
+      "men": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2022,
+          "to_season": 2022,
+          "source": "Pacific West Conference, 2022 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true (accessed 2026-09-05); listed there under the label Holy Names as a row whose team link is '#' (no thepacwest.com team page), and on the archived 2022 standings (https://thepacwest.com/standings.aspx?standings=175, 5-5 in ten conference matches); the 2021 records (year=2021) and standings (standings=163) list it too. Absent from the 2023 records (https://thepacwest.com/stats.aspx?path=msoc&year=2023&conf=true) and standings (https://thepacwest.com/standings.aspx?standings=183); Holy Names University announced on 2022-12-19 that it would cease operations after the spring 2023 semester and cancel its NCAA sports programs (https://hnu.edu/news/holy-names-university-in-oakland-to-close-after-spring-semester-in-may-2023/). The athletics host hnuhawks.com redirects to a page on hnu.edu (read 2026-09-05), so the stanza stays enabled for the identity row only: every fetch fails and the backfill files the absence."
         }
       ]
     },
@@ -791,6 +990,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
+    "jessup": {
+      "men": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2024,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2024 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2024&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Jessup, and in 2025 (year=2025). Absent from the 2023 records (https://thepacwest.com/stats.aspx?path=msoc&year=2023&conf=true); first listed 2024, matching Jessup's move from the NAIA Golden State Athletic Conference for 2024-25 (https://thepacwest.com/news/2023/7/21/general-pacwest-welcomes-trio-of-new-schools-in-2024-25.aspx, 2023-07-21; https://jessupathletics.com/news/2024/7/23/mens-soccer-mens-soccer-announces-schedule-for-first-division-ii-season.aspx, 2024-07-23, 'Entering year one as a member of the PacWest Conference'). The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
         }
       ]
     },
@@ -998,6 +1207,22 @@
         }
       ]
     },
+    "menlo": {
+      "men": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2024,
+          "to_season": 2025,
+          "source": "Pacific West Conference, 2024 and 2025 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2024&conf=true and https://thepacwest.com/stats.aspx?path=msoc&year=2025&conf=true (accessed 2026-09-05); listed in both under the label Menlo, each year as a row whose team link is '#' (no thepacwest.com team page). Absent from the 2023 records (https://thepacwest.com/stats.aspx?path=msoc&year=2023&conf=true); first listed 2024, matching the conference's welcome of Menlo, Vanguard and Jessup for 2024-25 (https://thepacwest.com/news/2023/7/21/general-pacwest-welcomes-trio-of-new-schools-in-2024-25.aspx, 2023-07-21). Absent from the live 2026 standings (https://thepacwest.com/standings.aspx?path=msoc); Menlo joined the CCAA for 2026-27 after two PacWest years (https://goccaa.org/news/2025/11/25/awards-menlo-college-joins-the-california-collegiate-athletic-association.aspx, 2025-11-25, 'It will begin competing in the CCAA in Fall 2026', 'joined the PacWest in July 2024 after previously competing in the Golden State Athletic Conference'; https://menloathletics.com/news/2024/8/1/mens-soccer-menlo-mens-soccer-looking-forward-to-new-beginnings-in-pacwest-conference-in-inaugural-season-in-ncaa-dii-era.aspx, 2024-08-01, the inaugural PacWest season). The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
+        },
+        {
+          "conference": "CCAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2026 Men's Soccer standings, https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed there under the label Menlo. Absent from the 2025 records (https://goccaa.org/stats.aspx?path=msoc&year=2025&conf=true) and every earlier CCAA page; Menlo joined the CCAA for 2026-27 after two PacWest years (https://goccaa.org/news/2025/11/25/awards-menlo-college-joins-the-california-collegiate-athletic-association.aspx, 2025-11-25, 'It will begin competing in the CCAA in Fall 2026', 'joined the PacWest in July 2024 after previously competing in the Golden State Athletic Conference'; https://menloathletics.com/news/2024/8/1/mens-soccer-menlo-mens-soccer-looking-forward-to-new-beginnings-in-pacwest-conference-in-inaugural-season-in-ncaa-dii-era.aspx, 2024-08-01, the inaugural PacWest season). The 2026 records page (year=2026) carries no table yet."
+        }
+      ]
+    },
     "mercy": {
       "men": [
         {
@@ -1085,6 +1310,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
+        }
+      ]
+    },
+    "montana-state-billings": {
+      "men": [
+        {
+          "conference": "GNAC",
+          "from_season": 2022,
+          "to_season": 2024,
+          "source": "Great Northwest Athletic Conference, 2022 and 2024 Men's Soccer standings, https://gnacsports.com/standings.aspx?standings=45 and https://gnacsports.com/standings.aspx?standings=96 (accessed 2026-09-05); listed in both under the label Montana State Billings, and in 2023 (https://gnacsports.com/standings.aspx?standings=46) and 2021 (https://gnacsports.com/standings.aspx?standings=44); the 2024 records page (https://gnacsports.com/stats.aspx?path=msoc&year=2024&conf=true) lists it too. Absent from the 2025 standings (https://gnacsports.com/standings.aspx?standings=127) and records (https://gnacsports.com/stats.aspx?path=msoc&year=2025&conf=true) and from the live 2026 table (https://gnacsports.com/standings.aspx?path=msoc); MSU Billings discontinued men's soccer after 2024-25 (https://msubsports.com/news/2024/11/19/mens-soccer-msu-billings-department-of-athletics-discontinues-mens-soccer-program.aspx, 2024-11-19, 'The men's soccer program will be discontinued following the 2024-2025 academic year'). The GNAC publishes no records table before 2024 (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for 2021-2023 and carries no table for 2026), so the standings archive is source 1 (standings_archives.GNAC); the 2024 and 2025 records pages (https://gnacsports.com/stats.aspx?path=msoc&year=2024&conf=true and https://gnacsports.com/stats.aspx?path=msoc&year=2025&conf=true) list the same members."
         }
       ]
     },
@@ -1243,6 +1478,16 @@
         }
       ]
     },
+    "northwest-nazarene": {
+      "men": [
+        {
+          "conference": "GNAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Northwest Athletic Conference, 2022 and 2026 Men's Soccer standings, https://gnacsports.com/standings.aspx?standings=45 (the archived 2022 table) and https://gnacsports.com/standings.aspx?path=msoc (the live 2026 table) (accessed 2026-09-05); listed in both under the label Northwest Nazarene, and in every season between (https://gnacsports.com/standings.aspx?standings=46, 96 and 127). The 2021 standings (https://gnacsports.com/standings.aspx?standings=44) list it too, so it did not arrive across the window's edge. The GNAC publishes no records table before 2024 (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for 2021-2023 and carries no table for 2026), so the standings archive is source 1 (standings_archives.GNAC); the 2024 and 2025 records pages (https://gnacsports.com/stats.aspx?path=msoc&year=2024&conf=true and https://gnacsports.com/stats.aspx?path=msoc&year=2025&conf=true) list the same members."
+        }
+      ]
+    },
     "northwestern-oklahoma-state": {
       "women": [
         {
@@ -1372,6 +1617,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Pennsylvania State Athletic Conference, 2022 and 2026 Men's Soccer records, https://psacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://psacsports.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same thirteen programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "point-loma": {
+      "men": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2022 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Point Loma, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
         }
       ]
     },
@@ -1545,6 +1800,16 @@
         }
       ]
     },
+    "saint-martins": {
+      "men": [
+        {
+          "conference": "GNAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Northwest Athletic Conference, 2022 and 2026 Men's Soccer standings, https://gnacsports.com/standings.aspx?standings=45 (the archived 2022 table) and https://gnacsports.com/standings.aspx?path=msoc (the live 2026 table) (accessed 2026-09-05); listed in both under the label Saint Martin's, and in every season between (https://gnacsports.com/standings.aspx?standings=46, 96 and 127). The 2021 standings (https://gnacsports.com/standings.aspx?standings=44) list it too, so it did not arrive across the window's edge. The GNAC publishes no records table before 2024 (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for 2021-2023 and carries no table for 2026), so the standings archive is source 1 (standings_archives.GNAC); the 2024 and 2025 records pages (https://gnacsports.com/stats.aspx?path=msoc&year=2024&conf=true and https://gnacsports.com/stats.aspx?path=msoc&year=2025&conf=true) list the same members."
+        }
+      ]
+    },
     "saint-marys": {
       "men": [
         {
@@ -1582,6 +1847,26 @@
           "from_season": 2026,
           "to_season": 2026,
           "source": "Mountain East Conference, 2026 Men's Soccer standings, https://mountaineast.org/standings.aspx?path=msoc (accessed 2026-09-03; the 2026 records page, https://mountaineast.org/stats.aspx?path=msoc&year=2026&conf=true, still prints no statistics); listed there. Absent from every records page 2021-2025 (https://mountaineast.org/stats.aspx?path=msoc&year=2025&conf=true and earlier): Salem is an associate member for men's soccer from 2026-27 (https://salemtigers.com/news/2026/3/25/salem-joins-mountain-east-conference-for-mens-soccer.aspx and https://mountaineast.org/news/2026/3/25/mec-adds-salem-university-as-associate-member-in-mens-soccer.aspx); first listed 2026."
+        }
+      ]
+    },
+    "san-francisco-state": {
+      "men": [
+        {
+          "conference": "CCAA",
+          "from_season": 2022,
+          "to_season": 2024,
+          "source": "California Collegiate Athletic Association, 2022 and 2024 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/stats.aspx?path=msoc&year=2024&conf=true (accessed 2026-09-05); listed in both under the label San Francisco State, and in 2023 (year=2023) and 2021 (year=2021). Absent from the 2025 records (https://goccaa.org/stats.aspx?path=msoc&year=2025&conf=true) and from the live 2026 standings (https://goccaa.org/standings.aspx?path=msoc); San Francisco State eliminated men's soccer as of 2025-07-01 while staying a CCAA member (https://sfstategators.com/news/2025/3/6/general-update-on-ncaa-athletics-programs-at-sf-state.aspx, 2025-03-06; the 2026 goccaa.org member JSON still lists the institution)."
+        }
+      ]
+    },
+    "seattle-pacific": {
+      "men": [
+        {
+          "conference": "GNAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Northwest Athletic Conference, 2022 and 2026 Men's Soccer standings, https://gnacsports.com/standings.aspx?standings=45 (the archived 2022 table) and https://gnacsports.com/standings.aspx?path=msoc (the live 2026 table) (accessed 2026-09-05); listed in both under the label Seattle Pacific, and in every season between (https://gnacsports.com/standings.aspx?standings=46, 96 and 127). The 2021 standings (https://gnacsports.com/standings.aspx?standings=44) list it too, so it did not arrive across the window's edge. The GNAC publishes no records table before 2024 (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for 2021-2023 and carries no table for 2026), so the standings archive is source 1 (standings_archives.GNAC); the 2024 and 2025 records pages (https://gnacsports.com/stats.aspx?path=msoc&year=2024&conf=true and https://gnacsports.com/stats.aspx?path=msoc&year=2025&conf=true) list the same members."
         }
       ]
     },
@@ -1642,6 +1927,16 @@
         }
       ]
     },
+    "simon-fraser": {
+      "men": [
+        {
+          "conference": "GNAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Northwest Athletic Conference, 2022 and 2026 Men's Soccer standings, https://gnacsports.com/standings.aspx?standings=45 (the archived 2022 table) and https://gnacsports.com/standings.aspx?path=msoc (the live 2026 table) (accessed 2026-09-05); listed in both under the label Simon Fraser, and in every season between (https://gnacsports.com/standings.aspx?standings=46, 96 and 127). The 2021 standings (https://gnacsports.com/standings.aspx?standings=44) list it too, so it did not arrive across the window's edge. The GNAC publishes no records table before 2024 (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for 2021-2023 and carries no table for 2026), so the standings archive is source 1 (standings_archives.GNAC); the 2024 and 2025 records pages (https://gnacsports.com/stats.aspx?path=msoc&year=2024&conf=true and https://gnacsports.com/stats.aspx?path=msoc&year=2025&conf=true) list the same members."
+        }
+      ]
+    },
     "slippery-rock": {
       "men": [
         {
@@ -1649,6 +1944,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Pennsylvania State Athletic Conference, 2022 and 2026 Men's Soccer records, https://psacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://psacsports.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same thirteen programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "sonoma-state": {
+      "men": [
+        {
+          "conference": "CCAA",
+          "from_season": 2022,
+          "to_season": 2024,
+          "source": "California Collegiate Athletic Association, 2022 and 2024 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/stats.aspx?path=msoc&year=2024&conf=true (accessed 2026-09-05); listed in both under the label Sonoma State, and in 2023 (year=2023) and 2021 (year=2021), every year as a row whose team link is '#' (no goccaa.org team page). Absent from the 2025 records (https://goccaa.org/stats.aspx?path=msoc&year=2025&conf=true) and from the live 2026 standings (https://goccaa.org/standings.aspx?path=msoc); Sonoma State suspended intercollegiate athletics after 2024-25 (https://news.sonoma.edu/articles/2026/athletics-launch-fall-2027, 'shuttered in June 2025 as part of campus-wide program and personnel reductions', and the conference's release of 2026-07-27, https://goccaa.org/news/2026/7/27/general-sonoma-state-rejoins-the-ccaa.aspx, 'after a two-year hiatus from intercollegiate athletics')."
         }
       ]
     },
@@ -1767,6 +2072,16 @@
         }
       ]
     },
+    "stanislaus-state": {
+      "men": [
+        {
+          "conference": "CCAA",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Stanislaus State, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
+        }
+      ]
+    },
     "staten-island": {
       "men": [
         {
@@ -1873,6 +2188,16 @@
         }
       ]
     },
+    "uc-merced": {
+      "men": [
+        {
+          "conference": "CCAA",
+          "from_season": 2025,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2025 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2025&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label UC Merced (the 2025 standings archive, https://goccaa.org/standings.aspx?standings=320, prints 'UC Merced *', the championship-ineligibility mark of its NCAA candidacy year). Absent from the 2024 records (https://goccaa.org/stats.aspx?path=msoc&year=2024&conf=true); first listed 2025, matching the conference's announcement of 2023-11-14 that UC Merced would compete on CCAA schedules from fall 2025 (https://goccaa.org/news/2023/11/13/general-california-collegiate-athletic-association-set-to-add-university-of-california-merced.aspx) and the university's release of 2024-07-11 (https://ucmercedbobcats.com/news/2024/7/11/all-sports-uc-merced-accepted-into-ncaa-division-ii.aspx, 'During its second year of the candidacy period (2025-26), UC Merced will compete in the CCAA'). The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
+        }
+      ]
+    },
     "uccs": {
       "men": [
         {
@@ -1949,6 +2274,16 @@
         }
       ]
     },
+    "vanguard": {
+      "men": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2024,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2024 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2024&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Vanguard, and in 2025 (year=2025). Absent from the 2023 records (https://thepacwest.com/stats.aspx?path=msoc&year=2023&conf=true); first listed 2024, matching Vanguard's move from the NAIA Golden State Athletic Conference for 2024-25 (https://thepacwest.com/news/2023/7/21/general-pacwest-welcomes-trio-of-new-schools-in-2024-25.aspx, 2023-07-21; https://vanguardlions.com/news/2024/11/7/first-pacwest-season-for-mens-soccer-comes-to-a-close.aspx, 2024-11-07, 'their first PacWest season'). The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
+        }
+      ]
+    },
     "walsh": {
       "men": [
         {
@@ -2019,6 +2354,26 @@
         }
       ]
     },
+    "western-oregon": {
+      "men": [
+        {
+          "conference": "GNAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Northwest Athletic Conference, 2022 and 2026 Men's Soccer standings, https://gnacsports.com/standings.aspx?standings=45 (the archived 2022 table, 1-10-1) and https://gnacsports.com/standings.aspx?path=msoc (the live 2026 table) (accessed 2026-09-05); listed in both under the label Western Oregon, and in every season between (https://gnacsports.com/standings.aspx?standings=46, 96 and 127). Absent from the 2021 standings (https://gnacsports.com/standings.aspx?standings=44): the programme began in fall 2022 (https://wouwolves.com/news/2021/7/13/athletics-wou-to-add-mens-soccer-for-the-fall-of-2022.aspx, 2021-07-13, 'add men's soccer to its NCAA Division II athletic program beginning in the fall of 2022'), so the window's first year is a real edge. The GNAC publishes no records table before 2024 (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for 2021-2023 and carries no table for 2026), so the standings archive is source 1 (standings_archives.GNAC); the 2024 and 2025 records pages (https://gnacsports.com/stats.aspx?path=msoc&year=2024&conf=true and https://gnacsports.com/stats.aspx?path=msoc&year=2025&conf=true) list the same members."
+        }
+      ]
+    },
+    "western-washington": {
+      "men": [
+        {
+          "conference": "GNAC",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Great Northwest Athletic Conference, 2022 and 2026 Men's Soccer standings, https://gnacsports.com/standings.aspx?standings=45 (the archived 2022 table) and https://gnacsports.com/standings.aspx?path=msoc (the live 2026 table) (accessed 2026-09-05); listed in both under the label Western Washington, and in every season between (https://gnacsports.com/standings.aspx?standings=46, 96 and 127). The 2021 standings (https://gnacsports.com/standings.aspx?standings=44) list it too, so it did not arrive across the window's edge. The GNAC publishes no records table before 2024 (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for 2021-2023 and carries no table for 2026), so the standings archive is source 1 (standings_archives.GNAC); the 2024 and 2025 records pages (https://gnacsports.com/stats.aspx?path=msoc&year=2024&conf=true and https://gnacsports.com/stats.aspx?path=msoc&year=2025&conf=true) list the same members."
+        }
+      ]
+    },
     "westminster": {
       "men": [
         {
@@ -2026,6 +2381,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "westmont": {
+      "men": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2023,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2023 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2023&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Westmont, and in every season between (year=2024, 2025). Absent from the 2022 records (https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true); first listed 2023, matching Westmont's move from the NAIA Golden State Athletic Conference for 2023-24 (https://thepacwest.com/news/2022/7/14/general-westmont-becomes-12th-member-of-pacwest.aspx, 2022-07-14, 'Westmont will begin to compete in the PacWest in the 2023-24 season'; https://www.westmont.edu/westmont-news/warriors-begin-new-era-competition-pacwest-conference, 2023-07-13). The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
         }
       ]
     },
@@ -2102,6 +2467,16 @@
     "to": 2026
   },
   "standings_archives": {
+    "GNAC": {
+      "url_template": "https://gnacsports.com/standings.aspx?standings={id}",
+      "seasons": {
+        "2021": "44",
+        "2022": "45",
+        "2023": "46",
+        "2024": "96",
+        "2025": "127"
+      }
+    },
     "SAC": {
       "url_template": "https://www.thesac.com/standings.aspx?standings={id}",
       "seasons": {
