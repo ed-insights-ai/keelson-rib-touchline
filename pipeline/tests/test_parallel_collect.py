@@ -200,9 +200,17 @@ def _published_rows(slug: str, slugs: list[str]) -> list[dict[str, object]]:
 
 def _fake_programme_factory(delays: dict[str, float], slugs: list[str]):
     def fake_programme(
-        school, season, aliases, *, session=None, layers, members, page_cache=None
+        school,
+        season,
+        aliases,
+        *,
+        session=None,
+        layers,
+        members,
+        page_cache=None,
+        scope=None,
     ):
-        del season, aliases, session, members, page_cache
+        del season, aliases, session, members, page_cache, scope
         slug = programme_slug(school.name)
         time.sleep(delays.get(slug, 0))
         rows = _published_rows(slug, slugs)
@@ -450,9 +458,17 @@ def test_a_hung_programme_is_a_named_gap_and_the_rest_complete(
     schools = _schools(3)
 
     def fake_programme(
-        school, season, aliases, *, session=None, layers, members, page_cache=None
+        school,
+        season,
+        aliases,
+        *,
+        session=None,
+        layers,
+        members,
+        page_cache=None,
+        scope=None,
     ):
-        del season, aliases, session, members, page_cache
+        del season, aliases, session, members, page_cache, scope
         slug = programme_slug(school.name)
         if slug == "bravo":
             release.wait(10)  # a hung site, far beyond the budget
@@ -627,9 +643,17 @@ def test_a_crashing_collector_is_a_named_gap_not_a_dead_run(
     schools = _schools(2)
 
     def fake_programme(
-        school, season, aliases, *, session=None, layers, members, page_cache=None
+        school,
+        season,
+        aliases,
+        *,
+        session=None,
+        layers,
+        members,
+        page_cache=None,
+        scope=None,
     ):
-        del season, aliases, session, members, page_cache
+        del season, aliases, session, members, page_cache, scope
         slug = programme_slug(school.name)
         if slug == "alpha":
             raise RuntimeError("collector bug")
@@ -668,9 +692,17 @@ def test_a_late_result_after_the_budget_is_discarded_not_mixed_in(
     schools = _schools(2)
 
     def fake_programme(
-        school, season, aliases, *, session=None, layers, members, page_cache=None
+        school,
+        season,
+        aliases,
+        *,
+        session=None,
+        layers,
+        members,
+        page_cache=None,
+        scope=None,
     ):
-        del season, aliases, session, members, page_cache
+        del season, aliases, session, members, page_cache, scope
         slug = programme_slug(school.name)
         if slug == "alpha":
             release.wait(10)
@@ -1167,9 +1199,17 @@ def test_a_challenged_programme_is_retried_once_after_the_cool_down(
     attempts: dict[str, int] = {}
 
     def fake_programme(
-        school, season, aliases, *, session=None, layers, members, page_cache=None
+        school,
+        season,
+        aliases,
+        *,
+        session=None,
+        layers,
+        members,
+        page_cache=None,
+        scope=None,
     ):
-        del season, aliases, session, members, page_cache
+        del season, aliases, session, members, page_cache, scope
         slug = programme_slug(school.name)
         attempts[slug] = attempts.get(slug, 0) + 1
         if slug == "bravo" and attempts[slug] == 1:

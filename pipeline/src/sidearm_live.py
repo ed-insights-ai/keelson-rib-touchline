@@ -57,8 +57,10 @@ import hashlib
 import json
 import logging
 import re
-from collections.abc import Callable, Sequence
+import threading
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
+from dataclasses import field as dataclass_field
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
@@ -776,7 +778,11 @@ def _two_team_names(opponent_name: str) -> tuple[str, str] | None:
 
 
 def hosted_other_match(
-    opponent_name: str, *, owner_slug: str, aliases: dict[str, str]
+    opponent_name: str,
+    *,
+    owner_slug: str,
+    aliases: dict[str, str],
+    scope: ResolutionScope | None = None,
 ) -> tuple[str, str] | None:
     """The two teams a published row names when the page owner is neither.
 
@@ -798,15 +804,19 @@ def hosted_other_match(
     if pair is None:
         return None
     if owner_slug in (
-        opponent_slug(pair[0], aliases),
-        opponent_slug(pair[1], aliases),
+        opponent_slug(pair[0], aliases, scope=scope),
+        opponent_slug(pair[1], aliases, scope=scope),
     ):
         return None
     return pair
 
 
 def own_side_opponent(
-    opponent_name: str, *, owner_slug: str, aliases: dict[str, str]
+    opponent_name: str,
+    *,
+    owner_slug: str,
+    aliases: dict[str, str],
+    scope: ResolutionScope | None = None,
 ) -> str:
     """The other side of a row that names the owner beside its opponent.
 
@@ -816,9 +826,9 @@ def own_side_opponent(
     pair = _two_team_names(opponent_name)
     if pair is None:
         return opponent_name
-    if opponent_slug(pair[0], aliases) == owner_slug:
+    if opponent_slug(pair[0], aliases, scope=scope) == owner_slug:
         return pair[1]
-    if opponent_slug(pair[1], aliases) == owner_slug:
+    if opponent_slug(pair[1], aliases, scope=scope) == owner_slug:
         return pair[0]
     return opponent_name
 
@@ -941,7 +951,9 @@ def _identity_spellings(school: SchoolConfig) -> list[str]:
     an identity, so a same-name pair may print "Dominican (N.Y.)" beside
     "Dominican (Calif.)" while the bare "Dominican" resolves by name and
     aliases alone (tl-4an.31). A published spelling that should resolve is
-    stated as an alias.
+    stated as an alias. ``member_aliases`` are not claimed here either: they
+    resolve only inside a collect's scope (``resolution_scope``), so the
+    gender-wide map never sees them.
     """
     spellings = [school.name, *school.aliases]
     if school.abbreviation_resolves:
@@ -1041,8 +1053,141 @@ def conference_members(
     )
 
 
-def opponent_slug(name: str, aliases: dict[str, str]) -> str:
+@dataclass(frozen=True)
+class ResolutionScope:
+    """The conference-season a collect reads for, and what its members claim.
+
+    Opponent text on a member's page is written for that conference's
+    readers: Chaminade's 2025 page prints "Dominican" for Dominican of
+    California, a fellow PacWest member, and the gender-wide map reads it as
+    the CACC's Dominican, whose whole name it is (tl-b3v: every such match
+    landed in the PacWest file twice, once under each slug). So a collect
+    resolves inside a scope: the conference-season it is collecting, with
+    the identity keys its members claim by name, alias, resolving
+    abbreviation and ``member_aliases``. A key a member claims resolves to
+    that member before any other programme; every other key resolves as it
+    always has. The scope is one object per collect, built from the
+    membership resolver's member set, and it applies to every row of every
+    page in the collect, conference and non-conference alike.
+
+    ``note`` records each printed text the scope re-pointed, once per
+    collect, for the run log.
+    """
+
+    conference: str
+    season: int
+    members: frozenset[str]
+    claims: Mapping[str, str]
+    _notes: dict[str, tuple[str, str]] = dataclass_field(
+        default_factory=dict, compare=False, repr=False
+    )
+    _lock: threading.Lock = dataclass_field(
+        default_factory=threading.Lock, compare=False, repr=False
+    )
+
+    def note(self, printed: str, chosen: str, otherwise: str) -> None:
+        """Record that ``printed`` read as ``chosen``, not ``otherwise``."""
+        with self._lock:
+            self._notes.setdefault(printed, (chosen, otherwise))
+
+    def notes(self) -> list[str]:
+        """One run-log line per distinct printed text the scope re-pointed."""
+        with self._lock:
+            return [
+                f"resolution: {printed!r} read as {chosen}, a {self.conference} "
+                f"{self.season} member, not {otherwise}"
+                for printed, (chosen, otherwise) in self._notes.items()
+            ]
+
+    def fingerprint(self) -> dict[str, object]:
+        """What of the scope shapes a parse, for ``parse_fingerprint``."""
+        return {
+            "conference": self.conference,
+            "season": self.season,
+            "claims": dict(sorted(self.claims.items())),
+        }
+
+
+def resolution_scope(
+    schools: list[SchoolConfig],
+    gender: str,
+    members: set[str],
+    *,
+    conference: str,
+    season: int,
+) -> ResolutionScope:
+    """The scope one collect resolves inside: ``members`` and their claims.
+
+    ``members`` is the membership resolver's answer for the conference-season
+    (``conference_members``), never a conference literal; a member with no
+    stanza (a dead host recorded membership-only) claims nothing.
+    """
+    claims: dict[str, str] = {}
+    for school in schools:
+        if school.gender != gender:
+            continue
+        slug = programme_slug(school.name)
+        if slug not in members:
+            continue
+        for candidate in (*_identity_spellings(school), *school.member_aliases):
+            key = _identity_key(candidate)
+            if key:
+                claims[key] = slug
+    return ResolutionScope(
+        conference=conference,
+        season=season,
+        members=frozenset(members),
+        claims=claims,
+    )
+
+
+def member_alias_collisions(
+    schools: list[SchoolConfig],
+) -> list[tuple[str, str, str, list[tuple[str, str]]]]:
+    """Every member alias another stanza of the same conference also claims.
+
+    One entry per (gender, conference, key): a member alias resolves only
+    inside its conference's scope, so the only spelling it may not share is
+    one a fellow member claims there, by name, alias, resolving abbreviation
+    or member alias. The stanza's ``conference`` field stands for the
+    conference here, as it does for a programme with no membership window.
+    A member alias that is another conference's whole name is the point of
+    the field, not a collision.
+    """
+    claims: dict[tuple[str, str, str], dict[str, list[tuple[str, str]]]] = {}
+    for school in schools:
+        slug = programme_slug(school.name)
+        fields = [("name", school.name)]
+        if school.abbreviation_resolves:
+            fields.append(("abbreviation", school.abbreviation))
+        fields.extend(("alias", alias) for alias in school.aliases)
+        fields.extend(("member_alias", alias) for alias in school.member_aliases)
+        for label, candidate in fields:
+            key = _identity_key(candidate)
+            if not key:
+                continue
+            owners = claims.setdefault((school.gender, school.conference, key), {})
+            owners.setdefault(slug, []).append((slug, label))
+    collisions = []
+    for (gender, conference, key), owners in claims.items():
+        if len(owners) < 2:
+            continue
+        pairs = [pair for pairs in owners.values() for pair in pairs]
+        if any(label == "member_alias" for _, label in pairs):
+            collisions.append((gender, conference, key, pairs))
+    return collisions
+
+
+def opponent_slug(
+    name: str, aliases: dict[str, str], *, scope: ResolutionScope | None = None
+) -> str:
     """Resolve a published opponent string to a stable identity, or record it.
+
+    With a ``scope`` (the conference-season a collect is reading for), a key
+    one of its members claims resolves to that member before any other
+    programme, and the scope notes the re-pointing when the gender-wide map
+    would have read it otherwise. Without one, or for every key no member
+    claims, the gender-wide rule below applies unchanged.
 
     The fallback is deliberately conservative. A bare substring test treats a
     PREFIX as an identity — "Southwestern" sits inside "southwestern oklahoma
@@ -1060,6 +1205,17 @@ def opponent_slug(name: str, aliases: dict[str, str]) -> str:
     key = _identity_key(name)
     if not key:
         return programme_slug(_clean_team_name(name))
+    if scope is not None and key in scope.claims:
+        chosen = scope.claims[key]
+        otherwise = _unscoped_slug(key, aliases)
+        if chosen != otherwise:
+            scope.note(_clean_team_name(name), chosen, otherwise)
+        return chosen
+    return _unscoped_slug(key, aliases)
+
+
+def _unscoped_slug(key: str, aliases: dict[str, str]) -> str:
+    """The gender-wide rule: exact claim, unique multi-token match, or the key."""
     if key in aliases:
         return aliases[key]
 
@@ -1466,6 +1622,7 @@ def _parse_schedule_dom(
     aliases: dict[str, str],
     members: set[str] | None = None,
     skips: list[str] | None = None,
+    scope: ResolutionScope | None = None,
 ) -> list[dict[str, object]]:
     """Read the server-rendered game list.
 
@@ -1548,16 +1705,16 @@ def _parse_schedule_dom(
         # in it, so it is not the owner's fixture: skipped by name, never
         # minted under the owner's id.
         hosted = hosted_other_match(
-            opponent_name, owner_slug=owner_slug, aliases=aliases
+            opponent_name, owner_slug=owner_slug, aliases=aliases, scope=scope
         )
         if hosted is not None:
             if skips is not None:
                 skips.append(hosted_skip(date, hosted))
             continue
         opponent_name = own_side_opponent(
-            opponent_name, owner_slug=owner_slug, aliases=aliases
+            opponent_name, owner_slug=owner_slug, aliases=aliases, scope=scope
         )
-        other_slug = opponent_slug(opponent_name, aliases)
+        other_slug = opponent_slug(opponent_name, aliases, scope=scope)
         if neutral:
             # Neutral rows keep the "vs"/"at" span as the only side
             # indicator; home/away stay as published, the flag says
@@ -1716,6 +1873,7 @@ def parse_schedule_page(
     aliases: dict[str, str],
     members: set[str] | None = None,
     skips: list[str] | None = None,
+    scope: ResolutionScope | None = None,
 ) -> list[dict[str, object]]:
     """Read a SideArm schedule page into fixture rows.
 
@@ -1723,7 +1881,9 @@ def parse_schedule_page(
     every game the JSON stub left out, under the same identifiers.  A row
     naming two other teams (a match the owner hosted but did not play) is
     never minted; with a ``skips`` list it is named there, one line per
-    row, for the collect summary.
+    row, for the collect summary.  With a ``scope`` (the collect's
+    conference-season), an opponent a member of that conference claims
+    resolves to the member first (``opponent_slug``).
     """
     events: dict[str, dict[str, object]] = {}
     for title, raw, honest in _payload_events(html):
@@ -1756,16 +1916,16 @@ def parse_schedule_page(
         # University of Denver" as the opponent title, location_indicator
         # "N" (westminstergriffins.com 2026).  Not the owner's fixture.
         hosted = hosted_other_match(
-            opponent_name, owner_slug=owner_slug, aliases=aliases
+            opponent_name, owner_slug=owner_slug, aliases=aliases, scope=scope
         )
         if hosted is not None:
             if skips is not None:
                 skips.append(hosted_skip(date_text[:10], hosted))
             continue
         opponent_name = own_side_opponent(
-            opponent_name, owner_slug=owner_slug, aliases=aliases
+            opponent_name, owner_slug=owner_slug, aliases=aliases, scope=scope
         )
-        other_slug = opponent_slug(opponent_name, aliases)
+        other_slug = opponent_slug(opponent_name, aliases, scope=scope)
         indicator = str(event.get("location_indicator") or "").upper()
         owner_is_home = indicator == "H" or (
             indicator == "N" and bool(event.get("neutral_hometeam"))
@@ -1921,6 +2081,7 @@ def parse_schedule_page(
         aliases=aliases,
         members=members,
         skips=dom_skips,
+        scope=scope,
     ):
         if str(fixture["id"]) not in json_ids:
             fixtures.append(fixture)
@@ -2946,6 +3107,7 @@ def collect_programme(
     layers: Sequence[str] = DEFAULT_LAYERS,
     members: set[str] | None = None,
     page_cache: PageStateStore | None = None,
+    scope: ResolutionScope | None = None,
 ) -> ProgrammeCollection:
     """Collect the requested layers, each standing or falling on its own.
 
@@ -3023,6 +3185,10 @@ def collect_programme(
             year,
             aliases,
             sorted(members) if members is not None else None,
+            # A scope re-points what its members claim, so it is part of the
+            # parse's identity when there is one; without one the inputs are
+            # exactly what they were.
+            *(() if scope is None else (scope.fingerprint(),)),
             *recipe.parse_identity,
         )
         state = (
@@ -3073,6 +3239,7 @@ def collect_programme(
                         aliases=aliases,
                         members=members,
                         skips=schedule_skips,
+                        scope=scope,
                     )
                     outcomes[LAYER_SCHEDULE] = LayerOutcome(
                         LAYER_SCHEDULE,
@@ -3109,6 +3276,7 @@ def collect_programme(
                     aliases=aliases,
                     members=members,
                     skips=schedule_skips,
+                    scope=scope,
                 )
                 recipe.assert_schedule_proven(
                     page.html,

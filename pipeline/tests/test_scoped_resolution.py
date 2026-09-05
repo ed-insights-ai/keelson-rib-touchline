@@ -1,0 +1,422 @@
+"""A collect resolves opponent text inside the conference-season it reads for.
+
+Measured 2026-09-05 (tl-b3v, batch 5 backfill): Chaminade's 2025 schedule
+page (goswords.com, game 8132) prints "Dominican" for Dominican of
+California and "Concordia" for Concordia Irvine, both PacWest members. The
+gender-wide map read the first as the CACC's Dominican, whose whole name it
+is, and the second as an unresolved key, so each match sat in the PacWest
+fixtures file twice: ``sidearm:chaminade:8132`` (dominican v chaminade)
+beside ``sidearm:dominican-of-california:9578`` (dominican-of-california v
+chaminade), and the dedupe never folded them because the slugs differ.
+
+The rule: during a collect of conference C for season Y, a printed name a
+member of C in Y claims (by name, alias, resolving abbreviation or member
+alias) resolves to that member before any other programme. The member set
+is the membership resolver's (``conference_members``), the scope applies to
+every row of the collect, and a name no member claims resolves exactly as
+before. ``display_name`` stays out of identity (tl-4an.31).
+"""
+
+from __future__ import annotations
+
+import json
+from dataclasses import replace
+from pathlib import Path
+
+from src import membership, presto
+from src.config import SchoolConfig, load_schools
+from src.membership import load_membership
+from src.sidearm_live import (
+    LAYER_SCHEDULE,
+    STATE_EMPTY,
+    LayerOutcome,
+    ProgrammeCollection,
+    conference_members,
+    hosted_other_match,
+    identity_aliases,
+    identity_collisions,
+    member_alias_collisions,
+    opponent_slug,
+    own_side_opponent,
+    parse_schedule_page,
+    programme_slug,
+    resolution_scope,
+)
+
+FIXTURES = Path(__file__).parent / "fixtures"
+
+SCHOOLS = load_schools()
+MEMBERSHIP = load_membership()
+MEN = identity_aliases(SCHOOLS, "men")
+
+
+def _scope(conference: str, season: int):
+    members = conference_members(
+        SCHOOLS, "men", conference, season=season, document=MEMBERSHIP
+    )
+    return resolution_scope(
+        SCHOOLS, "men", members, conference=conference, season=season
+    )
+
+
+def _chaminade_page(*opponents: str) -> str:
+    """Chaminade's 2025 page, in the events-component shape, one row each."""
+    events = [
+        {
+            "id": 8132 + index,
+            "date": f"2025-09-{27 + index:02d}T12:30:00",
+            "opponent": {"title": opponent},
+            "location_indicator": "A",
+            "is_conference": True,
+            "schedule": {"title": "2025 Men's Soccer Schedule"},
+            "result": {"status": "W", "team_score": 0, "opponent_score": 1},
+        }
+        for index, opponent in enumerate(opponents)
+    ]
+    component = {"type": "events", "data": events}
+    return (
+        "<html><head><title>2025 Men's Soccer Schedule - Chaminade</title></head>"
+        f"<body><script>\nvar obj = {json.dumps(component)};\n</script></body></html>"
+    )
+
+
+# ── the rule, on the shipped config and membership ─────────────────────────
+
+
+def test_the_member_set_is_the_membership_resolvers() -> None:
+    pacwest = _scope("PACWEST", 2025)
+    assert {"dominican-of-california", "concordia-irvine", "chaminade"} <= (
+        pacwest.members
+    )
+    assert "dominican" not in pacwest.members
+    assert "dominican" in _scope("CACC", 2025).members
+    ecc = _scope("ECC", 2025)
+    assert not {"dominican", "dominican-of-california"} & ecc.members
+
+
+def test_dominican_under_pacwest_2025_is_the_pacwest_member() -> None:
+    scope = _scope("PACWEST", 2025)
+    assert opponent_slug("Dominican", MEN, scope=scope) == "dominican-of-california"
+    # The same page prints a rank and the parenthetical the fold drops.
+    assert opponent_slug("No. 4 Dominican", MEN, scope=scope) == (
+        "dominican-of-california"
+    )
+    assert opponent_slug("Dominican (Calif.)", MEN, scope=scope) == (
+        "dominican-of-california"
+    )
+
+
+def test_concordia_under_pacwest_2025_is_the_pacwest_member() -> None:
+    scope = _scope("PACWEST", 2025)
+    assert opponent_slug("Concordia", MEN, scope=scope) == "concordia-irvine"
+    assert opponent_slug("Concordia University Irvine", MEN, scope=scope) == (
+        "concordia-irvine"
+    )
+
+
+def test_dominican_under_cacc_2025_is_the_cacc_member_as_before() -> None:
+    scope = _scope("CACC", 2025)
+    assert opponent_slug("Dominican", MEN, scope=scope) == "dominican"
+    assert opponent_slug("Dominican", MEN) == "dominican"
+    assert scope.notes() == []
+
+
+def test_dominican_under_ecc_2025_falls_to_todays_rule() -> None:
+    # No ECC member claims the word, so the gender-wide map answers, and it
+    # answers the way it did before the scope existed.
+    scope = _scope("ECC", 2025)
+    assert opponent_slug("Dominican", MEN, scope=scope) == "dominican"
+    assert opponent_slug("Dominican", MEN, scope=scope) == opponent_slug(
+        "Dominican", MEN
+    )
+    assert scope.notes() == []
+
+
+def test_a_name_no_member_claims_resolves_exactly_as_before() -> None:
+    scope = _scope("PACWEST", 2025)
+    for published in (
+        "Harding",
+        "Lincoln Memorial",
+        "Delta St.",
+        "DBU",
+        "Concordia St. Paul",
+        "Dominican University of N.Y.",
+        "Oklahoma Wesleyan (Exhibition)",
+        "Hawaii Pacific",
+        "Point Loma",
+    ):
+        assert opponent_slug(published, MEN, scope=scope) == opponent_slug(
+            published, MEN
+        ), published
+    assert scope.notes() == []
+
+
+def test_a_member_alias_enters_no_gender_wide_map() -> None:
+    # Outside a PacWest collect the bare words read as they always did: the
+    # incumbent by name, and an unresolved key for the Concordia nobody
+    # claims gender-wide.
+    assert "concordia" not in MEN
+    assert MEN["dominican"] == "dominican"
+    assert opponent_slug("Concordia", MEN) == "concordia"
+    assert opponent_slug("Dominican", MEN) == "dominican"
+    assert identity_collisions(SCHOOLS) == []
+    assert member_alias_collisions(SCHOOLS) == []
+    assert membership.validate(MEMBERSHIP, schools=SCHOOLS) == []
+
+
+# ── the run log ─────────────────────────────────────────────────────────────
+
+
+def test_the_scope_notes_each_re_pointed_text_once() -> None:
+    scope = _scope("PACWEST", 2025)
+    for published in ("Dominican", "Dominican", "#4 Dominican", "Concordia"):
+        opponent_slug(published, MEN, scope=scope)
+    # Chaminade's own name is claimed by a member too, but the gender-wide
+    # map agrees, so nothing is noted for it.
+    opponent_slug("Chaminade", MEN, scope=scope)
+    assert scope.notes() == [
+        "resolution: 'Dominican' read as dominican-of-california, "
+        "a PACWEST 2025 member, not dominican",
+        "resolution: 'Concordia' read as concordia-irvine, "
+        "a PACWEST 2025 member, not concordia",
+    ]
+
+
+# ── the parsers read through the scope ──────────────────────────────────────
+
+
+def test_the_chaminade_page_mints_the_match_under_the_members_slug() -> None:
+    scope = _scope("PACWEST", 2025)
+    fixtures = parse_schedule_page(
+        _chaminade_page("Dominican", "Concordia"),
+        page_url="https://goswords.com/sports/mens-soccer/schedule/2025",
+        year=2025,
+        owner_slug="chaminade",
+        aliases=MEN,
+        members=set(scope.members),
+        scope=scope,
+    )
+    assert [
+        (f["id"], f["home"], f["away"], f["conference_game"]) for f in fixtures
+    ] == [
+        ("sidearm:chaminade:8132", "dominican-of-california", "chaminade", True),
+        ("sidearm:chaminade:8133", "concordia-irvine", "chaminade", True),
+    ]
+    # Without the scope the same page is the bug: the CACC incumbent and an
+    # unresolved key, neither of which the dedupe can fold onto the member.
+    unscoped = parse_schedule_page(
+        _chaminade_page("Dominican", "Concordia"),
+        page_url="https://goswords.com/sports/mens-soccer/schedule/2025",
+        year=2025,
+        owner_slug="chaminade",
+        aliases=MEN,
+        members=set(scope.members),
+    )
+    assert [f["home"] for f in unscoped] == ["dominican", "concordia"]
+
+
+def test_a_two_team_row_on_the_members_own_page_reads_the_owner() -> None:
+    # Dominican of California's own page, printing itself the way its peers
+    # do: the row is its fixture, not a hosted other-match to skip.
+    scope = _scope("PACWEST", 2025)
+    owner = "dominican-of-california"
+    row = "Dominican vs Chaminade"
+    assert hosted_other_match(row, owner_slug=owner, aliases=MEN, scope=scope) is None
+    assert own_side_opponent(row, owner_slug=owner, aliases=MEN, scope=scope) == (
+        "Chaminade"
+    )
+
+
+def test_a_presto_page_is_byte_identical_under_a_scope_no_member_alias_touches():
+    html = (FIXTURES / "prestosports_bridgeport_schedule_2025.html").read_text(
+        encoding="utf-8"
+    )
+    scope = _scope("CACC", 2025)
+    url = "https://www.ubknights.com/sports/msoc/2025-26/schedule"
+    kwargs = dict(
+        page_url=url,
+        year=2025,
+        owner_slug="bridgeport",
+        aliases=MEN,
+        members=set(scope.members),
+    )
+    assert presto.parse_schedule(html, **kwargs, scope=scope) == presto.parse_schedule(
+        html, **kwargs
+    )
+    assert scope.notes() == []
+
+
+# ── check-membership refuses a member alias a fellow member claims ──────────
+
+
+def _school(name: str, conference: str, **fields: object) -> SchoolConfig:
+    return replace(
+        SchoolConfig(
+            name=name,
+            abbreviation=name,
+            conference=conference,
+            prefix="",
+            base_url="",
+            gender="men",
+        ),
+        **fields,
+    )
+
+
+def test_a_member_alias_may_be_another_conferences_whole_name() -> None:
+    incumbent = _school("Dominican", "CACC")
+    newcomer = _school(
+        "Dominican of California", "PACWEST", member_aliases=["Dominican"]
+    )
+    assert identity_collisions([incumbent, newcomer]) == []
+    assert member_alias_collisions([incumbent, newcomer]) == []
+
+
+def test_a_member_alias_a_fellow_member_claims_is_refused() -> None:
+    chaminade = _school("Chaminade", "PACWEST", aliases=["Dominican"])
+    newcomer = _school(
+        "Dominican of California", "PACWEST", member_aliases=["Dominican"]
+    )
+    assert member_alias_collisions([chaminade, newcomer]) == [
+        (
+            "men",
+            "PACWEST",
+            "dominican",
+            [("chaminade", "alias"), ("dominican-of-california", "member_alias")],
+        )
+    ]
+    # Two member aliases of one spelling in one conference collide too; the
+    # same spelling in another gender's table does not.
+    twin = _school("Dominican Twin", "PACWEST", member_aliases=["Dominican"])
+    assert len(member_alias_collisions([twin, newcomer])) == 1
+    assert member_alias_collisions([replace(twin, gender="women"), newcomer]) == []
+
+
+def test_validate_names_a_member_alias_collision() -> None:
+    document = {
+        "version": 1,
+        "seasons": {"from": 2025, "to": 2025},
+        "conferences": ["PACWEST", "independent", "non_member"],
+        "memberships": {},
+    }
+    chaminade = _school("Chaminade", "PACWEST", aliases=["Dominican"])
+    newcomer = _school(
+        "Dominican of California", "PACWEST", member_aliases=["Dominican"]
+    )
+    errors = membership.validate(document, schools=[chaminade, newcomer])
+    assert any(
+        error.startswith("member alias collision (men, PACWEST): 'dominican'")
+        for error in errors
+    ), errors
+
+
+# ── collect builds one scope from the member set and threads it ────────────
+
+
+def test_collect_threads_one_scope_built_from_the_seasons_members(
+    monkeypatch, tmp_path: Path
+) -> None:
+    from scripts import collect_board
+
+    schools = [
+        SchoolConfig(
+            name="Trevecca",
+            abbreviation="TNU",
+            conference="GSC",
+            prefix="",
+            base_url="https://trevecca.example",
+            enabled=True,
+            member_aliases=["Trojans"],
+        ),
+        SchoolConfig(
+            name="Harding",
+            abbreviation="HU",
+            conference="GAC",
+            prefix="",
+            base_url="https://harding.example",
+            enabled=True,
+        ),
+    ]
+    window = {"source": "test fixture"}
+    document = {
+        "version": 1,
+        "seasons": {"from": 2022, "to": 2026},
+        "conferences": ["G-MAC", "GSC", "independent", "non_member"],
+        "memberships": {
+            "trevecca": {
+                "men": [
+                    {
+                        **window,
+                        "conference": "G-MAC",
+                        "from_season": 2022,
+                        "to_season": 2023,
+                    },
+                    {
+                        **window,
+                        "conference": "GSC",
+                        "from_season": 2024,
+                        "to_season": 2026,
+                    },
+                ]
+            },
+        },
+    }
+    seen: list[object] = []
+
+    def fake_programme(
+        school,
+        season,
+        aliases,
+        *,
+        session=None,
+        layers,
+        members,
+        page_cache=None,
+        scope=None,
+    ):
+        del season, aliases, session, page_cache, members
+        seen.append(scope)
+        return ProgrammeCollection(
+            slug=programme_slug(school.name),
+            name=school.name,
+            fixtures=[],
+            players=[],
+            outcomes={
+                layer: LayerOutcome(layer=layer, state=STATE_EMPTY) for layer in layers
+            },
+        )
+
+    monkeypatch.setattr(collect_board, "load_schools", lambda path: schools)
+    monkeypatch.setattr(collect_board, "load_membership", lambda: document)
+    monkeypatch.setattr(collect_board, "collect_programme", fake_programme)
+    monkeypatch.setattr(collect_board, "write_raw_pages", lambda *args: None)
+    monkeypatch.setattr(collect_board.paths, "data_root", lambda: tmp_path)
+
+    def run(season: int) -> None:
+        seen.clear()
+        collect_board.collect(
+            season=season,
+            gender="men",
+            conference="G-MAC",
+            wanted=["trevecca", "harding"],
+            layers=(LAYER_SCHEDULE,),
+            config_path=tmp_path / "schools.toml",
+            membership_extrapolated=False,
+        )
+
+    run(2022)
+    # One scope object for the whole collect, every programme handed the same.
+    assert len(seen) == 2 and seen[0] is seen[1]
+    scope = seen[0]
+    assert (scope.conference, scope.season) == ("G-MAC", 2022)
+    assert scope.members == {"trevecca"}
+    assert scope.claims == {
+        "trevecca": "trevecca",
+        "tnu": "trevecca",
+        "trojans": "trevecca",
+    }
+
+    run(2024)
+    scope = seen[0]
+    assert scope.members == frozenset()
+    assert scope.claims == {}

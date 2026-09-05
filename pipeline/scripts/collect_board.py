@@ -75,6 +75,7 @@ from src.sidearm_live import (
     conference_members,
     identity_aliases,
     programme_slug,
+    resolution_scope,
     write_raw_pages,
 )
 
@@ -505,6 +506,13 @@ def collect(
     members = conference_members(
         schools, gender, conference, season=season, document=membership_document
     )
+    # Opponent text is written for the collecting conference's readers, so
+    # a printed name a member claims resolves to the member before any other
+    # programme (tl-b3v). One scope per collect, built from the member set
+    # above, applied to every row of every page in it.
+    scope = resolution_scope(
+        schools, gender, members, conference=conference, season=season
+    )
     results = []
     errors: list[str] = []
     cells: dict[str, dict[str, object]] = {}
@@ -591,6 +599,7 @@ def collect(
                 layers=layers,
                 members=members,
                 page_cache=page_cache,
+                scope=scope,
             )
 
         def settle_programme(slug: str, value: object) -> None:
@@ -715,6 +724,11 @@ def collect(
                 results.append(value)
             cells.update(programme_cells.get(slug, {}))
             errors.extend(programme_errors.get(slug, []))
+
+        # Where the scope re-pointed a printed name away from the gender-wide
+        # reading, the run log says so once per distinct text.
+        for line in scope.notes():
+            print(line, flush=True)
 
         return _assemble(
             season=season,
