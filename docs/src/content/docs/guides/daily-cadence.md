@@ -20,8 +20,8 @@ per step, and a run record, one JSON line per completed run. Both live under
 
 ## The loop
 
-One run is five legs, in order. A leg that fails is logged and the later legs
-still run, except where the table says otherwise.
+One run is these legs, in order. A leg that fails is logged and the later
+legs still run, except where the table says otherwise.
 
 | leg | what it does | on failure |
 |---|---|---|
@@ -31,6 +31,7 @@ still run, except where the table says otherwise.
 | commit journals | stages exactly the regenerated journal and validation files, commits on the site's `main`, pushes | a checkout not on `main` is logged and left uncommitted; a push failure is a warning, never a stop |
 | publish | `just publish` in the site checkout, once, only when a conference changed. The recipe's own build, link check, gh-pages push and deployed-host assertion are the gate | logged as `PUBLISH FAILED`, exit 1; the data home commits are intact |
 | push data | pushes every data home commit ahead of upstream | a warning and exit 1; the commits stay local |
+| archive | on the archive day only (Sunday by default), tars the raw HTML fetch cache as one `tar.zst` per season, gender and conference plus one for anything unclaimed, then prunes old sets ([Weekly raw HTML archive](#weekly-raw-html-archive)) | a warning and exit 1; the dated directory is left without its `.done` marker and the next run removes it |
 
 Membership resolution failing for a conference (`resolve-failed`) skips its
 collect and counts as a failure the same way.
@@ -48,8 +49,9 @@ The first argument selects the mode; no argument is the full loop.
 
 | mode | runs | use |
 |---|---|---|
-| `loop` (default) | all five legs | what launchd runs at 06:30 |
-| `collect` | collect and detect only: no journal, no commit, no publish, no data push | the site's justfile delegates its collect step here (`TOUCHLINE_COLLECT_CMD="sh {shim} collect"`) so `just` does not run the journal twice |
+| `loop` (default) | all the legs | what launchd runs at 06:30 |
+| `collect` | collect and detect only: no journal, no commit, no publish, no data push, no archive | the site's justfile delegates its collect step here (`TOUCHLINE_COLLECT_CMD="sh {shim} collect"`) so `just` does not run the journal twice |
+| `archive` | the archive leg alone, under the same PID lock, whatever the day: no collect, no journal, no publish, no data push | take a tarball set by hand, or catch up a missed Sunday |
 | `version` | prints the packaged script path, the package dir, the package version and its `git describe`, then exits 0 | proves the shim resolves the installed package without taking the lock or collecting |
 
 Environment overrides: `TOUCHLINE_CONFERENCES` (space-separated keys, pins the
@@ -58,8 +60,9 @@ set), `TOUCHLINE_SEASON`, `TOUCHLINE_GENDER` (default `men`),
 (default `~/edinsights-ai/project/touchline-ui`),
 `TOUCHLINE_CADENCE_RUNS_FILE` (the run record path),
 `TOUCHLINE_CADENCE_LOCK_DIR` (the PID lock directory, read by the backfill
-preflight too) and `TOUCHLINE_CADENCE_PATH` (replaces the script's absolute
-`PATH`; the test harness uses it to put its fakes first).
+preflight too), `TOUCHLINE_ARCHIVE_DAY` and `TOUCHLINE_ARCHIVE_DIR` (the
+archive leg's day and root, below) and `TOUCHLINE_CADENCE_PATH` (replaces the
+script's absolute `PATH`; the test harness uses it to put its fakes first).
 
 ## The shim install
 
@@ -97,9 +100,11 @@ board files (`data/fixtures`, `data/rosters`, `data/stats`, `data/matches`,
 each `{season}-{gender}-{conference}.json`), so "any diff" would journal daily
 forever. A conference counts as changed when, for its four board files, either
 a file is new to git or `git diff HEAD -U0` carries a changed line that is not
-the `"collected_at"` line. Coverage manifests, raw page archives and error
-files churn on every fetch: they ride along in a real change's commit and never
-count as one.
+the `"collected_at"` line. Coverage manifests and error files churn on every
+fetch: they ride along in a real change's commit and never count as one. Raw
+pages churn the same way but are not tracked at all: `data/raw_html` is
+gitignored in the data home, lives on disk as the collector's fetch cache, and
+is preserved by the weekly archive below rather than by git history.
 
 A real change is committed in the data home as
 `chore(data): cadence collect {conference} {gender} {season}`. Churn is rolled
@@ -167,6 +172,62 @@ conference, so restoring it is all-or-nothing; inside a run every successful
 collect commits before the next one starts, so no other conference's coverage
 is lost. Nothing outside those paths is ever reset.
 
+## Weekly raw HTML archive
+
+The raw pages under `data/raw_html` are the evidence behind every number and
+cannot be fetched again once a publisher redesigns, but they are also the
+data home's largest and churniest class, so they left its git index (bead
+tl-ttj: gitignored, the history kept as it was). What preserves them now is
+this leg.
+
+**When.** In `loop` mode, on the archive day: the run's `date +%u` equals
+`TOUCHLINE_ARCHIVE_DAY`, default `7` (Sunday). `0` disables the leg, `always`
+forces it on every run. `archive` mode runs the leg on any day. The leg runs
+after the data home push and before the run record, so the record carries its
+result.
+
+**Where.** `{TOUCHLINE_ARCHIVE_DIR}/{YYYY-MM-DD}/`, the root defaulting to
+`~/keelson/archive/raw-html`, one dated directory per run. Inside it, one
+`{season}-{gender}-{conference}.tar.zst` per conference-season the data home
+has collected, holding `data/raw_html/{slug}/{season}-{gender}-*` for that
+cell's programmes (the `.state.json` sidecars included), paths relative to the
+data home. Membership is read from the data home, never resolved live:
+`data/coverage.json` says which `(season, gender, programme)` cells were
+collected (`.cells[] | .season, .gender, .programme`), and the fixtures board
+of that season and gender says which conference collected the programme
+(`data/fixtures/{season}-{gender}-{conference}.json`: `.conference`,
+`.programmes[].slug`), since a coverage cell carries no conference field. A
+cell with no pages on disk is logged and skipped. Nothing on disk is left
+out: every file under `data/raw_html` that no cell claimed (a slug no cell
+names, a page older than its coverage, a disabled or dead-host stanza's
+pages) goes into `unassigned.tar.zst`. Each tarball is written to
+`{name}.tar.zst.tmp` and moved into place, and a `.done` marker is written
+last, after every tarball of the run landed.
+
+**Retention.** After the run's tarballs, the dated directories under the root
+are listed newest first by name. Any directory without a `.done` marker is
+removed (an interrupted or failed run), then every complete directory beyond
+the newest four, today's counted. A failed leg writes no `.done`, so the next
+pass removes its directory.
+
+**Log lines.** `archive: writing {dir} from {data home}/data/raw_html`, then
+`archive {season} {gender} {CONF}: {n} file(s), {size}` per tarball,
+`archive unassigned: {n} file(s) across {k} slug(s) ({first few slugs}), {size}`
+or `archive unassigned: none`, `archive total: {n} tarball(s), {size}, {dir}`,
+`archive retention: removed {dir} (...)` per removal and
+`archive retention: kept {k} of {n}`. A skipped leg logs
+`archive: skipped (not archive day; today is {u}, archive day {d})` or
+`archive: skipped (disabled; archive day 0, today is {u})`. A failure logs
+`WARNING: archive FAILED ({reason})`, sets the exit code to 1 and never stops
+the run. The summary line ends `archive={result}` and the run record carries
+the same string in `archive`: `ok {dir} {total size}`, `skipped (...)` or
+`FAILED ({reason})`.
+
+`zstd` must be on the script's `PATH` in `loop` and `archive` modes
+(preflight dies naming it, like `git` and `jq`); `collect` mode does not need
+it. Restore a page set with
+`zstd -dc {dir}/{season}-{gender}-{conf}.tar.zst | tar -C ~/keelson/d2-soccer -xf -`.
+
 ## Where the log lives
 
 `~/.keelson/logs/touchline-collect-cadence.log`, appended by every run. Lines
@@ -180,11 +241,11 @@ summary:
 run summary: mode=loop season=2026 collect=[GAC=changed LSC=no-change]
   changed=[gac] failed=[none] journal_model_calls=2 journal_commit=95ff38f
   publish=succeeded exit=0 data_head=ce924f2 build=2026-09-06T14:16:59Z
-  locked=[none] busy=none
+  locked=[none] busy=none archive=skipped (not archive day; today is 4, archive day 7)
 ```
 
 (one line in the log). The fields keep their positions; `data_head`, `build`,
-`locked` and `busy` are appended at the end. `journal_model_calls` counts live
+`locked`, `busy` and `archive` are appended at the end. `journal_model_calls` counts live
 model calls made this run: the pooled conference call counts one per changed
 conference, the national call one more. A busy start reads
 `collect=[none] ... busy=touchline-backfill {run id}`.
@@ -199,7 +260,7 @@ write none).
 | field | value |
 |---|---|
 | `started_at`, `finished_at` | UTC, `YYYY-MM-DDTHH:MM:SSZ` |
-| `mode` | `loop` or `collect` |
+| `mode` | `loop`, `collect` or `archive` |
 | `season` | number |
 | `gender` | `men` or `women` |
 | `conferences` | the keys this run iterated, in order |
@@ -216,6 +277,7 @@ write none).
 | `build_stamp` | the `touchline-build` meta content read from the site's `dist/index.html` after a successful publish, else `null` |
 | `publish` | `succeeded`, `FAILED (exit {n})`, or `skipped (no change)` |
 | `exit` | the run's exit code |
+| `archive` | `ok {dir} {total size}`, `skipped (...)` (not the archive day, disabled, `collect` mode, or not reached on a busy start), or `FAILED ({reason})` |
 
 Read it with jq:
 
@@ -230,15 +292,21 @@ jq -r 'select(.exit != 0) | "\(.started_at) \(.failed) \(.publish)"' \
 `test/cadence.test.ts` runs the script and the shim under `/bin/sh` against a
 throwaway world: a temp `HOME` with the rib config, a temp package dir, a temp
 git data home with an upstream, a temp site checkout with an upstream, and
-fake `keelson`, `bun` and `just` first on the script's `PATH` (git and jq are
-real). The scenarios are the ones above: a changed collect commits, churn
-rolls back, a failed collect rolls back and the run continues with exit 1,
-`collect` mode stops before the journal, a `loop` run journals the conference
-and the national leg, commits on the site's `main`, publishes and records the
-build stamp, a second concurrent start is a no-op, a run already on the data
-home makes the start a busy exit, a locked collect is reported and nothing
-rolled back, a failed collect's rollback leaves a sibling's mid-collect write
-alone, the sweep names its paths per conference, and `version` resolves
-through the shim. The backfill preflight's lock refusal is covered in
+fake `keelson`, `bun` and `just` first on the script's `PATH` (git, jq, tar
+and zstd are real). The scenarios are the ones above: a changed collect
+commits, churn rolls back, a failed collect rolls back and the run continues
+with exit 1, `collect` mode stops before the journal, a `loop` run journals
+the conference and the national leg, commits on the site's `main`, publishes
+and records the build stamp, a second concurrent start is a no-op, a run
+already on the data home makes the start a busy exit, a locked collect is
+reported and nothing rolled back, a failed collect's rollback leaves a
+sibling's mid-collect write alone, the sweep names its paths per conference,
+and `version` resolves through the shim. The archive leg has its own set: a
+`loop` run on the archive day writes one tarball per conference-season with
+exactly that cell's pages, retention keeps the newest four complete sets and
+drops an incomplete one, a disabled or wrong day skips with the reason, an
+unclaimed page lands in `unassigned.tar.zst`, `archive` mode runs only that
+leg under the lock, and a `PATH` without zstd fails `loop` preflight but not
+`collect`. The zstd-dependent scenarios skip by name on a machine without it. The backfill preflight's lock refusal is covered in
 `test/workflows.test.ts`. `bun test` runs them with the rest of the rib
 suite; `bun run check:sh` runs shellcheck over `bin/*.sh`.
