@@ -425,7 +425,10 @@ touchline-ui: `src/site.config.ts` gains the conference in `conferences` and
 national regeneration are run (model spend, authorised per conference in the
 epic). Two conferences landing together share one national regeneration.
 The cadence script's conference set resolves from the membership record
-(`bin/resolve-membership.ts conferences`), so it needs no edit. Since the
+(`bin/resolve-membership.ts conferences`), so it needs no edit; the script
+itself ships in the rib as `bin/touchline-collect-cadence.sh` and the
+launchd path holds only a shim that execs it
+([Run the daily cadence](../daily-cadence/)). Since the
 rib builds `programmes.json` from the stanzas (step 3) and the site reads
 the mirrored copy, the reference rows are no longer hand-kept on the site;
 the RMAC and SSC add was the last to write them by hand. The site's own
@@ -468,7 +471,7 @@ What the GLVC, the fourth conference, actually required, measured on
 | data-home membership mirror | self-healed on the first collect ("membership reference synced … was diverged") |
 | `workflow_run("touchline-collect")` | refused without caller-resolved `programmes` at the time; the workflow now resolves its own (proposal 1 below) |
 | data-integrity check count | 4, matching the workflow file; a remembered "12" was stale |
-| `~/.keelson/scripts/touchline-collect-cadence.sh` line 74 | `TOUCHLINE_CONFERENCES` default string had to be extended by hand; the default now resolves from data (proposal 2 below) |
+| the cadence script (then a lone copy at `~/.keelson/scripts/`, now the packaged `bin/touchline-collect-cadence.sh` reached through the shim at that path) | `TOUCHLINE_CONFERENCES` default string had to be extended by hand; the default now resolves from data (proposal 2 below) |
 | finished-season `scheduled` rows | unpublished exhibitions, one cancellation, one tournament placeholder; noted, not gaps |
 
 **Site (coordinator, then the site beads under tui-4me)**
