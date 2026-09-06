@@ -431,6 +431,90 @@ def _dedupe_fixtures(
     return values, duplicates
 
 
+def _borrow_twin_exhibitions(
+    fixtures: list[dict[str, object]],
+    *,
+    season: int,
+    gender: str,
+    conference: str,
+    fixtures_dir: Path,
+) -> int:
+    """Stamp ``match_type = "exhibition"`` on a freshly parsed row whose twin,
+    in another conference's season file, carries that mark (bead tl-1go).
+
+    A friendly is a property of the match, not of the page that printed it,
+    and ``_dedupe_fixtures`` already carries the mark across the two rows of
+    one file.  Across files nothing did: Lander's page marks its preseason
+    games exhibition, Southern Wesleyan's and Newberry's pages do not, and the
+    three rows sit in three conference files.  This step reads the OTHER
+    conferences' season files for the same season and gender (the siblings
+    ``{season}-{gender}-*.json`` of this collect's own file, which is never
+    read), keys them by (date, sorted slug pair) exactly as the dedupe does,
+    and borrows the one mark.  Nothing else crosses: not neutral, forfeit,
+    time, venue or scores, and ``conference_game`` is not touched.
+
+    Two rules bound it.  Own text always wins: a row that already carries any
+    ``match_type`` is never touched, whatever the twin says.  And it applies
+    to the freshly parsed rows only, never to a previously stored row's
+    stamped value: a mark borrowed yesterday drops on its own if the other
+    side withdraws it, because tomorrow's parse starts from the page again
+    and this step starts from the sibling files again.  It is a pure function
+    of (this collect's rows, the sibling files on disk), so ``_assemble``'s
+    byte-identical guarantee holds.  A missing or unreadable sibling is
+    skipped, never fatal.  One line per borrow goes to the collect log so the
+    cadence log explains why a file changed when its own source did not.
+    Mutates the rows in place and returns the number borrowed.
+    """
+    own = f"{season}-{gender}-{programme_slug(conference)}.json"
+    twins: dict[tuple[str, str, str], str] = {}
+    try:
+        siblings = sorted(fixtures_dir.glob(f"{season}-{gender}-*.json"))
+    except OSError:
+        siblings = []
+    for sibling in siblings:
+        if sibling.name == own:
+            continue
+        try:
+            payload = json.loads(sibling.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+            continue
+        if not isinstance(payload, dict):
+            continue
+        rows = payload.get("fixtures")
+        if not isinstance(rows, list):
+            continue
+        source = payload.get("conference")
+        if not isinstance(source, str) or not source:
+            source = sibling.stem.removeprefix(f"{season}-{gender}-")
+        for row in rows:
+            if not isinstance(row, dict) or row.get("match_type") != "exhibition":
+                continue
+            try:
+                pair = sorted((str(row["home"]), str(row["away"])))
+                key = (str(row["date"]), pair[0], pair[1])
+            except KeyError:
+                continue
+            twins.setdefault(key, source)
+    if not twins:
+        return 0
+    borrowed = 0
+    for fixture in fixtures:
+        if "match_type" in fixture:
+            continue
+        pair = sorted((str(fixture["home"]), str(fixture["away"])))
+        source = twins.get((str(fixture["date"]), pair[0], pair[1]))
+        if source is None:
+            continue
+        fixture["match_type"] = "exhibition"
+        borrowed += 1
+        print(
+            f"exhibition borrowed: {fixture['date']}, "
+            f"{fixture['home']} v {fixture['away']}, from {source}",
+            flush=True,
+        )
+    return borrowed
+
+
 def _stored_match_current(
     stored: dict[str, object], fixture: dict[str, object]
 ) -> bool:
@@ -764,6 +848,7 @@ def collect(
             errors=errors,
             cells=cells,
             now=now,
+            data_root=root,
             stored_matches=stored_matches,
             refetch=refetch,
             executor=executor,
@@ -810,6 +895,7 @@ def _assemble(
     errors: list[str],
     cells: dict[str, dict[str, object]],
     now: str,
+    data_root: Path,
     stored_matches: dict[str, dict[str, object]] | None,
     refetch: bool,
     executor: ThreadPoolExecutor,
@@ -834,6 +920,22 @@ def _assemble(
 
     all_fixtures = [fixture for result in results for fixture in result.fixtures]
     fixtures, duplicates = _dedupe_fixtures(all_fixtures)
+    # A friendly one side marked and the other did not, across two conference
+    # files: borrow the mark from the twin row before the season file is
+    # written (bead tl-1go).  Read-only over the sibling files, own text wins.
+    borrowed = _borrow_twin_exhibitions(
+        fixtures,
+        season=season,
+        gender=gender,
+        conference=conference,
+        fixtures_dir=data_root / "data" / "fixtures",
+    )
+    if borrowed:
+        print(
+            f"borrowed {borrowed} exhibition mark(s) from the other conferences' "
+            f"season files for the same match",
+            flush=True,
+        )
 
     def _served(layer: str) -> list[str]:
         return [
