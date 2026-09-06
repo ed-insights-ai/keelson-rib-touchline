@@ -25,7 +25,7 @@ still run, except where the table says otherwise.
 
 | leg | what it does | on failure |
 |---|---|---|
-| collect | one `keelson workflow run touchline-collect` per conference, sequentially, with programmes resolved from membership for the season | the conference is marked `failed`, its partial writes are rolled back, the next conference runs, the run exits 1 at the end |
+| collect | one `keelson workflow run touchline-collect` per conference, sequentially, with programmes resolved from membership for the season | the conference is marked `failed`, its own paths are rolled back, the next conference runs, the run exits 1 at the end. A collect refused by keelson's mutation lock is marked `locked` instead: nothing is rolled back and the conferences after it are skipped |
 | detect | reads the data home's git state per conference: real change is committed, stamp-only churn is rolled back | never fails on its own |
 | journal | `bun run journal run --conference {keys} --write` in the site checkout, one pooled call for every changed conference, then `--national` once when any conference journal regenerated. Each is a live model call | the site keeps its previous journal for that conference; the loop continues |
 | commit journals | stages exactly the regenerated journal and validation files, commits on the site's `main`, pushes | a checkout not on `main` is logged and left uncommitted; a push failure is a warning, never a stop |
@@ -56,9 +56,10 @@ Environment overrides: `TOUCHLINE_CONFERENCES` (space-separated keys, pins the
 set), `TOUCHLINE_SEASON`, `TOUCHLINE_GENDER` (default `men`),
 `TOUCHLINE_DATA_HOME` (default `~/keelson/d2-soccer`), `TOUCHLINE_UI_DIR`
 (default `~/edinsights-ai/project/touchline-ui`),
-`TOUCHLINE_CADENCE_RUNS_FILE` (the run record path) and
-`TOUCHLINE_CADENCE_PATH` (replaces the script's absolute `PATH`; the test
-harness uses it to put its fakes first).
+`TOUCHLINE_CADENCE_RUNS_FILE` (the run record path),
+`TOUCHLINE_CADENCE_LOCK_DIR` (the PID lock directory, read by the backfill
+preflight too) and `TOUCHLINE_CADENCE_PATH` (replaces the script's absolute
+`PATH`; the test harness uses it to put its fakes first).
 
 ## The shim install
 
@@ -108,26 +109,63 @@ already-collected day converges to "nothing to do".
 Before the first collect, any uncommitted state already in the data home (an
 interrupted earlier run) is swept into one commit, and a conference whose
 board files carry real change in that sweep is marked changed, so the
-per-conference detection that follows stays exact.
+per-conference detection that follows stays exact. The sweep names what it
+commits: one `sweep {CONF}: {n} path(s): ...` line per conference (board and
+errors files by their `{season}-{gender}-{conference}` suffix, raw page
+archives by programme slug, with membership resolved once per conference for
+the whole run), one `sweep shared:` line for `data/coverage.json`, one
+`sweep unattributed:` line for anything else, and the commit reads
+`chore(data): sweep uncommitted changes found before cadence run [{CONFs}]`.
 
-## Rollback scope
+## Two locks and a scoped rollback
 
-Rollback is data-home-wide today: `git reset --hard` followed by
-`git clean -fd data`. It runs after a failed collect and after stamp-only
-churn, and it is safe only because collects are serial inside one run and the
-cadence is the only writer while it holds its lock. A concurrent backfill or a
-maintenance write landing during a run would be swept by the pre-run commit or
-discarded by the next rollback. Bead `tl-5go` tracks scoping the rollback to
-the collected conference's board files plus its coverage, raw_html and error
-entries, and taking the keelson workspace lease on the data home so the two
-writers exclude each other.
+Two writers can reach one data home: the cadence and a `touchline-backfill`
+run. Two locks keep them apart, neither of them new.
 
-## The lock
+The first is keelson's. `touchline-collect` and `touchline-backfill` both
+declare `mutates_checkout: true`, so the server holds one exclusive mutation
+lock per project and runs them one after another. A collect started while a
+backfill holds the lock fails at start with
+`project {id} is locked by {owner} for "touchline-backfill"`. The cadence
+honours that lock twice over. Before its sweep it asks
+`keelson workflow status --json` whether a `touchline-collect` or
+`touchline-backfill` run is running or paused on the data home (matched on the
+run's `workingDir`, since the envelope carries the project's id, not its
+name). If one is, it logs
+`data home busy: {workflow} run {id} started {at}, owner {origin}` and exits 0
+with nothing swept and nothing collected; the run record carries `busy` and
+the summary line ends `busy={workflow} {id}`, so a busy start never reads as
+a quiet day. A status call that fails is logged and the run goes on, because
+the server refuses the collect itself. A collect refused mid-run makes its
+conference `locked`: the error is logged verbatim, nothing is rolled back,
+the conferences after it are skipped by name, the journal and publish legs
+still run for whatever changed before it, and the run exits 1. There is no
+retry inside the run; the next fire is the retry. (Keelson's
+`workspace_lease` is a worktree lease, not a mutex, and plays no part.)
 
-A PID lock at `~/.keelson/locks/touchline-collect-cadence.lock` makes a second
+The second is the cadence's own PID lock at
+`~/.keelson/locks/touchline-collect-cadence.lock`. It makes a second cadence
 start a logged no-op (`cadence already running (pid {n}) - exiting without
-work.`, exit 0). A lock whose PID is gone is taken over. `version` mode never
-takes the lock.
+work.`, exit 0); a lock whose PID is gone is taken over, and `version` mode
+never takes it. The backfill workflow's preflight reads the same lock and
+refuses with `REFUSED: the touchline cadence is running (pid {n}); retry
+after it finishes.` while that PID is live.
+
+A rollback, after stamp-only churn or a failed collect, touches only the
+collected conference's paths:
+
+- `data/fixtures/{season}-{gender}-{conference}.json` and the same file under
+  `data/rosters`, `data/stats` and `data/matches`
+- `data/errors/collect-board-{season}-{gender}-{conference}.json`
+- `data/raw_html/{slug}/{season}-{gender}-*` for each of its resolved
+  programme slugs
+- `data/coverage.json`
+
+Tracked paths go back to `HEAD`, untracked ones are cleaned, and a path that
+does not exist is skipped. Coverage is one manifest shared by every
+conference, so restoring it is all-or-nothing; inside a run every successful
+collect commits before the next one starts, so no other conference's coverage
+is lost. Nothing outside those paths is ever reset.
 
 ## Where the log lives
 
@@ -142,12 +180,14 @@ summary:
 run summary: mode=loop season=2026 collect=[GAC=changed LSC=no-change]
   changed=[gac] failed=[none] journal_model_calls=2 journal_commit=95ff38f
   publish=succeeded exit=0 data_head=ce924f2 build=2026-09-06T14:16:59Z
+  locked=[none] busy=none
 ```
 
-(one line in the log). The fields keep their positions; `data_head` and
-`build` are appended at the end. `journal_model_calls` counts live model calls
-made this run: the pooled conference call counts one per changed conference,
-the national call one more.
+(one line in the log). The fields keep their positions; `data_head`, `build`,
+`locked` and `busy` are appended at the end. `journal_model_calls` counts live
+model calls made this run: the pooled conference call counts one per changed
+conference, the national call one more. A busy start reads
+`collect=[none] ... busy=touchline-backfill {run id}`.
 
 ## The run record
 
@@ -163,9 +203,11 @@ write none).
 | `season` | number |
 | `gender` | `men` or `women` |
 | `conferences` | the keys this run iterated, in order |
-| `collect` | map, conference key to `changed`, `no-change`, `failed` or `resolve-failed` |
+| `collect` | map, conference key to `changed`, `no-change`, `failed`, `locked` or `resolve-failed`; empty on a busy start |
 | `changed` | lowercase keys whose board really changed (the sweep's leftovers included) |
 | `failed` | keys that failed or did not resolve |
+| `locked` | keys whose collect was refused by keelson's mutation lock |
+| `busy` | `{workflow} {run id}` when the start found another run on the data home and did nothing, else `null` |
 | `journal_model_calls` | number, as in the summary line |
 | `journal_commit` | the site's short SHA, `none`, `no-op` (files matched HEAD), `FAILED`, or `skipped (branch {name})` |
 | `journaled` | keys whose journal regenerated and validated, `national` last when it did |
@@ -193,6 +235,10 @@ real). The scenarios are the ones above: a changed collect commits, churn
 rolls back, a failed collect rolls back and the run continues with exit 1,
 `collect` mode stops before the journal, a `loop` run journals the conference
 and the national leg, commits on the site's `main`, publishes and records the
-build stamp, a second concurrent start is a no-op, and `version` resolves
-through the shim. `bun test` runs them with the rest of the rib suite;
-`bun run check:sh` runs shellcheck over `bin/*.sh`.
+build stamp, a second concurrent start is a no-op, a run already on the data
+home makes the start a busy exit, a locked collect is reported and nothing
+rolled back, a failed collect's rollback leaves a sibling's mid-collect write
+alone, the sweep names its paths per conference, and `version` resolves
+through the shim. The backfill preflight's lock refusal is covered in
+`test/workflows.test.ts`. `bun test` runs them with the rest of the rib
+suite; `bun run check:sh` runs shellcheck over `bin/*.sh`.

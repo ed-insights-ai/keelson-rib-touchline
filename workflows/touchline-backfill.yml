@@ -70,6 +70,19 @@ nodes:
         printf 'REFUSED: touchline-data.yaml exists but declares kind=%s, not touchline-data.\n' "${KIND:-(none)}"
         exit 1
       fi
+      # The daily cadence (bin/touchline-collect-cadence.sh) holds a PID lock
+      # while it collects, and its scoped rollbacks assume nothing else writes
+      # the data home meanwhile. A live lock means every season here would be
+      # refused by the server's mutation lock anyway; refuse up front with the
+      # holder named. A lock whose pid is gone is stale and ignored.
+      CADENCE_LOCK="${TOUCHLINE_CADENCE_LOCK_DIR:-${HOME:-/nonexistent}/.keelson/locks/touchline-collect-cadence.lock}"
+      if [ -f "$CADENCE_LOCK/pid" ]; then
+        CADENCE_PID=$(cat "$CADENCE_LOCK/pid" 2>/dev/null || printf '')
+        if [ -n "$CADENCE_PID" ] && kill -0 "$CADENCE_PID" 2>/dev/null; then
+          printf 'REFUSED: the touchline cadence is running (pid %s); retry after it finishes.\n' "$CADENCE_PID"
+          exit 1
+        fi
+      fi
       for v in KEELSON_INPUTS_conference KEELSON_INPUTS_gender KEELSON_INPUTS_from_season KEELSON_INPUTS_to_season; do
         eval "val=\${$v:-}"
         if [ -z "$val" ]; then

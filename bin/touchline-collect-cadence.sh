@@ -18,7 +18,8 @@
 # The loop (house process — one conference-season per collect invocation):
 #   1. COLLECT  each configured conference sequentially through the keelson
 #               `touchline-collect` workflow. One conference failing is logged
-#               and its partial writes rolled back; the others still run.
+#               and its partial writes rolled back (that conference's paths
+#               only, see restore_conference); the others still run.
 #   2. DETECT   per conference, from the data home's git state. Every collect
 #               rewrites the four board files' collected_at stamp, so "any
 #               diff" would journal daily forever; a real change is a diff
@@ -78,6 +79,19 @@
 # Non-interactive by construction: absolute PATH, no prompts, a PID lock so a
 # double fire is a logged no-op, and change detection that makes a re-run of
 # an already-collected day converge to "nothing to do".
+#
+# Two locks (bead tl-5go). The PID lock above serialises cadence starts, and
+# the touchline-backfill workflow's preflight refuses while it is live. The
+# data home itself is guarded by keelson: touchline-collect and
+# touchline-backfill both declare mutates_checkout, so the server holds one
+# exclusive per-project mutation lock across them and a collect started while
+# a backfill holds it fails at start with HTTP 409 and the envelope
+#   {"error":"project <id> is locked by <owner> for \"<purpose>\"","code":"REQUEST_FAILED"}
+# (workspace_lease is a worktree lease, not a mutex, and is not used here).
+# Before the sweep this script asks `keelson workflow status --json` whether
+# such a run is already in flight and, if so, exits 0 naming it, so the sweep
+# and the rollbacks never touch a data home another run is writing. A collect
+# refused by that lock mid-run is reported as `locked`, never rolled back.
 set -u
 # Absolute PATH: launchd hands the script almost none. TOUCHLINE_CADENCE_PATH
 # is the test harness's way to put its fakes first; unset, nothing changes.
@@ -92,7 +106,10 @@ CONFERENCES="${TOUCHLINE_CONFERENCES:-}"
 GENDER="${TOUCHLINE_GENDER:-men}"
 LOG_FILE="$HOME_DIR/.keelson/logs/touchline-collect-cadence.log"
 RUNS_FILE="${TOUCHLINE_CADENCE_RUNS_FILE:-$HOME_DIR/.keelson/logs/touchline-cadence-runs.jsonl}"
-LOCK_DIR="$HOME_DIR/.keelson/locks/touchline-collect-cadence.lock"
+# TOUCHLINE_CADENCE_LOCK_DIR is the test harness's override; the backfill
+# workflow's preflight reads the same path (and the same override) to refuse
+# while the cadence is running.
+LOCK_DIR="${TOUCHLINE_CADENCE_LOCK_DIR:-$HOME_DIR/.keelson/locks/touchline-collect-cadence.lock}"
 RIB_CFG="$HOME_DIR/.keelson/rib-touchline/config.json"
 MODE="${1:-loop}"
 STARTED_AT=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
@@ -152,8 +169,11 @@ if ! mkdir "$LOCK_DIR" 2>/dev/null; then
   mkdir "$LOCK_DIR" 2>/dev/null || die "cannot take the cadence lock at $LOCK_DIR"
 fi
 printf '%s\n' "$$" >"$LOCK_DIR/pid"
-trap 'rm -rf "$LOCK_DIR"' EXIT
-trap 'rm -rf "$LOCK_DIR"; exit 130' INT TERM
+# PROG_CACHE holds one membership resolution per conference for the whole run
+# (the sweep attribution and the collect loop share it).
+PROG_CACHE=$(mktemp -d)
+trap 'rm -rf "$LOCK_DIR" "$PROG_CACHE"' EXIT
+trap 'rm -rf "$LOCK_DIR" "$PROG_CACHE"; exit 130' INT TERM
 
 # ── preflight ────────────────────────────────────────────────────────────────
 for tool in git jq bun keelson; do
@@ -205,6 +225,21 @@ resolve_programmes() { # $1 = conference; prints "true|false slug1,slug2,…"
   '
 }
 
+# One live resolution per conference per run: the first caller pays, every
+# later one (the sweep attribution, then the collect loop) reads the cached
+# output and exit code back.
+resolve_programmes_cached() { # $1 = conference; same output and rc as resolve_programmes
+  _cf="$PROG_CACHE/$1"
+  if [ ! -f "$_cf.rc" ]; then
+    resolve_programmes "$1" >"$_cf" 2>&1
+    printf '%s' "$?" >"$_cf.rc"
+  fi
+  cat "$_cf"
+  return "$(cat "$_cf.rc")"
+}
+
+lower() { printf '%s' "$1" | tr '[:upper:]' '[:lower:]'; }
+
 # ── change detection ─────────────────────────────────────────────────────────
 # Real change = a new board file, or a board-file diff with any line beyond
 # the top-level collected_at stamp. Board files only; coverage/raw_html/errors
@@ -225,9 +260,71 @@ has_signal() { # $1 = lowercase conference key
   return 1
 }
 
-restore_home() { # roll back everything uncommitted (churn, or a failed collect's partial writes)
-  git -C "$DATA_HOME" reset -q --hard
-  git -C "$DATA_HOME" clean -qfd data
+# Scoped rollback (tl-5go): a churned or failed collect is undone for the
+# collected conference's paths and nothing else, so a write another run left
+# in the data home is never reset by this one. The paths are
+#   data/{fixtures,rosters,stats,matches}/<season>-<gender>-<lc>.json
+#   data/errors/collect-board-<season>-<gender>-<lc>.json
+#   data/raw_html/<slug>/<season>-<gender>-*        for each resolved slug
+#   data/coverage.json
+# coverage.json is one shared manifest for every conference, so restoring it
+# is all-or-nothing: the churn this collect wrote to it goes, and so would a
+# line another conference's collect had written since the last commit (inside
+# one run there is none: every successful collect commits before the next
+# starts). Only paths git reports dirty are touched, so a path that does not
+# exist is fine: tracked ones go back to HEAD, untracked ones are cleaned.
+restore_conference() { # $1 = lowercase conference key, $2 = comma-separated programme slugs
+  _lc="$1"
+  _slugs="${2:-}"
+  set -- "data/fixtures/${SEASON}-${GENDER}-${_lc}.json" \
+         "data/rosters/${SEASON}-${GENDER}-${_lc}.json" \
+         "data/stats/${SEASON}-${GENDER}-${_lc}.json" \
+         "data/matches/${SEASON}-${GENDER}-${_lc}.json" \
+         "data/errors/collect-board-${SEASON}-${GENDER}-${_lc}.json" \
+         "data/coverage.json"
+  for _slug in $(printf '%s' "$_slugs" | tr ',' ' '); do
+    set -- "$@" "data/raw_html/$_slug/${SEASON}-${GENDER}-*"
+  done
+  git -C "$DATA_HOME" status --porcelain -uall -- "$@" 2>/dev/null >"$PROG_CACHE/restore"
+  while IFS= read -r _l || [ -n "$_l" ]; do
+    _p=${_l#???}
+    case "$_l" in
+      # -d: without it git clean skips a file that sits in an untracked
+      # directory (a slug's first raw page); the path limits it to that file.
+      '??'*) git -C "$DATA_HOME" clean -qfd -- "$_p" ;;
+      *) git -C "$DATA_HOME" checkout -q HEAD -- "$_p" ;;
+    esac
+  done <"$PROG_CACHE/restore"
+  # a slug directory the cleaned pages leave empty goes too (git never tracked it)
+  for _slug in $(printf '%s' "$_slugs" | tr ',' ' '); do
+    rmdir "$DATA_HOME/data/raw_html/$_slug" 2>/dev/null || true
+  done
+}
+
+# Sweep attribution (tl-5go): names the owner of every dirty path the pre-run
+# sweep is about to commit. Board and errors files carry the conference in
+# their <season>-<gender>-<conf> suffix, raw_html pages belong to whichever
+# conference in this run's set resolves their slug, coverage.json is shared
+# by every conference, and anything else is unattributed.
+attribute_path() { # $1 = path relative to the data home; prints the lowercase key, "shared" or nothing
+  case "$1" in
+    data/coverage.json) printf 'shared'; return 0 ;;
+    data/fixtures/*.json|data/rosters/*.json|data/stats/*.json|data/matches/*.json|data/errors/collect-board-*.json)
+      _b=${1##*/}; _b=${_b%.json}; _b=${_b#collect-board-}
+      _k=${_b#*-}; _k=${_k#*-} # drop <season>- then <gender>-; a key may itself carry a dash (g-mac)
+      for _c in $CONFERENCES; do
+        if [ "$(lower "$_c")" = "$_k" ]; then printf '%s' "$_k"; return 0; fi
+      done
+      return 0 ;;
+    data/raw_html/*/*)
+      _s=${1#data/raw_html/}; _s=${_s%%/*}
+      for _c in $CONFERENCES; do
+        _r=$(resolve_programmes_cached "$_c") || continue
+        case ",${_r#* }," in *",$_s,"*) lower "$_c"; return 0 ;; esac
+      done
+      return 0 ;;
+  esac
+  return 0
 }
 
 commit_home() { # $1 = message
@@ -287,6 +384,8 @@ CHANGED=""
 JOURNALED=""
 COLLECT_SUMMARY=""
 FAILED_COLLECTS=""
+LOCKED_COLLECTS=""
+BUSY=""
 JOURNAL_SPEND=0
 PUBLISH_RESULT="skipped (no change)"
 JOURNAL_COMMIT="none"
@@ -294,28 +393,119 @@ DATA_PUSH="skipped"
 BUILD_STAMP=""
 RUN_RC=0
 
+# ── run record and summary: the same run as data (one JSON line) and as the
+#    log's last line. Called at the end of every run that got past preflight,
+#    the busy exit included, so tomorrow's reader sees the cause on one line.
+#    data_head is the data home's HEAD after the push step (the pre-run value
+#    when this mode never pushes). Written before the summary line so a
+#    reader of either sees the same run; a record that cannot be written is
+#    a WARNING, never a changed exit code. ──────────────────────────────────
+finish_run() {
+  DATA_HEAD=$(git -C "$DATA_HOME" rev-parse --short HEAD 2>/dev/null || printf 'unknown')
+  FINISHED_AT=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
+  if RECORD=$(jq -cn \
+      --arg started_at "$STARTED_AT" --arg finished_at "$FINISHED_AT" \
+      --arg mode "$MODE" --arg season "$SEASON" --arg gender "$GENDER" \
+      --arg conferences "$CONFERENCES" --arg collect "${COLLECT_SUMMARY:-}" \
+      --arg changed "${CHANGED:-}" --arg failed "${FAILED_COLLECTS:-}" \
+      --arg locked "${LOCKED_COLLECTS:-}" --arg busy "${BUSY:-}" \
+      --arg journal_model_calls "$JOURNAL_SPEND" --arg journal_commit "$JOURNAL_COMMIT" \
+      --arg journaled "${JOURNALED:-}" --arg data_head "$DATA_HEAD" --arg data_push "$DATA_PUSH" \
+      --arg build_stamp "$BUILD_STAMP" --arg publish "$PUBLISH_RESULT" --arg exit "$RUN_RC" \
+      'def words: split(" ") | map(select(. != ""));
+       {started_at: $started_at, finished_at: $finished_at, mode: $mode,
+        season: ($season | tonumber? // $season), gender: $gender,
+        conferences: ($conferences | words),
+        collect: ($collect | words | map(split("=") | {key: .[0], value: (.[1:] | join("="))}) | from_entries),
+        changed: ($changed | words), failed: ($failed | words), locked: ($locked | words),
+        busy: (if $busy == "" then null else $busy end),
+        journal_model_calls: ($journal_model_calls | tonumber), journal_commit: $journal_commit,
+        journaled: ($journaled | words), data_head: $data_head, data_push: $data_push,
+        build_stamp: (if $build_stamp == "" then null else $build_stamp end),
+        publish: $publish, exit: ($exit | tonumber)}' 2>&1); then
+    mkdir -p "$(dirname "$RUNS_FILE")" 2>/dev/null
+    printf '%s\n' "$RECORD" >>"$RUNS_FILE" || log "WARNING: run record not written to $RUNS_FILE"
+  else
+    log "WARNING: run record could not be built — $RECORD"
+  fi
+  log "run summary: mode=$MODE season=$SEASON collect=[${COLLECT_SUMMARY:-none}] changed=[${CHANGED:-none}] failed=[${FAILED_COLLECTS:-none}] journal_model_calls=$JOURNAL_SPEND journal_commit=$JOURNAL_COMMIT publish=$PUBLISH_RESULT exit=$RUN_RC data_head=$DATA_HEAD build=${BUILD_STAMP:-none} locked=[${LOCKED_COLLECTS:-none}] busy=${BUSY:-none}"
+}
+
+# ── busy check (tl-5go): is another run already writing this data home? The
+#    `keelson workflow status --json` envelope is {"ok":true,"data":{"runs":[…]}}
+#    (keelson 0.103.0, workflowRunSummarySchema): each run carries runId,
+#    workflowName, status (running|paused|succeeded|failed|cancelled),
+#    startedAt, completedAt, origin (manual|scheduled), projectId (the
+#    project's UUID, not its name) and workingDir (the project's root path).
+#    The cadence passes --project d2-soccer by name, so the match is on
+#    workingDir against the data home, raw and physical (macOS tmp dirs are
+#    symlinks). A status call that fails (exit 3 with the server down, or an
+#    envelope jq cannot read) is logged and the run continues as before: the
+#    server-side lock still refuses a collect that races another run. ───────
+DATA_HOME_P=$(cd "$DATA_HOME" 2>/dev/null && pwd -P)
+SOUT=$(keelson workflow status --json 2>&1)
+src=$?
+if [ "$src" -ne 0 ]; then
+  log "workflow status unavailable (exit $src): $(printf '%s\n' "$SOUT" | tail -1) — busy check skipped; a collect that races another run is still refused by the server's lock."
+elif BUSY_LINE=$(printf '%s\n' "$SOUT" | tail -1 | jq -r --arg home "$DATA_HOME" --arg home_p "${DATA_HOME_P:-$DATA_HOME}" '
+      (.data.runs // [])[]
+      | select((.status == "running" or .status == "paused")
+          and (.workflowName == "touchline-collect" or .workflowName == "touchline-backfill")
+          and ((.workingDir // "") == $home or (.workingDir // "") == $home_p))
+      | "\(.workflowName) \(.runId) \(.startedAt) \(.origin // "manual")"' 2>&1); then
+  BUSY_LINE=$(printf '%s\n' "$BUSY_LINE" | head -1)
+  if [ -n "$BUSY_LINE" ]; then
+    # shellcheck disable=SC2086 # four space-separated words by construction.
+    set -- $BUSY_LINE
+    BUSY="$1 $2"
+    log "data home busy: $1 run $2 started $3, owner $4 — exiting without a sweep or a collect; the next fire retries."
+    finish_run
+    exit 0
+  fi
+else
+  log "workflow status unparseable — busy check skipped; a collect that races another run is still refused by the server's lock."
+fi
+
 # ── sweep: attribute any pre-existing uncommitted writes (an interrupted
 #    earlier run) before today's collects, so per-conference detection stays
-#    exact ───────────────────────────────────────────────────────────────────
+#    exact. Every dirty path is named by owner (attribute_path) in the log,
+#    and the commit message lists the conferences it touched ────────────────
 if [ -n "$(git -C "$DATA_HOME" status --porcelain)" ]; then
   log "data home dirty before collecting — sweeping leftovers into a commit first:"
   git -C "$DATA_HOME" status --porcelain | head -25 | logblock
+  git -C "$DATA_HOME" status --porcelain -uall >"$PROG_CACHE/sweep"
+  rm -f "$PROG_CACHE"/sweep.*
+  while IFS= read -r _l || [ -n "$_l" ]; do
+    _p=${_l#???}
+    _owner=$(attribute_path "$_p")
+    printf '%s\n' "$_p" >>"$PROG_CACHE/sweep.${_owner:-unattributed}"
+  done <"$PROG_CACHE/sweep"
+  SWEPT_CONFS=""
   for CONF in $CONFERENCES; do
-    lc=$(printf '%s' "$CONF" | tr '[:upper:]' '[:lower:]')
+    lc=$(lower "$CONF")
+    if [ -f "$PROG_CACHE/sweep.$lc" ]; then
+      SWEPT_CONFS="${SWEPT_CONFS:+$SWEPT_CONFS }$CONF"
+      log "  sweep $CONF: $(wc -l <"$PROG_CACHE/sweep.$lc" | tr -d ' ') path(s): $(head -4 "$PROG_CACHE/sweep.$lc" | paste -sd ' ' -)"
+    fi
     if has_signal "$lc"; then
       mark_changed "$lc"
       log "  leftover board changes touch $CONF — it counts as changed."
     fi
   done
-  commit_home "chore(data): sweep uncommitted changes found before cadence run"
+  for _owner in shared unattributed; do
+    if [ -f "$PROG_CACHE/sweep.$_owner" ]; then
+      log "  sweep $_owner: $(wc -l <"$PROG_CACHE/sweep.$_owner" | tr -d ' ') path(s): $(head -4 "$PROG_CACHE/sweep.$_owner" | paste -sd ' ' -)"
+    fi
+  done
+  commit_home "chore(data): sweep uncommitted changes found before cadence run [${SWEPT_CONFS:-none}]"
 fi
 
 # ── 1+2: collect and detect, per conference, isolated ────────────────────────
 for CONF in $CONFERENCES; do
-  lc=$(printf '%s' "$CONF" | tr '[:upper:]' '[:lower:]')
+  lc=$(lower "$CONF")
   log "collect $CONF $GENDER $SEASON:"
 
-  if ! RES=$(resolve_programmes "$CONF" 2>&1) || [ -z "$RES" ]; then
+  if ! RES=$(resolve_programmes_cached "$CONF") || [ -z "$RES" ]; then
     log "  membership resolution FAILED — ${RES:-no output}; skipping $CONF, continuing."
     FAILED_COLLECTS="${FAILED_COLLECTS:+$FAILED_COLLECTS }$CONF"
     COLLECT_SUMMARY="${COLLECT_SUMMARY:+$COLLECT_SUMMARY }$CONF=resolve-failed"
@@ -345,6 +535,11 @@ for CONF in $CONFERENCES; do
   STATUS=$(printf '%s\n' "$OUT" | tail -1 \
     | jq -r 'if .ok == true then (.data.status // "unknown") else "error(" + (.code // "?") + "): " + (.error // "unknown") end' 2>/dev/null)
   STATUS=${STATUS:-unparseable}
+  # The server's per-project mutation lock refuses a collect at start with
+  # HTTP 409 and `{"error":"project <id> is locked by <owner> for \"<purpose>\"",
+  # "code":"REQUEST_FAILED"}`: nothing was written, so nothing is rolled back.
+  ERR=$(printf '%s\n' "$OUT" | tail -1 | jq -r 'if .ok == true then "" else (.error // "") end' 2>/dev/null)
+  case "${ERR:-}" in *"is locked by"*) LOCKED_NOW=1 ;; *) LOCKED_NOW=0 ;; esac
 
   if [ "$crc" -eq 0 ] && [ "$STATUS" = "succeeded" ]; then
     if has_signal "$lc"; then
@@ -353,12 +548,30 @@ for CONF in $CONFERENCES; do
       log "  $CONF: board CHANGED — committed $(git -C "$DATA_HOME" rev-parse --short HEAD)."
       COLLECT_SUMMARY="${COLLECT_SUMMARY:+$COLLECT_SUMMARY }$CONF=changed"
     else
-      restore_home
+      restore_conference "$lc" "$PROGRAMMES"
       log "  $CONF: no change beyond the collected_at stamp — churn rolled back, journal skipped."
       COLLECT_SUMMARY="${COLLECT_SUMMARY:+$COLLECT_SUMMARY }$CONF=no-change"
     fi
+  elif [ "$LOCKED_NOW" -eq 1 ]; then
+    log "  $CONF: collect LOCKED — $ERR"
+    LOCKED_COLLECTS="${LOCKED_COLLECTS:+$LOCKED_COLLECTS }$CONF"
+    COLLECT_SUMMARY="${COLLECT_SUMMARY:+$COLLECT_SUMMARY }$CONF=locked"
+    RUN_RC=1
+    # the holder outlives this loop; the conferences after this one would
+    # only be refused the same way, so they are skipped by name (no retry:
+    # the next fire is the retry) and the journal/publish legs run for
+    # whatever changed before it.
+    REMAINING=""
+    _after=0
+    for _c in $CONFERENCES; do
+      if [ "$_after" -eq 1 ]; then REMAINING="${REMAINING:+$REMAINING }$_c"; elif [ "$_c" = "$CONF" ]; then _after=1; fi
+    done
+    if [ -n "$REMAINING" ]; then
+      log "  data home held by another run — skipping the remaining conference(s) [$REMAINING] this run; nothing of theirs was written or rolled back."
+    fi
+    break
   else
-    restore_home
+    restore_conference "$lc" "$PROGRAMMES"
     log "  $CONF: collect FAILED (exit $crc, $STATUS) — partial writes rolled back; continuing with the next conference."
     FAILED_COLLECTS="${FAILED_COLLECTS:+$FAILED_COLLECTS }$CONF"
     COLLECT_SUMMARY="${COLLECT_SUMMARY:+$COLLECT_SUMMARY }$CONF=failed"
@@ -510,36 +723,6 @@ if [ "$MODE" = "loop" ]; then
   fi
 fi
 
-# ── run record: the summary line as data, one JSON line per completed run.
-#    data_head is the data home's HEAD after the push step (the pre-run value
-#    when this mode never pushes). Written before the summary line so a
-#    reader of either sees the same run; a record that cannot be written is
-#    a WARNING, never a changed exit code.
-DATA_HEAD=$(git -C "$DATA_HOME" rev-parse --short HEAD 2>/dev/null || printf 'unknown')
-FINISHED_AT=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
-if RECORD=$(jq -cn \
-    --arg started_at "$STARTED_AT" --arg finished_at "$FINISHED_AT" \
-    --arg mode "$MODE" --arg season "$SEASON" --arg gender "$GENDER" \
-    --arg conferences "$CONFERENCES" --arg collect "${COLLECT_SUMMARY:-}" \
-    --arg changed "${CHANGED:-}" --arg failed "${FAILED_COLLECTS:-}" \
-    --arg journal_model_calls "$JOURNAL_SPEND" --arg journal_commit "$JOURNAL_COMMIT" \
-    --arg journaled "${JOURNALED:-}" --arg data_head "$DATA_HEAD" --arg data_push "$DATA_PUSH" \
-    --arg build_stamp "$BUILD_STAMP" --arg publish "$PUBLISH_RESULT" --arg exit "$RUN_RC" \
-    'def words: split(" ") | map(select(. != ""));
-     {started_at: $started_at, finished_at: $finished_at, mode: $mode,
-      season: ($season | tonumber? // $season), gender: $gender,
-      conferences: ($conferences | words),
-      collect: ($collect | words | map(split("=") | {key: .[0], value: (.[1:] | join("="))}) | from_entries),
-      changed: ($changed | words), failed: ($failed | words),
-      journal_model_calls: ($journal_model_calls | tonumber), journal_commit: $journal_commit,
-      journaled: ($journaled | words), data_head: $data_head, data_push: $data_push,
-      build_stamp: (if $build_stamp == "" then null else $build_stamp end),
-      publish: $publish, exit: ($exit | tonumber)}' 2>&1); then
-  mkdir -p "$(dirname "$RUNS_FILE")" 2>/dev/null
-  printf '%s\n' "$RECORD" >>"$RUNS_FILE" || log "WARNING: run record not written to $RUNS_FILE"
-else
-  log "WARNING: run record could not be built — $RECORD"
-fi
-
-log "run summary: mode=$MODE season=$SEASON collect=[${COLLECT_SUMMARY:-none}] changed=[${CHANGED:-none}] failed=[${FAILED_COLLECTS:-none}] journal_model_calls=$JOURNAL_SPEND journal_commit=$JOURNAL_COMMIT publish=$PUBLISH_RESULT exit=$RUN_RC data_head=$DATA_HEAD build=${BUILD_STAMP:-none}"
+# ── run record and summary line (finish_run, defined above the sweep) ────────
+finish_run
 exit "$RUN_RC"
