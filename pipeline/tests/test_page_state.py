@@ -22,7 +22,7 @@ import pytest
 
 from src import sidearm_live
 from src.config import SchoolConfig
-from src.page_state import PageStateStore, content_signature
+from src.page_state import BoxArchive, PageStateStore, box_kind, content_signature
 from src.sidearm_live import (
     LAYER_ROSTER,
     LAYER_SCHEDULE,
@@ -435,3 +435,69 @@ def test_a_304_reuses_the_cached_skips_with_the_cached_fixtures(
     )
     assert second.outcomes[LAYER_SCHEDULE].unchanged is True
     assert second.outcomes[LAYER_SCHEDULE].skips == expected
+
+
+def test_box_kind_folds_every_character_outside_the_safe_set() -> None:
+    """A box page is named by its fixture id, folded to ``[A-Za-z0-9._-]``.
+    Presto ids carry only colons and alphanumerics (every stored matches
+    file read on 2026-09-06 holds no id with a slash), so both platforms
+    fold the same way; the general fold is pinned on a made-up id."""
+    assert box_kind("sidearm:harding:14053") == "box-sidearm-harding-14053"
+    assert (
+        box_kind("presto:bridgeport:0x4hct72k8bvn6o4")
+        == "box-presto-bridgeport-0x4hct72k8bvn6o4"
+    )
+    assert box_kind("presto:x/y z") == "box-presto-x-y-z"
+    store = PageStateStore(Path("/home"), 2026, "men")
+    assert store.html_path("harding", box_kind("sidearm:harding:14053")) == Path(
+        "/home/data/raw_html/harding/2026-men-box-sidearm-harding-14053.html"
+    )
+
+
+def test_save_html_writes_the_page_atomically(tmp_path: Path) -> None:
+    store = PageStateStore(tmp_path, 2026, "men")
+    store.save_html("harding", "box-sidearm-harding-1", "<html>one</html>")
+    store.save_html("harding", "box-sidearm-harding-1", "<html>two</html>")
+
+    path = (
+        tmp_path
+        / "data"
+        / "raw_html"
+        / "harding"
+        / "2026-men-box-sidearm-harding-1.html"
+    )
+    assert path.read_text(encoding="utf-8") == "<html>two</html>"
+    # The temporary the rename came from never outlives the write.
+    assert sorted(item.name for item in path.parent.iterdir()) == [path.name]
+
+
+def test_box_archive_saves_the_page_and_a_sidecar_the_store_loads(
+    tmp_path: Path,
+) -> None:
+    store = PageStateStore(tmp_path, 2026, "men")
+    archive = BoxArchive(store, "harding", "sidearm:harding:1", "fp-1")
+    record = {"source_url": "https://example.test/boxscore/1", "teams": []}
+    archive.save(
+        requested_url="https://example.test/boxscore/1",
+        final_url="https://example.test/boxscore/1",
+        html="<html>box</html>",
+        parsed=record,
+    )
+
+    assert archive.html_path().read_text(encoding="utf-8") == "<html>box</html>"
+    state = archive.load()
+    assert state is not None and state.parsed == record
+    assert state.signature == content_signature("<html>box</html>")
+    # Another fingerprint keeps the bytes but not the parse.
+    stale = BoxArchive(store, "harding", "sidearm:harding:1", "fp-2").load()
+    assert stale is not None and stale.parsed is None
+    # A sidecar-only rewrite leaves the archived bytes alone.
+    archive.save(
+        requested_url="https://example.test/boxscore/1",
+        final_url="https://example.test/boxscore/1",
+        html="<html>never written</html>",
+        parsed={"teams": [1]},
+        with_html=False,
+    )
+    assert archive.html_path().read_text(encoding="utf-8") == "<html>box</html>"
+    assert archive.load().parsed == {"teams": [1]}  # type: ignore[union-attr]

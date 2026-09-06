@@ -241,7 +241,7 @@ def _fake_programme_factory(delays: dict[str, float], slugs: list[str]):
 
 
 def _fake_match_factory(delays: dict[str, float]):
-    def fake_collect_match(session, url, season, fixture):
+    def fake_collect_match(session, url, season, fixture, archive=None):
         del session, season
         time.sleep(delays.get(str(fixture["id"]), 0))
         return {
@@ -569,7 +569,7 @@ def test_a_hung_box_score_fetch_is_isolated_to_its_fixture(
     release = threading.Event()
     _one_programme_with_finals(monkeypatch, tmp_path)
 
-    def fake_collect_match(session, url, season, fixture):
+    def fake_collect_match(session, url, season, fixture, archive=None):
         del session, season
         if str(fixture["id"]).endswith(":1"):
             release.wait(10)
@@ -864,7 +864,7 @@ def test_match_task_failures_keep_the_ruled_message_shape(
     failure reasons, exactly as the sequential loop did."""
     _one_programme_with_finals(monkeypatch, tmp_path)
 
-    def failing_collect_match(session, url, season, fixture):
+    def failing_collect_match(session, url, season, fixture, archive=None):
         del session, season, fixture
         raise LiveCollectionError(f"refused {url}")
 
@@ -1265,7 +1265,7 @@ def test_a_challenged_box_score_is_retried_once_after_the_cool_down(
     gate, fake, _log = _fake_gate(cooldown=600.0)
     attempts: dict[str, int] = {}
 
-    def fake_collect_match(session, url, season, fixture):
+    def fake_collect_match(session, url, season, fixture, archive=None):
         del session, season
         identity = str(fixture["id"])
         attempts[identity] = attempts.get(identity, 0) + 1

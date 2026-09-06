@@ -25,6 +25,13 @@ and stats pages. Its docstring is the whole rule: archive whatever was
 actually served, so any parse can be redone offline. The board entrypoint
 (`pipeline/scripts/collect_board.py`) calls it immediately after each
 programme's collection, before it assembles a single season file.
+Box-score pages sit in the same cache beside the three layer pages, named by
+fixture id (`data/raw_html/{slug}/{year}-{gender}-box-{fixture-id}.html`,
+every character outside `[A-Za-z0-9._-]` folded to `-`, so
+`sidearm:harding:14053` becomes `2026-men-box-sidearm-harding-14053.html`)
+under the programme whose schedule page linked them, each with a sidecar
+carrying the parser fingerprint; a parser change reparses a stored box from
+disk instead of fetching it again.
 
 This is what warehouse practice calls a **raw zone** (or bronze layer): an
 immutable capture of the source, with every parsed product strictly

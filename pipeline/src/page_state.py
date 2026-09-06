@@ -14,6 +14,12 @@ The state lives in a sidecar JSON next to the archived page it describes:
     data/raw_html/{slug}/{season}-{gender}-{kind}.html          the bytes
     data/raw_html/{slug}/{season}-{gender}-{kind}.state.json    what we know
 
+A box-score page sits in the same cache under the programme whose schedule
+page linked it, with the fixture id as its kind (``box-<fixture-id>``, every
+character outside ``[A-Za-z0-9._-]`` folded to ``-``), so a parser change
+reaches stored box scores the way it reaches the three layer pages: the
+archived bytes are read again, nothing is fetched.
+
 The sidecar is only ever trusted while the archived page it describes is
 still on disk, and the cached parse output is only ever trusted while its
 ``fingerprint`` — the identity of the parse, covering the parser source and
@@ -111,11 +117,27 @@ def _now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
-def _atomic_write(path: Path, payload: dict[str, Any]) -> None:
+def _atomic_write_text(path: Path, text: str) -> None:
+    """Write the whole text or none of it: a temporary beside the target,
+    then one rename, so a reader (or a killed run) never sees a half page."""
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
-    temporary.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    temporary.write_text(text, encoding="utf-8")
     temporary.replace(path)
+
+
+def _atomic_write(path: Path, payload: dict[str, Any]) -> None:
+    _atomic_write_text(path, json.dumps(payload, indent=2) + "\n")
+
+
+_UNSAFE_KIND = re.compile(r"[^A-Za-z0-9._-]")
+
+
+def box_kind(fixture_id: str) -> str:
+    """The cache kind of one fixture's box-score page: ``box-<fixture id>``
+    with every character outside ``[A-Za-z0-9._-]`` folded to ``-``, so
+    ``sidearm:harding:14053`` archives as ``{season}-{gender}-box-sidearm-harding-14053``."""
+    return "box-" + _UNSAFE_KIND.sub("-", fixture_id)
 
 
 class PageStateStore:
@@ -137,6 +159,10 @@ class PageStateStore:
 
     def state_path(self, slug: str, kind: str) -> Path:
         return self.html_path(slug, kind).with_suffix(".state.json")
+
+    def save_html(self, slug: str, kind: str, html: str) -> None:
+        """Archive a served page's bytes, atomically (temp file and rename)."""
+        _atomic_write_text(self.html_path(slug, kind), html)
 
     def load(self, slug: str, kind: str, fingerprint: str) -> PageState | None:
         """The stored state, or ``None`` when there is nothing safe to reuse.
@@ -274,3 +300,60 @@ class PageStateStore:
             self.state_path(slug, kind).unlink()
         except OSError:
             pass
+
+
+@dataclass(frozen=True)
+class BoxArchive:
+    """Where one fixture's box-score page belongs in the cache.
+
+    Handed to a recipe's ``collect_match`` by the board collector, which
+    alone knows the programme whose schedule page carried the link
+    (``slug``) and the parse identity the sidecar must carry
+    (``fingerprint``, ``parse_fingerprint(year, *recipe.parse_identity)``).
+    The collector writes the proven page and its sidecar through it; the
+    sidecar's cached parse is the match record itself.
+    """
+
+    store: PageStateStore
+    slug: str
+    fixture_id: str
+    fingerprint: str
+
+    @property
+    def kind(self) -> str:
+        return box_kind(self.fixture_id)
+
+    def html_path(self) -> Path:
+        return self.store.html_path(self.slug, self.kind)
+
+    def load(self) -> PageState | None:
+        return self.store.load(self.slug, self.kind, self.fingerprint)
+
+    def save(
+        self,
+        *,
+        requested_url: str,
+        final_url: str,
+        html: str,
+        parsed: dict[str, Any],
+        signature: str | None = None,
+        with_html: bool = True,
+    ) -> None:
+        """Archive the page (unless ``with_html`` is off: a reparse of bytes
+        already on disk rewrites only the sidecar) and record its parse."""
+        if with_html:
+            self.store.save_html(self.slug, self.kind, html)
+        self.store.save(
+            self.slug,
+            self.kind,
+            requested_url=requested_url,
+            final_url=final_url,
+            etag=None,
+            last_modified=None,
+            signature=signature or content_signature(html),
+            fingerprint=self.fingerprint,
+            outcome_state="complete",
+            outcome_count=1,
+            outcome_reason=None,
+            parsed=parsed,
+        )

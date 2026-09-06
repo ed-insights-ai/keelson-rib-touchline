@@ -92,10 +92,14 @@ class Recipe:
     #: the id is the trailing segment of the fixture ids the schedule parse
     #: minted, so the join is exact.
     boxscore_links: Callable[[str, str], dict[str, str]]
-    #: Fetch one fixture's box score, prove it is that fixture's, parse it.
-    collect_match: Callable[
-        [requests.Session, str, int, dict[str, object]], dict[str, object]
-    ]
+    #: Fetch one fixture's box score, prove it is that fixture's, parse it;
+    #: with an ``archive`` keyword (``page_state.BoxArchive``), write the
+    #: proven page and its parse to the fetch cache.
+    collect_match: Callable[..., dict[str, object]]
+    #: The proof and parse ``collect_match`` runs over the served page,
+    #: over a ``PublishedPage`` read back from the cache: how a parser
+    #: change reaches an archived box score without a fetch.
+    parse_match: Callable[[PublishedPage, int, dict[str, object]], dict[str, object]]
     #: What identifies the platform's parsers beyond sidearm_live.py's own
     #: source, which is the base of every cached parse's fingerprint: the
     #: digest of the platform module for parsers that live elsewhere, so a
@@ -141,6 +145,7 @@ SIDEARM = Recipe(
     parse_stats=_late(sidearm_live, "parse_stats_page"),
     boxscore_links=_late(sidearm_live, "boxscore_links"),
     collect_match=_late(sidearm_live, "collect_match"),
+    parse_match=_late(sidearm_live, "parse_match_page"),
     parse_identity=(),
 )
 
@@ -154,6 +159,7 @@ PRESTO = Recipe(
     parse_stats=_late(presto, "parse_stats"),
     boxscore_links=_late(presto, "boxscore_links_by_event"),
     collect_match=_late(presto, "collect_match"),
+    parse_match=_late(presto, "parse_match_page"),
     parse_identity=(_source_digest(presto.__file__),),
     locate_stats=_late(presto, "locate_stats"),
 )

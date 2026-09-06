@@ -1792,6 +1792,72 @@ def test_collect_match_proves_and_parses_one_fixture() -> None:
     assert detail["source_url"].endswith("/boxscore/14824")
 
 
+def test_collect_match_archives_the_proven_page_and_its_parse(tmp_path: Path) -> None:
+    """With an archive, the served box page and a sidecar carrying the parse
+    fingerprint and the match record land in the fetch cache under the
+    linking programme, named by the folded fixture id (bead tl-ir6)."""
+    from src.page_state import BoxArchive, PageStateStore, content_signature
+    from src.sidearm_live import collect_match, parse_fingerprint
+
+    response = MagicMock()
+    response.url = (
+        "https://example.test/sports/mens-soccer/stats/2025/union-tn-/boxscore/14824"
+    )
+    response.text = _boxscore_html()
+    session = MagicMock()
+    session.get.return_value = response
+    fingerprint = parse_fingerprint(2025)
+    archive = BoxArchive(
+        PageStateStore(tmp_path, 2025, "men"),
+        "harding",
+        "sidearm:harding:14824",
+        fingerprint,
+    )
+
+    detail = collect_match(
+        session, response.url, 2025, dict(_OT_FIXTURE), archive=archive
+    )
+
+    html_path = (
+        tmp_path
+        / "data"
+        / "raw_html"
+        / "harding"
+        / "2025-men-box-sidearm-harding-14824.html"
+    )
+    assert html_path.read_text(encoding="utf-8") == _boxscore_html()
+    sidecar = json.loads(
+        html_path.with_suffix(".state.json").read_text(encoding="utf-8")
+    )
+    assert sidecar["fingerprint"] == fingerprint
+    assert sidecar["parsed"] == detail
+    assert sidecar["final_url"] == response.url
+    assert sidecar["signature"] == content_signature(response.text)
+    assert archive.load().parsed == detail  # type: ignore[union-attr]
+
+
+def test_collect_match_archives_nothing_it_could_not_prove(tmp_path: Path) -> None:
+    from src.page_state import BoxArchive, PageStateStore
+    from src.sidearm_live import collect_match
+
+    response = MagicMock()
+    response.url = (
+        "https://example.test/sports/mens-soccer/stats/2025/union-tn-/boxscore/14824"
+    )
+    response.text = _boxscore_html()
+    session = MagicMock()
+    session.get.return_value = response
+    archive = BoxArchive(
+        PageStateStore(tmp_path, 2025, "men"), "harding", "sidearm:harding:14824", "fp"
+    )
+    other_day = dict(_OT_FIXTURE, date="2025-09-07")
+
+    with pytest.raises(LiveCollectionError, match="served the match of 2025-09-06"):
+        collect_match(session, response.url, 2025, other_day, archive=archive)
+
+    assert not (tmp_path / "data").exists()
+
+
 def test_a_challenge_answer_to_a_box_score_is_refused_with_its_status() -> None:
     """The body check at the season-page seam guards the box-score fetch
     too: an empty HTTP 202 names its status, never a box score with no

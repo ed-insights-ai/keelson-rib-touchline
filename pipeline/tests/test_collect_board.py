@@ -20,7 +20,9 @@ from scripts.collect_board import (
     _stored_match_current,
     widen_to_existing_scope,
 )
+from src import sidearm_live
 from src.config import SchoolConfig
+from src.page_state import PageStateStore, content_signature
 from src.sidearm_live import (
     DEFAULT_LAYERS,
     LAYER_MATCHES,
@@ -30,6 +32,7 @@ from src.sidearm_live import (
     STATE_NO_COLLECTOR,
     LayerOutcome,
     ProgrammeCollection,
+    parse_fingerprint,
     programme_slug,
 )
 
@@ -838,13 +841,22 @@ def _harvest_setup(
     )
     fetched: list[str] = []
 
-    def fake_collect_match(session, url, season, fixture):
+    def fake_collect_match(session, url, season, fixture, archive=None):
         del session, season
         fetched.append(url)
-        return _stored_detail(
+        detail = _stored_detail(
             int(fixture.get("home_score", 0) or 0),
             int(fixture.get("away_score", 0) or 0),
         )
+        # What the real collector does with the archive it is handed.
+        if archive is not None:
+            archive.save(
+                requested_url=url,
+                final_url=url,
+                html=f"<html>{url}</html>",
+                parsed=detail,
+            )
+        return detail
 
     monkeypatch.setattr(collect_board, "load_schools", lambda _path: [school])
     monkeypatch.setattr(
@@ -940,6 +952,189 @@ def test_a_final_with_no_stored_detail_is_fetched(monkeypatch, tmp_path: Path) -
 
     assert len(fetched) == 1
     assert "sidearm:harding:1" in payload["matches"]
+
+
+_BOX_KIND = "box-sidearm-harding-1"
+_BOX_URL = "https://example.test/boxscore/1"
+_BOX_HTML = (
+    "<html><head><title>Harding vs Rogers State on 10/8/2026 - Box Score</title>"
+    "</head><body>archived</body></html>"
+)
+
+
+def _archive_box(tmp_path: Path, fingerprint: str | None) -> Path:
+    """Seed the data home with the archived box page of sidearm:harding:1
+    and, given a fingerprint, its sidecar; return the page's path."""
+    store = PageStateStore(tmp_path, 2026, "men")
+    store.save_html("harding", _BOX_KIND, _BOX_HTML)
+    if fingerprint is not None:
+        store.save(
+            "harding",
+            _BOX_KIND,
+            requested_url=_BOX_URL,
+            final_url=_BOX_URL,
+            etag=None,
+            last_modified=None,
+            signature=content_signature(_BOX_HTML),
+            fingerprint=fingerprint,
+            outcome_state="complete",
+            outcome_count=1,
+            outcome_reason=None,
+            parsed=_stored_detail(),
+        )
+    return store.html_path("harding", _BOX_KIND)
+
+
+def _sidecar(path: Path) -> dict:
+    return json.loads(path.with_suffix(".state.json").read_text(encoding="utf-8"))
+
+
+def _refusing_parse(monkeypatch) -> None:
+    def never(html: str, *, page_url: str) -> dict[str, object]:
+        raise AssertionError(f"parsed {page_url}")
+
+    monkeypatch.setattr(sidearm_live, "parse_boxscore_page", never)
+
+
+def test_an_archived_box_under_the_current_fingerprint_is_reused_as_stored(
+    monkeypatch, tmp_path: Path, capsys
+) -> None:
+    """Branch one: sidecar present, fingerprint equal; the stored record
+    stands, no fetch and no parse (today's path)."""
+    page = _archive_box(tmp_path, parse_fingerprint(2026))
+    _refusing_parse(monkeypatch)
+    stored = {"sidearm:harding:1": _stored_detail()}
+
+    payload, _cells, fetched = _harvest(
+        [_final_fixture()], stored, monkeypatch, tmp_path
+    )
+
+    assert fetched == []
+    assert payload["matches"] == stored
+    assert _sidecar(page)["fingerprint"] == parse_fingerprint(2026)
+    out = capsys.readouterr().out
+    assert "reparsed from the archive" not in out
+    assert "no archived page" not in out
+
+
+def test_a_parser_change_reparses_the_archived_box_from_disk(
+    monkeypatch, tmp_path: Path, capsys
+) -> None:
+    """Branch two: the sidecar names another fingerprint, so the archived
+    bytes go through the recipe's proof and parser again, the sidecar is
+    rewritten under the current fingerprint, and the count line prints
+    with its wall time. The session is never asked."""
+    page = _archive_box(tmp_path, "a-previous-parser")
+    parsed: list[str] = []
+
+    def reparse(html: str, *, page_url: str) -> dict[str, object]:
+        parsed.append(page_url)
+        assert html == _BOX_HTML
+        return dict(_stored_detail(), source_url=page_url, reparsed=True)
+
+    monkeypatch.setattr(sidearm_live, "parse_boxscore_page", reparse)
+    stored = {"sidearm:harding:1": _stored_detail()}
+
+    payload, cells, fetched = _harvest(
+        [_final_fixture()], stored, monkeypatch, tmp_path
+    )
+
+    assert fetched == []
+    assert parsed == [_BOX_URL]
+    assert payload["matches"]["sidearm:harding:1"]["reparsed"] is True
+    assert cells["2026/men/harding/matches"]["state"] == STATE_COMPLETE
+    sidecar = _sidecar(page)
+    assert sidecar["fingerprint"] == parse_fingerprint(2026)
+    assert sidecar["parsed"]["reparsed"] is True
+    assert page.read_text(encoding="utf-8") == _BOX_HTML
+    out = capsys.readouterr().out
+    assert "boxes reparsed from the archive after a parser change: 1 in " in out
+    assert " in 0." in out and out.strip().count("parser change") == 1
+
+    # The rewritten sidecar settles the question: the next run reuses.
+    _refusing_parse(monkeypatch)
+    payload, _cells, fetched = _harvest(
+        [_final_fixture()], stored, monkeypatch, tmp_path
+    )
+    assert fetched == []
+    assert "parser change" not in capsys.readouterr().out
+
+
+def test_an_archived_box_without_a_sidecar_is_reparsed_too(
+    monkeypatch, tmp_path: Path
+) -> None:
+    page = _archive_box(tmp_path, None)
+    monkeypatch.setattr(
+        sidearm_live,
+        "parse_boxscore_page",
+        lambda html, *, page_url: dict(_stored_detail(), source_url=page_url, fresh=1),
+    )
+    stored = {"sidearm:harding:1": _stored_detail()}
+
+    payload, _cells, fetched = _harvest(
+        [_final_fixture()], stored, monkeypatch, tmp_path
+    )
+
+    assert fetched == []
+    assert payload["matches"]["sidearm:harding:1"]["fresh"] == 1
+    assert _sidecar(page)["fingerprint"] == parse_fingerprint(2026)
+
+
+def test_a_stored_box_with_no_archived_page_is_reused_and_counted(
+    monkeypatch, tmp_path: Path, capsys
+) -> None:
+    """Branch three: a box collected before pages were archived is reused as
+    today; nothing fetches on its own, and the count line says a refetch
+    would archive it."""
+    _refusing_parse(monkeypatch)
+    stored = {"sidearm:harding:1": _stored_detail()}
+
+    payload, _cells, fetched = _harvest(
+        [_final_fixture()], stored, monkeypatch, tmp_path
+    )
+
+    assert fetched == []
+    assert payload["matches"] == stored
+    assert (
+        "stored boxes with no archived page: 1 (refetch archives them)"
+        in capsys.readouterr().out
+    )
+
+
+def test_a_changed_result_still_fetches_over_an_archived_page(
+    monkeypatch, tmp_path: Path
+) -> None:
+    # Today's rule, unchanged: the archive answers only for a box whose
+    # result stands; a correction goes to the site.
+    _archive_box(tmp_path, parse_fingerprint(2026))
+    _refusing_parse(monkeypatch)
+    corrected = _final_fixture(home_score=3, away_score=1)
+    stored = {"sidearm:harding:1": _stored_detail(2, 1)}
+
+    payload, _cells, fetched = _harvest([corrected], stored, monkeypatch, tmp_path)
+
+    assert len(fetched) == 1
+    assert payload["matches"]["sidearm:harding:1"]["teams"][0]["score"] == 3
+
+
+def test_refetch_fetches_and_rewrites_the_archived_box(
+    monkeypatch, tmp_path: Path
+) -> None:
+    page = _archive_box(tmp_path, "a-previous-parser")
+    _refusing_parse(monkeypatch)
+    stored = {"sidearm:harding:1": _stored_detail()}
+
+    _payload, _cells, fetched = _harvest(
+        [_final_fixture()], stored, monkeypatch, tmp_path, refetch=True
+    )
+
+    assert fetched == ["https://example.test/sports/mens-soccer/boxscore/1"]
+    # Rewritten in place: same slug, same folded id, the fingerprint the
+    # recipe's identity gives, the served page's bytes.
+    assert page.read_text(encoding="utf-8") == f"<html>{fetched[0]}</html>"
+    sidecar = _sidecar(page)
+    assert sidecar["fingerprint"] == parse_fingerprint(2026)
+    assert sidecar["final_url"] == fetched[0]
 
 
 def test_stored_match_current_respects_orientation() -> None:

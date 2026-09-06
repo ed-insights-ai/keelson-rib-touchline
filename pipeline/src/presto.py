@@ -83,6 +83,7 @@ from urllib.parse import urljoin, urlparse
 import requests
 from bs4 import BeautifulSoup, Tag
 
+from src.page_state import BoxArchive
 from src.sidearm_live import (
     LAYER_ROSTER,
     LAYER_SCHEDULE,
@@ -1810,17 +1811,39 @@ def assert_served_match(
         )
 
 
+def parse_match_page(
+    page: PublishedPage, year: int, fixture: dict[str, object]
+) -> dict[str, object]:
+    """Prove a served box-score page is the fixture's, then read it: the
+    SideArm ``parse_match_page`` over this platform's proof and parser, so
+    an archived page reparses exactly as a served one."""
+    assert_served_match(page, year, fixture)
+    detail = parse_boxscore(page.html, page_url=page.final_url)
+    teams = detail.get("teams") or []
+    if len(teams) != 2:  # type: ignore[arg-type]
+        raise LiveCollectionError(
+            f"[{year}] {fixture.get('id')}: {page.final_url} proved its match but "
+            f"its score-by-period table rendered {len(teams)} team(s) "  # type: ignore[arg-type]
+            f"where a match needs exactly two"
+        )
+    orient_match(detail, fixture)
+    return detail
+
+
 def collect_match(
     session: requests.Session,
     url: str,
     year: int,
     fixture: dict[str, object],
+    *,
+    archive: BoxArchive | None = None,
 ) -> dict[str, object]:
     """Fetch one fixture's box score, prove it is that fixture's, and parse it.
 
     The fetch rides the shared session and the shared body check: a 2xx that
     is not the page (the site's HTTP 202 challenge after a burst) is refused
-    with its status, never read as a box score with no teams.
+    with its status, never read as a box score with no teams.  With an
+    ``archive``, the proven page and its parse join the fetch cache.
     """
     try:
         response = session.get(url, timeout=30)
@@ -1832,14 +1855,12 @@ def collect_match(
         ) from exc
     assert_served_body(response, year=year, kind="box-score", url=url)
     page = PublishedPage(url, response.url, response.text)
-    assert_served_match(page, year, fixture)
-    detail = parse_boxscore(page.html, page_url=page.final_url)
-    teams = detail.get("teams") or []
-    if len(teams) != 2:  # type: ignore[arg-type]
-        raise LiveCollectionError(
-            f"[{year}] {fixture.get('id')}: {page.final_url} proved its match but "
-            f"its score-by-period table rendered {len(teams)} team(s) "  # type: ignore[arg-type]
-            f"where a match needs exactly two"
+    detail = parse_match_page(page, year, fixture)
+    if archive is not None:
+        archive.save(
+            requested_url=page.requested_url,
+            final_url=page.final_url,
+            html=page.html,
+            parsed=detail,
         )
-    orient_match(detail, fixture)
     return detail
