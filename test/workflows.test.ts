@@ -332,6 +332,38 @@ describe("workflows/touchline-backfill.yml", () => {
     expect(ok.stdout).toContain("range: X men 2022-2026 (5 seasons, 8 slots)");
   });
 
+  test("preflight refuses while the cadence's pid lock is live and passes once that pid is gone", async () => {
+    const wf = await loadWorkflow("touchline-backfill");
+    const body = wf.nodes.find((n) => n.id === "preflight")?.bash ?? "";
+    const home = await mkdtemp(join(tmpdir(), "touchline-backfill-"));
+    await writeFile(join(home, "touchline-data.yaml"), "kind: touchline-data\n");
+    // the cadence's lock dir, pointed at by the same override the cadence honours
+    const lock = join(home, "touchline-collect-cadence.lock");
+    await mkdir(lock);
+    const env = {
+      KEELSON_INPUTS_conference: "X",
+      KEELSON_INPUTS_gender: "men",
+      KEELSON_INPUTS_from_season: "2025",
+      KEELSON_INPUTS_to_season: "2026",
+      TOUCHLINE_CADENCE_LOCK_DIR: lock,
+    };
+
+    await writeFile(join(lock, "pid"), `${process.pid}\n`);
+    const live = await run(["bash", "-c", body], env, home);
+    expect(live.code).toBe(1);
+    expect(live.stdout).toContain(
+      `REFUSED: the touchline cadence is running (pid ${process.pid}); retry after it finishes.`,
+    );
+
+    // a lock whose pid is gone is stale: the range check runs as before
+    const gone = Bun.spawn(["true"]);
+    await gone.exited;
+    await writeFile(join(lock, "pid"), `${gone.pid}\n`);
+    const ok = await run(["bash", "-c", body], env, home);
+    expect(ok.code).toBe(0);
+    expect(ok.stdout).toContain("range: X men 2025-2026 (2 seasons, 8 slots)");
+  });
+
   test("a slot past the range is skipped without touching the pipeline", async () => {
     const r = await run(["sh", slotScript], {
       SLOT: "6",

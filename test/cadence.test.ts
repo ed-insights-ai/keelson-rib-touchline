@@ -53,12 +53,37 @@ async function run(cmd: string[], env: Record<string, string>, cwd?: string): Pr
   return { code: await proc.exited, stdout, stderr };
 }
 
+// The project id keelson assigns the d2-soccer data home; the status envelope
+// carries it, not the name, so the cadence matches on workingDir instead.
+const PROJECT_ID = "0f063a68-64bd-4055-9993-04426cc43e6f";
+
 const FAKE_KEELSON = `#!/bin/sh
-# Fake keelson: answers \`workflow run touchline-collect ... --inputs conference=X\`
-# by writing the data home the way the plan says (CADENCE_FAKE_PLAN is
-# "CONF=changed,CONF=churn,CONF=failed"; unnamed conferences are changed) and
-# printing the JSON status line the cadence parses from its last line.
+# Fake keelson. \`workflow status --json\` answers from CADENCE_FAKE_BUSY
+# ("<workflow>:<runId>:<startedAt>") with the keelson 0.103.0 envelope shape,
+# {"ok":true,"data":{"runs":[...]}} where each run is a workflowRunSummary
+# (runId, workflowName, status, startedAt, completedAt, error, conversationId,
+# projectId, workingDir, worktreePath, worktreeBase, origin, ribId), otherwise
+# an empty run list. \`workflow run touchline-collect ... --inputs conference=X\`
+# writes the data home the way the plan says (CADENCE_FAKE_PLAN is
+# "CONF=changed,CONF=churn,CONF=failed,CONF=locked"; unnamed conferences are
+# changed) and prints the JSON line the cadence parses from its last line.
+# CADENCE_FAKE_SIDE_WRITE=<path> makes the failed and locked actions also
+# write that path under the data home: another writer's file landing while
+# this collect runs, which a rollback must leave alone.
 printf 'keelson %s\\n' "$*" >>"$CADENCE_FAKE_LOG"
+home="$TOUCHLINE_DATA_HOME"
+if [ "$1 $2" = "workflow status" ]; then
+  if [ -n "\${CADENCE_FAKE_BUSY:-}" ]; then
+    bw=$(printf '%s' "$CADENCE_FAKE_BUSY" | cut -d: -f1)
+    bid=$(printf '%s' "$CADENCE_FAKE_BUSY" | cut -d: -f2)
+    bat=$(printf '%s' "$CADENCE_FAKE_BUSY" | cut -d: -f3-)
+    printf '{"ok":true,"data":{"runs":[{"runId":"%s","workflowName":"%s","status":"running","startedAt":"%s","completedAt":null,"error":null,"conversationId":null,"projectId":"${PROJECT_ID}","workingDir":"%s","worktreePath":null,"worktreeBase":null,"origin":"manual","ribId":"touchline"}]}}\\n' \\
+      "$bid" "$bw" "$bat" "$home"
+  else
+    printf '{"ok":true,"data":{"runs":[]}}\\n'
+  fi
+  exit 0
+fi
 conf=""
 for a in "$@"; do case "$a" in conference=*) conf=\${a#conference=} ;; esac; done
 lc=$(printf '%s' "$conf" | tr '[:upper:]' '[:lower:]')
@@ -67,16 +92,27 @@ for p in $(printf '%s' "\${CADENCE_FAKE_PLAN:-}" | tr ',' ' '); do
   case "$p" in "$conf="*) action=\${p#*=} ;; esac
 done
 if [ -n "\${CADENCE_FAKE_SLEEP:-}" ]; then sleep "$CADENCE_FAKE_SLEEP"; fi
-home="$TOUCHLINE_DATA_HOME"
 stamp=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 write_board() { # $1 = layer, $2 = rows
   printf '{\\n  "collected_at": "%s",\\n  "rows": [%s]\\n}\\n' "$stamp" "$2" \\
     >"$home/data/$1/\${TOUCHLINE_SEASON}-\${TOUCHLINE_GENDER}-\${lc}.json"
 }
-write_churn() { # coverage and raw_html churn on every fetch, never a signal
-  mkdir -p "$home/data/coverage" "$home/data/raw_html/$lc"
-  printf '{"collected_at":"%s"}\\n' "$stamp" >"$home/data/coverage/\${lc}.json"
-  printf '<html>%s</html>\\n' "$stamp" >"$home/data/raw_html/$lc/page.html"
+write_churn() { # coverage, raw_html and errors churn on every fetch, never a signal
+  # the real layout: one shared coverage.json, raw pages per programme slug
+  # (the fake bun resolves <lc>-alpha,<lc>-beta) named <season>-<gender>-*,
+  # and one errors file per conference board
+  mkdir -p "$home/data/errors" "$home/data/raw_html/\${lc}-alpha"
+  printf '{"collected_at":"%s","last":"%s"}\\n' "$stamp" "$lc" >"$home/data/coverage.json"
+  printf '<html>%s</html>\\n' "$stamp" \\
+    >"$home/data/raw_html/\${lc}-alpha/\${TOUCHLINE_SEASON}-\${TOUCHLINE_GENDER}-schedule.html"
+  printf '{"errors":[]}\\n' \\
+    >"$home/data/errors/collect-board-\${TOUCHLINE_SEASON}-\${TOUCHLINE_GENDER}-\${lc}.json"
+}
+side_write() {
+  if [ -n "\${CADENCE_FAKE_SIDE_WRITE:-}" ]; then
+    mkdir -p "$(dirname "$home/$CADENCE_FAKE_SIDE_WRITE")"
+    printf '{\\n  "collected_at": "%s",\\n  "rows": ["side-row"]\\n}\\n' "$stamp" >"$home/$CADENCE_FAKE_SIDE_WRITE"
+  fi
 }
 case "$action" in
   changed)
@@ -94,9 +130,17 @@ case "$action" in
   failed)
     write_board fixtures '"partial-row"'
     write_churn
+    side_write
     printf 'collect %s: boom\\n' "$conf"
     printf '{"ok":false,"code":"E_COLLECT","error":"fake collect blew up"}\\n'
     exit 2
+    ;;
+  locked)
+    # the server's mutation lock refuses at start: HTTP 409, nothing written
+    side_write
+    printf '{"error":"%s","code":"REQUEST_FAILED"}\\n' \\
+      'project ${PROJECT_ID} is locked by run:abc for \\"touchline-backfill\\"'
+    exit 1
     ;;
   *) printf 'fake keelson: unknown action %s\\n' "$action" >&2; exit 99 ;;
 esac
@@ -344,9 +388,9 @@ describe("bin/touchline-collect-cadence.sh", () => {
     expect(await h.git(h.data, "status", "--porcelain")).toBe("");
     expect(await boardFile(h, "fixtures", "gac")).toContain('"new-row"');
     // coverage and raw_html churn ride along in the same commit
-    expect(await h.git(h.data, "show", "--stat", "--format=", "HEAD")).toContain(
-      "data/coverage/gac.json",
-    );
+    const shown = await h.git(h.data, "show", "--stat", "--format=", "HEAD");
+    expect(shown).toContain("data/coverage.json");
+    expect(shown).toContain(`data/raw_html/gac-alpha/${SEASON}-${GENDER}-schedule.html`);
 
     const log = await h.log();
     expect(log).toContain(
@@ -379,7 +423,11 @@ describe("bin/touchline-collect-cadence.sh", () => {
     expect(await h.git(h.data, "rev-parse", "--short", "HEAD")).toBe(before);
     expect(await h.git(h.data, "status", "--porcelain")).toBe("");
     expect(await boardFile(h, "fixtures", "gac")).toBe(INITIAL_BOARD);
-    expect(existsSync(join(h.data, "data", "coverage"))).toBe(false);
+    expect(existsSync(join(h.data, "data", "coverage.json"))).toBe(false);
+    expect(existsSync(join(h.data, "data", "raw_html", "gac-alpha"))).toBe(false);
+    expect(
+      existsSync(join(h.data, "data", "errors", `collect-board-${SEASON}-${GENDER}-gac.json`)),
+    ).toBe(false);
 
     const log = await h.log();
     expect(log).toContain(
@@ -404,7 +452,7 @@ describe("bin/touchline-collect-cadence.sh", () => {
 
     // GAC's partial write is gone; LSC's real change is committed on top of the old HEAD
     expect(await boardFile(h, "fixtures", "gac")).toBe(INITIAL_BOARD);
-    expect(existsSync(join(h.data, "data", "raw_html", "gac"))).toBe(false);
+    expect(existsSync(join(h.data, "data", "raw_html", "gac-alpha"))).toBe(false);
     expect(await boardFile(h, "fixtures", "lsc")).toContain('"new-row"');
     expect(await h.git(h.data, "status", "--porcelain")).toBe("");
     const head = await h.git(h.data, "rev-parse", "--short", "HEAD");
@@ -533,7 +581,8 @@ describe("bin/touchline-collect-cadence.sh", () => {
         new RegExp(
           `^\\[\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\] run summary: mode=loop season=${SEASON} ` +
             `collect=\\[GAC=changed\\] changed=\\[gac\\] failed=\\[none\\] journal_model_calls=2 ` +
-            `journal_commit=${siteHead} publish=succeeded exit=0 data_head=${dataHead} build=${BUILD}$`,
+            `journal_commit=${siteHead} publish=succeeded exit=0 data_head=${dataHead} build=${BUILD} ` +
+            `locked=\\[none\\] busy=none$`,
           "m",
         ),
       );
@@ -552,6 +601,8 @@ describe("bin/touchline-collect-cadence.sh", () => {
           "collect",
           "changed",
           "failed",
+          "locked",
+          "busy",
           "journal_model_calls",
           "journal_commit",
           "journaled",
@@ -567,6 +618,8 @@ describe("bin/touchline-collect-cadence.sh", () => {
       expect(rec.mode).toBe("loop");
       expect(rec.collect).toEqual({ GAC: "changed" });
       expect(rec.changed).toEqual(["gac"]);
+      expect(rec.locked).toEqual([]);
+      expect(rec.busy).toBeNull();
       expect(rec.journal_model_calls).toBe(2);
       expect(rec.journal_commit).toBe(siteHead);
       expect(rec.journaled).toEqual(["gac", "national"]);
@@ -592,7 +645,7 @@ describe("bin/touchline-collect-cadence.sh", () => {
       const log = await h.log();
       expect(log).toContain("PUBLISH FAILED (exit 1) — the live site did NOT update.");
       expect(log).toMatch(
-        /run summary: .* publish=FAILED \(exit 1\) exit=1 data_head=[0-9a-f]{7,} build=none$/m,
+        /run summary: .* publish=FAILED \(exit 1\) exit=1 data_head=[0-9a-f]{7,} build=none locked=\[none\] busy=none$/m,
       );
       const [rec] = await h.records();
       expect(rec.publish).toBe("FAILED (exit 1)");
@@ -655,6 +708,206 @@ describe("bin/touchline-collect-cadence.sh", () => {
       false,
     );
   }, 60_000);
+
+  test("(g) a collect or backfill already running on the data home makes the start a busy exit: no sweep, no collect, and the record says why", async () => {
+    const h = await makeHarness();
+    const before = await h.git(h.data, "rev-parse", "--short", "HEAD");
+    // a sibling's uncommitted board change already sits in the data home
+    const sibling = join(h.data, "data", "fixtures", `${SEASON}-${GENDER}-lsc.json`);
+    await writeFile(sibling, board("2026-09-05T00:00:00Z", '"backfill-row"'));
+    const r = await h.cadence("loop", {
+      TOUCHLINE_CONFERENCES: "GAC LSC",
+      CADENCE_FAKE_PLAN: "GAC=changed",
+      CADENCE_FAKE_BUSY: "touchline-backfill:run-abc:2026-09-06T12:00:00Z",
+    });
+    expect(r.code).toBe(0);
+
+    // nothing swept, nothing collected: HEAD stands and the sibling's change is intact and dirty
+    expect(await h.git(h.data, "rev-parse", "--short", "HEAD")).toBe(before);
+    expect(await readFile(sibling, "utf8")).toContain('"backfill-row"');
+    expect(await h.git(h.data, "status", "--porcelain")).toBe(
+      `M data/fixtures/${SEASON}-${GENDER}-lsc.json`,
+    );
+    const calls = await h.calls();
+    expect(calls).toContain("keelson workflow status --json");
+    expect(calls).not.toContain("keelson workflow run");
+    expect(calls).not.toContain("run journal");
+    expect(calls).not.toContain("just publish");
+
+    const log = await h.log();
+    expect(log).toContain(
+      "data home busy: touchline-backfill run run-abc started 2026-09-06T12:00:00Z, owner manual — exiting without a sweep or a collect",
+    );
+    expect(log).not.toContain("sweeping leftovers");
+    expect(log).toMatch(
+      /run summary: mode=loop season=2026 collect=\[none\] changed=\[none\] failed=\[none\] .* exit=0 .* locked=\[none\] busy=touchline-backfill run-abc$/m,
+    );
+
+    const [rec] = await h.records();
+    expect(rec.busy).toBe("touchline-backfill run-abc");
+    expect(rec.collect).toEqual({});
+    expect(rec.conferences).toEqual(["GAC", "LSC"]);
+    expect(rec.changed).toEqual([]);
+    expect(rec.locked).toEqual([]);
+    expect(rec.data_head).toBe(before);
+    expect(rec.exit).toBe(0);
+  });
+
+  test(
+    "(h) a collect refused by the server's mutation lock is locked, never rolled back, skips the rest of the set by name, and the run still journals and publishes what changed",
+    async () => {
+      const h = await makeHarness();
+      const before = await h.git(h.data, "rev-parse", "--short", "HEAD");
+      const r = await h.cadence("loop", {
+        TOUCHLINE_CONFERENCES: "GAC LSC GSC",
+        CADENCE_FAKE_PLAN: "GAC=changed,LSC=locked",
+        // the holder's own file lands during the refused collect
+        CADENCE_FAKE_SIDE_WRITE: "data/scratch/holder-note.json",
+      });
+      expect(r.code).toBe(1);
+
+      // GAC committed and pushed; the holder's file is untouched and still uncommitted
+      const head = await h.git(h.data, "rev-parse", "--short", "HEAD");
+      expect(head).not.toBe(before);
+      expect(await h.git(h.data, "log", "--format=%s", `${before}..HEAD`)).toBe(
+        `chore(data): cadence collect GAC ${GENDER} ${SEASON}`,
+      );
+      expect(await h.git(h.dataRemote, "rev-parse", "--short", "main")).toBe(head);
+      expect(existsSync(join(h.data, "data", "scratch", "holder-note.json"))).toBe(true);
+      expect(await h.git(h.data, "status", "--porcelain")).toBe("?? data/scratch/");
+
+      // GSC never ran; the journal and publish legs ran for GAC
+      const calls = await h.calls();
+      expect(calls).toContain("conference=LSC");
+      expect(calls).not.toContain("conference=GSC");
+      expect(calls).toContain("bun run journal run --conference gac --write");
+      expect(calls).toContain(`just publish (cwd ${h.site})`);
+
+      const log = await h.log();
+      expect(log).toContain(
+        `  LSC: collect LOCKED — project ${PROJECT_ID} is locked by run:abc for "touchline-backfill"`,
+      );
+      expect(log).toContain(
+        "  data home held by another run — skipping the remaining conference(s) [GSC] this run; nothing of theirs was written or rolled back.",
+      );
+      expect(log).not.toContain("partial writes rolled back");
+      expect(log).not.toContain("churn rolled back");
+      expect(log).toMatch(
+        /run summary: mode=loop season=2026 collect=\[GAC=changed LSC=locked\] changed=\[gac\] failed=\[none\] journal_model_calls=2 .* publish=succeeded exit=1 .* locked=\[LSC\] busy=none$/m,
+      );
+
+      const [rec] = await h.records();
+      expect(rec.collect).toEqual({ GAC: "changed", LSC: "locked" });
+      expect(rec.locked).toEqual(["LSC"]);
+      expect(rec.failed).toEqual([]);
+      expect(rec.changed).toEqual(["gac"]);
+      expect(rec.busy).toBeNull();
+      expect(rec.journaled).toEqual(["gac", "national"]);
+      expect(rec.publish).toBe("succeeded");
+      expect(rec.data_push).toBe("ok");
+      expect(rec.exit).toBe(1);
+    },
+    LOOP_TIMEOUT,
+  );
+
+  test("(i) a failed collect's rollback restores only that conference's paths: a sibling's write landing mid-collect survives, still uncommitted", async () => {
+    const h = await makeHarness();
+    const before = await h.git(h.data, "rev-parse", "--short", "HEAD");
+    const r = await h.cadence("collect", {
+      TOUCHLINE_CONFERENCES: "GAC",
+      CADENCE_FAKE_PLAN: "GAC=failed",
+      // written by the fake during GAC's collect, after the sweep has run
+      CADENCE_FAKE_SIDE_WRITE: `data/fixtures/${SEASON}-${GENDER}-lsc.json`,
+    });
+    expect(r.code).toBe(1);
+    expect(await h.git(h.data, "rev-parse", "--short", "HEAD")).toBe(before);
+
+    // GAC's board, errors, raw_html and coverage paths are back to HEAD or gone
+    expect(await boardFile(h, "fixtures", "gac")).toBe(INITIAL_BOARD);
+    expect(
+      existsSync(join(h.data, "data", "errors", `collect-board-${SEASON}-${GENDER}-gac.json`)),
+    ).toBe(false);
+    expect(existsSync(join(h.data, "data", "raw_html", "gac-alpha"))).toBe(false);
+    expect(existsSync(join(h.data, "data", "coverage.json"))).toBe(false);
+    // LSC's write survived the rollback and is still dirty
+    expect(await boardFile(h, "fixtures", "lsc")).toContain('"side-row"');
+    expect(await h.git(h.data, "status", "--porcelain")).toBe(
+      `M data/fixtures/${SEASON}-${GENDER}-lsc.json`,
+    );
+
+    const log = await h.log();
+    expect(log).toContain(
+      "  GAC: collect FAILED (exit 2, error(E_COLLECT): fake collect blew up) — partial writes rolled back; continuing with the next conference.",
+    );
+    const [rec] = await h.records();
+    expect(rec.collect).toEqual({ GAC: "failed" });
+    expect(rec.failed).toEqual(["GAC"]);
+    expect(rec.locked).toEqual([]);
+    expect(rec.busy).toBeNull();
+    expect(rec.exit).toBe(1);
+  });
+
+  test("(j) the pre-run sweep names what it commits per conference, shared and unattributed, and the commit message lists the conferences", async () => {
+    const h = await makeHarness();
+    const before = await h.git(h.data, "rev-parse", "--short", "HEAD");
+    const left = board("2026-09-05T00:00:00Z", '"left-row"');
+    await writeFile(join(h.data, "data", "fixtures", `${SEASON}-${GENDER}-gac.json`), left);
+    await writeFile(join(h.data, "data", "rosters", `${SEASON}-${GENDER}-gac.json`), left);
+    await writeFile(join(h.data, "data", "stats", `${SEASON}-${GENDER}-lsc.json`), left);
+    await mkdir(join(h.data, "data", "raw_html", "lsc-beta"), { recursive: true });
+    await writeFile(
+      join(h.data, "data", "raw_html", "lsc-beta", `${SEASON}-${GENDER}-roster.html`),
+      "<html>left</html>\n",
+    );
+    await writeFile(join(h.data, "data", "coverage.json"), '{"collected_at":"left"}\n');
+    await writeFile(join(h.data, "data", "notes.txt"), "stray\n");
+    const r = await h.cadence("collect", {
+      TOUCHLINE_CONFERENCES: "GAC LSC",
+      CADENCE_FAKE_PLAN: "GAC=changed,LSC=changed",
+    });
+    expect(r.code).toBe(0);
+
+    const log = await h.log();
+    expect(log).toContain(
+      `  sweep GAC: 2 path(s): data/fixtures/${SEASON}-${GENDER}-gac.json data/rosters/${SEASON}-${GENDER}-gac.json`,
+    );
+    // git lists tracked changes before untracked paths
+    expect(log).toContain(
+      `  sweep LSC: 2 path(s): data/stats/${SEASON}-${GENDER}-lsc.json data/raw_html/lsc-beta/${SEASON}-${GENDER}-roster.html`,
+    );
+    expect(log).toContain("  sweep shared: 1 path(s): data/coverage.json");
+    expect(log).toContain("  sweep unattributed: 1 path(s): data/notes.txt");
+    expect(log).toContain("  leftover board changes touch GAC — it counts as changed.");
+    expect(log).toContain("  leftover board changes touch LSC — it counts as changed.");
+
+    // the sweep commit comes first and carries every dirty path; the collects commit after it
+    const subjects = await h.git(h.data, "log", "--reverse", "--format=%s", `${before}..HEAD`);
+    expect(subjects.split("\n")).toEqual([
+      "chore(data): sweep uncommitted changes found before cadence run [GAC LSC]",
+      `chore(data): cadence collect GAC ${GENDER} ${SEASON}`,
+      `chore(data): cadence collect LSC ${GENDER} ${SEASON}`,
+    ]);
+    const swept = await h.git(h.data, "show", "--name-only", "--format=", "HEAD~2");
+    for (const p of [
+      `data/fixtures/${SEASON}-${GENDER}-gac.json`,
+      `data/rosters/${SEASON}-${GENDER}-gac.json`,
+      `data/stats/${SEASON}-${GENDER}-lsc.json`,
+      `data/raw_html/lsc-beta/${SEASON}-${GENDER}-roster.html`,
+      "data/coverage.json",
+      "data/notes.txt",
+    ]) {
+      expect(swept).toContain(p);
+    }
+    expect(await h.git(h.data, "status", "--porcelain")).toBe("");
+    // membership resolved once per conference for the whole run: the sweep's
+    // raw_html attribution and the collect loop share the cache
+    expect((await h.calls()).match(/^bun -e /gm) ?? []).toHaveLength(2);
+
+    const [rec] = await h.records();
+    expect(rec.changed).toEqual(["gac", "lsc"]);
+    expect(rec.collect).toEqual({ GAC: "changed", LSC: "changed" });
+    expect(rec.exit).toBe(0);
+  });
 
   test("an unknown mode is a logged FATAL", async () => {
     const h = await makeHarness();
