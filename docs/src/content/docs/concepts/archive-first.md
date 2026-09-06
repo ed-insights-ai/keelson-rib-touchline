@@ -31,7 +31,11 @@ every character outside `[A-Za-z0-9._-]` folded to `-`, so
 `sidearm:harding:14053` becomes `2026-men-box-sidearm-harding-14053.html`)
 under the programme whose schedule page linked them, each with a sidecar
 carrying the parser fingerprint; a parser change reparses a stored box from
-disk instead of fetching it again.
+disk instead of fetching it again. All of those pages live on disk as the
+collector's fetch cache, no longer in the data home's git history, and the
+daily cadence preserves them as weekly `tar.zst` sets per conference-season
+under `~/keelson/archive/raw-html`
+([Run the daily cadence](../../guides/daily-cadence/#weekly-raw-html-archive)).
 
 This is what warehouse practice calls a **raw zone** (or bronze layer): an
 immutable capture of the source, with every parsed product strictly

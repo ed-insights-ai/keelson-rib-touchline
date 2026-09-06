@@ -8,7 +8,10 @@ sidebar:
 **Status: historical decision record, 2026-09-06.** The Postgres/parquet
 lineage was retired (bead tl-hzp); the system of record is the JSON data home
 written by `pipeline/scripts/collect_board.py`, with raw HTML kept as a fetch
-cache (bead tl-ttj).
+cache (bead tl-ttj). That evidence now lives on disk under `data/raw_html`,
+outside the data home's git history, and in the weekly `tar.zst` sets the
+cadence writes under `~/keelson/archive/raw-html`
+([Run the daily cadence](../../guides/daily-cadence/#weekly-raw-html-archive)).
 
 ## Decision
 

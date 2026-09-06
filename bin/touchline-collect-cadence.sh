@@ -48,6 +48,15 @@
 #   5. PUSH     the data home's branch (tl-151, full loop only): every commit
 #               ahead of upstream is pushed, so the collected record leaves
 #               this machine without a hand reconciliation.
+#   6. ARCHIVE  (tl-ttj, full loop only, on the archive day: `date +%u`
+#               equals TOUCHLINE_ARCHIVE_DAY, default 7, Sunday; 0 disables,
+#               `always` forces) the raw HTML fetch cache, data/raw_html, is
+#               no longer tracked by the data home, so once a week it is
+#               tarred as tar.zst per (season, gender, conference) plus one
+#               unassigned tarball for anything on disk no cell claims, under
+#               TOUCHLINE_ARCHIVE_DIR (default ~/keelson/archive/raw-html),
+#               one dated directory per run, newest four complete kept. A
+#               failure is a WARNING and exit 1, never a stop.
 #
 # Modes:  (no argument)   the full loop — what launchd runs.
 #         collect         collect+detect only, no journal/build/publish.
@@ -55,6 +64,10 @@
 #                         to this script; set
 #                           TOUCHLINE_COLLECT_CMD="sh <this script> collect"
 #                         there so `just` does not run the journal twice.
+#         archive         the archive step only, under the same PID lock,
+#                         regardless of the day: no collect, no journal, no
+#                         publish, no push. The way to take a tarball set
+#                         by hand or to catch up a missed Sunday.
 #         version         print the packaged script path and its version
 #                         (package.json version, git describe when the
 #                         package is a checkout) and exit 0. No lock, no
@@ -133,7 +146,7 @@ logblock() { # indent stdin into the log, line by line
 }
 die() { log "FATAL: $*"; exit 1; }
 
-case "$MODE" in loop|collect|version) ;; *) die "unknown mode '$MODE' — use no argument (full loop), 'collect' or 'version'." ;; esac
+case "$MODE" in loop|collect|archive|version) ;; *) die "unknown mode '$MODE' — use no argument (full loop), 'collect', 'archive' or 'version'." ;; esac
 
 # ── version: prove the shim resolves without taking the lock or collecting ──
 if [ "$MODE" = "version" ]; then
@@ -185,6 +198,11 @@ if [ "$MODE" = "loop" ]; then
   command -v just >/dev/null 2>&1 || die "required tool 'just' is not on PATH"
   [ -f "$UI_DIR/justfile" ] || die "touchline-ui not found at $UI_DIR (no justfile)"
 fi
+# the archive step (loop and archive modes) compresses through zstd; tar is
+# assumed, zstd is not (Homebrew on the machine, the zstd package on CI)
+if [ "$MODE" = "loop" ] || [ "$MODE" = "archive" ]; then
+  command -v zstd >/dev/null 2>&1 || die "required tool 'zstd' is not on PATH ($PATH)"
+fi
 
 log "touchline cadence: mode=$MODE season=$SEASON gender=$GENDER conferences=[$CONFERENCES] data_home=$DATA_HOME"
 
@@ -201,8 +219,10 @@ rib_package_dir() {
 }
 
 # conference set: every conference the membership record authors a window for
-# this gender, unless TOUCHLINE_CONFERENCES pins it (rib bin/resolve-membership.ts)
-if [ -z "$CONFERENCES" ]; then
+# this gender, unless TOUCHLINE_CONFERENCES pins it (rib bin/resolve-membership.ts).
+# archive mode collects nothing and reads its membership from the data home
+# (see archive_rows), so it never resolves the set.
+if [ -z "$CONFERENCES" ] && [ "$MODE" != "archive" ]; then
   CONFERENCES=$(bun "$(rib_package_dir)/bin/resolve-membership.ts" conferences "$GENDER" 2>&1) \
     || die "cannot resolve the conference set from membership: $CONFERENCES"
   log "touchline cadence: conferences resolved from membership: [$CONFERENCES]"
@@ -242,9 +262,11 @@ lower() { printf '%s' "$1" | tr '[:upper:]' '[:lower:]'; }
 
 # ── change detection ─────────────────────────────────────────────────────────
 # Real change = a new board file, or a board-file diff with any line beyond
-# the top-level collected_at stamp. Board files only; coverage/raw_html/errors
+# the top-level collected_at stamp. Board files only; coverage and errors
 # churn on every fetch and are committed alongside a real change, never
-# counted as one.
+# counted as one. raw_html churns the same way but is no longer tracked
+# (tl-ttj): the pages live on disk as the collector's fetch cache and in the
+# weekly archive (step 6), not in the data home's git history.
 has_signal() { # $1 = lowercase conference key
   _lc="$1"
   set -- "data/fixtures/${SEASON}-${GENDER}-${_lc}.json" \
@@ -379,7 +401,182 @@ build_stamp() { # prints the meta content, or nothing
     | sed -n 's/.*content="\([^"]*\)".*/\1/p' | head -1
 }
 
+# ── archive (tl-ttj): the raw HTML fetch cache, weekly, as tar.zst ───────────
+# data/raw_html left the data home's index (gitignored, history kept), so the
+# pages the collector fetched exist only on this disk. On the archive day the
+# loop, or the `archive` mode any day, writes
+#   $ARCHIVE_ROOT/<YYYY-MM-DD>/<season>-<gender>-<conf>.tar.zst
+# per (season, gender, conference) with paths relative to the data home
+# (data/raw_html/<slug>/<season>-<gender>-*, the .state.json sidecars
+# included), then <date>/unassigned.tar.zst for every file under data/raw_html
+# no cell claimed, then a .done marker, and keeps the newest four complete
+# dated directories. Every tarball is written to <name>.tmp and moved into
+# place; a run that fails leaves no .done, and the next retention pass removes
+# the directory.
+#
+# Membership is DATA read from the data home, not a live resolution: the
+# coverage manifest says which (season, gender, programme) cells this home
+# collected, and the fixtures board of that season and gender says which
+# conference collected the programme. jq paths (schema touchline.coverage/1):
+#   data/coverage.json                     .cells[] | .season, .gender, .programme
+#   data/fixtures/<season>-<gender>-<conf>.json
+#                                          .season, .gender, .conference, .programmes[].slug
+# A coverage cell carries no conference field, hence the join through the
+# board the same collect wrote. A slug two boards of one season name goes to
+# the first by conference key; a cell no board names, a slug no cell names, a
+# page older than coverage, a disabled or dead-host stanza's pages: all land
+# in unassigned.tar.zst, so nothing on disk is left out.
+ARCHIVE_ROOT="${TOUCHLINE_ARCHIVE_DIR:-$HOME_DIR/keelson/archive/raw-html}"
+ARCHIVE_DAY="${TOUCHLINE_ARCHIVE_DAY:-7}"
+ARCHIVE_KEEP=4
+
+hsize() { du -sh "$1" | cut -f1 | tr -d ' '; } # BSD du pads the column
+
+archive_fail() { # $1 = reason; a WARNING and exit 1 at the end, never a stop
+  log "WARNING: archive FAILED ($1); no .done marker is written, the next retention pass removes the directory."
+  ARCHIVE_RESULT="FAILED ($1)"
+  RUN_RC=1
+}
+
+archive_rows() { # prints "season gender CONF slug" rows, one per (cell, slug) the data home claims
+  set --
+  for _f in "$DATA_HOME"/data/fixtures/*.json; do
+    [ -f "$_f" ] && set -- "$@" "$_f"
+  done
+  [ $# -gt 0 ] || return 0
+  jq -r -n --slurpfile cov "$DATA_HOME/data/coverage.json" '
+    ([$cov[0].cells // {} | .[]
+        | select(.season != null and .gender != null and .programme != null)
+        | "\(.season) \(.gender) \(.programme)"]
+      | map({key: ., value: true}) | from_entries) as $cells
+    | [inputs
+        | select(.conference != null and .season != null and .gender != null)
+        | (.season | tostring) as $s | .gender as $g | .conference as $c
+        | (.programmes // [])[] | select(.slug != null)
+        | {k: "\($s) \($g) \(.slug)", s: $s, g: $g, c: $c, slug: .slug}]
+    | sort_by(.k, .c) | group_by(.k) | map(.[0])
+    | .[] | select($cells[.k] == true)
+    | "\(.s) \(.g) \(.c) \(.slug)"' "$@"
+}
+
+archive_tarball() { # $1 = target .tar.zst, $2 = file list relative to the data home
+  rm -f "$1.tmp" "$ARCH/tar.err"
+  # the pipeline's status is zstd's, so tar reports through the sentinel file
+  (tar -C "$DATA_HOME" -cf - -T "$2" 2>"$ARCH/tar.err" || printf 'tar exit %s\n' "$?" >>"$ARCH/tar.err") \
+    | zstd -q -T0 -o "$1.tmp" 2>>"$ARCH/tar.err"
+  _zrc=$?
+  if [ "$_zrc" -ne 0 ] || [ -s "$ARCH/tar.err" ]; then
+    rm -f "$1.tmp"
+    archive_fail "${1##*/}: $(head -1 "$ARCH/tar.err" 2>/dev/null | tr -d '\n'; [ "$_zrc" -ne 0 ] && printf ' zstd exit %s' "$_zrc")"
+    return 1
+  fi
+  mv "$1.tmp" "$1" || { archive_fail "cannot move $1.tmp into place"; return 1; }
+}
+
+archive_retention() { # newest four complete dated directories stay; incomplete ones go
+  _n=0
+  _k=0
+  find "$ARCHIVE_ROOT" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sed 's|.*/||' \
+    | grep -E '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' | LC_ALL=C sort -r >"$ARCH/dated"
+  while IFS= read -r _d || [ -n "$_d" ]; do
+    [ -n "$_d" ] || continue
+    _n=$((_n + 1))
+    if [ ! -f "$ARCHIVE_ROOT/$_d/.done" ]; then
+      rm -rf "${ARCHIVE_ROOT:?}/${_d:?}" && log "archive retention: removed $ARCHIVE_ROOT/$_d (incomplete, no .done marker)"
+    elif [ "$_k" -ge "$ARCHIVE_KEEP" ]; then
+      rm -rf "${ARCHIVE_ROOT:?}/${_d:?}" && log "archive retention: removed $ARCHIVE_ROOT/$_d (beyond the newest $ARCHIVE_KEEP)"
+    else
+      _k=$((_k + 1))
+    fi
+  done <"$ARCH/dated"
+  log "archive retention: kept $_k of $_n"
+}
+
+archive_gate() { # loop mode only: is today the archive day? logs the skip otherwise
+  _u=$(date +%u)
+  case "$ARCHIVE_DAY" in
+    always) return 0 ;;
+    0) ARCHIVE_RESULT="skipped (disabled; archive day 0, today is $_u)" ;;
+    [1-7])
+      [ "$_u" = "$ARCHIVE_DAY" ] && return 0
+      ARCHIVE_RESULT="skipped (not archive day; today is $_u, archive day $ARCHIVE_DAY)" ;;
+    *)
+      log "WARNING: TOUCHLINE_ARCHIVE_DAY='$ARCHIVE_DAY' is not 0-7 or 'always'; archive skipped."
+      ARCHIVE_RESULT="skipped (TOUCHLINE_ARCHIVE_DAY='$ARCHIVE_DAY' invalid)"
+      RUN_RC=1 ;;
+  esac
+  log "archive: $ARCHIVE_RESULT"
+  return 1
+}
+
+archive_step() {
+  ARCHIVE_DATE=$(date +%Y-%m-%d)
+  ARCHIVE_OUT="$ARCHIVE_ROOT/$ARCHIVE_DATE"
+  ARCH="$PROG_CACHE/archive"
+  if ! mkdir -p "$ARCH" "$ARCHIVE_OUT" 2>/dev/null; then
+    archive_fail "cannot create $ARCHIVE_OUT"
+    return 0
+  fi
+  rm -f "$ARCHIVE_OUT/.done" # a second run today is incomplete until it finishes
+  log "archive: writing $ARCHIVE_OUT from $DATA_HOME/data/raw_html"
+  if [ ! -f "$DATA_HOME/data/coverage.json" ]; then
+    log "archive: no data/coverage.json in the data home; every page on disk is unassigned."
+    : >"$ARCH/rows"
+  elif ! archive_rows >"$ARCH/rows" 2>"$ARCH/rows.err"; then
+    archive_fail "membership rows: $(head -1 "$ARCH/rows.err" | tr -d '\n')"
+    return 0
+  fi
+  # one slug list per cell, cells sorted by season, gender, conference
+  : >"$ARCH/cells"
+  rm -f "$ARCH"/slugs.* "$ARCH"/list.*
+  while read -r _s _g _c _slug; do
+    [ -n "$_slug" ] || continue
+    printf '%s %s %s\n' "$_s" "$_g" "$_c" >>"$ARCH/cells"
+    printf '%s\n' "$_slug" >>"$ARCH/slugs.${_s}-${_g}-$(lower "$_c")"
+  done <"$ARCH/rows"
+  LC_ALL=C sort -u -o "$ARCH/cells" "$ARCH/cells"
+  : >"$ARCH/claimed"
+  N_TARBALLS=0
+  while read -r _s _g _c; do
+    [ -n "$_c" ] || continue
+    _cell="${_s}-${_g}-$(lower "$_c")"
+    _list="$ARCH/list.$_cell"
+    (cd "$DATA_HOME" && while read -r _slug; do
+      [ -d "data/raw_html/$_slug" ] && find "data/raw_html/$_slug" -maxdepth 1 -type f -name "${_s}-${_g}-*"
+    done <"$ARCH/slugs.$_cell") | LC_ALL=C sort -u >"$_list"
+    _n=$(wc -l <"$_list" | tr -d ' ')
+    if [ "$_n" -eq 0 ]; then
+      log "archive $_s $_g $_c: no raw pages on disk, skipped."
+      continue
+    fi
+    archive_tarball "$ARCHIVE_OUT/$_cell.tar.zst" "$_list" || return 0
+    cat "$_list" >>"$ARCH/claimed"
+    N_TARBALLS=$((N_TARBALLS + 1))
+    log "archive $_s $_g $_c: $_n file(s), $(hsize "$ARCHIVE_OUT/$_cell.tar.zst")"
+  done <"$ARCH/cells"
+  # nothing on disk may be left out: the sorted claimed set against every file
+  (cd "$DATA_HOME" && [ -d data/raw_html ] && find data/raw_html -type f) | LC_ALL=C sort -u >"$ARCH/all"
+  LC_ALL=C sort -u -o "$ARCH/claimed" "$ARCH/claimed"
+  LC_ALL=C comm -13 "$ARCH/claimed" "$ARCH/all" >"$ARCH/unassigned"
+  _n=$(wc -l <"$ARCH/unassigned" | tr -d ' ')
+  if [ "$_n" -eq 0 ]; then
+    log "archive unassigned: none"
+  else
+    archive_tarball "$ARCHIVE_OUT/unassigned.tar.zst" "$ARCH/unassigned" || return 0
+    N_TARBALLS=$((N_TARBALLS + 1))
+    sed -e 's|^data/raw_html/||' -e 's|/.*||' "$ARCH/unassigned" | LC_ALL=C sort -u >"$ARCH/unassigned.slugs"
+    _k=$(wc -l <"$ARCH/unassigned.slugs" | tr -d ' ')
+    log "archive unassigned: $_n file(s) across $_k slug(s) ($(head -3 "$ARCH/unassigned.slugs" | paste -sd ',' - | sed 's/,/, /g')), $(hsize "$ARCHIVE_OUT/unassigned.tar.zst")"
+  fi
+  : >"$ARCHIVE_OUT/.done"
+  ARCHIVE_SIZE=$(hsize "$ARCHIVE_OUT")
+  log "archive total: $N_TARBALLS tarball(s), $ARCHIVE_SIZE, $ARCHIVE_OUT"
+  ARCHIVE_RESULT="ok $ARCHIVE_OUT $ARCHIVE_SIZE"
+  archive_retention
+}
+
 # ── state ────────────────────────────────────────────────────────────────────
+ARCHIVE_RESULT="skipped (not reached)"
 CHANGED=""
 JOURNALED=""
 COLLECT_SUMMARY=""
@@ -412,6 +609,7 @@ finish_run() {
       --arg journal_model_calls "$JOURNAL_SPEND" --arg journal_commit "$JOURNAL_COMMIT" \
       --arg journaled "${JOURNALED:-}" --arg data_head "$DATA_HEAD" --arg data_push "$DATA_PUSH" \
       --arg build_stamp "$BUILD_STAMP" --arg publish "$PUBLISH_RESULT" --arg exit "$RUN_RC" \
+      --arg archive "$ARCHIVE_RESULT" \
       'def words: split(" ") | map(select(. != ""));
        {started_at: $started_at, finished_at: $finished_at, mode: $mode,
         season: ($season | tonumber? // $season), gender: $gender,
@@ -422,14 +620,23 @@ finish_run() {
         journal_model_calls: ($journal_model_calls | tonumber), journal_commit: $journal_commit,
         journaled: ($journaled | words), data_head: $data_head, data_push: $data_push,
         build_stamp: (if $build_stamp == "" then null else $build_stamp end),
-        publish: $publish, exit: ($exit | tonumber)}' 2>&1); then
+        publish: $publish, exit: ($exit | tonumber), archive: $archive}' 2>&1); then
     mkdir -p "$(dirname "$RUNS_FILE")" 2>/dev/null
     printf '%s\n' "$RECORD" >>"$RUNS_FILE" || log "WARNING: run record not written to $RUNS_FILE"
   else
     log "WARNING: run record could not be built — $RECORD"
   fi
-  log "run summary: mode=$MODE season=$SEASON collect=[${COLLECT_SUMMARY:-none}] changed=[${CHANGED:-none}] failed=[${FAILED_COLLECTS:-none}] journal_model_calls=$JOURNAL_SPEND journal_commit=$JOURNAL_COMMIT publish=$PUBLISH_RESULT exit=$RUN_RC data_head=$DATA_HEAD build=${BUILD_STAMP:-none} locked=[${LOCKED_COLLECTS:-none}] busy=${BUSY:-none}"
+  log "run summary: mode=$MODE season=$SEASON collect=[${COLLECT_SUMMARY:-none}] changed=[${CHANGED:-none}] failed=[${FAILED_COLLECTS:-none}] journal_model_calls=$JOURNAL_SPEND journal_commit=$JOURNAL_COMMIT publish=$PUBLISH_RESULT exit=$RUN_RC data_head=$DATA_HEAD build=${BUILD_STAMP:-none} locked=[${LOCKED_COLLECTS:-none}] busy=${BUSY:-none} archive=$ARCHIVE_RESULT"
 }
+
+# ── archive mode: the archive step alone, under the lock taken above, any
+#    day. No busy check (nothing here writes the data home), no sweep, no
+#    collect, no journal, no publish, no push. ──────────────────────────────
+if [ "$MODE" = "archive" ]; then
+  archive_step
+  finish_run
+  exit "$RUN_RC"
+fi
 
 # ── busy check (tl-5go): is another run already writing this data home? The
 #    `keelson workflow status --json` envelope is {"ok":true,"data":{"runs":[…]}}
@@ -582,6 +789,7 @@ done
 # ── 3+4: journal the changed conferences, then publish once ──────────────────
 if [ "$MODE" = "collect" ]; then
   log "mode=collect — stopping after collect+detect (no journal, no publish)."
+  ARCHIVE_RESULT="skipped (mode collect)"
 elif [ -z "$CHANGED" ]; then
   log "no conference changed — nothing to journal, nothing to publish. No-op run complete."
 else
@@ -721,6 +929,13 @@ if [ "$MODE" = "loop" ]; then
   else
     log "WARNING: data home branch has no upstream — collect commits stay local; set one to let the cadence push."
   fi
+fi
+
+# ── 6: archive the raw HTML cache (tl-ttj, full loop only, on the archive
+#    day). After the push so the record is safe first; before the run record
+#    so it carries the result. A failure is a WARNING and exit 1, never a stop.
+if [ "$MODE" = "loop" ]; then
+  if archive_gate; then archive_step; fi
 fi
 
 # ── run record and summary line (finish_run, defined above the sweep) ────────

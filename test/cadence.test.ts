@@ -11,13 +11,14 @@
 // temp HOME carrying the keelson rib config, a temp package dir holding the
 // script, a temp git data home with one board file set and a bare upstream,
 // a temp site checkout with a bare upstream, and a fakes directory first on
-// the script's PATH standing in for keelson, bun and just. git and jq are the
-// real ones. Each scenario asserts on the run record JSON line, the cadence
+// the script's PATH standing in for keelson, bun and just. git, jq, tar and
+// zstd are the real ones (the archive scenarios skip by name when zstd is not
+// on PATH). Each scenario asserts on the run record JSON line, the cadence
 // log, and the git state the run leaves behind.
 
 import { describe, expect, test } from "bun:test";
 import { existsSync, realpathSync } from "node:fs";
-import { chmod, mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { chmod, mkdir, mkdtemp, readdir, readFile, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { packageDir } from "../src/datahome.ts";
@@ -30,13 +31,38 @@ const BUILD = "2026-09-06T06:31:00Z";
 // The journal legs are polled by the script's `capped` every 5s plus a 1s
 // stamp settle per leg; a loop run with a publish needs the long timeout.
 const LOOP_TIMEOUT = 120_000;
+// The archive step needs a real zstd; ubuntu-latest ships one, a machine
+// without it skips those scenarios under a name that says so.
+const ZSTD = Bun.which("zstd");
+const NEEDS_ZSTD = ZSTD ? "" : " [skipped: zstd is not on PATH]";
 
 // Board file shape the fake collect rewrites: the churn scenario rewrites
 // only the collected_at line, so the initial file must carry the same layout.
-function board(stamp: string, rows: string): string {
-  return `{\n  "collected_at": "${stamp}",\n  "rows": [${rows}]\n}\n`;
+// The board names its conference and programmes the way the real one does
+// (data/fixtures/<season>-<gender>-<conf>.json: .conference, .programmes[].slug),
+// which the archive step joins against coverage.json for a cell's conference.
+function board(lc: string, stamp: string, rows: string, season: string = SEASON): string {
+  return (
+    `{\n  "collected_at": "${stamp}",\n  "conference": "${lc.toUpperCase()}",\n` +
+    `  "season": ${season},\n  "gender": "${GENDER}",\n` +
+    `  "programmes": [{"slug": "${lc}-alpha"}, {"slug": "${lc}-beta"}],\n  "rows": [${rows}]\n}\n`
+  );
 }
-const INITIAL_BOARD = board("2026-01-01T00:00:00Z", "");
+function initialBoard(lc: string): string {
+  return board(lc, "2026-01-01T00:00:00Z", "");
+}
+
+// Local calendar date, the way the script's `date +%Y-%m-%d` names the
+// archive directory, and ISO weekday the way `date +%u` reports it.
+function today(): string {
+  const d = new Date();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${d.getFullYear()}-${mm}-${dd}`;
+}
+function weekday(): number {
+  return new Date().getDay() || 7;
+}
 
 interface RunResult {
   code: number;
@@ -93,18 +119,36 @@ for p in $(printf '%s' "\${CADENCE_FAKE_PLAN:-}" | tr ',' ' '); do
 done
 if [ -n "\${CADENCE_FAKE_SLEEP:-}" ]; then sleep "$CADENCE_FAKE_SLEEP"; fi
 stamp=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
-write_board() { # $1 = layer, $2 = rows
-  printf '{\\n  "collected_at": "%s",\\n  "rows": [%s]\\n}\\n' "$stamp" "$2" \\
+write_board() { # $1 = layer, $2 = rows; the layout test/cadence.test.ts board() writes
+  printf '{\\n  "collected_at": "%s",\\n  "conference": "%s",\\n  "season": %s,\\n  "gender": "%s",\\n  "programmes": [{"slug": "%s-alpha"}, {"slug": "%s-beta"}],\\n  "rows": [%s]\\n}\\n' \\
+    "$stamp" "$conf" "$TOUCHLINE_SEASON" "$TOUCHLINE_GENDER" "$lc" "$lc" "$2" \\
     >"$home/data/$1/\${TOUCHLINE_SEASON}-\${TOUCHLINE_GENDER}-\${lc}.json"
 }
 write_churn() { # coverage, raw_html and errors churn on every fetch, never a signal
-  # the real layout: one shared coverage.json, raw pages per programme slug
-  # (the fake bun resolves <lc>-alpha,<lc>-beta) named <season>-<gender>-*,
-  # and one errors file per conference board
-  mkdir -p "$home/data/errors" "$home/data/raw_html/\${lc}-alpha"
-  printf '{"collected_at":"%s","last":"%s"}\\n' "$stamp" "$lc" >"$home/data/coverage.json"
-  printf '<html>%s</html>\\n' "$stamp" \\
-    >"$home/data/raw_html/\${lc}-alpha/\${TOUCHLINE_SEASON}-\${TOUCHLINE_GENDER}-schedule.html"
+  # the real layout: one shared coverage.json (touchline.coverage/1, merged,
+  # never overwritten: cells keyed <season>/<gender>/<programme>/<layer>),
+  # raw pages per programme slug (the fake bun resolves <lc>-alpha,<lc>-beta)
+  # named <season>-<gender>-* with a .state.json sidecar each, and one errors
+  # file per conference board
+  mkdir -p "$home/data/errors"
+  for s in alpha beta; do
+    d="$home/data/raw_html/\${lc}-$s"
+    mkdir -p "$d"
+    printf '<html>%s %s</html>\\n' "$s" "$stamp" \\
+      >"$d/\${TOUCHLINE_SEASON}-\${TOUCHLINE_GENDER}-schedule.html"
+    printf '{"fetched_at":"%s"}\\n' "$stamp" \\
+      >"$d/\${TOUCHLINE_SEASON}-\${TOUCHLINE_GENDER}-schedule.state.json"
+  done
+  cov="$home/data/coverage.json"
+  [ -f "$cov" ] || printf '{"schema":"touchline.coverage/1","cells":{}}\\n' >"$cov"
+  jq --arg s "$TOUCHLINE_SEASON" --arg g "$TOUCHLINE_GENDER" --arg lc "$lc" --arg at "$stamp" '
+    def cell(slug): {season: ($s | tonumber), gender: $g, programme: slug, layer: "matches",
+                     state: "complete", collector: "fake", confirmed_at: $at};
+    .schema = "touchline.coverage/1" | .updated_at = $at
+    | .cells = ((.cells // {})
+        + {"\\($s)/\\($g)/\\($lc)-alpha/matches": cell("\\($lc)-alpha"),
+           "\\($s)/\\($g)/\\($lc)-beta/matches": cell("\\($lc)-beta")})' "$cov" >"$cov.tmp" \\
+    && mv "$cov.tmp" "$cov"
   printf '{"errors":[]}\\n' \\
     >"$home/data/errors/collect-board-\${TOUCHLINE_SEASON}-\${TOUCHLINE_GENDER}-\${lc}.json"
 }
@@ -220,6 +264,8 @@ interface Harness {
   dataRemote: string;
   site: string;
   siteRemote: string;
+  fakes: string;
+  archive: string;
   fakeLog: string;
   logFile: string;
   runsFile: string;
@@ -245,6 +291,7 @@ async function makeHarness(): Promise<Harness> {
   const site = join(root, "site");
   const siteRemote = join(root, "site-remote.git");
   const fakes = join(root, "fakes");
+  const archive = join(root, "archive");
   const fakeLog = join(root, "fake-calls.log");
   const logFile = join(home, ".keelson", "logs", "touchline-collect-cadence.log");
   const runsFile = join(home, ".keelson", "logs", "touchline-cadence-runs.jsonl");
@@ -271,6 +318,11 @@ async function makeHarness(): Promise<Harness> {
     TOUCHLINE_SEASON: SEASON,
     TOUCHLINE_GENDER: GENDER,
     TOUCHLINE_CADENCE_PATH: `${fakes}:${process.env.PATH ?? "/usr/bin:/bin"}`,
+    // the archive step is off unless a scenario turns it on (`always`), so a
+    // Sunday run of the suite behaves like any other day; its root is a temp
+    // dir, never ~/keelson/archive
+    TOUCHLINE_ARCHIVE_DAY: "0",
+    TOUCHLINE_ARCHIVE_DIR: archive,
     CADENCE_FAKE_LOG: fakeLog,
   };
   const git = async (cwd: string, ...args: string[]): Promise<string> => {
@@ -316,7 +368,10 @@ async function makeHarness(): Promise<Harness> {
   for (const layer of LAYERS) {
     await mkdir(join(data, "data", layer), { recursive: true });
     for (const lc of ["gac", "lsc"]) {
-      await writeFile(join(data, "data", layer, `${SEASON}-${GENDER}-${lc}.json`), INITIAL_BOARD);
+      await writeFile(
+        join(data, "data", layer, `${SEASON}-${GENDER}-${lc}.json`),
+        initialBoard(lc),
+      );
     }
   }
   await git(data, "init", "-q", "-b", "main");
@@ -348,6 +403,8 @@ async function makeHarness(): Promise<Harness> {
     dataRemote,
     site,
     siteRemote,
+    fakes,
+    archive,
     fakeLog,
     logFile,
     runsFile,
@@ -422,9 +479,10 @@ describe("bin/touchline-collect-cadence.sh", () => {
 
     expect(await h.git(h.data, "rev-parse", "--short", "HEAD")).toBe(before);
     expect(await h.git(h.data, "status", "--porcelain")).toBe("");
-    expect(await boardFile(h, "fixtures", "gac")).toBe(INITIAL_BOARD);
+    expect(await boardFile(h, "fixtures", "gac")).toBe(initialBoard("gac"));
     expect(existsSync(join(h.data, "data", "coverage.json"))).toBe(false);
     expect(existsSync(join(h.data, "data", "raw_html", "gac-alpha"))).toBe(false);
+    expect(existsSync(join(h.data, "data", "raw_html", "gac-beta"))).toBe(false);
     expect(
       existsSync(join(h.data, "data", "errors", `collect-board-${SEASON}-${GENDER}-gac.json`)),
     ).toBe(false);
@@ -451,7 +509,7 @@ describe("bin/touchline-collect-cadence.sh", () => {
     expect(r.code).toBe(1);
 
     // GAC's partial write is gone; LSC's real change is committed on top of the old HEAD
-    expect(await boardFile(h, "fixtures", "gac")).toBe(INITIAL_BOARD);
+    expect(await boardFile(h, "fixtures", "gac")).toBe(initialBoard("gac"));
     expect(existsSync(join(h.data, "data", "raw_html", "gac-alpha"))).toBe(false);
     expect(await boardFile(h, "fixtures", "lsc")).toContain('"new-row"');
     expect(await h.git(h.data, "status", "--porcelain")).toBe("");
@@ -582,7 +640,7 @@ describe("bin/touchline-collect-cadence.sh", () => {
           `^\\[\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\] run summary: mode=loop season=${SEASON} ` +
             `collect=\\[GAC=changed\\] changed=\\[gac\\] failed=\\[none\\] journal_model_calls=2 ` +
             `journal_commit=${siteHead} publish=succeeded exit=0 data_head=${dataHead} build=${BUILD} ` +
-            `locked=\\[none\\] busy=none$`,
+            `locked=\\[none\\] busy=none archive=skipped \\(disabled; archive day 0, today is ${weekday()}\\)$`,
           "m",
         ),
       );
@@ -611,6 +669,7 @@ describe("bin/touchline-collect-cadence.sh", () => {
           "build_stamp",
           "publish",
           "exit",
+          "archive",
         ].sort(),
       );
       expect(rec.started_at).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/);
@@ -627,6 +686,7 @@ describe("bin/touchline-collect-cadence.sh", () => {
       expect(rec.data_push).toBe("ok");
       expect(rec.build_stamp).toBe(BUILD);
       expect(rec.publish).toBe("succeeded");
+      expect(rec.archive).toBe(`skipped (disabled; archive day 0, today is ${weekday()})`);
       expect(rec.exit).toBe(0);
     },
     LOOP_TIMEOUT,
@@ -645,7 +705,7 @@ describe("bin/touchline-collect-cadence.sh", () => {
       const log = await h.log();
       expect(log).toContain("PUBLISH FAILED (exit 1) — the live site did NOT update.");
       expect(log).toMatch(
-        /run summary: .* publish=FAILED \(exit 1\) exit=1 data_head=[0-9a-f]{7,} build=none locked=\[none\] busy=none$/m,
+        /run summary: .* publish=FAILED \(exit 1\) exit=1 data_head=[0-9a-f]{7,} build=none locked=\[none\] busy=none archive=skipped \(disabled; archive day 0, today is [1-7]\)$/m,
       );
       const [rec] = await h.records();
       expect(rec.publish).toBe("FAILED (exit 1)");
@@ -714,7 +774,7 @@ describe("bin/touchline-collect-cadence.sh", () => {
     const before = await h.git(h.data, "rev-parse", "--short", "HEAD");
     // a sibling's uncommitted board change already sits in the data home
     const sibling = join(h.data, "data", "fixtures", `${SEASON}-${GENDER}-lsc.json`);
-    await writeFile(sibling, board("2026-09-05T00:00:00Z", '"backfill-row"'));
+    await writeFile(sibling, board("lsc", "2026-09-05T00:00:00Z", '"backfill-row"'));
     const r = await h.cadence("loop", {
       TOUCHLINE_CONFERENCES: "GAC LSC",
       CADENCE_FAKE_PLAN: "GAC=changed",
@@ -740,11 +800,12 @@ describe("bin/touchline-collect-cadence.sh", () => {
     );
     expect(log).not.toContain("sweeping leftovers");
     expect(log).toMatch(
-      /run summary: mode=loop season=2026 collect=\[none\] changed=\[none\] failed=\[none\] .* exit=0 .* locked=\[none\] busy=touchline-backfill run-abc$/m,
+      /run summary: mode=loop season=2026 collect=\[none\] changed=\[none\] failed=\[none\] .* exit=0 .* locked=\[none\] busy=touchline-backfill run-abc archive=skipped \(not reached\)$/m,
     );
 
     const [rec] = await h.records();
     expect(rec.busy).toBe("touchline-backfill run-abc");
+    expect(rec.archive).toBe("skipped (not reached)");
     expect(rec.collect).toEqual({});
     expect(rec.conferences).toEqual(["GAC", "LSC"]);
     expect(rec.changed).toEqual([]);
@@ -793,7 +854,7 @@ describe("bin/touchline-collect-cadence.sh", () => {
       expect(log).not.toContain("partial writes rolled back");
       expect(log).not.toContain("churn rolled back");
       expect(log).toMatch(
-        /run summary: mode=loop season=2026 collect=\[GAC=changed LSC=locked\] changed=\[gac\] failed=\[none\] journal_model_calls=2 .* publish=succeeded exit=1 .* locked=\[LSC\] busy=none$/m,
+        /run summary: mode=loop season=2026 collect=\[GAC=changed LSC=locked\] changed=\[gac\] failed=\[none\] journal_model_calls=2 .* publish=succeeded exit=1 .* locked=\[LSC\] busy=none archive=skipped \(disabled; .*\)$/m,
       );
 
       const [rec] = await h.records();
@@ -823,7 +884,7 @@ describe("bin/touchline-collect-cadence.sh", () => {
     expect(await h.git(h.data, "rev-parse", "--short", "HEAD")).toBe(before);
 
     // GAC's board, errors, raw_html and coverage paths are back to HEAD or gone
-    expect(await boardFile(h, "fixtures", "gac")).toBe(INITIAL_BOARD);
+    expect(await boardFile(h, "fixtures", "gac")).toBe(initialBoard("gac"));
     expect(
       existsSync(join(h.data, "data", "errors", `collect-board-${SEASON}-${GENDER}-gac.json`)),
     ).toBe(false);
@@ -850,10 +911,11 @@ describe("bin/touchline-collect-cadence.sh", () => {
   test("(j) the pre-run sweep names what it commits per conference, shared and unattributed, and the commit message lists the conferences", async () => {
     const h = await makeHarness();
     const before = await h.git(h.data, "rev-parse", "--short", "HEAD");
-    const left = board("2026-09-05T00:00:00Z", '"left-row"');
-    await writeFile(join(h.data, "data", "fixtures", `${SEASON}-${GENDER}-gac.json`), left);
-    await writeFile(join(h.data, "data", "rosters", `${SEASON}-${GENDER}-gac.json`), left);
-    await writeFile(join(h.data, "data", "stats", `${SEASON}-${GENDER}-lsc.json`), left);
+    const leftGac = board("gac", "2026-09-05T00:00:00Z", '"left-row"');
+    const leftLsc = board("lsc", "2026-09-05T00:00:00Z", '"left-row"');
+    await writeFile(join(h.data, "data", "fixtures", `${SEASON}-${GENDER}-gac.json`), leftGac);
+    await writeFile(join(h.data, "data", "rosters", `${SEASON}-${GENDER}-gac.json`), leftGac);
+    await writeFile(join(h.data, "data", "stats", `${SEASON}-${GENDER}-lsc.json`), leftLsc);
     await mkdir(join(h.data, "data", "raw_html", "lsc-beta"), { recursive: true });
     await writeFile(
       join(h.data, "data", "raw_html", "lsc-beta", `${SEASON}-${GENDER}-roster.html`),
@@ -917,6 +979,20 @@ describe("bin/touchline-collect-cadence.sh", () => {
     expect(await h.records()).toHaveLength(0);
   });
 
+  test("mode collect records the archive as skipped by mode", async () => {
+    const h = await makeHarness();
+    const r = await h.cadence("collect", {
+      TOUCHLINE_CONFERENCES: "GAC",
+      CADENCE_FAKE_PLAN: "GAC=churn",
+      TOUCHLINE_ARCHIVE_DAY: "always",
+    });
+    expect(r.code).toBe(0);
+    expect(existsSync(h.archive)).toBe(false);
+    expect(await h.log()).not.toContain("archive:");
+    const [rec] = await h.records();
+    expect(rec.archive).toBe("skipped (mode collect)");
+  });
+
   test("version mode prints the packaged script path and version, takes no lock and writes no log", async () => {
     const h = await makeHarness();
     const r = await h.cadence("version");
@@ -930,6 +1006,336 @@ describe("bin/touchline-collect-cadence.sh", () => {
     );
     expect(await h.records()).toHaveLength(0);
     expect(await h.calls()).toBe("");
+  });
+});
+
+// ── the weekly raw HTML archive (tl-ttj) ─────────────────────────────────────
+
+// Season-named raw pages for a conference's two slugs, the way the collector
+// leaves them on disk: <season>-<gender>-schedule.html plus its .state.json.
+async function seedRawPages(h: Harness, lc: string, season: string, slugs?: string[]) {
+  for (const slug of slugs ?? [`${lc}-alpha`, `${lc}-beta`]) {
+    const dir = join(h.data, "data", "raw_html", slug);
+    await mkdir(dir, { recursive: true });
+    await writeFile(
+      join(dir, `${season}-${GENDER}-schedule.html`),
+      `<html>${slug} ${season}</html>\n`,
+    );
+    await writeFile(
+      join(dir, `${season}-${GENDER}-schedule.state.json`),
+      `{"fetched_at":"${season}-09-01T00:00:00Z"}\n`,
+    );
+  }
+}
+
+// coverage.json in its real shape (touchline.coverage/1), merged into
+// whatever the data home already holds: one matches cell per (season, slug).
+async function seedCoverage(h: Harness, cells: Array<{ season: string; slug: string }>) {
+  const path = join(h.data, "data", "coverage.json");
+  const manifest = existsSync(path)
+    ? JSON.parse(await readFile(path, "utf8"))
+    : { schema: "touchline.coverage/1", cells: {} };
+  for (const { season, slug } of cells) {
+    manifest.cells[`${season}/${GENDER}/${slug}/matches`] = {
+      season: Number(season),
+      gender: GENDER,
+      programme: slug,
+      layer: "matches",
+      state: "complete",
+      collector: "seed",
+      confirmed_at: `${season}-09-01T00:00:00Z`,
+    };
+  }
+  manifest.updated_at = "2026-09-01T00:00:00Z";
+  await writeFile(path, `${JSON.stringify(manifest, null, 2)}\n`);
+}
+
+async function tarball(path: string): Promise<string[]> {
+  const r = await run(["/bin/sh", "-c", `zstd -dc "$1" | tar -tf -`, "sh", path], {
+    ...process.env,
+  } as Record<string, string>);
+  if (r.code !== 0) throw new Error(`listing ${path}: ${r.stderr}`);
+  return r.stdout
+    .split("\n")
+    .filter((l) => l.trim() !== "")
+    .sort();
+}
+
+function pages(slug: string, season: string): string[] {
+  return [
+    `data/raw_html/${slug}/${season}-${GENDER}-schedule.html`,
+    `data/raw_html/${slug}/${season}-${GENDER}-schedule.state.json`,
+  ];
+}
+
+async function seedDated(h: Harness, name: string, complete: boolean) {
+  const dir = join(h.archive, name);
+  await mkdir(dir, { recursive: true });
+  await writeFile(join(dir, `${SEASON}-${GENDER}-gac.tar.zst`), "old\n");
+  if (complete) await writeFile(join(dir, ".done"), "");
+}
+
+describe("bin/touchline-collect-cadence.sh archive step", () => {
+  test.skipIf(!ZSTD)(
+    `(a) a loop run on the archive day writes one tar.zst per (season, gender, conference) the data home collected, with exactly that cell's pages${NEEDS_ZSTD}`,
+    async () => {
+      const h = await makeHarness();
+      // an older season GAC collected once: its board, pages and coverage cell
+      // are already in the data home; the run's own collects add 2026 for GAC and LSC
+      await writeFile(
+        join(h.data, "data", "fixtures", `2025-${GENDER}-gac.json`),
+        board("gac", "2025-11-01T00:00:00Z", "", "2025"),
+      );
+      await seedRawPages(h, "gac", "2025", ["gac-alpha"]);
+      await seedCoverage(h, [{ season: "2025", slug: "gac-alpha" }]);
+      await h.git(h.data, "add", "-A");
+      await h.git(h.data, "commit", "-q", "-m", "chore(data): 2025 gac");
+
+      const r = await h.cadence("loop", {
+        TOUCHLINE_CONFERENCES: "GAC LSC",
+        CADENCE_FAKE_PLAN: "GAC=changed,LSC=changed",
+        TOUCHLINE_ARCHIVE_DAY: "always",
+      });
+      expect(r.code).toBe(0);
+
+      const dir = join(h.archive, today());
+      expect((await readdir(dir)).sort()).toEqual([
+        ".done",
+        `2025-${GENDER}-gac.tar.zst`,
+        `${SEASON}-${GENDER}-gac.tar.zst`,
+        `${SEASON}-${GENDER}-lsc.tar.zst`,
+      ]);
+      expect(await tarball(join(dir, `${SEASON}-${GENDER}-gac.tar.zst`))).toEqual(
+        [...pages("gac-alpha", SEASON), ...pages("gac-beta", SEASON)].sort(),
+      );
+      expect(await tarball(join(dir, `${SEASON}-${GENDER}-lsc.tar.zst`))).toEqual(
+        [...pages("lsc-alpha", SEASON), ...pages("lsc-beta", SEASON)].sort(),
+      );
+      expect(await tarball(join(dir, `2025-${GENDER}-gac.tar.zst`))).toEqual(
+        pages("gac-alpha", "2025").sort(),
+      );
+
+      const log = await h.log();
+      expect(log).toContain(`archive: writing ${dir} from ${h.data}/data/raw_html`);
+      expect(log).toMatch(/archive 2025 men GAC: 2 file\(s\), \S+$/m);
+      expect(log).toMatch(/archive 2026 men GAC: 4 file\(s\), \S+$/m);
+      expect(log).toMatch(/archive 2026 men LSC: 4 file\(s\), \S+$/m);
+      expect(log).toContain("archive unassigned: none");
+      expect(log).toMatch(new RegExp(`archive total: 3 tarball\\(s\\), \\S+, ${dir}$`, "m"));
+      expect(log).toContain("archive retention: kept 1 of 1");
+      // the archive ran after the data push and before the summary
+      expect(log.indexOf("data home push:")).toBeLessThan(log.indexOf("archive: writing"));
+      expect(log).toMatch(new RegExp(`run summary: .* busy=none archive=ok ${dir} \\S+$`, "m"));
+
+      const [rec] = await h.records();
+      expect(rec.archive).toMatch(new RegExp(`^ok ${dir} \\S+$`));
+      expect(rec.exit).toBe(0);
+    },
+    LOOP_TIMEOUT,
+  );
+
+  test.skipIf(!ZSTD)(
+    `(b) retention keeps the newest four complete dated directories, today's included, and removes an incomplete one${NEEDS_ZSTD}`,
+    async () => {
+      const h = await makeHarness();
+      for (const d of ["2026-08-09", "2026-08-16", "2026-08-23", "2026-08-30"]) {
+        await seedDated(h, d, true);
+      }
+      await seedDated(h, "2026-09-01", false);
+      await seedRawPages(h, "gac", SEASON);
+      await seedCoverage(h, [
+        { season: SEASON, slug: "gac-alpha" },
+        { season: SEASON, slug: "gac-beta" },
+      ]);
+
+      const r = await h.cadence("archive");
+      expect(r.code).toBe(0);
+
+      expect((await readdir(h.archive)).sort()).toEqual([
+        "2026-08-16",
+        "2026-08-23",
+        "2026-08-30",
+        today(),
+      ]);
+      const log = await h.log();
+      expect(log).toContain(
+        `archive retention: removed ${h.archive}/2026-09-01 (incomplete, no .done marker)`,
+      );
+      expect(log).toContain(
+        `archive retention: removed ${h.archive}/2026-08-09 (beyond the newest 4)`,
+      );
+      expect(log).toContain("archive retention: kept 4 of 6");
+      expect(existsSync(join(h.archive, today(), ".done"))).toBe(true);
+    },
+  );
+
+  test("(c) TOUCHLINE_ARCHIVE_DAY=0 and a day that is not today skip the step and say why", async () => {
+    const h = await makeHarness();
+    const r0 = await h.cadence("loop", {
+      TOUCHLINE_CONFERENCES: "GAC",
+      CADENCE_FAKE_PLAN: "GAC=churn",
+      TOUCHLINE_ARCHIVE_DAY: "0",
+    });
+    expect(r0.code).toBe(0);
+    const notToday = String((weekday() % 7) + 1);
+    const r1 = await h.cadence("loop", {
+      TOUCHLINE_CONFERENCES: "GAC",
+      CADENCE_FAKE_PLAN: "GAC=churn",
+      TOUCHLINE_ARCHIVE_DAY: notToday,
+    });
+    expect(r1.code).toBe(0);
+
+    expect(existsSync(h.archive)).toBe(false);
+    const log = await h.log();
+    expect(log).toContain(`archive: skipped (disabled; archive day 0, today is ${weekday()})`);
+    expect(log).toContain(
+      `archive: skipped (not archive day; today is ${weekday()}, archive day ${notToday})`,
+    );
+    const [rec0, rec1] = await h.records();
+    expect(rec0.archive).toBe(`skipped (disabled; archive day 0, today is ${weekday()})`);
+    expect(rec1.archive).toBe(
+      `skipped (not archive day; today is ${weekday()}, archive day ${notToday})`,
+    );
+  });
+
+  test.skipIf(!ZSTD)(
+    `(e) a page no coverage cell claims lands in unassigned.tar.zst and in no cell tarball${NEEDS_ZSTD}`,
+    async () => {
+      const h = await makeHarness();
+      await seedRawPages(h, "gac", SEASON);
+      await seedCoverage(h, [
+        { season: SEASON, slug: "gac-alpha" },
+        { season: SEASON, slug: "gac-beta" },
+      ]);
+      // a slug no cell names, and a known slug's page from before coverage
+      await mkdir(join(h.data, "data", "raw_html", "stray-u"), { recursive: true });
+      await writeFile(
+        join(h.data, "data", "raw_html", "stray-u", `2019-${GENDER}-schedule.html`),
+        "<html>stray</html>\n",
+      );
+      await writeFile(
+        join(h.data, "data", "raw_html", "gac-alpha", `2019-${GENDER}-schedule.html`),
+        "<html>older than coverage</html>\n",
+      );
+
+      const r = await h.cadence("archive");
+      expect(r.code).toBe(0);
+
+      const dir = join(h.archive, today());
+      expect((await readdir(dir)).sort()).toEqual([
+        ".done",
+        `${SEASON}-${GENDER}-gac.tar.zst`,
+        "unassigned.tar.zst",
+      ]);
+      expect(await tarball(join(dir, "unassigned.tar.zst"))).toEqual([
+        `data/raw_html/gac-alpha/2019-${GENDER}-schedule.html`,
+        `data/raw_html/stray-u/2019-${GENDER}-schedule.html`,
+      ]);
+      expect(await tarball(join(dir, `${SEASON}-${GENDER}-gac.tar.zst`))).toEqual(
+        [...pages("gac-alpha", SEASON), ...pages("gac-beta", SEASON)].sort(),
+      );
+      const log = await h.log();
+      expect(log).toMatch(
+        /archive unassigned: 2 file\(s\) across 2 slug\(s\) \(gac-alpha, stray-u\), \S+$/m,
+      );
+      expect(log).toMatch(new RegExp(`archive total: 2 tarball\\(s\\), \\S+, ${dir}$`, "m"));
+    },
+  );
+
+  test.skipIf(!ZSTD)(
+    `(d) archive mode runs only the archive step under the PID lock: no collect, a second start is the logged no-op, the record says mode=archive${NEEDS_ZSTD}`,
+    async () => {
+      const h = await makeHarness();
+      await seedRawPages(h, "gac", SEASON);
+      await seedRawPages(h, "lsc", SEASON);
+      await seedCoverage(h, [
+        { season: SEASON, slug: "gac-alpha" },
+        { season: SEASON, slug: "gac-beta" },
+        { season: SEASON, slug: "lsc-alpha" },
+        { season: SEASON, slug: "lsc-beta" },
+      ]);
+      // a zstd that dawdles, first on the PATH, so the first run holds the lock
+      // long enough for the second to find it
+      const slow = join(h.root, "slow");
+      await mkdir(slow, { recursive: true });
+      await writeExec(join(slow, "zstd"), `#!/bin/sh\nsleep 4\nexec "${ZSTD}" "$@"\n`);
+      const first = h.cadence("archive", {
+        TOUCHLINE_CADENCE_PATH: `${slow}:${h.env.TOUCHLINE_CADENCE_PATH}`,
+      });
+      const deadline = Date.now() + 10_000;
+      while (Date.now() < deadline) {
+        if (existsSync(h.logFile) && (await h.log()).includes("archive: writing")) break;
+        await Bun.sleep(100);
+      }
+      const second = await h.cadence("archive");
+      expect(second.code).toBe(0);
+      const r1 = await first;
+      expect(r1.code).toBe(0);
+
+      const log = await h.log();
+      expect(log).toMatch(/cadence already running \(pid \d+\) — exiting without work\./);
+      expect(log).toContain(
+        `touchline cadence: mode=archive season=${SEASON} gender=${GENDER} conferences=[]`,
+      );
+      expect(log).not.toMatch(/\] collect /);
+      expect(log).not.toContain("sweeping leftovers");
+      expect(log).not.toContain("data home push");
+      expect(log).toMatch(/archive 2026 men GAC: 4 file\(s\)/);
+      expect(log).toMatch(/archive 2026 men LSC: 4 file\(s\)/);
+      expect((log.match(/run summary:/g) ?? []).length).toBe(1);
+      // nothing but the archive: no keelson, no bun, no just
+      expect(await h.calls()).toBe("");
+      expect(await h.git(h.data, "status", "--porcelain")).toContain("?? data/coverage.json");
+
+      const records = await h.records();
+      expect(records).toHaveLength(1);
+      expect(records[0].mode).toBe("archive");
+      expect(records[0].conferences).toEqual([]);
+      expect(records[0].collect).toEqual({});
+      expect(records[0].data_push).toBe("skipped");
+      expect(records[0].publish).toBe("skipped (no change)");
+      expect(records[0].archive).toMatch(/^ok /);
+      expect(records[0].exit).toBe(0);
+      expect(existsSync(join(h.home, ".keelson", "locks", "touchline-collect-cadence.lock"))).toBe(
+        false,
+      );
+    },
+    60_000,
+  );
+
+  test("(f) without zstd on PATH, loop mode dies in preflight naming it and collect mode does not", async () => {
+    const h = await makeHarness();
+    // every executable the real PATH offers except zstd and its siblings
+    const nozstd = join(h.root, "nozstd");
+    await mkdir(nozstd, { recursive: true });
+    const seen = new Set<string>();
+    for (const dir of (process.env.PATH ?? "/usr/bin:/bin").split(":")) {
+      let names: string[] = [];
+      try {
+        names = await readdir(dir);
+      } catch {
+        continue;
+      }
+      for (const name of names) {
+        if (seen.has(name) || name.startsWith("zstd") || name === "unzstd") continue;
+        seen.add(name);
+        try {
+          await symlink(join(dir, name), join(nozstd, name));
+        } catch {}
+      }
+    }
+    const env = { TOUCHLINE_CADENCE_PATH: `${h.fakes}:${nozstd}`, TOUCHLINE_CONFERENCES: "GAC" };
+
+    const loop = await h.cadence("loop", { ...env, CADENCE_FAKE_PLAN: "GAC=churn" });
+    expect(loop.code).toBe(1);
+    expect(await h.log()).toContain("FATAL: required tool 'zstd' is not on PATH");
+    expect(await h.records()).toHaveLength(0);
+
+    const collect = await h.cadence("collect", { ...env, CADENCE_FAKE_PLAN: "GAC=churn" });
+    expect(collect.code).toBe(0);
+    const [rec] = await h.records();
+    expect(rec.mode).toBe("collect");
+    expect(rec.collect).toEqual({ GAC: "no-change" });
   });
 });
 
