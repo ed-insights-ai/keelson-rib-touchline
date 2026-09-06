@@ -3797,3 +3797,243 @@ def test_the_scrimmage_marker_keeps_its_word_boundary() -> None:
     assert _exhibition_marked("Blue-Grey Scrimmage")
     assert _exhibition_marked("Drexel University (scrimmage)")
     assert not _exhibition_marked("Scrimmagers FC")
+
+
+# Bead tl-11p7: a schedule row whose opponent is not a team (an alumni game,
+# an intrasquad, a scrimmage against a club, a club side with no programme,
+# the school listed against itself) was minted as a countable fixture. The
+# ruling keeps the row and marks it exhibition; the opponent slug stays
+# whatever the text mints. Three tells: the opponent text ("Alumni Game",
+# "Intrasquad Game"), the minted slug being the owner's own, and the opponent
+# link pointing at the site's own root, which is the only tell a colour game
+# or a club side carries.
+
+
+def _tl_11p7_page(name: str, *, page_url: str, year: int, owner_slug: str):
+    from bs4 import BeautifulSoup
+
+    html = (FIXTURES / name).read_text()
+    rendered = BeautifulSoup(html, "lxml").select("li.sidearm-schedule-game")
+    skips: list[str] = []
+    fixtures = parse_schedule_page(
+        html,
+        page_url=page_url,
+        year=year,
+        owner_slug=owner_slug,
+        aliases={},
+        skips=skips,
+    )
+    # Every rendered row is still a fixture: marked, never skipped.
+    assert len(fixtures) == len(rendered)
+    assert skips == []
+    return {str(row["id"]).rsplit(":", 1)[-1]: row for row in fixtures}
+
+
+def test_an_alumni_game_is_an_exhibition_and_the_match_beside_it_is_not() -> None:
+    """sonomaseawolves.com 2024: row 12375, "Alumni Game", links the
+    opponent to the site's own root; row 12376, Santa Rosa JC the same
+    afternoon, links to srjcathletics.com. The alumni row keeps its minted
+    slug and its place in the list under the exhibition mark."""
+    rows = _tl_11p7_page(
+        "sidearm_sonoma_state_schedule_2024.html",
+        page_url="https://sonomaseawolves.com/sports/mens-soccer/schedule/2024",
+        year=2024,
+        owner_slug="sonoma-state",
+    )
+    alumni, match = rows["12375"], rows["12376"]
+    assert (alumni["home"], alumni["away"]) == ("sonoma-state", "alumni-game")
+    assert (alumni["date"], alumni["time"]) == ("2024-08-24", "11:30")
+    assert alumni["match_type"] == "exhibition"
+    assert alumni["conference_game"] is False
+    assert (match["home"], match["away"]) == ("sonoma-state", "santa-rosa-jc")
+    assert "match_type" not in match
+
+
+def test_an_intrasquad_with_only_the_own_root_link_is_an_exhibition() -> None:
+    """hpusharks.com 2026: row 11357, "HPU Grey and Black Game", carries no
+    marker word; its only tell is the opponent link to the site's own root.
+    Row 11356, "Paradise SC", a club opponent with no website, prints no link
+    at all and stays a match; row 11358, the played conference match at UH
+    Hilo, links to hiloathletics.com and keeps its score."""
+    rows = _tl_11p7_page(
+        "sidearm_hawaii_pacific_schedule_2026.html",
+        page_url="https://hpusharks.com/sports/mens-soccer/schedule/2026",
+        year=2026,
+        owner_slug="hawaii-pacific",
+    )
+    colours, club, match = rows["11357"], rows["11356"], rows["11358"]
+    assert (colours["home"], colours["away"]) == (
+        "hawaii-pacific",
+        "hpu-grey-and-black-game",
+    )
+    assert colours["match_type"] == "exhibition"
+    assert (club["home"], club["away"]) == ("hawaii-pacific", "paradise-sc")
+    assert "match_type" not in club
+    assert (match["home"], match["away"]) == ("uh-hilo", "hawaii-pacific")
+    assert (match["status"], match["home_score"], match["away_score"]) == (
+        "final",
+        2,
+        1,
+    )
+    assert "match_type" not in match
+
+
+def test_a_scrimmage_against_a_club_is_an_exhibition_and_alumni_night_is_not() -> None:
+    """eckerdtritons.com 2024: row 8363, "St. Pete Aztecs (Scrimmage)", says
+    the word and links to the site's own root; row 8369, "Barry University
+    (Alumni Night)", is a played conference match whose opponent cell
+    carries a promotion. "Alumni" alone is not the marker."""
+    rows = _tl_11p7_page(
+        "sidearm_eckerd_schedule_2024.html",
+        page_url="https://www.eckerdtritons.com/sports/mens-soccer/schedule/2024",
+        year=2024,
+        owner_slug="eckerd",
+    )
+    scrimmage, match = rows["8363"], rows["8369"]
+    assert (scrimmage["home"], scrimmage["away"]) == ("eckerd", "saint-pete-aztecs")
+    assert scrimmage["match_type"] == "exhibition"
+    assert (match["home"], match["away"]) == ("eckerd", "barry")
+    assert (match["status"], match["home_score"], match["away_score"]) == (
+        "final",
+        0,
+        3,
+    )
+    assert "match_type" not in match
+
+
+def test_a_school_listed_against_itself_is_an_exhibition() -> None:
+    """cbubucs.com 2025: row 9364 names "Christian Brothers University" as
+    the opponent (an alumni game the venue text names), so both sides mint
+    the owner; row 9025, the played match vs Mississippi College, is a
+    match."""
+    rows = _tl_11p7_page(
+        "sidearm_christian_brothers_schedule_2025.html",
+        page_url="https://cbubucs.com/sports/mens-soccer/schedule/2025",
+        year=2025,
+        owner_slug="christian-brothers",
+    )
+    own, match = rows["9364"], rows["9025"]
+    assert (own["home"], own["away"]) == ("christian-brothers", "christian-brothers")
+    assert own["date"] == "2026-04-25"
+    assert own["match_type"] == "exhibition"
+    assert (match["home"], match["away"]) == ("christian-brothers", "mississippi")
+    assert (match["home_score"], match["away_score"]) == (4, 4)
+    assert "match_type" not in match
+
+
+def test_a_club_side_with_no_programme_is_an_exhibition() -> None:
+    """rooseveltlakers.com 2025: row 5305, "FC United", carries no marker
+    word and links the opponent to the site's own root; row 5306, the played
+    match at Thomas More, links to thomasmoresaints.com."""
+    rows = _tl_11p7_page(
+        "sidearm_roosevelt_schedule_2025.html",
+        page_url="https://rooseveltlakers.com/sports/mens-soccer/schedule/2025",
+        year=2025,
+        owner_slug="roosevelt",
+    )
+    club, match = rows["5305"], rows["5306"]
+    assert (club["home"], club["away"]) == ("roosevelt", "fc-united")
+    assert club["match_type"] == "exhibition"
+    assert (match["home"], match["away"]) == ("thomas-more", "roosevelt")
+    assert (match["home_score"], match["away_score"]) == (0, 1)
+    assert "match_type" not in match
+
+
+def test_a_venue_named_alumni_field_is_not_an_exhibition() -> None:
+    """umotrojans.com 2026, row 7659: Belmont Abbey at "Belmont, NC Alumni
+    Field". The word sits in the venue, where the existing marker reads
+    "Friendly"; the alumni-game marker never reads the venue."""
+    row = _archived_row(
+        "sidearm_mount_olive_schedule_2026_7659.html",
+        year=2026,
+        owner_slug="mount-olive",
+    )
+    assert (row["home"], row["away"]) == ("belmont-abbey", "mount-olive")
+    assert row["venue"] == "Belmont, NC Alumni Field"
+    assert "match_type" not in row
+
+
+def test_the_payload_marks_alumni_intrasquad_self_and_own_site_rows() -> None:
+    """The events component cannot see the rendered link; it carries the
+    opponent's title and, on some events, ``opponent.website``. The word
+    marks an alumni game or intrasquad by title, the slug marks the owner
+    listed against itself, and a website at the page's own root marks a
+    club side (gochoctaws.com's "Alumni Game" events point theirs there). A
+    real opponent with its own site, and a promotion naming alumni, stay
+    matches."""
+    base = {
+        "date": "2026-08-22T19:00:00",
+        "location_indicator": "H",
+        "schedule": {"title": "2026 Men's Soccer Schedule"},
+        "result": {"status": "N"},
+    }
+    events = [
+        {**base, "id": 1, "opponent": {"title": "Alumni Game"}},
+        {**base, "id": 2, "opponent": {"title": "Intrasquad Game"}},
+        {**base, "id": 3, "opponent": {"title": "Hostville Griffins"}},
+        {
+            **base,
+            "id": 4,
+            "opponent": {"title": "FC United", "website": "http://www.host.test/"},
+        },
+        {
+            **base,
+            "id": 5,
+            "opponent": {"title": "Alpha", "website": "http://www.alpha.test/"},
+        },
+        {**base, "id": 6, "opponent": {"title": "Bravo (Alumni Night)"}},
+    ]
+    component = {"type": "events", "data": events}
+    html = (
+        "<html><head><title>2026 Men's Soccer Schedule - Host</title></head>"
+        f"<body><script>\nvar obj = {json.dumps(component)};\n</script></body></html>"
+    )
+    fixtures = parse_schedule_page(
+        html,
+        page_url="https://host.test/sports/mens-soccer/schedule/2026",
+        year=2026,
+        owner_slug=_HOST,
+        aliases=_HOST_ALIASES,
+    )
+    by_id = {str(row["id"]).rsplit(":", 1)[-1]: row for row in fixtures}
+    assert set(by_id) == {"1", "2", "3", "4", "5", "6"}
+    assert [by_id[key]["away"] for key in ("1", "2", "3", "4")] == [
+        "alumni-game",
+        "intrasquad-game",
+        "hostville",
+        "fc-united",
+    ]
+    assert all(by_id[key]["match_type"] == "exhibition" for key in ("1", "2", "3", "4"))
+    assert (by_id["5"]["away"], by_id["6"]["away"]) == ("alpha", "bravo")
+    assert "match_type" not in by_id["5"]
+    assert "match_type" not in by_id["6"]
+
+
+def test_the_non_match_markers_keep_their_word_boundaries() -> None:
+    from src.sidearm_live import _non_match_opponent, _own_root_link
+
+    assert _non_match_opponent("Alumni Game")
+    assert _non_match_opponent("ALUMNI GAME")
+    assert _non_match_opponent("Alumni Match")
+    assert _non_match_opponent("Alumni Game (Exhibition)")
+    assert _non_match_opponent("Intrasquad Game")
+    for text in (
+        "Barry University (Alumni Night)",
+        "Millersville (Alumni Day)",
+        "Embry-Riddle University (Teal Out and Alumni Night)",
+        "Alumni Appreciation Game",
+        "Belmont, NC Alumni Field",
+        "Alumnigame FC",
+        "Intrasquads United",
+    ):
+        assert not _non_match_opponent(text), text
+    page = "https://sonomaseawolves.com/sports/mens-soccer/schedule/2024"
+    assert _own_root_link("http://sonomaseawolves.com/", page)
+    assert _own_root_link("https://www.sonomaseawolves.com", page)
+    assert not _own_root_link("http://srjcathletics.com", page)
+    assert not _own_root_link(
+        "https://sonomaseawolves.com/sports/mens-soccer/opponents/1", page
+    )
+    assert not _own_root_link("", page)
+    assert not _own_root_link("#", page)
+    assert not _own_root_link("/sports/mens-soccer/schedule", page)
