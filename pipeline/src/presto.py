@@ -96,6 +96,7 @@ from src.sidearm_live import (
     _dom_result,
     _dom_time,
     _exhibition_marked,
+    _non_match_opponent,
     hosted_other_match,
     hosted_skip,
     own_side_opponent,
@@ -542,7 +543,9 @@ def parse_schedule(
       Night" keeps "Tampa, Fla."; the promotions after the slash are never
       the venue).
     - ``match_type``: an exhibition or friendly marker in the opponent name
-      or the notes, as on SideArm.
+      or the notes, as on SideArm; an alumni game or intrasquad named in
+      the opponent text, or the school listed against itself, is the same
+      mark (bead tl-11p7; no archived Presto page carries either).
     - ``source_url``: the page.
 
     The other skins (table, legacy table, mobile list) are read through the
@@ -615,7 +618,11 @@ def parse_schedule(
         result_text = _value_text(row, _ROW_RESULT)
         result = _dom_result(_BY_PENALTIES.sub("T,", result_text))
         notes = _value_text(row, _ROW_NOTES)
-        exhibition = _exhibition_marked(opponent_raw, notes)
+        exhibition = (
+            _exhibition_marked(opponent_raw, notes)
+            or _non_match_opponent(opponent_raw)
+            or other_slug == owner_slug
+        )
         printed = f"{status_text} {result_text}"
         if re.search(r"cancel", printed, re.IGNORECASE):
             status = "cancelled"

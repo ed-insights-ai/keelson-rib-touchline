@@ -1675,6 +1675,77 @@ def _exhibition_marked(*texts: str) -> bool:
     return any(_EXHIBITION_MARKER.search(text) for text in texts)
 
 
+# A schedule row whose opponent is not a team (bead tl-11p7): an alumni game
+# ("Alumni Game", "Alumni Match"), an intrasquad ("Intrasquad Game", "Blue
+# vs. Gold", "Green & White Game"), a club side with no programme ("FC
+# United", "UDA") or the school listed against itself. The ruling keeps the
+# row and marks it exhibition, so the schedule stays as published and the
+# row stays out of every count; the opponent slug stays whatever the text
+# mints. Three tells, measured 2026-09-06 over every archived men's schedule
+# page (1073 pages, 18,214 rendered rows past the hosted and calendar skips,
+# 9,799 payload events):
+#
+# 1. The opponent text says "alumni game/match" or "intrasquad". The bare
+#    word "alumni" is NOT a tell: "Barry University (Alumni Night)",
+#    "Millersville (Alumni Day)" and "Embry-Riddle University (Teal Out and
+#    Alumni Night)" are real matches with a promotion in the opponent cell,
+#    and "Alumni Field", "Alumni Day" and "Alumni Appreciation Game" sit in
+#    the venue of real matches, so this marker reads the opponent text only,
+#    never the location. "Scrimmage" already belongs to _EXHIBITION_MARKER.
+# 2. The minted opponent slug is the owner's own (christian-brothers 2025,
+#    game 9364, "Christian Brothers University" at "Signaigo Field Alumni
+#    Game"; the utpbfalcons.com payload's "UT Permian Basin - Orange & Black
+#    Scrimmage"). A programme never plays itself.
+# 3. The opponent link points at the site's own root. A real opponent's
+#    link points at the opponent's site (17,383 rows) or a page on it (714);
+#    an opponent with no website prints no link at all (73 rows: "Oakland
+#    Roots", "Paradise SC"); no row on the owner's host reaches a path. The
+#    31 rows that link to the own root are all alumni games, intrasquads,
+#    scrimmages, club sides or the self-row, and it is the only tell the
+#    colour games ("HPU Grey and Black Game") and club sides carry. The
+#    hosted other-match skip and the calendar-event skip run first, so a
+#    hosted pair and the media-day row never reach it.
+#
+# The payload cannot see the anchor; its copy of the third tell is the
+# ``opponent.website`` field, which the events component carries on 768 of
+# the archived events (gochoctaws.com's "Alumni Game" rows point it at the
+# own root) and the schedule objects omit, so a colour game or club side
+# that reaches the payload without a website and without a word is minted
+# unmarked there (none archived does).
+_NON_MATCH_OPPONENT_MARKER = re.compile(
+    r"\balumni (?:game|match)\b|\bintrasquad\b", re.IGNORECASE
+)
+
+
+def _non_match_opponent(text: str) -> bool:
+    """Whether the opponent text names an alumni game or an intrasquad."""
+    return _NON_MATCH_OPPONENT_MARKER.search(text) is not None
+
+
+def _own_root_link(href: str, page_url: str) -> bool:
+    """Whether an opponent link points at the schedule's own site root."""
+    if not href:
+        return False
+    link, page = urlparse(href.strip()), urlparse(page_url)
+    if not link.netloc or not page.netloc:
+        return False
+    own = page.netloc.lower().removeprefix("www.")
+    return (
+        link.netloc.lower().removeprefix("www.") == own and link.path.strip("/") == ""
+    )
+
+
+def _non_match_row(
+    opponent_text: str, *, other_slug: str, owner_slug: str, href: str, page_url: str
+) -> bool:
+    """The three tells of a row whose opponent is not a team, any one of them."""
+    return (
+        _non_match_opponent(opponent_text)
+        or other_slug == owner_slug
+        or _own_root_link(href, page_url)
+    )
+
+
 # A calendar event SideArm files under an opponent record (bead tl-ttr:
 # gohilltoppers.com 2026, game 8813, "Men's Soccer Media Day" with an
 # opponent id, a logo and a JSON-LD SportsEvent) prints a start-to-end time
@@ -1889,6 +1960,17 @@ def _parse_schedule_dom(
         other_slug = opponent_slug(
             opponent_name, aliases, scope=scope, owner=owner_slug
         )
+        # An alumni game, intrasquad, club side or the school against
+        # itself is kept and marked exhibition, never skipped (bead
+        # tl-11p7). The link is the rendered list's own tell.
+        if not exhibition and _non_match_row(
+            opponent_raw,
+            other_slug=other_slug,
+            owner_slug=owner_slug,
+            href=str(opponent_link.get("href") or "") if opponent_link else "",
+            page_url=page_url,
+        ):
+            exhibition = True
         if neutral:
             # Neutral rows keep the "vs"/"at" span as the only side
             # indicator; home/away stay as published, the flag says
@@ -2176,7 +2258,16 @@ def parse_schedule_page(
         # The payload has no exhibition field — the site says it in the
         # opponent's own published title ("Oklahoma Wesleyan (Exhibition)")
         # or beside the venue in its location text ("Tulsa, Okla. Friendly").
-        if _exhibition_marked(published_title, venue):
+        # An alumni game, intrasquad, club side or the school against itself
+        # is the same exhibition (bead tl-11p7); the payload's copy of the
+        # rendered link is ``opponent.website``, where the event carries one.
+        if _exhibition_marked(published_title, venue) or _non_match_row(
+            published_title,
+            other_slug=other_slug,
+            owner_slug=owner_slug,
+            href=str(opponent_dict.get("website") or ""),
+            page_url=page_url,
+        ):
             fixture["match_type"] = "exhibition"
         if not event.get("tbd") and "T" in date_text:
             try:

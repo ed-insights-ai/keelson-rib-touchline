@@ -257,9 +257,13 @@ nodes:
       # silent final and goal-attribution excluded nothing. Text and flag
       # must not disagree silently: every fixture whose stored venue or
       # opponent slugs carry the wording while match_type is unset is named,
-      # verdict warn. The regex is the parser's own — \bexhib or
-      # \bfriendl(y|ies)\b, case-insensitive, word-bounded so a school named
-      # Friends never matches. A fixture that DOES carry match_type is
+      # verdict warn. The regex is the parser's own — \bexhib,
+      # \bfriendl(y|ies)\b or \bscrimmage\b, case-insensitive, word-bounded
+      # so a school named Friends never matches. The parser's two other
+      # tells (bead tl-11p7) are read the same way: an opponent slug that
+      # says alumni-game, alumni-match or intrasquad (slugs only, never the
+      # venue, where "Alumni Field" is a real ground), and a row whose home
+      # and away are one programme. A fixture that DOES carry match_type is
       # consistent by definition and is not reported. Nothing here names a
       # conference: the sweep covers whatever season files the data home
       # holds. Alarm is reserved for the check itself failing to run, per
@@ -286,11 +290,16 @@ nodes:
       # headline can say how much was measured; ROW names each offender with
       # the text that tripped it.
       JQ='
-        def marked: test("\\bexhib|\\bfriendl(y|ies)\\b"; "i");
+        def marked: test("\\bexhib|\\bfriendl(y|ies)\\b|\\bscrimmage\\b"; "i");
+        def non_team: test("\\balumni[ -](game|match)\\b|\\bintrasquad\\b"; "i");
         ( ["TOTAL\t\(.fixtures | length)"]
         + [ .fixtures[]
             | select(has("match_type") | not)
-            | select([.venue // "", .home // "", .away // ""] | any(marked))
+            | select(
+                ([.venue // "", .home // "", .away // ""] | any(marked))
+                or ([.home // "", .away // ""] | any(non_team))
+                or ((.home // "") != "" and .home == .away)
+              )
             | "ROW\t\(.id)\t\(.date)\t\(.home) v \(.away)\t\(.venue // "(no venue)")" ]
         )[]'
       CELLS=0
