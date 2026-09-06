@@ -597,7 +597,9 @@ display_name = "Mississippi Christian"
 abbreviation = "MC"
 conference   = "GSC"
 mascot       = "Choctaws"
-aliases      = ["Mississippi Christian"]
+# Peers print "Mississippi Col." (Harding 2019, sidearm:harding:5111; 2023,
+# sidearm:harding:13909; 2024, sidearm:harding:14408).
+aliases      = ["Mississippi Christian", "Mississippi Col."]
 gender       = "men"
 base_url     = "https://gochoctaws.com/sports/mens-soccer"
 years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
@@ -1448,7 +1450,10 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Palm Beach Atlantic University"]
+# Peers print "Palm Beach Atl." (Tusculum 2025,
+# presto:tusculum:20250906-palm-beach-atl; Carson-Newman 2026,
+# presto:carson-newman:x27xfnup7yn496ab).
+aliases      = ["Palm Beach Atlantic University", "Palm Beach Atl."]
 city         = "West Palm Beach, Fla."
 city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
 identity_accessed = "2026-09-02"
@@ -3121,7 +3126,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Northern Michigan University", "NMU"]
+# Peers print "Northern Mich." (Northwood 2023,
+# presto:northwood:20230831-northern-mich, and each season through 2026).
+aliases      = ["Northern Michigan University", "NMU", "Northern Mich."]
 city         = "Marquette, Mich."
 city_source  = "schedule-page home venue location, https://nmuwildcats.com/sports/mens-soccer/schedule/2026 (Marquette, MI); the gliac.org member JSON prints Marquette, MI (read 2026-09-04)"
 identity_accessed = "2026-09-04"
