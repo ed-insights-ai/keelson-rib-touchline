@@ -3153,6 +3153,150 @@ def test_a_hosted_row_in_both_the_payload_and_the_dom_is_one_skip() -> None:
     assert skips == ["hosted other-match skipped: 2026-08-27, Alpha v Bravo"]
 
 
+# Bead tl-ttr: a calendar event SideArm files under an opponent record (a
+# media day, with an opponent id, a logo and a JSON-LD SportsEvent) reached the
+# fixture contract as a countable fixture. The tell a match can never carry is
+# the start-to-end time range printed where a match prints its kickoff.
+
+
+def test_a_calendar_event_on_the_rendered_list_is_a_named_skip() -> None:
+    """gohilltoppers.com 2026: row 8813, "Men's Soccer Media Day", prints
+    "11:25 AM-12:40 PM" in the date cell and in the opponent link's
+    aria-label; row 8616, the real match vs Southwestern, prints "7:00 PM".
+    The event is named, never minted; the match still parses; the page's
+    fixture count drops by exactly one."""
+    from bs4 import BeautifulSoup
+
+    html = (FIXTURES / "sidearm_saint_edwards_schedule_2026.html").read_text()
+    rendered = BeautifulSoup(html, "lxml").select("li.sidearm-schedule-game")
+    assert len(rendered) == 2
+    skips: list[str] = []
+    fixtures = parse_schedule_page(
+        html,
+        page_url="https://gohilltoppers.com/sports/mens-soccer/schedule/2026",
+        year=2026,
+        owner_slug="saint-edwards",
+        aliases={"southwestern university": "southwestern"},
+        skips=skips,
+    )
+    assert len(fixtures) == len(rendered) - 1
+    [match] = fixtures
+    assert match["id"] == "sidearm:saint-edwards:8616"
+    assert (match["home"], match["away"]) == ("saint-edwards", "southwestern")
+    assert (match["date"], match["time"], match["status"]) == (
+        "2026-08-22",
+        "19:00",
+        "scheduled",
+    )
+    assert match["venue"] == "Lewis-Chen Family Field"
+    assert skips == ["calendar event skipped: 2026-08-09, Men's Soccer Media Day"]
+    # Without a skips list the row is still not minted, just not narrated.
+    assert _ids(
+        parse_schedule_page(
+            html,
+            page_url="https://gohilltoppers.com/sports/mens-soccer/schedule/2026",
+            year=2026,
+            owner_slug="saint-edwards",
+            aliases={"southwestern university": "southwestern"},
+        )
+    ) == {"8616"}
+
+
+def test_a_calendar_event_in_the_payload_is_a_named_skip() -> None:
+    """The events component's copy of the same tell: the rendered ``time``
+    string printing a range, or an ``end_date`` after ``date``. No archived
+    payload carries the media-day row (the St. Edward's events stub is
+    windowed to upcoming games), so the shape here is the one the rendered
+    range must come from. A stub whose end_date is EARLIER than its start
+    (measured: cal-state-east-bay 7008, a real match) stays a fixture."""
+    real = {
+        "id": 13071,
+        "date": "2026-08-22T19:00:00",
+        "end_date": None,
+        "time": "7:00 PM",
+        "tbd": False,
+        "location_indicator": "H",
+        "is_conference": False,
+        "type": "upcoming",
+        "schedule": {"title": "2026 Men's Soccer Schedule"},
+        "opponent": {"title": "Alpha"},
+        "result": {"status": "N"},
+    }
+    by_time = {
+        **real,
+        "id": 13070,
+        "date": "2026-08-09T11:25:00",
+        "time": "11:25 AM-12:40 PM",
+        "opponent": {"title": "Men's Soccer Media Day"},
+    }
+    by_end_date = {
+        **real,
+        "id": 13069,
+        "date": "2026-08-10T09:00:00",
+        "end_date": "2026-08-10T10:00:00",
+        "time": "9:00 AM",
+        "opponent": {"title": "Community Clinic"},
+    }
+    end_before_start = {
+        **real,
+        "id": 13072,
+        "date": "2026-09-27T15:00:00",
+        "end_date": "2026-09-27T11:30:00",
+        "time": "3:00 PM",
+        "opponent": {"title": "Bravo"},
+    }
+    component = {
+        "type": "events",
+        "data": [by_time, by_end_date, real, end_before_start],
+    }
+    html = (
+        "<html><head><title>2026 Men's Soccer Schedule - Host</title></head>"
+        f"<body><script>\nvar obj = {json.dumps(component)};\n</script></body></html>"
+    )
+    skips: list[str] = []
+    fixtures = parse_schedule_page(
+        html,
+        page_url="https://host.test/sports/mens-soccer/schedule/2026",
+        year=2026,
+        owner_slug=_HOST,
+        aliases=_HOST_ALIASES,
+        skips=skips,
+    )
+    assert [row["id"] for row in fixtures] == [
+        "sidearm:hostville:13071",
+        "sidearm:hostville:13072",
+    ]
+    assert [(row["away"], row["time"]) for row in fixtures] == [
+        ("alpha", "19:00"),
+        ("bravo", "15:00"),
+    ]
+    assert skips == [
+        "calendar event skipped: 2026-08-09, Men's Soccer Media Day",
+        "calendar event skipped: 2026-08-10, Community Clinic",
+    ]
+
+
+def test_the_time_range_marker_reads_ranges_and_nothing_else() -> None:
+    """The cell forms a range can take, and the texts a match row prints
+    that must never read as one (a kickoff, a score, a repeated date)."""
+    from src.sidearm_live import _calendar_event_marked
+
+    assert _calendar_event_marked("Aug 9 (Sun) 11:25 AM-12:40 PM")
+    assert _calendar_event_marked("11 a.m. - 1 p.m.")
+    assert _calendar_event_marked("11:25-12:40 PM")
+    assert _calendar_event_marked("9:00 AM \u2013 10:00 AM")
+    for text in (
+        "Aug 22 (Sat) 7:00 PM",
+        "Aug 20 (Sat) Aug 20 (Sat)",
+        "W, 2-1",
+        "T, 1-1 (SO, 4-3)",
+        "7:00 PM - TBA",
+        "Noon",
+        "",
+    ):
+        assert not _calendar_event_marked(text), text
+
+
 # Beads tl-d69 and tl-md2: a fixture is final only when it carries a score.
 # The twin-check after the 2026-09-02 GAC re-collect named rows the owner's
 # page marks completed or "Final" with no score while the opponent's own page

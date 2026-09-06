@@ -839,6 +839,11 @@ def hosted_skip(date: str, pair: tuple[str, str]) -> str:
     return f"hosted other-match skipped: {date}, {pair[0]} v {pair[1]}"
 
 
+def calendar_event_skip(date: str, name: str) -> str:
+    """The named skip the collect summary prints for one calendar-event row."""
+    return f"calendar event skipped: {date}, {name}"
+
+
 def _identity_key(name: str) -> str:
     """Normalize a published opponent string toward a comparable identity.
 
@@ -1670,6 +1675,51 @@ def _exhibition_marked(*texts: str) -> bool:
     return any(_EXHIBITION_MARKER.search(text) for text in texts)
 
 
+# A calendar event SideArm files under an opponent record (bead tl-ttr:
+# gohilltoppers.com 2026, game 8813, "Men's Soccer Media Day" with an
+# opponent id, a logo and a JSON-LD SportsEvent) prints a start-to-end time
+# range where a match prints its kickoff: "11:25 AM-12:40 PM" in the date
+# cell and again in the opponent link's aria-label. A match has one kickoff
+# and no end time. Measured 2026-09-06 over every archived men's schedule
+# page (1073 pages, 18,530 rendered rows, 9,799 payload events): the range
+# marks that one row and no match; no payload event carries an end_date
+# after its date (the one end_date that differs, cal-state-east-bay 7008, is
+# earlier than its start). The other tell the row carries, an opponent link
+# to the site's own root, also marks alumni games, intrasquads and club
+# scrimmages that ARE played, so it is not the rule. Left-hand time must
+# carry its meridiem, or both sides must be H:MM, so a score ("2-1") and a
+# bare date never read as a range.
+_TIME_RANGE_MARKER = re.compile(
+    r"\b\d{1,2}(?::\d{2})?\s*[ap]\.?m\.?\s*[-\u2013\u2014]\s*"
+    r"\d{1,2}(?::\d{2})?(?:\s*[ap]\.?m\.?)?\b"
+    r"|\b\d{1,2}:\d{2}\s*[-\u2013\u2014]\s*\d{1,2}:\d{2}\s*[ap]\.?m\.?",
+    re.IGNORECASE,
+)
+
+
+def _calendar_event_marked(*texts: str) -> bool:
+    """Whether any of the row's time texts prints a start-to-end range."""
+    return any(_TIME_RANGE_MARKER.search(text) for text in texts)
+
+
+def _payload_ends_after_start(event: dict[str, object]) -> bool:
+    """The payload's form of the same marker: an ``end_date`` after ``date``.
+
+    Every archived payload event carries ``end_date: null`` or an end no
+    later than its start, and no archived events component carries the
+    media-day row at all (the St. Edward's stub is windowed to upcoming
+    games), so this reading is the field the rendered range must come from,
+    not a measured payload row.
+    """
+    start, end = str(event.get("date") or ""), str(event.get("end_date") or "")
+    if not start or not end:
+        return False
+    try:
+        return datetime.fromisoformat(end) > datetime.fromisoformat(start)
+    except ValueError:
+        return False
+
+
 def _dom_bare_letter(result_text: str, classes: set[str]) -> str | None:
     """The result letter of a row whose cell parsed no score.
 
@@ -1795,6 +1845,18 @@ def _parse_schedule_dom(
         if re.fullmatch(r"tbd|tba", opponent_name, re.IGNORECASE) or re.search(
             r"tournament|championship", opponent_name, re.IGNORECASE
         ):
+            continue
+        # A calendar event filed under an opponent record (a media day)
+        # prints a start-to-end time range where a match prints its kickoff;
+        # named for the collect summary, never minted (bead tl-ttr).
+        opponent_link = row.select_one(".sidearm-schedule-game-opponent-name a")
+        if _calendar_event_marked(
+            _first_text(row, ".sidearm-schedule-game-opponent-date") or "",
+            _first_text(row, ".sidearm-schedule-game-time") or "",
+            str(opponent_link.get("aria-label") or "") if opponent_link else "",
+        ):
+            if skips is not None:
+                skips.append(calendar_event_skip(date, opponent_name))
             continue
         classes = set(row.get("class") or [])
         # The theme's own word for a neutral site is a row class (measured:
@@ -2023,6 +2085,15 @@ def parse_schedule_page(
         if not opponent_name:
             continue
         date_text = str(event.get("date"))
+        # The payload's copy of the calendar-event tell: the rendered time
+        # string printing a range, or an end_date after the start (bead
+        # tl-ttr). Named for the collect summary, never minted.
+        if _calendar_event_marked(
+            str(event.get("time") or "")
+        ) or _payload_ends_after_start(event):
+            if skips is not None:
+                skips.append(calendar_event_skip(date_text[:10], opponent_name))
+            continue
         # The payload publishes a hosted other-match under the same shape
         # as the DOM: "Western Oregon University vs Metropolitan State
         # University of Denver" as the opponent title, location_indicator
