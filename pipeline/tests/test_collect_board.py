@@ -1208,3 +1208,211 @@ def test_named_skips_are_listed_in_the_gap_lines_voice() -> None:
         "alpha schedule: hosted other-match skipped: 2026-08-27, Delta v Echo",
         "alpha schedule: hosted other-match skipped: 2026-08-29, Echo v Foxtrot",
     ]
+
+
+# --- Cross-file exhibition borrow (bead tl-1go) --------------------------------
+#
+# Lander's page marks its preseason games exhibition; Southern Wesleyan's and
+# Newberry's pages do not, and the three rows sit in three conference files.
+
+
+def _lander_pbc_rows() -> list[dict[str, object]]:
+    return [
+        {
+            "id": "sidearm:lander:13347",
+            "date": "2026-08-18",
+            "home": "southern-wesleyan",
+            "away": "lander",
+            "status": "final",
+            "match_type": "exhibition",
+            "conference_game": False,
+            "time": "19:00",
+            "venue": "Central, S.C.",
+            "home_score": 0,
+            "away_score": 1,
+        },
+        {
+            "id": "sidearm:lander:13352",
+            "date": "2026-08-22",
+            "home": "lander",
+            "away": "newberry",
+            "status": "final",
+            "match_type": "exhibition",
+            "conference_game": False,
+            "time": "19:00",
+            "venue": "Van Taylor Stadium",
+            "home_score": 1,
+            "away_score": 0,
+        },
+    ]
+
+
+def _southern_wesleyan_row() -> dict[str, object]:
+    return {
+        "id": "sidearm:southern-wesleyan:6796",
+        "date": "2026-08-18",
+        "home": "southern-wesleyan",
+        "away": "lander",
+        "status": "scheduled",
+        "conference_game": False,
+        "time": "17:00",
+        "venue": "Joe R Gilbert Track and Field",
+    }
+
+
+def _newberry_row() -> dict[str, object]:
+    return {
+        "id": "sidearm:newberry:15432",
+        "date": "2026-08-22",
+        "home": "lander",
+        "away": "newberry",
+        "status": "scheduled",
+        "conference_game": False,
+        "time": "19:00",
+        "venue": "Greenwood, S.C.",
+    }
+
+
+def _season_file(
+    home: Path, season: int, gender: str, conference: str, rows: list[dict]
+) -> Path:
+    slug = programme_slug(conference)
+    return _write(
+        home / "data" / "fixtures" / f"{season}-{gender}-{slug}.json",
+        {
+            "schema": "touchline.fixtures/2",
+            "season": season,
+            "gender": gender,
+            "conference": conference,
+            "fixtures": rows,
+        },
+    )
+
+
+def _borrow(
+    home: Path, rows: list[dict[str, object]], conference: str, **kwargs
+) -> int:
+    return collect_board._borrow_twin_exhibitions(
+        rows,
+        season=kwargs.get("season", 2026),
+        gender=kwargs.get("gender", "men"),
+        conference=conference,
+        fixtures_dir=home / "data" / "fixtures",
+    )
+
+
+def test_borrow_stamps_the_twin_from_the_other_conferences_file(
+    tmp_path: Path,
+) -> None:
+    _season_file(tmp_path, 2026, "men", "PBC", _lander_pbc_rows())
+
+    cc_row = _southern_wesleyan_row()
+    assert _borrow(tmp_path, [cc_row], "CC") == 1
+    assert cc_row["match_type"] == "exhibition"
+
+    sac_row = _newberry_row()
+    assert _borrow(tmp_path, [sac_row], "SAC") == 1
+    assert sac_row["match_type"] == "exhibition"
+
+    # Only the one mark crosses: the twin's score, time and venue stay home,
+    # and the conference claim is not touched.
+    for row in (cc_row, sac_row):
+        assert row["status"] == "scheduled"
+        assert "home_score" not in row and "away_score" not in row
+        assert row["conference_game"] is False
+    assert cc_row["time"] == "17:00"
+    assert cc_row["venue"] == "Joe R Gilbert Track and Field"
+
+
+def test_borrow_never_touches_a_row_that_carries_its_own_mark(
+    tmp_path: Path,
+) -> None:
+    _season_file(tmp_path, 2026, "men", "PBC", _lander_pbc_rows())
+
+    own_exhibition = {**_southern_wesleyan_row(), "match_type": "exhibition"}
+    own_other = {**_newberry_row(), "match_type": "scrimmage"}
+    assert _borrow(tmp_path, [own_exhibition, own_other], "CC") == 0
+    assert own_exhibition["match_type"] == "exhibition"
+    assert own_other["match_type"] == "scrimmage"
+
+
+def test_borrow_stamps_nothing_from_an_unmarked_or_differently_marked_twin(
+    tmp_path: Path,
+) -> None:
+    unmarked, other = _lander_pbc_rows()
+    del unmarked["match_type"]
+    other["match_type"] = "scrimmage"
+    _season_file(tmp_path, 2026, "men", "PBC", [unmarked, other])
+
+    cc_row = _southern_wesleyan_row()
+    sac_row = _newberry_row()
+    assert _borrow(tmp_path, [cc_row], "CC") == 0
+    assert _borrow(tmp_path, [sac_row], "SAC") == 0
+    assert "match_type" not in cc_row
+    assert "match_type" not in sac_row
+
+
+def test_borrow_reads_only_siblings_of_the_same_season_and_gender(
+    tmp_path: Path,
+) -> None:
+    # A would-be twin in last season's file, in the women's file, and in
+    # this conference's own file on disk: none is a sibling.
+    _season_file(tmp_path, 2025, "men", "PBC", _lander_pbc_rows())
+    _season_file(tmp_path, 2026, "women", "PBC", _lander_pbc_rows())
+    _season_file(
+        tmp_path,
+        2026,
+        "men",
+        "CC",
+        [{**_southern_wesleyan_row(), "match_type": "exhibition"}],
+    )
+
+    cc_row = _southern_wesleyan_row()
+    assert _borrow(tmp_path, [cc_row], "CC") == 0
+    assert "match_type" not in cc_row
+
+
+def test_borrow_never_consults_the_stored_rows_previous_mark(
+    tmp_path: Path,
+) -> None:
+    # Yesterday's own file carries the borrowed mark; today the row parses
+    # fresh with no mark and no sibling marks it. The mark drops on its own.
+    _season_file(
+        tmp_path,
+        2026,
+        "men",
+        "CC",
+        [{**_southern_wesleyan_row(), "match_type": "exhibition"}],
+    )
+    withdrawn, other = _lander_pbc_rows()
+    del withdrawn["match_type"]
+    _season_file(tmp_path, 2026, "men", "PBC", [withdrawn, other])
+
+    cc_row = _southern_wesleyan_row()
+    assert _borrow(tmp_path, [cc_row], "CC") == 0
+    assert "match_type" not in cc_row
+
+
+def test_borrow_logs_one_line_per_borrow(tmp_path: Path, capsys) -> None:
+    _season_file(tmp_path, 2026, "men", "PBC", _lander_pbc_rows())
+    rows = [_southern_wesleyan_row(), _newberry_row()]
+
+    assert _borrow(tmp_path, rows, "CC") == 2
+    lines = [
+        line for line in capsys.readouterr().out.splitlines() if "borrowed" in line
+    ]
+    assert lines == [
+        "exhibition borrowed: 2026-08-18, southern-wesleyan v lander, from PBC",
+        "exhibition borrowed: 2026-08-22, lander v newberry, from PBC",
+    ]
+
+
+def test_borrow_skips_a_missing_or_unreadable_sibling(tmp_path: Path) -> None:
+    _write(tmp_path / "data" / "fixtures" / "2026-men-sac.json", {})
+    (tmp_path / "data" / "fixtures" / "2026-men-gac.json").write_text(
+        "{not json", encoding="utf-8"
+    )
+    cc_row = _southern_wesleyan_row()
+    assert _borrow(tmp_path, [cc_row], "CC") == 0
+    assert _borrow(tmp_path / "absent", [cc_row], "CC") == 0
+    assert "match_type" not in cc_row

@@ -70,7 +70,7 @@ seasons still run. See [Workflows](../../reference/workflows/).
 
 ## 4. Read the output
 
-Watch for three kinds of line:
+Watch for four kinds of line:
 
 - **Scope widening.** Season files are written wholesale, so a narrow rerun
   could silently discard other programmes' data. Instead,
@@ -82,6 +82,18 @@ Watch for three kinds of line:
   played and upcoming, roster players, player season lines, how many played
   fixtures carry a collected box score, and any collapsed duplicate rows
   (a conference game is published by both schedules).
+- **Borrowed exhibition marks.** A friendly is a property of the match, not
+  of the page that printed it. When one side's schedule marks a fixture
+  exhibition and the twin row sits unmarked in another conference's season
+  file for the same season and gender, the collect stamps `match_type`
+  `exhibition` on its own freshly parsed row and prints `exhibition
+  borrowed: {date}, {home} v {away}, from {conference}` once per row, so the
+  cadence log explains a file that changed when its own source did not. The
+  other file is only read, never written; a row that already carries any
+  `match_type` is never touched; nothing else crosses (not scores, time,
+  venue or the conference flag). Because every run starts from the page and
+  the sibling files again, a borrowed mark drops on its own if the other
+  side withdraws it, and every conference converges within one cadence.
 - **GAP lines.** Every named gap prints as a `GAP:` line naming the
   programme and layer (or the match) and the reason. Gaps are data, not
   failure: they land in the coverage manifest and in
