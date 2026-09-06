@@ -368,7 +368,7 @@ def _fake_programme(
     )
 
 
-def _fake_collect_match(session, url, season, fixture):
+def _fake_collect_match(session, url, season, fixture, archive=None):
     """The real box-score parser over an archived page: writer output, not a
     hand-written stand-in."""
     del session, season, fixture

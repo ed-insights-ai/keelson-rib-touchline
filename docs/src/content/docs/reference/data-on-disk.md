@@ -63,6 +63,7 @@ Field semantics live in [File contracts](../file-contracts/).
 | Path | Written by | Contents |
 |---|---|---|
 | `data/raw_html/{programme}/{season}-{gender}-schedule.html` (also `-roster`, `-stats`) | `write_raw_pages` in `pipeline/src/sidearm_live.py` | The pages exactly as the collector fetched them, so any parse can be redone offline. |
+| `data/raw_html/{programme}/{season}-{gender}-box-{fixture-id}.html` (+ `.state.json`) | `collect_match` in `pipeline/src/sidearm_live.py` and `pipeline/src/presto.py`, through `BoxArchive` in `pipeline/src/page_state.py` | Each proven box-score page under the programme whose schedule linked it, the fixture id folded to `[A-Za-z0-9._-]`; the sidecar carries the parser fingerprint and the match record, so a parser change reparses from disk. |
 | `data/errors/collect-board-{season}-{gender}-{conference}.json` | `pipeline/scripts/collect_board.py` | A run's named gaps, written alongside the coverage cells that record them. |
 
 ## Reference

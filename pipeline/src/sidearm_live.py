@@ -72,7 +72,7 @@ from urllib3.util.retry import Retry
 
 from src.config import SchoolConfig, programme_slug
 from src.membership import conference_for, load_membership, members_of
-from src.page_state import PageState, PageStateStore, content_signature
+from src.page_state import BoxArchive, PageState, PageStateStore, content_signature
 from src.tls import TruststoreHTTPAdapter
 
 _LOG = logging.getLogger(__name__)
@@ -3322,13 +3322,42 @@ def orient_match(detail: dict[str, object], fixture: dict[str, object]) -> None:
         detail["home_index"] = 1
 
 
+def parse_match_page(
+    page: PublishedPage, year: int, fixture: dict[str, object]
+) -> dict[str, object]:
+    """Prove a served box-score page is the fixture's, then read it.
+
+    The half of ``collect_match`` after the fetch, on its own so the board
+    collector can run exactly the same proof and parse over an archived
+    page when the parser's fingerprint has moved (bead tl-ir6).
+    """
+    assert_served_match(page, year, fixture)
+    detail = parse_boxscore_page(page.html, page_url=page.final_url)
+    teams = detail.get("teams") or []
+    if len(teams) != 2:  # type: ignore[arg-type]
+        raise LiveCollectionError(
+            f"[{year}] {fixture.get('id')}: {page.final_url} proved its match but "
+            f"its score-by-period table rendered {len(teams)} team(s) "  # type: ignore[arg-type]
+            f"where a match needs exactly two"
+        )
+    orient_match(detail, fixture)
+    return detail
+
+
 def collect_match(
     session: requests.Session,
     url: str,
     year: int,
     fixture: dict[str, object],
+    *,
+    archive: BoxArchive | None = None,
 ) -> dict[str, object]:
-    """Fetch one fixture's box score, prove it is that fixture's, and parse it."""
+    """Fetch one fixture's box score, prove it is that fixture's, and parse it.
+
+    With an ``archive``, the proven page and its parse are written to the
+    fetch cache beside the layer pages, so a later parser change re-reads
+    the bytes from disk instead of the site.
+    """
     try:
         response = session.get(url, timeout=30)
         response.raise_for_status()
@@ -3339,16 +3368,14 @@ def collect_match(
         ) from exc
     assert_served_body(response, year=year, kind="box-score", url=url)
     page = PublishedPage(url, response.url, response.text)
-    assert_served_match(page, year, fixture)
-    detail = parse_boxscore_page(response.text, page_url=response.url)
-    teams = detail.get("teams") or []
-    if len(teams) != 2:  # type: ignore[arg-type]
-        raise LiveCollectionError(
-            f"[{year}] {fixture.get('id')}: {response.url} proved its match but "
-            f"its score-by-period table rendered {len(teams)} team(s) "  # type: ignore[arg-type]
-            f"where a match needs exactly two"
+    detail = parse_match_page(page, year, fixture)
+    if archive is not None:
+        archive.save(
+            requested_url=page.requested_url,
+            final_url=page.final_url,
+            html=page.html,
+            parsed=detail,
         )
-    orient_match(detail, fixture)
     return detail
 
 

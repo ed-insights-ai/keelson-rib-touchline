@@ -1263,6 +1263,54 @@ def test_collect_match_proves_and_parses_one_fixture() -> None:
     assert site.requests == [(BOX_4ZCL_URL, None)]
 
 
+def test_collect_match_archives_the_proven_page_under_the_recipes_fingerprint(
+    tmp_path: Path,
+) -> None:
+    """The Presto box page joins the cache the way the SideArm one does, its
+    sidecar fingerprinted with the Presto module digest (bead tl-ir6)."""
+    from src.page_state import BoxArchive, PageStateStore, box_kind
+    from src.sidearm_live import parse_fingerprint
+
+    fixture = _fixture_for("4zcl")
+    fixture_id = str(fixture["id"])
+    assert fixture_id == "presto:tampa:4zclc4rvdo9ctcv4"
+    fingerprint = parse_fingerprint(2025, *PRESTO.parse_identity)
+    archive = BoxArchive(
+        PageStateStore(tmp_path, 2025, "men"), "tampa", fixture_id, fingerprint
+    )
+    site = _season_site()
+
+    detail = PRESTO.collect_match(
+        site, BOX_4ZCL_URL, 2025, dict(fixture), archive=archive
+    )
+
+    html_path = (
+        tmp_path
+        / "data"
+        / "raw_html"
+        / "tampa"
+        / "2025-men-box-presto-tampa-4zclc4rvdo9ctcv4.html"
+    )
+    assert html_path == archive.html_path()
+    assert box_kind(fixture_id) == "box-presto-tampa-4zclc4rvdo9ctcv4"
+    assert html_path.read_text(encoding="utf-8") == BOX_4ZCL
+    state = archive.load()
+    assert state is not None and state.parsed == detail
+    assert state.final_url == BOX_4ZCL_URL
+    assert site.requests == [(BOX_4ZCL_URL, None)]
+    # The recipe's reparse over the archived bytes is the served parse.
+    assert (
+        PRESTO.parse_match(
+            PublishedPage(
+                BOX_4ZCL_URL, BOX_4ZCL_URL, html_path.read_text(encoding="utf-8")
+            ),
+            2025,
+            dict(fixture),
+        )
+        == detail
+    )
+
+
 def test_a_challenge_answer_to_a_box_score_is_refused_with_its_status() -> None:
     """Measured 2026-09-02: the site's WAF answers HTTP 202 with an empty
     body after a burst.  The box-score fetch goes through the same body

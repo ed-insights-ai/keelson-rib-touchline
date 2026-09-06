@@ -54,7 +54,7 @@ from src.fetch_pool import (
 )
 from src.config import DEFAULT_CONFIG, SchoolConfig, load_schools
 from src.membership import conference_for, division_for, load_membership
-from src.page_state import PageStateStore
+from src.page_state import BoxArchive, PageStateStore
 from src.programmes import load_programmes, programme_points
 from src.recipes import PRESTO, SIDEARM, NoCollector, Recipe, live_recipe
 from src.sidearm_live import (
@@ -69,12 +69,14 @@ from src.sidearm_live import (
     STATE_UNAVAILABLE,
     LiveCollectionError,
     ProgrammeCollection,
+    PublishedPage,
     boxscore_links,
     build_session,
     collect_match,
     collect_programme,
     conference_members,
     identity_aliases,
+    parse_fingerprint,
     programme_slug,
     resolution_scope,
     write_raw_pages,
@@ -547,6 +549,71 @@ def _stored_match_current(
             scores[home_index] == home_score and scores[1 - home_index] == away_score  # type: ignore[index]
         )
     return sorted(scores) == sorted([home_score, away_score])  # type: ignore[type-var]
+
+
+def _stored_box(
+    fixture: dict[str, object],
+    stored: dict[str, object],
+    owners: list[tuple[str, Recipe]],
+    store: PageStateStore,
+    season: int,
+) -> tuple[dict[str, object] | None, str, float]:
+    """The record a stored box score stands on this run, which of the three
+    reuse branches it took, and the wall time a reparse cost.
+
+    ``current``: the archived page's sidecar carries the current parse
+    fingerprint, so the stored record is reused as it stands, no fetch and
+    no parse (today's path).  ``reparsed``: the page is archived but its
+    sidecar is missing or names another fingerprint (the parser changed),
+    so the bytes are read from disk through the recipe's own proof and
+    parser, the sidecar is rewritten, and the fresh parse is the record.
+    ``unarchived``: no archived page (a box collected before box pages
+    joined the cache), so the stored record is reused; nothing fetches on
+    its own, a ``--refetch`` archives it.  A reparse the current parser
+    refuses returns no record (``refused``) and the site is asked, as for a
+    fixture whose result moved.
+
+    ``owners`` are the programmes whose schedule page could have linked the
+    box, in the order the fetch tries them; the first with an archived page
+    answers.  Pure over the disk state, run serially in fixture order.
+    """
+    fixture_id = str(fixture["id"])
+    for owner, recipe in owners:
+        archive = BoxArchive(
+            store, owner, fixture_id, parse_fingerprint(season, *recipe.parse_identity)
+        )
+        state = archive.load()
+        if state is not None and state.parsed is not None:
+            return stored, "current", 0.0
+        html_path = archive.html_path()
+        if not html_path.is_file():
+            continue
+        started = time.perf_counter()
+        source = str(stored.get("source_url") or "")
+        try:
+            page = PublishedPage(
+                state.requested_url if state else source,
+                state.final_url if state else source,
+                html_path.read_text(encoding="utf-8"),
+            )
+            detail = recipe.parse_match(page, season, fixture)
+        except (LiveCollectionError, OSError) as exc:
+            print(
+                f"match {fixture_id}: the archived box-score page no longer "
+                f"parses ({exc}); fetching it",
+                flush=True,
+            )
+            return None, "refused", time.perf_counter() - started
+        archive.save(
+            requested_url=page.requested_url,
+            final_url=page.final_url,
+            html=page.html,
+            parsed=detail,
+            signature=state.signature if state else None,
+            with_html=False,
+        )
+        return detail, "reparsed", time.perf_counter() - started
+    return stored, "unarchived", 0.0
 
 
 def collect(
@@ -1077,7 +1144,11 @@ def _assemble(
                 without_collector[result.slug] = exc.reason(school)
                 continue
             links_by_owner[result.slug] = (recipe, links)
-        candidates_by_match: dict[tuple[str, str, str], list[tuple[str, Recipe]]] = {}
+        # Each candidate carries the programme whose schedule page published
+        # the link: the box page is archived under that programme.
+        candidates_by_match: dict[
+            tuple[str, str, str], list[tuple[str, Recipe, str]]
+        ] = {}
         for fixture in all_fixtures:
             pair = sorted((str(fixture["home"]), str(fixture["away"])))
             key = (str(fixture["date"]), pair[0], pair[1])
@@ -1086,7 +1157,9 @@ def _assemble(
             published = links_by_owner.get(owner)
             url = published[1].get(game_id) if published else None
             if published and url:
-                candidates_by_match.setdefault(key, []).append((url, published[0]))
+                candidates_by_match.setdefault(key, []).append(
+                    (url, published[0], owner)
+                )
 
         # Incremental harvest: a box score already stored for a final whose
         # result has not moved is data that cannot have changed since the
@@ -1095,30 +1168,74 @@ def _assemble(
         # late) or to a fixture whose result moved (a correction) — and the
         # fixture's own result is current every run, because the schedule
         # pages above are re-collected (or verified unchanged) first.
+        # Box pages join the fetch cache beside the layer pages (bead tl-ir6):
+        # a stored box whose page is archived reparses from disk when the
+        # parser's fingerprint moves, and --refetch rewrites the archive.
+        box_store = PageStateStore(data_root, season, gender)
+
+        def box_owners(
+            fixture: dict[str, object], key: tuple[str, str, str]
+        ) -> list[tuple[str, Recipe]]:
+            """The programmes whose schedule page could have linked this
+            box, in the order the fetch tries them: the links published this
+            run, then either side of the fixture."""
+            owners: dict[str, Recipe] = {}
+            for _url, recipe, owner in candidates_by_match.get(key, []):
+                owners.setdefault(owner, recipe)
+            for side in (str(fixture["home"]), str(fixture["away"])):
+                school = candidates.get(side)
+                recipe = (
+                    _recipe_for(school) if isinstance(school, SchoolConfig) else None
+                )
+                if recipe is not None:
+                    owners.setdefault(side, recipe)
+            return list(owners.items())
+
         available = {} if refetch else dict(stored_matches or {})
         reused: dict[str, dict[str, object]] = {}
-        planned: dict[str, tuple[list[tuple[str, Recipe]], dict[str, object]]] = {}
+        planned: dict[str, tuple[list[tuple[str, Recipe, str]], dict[str, object]]] = {}
+        reparsed = 0
+        reparse_seconds = 0.0
+        unarchived = 0
         for fixture in fixtures:
             if str(fixture.get("status")) != "final":
                 continue
             fixture_id = str(fixture["id"])
-            stored = available.get(fixture_id)
-            if stored is not None and _stored_match_current(stored, fixture):
-                reused[fixture_id] = stored
-                continue
             pair = sorted((str(fixture["home"]), str(fixture["away"])))
             key = (str(fixture["date"]), pair[0], pair[1])
+            stored = available.get(fixture_id)
+            if stored is not None and _stored_match_current(stored, fixture):
+                held, branch, seconds = _stored_box(
+                    fixture, stored, box_owners(fixture, key), box_store, season
+                )
+                if held is not None:
+                    reused[fixture_id] = held
+                    if branch == "reparsed":
+                        reparsed += 1
+                        reparse_seconds += seconds
+                    elif branch == "unarchived":
+                        unarchived += 1
+                    continue
             urls = candidates_by_match.get(key, [])
             if urls:
                 planned[fixture_id] = (urls, fixture)
 
         def match_task(
-            urls: list[tuple[str, Recipe]], fixture: dict[str, object]
+            urls: list[tuple[str, Recipe, str]], fixture: dict[str, object]
         ) -> object:
             failures: list[str] = []
-            for url, recipe in urls:
+            fixture_id = str(fixture["id"])
+            for url, recipe, owner in urls:
+                archive = BoxArchive(
+                    box_store,
+                    owner,
+                    fixture_id,
+                    parse_fingerprint(season, *recipe.parse_identity),
+                )
                 try:
-                    return recipe.collect_match(thread_session(), url, season, fixture)
+                    return recipe.collect_match(
+                        thread_session(), url, season, fixture, archive=archive
+                    )
                 except LiveCollectionError as exc:
                     failures.append(str(exc))
             raise LiveCollectionError("; ".join(failures))
@@ -1223,6 +1340,20 @@ def _assemble(
             print(
                 f"matches: kept {len(reused)} stored box score(s) whose results "
                 f"are unchanged — not re-fetched"
+            )
+        # The price of a module-wide fingerprint change, per conference: any
+        # edit to sidearm_live.py reparses every archived box of the season.
+        if reparsed:
+            print(
+                f"boxes reparsed from the archive after a parser change: "
+                f"{reparsed} in {reparse_seconds:.1f}s",
+                flush=True,
+            )
+        if unarchived:
+            print(
+                f"stored boxes with no archived page: {unarchived} "
+                f"(refetch archives them)",
+                flush=True,
             )
 
         match_cells: dict[str, dict[str, object]] = {}

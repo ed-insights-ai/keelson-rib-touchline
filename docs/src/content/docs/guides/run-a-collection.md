@@ -94,6 +94,17 @@ Watch for four kinds of line:
   venue or the conference flag). Because every run starts from the page and
   the sibling files again, a borrowed mark drops on its own if the other
   side withdraws it, and every conference converges within one cadence.
+- **Box scores answered from the archive.** A stored box score whose
+  result has not moved is never fetched again. When the box parser changes
+  (any edit to `pipeline/src/sidearm_live.py`, or to `presto.py` for a
+  PrestoSports site), every archived box page of the season is read again
+  from disk instead, and the run prints `boxes reparsed from the archive
+  after a parser change: N in S.Ss` so the cadence log shows what the
+  change cost per conference. A box collected before box pages joined the
+  cache has no page to reparse; it is reused as stored and counted in
+  `stored boxes with no archived page: N (refetch archives them)`. Neither
+  line prints when its count is zero, and nothing fetches on its own: a
+  `--refetch` for the season archives the legacy boxes.
 - **GAP lines.** Every named gap prints as a `GAP:` line naming the
   programme and layer (or the match) and the reason. Gaps are data, not
   failure: they land in the coverage manifest and in
