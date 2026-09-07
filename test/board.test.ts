@@ -1286,6 +1286,19 @@ describe("the fixtures schema", () => {
     expect(parsed.matches["sidearm:harding:14830"]?.teams[0]?.shots).toBe(27);
     expect(parsed.matches["sidearm:harding:14830"]?.plays?.[0]?.score).toEqual([1, 0]);
     expect(parsed.missing?.["sidearm:harding:9999"]).toContain("no box-score link");
+    // A legacy touchline.matches/1 file still reads (a home holds them until
+    // the backfill rewrites every season); under touchline.matches/2 every
+    // line carries player_ref, its source one of the four routes, and a
+    // route the resolver never wrote is refused.
+    const current = structuredClone(file) as Record<string, unknown>;
+    current.schema = "touchline.matches/2";
+    const side = (current.matches as Record<string, { teams: Record<string, unknown>[] }>)[
+      "sidearm:harding:14830"
+    ]?.teams[1] as { keepers: Record<string, unknown>[] };
+    side.keepers[0]!.player_ref = { id: "harding:rinnerstewart:", source: "key" };
+    expect(matchesFileSchema.parse(current).schema).toBe("touchline.matches/2");
+    side.keepers[0]!.player_ref = { id: "1", source: "guess" };
+    expect(() => matchesFileSchema.parse(current)).toThrow();
     const poisoned = structuredClone(file) as Record<string, unknown>;
     const inner = (poisoned.matches as Record<string, Record<string, unknown>>)[
       "sidearm:harding:14830"

@@ -122,7 +122,7 @@ const SCHEMAS = [
   "touchline.fixtures/2",
   "touchline.rosters/1",
   "touchline.stats/1",
-  "touchline.matches/1",
+  "touchline.matches/2",
   "touchline.digest/1",
   "touchline.research/1",
   "touchline.report-narrative/4",

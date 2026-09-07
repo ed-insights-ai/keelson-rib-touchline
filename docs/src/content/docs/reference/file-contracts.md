@@ -16,7 +16,7 @@ fails validation the same way a missing one does.
 | `touchline.fixtures/2` | `data/fixtures/{season}-{gender}-{conference}.json` | `pipeline/scripts/collect_board.py` | `fixturesFileSchema` in `src/model.ts` |
 | `touchline.rosters/1` | `data/rosters/{season}-{gender}-{conference}.json` | `pipeline/scripts/collect_board.py` | `rostersFileSchema` in `src/model.ts` |
 | `touchline.stats/1` | `data/stats/{season}-{gender}-{conference}.json` | `pipeline/scripts/collect_board.py` | `statsFileSchema` in `src/model.ts` |
-| `touchline.matches/1` | `data/matches/{season}-{gender}-{conference}.json` | `pipeline/scripts/collect_board.py` | `matchesFileSchema` in `src/model.ts` |
+| `touchline.matches/2` | `data/matches/{season}-{gender}-{conference}.json` | `pipeline/scripts/collect_board.py` | `matchesFileSchema` in `src/model.ts` |
 | `touchline.digest/1` | `data/scratch/digest-{season}-{gender}-{focus}.json` | `build_digest` in `pipeline/src/digest.py` | `pipeline/src/report.py` and the `touchline-report` gates |
 | `touchline.research/1` | `data/research/{season}-{gender}/{conference}/research-{slug}.json` | `touchline-report` research nodes | The `validate-research` gate |
 | `touchline.research-verified/1` | `data/research/{season}-{gender}/{conference}/verified-{slug}.json`, merged into `verified.json` | `touchline-report` verify and merge nodes | The `validate-verified` gate |
@@ -70,15 +70,21 @@ filename shard.
 | `player_id` | SideArm's own player id, the join key to the roster's bio URL. |
 | `missing` | Programmes whose statistics page yielded nothing. Named, never dropped. |
 
-### touchline.matches/1
+### touchline.matches/2
 
 | Field | Semantics |
 |---|---|
 | `matches` | A record keyed by fixture id, the same ids the season's fixtures file carries. |
+| `player_id` | On a player or keeper line: SideArm's own player id AS PRINTED ON THE PAGE, the same id the roster and season stats carry. A box score links a bio for the site owner's roster only, so it is absent on the opponent's side (and on both sides of a PrestoSports box). |
+| `player_ref` | On every player and keeper line, both sides: `{id, source}`, who the line is, resolved from the season's own files by `pipeline/src/identity.py`. `source` is `page` (the page's own link; `id` equals `player_id`), `twin` (the opponent's own box score of the same match, whose site linked its roster), `roster` (the programme's season roster in `data/rosters`), or `key` (unresolved; `id` is the synthetic `{slug}:{folded name}:{number}`, stable within a season and joinable to nothing outside the box scores). The routes run in that order and stop at the first hit; a name matches only exactly (folded: accents, case, order, letters only) or by shirt number and surname, never by edit distance or nickname. A consumer joining players across matches keys on `player_ref.id` where `source` is `page`, `twin` or `roster` (the site's id space), and on the key otherwise. Recomputed on every write; `check-player-identity` reports coverage by route. |
 | `teams` | Each side exactly as the box score served it. Names and abbreviations are consistent within a page, not across pages, so `scoring`, `cards`, and `plays` reference sides by index into this array. |
 | `home_index` | Which served side is the fixture's home team. Absent when the page gave no way to prove it. |
 | `plays` | The text is the record, free prose typed by the home stat crew; `type` exists only where the collector recognized the phrasing, so an untyped play is still a play. The `period` is the page's own section token ("1", "2", "SO"). |
 | `missing` | A record of fixture id to the collector's named reason, for played fixtures whose box score could not be collected. |
+
+`touchline.matches/1` is the same file without `player_ref`; a data home holds
+files under it until the next collect of each season rewrites them (the
+backfill workflow, no refetch), and the readers admit both.
 
 ## touchline.digest/1
 

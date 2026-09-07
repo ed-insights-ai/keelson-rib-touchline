@@ -42,7 +42,7 @@ const PUBLISHED = [
   ["fixtures-2.json", FIXTURES_SCHEMA, fixturesFileSchema],
   ["rosters-1.json", ROSTERS_SCHEMA, rostersFileSchema],
   ["stats-1.json", STATS_SCHEMA, statsFileSchema],
-  ["matches-1.json", MATCHES_SCHEMA, matchesFileSchema],
+  ["matches-2.json", MATCHES_SCHEMA, matchesFileSchema],
 ] as const;
 
 describe("every published contract fixture parses under the rib's strict schema", () => {
@@ -115,7 +115,7 @@ describe("the fixtures exercise every value the schemas enumerate", () => {
   });
 
   test("matches: every card type, and a match the page could not orient", () => {
-    const file = matchesFileSchema.parse(read("matches-1.json"));
+    const file = matchesFileSchema.parse(read("matches-2.json"));
     const details = Object.values(file.matches);
     const types = new Set(details.flatMap((m) => (m.cards ?? []).map((c) => c.type)));
     expect(types).toEqual(new Set(matchCardSchema.shape.type.options));

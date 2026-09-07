@@ -632,7 +632,7 @@ def test_box_scores_checkpoint_to_disk_as_they_confirm(monkeypatch, tmp_path) ->
     assert len(checkpoints) == 2
     for checkpoint in checkpoints:
         # Every checkpoint is a valid wholesale payload, never a fragment.
-        assert checkpoint["schema"] == "touchline.matches/1"
+        assert checkpoint["schema"] == "touchline.matches/2"
         assert checkpoint["season"] == 2026
     assert set(checkpoints[-1]["matches"]) == set(payload["matches"])
 
@@ -770,7 +770,7 @@ def _fake_payloads(season: int, gender: str, conference: str, wanted: list[str])
             "teams": {},
         },
         {
-            "schema": "touchline.matches/1",
+            "schema": "touchline.matches/2",
             "season": season,
             "gender": gender,
             "collected_at": stamp,
@@ -838,7 +838,7 @@ def test_main_wires_serial_and_the_matches_checkpoint(monkeypatch, tmp_path) -> 
             encoding="utf-8"
         )
     )
-    assert checkpointed["schema"] == "touchline.matches/1"
+    assert checkpointed["schema"] == "touchline.matches/2"
 
 
 def test_main_wires_workers_and_programme_timeout(monkeypatch, tmp_path) -> None:

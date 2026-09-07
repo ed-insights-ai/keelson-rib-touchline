@@ -41,7 +41,7 @@ an inferred intent.
 | `data/fixtures/` | Published schedules | `touchline.fixtures/2` |
 | `data/rosters/` | Published rosters | `touchline.rosters/1` |
 | `data/stats/` | Published player season statistics | `touchline.stats/1` |
-| `data/matches/` | Published per-match box scores | `touchline.matches/1` |
+| `data/matches/` | Published per-match box scores | `touchline.matches/2` |
 
 Each directory holds one JSON file per season shard, named
 `{season}-{gender}-{conference}.json` by `seasonFileName` in

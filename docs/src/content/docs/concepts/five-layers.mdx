@@ -32,7 +32,7 @@ the layer. `pipeline/scripts/collect_board.py` is the live collector: for each
 programme it gathers schedule, roster, statistics, and box scores, proves
 which season the site actually served (`assert_served_season`), and writes
 conference-sharded season files under the schema tags `touchline.fixtures/2`,
-`touchline.rosters/1`, `touchline.stats/1`, and `touchline.matches/1`. Every
+`touchline.rosters/1`, `touchline.stats/1`, and `touchline.matches/2`. Every
 run also merges its outcome cells into `data/coverage.json`, because a named
 gap is data, not a failure. `pipeline/scripts/probe.py` is the read-only
 scout beside it: it fingerprints a candidate site's platform and drafts a

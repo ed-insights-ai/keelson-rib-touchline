@@ -35,6 +35,7 @@ counts) and one row per check.
 | programmes-sync | the data home's mirrored `data/reference/programmes.json` (`touchline.programmes/2`: nickname, town, point, provenance per programme) vs the rib's built source of record, canonicalized; a divergence warns with the exact diff |
 | twin-check | every match collected from both sides (two season files, same date and slugs): unordered score and status must agree; the home side is not compared, since a neutral site differs there honestly |
 | box-vs-fixture | every box score against its fixture by team name, the names resolved through the collector's identity rules; reversed or different scorelines named, a disagreeing stored `home_index` named, unresolved names counted and never passed |
+| player-identity | `player_ref` coverage on every box-score line by route (page, twin, roster, key), the owner side's page share, the key lines by miss reason, and every twin/roster disagreement named; legacy `touchline.matches/1` files measured and named, never counted as zero |
 
 The twin-check leans on one collector rule: a fixture is `final` only when it
 carries both scores. A schedule row whose completed class or "Final" span
