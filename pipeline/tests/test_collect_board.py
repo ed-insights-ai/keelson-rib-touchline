@@ -581,7 +581,7 @@ def test_main_keeps_conference_shards_independent(
             "teams": {},
         }
         matches_payload = {
-            "schema": "touchline.matches/1",
+            "schema": "touchline.matches/2",
             "season": season,
             "gender": gender,
             "collected_at": "2026-08-12T12:00:00+00:00",

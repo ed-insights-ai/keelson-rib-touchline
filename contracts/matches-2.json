@@ -1,5 +1,5 @@
 {
-  "schema": "touchline.matches/1",
+  "schema": "touchline.matches/2",
   "season": 2016,
   "gender": "men",
   "collected_at": "2026-08-10T10:48:07+00:00",
@@ -29,7 +29,11 @@
               "sog": 0,
               "goals": 0,
               "assists": 0,
-              "minutes": 101
+              "minutes": 101,
+              "player_ref": {
+                "id": "5233",
+                "source": "page"
+              }
             },
             {
               "name": "Jeremy Nwonumah",
@@ -39,7 +43,11 @@
               "sog": 0,
               "goals": 0,
               "assists": 0,
-              "minutes": 31
+              "minutes": 31,
+              "player_ref": {
+                "id": "5225",
+                "source": "page"
+              }
             },
             {
               "name": "Landon Lacy",
@@ -50,7 +58,11 @@
               "sog": 1,
               "goals": 0,
               "assists": 0,
-              "minutes": 65
+              "minutes": 65,
+              "player_ref": {
+                "id": "9001",
+                "source": "twin"
+              }
             },
             {
               "name": "Seth Elliott",
@@ -59,7 +71,11 @@
               "sog": 0,
               "goals": 0,
               "assists": 0,
-              "minutes": 27
+              "minutes": 27,
+              "player_ref": {
+                "id": "9002",
+                "source": "roster"
+              }
             },
             {
               "name": "Cutter Smith",
@@ -70,7 +86,11 @@
               "sog": 0,
               "goals": 0,
               "assists": 0,
-              "minutes": 70
+              "minutes": 70,
+              "player_ref": {
+                "id": "3112",
+                "source": "page"
+              }
             },
             {
               "name": "Nelson Pacheco",
@@ -80,7 +100,11 @@
               "sog": 0,
               "goals": 0,
               "assists": 0,
-              "minutes": 90
+              "minutes": 90,
+              "player_ref": {
+                "id": "maryville-mo:nelsonpacheco:01",
+                "source": "key"
+              }
             },
             {
               "name": "Austin Reis",
@@ -91,7 +115,11 @@
               "shots": 0,
               "sog": 0,
               "goals": 0,
-              "assists": 0
+              "assists": 0,
+              "player_ref": {
+                "id": "3463",
+                "source": "page"
+              }
             },
             {
               "name": "Cole Pardo",
@@ -100,7 +128,11 @@
               "shots": 0,
               "sog": 0,
               "goals": 0,
-              "assists": 0
+              "assists": 0,
+              "player_ref": {
+                "id": "3462",
+                "source": "page"
+              }
             },
             {
               "name": "Robert Gjelaj",
@@ -110,7 +142,11 @@
               "shots": 0,
               "sog": 0,
               "goals": 0,
-              "assists": 0
+              "assists": 0,
+              "player_ref": {
+                "id": "9004",
+                "source": "twin"
+              }
             },
             {
               "name": "Arthur White",
@@ -118,7 +154,11 @@
               "shots": 0,
               "sog": 0,
               "goals": 0,
-              "assists": 0
+              "assists": 0,
+              "player_ref": {
+                "id": "9005",
+                "source": "roster"
+              }
             },
             {
               "name": "George Francis V",
@@ -127,7 +167,11 @@
               "shots": 1,
               "sog": 0,
               "goals": 0,
-              "assists": 0
+              "assists": 0,
+              "player_ref": {
+                "id": "maryville-mo:georgefrancisv:5",
+                "source": "key"
+              }
             },
             {
               "name": "Luca Saewe",
@@ -137,7 +181,11 @@
               "shots": 2,
               "sog": 0,
               "goals": 0,
-              "assists": 0
+              "assists": 0,
+              "player_ref": {
+                "id": "3770",
+                "source": "page"
+              }
             }
           ],
           "keepers": [
@@ -148,7 +196,11 @@
               "number": "1",
               "minutes": 101,
               "goals_against": 1,
-              "saves": 7
+              "saves": 7,
+              "player_ref": {
+                "id": "5233",
+                "source": "page"
+              }
             },
             {
               "name": "Sean Bouland",
@@ -156,7 +208,11 @@
               "number": "31",
               "minutes": 101,
               "goals_against": 0,
-              "saves": 2
+              "saves": 2,
+              "player_ref": {
+                "id": "9007",
+                "source": "twin"
+              }
             }
           ]
         },
@@ -483,7 +539,11 @@
               "sog": 0,
               "goals": 0,
               "assists": 0,
-              "minutes": 85
+              "minutes": 85,
+              "player_ref": {
+                "id": "9008",
+                "source": "roster"
+              }
             }
           ],
           "keepers": [
@@ -493,7 +553,11 @@
               "number": "29",
               "minutes": 90,
               "goals_against": 2,
-              "saves": 3
+              "saves": 3,
+              "player_ref": {
+                "id": "maryville-mo:joeyschrand:29",
+                "source": "key"
+              }
             }
           ]
         },
@@ -519,7 +583,11 @@
               "sog": 0,
               "goals": 0,
               "assists": 0,
-              "minutes": 90
+              "minutes": 90,
+              "player_ref": {
+                "id": "10345",
+                "source": "page"
+              }
             }
           ],
           "keepers": [
@@ -530,7 +598,11 @@
               "number": "1",
               "minutes": 90,
               "goals_against": 1,
-              "saves": 6
+              "saves": 6,
+              "player_ref": {
+                "id": "10345",
+                "source": "page"
+              }
             }
           ]
         }

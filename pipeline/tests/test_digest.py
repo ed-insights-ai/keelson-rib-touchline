@@ -138,7 +138,7 @@ def test_patterns_attribute_by_home_index_not_column_order():
         2025, [fixture, final("2025-09-08", "alpha", "beta", 1, 0, fixture_id="m2")]
     )
     matches = {
-        "schema": "touchline.matches/1",
+        "schema": "touchline.matches/2",
         "matches": {
             "m1": {
                 # teams[0] is alpha (away), teams[1] is beta (home).
@@ -400,7 +400,7 @@ def _season_of_matches(dates_and_squads):
             ],
         }
     return fixtures_payload(2025, fixtures), {
-        "schema": "touchline.matches/1",
+        "schema": "touchline.matches/2",
         "matches": matches,
     }
 
@@ -607,7 +607,7 @@ def seed_home(root: Path) -> None:
         "matches",
         2025,
         {
-            "schema": "touchline.matches/1",
+            "schema": "touchline.matches/2",
             "collected_at": "2025-11-20T00:00:00+00:00",
             "matches": {
                 "m1": {

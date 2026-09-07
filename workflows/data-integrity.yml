@@ -605,14 +605,47 @@ nodes:
       fi
       printf '%s\n' "$OUT"
 
+  - id: player-identity
+    timeout: 600000
+    bash: |
+      set -uo pipefail
+      # Who each box-score line is. A box links a bio for the site owner's
+      # roster only, so player_id is absent on the opponent's side of every
+      # match; the writer resolves a player_ref on every line from the
+      # season's own files (the opponent's own box of the same match, then
+      # its roster, else a synthetic key) and this node measures how far
+      # each file got, by route, and names every line where the twin box
+      # and the roster disagree (bead tl-y8q). Lives in the pipeline
+      # (scripts/check_player_identity.py) beside check_box_scores.py and
+      # resolves the pipeline the same way.
+      KEELSON_HOME_DIR="${KEELSON_HOME:-$HOME/.keelson}"
+      CFG="$KEELSON_HOME_DIR/rib-touchline/config.json"
+      PD="${TOUCHLINE_PIPELINE_DIR:-}"
+      if [ -z "$PD" ] && [ -f "$CFG" ]; then
+        PKG=$(jq -r '.packageDir // empty' "$CFG" 2>/dev/null); [ -n "$PKG" ] && PD="$PKG/pipeline"
+      fi
+      [ -z "$PD" ] && PD="$KEELSON_HOME_DIR/node_modules/@keelson/rib-touchline/pipeline"
+      if [ ! -f "$PD/pyproject.toml" ]; then
+        printf '{"check":"player-identity","verdict":"alarm","headline":"CHECK DID NOT RUN — cannot resolve the Touchline pipeline (tried TOUCHLINE_PIPELINE_DIR, %s, the installed package path; last candidate %s).","cause":"the check is a pipeline script and needs the pipeline to run — see touchline-collect resolve-pipeline for the same lookup"}\n' "$CFG" "$PD"
+        exit 0
+      fi
+      OUT=$(TOUCHLINE_DATA_DIR="$PWD" uv run --project "$PD" check-player-identity 2>&1); RC=$?
+      LAST=$(printf '%s\n' "$OUT" | grep '^{' | tail -1)
+      if [ "$RC" -ne 0 ] || [ -z "$LAST" ]; then
+        printf '%s\n' "$OUT" | tail -20
+        printf '{"check":"player-identity","verdict":"alarm","headline":"CHECK DID NOT RUN — check-player-identity exited %s without a verdict line (cwd %s); its last lines are printed above.","cause":"the pipeline could not run the check — a missing venv, an unreadable season file, or a shape the script does not know"}\n' "$RC" "$(pwd)"
+        exit 0
+      fi
+      printf '%s\n' "$OUT"
+
   # ── Report ──────────────────────────────────────────────────────────────
   - id: report
     runtime: bun
     always_run: true
     trigger_rule: all_done
-    depends_on: [collect-gaps, goal-attribution, exhibition-markers, membership-sync, programmes-sync, twin-check, box-vs-fixture]
+    depends_on: [collect-gaps, goal-attribution, exhibition-markers, membership-sync, programmes-sync, twin-check, box-vs-fixture, player-identity]
     script: |
-      const IDS = ['collect_gaps', 'goal_attribution', 'exhibition_markers', 'membership_sync', 'programmes_sync', 'twin_check', 'box_vs_fixture']
+      const IDS = ['collect_gaps', 'goal_attribution', 'exhibition_markers', 'membership_sync', 'programmes_sync', 'twin_check', 'box_vs_fixture', 'player_identity']
       const MARK = { ok: '[ OK   ]', warn: '[ WARN ]', alarm: '[ ALARM]' }
       const rows = []
       for (const id of IDS) {

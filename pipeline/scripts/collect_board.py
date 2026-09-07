@@ -53,6 +53,7 @@ from src.fetch_pool import (
     is_challenge_reason,
 )
 from src.config import DEFAULT_CONFIG, SchoolConfig, load_schools
+from src.identity import IdentityReport, SeasonSources, resolve_matches
 from src.membership import conference_for, division_for, load_membership
 from src.page_state import BoxArchive, PageStateStore
 from src.programmes import load_programmes, programme_points
@@ -85,7 +86,7 @@ from src.sidearm_live import (
 FIXTURES_SCHEMA = "touchline.fixtures/2"
 ROSTERS_SCHEMA = "touchline.rosters/1"
 STATS_SCHEMA = "touchline.stats/1"
-MATCHES_SCHEMA = "touchline.matches/1"
+MATCHES_SCHEMA = "touchline.matches/2"
 
 # What a coverage cell names as its collector, per platform recipe.  A
 # programme with no recipe at all (a platform the table does not know, or a
@@ -1117,6 +1118,21 @@ def _assemble(
 
     matches: dict[str, object] = {}
     matches_missing: dict[str, str] = {}
+    # Who each box-score line is (bead tl-y8q): the page publishes an id for
+    # the owner's roster only, so every line gets a ``player_ref`` resolved
+    # from the season's own files — this run's rosters, the sibling
+    # conferences' rosters and boxes on disk, and the boxes this run holds.
+    # A function of those files, recomputed on every write.
+    identity_sources = SeasonSources()
+    identity_sources.load_disk(
+        data_root, season, gender, exclude_matches=programme_slug(conference)
+    )
+    identity_sources.add_rosters(roster_payload)
+
+    def resolve_identities(held: dict[str, dict[str, object]]) -> IdentityReport:
+        identity_sources.add_matches({"matches": held}, {"fixtures": fixtures})
+        return resolve_matches(held, fixtures, identity_sources)
+
     if LAYER_MATCHES in layers:
         # One box score per deduplicated fixture: a conference game sits on two
         # schedules, and each publishes its own link to the same match under its
@@ -1245,13 +1261,15 @@ def _assemble(
 
         def assembled_payload() -> dict[str, object]:
             """A valid matches payload from what is confirmed so far, in
-            fixture order — the same wholesale shape the final write uses."""
-            held: dict[str, object] = {}
+            fixture order — the same wholesale shape the final write uses,
+            every line carrying its ``player_ref``."""
+            held: dict[str, dict[str, object]] = {}
             for value in fixtures:
                 identity = str(value["id"])
                 detail = reused.get(identity) or fetched.get(identity)
                 if detail is not None:
                     held[identity] = detail
+            resolve_identities(held)
             return {
                 "schema": MATCHES_SCHEMA,
                 "season": season,
@@ -1425,6 +1443,12 @@ def _assemble(
 
         cells.update(match_cells)
         checkpoint_cells(match_cells)
+
+    if LAYER_MATCHES in layers:
+        identity_report = resolve_identities(matches)
+        print(identity_report.summary())
+        for finding in identity_report.disagreements:
+            print(f"  DISAGREE: {finding}")
 
     matches_payload: dict[str, object] = {
         "schema": MATCHES_SCHEMA,

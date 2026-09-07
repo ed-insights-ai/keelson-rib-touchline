@@ -11,7 +11,7 @@ value the writer can emit.
 | `fixtures-2.json` | `touchline.fixtures/2` | `pipeline/scripts/collect_board.py` |
 | `rosters-1.json` | `touchline.rosters/1` | `pipeline/scripts/collect_board.py` |
 | `stats-1.json` | `touchline.stats/1` | `pipeline/scripts/collect_board.py` |
-| `matches-1.json` | `touchline.matches/1` | `pipeline/scripts/collect_board.py` |
+| `matches-2.json` | `touchline.matches/2` | `pipeline/scripts/collect_board.py` |
 | `membership.json` | untagged membership reference | authored at `data/reference/membership.json` |
 | `programmes-2.json` | `touchline.programmes/2` | built at `data/reference/programmes.json` by `pipeline/scripts/build_programmes.py` |
 
@@ -48,8 +48,11 @@ The fixtures promise what the writer *can* emit, not only what it has:
 - `fixtures-2.json` carries a `status: "live"` row. The schedule parser
   emits it between kickoff and the final whistle; the cadence has not yet
   caught one.
-- `matches-1.json` carries a card of `type: "unknown"`. The box-score parser
+- `matches-2.json` carries a card of `type: "unknown"`. The box-score parser
   emits it when the phrasing names neither colour.
+- `matches-2.json` carries every `player_ref.source` (`page`, `twin`,
+  `roster`, `key`) across its lines; the `twin`, `roster` and `key` refs are
+  restamped onto the 2016 rows, whose page linked no bio for those players.
 - `fixtures-2.json` carries a `forfeit: "away"` row (an optional field
   naming the side a forfeit was awarded to, `home` or `away`; status stays
   `final`). The one archived forfeit, Upper Iowa 2024 game 9017, is the

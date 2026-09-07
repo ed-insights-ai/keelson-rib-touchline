@@ -108,8 +108,8 @@ STATS = Contract(
 
 MATCHES = Contract(
     name="matches",
-    filename="matches-1.json",
-    schema="touchline.matches/1",
+    filename="matches-2.json",
+    schema="touchline.matches/2",
     records=frozenset({("matches",), ("missing",)}),
     enums=frozenset(
         {
@@ -117,6 +117,8 @@ MATCHES = Contract(
             ("matches", KEY, "cards", ITEM, "type"),
             ("matches", KEY, "plays", ITEM, "type"),
             ("matches", KEY, "plays", ITEM, "period"),
+            ("matches", KEY, "teams", ITEM, "players", ITEM, "player_ref", "source"),
+            ("matches", KEY, "teams", ITEM, "keepers", ITEM, "player_ref", "source"),
         }
     ),
 )

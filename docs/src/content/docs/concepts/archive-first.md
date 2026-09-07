@@ -51,7 +51,7 @@ The stores downstream of the archive are each explicitly rebuildable:
 
 - **Season JSON files**, the consumer deliverable: one schema-tagged file per
   season, gender, and conference (`touchline.fixtures/2`,
-  `touchline.rosters/1`, `touchline.stats/1`, `touchline.matches/1`), written
+  `touchline.rosters/1`, `touchline.stats/1`, `touchline.matches/2`), written
   atomically by `_atomic_json` in `pipeline/scripts/collect_board.py`.
   The collector's conditional-fetch memory means a page verified unchanged is
   re-parsed from the archive rather than re-fetched, so a season already

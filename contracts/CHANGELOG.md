@@ -4,6 +4,25 @@ One line per change to a published contract, newest first. A fixture change
 without a line here is incomplete; a writer change without a fixture change
 fails `pipeline/tests/test_contracts.py`.
 
+## 2026-09-07
+
+- `touchline.matches/2` (was `/1`): every player and keeper line on both
+  sides carries `player_ref: {id, source}`, who the line is, resolved from
+  the season's own files, with `source` one of `page` (the page's own bio
+  link; `id` equals `player_id`), `twin` (the opponent's own box score of
+  the same match), `roster` (the programme's season roster) or `key`
+  (unresolved; a synthetic `<slug>:<folded name>:<number>`). `player_id`
+  keeps its meaning, the id as printed on the page, absent when the page
+  printed none. The rules run in that order, stop at the first hit, and
+  never guess a spelling (exact folded name, or shirt number and surname,
+  each unique). Reason: a SideArm box links bios for the owner's roster
+  only, so `player_id` was absent on 95% of opponent lines and no
+  opponent line could be joined to the same player anywhere else (bead
+  tl-y8q). The rib's `matchesFileSchema` admits `/1` and `/2` until the
+  backfill rewrites every season; the writer emits `/2` only. New check
+  `check-player-identity` (data-integrity node `player-identity`) reports
+  coverage by route per file and every twin/roster disagreement.
+
 ## 2026-09-05
 
 - Membership reference: `CCAA`, `PACWEST` and `GNAC` join `conferences`,
