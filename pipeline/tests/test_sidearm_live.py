@@ -2750,6 +2750,54 @@ def test_the_two_team_list_skin_reads_scores_and_dates_off_each_row() -> None:
     assert away_loss["conference_game"] is False
 
 
+def test_the_all_sports_upcoming_events_block_mints_no_other_sport_rows() -> None:
+    """Bead tl-4sg.41 (smcathletics.com 2026-09-07): the men's soccer page
+    embeds an all-sports upcoming-events block under the same ``events``
+    component type as the sport's own stub — women's soccer, volleyball,
+    field hockey, tennis and a cross-country invitational, every one naming
+    its sport.  None of them is a men's soccer fixture; the sport's own
+    events and the rendered rows still are."""
+    base = "https://smcathletics.com/sports/mens-soccer"
+    html = (FIXTURES / "sidearm_saint_michaels_schedule_2026.html").read_text()
+    rows = {
+        str(row["id"]).rsplit(":", 1)[-1]: row
+        for row in parse_schedule_page(
+            html,
+            page_url=f"{base}/schedule/2026",
+            year=2026,
+            owner_slug="saint-michael-s",
+            aliases={},
+            gender="men",
+        )
+    }
+    # 9947 is a rendered row only (a played match the stub no longer lists),
+    # 10129 rides the payload only, 9952 rides both.
+    assert set(rows) == {"9947", "10129", "9952"}
+    assert (rows["9947"]["home"], rows["9947"]["away"]) == (
+        "saint-michael-s",
+        "caldwell",
+    )
+    assert rows["10129"]["away"] == "saint-michael-s"
+    assert rows["9952"]["home"] == "saint-michael-s"
+    # The other gender's soccer is that programme's schedule, not this one's.
+    women = {
+        str(row["id"]).rsplit(":", 1)[-1]
+        for row in parse_schedule_page(
+            html,
+            page_url=f"{base}/schedule/2026",
+            year=2026,
+            owner_slug="saint-michael-s",
+            aliases={},
+            gender="women",
+        )
+    }
+    assert {"9816", "9817"} <= women
+    assert "10129" not in women
+    # A sport that is not soccer is never a row for either gender.
+    for other in ("9796", "10122", "9739", "10124", "9873", "9881"):
+        assert other not in rows and other not in women, other
+
+
 def test_the_two_team_list_skin_strips_the_orientation_word_on_upcoming_rows() -> None:
     """Bead tl-4sg.38 (daemenwildcats.com 2026): upcoming rows print the
     orientation word as a bare span inside the opponent-name span, so the
