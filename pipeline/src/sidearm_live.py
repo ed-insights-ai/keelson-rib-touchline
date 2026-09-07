@@ -519,8 +519,27 @@ def _nuxt_schedule_objects(html: str) -> list[dict[str, object]]:
     ]
 
 
-def _payload_events(html: str) -> list[tuple[str, dict[str, object], bool]]:
-    """Every embedded game as ``(schedule title, event, honest)``.
+#: SideArm's global code for the soccer programme of each gender, the
+#: ``sport.global_sport_shortname`` every embedded event carries (measured
+#: 2026-09-07 across 1,677 events on the cached 2026 schedule pages: every
+#: event names one, ``msoc`` on all but eight).
+SOCCER_SPORT_CODES = {"men": "msoc", "women": "wsoc"}
+
+
+def _event_sport_code(raw: dict[str, object]) -> str:
+    """The sport an embedded event says it belongs to, or ``""``."""
+    sport = raw.get("sport")
+    if not isinstance(sport, dict):
+        return ""
+    return str(
+        sport.get("global_sport_shortname") or sport.get("shortname") or ""
+    ).lower()
+
+
+def _payload_events(
+    html: str, gender: str | None = None
+) -> list[tuple[str, dict[str, object], bool]]:
+    """Every embedded soccer game as ``(schedule title, event, honest)``.
 
     Three payload shapes carry the same event contract.  The ``events``
     component's title names the current season whatever URL served it, so
@@ -528,7 +547,18 @@ def _payload_events(html: str) -> list[tuple[str, dict[str, object], bool]]:
     season.  A schedule object — the legacy list skin's inline Vue data or
     the Nuxt store's schedule — names its own season, so its games are the
     served season's and come back ``honest=True``.
+
+    The ``events`` component is not always the sport's own.  A skin's
+    all-sports upcoming-events block rides on the men's soccer page under
+    the same component type (smcathletics.com 2026-09-07: women's soccer,
+    volleyball, field hockey, tennis and a cross-country invitational
+    beside the men's games, bead tl-4sg.41), and every event names its
+    sport.  An event naming a sport that is not soccer is never a row, and
+    with a ``gender`` the other gender's soccer is not one either.  An
+    event naming no sport is kept: the schedule objects name none, and
+    they are the sport's own schedule by construction.
     """
+    wanted = SOCCER_SPORT_CODES.get(gender or "")
     rows: list[tuple[str, dict[str, object], bool]] = []
     for component in _component_objects(html):
         if component.get("type") != "events":
@@ -538,6 +568,11 @@ def _payload_events(html: str) -> list[tuple[str, dict[str, object], bool]]:
             continue
         for raw in data:
             if not isinstance(raw, dict):
+                continue
+            code = _event_sport_code(raw)
+            if code and code not in SOCCER_SPORT_CODES.values():
+                continue
+            if code and wanted and code != wanted:
                 continue
             schedule = raw.get("schedule")
             schedule_dict = schedule if isinstance(schedule, dict) else {}
@@ -2130,6 +2165,7 @@ def parse_schedule_page(
     members: set[str] | None = None,
     skips: list[str] | None = None,
     scope: ResolutionScope | None = None,
+    gender: str = "men",
 ) -> list[dict[str, object]]:
     """Read a SideArm schedule page into fixture rows.
 
@@ -2139,10 +2175,12 @@ def parse_schedule_page(
     never minted; with a ``skips`` list it is named there, one line per
     row, for the collect summary.  With a ``scope`` (the collect's
     conference-season), an opponent a member of that conference claims
-    resolves to the member first (``opponent_slug``).
+    resolves to the member first (``opponent_slug``).  ``gender`` is the
+    programme's (``SchoolConfig.gender``): an embedded event naming another
+    sport, or the other gender's soccer, is not this schedule's game.
     """
     events: dict[str, dict[str, object]] = {}
-    for title, raw, honest in _payload_events(html):
+    for title, raw, honest in _payload_events(html, gender):
         date = str(raw.get("date") or "")
         if not re.search(rf"\b{year}\b", title):
             continue
@@ -3543,6 +3581,7 @@ def collect_programme(
                         members=members,
                         skips=schedule_skips,
                         scope=scope,
+                        gender=school.gender,
                     )
                     outcomes[LAYER_SCHEDULE] = LayerOutcome(
                         LAYER_SCHEDULE,
@@ -3580,6 +3619,7 @@ def collect_programme(
                     members=members,
                     skips=schedule_skips,
                     scope=scope,
+                    gender=school.gender,
                 )
                 recipe.assert_schedule_proven(
                     page.html,

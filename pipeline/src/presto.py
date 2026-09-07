@@ -494,12 +494,16 @@ def parse_schedule(
     members: set[str] | None = None,
     skips: list[str] | None = None,
     scope: ResolutionScope | None = None,
+    gender: str = "men",
 ) -> list[dict[str, object]]:
     """Read a PrestoSports schedule page into fixture rows.
 
     Same row shape, and the same evidence-tiered conference flag, as the
     SideArm parser (``sidearm_live.parse_schedule_page``), under
-    ``presto:{owner}:{event id}`` identifiers.  Where each field comes from,
+    ``presto:{owner}:{event id}`` identifiers.  ``gender`` is the recipe
+    contract's (the programme's, ``SchoolConfig.gender``); a PrestoSports
+    schedule page lists one sport's games and nothing else, so it selects
+    nothing here.  Where each field comes from,
     measured on https://www.tampaspartans.com/sports/msoc/2025-26/schedule
     and the 2026-27 page (2026-09-02):
 
