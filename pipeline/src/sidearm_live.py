@@ -900,7 +900,7 @@ def calendar_event_skip(date: str, name: str) -> str:
 # before the test. "TBA" and "TBD" must be the whole string.
 _ROUND_PLACEHOLDER = re.compile(
     r"\b(?:tournament|championships?|quarte(?:r)?-?finals?|semi-?finals?|finals?"
-    r"|(?:\d{1,2}(?:st|nd|rd|th)|first|second|third|fourth)\s+round"
+    r"|(?:\d{1,2}(?:st|nd|rd|th)|first|second|third|fourth|opening)\s+rounds?"
     r"|selection\s+show|playoffs?|regionals?|\bconference\b)\b",
     re.IGNORECASE,
 )

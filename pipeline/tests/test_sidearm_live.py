@@ -3091,6 +3091,13 @@ def test_round_placeholder_reads_every_measured_slot_and_no_opponent() -> None:
         "Conference Carolinas",
         "Pennsylvania State Athletic Conference (PSAC)",
         "NCAA D2 National 3rd Round and Quarterfinals",
+        "NCAA First and Second Rounds",
+        "NCAA 1st and 2nd Rounds",
+        "NCAA 1st/2nd Rounds",
+        "NCAA D2 National 1st and 2nd Rounds",
+        "NCAA Opening Round",
+        "NCAA Midwest Regional",
+        "NCAA South Regional",
     ]
     opponents = [
         "No. 2E West Chester (PSAC Quarterfinal)",

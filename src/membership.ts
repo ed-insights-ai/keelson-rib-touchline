@@ -258,19 +258,26 @@ export async function resolveTargets(
   const wanted = normalize(subject);
 
   // 1. A conference name wins — it is the broader ask, and conference names
-  //    are short tokens unlikely to collide with a programme.
-  for (const conf of file.conferences) {
-    if (conf === "independent" || conf === "non_member") continue;
-    if (normalize(conf) === wanted || wanted.includes(normalize(conf))) {
-      const res = await resolveConference(conf, gender, season);
-      return {
-        kind: "conference",
-        conference: res.conference,
-        slugs: res.slugs,
-        extrapolated: res.extrapolated,
-        authoredThrough: res.authoredThrough,
-      };
-    }
+  //    are short tokens unlikely to collide with a programme. The code must
+  //    be the whole ask or one of its words: a substring test read "ECC"
+  //    and "CCAA" as the CC, whichever code came first in the file
+  //    (2026-09-12, two seasons collected into the wrong conference).
+  const padded = ` ${wanted} `;
+  const conferences = file.conferences.filter(
+    (conf) => conf !== "independent" && conf !== "non_member",
+  );
+  const named =
+    conferences.find((conf) => normalize(conf) === wanted) ??
+    conferences.find((conf) => padded.includes(` ${normalize(conf)} `));
+  if (named) {
+    const res = await resolveConference(named, gender, season);
+    return {
+      kind: "conference",
+      conference: res.conference,
+      slugs: res.slugs,
+      extrapolated: res.extrapolated,
+      authoredThrough: res.authoredThrough,
+    };
   }
 
   // 2. A single programme, matched on its slug's normalized form.
