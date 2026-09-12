@@ -101,6 +101,8 @@ from src.sidearm_live import (
     hosted_other_match,
     hosted_skip,
     own_side_opponent,
+    placeholder_skip,
+    round_placeholder,
     _name_slug_affinity,
     _oriented_scores,
     _play_type,
@@ -351,14 +353,8 @@ def assert_schedule_proven(
 # Postseason structure rows name a round, not an opponent ("SSC
 # Quarterfinals", "NCAA 1st Round", "NCAA Championship": nine such rows on
 # the 2026-27 schedule) or nothing yet ("TBA").  Real matches from those
-# rounds arrive later with actual opponents, as on SideArm.
-_ROUND_NAME = re.compile(
-    r"\b(?:tournament|championship|quarterfinals?|semifinals?"
-    r"|\d{1,2}(?:st|nd|rd|th)\s+round)\b",
-    re.IGNORECASE,
-)
-_PLACEHOLDER = re.compile(r"tbd|tba", re.IGNORECASE)
-_PARENTHETICAL = re.compile(r"\([^)]*\)")
+# rounds arrive later with actual opponents. One grammar with SideArm
+# (round_placeholder), named in the skips there and here.
 # A match settled on penalties after a draw: "L by PK, 1-1" beside a status
 # of "Final - PK Alliance University" (ubknights.com, 2022-23).  The match
 # itself is the draw the numbers print; the letter names the shoot-out.
@@ -590,10 +586,9 @@ def parse_schedule(
         # The table skin names a postseason opponent with its round in
         # parentheses ("No. 1 Seed Post (CACC Championship)"): a fixture, not
         # a round placeholder, so the round words are judged outside them.
-        outside_parentheses = _PARENTHETICAL.sub(" ", opponent_name).strip()
-        if _PLACEHOLDER.fullmatch(opponent_name) or _ROUND_NAME.search(
-            outside_parentheses
-        ):
+        if round_placeholder(opponent_name):
+            if skips is not None:
+                skips.append(placeholder_skip(date, opponent_name))
             continue
         hosted = hosted_other_match(
             opponent_name, owner_slug=owner_slug, aliases=aliases, scope=scope

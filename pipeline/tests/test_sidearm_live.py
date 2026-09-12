@@ -26,6 +26,7 @@ from src.sidearm_live import (
     conference_members,
     parse_roster_page,
     parse_schedule_page,
+    round_placeholder,
 )
 
 
@@ -2999,6 +3000,110 @@ def test_the_events_payload_skips_a_hosted_other_match_and_names_it() -> None:
     assert [row["id"] for row in fixtures] == ["sidearm:hostville:13071"]
     assert (fixtures[0]["home"], fixtures[0]["away"]) == ("hostville", "alpha")
     assert skips == ["hosted other-match skipped: 2026-08-27, Alpha v Bravo"]
+
+
+def test_the_events_payload_skips_a_round_placeholder_and_names_it() -> None:
+    """Rib issue #41: the payload path minted "Gulf South Conference" and
+    "NCAA First Round" as programmes; the rendered-list rule never reached
+    it. A round named inside a parenthetical is still a fixture."""
+    base = {
+        "date": "2026-10-31T19:00:00",
+        "location_indicator": "N",
+        "is_conference": True,
+        "schedule": {"title": "2026 Men's Soccer Schedule"},
+        "result": {"team_score": None, "opponent_score": None, "status": None},
+    }
+    events = [
+        {**base, "id": 1, "opponent": {"title": "Gulf South Conference"}},
+        {
+            **base,
+            "id": 2,
+            "date": "2026-11-13T00:00:00",
+            "opponent": {"title": "NCAA First Round"},
+        },
+        {
+            **base,
+            "id": 3,
+            "date": "2026-12-03T00:00:00",
+            "opponent": {"title": "NCAA Semifinals (MIAA)"},
+        },
+        {**base, "id": 4, "date": "2026-11-05T00:00:00", "opponent": {"title": "TBA"}},
+        {
+            **base,
+            "id": 5,
+            "date": "2026-11-01T13:00:00",
+            "opponent": {"title": "No. 2E Alpha (PSAC Quarterfinal)"},
+        },
+    ]
+    component = {"type": "events", "data": events}
+    html = (
+        "<html><head><title>2026 Men's Soccer Schedule - Host</title></head>"
+        f"<body><script>\nvar obj = {json.dumps(component)};\n</script></body></html>"
+    )
+    skips: list[str] = []
+    fixtures = parse_schedule_page(
+        html,
+        page_url="https://host.test/sports/mens-soccer/schedule/2026",
+        year=2026,
+        owner_slug=_HOST,
+        aliases=_HOST_ALIASES,
+        skips=skips,
+    )
+    assert [row["id"] for row in fixtures] == ["sidearm:hostville:5"]
+    assert {fixtures[0]["home"], fixtures[0]["away"]} == {"hostville", "alpha"}
+    assert skips == [
+        "round placeholder skipped: 2026-10-31, Gulf South Conference",
+        "round placeholder skipped: 2026-11-13, NCAA First Round",
+        "round placeholder skipped: 2026-12-03, NCAA Semifinals (MIAA)",
+        "round placeholder skipped: 2026-11-05, TBA",
+    ]
+
+
+def test_round_placeholder_reads_every_measured_slot_and_no_opponent() -> None:
+    """The 27 shapes measured over the archived payloads on 2026-09-12, and
+    the opponent strings nearest to them that must stay opponents."""
+    slots = [
+        "Gulf South Conference",
+        "CCAA Tournament",
+        "TBD",
+        "TBA",
+        "GLVC Quarterfinals",
+        "PBC Semifinals",
+        "PBC Championship",
+        "PBC Quartefinals",
+        "NCAA Selection Show",
+        "NCAA First Round",
+        "NCAA Second Round",
+        "NCAA Third Round",
+        "NCAA Quarterfinals",
+        "NCAA Semifinals (MIAA)",
+        "NCAA Finals (MIAA)",
+        "Quarterfinal",
+        "Semifinal",
+        "CCAA Tournament First Round (At Campus Sites)",
+        "CCAA Tournament Semifinals (at Cal Poly Pomona)",
+        "CCAA Tournament Championship Game (At Cal Poly Pomona)",
+        "SAC Tournament",
+        "PSAC Finals (top East seed)",
+        "NCAA Tournament First and Second Rounds",
+        "NCAA 1st Round",
+        "Lone Star Conference",
+        "Conference Carolinas",
+        "Pennsylvania State Athletic Conference (PSAC)",
+        "NCAA D2 National 3rd Round and Quarterfinals",
+    ]
+    opponents = [
+        "No. 2E West Chester (PSAC Quarterfinal)",
+        "No. 1 Seed Post (CACC Championship)",
+        "Friends University",
+        "Finlandia",
+        "Oklahoma Wesleyan (Exhibition)",
+        "Rogers State University (Okla.)",
+        "Southern Nazarene",
+        "Lee (Conference Opener)",
+    ]
+    assert [name for name in slots if not round_placeholder(name)] == []
+    assert [name for name in opponents if round_placeholder(name)] == []
 
 
 def test_the_rendered_list_skin_skips_a_hosted_other_match() -> None:

@@ -879,6 +879,48 @@ def calendar_event_skip(date: str, name: str) -> str:
     return f"calendar event skipped: {date}, {name}"
 
 
+# A postseason structure row names a round, a bracket or a conference where
+# an opponent should be, or nothing yet: "NCAA First Round", "GLVC
+# Quarterfinals", "PBC Quartefinals" (sic), "CCAA Tournament Semifinals (at
+# Cal Poly Pomona)", "NCAA Selection Show", "Gulf South Conference", "TBA".
+# Measured 2026-09-12 over every archived schedule payload (rib issue #41):
+# 27 distinct strings, the conference-name shape on 78 rows across six
+# conferences, and every one on a row the site would otherwise draw as a
+# match — "gulf-south-conference" landed on four rows flagged as conference
+# games. Real matches from those rounds arrive later with actual opponents,
+# so the row is a named skip, never a fixture (PrestoSports has read it that
+# way since #71; this is the one grammar for both).
+#
+# The round words are judged OUTSIDE parentheses: "No. 2E West Chester (PSAC
+# Quarterfinal)" and "No. 1 Seed Post (CACC Championship)" are fixtures whose
+# round sits in the annotation, and "NCAA Semifinals (MIAA)" is a placeholder
+# whose parenthetical names the host. The bare word "conference" is a tell
+# because no programme carries it in its name (checked over every archived
+# opponent string); a school's own conference in a parenthetical is dropped
+# before the test. "TBA" and "TBD" must be the whole string.
+_ROUND_PLACEHOLDER = re.compile(
+    r"\b(?:tournament|championships?|quarte(?:r)?-?finals?|semi-?finals?|finals?"
+    r"|(?:\d{1,2}(?:st|nd|rd|th)|first|second|third|fourth)\s+round"
+    r"|selection\s+show|playoffs?|regionals?|\bconference\b)\b",
+    re.IGNORECASE,
+)
+_UNNAMED_OPPONENT = re.compile(r"tbd|tba", re.IGNORECASE)
+_PARENTHETICAL = re.compile(r"\([^)]*\)")
+
+
+def round_placeholder(name: str) -> bool:
+    """Whether a published opponent string is a postseason slot, not a side."""
+    outside = _PARENTHETICAL.sub(" ", name).strip()
+    return bool(
+        _UNNAMED_OPPONENT.fullmatch(outside) or _ROUND_PLACEHOLDER.search(outside)
+    )
+
+
+def placeholder_skip(date: str, name: str) -> str:
+    """The named skip the collect summary prints for one postseason slot row."""
+    return f"round placeholder skipped: {date}, {name}"
+
+
 def _identity_key(name: str) -> str:
     """Normalize a published opponent string toward a comparable identity.
 
@@ -1947,10 +1989,10 @@ def _parse_schedule_dom(
         # Postseason structure rows are events, not fixtures: "TBA" hotel
         # blocks and "NCAA Tournament First and Second Rounds" carry no
         # opponent, and their date is a range.  Real matches from those rounds
-        # arrive later with actual opponents.
-        if re.fullmatch(r"tbd|tba", opponent_name, re.IGNORECASE) or re.search(
-            r"tournament|championship", opponent_name, re.IGNORECASE
-        ):
+        # arrive later with actual opponents. Named, never minted.
+        if round_placeholder(opponent_name):
+            if skips is not None:
+                skips.append(placeholder_skip(date, opponent_name))
             continue
         # A calendar event filed under an opponent record (a media day)
         # prints a start-to-end time range where a match prints its kickoff;
@@ -2205,6 +2247,14 @@ def parse_schedule_page(
         if not opponent_name:
             continue
         date_text = str(event.get("date"))
+        # The payload's copy of a postseason slot: the same strings the
+        # rendered list prints, under opponent.title. The rendered-list rule
+        # never reached this path, which is how every 2026 shard came to hold
+        # "ncaa-first-round" and "gulf-south-conference" as programmes.
+        if round_placeholder(opponent_name):
+            if skips is not None:
+                skips.append(placeholder_skip(date_text[:10], opponent_name))
+            continue
         # The payload's copy of the calendar-event tell: the rendered time
         # string printing a range, or an end_date after the start (bead
         # tl-ttr). Named for the collect summary, never minted.

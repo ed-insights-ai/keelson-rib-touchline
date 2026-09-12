@@ -146,6 +146,9 @@ SIDEARM = Recipe(
     boxscore_links=_late(sidearm_live, "boxscore_links"),
     collect_match=_late(sidearm_live, "collect_match"),
     parse_match=_late(sidearm_live, "parse_match_page"),
+    # Empty on purpose: parse_fingerprint hashes sidearm_live's own source
+    # before any input, so a SideArm parser change already re-reads every
+    # archived page; only a recipe whose parsers live elsewhere appends one.
     parse_identity=(),
 )
 
