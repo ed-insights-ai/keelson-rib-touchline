@@ -1396,6 +1396,22 @@ describe("understanding the ask", () => {
     }
   });
 
+  test("a code that contains another code is its own conference, not the shorter one", async () => {
+    // "ECC" and "CCAA" both contain "CC"; a substring match handed both to the
+    // CC on 2026-09-12 and collected two seasons into the wrong conference.
+    for (const [ask, conference] of [
+      ["ECC", "ECC"],
+      ["ccaa", "CCAA"],
+      ["CC", "CC"],
+      ["the whole G-MAC", "G-MAC"],
+      ["collect the GLIAC please", "GLIAC"],
+    ] as const) {
+      const t = await resolveTargets(ask, "men", 2026);
+      expect(t.kind).toBe("conference");
+      if (t.kind === "conference") expect(t.conference).toBe(conference);
+    }
+  });
+
   test("the hyphenated G-MAC resolves per season, Trevecca in its earlier window", async () => {
     // Against the packaged membership file: eleven members in 2026, twelve in
     // 2023 when Trevecca's first window still names the G-MAC.
