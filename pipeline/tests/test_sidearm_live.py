@@ -2562,6 +2562,35 @@ def test_event_status_reads_the_same_words_on_the_json_path(
     assert _event_status(event) == expected
 
 
+@pytest.mark.parametrize(
+    ("letter", "result", "expected"),
+    [
+        # catawba 2026, game 7931: status "C", type "recent", an empty
+        # result, and Canceled in the rendered result cell (bead tl-0y9u).
+        (
+            "C",
+            {"status": None, "team_score": None, "opponent_score": None},
+            "cancelled",
+        ),
+        (
+            "P",
+            {"status": None, "team_score": None, "opponent_score": None},
+            "postponed",
+        ),
+        (
+            "A",
+            {"status": None, "team_score": None, "opponent_score": None},
+            "scheduled",
+        ),
+        ("O", {"status": "W", "team_score": 2, "opponent_score": 0}, "final"),
+    ],
+)
+def test_event_status_reads_the_payload_status_letter(
+    letter: str, result: dict[str, object], expected: str
+) -> None:
+    assert _event_status({"status": letter, "result": result}) == expected
+
+
 # Bead tl-4sg.34: three PSAC hosts read as "no schedule payload and no rendered
 # games" in every season, and one of them listed no players either.  The
 # pipeline's own session receives exactly what a browser does (HTTP 200, same
