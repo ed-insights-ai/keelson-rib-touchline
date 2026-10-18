@@ -1477,6 +1477,9 @@ def _status_word(text: str) -> str | None:
     return None
 
 
+_EVENT_STATUS_LETTERS = {"C": "cancelled", "P": "postponed"}
+
+
 def _event_status(event: dict[str, object]) -> str:
     """The status the payload's own words derive, before the score check.
 
@@ -1495,6 +1498,15 @@ def _event_status(event: dict[str, object]) -> str:
     word = _status_word(status)
     if word is not None:
         return word
+    # The event's own status is a single letter, not a word (bead tl-0y9u):
+    # A upcoming, O over, C cancelled, P postponed. Measured across the
+    # 1,073 archived schedule pages (2026-10-18): every C or P event the
+    # rendered list also carries reads Canceled or Postponed there, and none
+    # holds a score. Read as a word, "c" matched nothing, and catawba 2026,
+    # game 7931 at Davis & Elkins, printed Canceled and stored scheduled.
+    letter = _EVENT_STATUS_LETTERS.get(str(event.get("status") or "").strip().upper())
+    if letter is not None:
+        return letter
     if event.get("type") == "live" or "live" in status or "progress" in status:
         return "live"
     if "final" in status:
