@@ -897,11 +897,15 @@ def calendar_event_skip(date: str, name: str) -> str:
 # whose parenthetical names the host. The bare word "conference" is a tell
 # because no programme carries it in its name (checked over every archived
 # opponent string); a school's own conference in a parenthetical is dropped
-# before the test. "TBA" and "TBD" must be the whole string.
+# before the test. "TBA" and "TBD" must be the whole string. Once a bracket
+# fills, the slot names the match that decides it: "USCA/Lander Winner", "#6
+# Seed Dallas Baptist OR #3 Seed St. Mary's" — no programme carries "or",
+# "winner" or "loser" as a word in its name either.
 _ROUND_PLACEHOLDER = re.compile(
     r"\b(?:tournament|championships?|quarte(?:r)?-?finals?|semi-?finals?|finals?"
     r"|(?:\d{1,2}(?:st|nd|rd|th)|first|second|third|fourth|opening)\s+rounds?"
-    r"|selection\s+show|playoffs?|regionals?|\bconference\b)\b",
+    r"|selection\s+show|playoffs?|regionals?|\bconference\b"
+    r"|or|winner|loser)\b",
     re.IGNORECASE,
 )
 _UNNAMED_OPPONENT = re.compile(r"tbd|tba", re.IGNORECASE)

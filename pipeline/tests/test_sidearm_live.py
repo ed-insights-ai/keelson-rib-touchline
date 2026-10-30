@@ -3127,6 +3127,8 @@ def test_round_placeholder_reads_every_measured_slot_and_no_opponent() -> None:
         "NCAA Opening Round",
         "NCAA Midwest Regional",
         "NCAA South Regional",
+        "USCA/Lander Winner",
+        "#6 Seed Dallas Baptist OR #3 Seed St. Mary's",
     ]
     opponents = [
         "No. 2E West Chester (PSAC Quarterfinal)",
@@ -3137,6 +3139,8 @@ def test_round_placeholder_reads_every_measured_slot_and_no_opponent() -> None:
         "Rogers State University (Okla.)",
         "Southern Nazarene",
         "Lee (Conference Opener)",
+        "Oregon Tech",
+        "Lake Erie (Senior Night)",
     ]
     assert [name for name in slots if not round_placeholder(name)] == []
     assert [name for name in opponents if round_placeholder(name)] == []
