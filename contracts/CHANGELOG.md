@@ -4,6 +4,30 @@ One line per change to a published contract, newest first. A fixture change
 without a line here is incomplete; a writer change without a fixture change
 fails `pipeline/tests/test_contracts.py`.
 
+## 2026-11-08
+
+- `touchline.fixtures/2`: a fixture may carry `stage`, where in the season the
+  match sits, as its schedule page groups it. `stage.phase` is `regular`,
+  `postseason` or `unknown`; a postseason stage carries `competition`
+  (`conference` or `ncaa`) and `source`, the tournament block's header as
+  printed ("NCAA Division II Championship", "2025 GAC Men's Soccer
+  Tournament"), and may carry `round_published`, the row's own round label
+  verbatim ("GAC Championship Game", "First Round"). `regular` is stamped only
+  on a page that marks a postseason block, and only before that page's first
+  postseason date; another body's postseason ("NCCAA National
+  Championships") is `unknown` with its `source`. A row with no `stage` says
+  nothing about phase, and the site reads it as unknown, never as regular.
+  A fixture may also carry `result_published`, the result cell verbatim, on a
+  level score that prints a shootout, and `shootout: {winner, home, away}`
+  when the cell names the winner by a letter or by one of the two sides'
+  names. Never from digit order: anderson 2025 prints the winner's count
+  first, lincoln-memorial 2025 its own ("T, 0-0 , 2-3 Penalty Kicks", which
+  carries `result_published` and no `shootout`). The scores stay the drawn
+  ones; a shootout is a draw in every record. Same schema version: optional
+  fields the site's `model.ts` reads as optional, the same widening as
+  `forfeit`. The fixture exhibits every phase, both competitions, a shootout,
+  and a printed shootout with no winner.
+
 ## 2026-09-07
 
 - `touchline.matches/2` (was `/1`): every player and keeper line on both

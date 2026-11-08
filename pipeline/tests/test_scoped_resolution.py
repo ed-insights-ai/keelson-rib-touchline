@@ -639,10 +639,13 @@ def test_a_ccaa_page_mints_the_match_under_the_nearer_slug() -> None:
 
 def test_the_tiebreak_enters_the_fingerprint_only_while_a_key_is_ambiguous():
     scope = _scope_with_points("CCAA", 2025)
+    # The configured abbreviations name a shootout's winner between two known
+    # sides, so a scope built from stanzas that carry them fingerprints them.
     assert set(scope.fingerprint("cal-state-east-bay")) == {
         "conference",
         "season",
         "claims",
+        "abbreviations",
         "tiebreak",
         "origin",
     }
@@ -650,7 +653,12 @@ def test_the_tiebreak_enters_the_fingerprint_only_while_a_key_is_ambiguous():
     plain = resolution_scope(
         [_school("Harding", "GAC")], "men", {"harding"}, conference="GAC", season=2025
     )
-    assert set(plain.fingerprint("harding")) == {"conference", "season", "claims"}
+    assert set(plain.fingerprint("harding")) == {
+        "conference",
+        "season",
+        "claims",
+        "abbreviations",
+    }
 
 
 def test_collect_reads_the_points_once_and_survives_their_absence(monkeypatch):

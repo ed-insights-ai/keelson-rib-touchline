@@ -901,6 +901,12 @@ def calendar_event_skip(date: str, name: str) -> str:
 # fills, the slot names the match that decides it: "USCA/Lander Winner", "#6
 # Seed Dallas Baptist OR #3 Seed St. Mary's" — no programme carries "or",
 # "winner" or "loser" as a word in its name either.
+#
+# A bare "NCAA" is the same slot before the field is named: flagler 2026,
+# games 13737 and 13738; findlay 2026, game 12542; cal-state-dominguez-hills
+# 2024, games 13162 and 13163 — five rows that minted a programme called
+# "ncaa". Like "TBA" it must be the whole string, so "NCAA Selection Show"
+# stays with the round words and no name merely containing it is caught.
 _ROUND_PLACEHOLDER = re.compile(
     r"\b(?:tournament|championships?|quarte(?:r)?-?finals?|semi-?finals?|finals?"
     r"|(?:\d{1,2}(?:st|nd|rd|th)|first|second|third|fourth|opening)\s+rounds?"
@@ -908,7 +914,9 @@ _ROUND_PLACEHOLDER = re.compile(
     r"|or|winner|loser)\b",
     re.IGNORECASE,
 )
-_UNNAMED_OPPONENT = re.compile(r"tbd|tba", re.IGNORECASE)
+_UNNAMED_OPPONENT = re.compile(
+    r"tbd|tba|ncaa(?:\s+(?:d2|dii|division\s+ii))?", re.IGNORECASE
+)
 _PARENTHETICAL = re.compile(r"\([^)]*\)")
 
 
@@ -1177,6 +1185,11 @@ class ResolutionScope:
     # collect. A claimant or a collecting school with no point sends the key
     # to the gender-wide rule instead.
     points: Mapping[str, tuple[float, float]] = dataclass_field(default_factory=dict)
+    # Every programme's configured abbreviation by slug, resolving or not. It
+    # never resolves an opponent: it only tells which of a shootout's two
+    # known sides a printed initialism names ("T, 1-1 RU wins on PKs, 4-3",
+    # rockhurst 2025, where "RU" is display-only because Roosevelt shares it).
+    abbreviations: Mapping[str, str] = dataclass_field(default_factory=dict)
     _notes: dict[str, str] = dataclass_field(
         default_factory=dict, compare=False, repr=False
     )
@@ -1247,6 +1260,8 @@ class ResolutionScope:
             "season": self.season,
             "claims": dict(sorted(self.claims.items())),
         }
+        if self.abbreviations:
+            fingerprint["abbreviations"] = dict(sorted(self.abbreviations.items()))
         if self.claimants:
             fingerprint["tiebreak"] = {
                 key: {slug: self.points.get(slug) for slug in sorted(slugs)}
@@ -1292,10 +1307,13 @@ def resolution_scope(
     """
     claims: dict[str, str] = {}
     claimed: dict[str, set[str]] = {}
+    abbreviations: dict[str, str] = {}
     for school in schools:
         if school.gender != gender:
             continue
         slug = programme_slug(school.name)
+        if school.abbreviation:
+            abbreviations[slug] = school.abbreviation
         for candidate in (*_identity_spellings(school), *school.member_aliases):
             key = _identity_key(candidate)
             if not key:
@@ -1312,6 +1330,7 @@ def resolution_scope(
             key: frozenset(slugs) for key, slugs in claimed.items() if len(slugs) > 1
         },
         points=dict(points or {}),
+        abbreviations=abbreviations,
     )
 
 
@@ -1645,6 +1664,302 @@ def _forfeit_scores(side: str) -> tuple[int, int]:
     return (1, 0) if side == "home" else (0, 1)
 
 
+# ---------------------------------------------------------------------------
+# Postseason stage.
+#
+# SideArm groups a run of schedule rows under ``div.sidearm-schedule-
+# tournament``, a ``<p>`` header naming the group and a ``<ul>`` of rows
+# (lincoln 2025: "GLVC Championship", then "NCAA Division II Championship").
+# The same markup wraps groups that are not postseason at all. Measured over
+# every archived men's schedule 2016-2026: "Senior Day", "Homecoming",
+# "Preseason", "Colorado Mesa Men's Soccer Showcase", "Adelphi Kick-Off
+# Tournament", "Georgian Court Univ. Tournament", "CBU Invitational
+# Tournament", and "NCCAA National Championships", which is another
+# governing body's postseason. So the block alone says nothing, and neither
+# does a championship word alone. The header must name the competition:
+#
+# * NCAA, as a word, beside a postseason word: "NCAA Tournament", "NCAA II
+#   Final Four", "NCAA Division II Super Region 3". Another body ("NCCAA",
+#   "USCAA", "NAIA", "NJCAA") is a postseason this contract has no
+#   competition for, so its rows are stamped ``unknown`` and never counted
+#   as either split.
+# * A conference, beside a championship word: the word "conference", a
+#   conference code the membership reference lists ("GLVC Championship",
+#   "GAC/MIAA Men's Soccer Championship"), or one of the long names the
+#   archive prints without either ("Northeast 10 Championship", "Great
+#   Midwest Tournament", "GULF SOUTH CHAMPIONSHIPS").
+#
+# The round is the row's own ``.sidearm-schedule-game-promotion-name``, kept
+# verbatim and only when it names a round: the same element carries "Watch
+# on YouTube", "Kids 12 & under free" and "Note Time Change" inside these
+# blocks. Placement in a bracket is the site's to derive; this is the label.
+_NCAA_BODY = re.compile(r"\bNCAA\b")
+_NCAA_POSTSEASON_WORD = re.compile(
+    r"\b(?:tournament|championships?|regionals?|super\s+region|final\s+four"
+    r"|elite\s+eight|rounds?|(?:quarter|semi)-?finals?)\b",
+    re.IGNORECASE,
+)
+_OTHER_BODY = re.compile(r"\b(?:NCCAA|USCAA|NAIA|NJCAA)\b", re.IGNORECASE)
+_CHAMPIONSHIP_WORD = re.compile(
+    r"\b(?:tournament|championships?|final\s+four)\b", re.IGNORECASE
+)
+_CONFERENCE_WORD = re.compile(r"\bconference\b", re.IGNORECASE)
+_CONFERENCE_LONG_NAME = re.compile(
+    r"\b(?:northeast[- ]?10|great\s+midwest|gulf\s+south|pacific\s+west"
+    r"|sunshine\s+state|lone\s+star|peach\s+belt|south\s+atlantic|east\s+coast"
+    r"|mountain\s+east|rocky\s+mountain|great\s+lakes|great\s+northwest"
+    r"|great\s+american|central\s+atlantic|california\s+collegiate"
+    r"|pennsylvania\s+state)\b",
+    re.IGNORECASE,
+)
+_ROUND_WORD = re.compile(
+    r"\b(?:rounds?|(?:quarter|semi)-?finals?|finals?|championship|final\s+four"
+    r"|elite\s+eight)\b",
+    re.IGNORECASE,
+)
+
+_conference_code_cache: list[re.Pattern[str]] = []
+
+
+def _conference_code() -> re.Pattern[str]:
+    """Every conference code the membership reference lists, as one pattern.
+
+    Read from configuration, never named here, so a conference added to the
+    reference is recognised in a header the day it is added.
+    """
+    if not _conference_code_cache:
+        codes = [
+            str(code)
+            for code in load_membership().get("conferences") or []
+            if code not in {"independent", "non_member"}
+        ]
+        alternatives = "|".join(
+            rf"(?<![\w-]){re.escape(code)}(?![\w-])"
+            for code in sorted(codes, key=len, reverse=True)
+        )
+        _conference_code_cache.append(
+            re.compile(alternatives or r"(?!x)x", re.IGNORECASE)
+        )
+    return _conference_code_cache[0]
+
+
+def tournament_stage(header: str) -> dict[str, str] | None:
+    """The stage a tournament block's header publishes, or nothing.
+
+    Nothing means the block is not a postseason (a senior day, an
+    invitational): its rows are classified like any row outside a block.
+    """
+    text = " ".join(header.split())
+    if not text:
+        return None
+    if _NCAA_BODY.search(text) and _NCAA_POSTSEASON_WORD.search(text):
+        return {"phase": "postseason", "competition": "ncaa", "source": text}
+    if _OTHER_BODY.search(text):
+        return {"phase": "unknown", "source": text}
+    if _CHAMPIONSHIP_WORD.search(text) and (
+        _CONFERENCE_WORD.search(text)
+        or _conference_code().search(text)
+        or _CONFERENCE_LONG_NAME.search(text)
+    ):
+        return {"phase": "postseason", "competition": "conference", "source": text}
+    return None
+
+
+def _dom_stages(
+    rows: Sequence[object], dates: Mapping[int, str]
+) -> dict[int, dict[str, str]]:
+    """Each row's stage, keyed by ``id(row)``; a row with no stage is absent.
+
+    A row inside a postseason block takes the block's stage and its own
+    round label. ``regular`` is evidence-tiered like the conference flag: it
+    is stamped only on a page that marks at least one postseason block, and
+    only on rows dated before that page's first postseason row. A page that
+    groups nothing says nothing about phase, so its rows carry no stage and
+    the site reads them as unknown, never as regular season. A row after the
+    first postseason date but outside every block is left unknown too
+    (bentley 2025 prints "NCAA Championship Second Round" in a promotion on
+    a row no block holds; the promotion element also carries "Stats and
+    Results will not count per NCAA rules", so it never classifies).
+
+    A row outside every postseason block may still name its competition in
+    the opponent cell's annotation, the same place round text already rides
+    ("No. 2E West Chester (PSAC Quarterfinal)"): roberts-wesleyan 2025, game
+    5530, "Wilimington (DE) University (NCAA Division II Tournament First
+    Round at Franklin Pierce University)", the one NCAA tie of 39 published
+    nowhere else on that page. Measured over every archived men's schedule
+    2022-2026, seven annotations name a postseason, all read by the header
+    rule ("Conference Carolinas Championship First Round", "East Coast
+    Conference Tournament").
+    """
+    stages: dict[int, dict[str, str]] = {}
+    for row in rows:
+        stage: dict[str, str] | None = None
+        block = row.find_parent("div", class_="sidearm-schedule-tournament")  # type: ignore[attr-defined]
+        if block is not None:
+            header = block.find("p", recursive=False)
+            stage = tournament_stage(header.get_text(" ", strip=True) if header else "")
+            if stage is not None and stage["phase"] == "postseason":
+                stage = dict(stage)
+                label = _first_text(row, ".sidearm-schedule-game-promotion-name")
+                if label and _ROUND_WORD.search(label):
+                    stage["round_published"] = " ".join(label.split())
+        if stage is None:
+            opponent = _first_text(row, ".sidearm-schedule-game-opponent-name") or ""
+            for annotation in _PARENTHETICAL.findall(opponent):
+                found = tournament_stage(annotation.strip("() "))
+                if found is not None and found["phase"] == "postseason":
+                    stage = dict(found)
+                    if _ROUND_WORD.search(found["source"]):
+                        stage["round_published"] = found["source"]
+                    break
+        if stage is not None:
+            stages[id(row)] = stage
+    postseason_dates = [
+        dates[key]
+        for key, stage in stages.items()
+        if stage["phase"] == "postseason" and key in dates
+    ]
+    if not postseason_dates:
+        return stages
+    first = min(postseason_dates)
+    for row in rows:
+        key = id(row)
+        if key in stages or key not in dates:
+            continue
+        if dates[key] < first:
+            stages[key] = {"phase": "regular"}
+    return stages
+
+
+# ---------------------------------------------------------------------------
+# Shootouts.
+#
+# A level tie decided on penalties prints the shootout beside the draw, and
+# the archive (2025, every NCAA level tie) spells it eight ways:
+#
+#   "W, 1-1 (SO, 4-3)"                    lincoln: the leading letter
+#   "T, 0-0 (W by PK, 5-4)"               an inner letter
+#   "T, 0-0 (W, 3-2 PK)"                  an inner letter
+#   "T, 1-1 (L, 8-7 PK)"                  anderson: an inner letter, winner's
+#                                         count first
+#   "T, 1-1 RU wins on PKs, 4-3"          rockhurst: a side named
+#   "T, 3-3 (UCCS Advances on PKs 4-2)"   a side named
+#   "T, 2-2 (PLNU Advances on PK's, 3-2)" a side named
+#   "T, 0-0 , 2-3 Penalty Kicks"          lincoln-memorial: own count first,
+#                                         no letter, no name
+#
+# The winner is read from a letter or a name, never from digit order:
+# anderson prints the winner's count first, lincoln-memorial its own. The
+# winner takes the larger count; equal counts are refused. A name counts
+# only when it names exactly one of the tie's two sides, by the identity map
+# or by a side's configured abbreviation. A row that says shootout and names
+# no winner keeps its printed text and no shootout.
+_SHOOTOUT_WORDS = re.compile(
+    r"\b(?:pks?|so|shootout|penalties|pens|penalty\s+kicks?)\b", re.IGNORECASE
+)
+_SCORE_PAIR = re.compile(r"(\d+)\s*-\s*(\d+)")
+_INNER_LETTER = re.compile(r"\(\s*([WL])\b")
+_NAMED_WINNER = re.compile(
+    r"([A-Za-z][\w.&'’ -]*?)\s+(?:advances|advanced|wins|won)\b", re.IGNORECASE
+)
+
+
+def _names_side(
+    name: str,
+    sides: tuple[str, str],
+    *,
+    aliases: Mapping[str, str],
+    scope: ResolutionScope | None,
+) -> str | None:
+    """The one side of ``sides`` a printed name identifies, or nothing."""
+    printed = " ".join(name.split()).strip(" .,(")
+    if not printed:
+        return None
+    hits: set[str] = set()
+    key = _identity_key(printed)
+    for resolved in (
+        aliases.get(key),
+        scope.claims.get(key) if scope is not None else None,
+    ):
+        if resolved in sides:
+            hits.add(resolved)
+    if scope is not None:
+        for side in sides:
+            abbreviation = scope.abbreviations.get(side, "")
+            if abbreviation and abbreviation.casefold() == printed.casefold():
+                hits.add(side)
+    return next(iter(hits)) if len(hits) == 1 else None
+
+
+def reoriented_shootout(
+    shootout: Mapping[str, object], *, home: str, to_home: str
+) -> dict[str, object]:
+    """A shootout read with ``home`` as the home side, told with ``to_home``."""
+    if home == to_home:
+        return dict(shootout)
+    return {
+        "winner": shootout["winner"],
+        "home": shootout["away"],
+        "away": shootout["home"],
+    }
+
+
+def shootout_published(result_text: str) -> bool:
+    """Whether a result cell prints a shootout beside a level score."""
+    main = re.search(r"\b([WLT])\s*,?\s*(\d+)\s*-\s*(\d+)", result_text)
+    if main is None or main.group(2) != main.group(3):
+        return False
+    return bool(_SHOOTOUT_WORDS.search(result_text[main.end() :]))
+
+
+def parse_shootout(
+    result_text: str,
+    *,
+    owner_slug: str,
+    other_slug: str,
+    owner_is_home: bool,
+    aliases: Mapping[str, str],
+    scope: ResolutionScope | None = None,
+) -> dict[str, object] | None:
+    """``{winner, home, away}`` for a shootout the cell decides, else nothing."""
+    if not shootout_published(result_text):
+        return None
+    main = re.search(r"\b([WLT])\s*,?\s*(\d+)\s*-\s*(\d+)", result_text)
+    assert main is not None
+    rest = result_text[main.end() :]
+    counts = _SCORE_PAIR.search(rest)
+    if counts is None:
+        return None
+    first, second = int(counts.group(1)), int(counts.group(2))
+    if first == second:
+        return None
+    winner: str | None = None
+    lead = main.group(1)
+    inner = _INNER_LETTER.search(rest)
+    if lead in {"W", "L"}:
+        winner = owner_slug if lead == "W" else other_slug
+    elif inner is not None:
+        winner = owner_slug if inner.group(1) == "W" else other_slug
+    else:
+        named = _NAMED_WINNER.search(rest)
+        if named is not None:
+            winner = _names_side(
+                named.group(1),
+                (owner_slug, other_slug),
+                aliases=aliases,
+                scope=scope,
+            )
+    if winner is None or owner_slug == other_slug:
+        return None
+    high, low = max(first, second), min(first, second)
+    winner_is_home = (winner == owner_slug) == owner_is_home
+    return {
+        "winner": winner,
+        "home": high if winner_is_home else low,
+        "away": low if winner_is_home else high,
+    }
+
+
 def _oriented_scores(
     letter: str | None,
     first: int,
@@ -1937,6 +2252,19 @@ def _dom_two_team_result(row: object, classes: set[str]) -> tuple[str, int, int]
     return letter, own_score, other_score
 
 
+def _dom_row_date(row: object, year: int) -> str | None:
+    """A rendered row's date. Most skins date the row beside the opponent;
+    the two-team list skin (measured daemenwildcats.com 2025: "Saturday,
+    Nov 1" in div.sidearm-schedule-game-date, no opponent-date element)
+    dates it in the details column."""
+    return _dom_date(
+        _first_text(row, ".sidearm-schedule-game-opponent-date")
+        or _first_text(row, ".sidearm-schedule-game-date")
+        or "",
+        year,
+    )
+
+
 def _parse_schedule_dom(
     html: str,
     *,
@@ -1979,6 +2307,14 @@ def _parse_schedule_dom(
         return bool(marker.get_text(strip=True)) or marker.select_one("img") is not None
 
     theme_marks_conference = any(conference_marked(row) for row in rows)
+    stages = _dom_stages(
+        rows,
+        {
+            id(row): date
+            for row in rows
+            if (date := _dom_row_date(row, year)) is not None
+        },
+    )
     # Falling back to the whole alias map preserves single-conference behaviour
     # for callers that have no member list to give, which is every test fixture
     # and nothing on the collection path.
@@ -1990,16 +2326,7 @@ def _parse_schedule_dom(
         opponent_raw = _first_text(row, ".sidearm-schedule-game-opponent-name") or ""
         orientation, opponent_raw = _split_orientation(opponent_raw)
         opponent_name = _clean_team_name(opponent_raw)
-        # Most skins date the row beside the opponent; the two-team list skin
-        # (measured daemenwildcats.com 2025: "Saturday, Nov 1" in
-        # div.sidearm-schedule-game-date, no opponent-date element) dates it
-        # in the details column.
-        date = _dom_date(
-            _first_text(row, ".sidearm-schedule-game-opponent-date")
-            or _first_text(row, ".sidearm-schedule-game-date")
-            or "",
-            year,
-        )
+        date = _dom_row_date(row, year)
         if not game_id or not opponent_name or not date:
             continue
         # Postseason structure rows are events, not fixtures: "TBA" hotel
@@ -2143,6 +2470,9 @@ def _parse_schedule_dom(
         else:
             fixture["conference_game"] = not exhibition and other_slug in member_slugs
             fixture["conference_game_source"] = "derived:membership"
+        stage = stages.get(id(row))
+        if stage is not None:
+            fixture["stage"] = dict(stage)
         # Some themes render kickoff in a dedicated element; at least one packs
         # it into the date text ("Aug 27 (Thu) 3:00 p.m.").  The game-list
         # skin drops the time element once a row is completed, and the
@@ -2190,6 +2520,18 @@ def _parse_schedule_dom(
                 fixture["home_score"], fixture["away_score"] = owner_score, other_score
             else:
                 fixture["home_score"], fixture["away_score"] = other_score, owner_score
+            if owner_score == other_score and shootout_published(result_text):
+                fixture["result_published"] = " ".join(result_text.split())
+                shootout = parse_shootout(
+                    result_text,
+                    owner_slug=owner_slug,
+                    other_slug=other_slug,
+                    owner_is_home=owner_is_home,
+                    aliases=aliases,
+                    scope=scope,
+                )
+                if shootout is not None:
+                    fixture["shootout"] = shootout
         elif status == "final" and forfeit_side is not None:
             # A forfeit the page did not score takes the sport's 1-0
             # convention to the awarded side (bead tl-wyv).
@@ -2419,6 +2761,21 @@ def parse_schedule_page(
                         opponent_score,
                         team_score,
                     )
+                # The payload's copy of a shootout lives in the same
+                # strings as its result text, so the cell grammar reads it.
+                printed = f"{letter or ''}, {team_score}-{opponent_score} {result_text}"
+                if team_score == opponent_score and shootout_published(printed):
+                    fixture["result_published"] = " ".join(result_text.split())
+                    shootout = parse_shootout(
+                        printed,
+                        owner_slug=owner_slug,
+                        other_slug=other_slug,
+                        owner_is_home=owner_is_home,
+                        aliases=aliases,
+                        scope=scope,
+                    )
+                    if shootout is not None:
+                        fixture["shootout"] = shootout
         if status == "final" and forfeit_side is not None:
             fixture["forfeit"] = forfeit_side
             if "home_score" not in fixture:
@@ -2451,7 +2808,7 @@ def parse_schedule_page(
     # every game the JSON stub left out, under the same identifiers.  A
     # hosted row both carry is one skip, not two (measured: the host's 2026
     # page publishes each such row in the payload and in the rendered list).
-    json_ids = {str(fixture["id"]) for fixture in fixtures}
+    by_id = {str(fixture["id"]): fixture for fixture in fixtures}
     dom_skips: list[str] = []
     for fixture in _parse_schedule_dom(
         html,
@@ -2463,8 +2820,36 @@ def parse_schedule_page(
         skips=dom_skips,
         scope=scope,
     ):
-        if str(fixture["id"]) not in json_ids:
+        twin = by_id.get(str(fixture["id"]))
+        if twin is None:
             fixtures.append(fixture)
+            continue
+        # The payload has no tournament grouping and its result strings
+        # rarely carry the shootout; the rendered row of the same game does.
+        # Its stage always rides along; its shootout only when both copies
+        # store the same level score.
+        if "stage" in fixture and "stage" not in twin:
+            twin["stage"] = fixture["stage"]
+        # The two copies may orient the match differently (a neutral row
+        # the rendered list reads "vs" and the payload "N" away), so the
+        # shootout's counts follow the side, not the column (measured:
+        # kentucky-wesleyan 2026, game 11458).
+        level = "home_score" in twin and twin.get("home_score") == twin.get(
+            "away_score"
+        )
+        if (
+            level
+            and fixture.get("home_score") == twin.get("home_score")
+            and "result_published" in fixture
+            and "result_published" not in twin
+        ):
+            twin["result_published"] = fixture["result_published"]
+            if "shootout" in fixture:
+                twin["shootout"] = reoriented_shootout(
+                    fixture["shootout"],  # type: ignore[arg-type]
+                    home=str(fixture["home"]),
+                    to_home=str(twin["home"]),
+                )
     if skips is not None:
         skips.extend(line for line in dom_skips if line not in skips)
     return sorted(fixtures, key=lambda value: (str(value["date"]), str(value["id"])))

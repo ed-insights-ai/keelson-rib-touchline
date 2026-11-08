@@ -427,11 +427,106 @@ def _dedupe_fixtures(
                 winner["home_score"] = loser["away_score"]
                 winner["away_score"] = loser["home_score"]
         _merge_conference_claim(winner, loser)
+        _merge_postseason_facts(winner, loser)
         by_match[key] = winner
     values = sorted(
         by_match.values(), key=lambda value: (str(value["date"]), str(value["id"]))
     )
     return values, duplicates
+
+
+def _shootout_by_slug(fixture: dict[str, object]) -> tuple[str, int, int] | None:
+    """A row's shootout as (winner, winner's count, loser's count), orientation-free."""
+    shootout = fixture.get("shootout")
+    if not isinstance(shootout, dict):
+        return None
+    winner = str(shootout["winner"])
+    home, away = int(shootout["home"]), int(shootout["away"])  # type: ignore[arg-type]
+    if winner == fixture["home"]:
+        return winner, home, away
+    return winner, away, home
+
+
+def _merge_postseason_facts(
+    winner: dict[str, object], loser: dict[str, object]
+) -> None:
+    """Carry the stage and shootout across one match's two rows.
+
+    A fact only one row published is kept: each page is authoritative for
+    what it printed, and 8 of the 39 2025 NCAA ties appear on one school's
+    schedule only. Two rows that contradict each other are not settled
+    here. A different phase or competition leaves the kept row ``unknown``,
+    and a different shootout leaves it with none, each printed, so no single
+    copy speaks for a match its two publishers disagree on.
+    """
+    mine, theirs = winner.get("stage"), loser.get("stage")
+    if isinstance(theirs, dict):
+        if not isinstance(mine, dict):
+            winner["stage"] = dict(theirs)
+        elif (mine.get("phase"), mine.get("competition")) != (
+            theirs.get("phase"),
+            theirs.get("competition"),
+        ):
+            print(
+                f"stage disagreement on {winner['id']} / {loser['id']}: "
+                f"{mine} v {theirs}; stored unknown",
+                flush=True,
+            )
+            winner["stage"] = {"phase": "unknown"}
+        else:
+            for field in ("round_published", "source"):
+                if field not in mine and field in theirs:
+                    mine[field] = theirs[field]
+    level = "home_score" in winner and winner.get("home_score") == winner.get(
+        "away_score"
+    )
+    if not level:
+        return
+    if "result_published" not in winner and "result_published" in loser:
+        winner["result_published"] = loser["result_published"]
+    own, other = _shootout_by_slug(winner), _shootout_by_slug(loser)
+    if other is None:
+        return
+    if own is None:
+        decided, high, low = other
+        winner_is_home = decided == winner["home"]
+        winner["shootout"] = {
+            "winner": decided,
+            "home": high if winner_is_home else low,
+            "away": low if winner_is_home else high,
+        }
+    elif own != other:
+        print(
+            f"shootout disagreement on {winner['id']} / {loser['id']}: "
+            f"{own} v {other}; stored none",
+            flush=True,
+        )
+        winner.pop("shootout", None)
+
+
+def postseason_strangers(
+    fixtures: list[dict[str, object]], stanza_slugs: set[str]
+) -> list[str]:
+    """One line per postseason row naming a side no schools.toml stanza mints.
+
+    A bracket is drawn from these rows, so a side printed under a spelling
+    no stanza claims ("Wilimington (DE) University" before its alias) splits
+    one programme into two and breaks the bracket's path. The collect names
+    them rather than refusing: the fix is an alias, made by hand.
+    """
+    lines: list[str] = []
+    for fixture in fixtures:
+        stage = fixture.get("stage")
+        if not isinstance(stage, dict) or stage.get("phase") != "postseason":
+            continue
+        for side in ("home", "away"):
+            slug = str(fixture[side])
+            if slug not in stanza_slugs:
+                lines.append(
+                    f"postseason side with no stanza: {fixture['date']}, "
+                    f"{slug} ({fixture['id']})"
+                )
+    return lines
 
 
 def _borrow_twin_exhibitions(
@@ -1748,6 +1843,21 @@ def main() -> int:
         print(
             f"collapsed {duplicates} duplicate fixture row(s) published by both programmes"
         )
+
+    if LAYER_SCHEDULE in layers:
+        stanza_slugs = {
+            programme_slug(school.name)
+            for school in load_schools(args.config)
+            if school.gender == args.gender
+        }
+        strangers = postseason_strangers(fixtures["fixtures"], stanza_slugs)
+        if strangers:
+            print(
+                f"\n{len(strangers)} postseason side(s) with no schools.toml "
+                f"stanza — add the printed spelling as an alias:"
+            )
+            for line in strangers:
+                print(f"  POSTSEASON: {line}")
 
     skips = named_skips(cells)
     if skips:

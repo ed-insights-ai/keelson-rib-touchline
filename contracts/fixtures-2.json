@@ -246,6 +246,104 @@
       "venue": "Dallas, TX",
       "home_score": 1,
       "away_score": 0
+    },
+    {
+      "id": "sidearm:fort-hays-state:13669",
+      "date": "2025-10-30",
+      "home": "ouachita-baptist",
+      "away": "fort-hays-state",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2025",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "15:30",
+      "venue": "Arkadelphia, Ark.",
+      "home_score": 0,
+      "away_score": 4
+    },
+    {
+      "id": "sidearm:fort-hays-state:13926",
+      "date": "2025-11-15",
+      "home": "fort-hays-state",
+      "away": "rogers-state",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2025",
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "2025 GAC Men's Soccer Tournament",
+        "round_published": "GAC Championship Game"
+      },
+      "time": "13:00",
+      "venue": "Hays, Kan.",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:lincoln:4402",
+      "date": "2025-11-23",
+      "home": "lincoln",
+      "away": "tiffin",
+      "status": "final",
+      "source_url": "https://lubluetigers.com/sports/mens-soccer/schedule/2025",
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "ncaa",
+        "source": "NCAA Division II Championship"
+      },
+      "time": "15:00",
+      "venue": "Jefferson City, Mo. Capital City High School",
+      "home_score": 1,
+      "away_score": 1,
+      "result_published": "W, 1-1 (SO, 4-3)",
+      "shootout": {
+        "winner": "lincoln",
+        "home": 4,
+        "away": 3
+      }
+    },
+    {
+      "id": "sidearm:lincoln-memorial:11414",
+      "date": "2025-11-21",
+      "home": "lincoln-memorial",
+      "away": "anderson",
+      "status": "final",
+      "source_url": "https://lmurailsplitters.com/sports/mens-soccer/schedule/2025",
+      "neutral": true,
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "ncaa",
+        "source": "NCAA Super Region 2",
+        "round_published": "First Round"
+      },
+      "time": "15:00",
+      "venue": "Boca Raton, FL",
+      "home_score": 0,
+      "away_score": 0,
+      "result_published": "T, 0-0 , 2-3 Penalty Kicks"
+    },
+    {
+      "id": "sidearm:roberts-wesleyan:4264",
+      "date": "2022-11-28",
+      "home": "roberts-wesleyan",
+      "away": "covenant",
+      "status": "final",
+      "source_url": "https://robertsredhawks.com/sports/mens-soccer/schedule/2022",
+      "neutral": true,
+      "conference_game": false,
+      "stage": {
+        "phase": "unknown",
+        "source": "NCCAA National Championships"
+      },
+      "time": "13:00",
+      "venue": "Kissimmee, Fla.",
+      "home_score": 3,
+      "away_score": 2
     }
   ],
   "missing": ["oklahoma-baptist"]

@@ -48,6 +48,26 @@ export const programmeSchema = z
   .strict();
 export type Programme = z.infer<typeof programmeSchema>;
 
+export const fixtureStageSchema = z
+  .object({
+    phase: z.enum(["regular", "postseason", "unknown"]),
+    competition: z.enum(["conference", "ncaa"]).optional(),
+    source: z.string().min(1).optional(),
+    round_published: z.string().min(1).optional(),
+  })
+  .strict();
+export type FixtureStage = z.infer<typeof fixtureStageSchema>;
+
+export const shootoutSchema = z
+  .object({
+    /** The slug of the side that won the shootout. */
+    winner: z.string().min(1),
+    home: z.number().int().nonnegative(),
+    away: z.number().int().nonnegative(),
+  })
+  .strict();
+export type Shootout = z.infer<typeof shootoutSchema>;
+
 export const fixtureSchema = z
   .object({
     id: z.string().min(1),
@@ -82,6 +102,20 @@ export const fixtureSchema = z
      *  the sport's 1-0 convention to the awarded side; neither is a measured
      *  scoreline. Absence means the page published no forfeit. */
     forfeit: z.enum(["home", "away"]).optional(),
+    /** Where in the season the match sits, as the schedule page groups it.
+     *  `regular` is stamped only on a page that marks a postseason block, and
+     *  only before its first postseason date; a postseason stage names its
+     *  competition and the block header it was read from (`source`), and the
+     *  row's own round label verbatim when it prints one. Absence means the
+     *  page said nothing about phase: read it as unknown, never as regular. */
+    stage: fixtureStageSchema.optional(),
+    /** The result cell verbatim, present only on a level score that prints a
+     *  shootout ("W, 1-1 (SO, 4-3)", "T, 0-0 , 2-3 Penalty Kicks"). */
+    result_published: z.string().min(1).optional(),
+    /** The shootout, present only when the cell names its winner by a letter
+     *  or by one of the two sides' names; never read from digit order. The
+     *  scores stay the drawn ones: a shootout is a draw in every record. */
+    shootout: shootoutSchema.optional(),
     /** Whether the result counts in the conference table. */
     conference_game: z.boolean().optional(),
     /** Present only when the flag was NOT published by a schedule page —
