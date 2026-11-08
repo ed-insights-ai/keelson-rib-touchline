@@ -65,6 +65,41 @@ preflight too), `TOUCHLINE_ARCHIVE_DAY` and `TOUCHLINE_ARCHIVE_DIR` (the
 archive leg's day and root, below) and `TOUCHLINE_CADENCE_PATH` (replaces the
 script's absolute `PATH`; the test harness uses it to put its fakes first).
 
+## Divisions: men's and women's in one morning
+
+The rib config (`~/.keelson/rib-touchline/config.json`) may name the
+divisions the data home follows, and pin a division's conference set:
+
+```json
+{
+  "packageDir": "…",
+  "dataDir": "…",
+  "genders": ["men", "women"],
+  "conferences": { "women": ["GAC"] }
+}
+```
+
+With more than one gender named and no `TOUCHLINE_GENDER` set (launchd sets
+none), `loop` and `collect` run the script once per gender, in the listed
+order, and exit with the worst status. Each run is an ordinary single-gender
+run: it takes the lock, sweeps, collects, rolls back, journals, commits,
+publishes and writes its own run record (`gender` tells them apart).
+
+- `conferences.{gender}` pins that gender's set; a gender without one
+  resolves its set from membership, as before. The women's division follows
+  only what the site publishes for women, so it is pinned: membership also
+  carries women's MIAA windows the collector has no stanzas for.
+  `TOUCHLINE_CONFERENCES` still pins every gender at once.
+- `TOUCHLINE_GENDERS` (`men,women`) overrides the config's list and is
+  exported to every run, because `just publish` in touchline-ui builds one
+  site per listed gender (the women's at `/women/`, behind the Men / Women
+  switch). A publish from either run therefore carries both sites.
+- Only the first run may archive: the archive leg tars every gender's cells
+  in one pass, so later runs get `TOUCHLINE_ARCHIVE_DAY=0`.
+
+A run with `TOUCHLINE_GENDER` set, or a config naming one gender or none, is
+the single run it always was.
+
 ## The shim install
 
 The launchd plist (`~/Library/LaunchAgents/ai.edinsights.touchline-collect.plist`)

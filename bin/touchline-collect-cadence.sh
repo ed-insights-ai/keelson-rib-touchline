@@ -171,6 +171,64 @@ if [ "$MODE" = "version" ]; then
   exit 0
 fi
 
+# ── divisions: one complete run per gender, in order ────────────────────────
+# The rib config may name the divisions this home follows:
+#   "genders": ["men", "women"], "conferences": {"women": ["GAC"]}
+# (TOUCHLINE_GENDERS="men,women" overrides the list). With more than one, and
+# no TOUCHLINE_GENDER pinning this run to one, the script runs itself once per
+# gender, one after the other, and exits with the worst status. Each child is
+# an ordinary run: it takes the lock, sweeps, collects, rolls back, journals,
+# commits, publishes and writes its own run record, exactly as a single-gender
+# run does, so nothing below this block knows divisions exist.
+#   - "conferences" pins a gender's conference set (a women's run follows only
+#     the conferences the site publishes for women); unset, the gender resolves
+#     its set from membership as before. TOUCHLINE_CONFERENCES still pins every
+#     gender at once.
+#   - TOUCHLINE_GENDERS is exported to every child, because `just publish` in
+#     touchline-ui builds one site per listed gender: a publish from either
+#     run carries both, and the Men / Women switch links between them.
+#   - Only the first child may archive. The archive tars every gender's cells
+#     in one pass, so a second pass on the archive day would redo it.
+# One gender (or none) named: this block does nothing and the run is the
+# single-gender run it always was.
+if [ -z "${TOUCHLINE_GENDER:-}" ] && { [ "$MODE" = "loop" ] || [ "$MODE" = "collect" ]; }; then
+  GENDERS="${TOUCHLINE_GENDERS:-}"
+  if [ -z "$GENDERS" ] && [ -f "$RIB_CFG" ]; then
+    GENDERS=$(jq -r '(.genders // []) | if type == "array" then join(",") else . end' "$RIB_CFG" 2>/dev/null || printf '')
+  fi
+  GENDERS=$(printf '%s' "$GENDERS" | tr -d ' ')
+  case "$GENDERS" in
+    *,*)
+      export TOUCHLINE_GENDERS="$GENDERS"
+      log "touchline cadence: divisions [$GENDERS] — one run per gender, in order (mode=$MODE)."
+      DIV_RC=0
+      DIV_FIRST=1
+      for DIV_G in $(printf '%s' "$GENDERS" | tr ',' ' '); do
+        case "$DIV_G" in
+          men|women) ;;
+          *) log "WARNING: divisions name unknown gender '$DIV_G' — skipped."; DIV_RC=1; continue ;;
+        esac
+        DIV_CONFS="${TOUCHLINE_CONFERENCES:-}"
+        if [ -z "$DIV_CONFS" ] && [ -f "$RIB_CFG" ]; then
+          DIV_CONFS=$(jq -r --arg g "$DIV_G" \
+            '(.conferences // {})[$g] // empty | if type == "array" then join(" ") else . end' \
+            "$RIB_CFG" 2>/dev/null || printf '')
+        fi
+        DIV_ARCHIVE_DAY="${TOUCHLINE_ARCHIVE_DAY:-7}"
+        [ "$DIV_FIRST" = 1 ] || DIV_ARCHIVE_DAY=0
+        log "touchline cadence: division $DIV_G — conferences [${DIV_CONFS:-from membership}]."
+        TOUCHLINE_GENDER="$DIV_G" TOUCHLINE_CONFERENCES="$DIV_CONFS" \
+          TOUCHLINE_ARCHIVE_DAY="$DIV_ARCHIVE_DAY" /bin/sh "$0" "$MODE"
+        DIV_R=$?
+        [ "$DIV_R" -gt "$DIV_RC" ] && DIV_RC=$DIV_R
+        DIV_FIRST=0
+      done
+      log "touchline cadence: divisions done [$GENDERS] — exit $DIV_RC."
+      exit "$DIV_RC"
+      ;;
+  esac
+fi
+
 # ── season ───────────────────────────────────────────────────────────────────
 YEAR=$(date +%Y)
 MONTH=$(date +%m)
