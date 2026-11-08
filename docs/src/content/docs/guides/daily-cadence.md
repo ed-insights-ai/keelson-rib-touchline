@@ -8,8 +8,9 @@ sidebar:
 The daily cadence is one POSIX shell script, `bin/touchline-collect-cadence.sh`,
 shipped in the rib package and run by launchd every morning through a thin
 shim. It collects every conference the membership record authors for the
-season, decides per conference whether the board really changed, journals and
-publishes only when one did, and pushes the data home's record. Nothing in it
+season, decides per conference whether the board really changed, journals
+only when one did, publishes whenever any conference was collected (so the
+site is dated by the run's look), and pushes the data home's record. Nothing in it
 names a conference: the set resolves at run time from
 `bin/resolve-membership.ts conferences {gender}`, so onboarding a conference
 never edits it ([Onboard a conference](../onboard-a-conference/), step 7).
@@ -29,7 +30,7 @@ legs still run, except where the table says otherwise.
 | detect | reads the data home's git state per conference: real change is committed, stamp-only churn is rolled back | never fails on its own |
 | journal | `bun run journal run --conference {keys} --write` in the site checkout, one pooled call for every changed conference, then `--national` once when any conference journal regenerated. Each is a live model call | the site keeps its previous journal for that conference; the loop continues |
 | commit journals | stages exactly the regenerated journal and validation files, commits on the site's `main`, pushes | a checkout not on `main` is logged and left uncommitted; a push failure is a warning, never a stop |
-| publish | `just publish` in the site checkout, once, only when a conference changed. The recipe's own build, link check, gh-pages push and deployed-host assertion are the gate | logged as `PUBLISH FAILED`, exit 1; the data home commits are intact |
+| publish | `just publish` in the site checkout, once, when any conference was collected (changed or not), with `TOUCHLINE_RECOLLECTED` naming each unchanged one and its collect stamp. The recipe's own build, link check, gh-pages push and deployed-host assertion are the gate | logged as `PUBLISH FAILED`, exit 1; the data home commits are intact |
 | push data | pushes every data home commit ahead of upstream | a warning and exit 1; the commits stay local |
 | archive | on the archive day only (Sunday by default), tars the raw HTML fetch cache as one `tar.zst` per season, gender and conference plus one for anything unclaimed, then prunes old sets ([Weekly raw HTML archive](#weekly-raw-html-archive)) | a warning and exit 1; the dated directory is left without its `.done` marker and the next run removes it |
 
@@ -108,8 +109,14 @@ is preserved by the weekly archive below rather than by git history.
 
 A real change is committed in the data home as
 `chore(data): cadence collect {conference} {gender} {season}`. Churn is rolled
-back, so a quiet day leaves no commit and spends nothing. A re-run of an
-already-collected day converges to "nothing to do".
+back, so a quiet day leaves no commit and spends no model call. The stamp
+that churn carried is not thrown away with it: the run hands it to the
+journal legs and the publish as `TOUCHLINE_RECOLLECTED`
+(`{conference}={collected_at} ...`), and the site dates that conference by it
+(its freshness line and its "today"). A day where every conference came back
+unchanged still republishes the site for the same reason; a day where none
+collected publishes nothing. A re-run of an already-collected day converges
+to "nothing to journal".
 
 Before the first collect, any uncommitted state already in the data home (an
 interrupted earlier run) is swept into one commit, and a conference whose
@@ -297,7 +304,10 @@ and zstd are real). The scenarios are the ones above: a changed collect
 commits, churn rolls back, a failed collect rolls back and the run continues
 with exit 1, `collect` mode stops before the journal, a `loop` run journals
 the conference and the national leg, commits on the site's `main`, publishes
-and records the build stamp, a second concurrent start is a no-op, a run
+and records the build stamp, an unchanged conference's collect stamp reaches
+the journal legs and the publish while its board keeps the committed one, a
+quiet run republishes without a journal or a commit while a run that
+collected nothing publishes nothing, a second concurrent start is a no-op, a run
 already on the data home makes the start a busy exit, a locked collect is
 reported and nothing rolled back, a failed collect's rollback leaves a
 sibling's mid-collect write alone, the sweep names its paths per conference,

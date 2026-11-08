@@ -222,6 +222,9 @@ const FAKE_BUN = `#!/bin/sh
 # from fixed strings; \`bun -e\` (resolve_programmes) reads RESOLVE_CONF; the
 # journal run touches the journal + validation files for each key.
 printf 'bun %s\\n' "$*" >>"$CADENCE_FAKE_LOG"
+if [ "$1" = "run" ] && [ "$2" = "journal" ] && [ -n "\${TOUCHLINE_RECOLLECTED:-}" ]; then
+  printf 'bun env TOUCHLINE_RECOLLECTED=%s\\n' "$TOUCHLINE_RECOLLECTED" >>"$CADENCE_FAKE_LOG"
+fi
 case "$1" in
   *resolve-membership.ts)
     case "$2" in
@@ -758,11 +761,16 @@ describe("bin/touchline-collect-cadence.sh", () => {
       expect(r.code).toBe(0);
       // the board is rolled back to its committed stamp...
       expect(await boardFile(h, "fixtures", "lsc")).toBe(initialBoard("lsc"));
-      // ...and the stamp the collect wrote reaches the site's build
-      const env = (await h.calls())
-        .split("\n")
-        .find((l) => l.startsWith("just env TOUCHLINE_RECOLLECTED="));
-      expect(env).toMatch(/^just env TOUCHLINE_RECOLLECTED=lsc=\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/);
+      // ...and the stamp the collect wrote reaches the site's build, and the
+      // journal legs before it, so both date the quiet conference alike
+      const lines = (await h.calls()).split("\n");
+      const env = lines.find((l) => l.startsWith("just env TOUCHLINE_RECOLLECTED="));
+      expect(env).toMatch(
+        /^just env TOUCHLINE_RECOLLECTED=lsc=\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/,
+      );
+      const journalEnv = lines.filter((l) => l.startsWith("bun env TOUCHLINE_RECOLLECTED="));
+      expect(journalEnv).toHaveLength(2); // the conference leg and the national leg
+      for (const l of journalEnv) expect(l.slice(4)).toBe((env as string).slice(5));
       const [rec] = await h.records();
       expect(rec.collect).toEqual({ GAC: "changed", LSC: "no-change" });
       expect(rec.publish).toBe("succeeded");
@@ -770,26 +778,56 @@ describe("bin/touchline-collect-cadence.sh", () => {
     LOOP_TIMEOUT,
   );
 
-  test("a quiet loop run journals nothing, publishes nothing, and still records the run", async () => {
+  test(
+    "a quiet loop run journals nothing and commits nothing, but republishes so the site is dated by the look",
+    async () => {
+      const h = await makeHarness();
+      const before = await h.git(h.data, "rev-parse", "--short", "HEAD");
+      const r = await h.cadence("loop", {
+        TOUCHLINE_CONFERENCES: "GAC",
+        CADENCE_FAKE_PLAN: "GAC=churn",
+      });
+      expect(r.code).toBe(0);
+      const calls = await h.calls();
+      expect(calls).not.toContain("run journal");
+      expect(calls).toContain(`just publish (cwd ${h.site})`);
+      expect(calls).toMatch(/^just env TOUCHLINE_RECOLLECTED=gac=\S+$/m);
+      expect(await h.log()).toContain(
+        "no conference changed — nothing to journal; republishing so the site is dated by this run's look.",
+      );
+      expect(await h.git(h.data, "rev-parse", "--short", "HEAD")).toBe(before);
+      const [rec] = await h.records();
+      expect(rec.mode).toBe("loop");
+      expect(rec.collect).toEqual({ GAC: "no-change" });
+      expect(rec.journal_model_calls).toBe(0);
+      expect(rec.journal_commit).toBe("none");
+      expect(rec.publish).toBe("succeeded");
+      expect(rec.data_push).toBe("skipped");
+      expect(rec.exit).toBe(0);
+    },
+    LOOP_TIMEOUT,
+  );
+
+  test("a loop run where nothing collected journals nothing and publishes nothing", async () => {
+    // Every collect failed: there is no look to date the site by, so the
+    // published site keeps the stamps it has — which now read as old, the
+    // signal a reader is owed.
     const h = await makeHarness();
     const r = await h.cadence("loop", {
       TOUCHLINE_CONFERENCES: "GAC",
-      CADENCE_FAKE_PLAN: "GAC=churn",
+      CADENCE_FAKE_PLAN: "GAC=failed",
     });
-    expect(r.code).toBe(0);
+    expect(r.code).toBe(1);
     const calls = await h.calls();
     expect(calls).not.toContain("run journal");
     expect(calls).not.toContain("just publish");
     expect(await h.log()).toContain(
-      "no conference changed — nothing to journal, nothing to publish. No-op run complete.",
+      "no conference changed and none collected — nothing to journal, nothing to publish. No-op run complete.",
     );
     const [rec] = await h.records();
-    expect(rec.mode).toBe("loop");
-    expect(rec.collect).toEqual({ GAC: "no-change" });
+    expect(rec.collect).toEqual({ GAC: "failed" });
     expect(rec.publish).toBe("skipped (no change)");
-    expect(rec.data_push).toBe("skipped");
     expect(rec.build_stamp).toBeNull();
-    expect(rec.exit).toBe(0);
   });
 
   test("(f) the lock: a second concurrent start is a logged no-op", async () => {

@@ -45,15 +45,18 @@
 #               deployed site ahead of its own source. Committed on main only
 #               (any other checkout is logged and skipped), then pushed —
 #               a push failure is loud but never blocks the publish.
-#   4. PUBLISH  once at the end, only if a conference changed: `just publish`
+#   4. PUBLISH  once at the end, if any conference collected (a day where
+#               all came back unchanged still republishes, journal-free, so
+#               the site's dates move with the look): `just publish`
 #               in touchline-ui. Its recipe already rebuilds with the base
 #               path, link-checks the artefact, pushes gh-pages, and asserts
 #               the DEPLOYED host serves correctly — that gate is trusted
 #               here, not duplicated (so no separate `just build` first).
 #               A publish failure is loud: logged and exits non-zero.
-#               Conferences that came back unchanged are passed as
-#               TOUCHLINE_RECOLLECTED (lc=collected_at), so the site says
-#               when it last looked, not when the board last moved.
+#               Conferences that came back unchanged are passed to the
+#               journal legs and the publish as TOUCHLINE_RECOLLECTED
+#               (lc=collected_at), so the site dates them by when it last
+#               looked, not by when the board last moved.
 #   5. PUSH     the data home's branch (tl-151, full loop only): every commit
 #               ahead of upstream is pushed, so the collected record leaves
 #               this machine without a hand reconciliation.
@@ -876,12 +879,43 @@ for CONF in $CONFERENCES; do
   fi
 done
 
+# The journal legs and the publish read the same report, so the national
+# journal is written against the same "today" the pages are built with.
+export TOUCHLINE_RECOLLECTED="$RECOLLECTED"
+
+# `just publish` in touchline-ui, recorded. TOUCHLINE_RECOLLECTED (exported
+# above): "<lc>=<collected_at> ..." for each conference this run collected
+# that came back unchanged (its stamp rolled back above). The site dates a
+# quiet conference by it — its freshness line and its "today" — while the
+# board files stay as committed.
+publish_site() {
+  POUT=$(cd "$UI_DIR" && just publish 2>&1)
+  prc=$?
+  printf '%s\n' "$POUT" | tail -25 | logblock
+  if [ "$prc" -ne 0 ]; then
+    PUBLISH_RESULT="FAILED (exit $prc)"
+    log "PUBLISH FAILED (exit $prc) — the live site did NOT update. Data home commits are intact; fix and re-run 'just publish' in $UI_DIR."
+    RUN_RC=1
+  else
+    PUBLISH_RESULT="succeeded"
+    BUILD_STAMP=$(build_stamp)
+    log "publish succeeded — the deployed host was asserted by the recipe itself. build=${BUILD_STAMP:-none}"
+  fi
+}
+
 # ── 3+4: journal the changed conferences, then publish once ──────────────────
 if [ "$MODE" = "collect" ]; then
   log "mode=collect — stopping after collect+detect (no journal, no publish)."
   ARCHIVE_RESULT="skipped (mode collect)"
+elif [ -z "$CHANGED" ] && [ -n "$RECOLLECTED" ]; then
+  # Every conference that collected came back unchanged. Nothing to journal
+  # (no model call), but the site is dated by when it last looked, so it is
+  # rebuilt and published: otherwise its "today", countdowns and freshness
+  # line would sit on yesterday's run until a board moved again.
+  log "no conference changed — nothing to journal; republishing so the site is dated by this run's look. Running 'just publish' in $UI_DIR."
+  publish_site
 elif [ -z "$CHANGED" ]; then
-  log "no conference changed — nothing to journal, nothing to publish. No-op run complete."
+  log "no conference changed and none collected — nothing to journal, nothing to publish. No-op run complete."
 else
   # one call for every changed conference: the CLI runs them under its pool
   # (cap 4) and reports each by key; a failure is exit 1 at the end, never a
@@ -982,21 +1016,7 @@ else
   fi
 
   log "publish: changed=[$CHANGED] — running 'just publish' in $UI_DIR (rebuild + link check + gh-pages push + deployed-host assertion)."
-  # TOUCHLINE_RECOLLECTED: "<lc>=<collected_at> ..." for each conference this
-  # run collected that came back unchanged (its stamp rolled back above). The
-  # site's freshness line reads it; the board files stay as committed.
-  POUT=$(cd "$UI_DIR" && TOUCHLINE_RECOLLECTED="$RECOLLECTED" just publish 2>&1)
-  prc=$?
-  printf '%s\n' "$POUT" | tail -25 | logblock
-  if [ "$prc" -ne 0 ]; then
-    PUBLISH_RESULT="FAILED (exit $prc)"
-    log "PUBLISH FAILED (exit $prc) — the live site did NOT update. Data home commits are intact; fix and re-run 'just publish' in $UI_DIR."
-    RUN_RC=1
-  else
-    PUBLISH_RESULT="succeeded"
-    BUILD_STAMP=$(build_stamp)
-    log "publish succeeded — the deployed host was asserted by the recipe itself. build=${BUILD_STAMP:-none}"
-  fi
+  publish_site
 fi
 
 # ── push the data home's record (tl-151, full loop only): collects commit
