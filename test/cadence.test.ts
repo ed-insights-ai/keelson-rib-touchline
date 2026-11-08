@@ -271,6 +271,9 @@ const FAKE_JUST = `#!/bin/sh
 # touchline-build meta the cadence reads for its build stamp.
 printf 'just %s (cwd %s)\\n' "$*" "$(pwd)" >>"$CADENCE_FAKE_LOG"
 if [ "$1" != "publish" ]; then printf 'fake just: unknown recipe %s\\n' "$1" >&2; exit 98; fi
+if [ -n "\${TOUCHLINE_RECOLLECTED:-}" ]; then
+  printf 'just env TOUCHLINE_RECOLLECTED=%s\\n' "$TOUCHLINE_RECOLLECTED" >>"$CADENCE_FAKE_LOG"
+fi
 if [ -n "\${CADENCE_FAKE_PUBLISH_FAIL:-}" ]; then
   printf 'publish: deployed host assertion FAILED\\n'; exit 1
 fi
@@ -740,6 +743,29 @@ describe("bin/touchline-collect-cadence.sh", () => {
       expect(rec.journaled).toEqual(["gac", "national"]);
       expect(rec.data_push).toBe("ok");
       expect(rec.exit).toBe(1);
+    },
+    LOOP_TIMEOUT,
+  );
+
+  test(
+    "a conference that came back unchanged hands its fresh stamp to the publish, while its board keeps the committed one",
+    async () => {
+      const h = await makeHarness();
+      const r = await h.cadence("loop", {
+        TOUCHLINE_CONFERENCES: "GAC LSC",
+        CADENCE_FAKE_PLAN: "GAC=changed,LSC=churn",
+      });
+      expect(r.code).toBe(0);
+      // the board is rolled back to its committed stamp...
+      expect(await boardFile(h, "fixtures", "lsc")).toBe(initialBoard("lsc"));
+      // ...and the stamp the collect wrote reaches the site's build
+      const env = (await h.calls())
+        .split("\n")
+        .find((l) => l.startsWith("just env TOUCHLINE_RECOLLECTED="));
+      expect(env).toMatch(/^just env TOUCHLINE_RECOLLECTED=lsc=\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/);
+      const [rec] = await h.records();
+      expect(rec.collect).toEqual({ GAC: "changed", LSC: "no-change" });
+      expect(rec.publish).toBe("succeeded");
     },
     LOOP_TIMEOUT,
   );

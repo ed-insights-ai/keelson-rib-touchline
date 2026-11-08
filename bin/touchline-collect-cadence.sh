@@ -51,6 +51,9 @@
 #               the DEPLOYED host serves correctly — that gate is trusted
 #               here, not duplicated (so no separate `just build` first).
 #               A publish failure is loud: logged and exits non-zero.
+#               Conferences that came back unchanged are passed as
+#               TOUCHLINE_RECOLLECTED (lc=collected_at), so the site says
+#               when it last looked, not when the board last moved.
 #   5. PUSH     the data home's branch (tl-151, full loop only): every commit
 #               ahead of upstream is pushed, so the collected record leaves
 #               this machine without a hand reconciliation.
@@ -615,6 +618,7 @@ archive_step() {
 # ── state ────────────────────────────────────────────────────────────────────
 ARCHIVE_RESULT="skipped (not reached)"
 CHANGED=""
+RECOLLECTED=""
 JOURNALED=""
 COLLECT_SUMMARY=""
 FAILED_COLLECTS=""
@@ -833,6 +837,14 @@ for CONF in $CONFERENCES; do
       log "  $CONF: board CHANGED — committed $(git -C "$DATA_HOME" rev-parse --short HEAD)."
       COLLECT_SUMMARY="${COLLECT_SUMMARY:+$COLLECT_SUMMARY }$CONF=changed"
     else
+      # The rollback puts back the stamp of the collect that last changed the
+      # board, so the file stops saying this conference was looked at today.
+      # Keep the stamp this collect wrote before it goes: the publish leg
+      # hands it to the site, whose "Data collected" line would otherwise
+      # read a quiet conference as a stale one.
+      _seen=$(jq -r '.collected_at // empty' \
+        "$DATA_HOME/data/fixtures/${SEASON}-${GENDER}-${lc}.json" 2>/dev/null || true)
+      if [ -n "$_seen" ]; then RECOLLECTED="${RECOLLECTED:+$RECOLLECTED }$lc=$_seen"; fi
       restore_conference "$lc" "$PROGRAMMES"
       log "  $CONF: no change beyond the collected_at stamp — churn rolled back, journal skipped."
       COLLECT_SUMMARY="${COLLECT_SUMMARY:+$COLLECT_SUMMARY }$CONF=no-change"
@@ -970,7 +982,10 @@ else
   fi
 
   log "publish: changed=[$CHANGED] — running 'just publish' in $UI_DIR (rebuild + link check + gh-pages push + deployed-host assertion)."
-  POUT=$(cd "$UI_DIR" && just publish 2>&1)
+  # TOUCHLINE_RECOLLECTED: "<lc>=<collected_at> ..." for each conference this
+  # run collected that came back unchanged (its stamp rolled back above). The
+  # site's freshness line reads it; the board files stay as committed.
+  POUT=$(cd "$UI_DIR" && TOUCHLINE_RECOLLECTED="$RECOLLECTED" just publish 2>&1)
   prc=$?
   printf '%s\n' "$POUT" | tail -25 | logblock
   if [ "$prc" -ne 0 ]; then
