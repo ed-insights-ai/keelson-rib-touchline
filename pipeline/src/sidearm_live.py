@@ -2981,6 +2981,8 @@ def _box_player_name(cell: object) -> tuple[str, str | None]:
 # typed only when its wording matches a known SideArm phrasing — the raw text
 # is the record, the type is an index into it.  First match wins: a penalty
 # goal reads "PENALTY KICK GOAL by …" and is a goal before it is a penalty.
+# "MIL Roy Parkyn PENALTY KICK GOAL." (no "by") stays a penalty: the site
+# reads every penalty kick by that type and its goal-ness from the score.
 _PLAY_TYPE_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("goal", re.compile(r"\bGOAL by\b", re.I)),
     ("penalty", re.compile(r"\bPENALTY KICK\b", re.I)),
@@ -3003,6 +3005,370 @@ def _play_type(text: str) -> str | None:
         if pattern.search(text):
             return name
     return None
+
+
+#: Names that label a footer row of a box score's player table, never a
+#: person (shared by the captioned tables and the Nuxt store's player lists).
+_BOX_FOOTER_NAMES = {"totals", "team", "tm", "tm team", "team tm"}
+
+
+def _nuxt_text(value: object) -> str:
+    """A store scalar as the text it publishes, or ``""`` for a non-scalar."""
+    if isinstance(value, bool) or not isinstance(value, (str, int, float)):
+        return ""
+    return str(value).strip()
+
+
+def _parse_nuxt_boxscore(html: str, *, page_url: str) -> dict[str, object] | None:
+    """Read the Nuxt skin's box-score store into the classic parser's shape.
+
+    Measured 2026-11-08 on millersvilleathletics.com and scsuhuskies.com: the
+    "nextgen" box score server-renders uncaptioned ``s-table`` markup from
+    ``pinia.boxscore.boxscore[<key>]`` — ``visitingTeam``/``homeTeam`` (each
+    with ``id``, ``name``, ``scoreSummary`` and ``players``), ``scores``,
+    ``penalties``, ``plays`` and ``venue`` — every figure a string.  None
+    if the page carries no such store, or carries more than one match.
+
+    The page's renderings follow the store field for field, so each is read
+    from the field the page prints: team order is visiting then home, the
+    order the score-by-period table lists them; the Team Statistics table's
+    per-period rows are ``scoreSummary.periodSummaries`` and its total column
+    their sum, with shots on goal from ``totals.shots.shotsOnGoal`` (the
+    store's ``totals.miscStats`` corner and offside counts read zero beside a
+    table that prints them, and are not used); the winner is the side both
+    ``winningTeamId`` and ``losingTeamId`` agree on (a draw names the same
+    side as both); player lines are the squad members with
+    ``gamePlayed`` above zero — the page's own cut — with the position
+    upper-cased as the page prints it (a substitute keeper the page shows
+    only in its goalkeeping table keeps his played line too); officials
+    join ``title: name`` as the page prints them; and a play's text is the
+    stat crew's line verbatim.  A line's name is the one the page's player
+    table prints: the stat crew's ``checkName`` as the page recases it
+    ("WOODFILL,NICHOLAS" prints "Woodfill, Nicholas"), read off the rendered
+    cell whose letters match it, never the store's ``name`` — that is the
+    roster's name ("Woodfill, Nick"), which this page does not print.
+    Measured on all twelve pages (2026-11-08): 474 of 474 played lines
+    matched exactly one rendered cell, and 52 differ from the roster name.
+    With no unique cell the ``checkName`` stands as the store publishes it.
+
+    Team references — ``teamId`` on a goal, card or play — resolve against
+    the two sides' ``id`` and agree with the ``isAHomeTeam`` flag beside
+    them, or stay unattributed: the period markers carry ``team: "0"``.
+    The store publishes no running score, so a scoring play's ``score`` is
+    the count of scoring plays so far — the figure the page prints beside
+    it — kept only when every ``scores`` entry matched exactly one
+    attributed play and the counts end on both sides' published scores;
+    otherwise no play carries one.  Measured on all twelve pages
+    (2026-11-08): every play's text is the line the page prints, except
+    the "End of period [45:00]." markers, which the page replaces with its
+    own "End of Period" label and which the classic skin kept as the stat
+    crew wrote them.
+    """
+    store = _nuxt_store(html, "boxscore").get("boxscore")
+    if not isinstance(store, dict):
+        return None
+    boxes = [
+        value
+        for value in store.values()
+        if isinstance(value, dict)
+        and isinstance(value.get("visitingTeam"), dict)
+        and isinstance(value.get("homeTeam"), dict)
+    ]
+    if len(boxes) != 1:
+        return None
+    box = boxes[0]
+
+    sides: list[dict[str, object]] = [box["visitingTeam"], box["homeTeam"]]  # type: ignore[list-item]
+    ids = [_nuxt_text(side.get("id")) for side in sides]
+
+    def side_of(reference: object, home_flag: object = None) -> int | None:
+        text = _nuxt_text(reference)
+        if not text or ids.count(text) != 1:
+            return None
+        index = ids.index(text)
+        if isinstance(home_flag, bool) and home_flag != (index == 1):
+            return None
+        return index
+
+    def int_list(values: object) -> list[int] | None:
+        if not isinstance(values, list):
+            return None
+        out = [_stat_int(_nuxt_text(value)) for value in values]
+        return [value for value in out if value is not None]
+
+    def name_key(text: str) -> str:
+        return re.sub(r"[^A-Z0-9,]", "", text.upper())
+
+    printed: dict[str, set[str]] = {}
+    for cell in BeautifulSoup(html, "lxml").select("td.s-table-whole-td-clickable"):
+        shown = re.sub(r"\s+", " ", cell.get_text(" ", strip=True))
+        if shown:
+            printed.setdefault(name_key(shown), set()).add(shown)
+
+    def line_of(raw: dict[str, object]) -> dict[str, object] | None:
+        check = _nuxt_text(raw.get("checkName"))
+        shown = printed.get(name_key(check), set()) if check else set()
+        published = (
+            next(iter(shown))
+            if len(shown) == 1
+            else check or _nuxt_text(raw.get("name"))
+        )
+        name = _stats_player_name(published)
+        if not name or name.lower() in _BOX_FOOTER_NAMES:
+            return None
+        line: dict[str, object] = {"name": name}
+        player_id = _nuxt_text(raw.get("rosterPlayerId"))
+        if player_id:
+            line["player_id"] = player_id
+        position = _nuxt_text(raw.get("position"))
+        if re.fullmatch(r"[A-Za-z]{1,3}", position):
+            line["position"] = position.upper()
+        number = _nuxt_text(raw.get("uniform"))
+        if re.fullmatch(r"\d{1,3}", number):
+            line["number"] = number
+        return line
+
+    teams: list[dict[str, object]] = []
+    for index, (side, prefix, periods_key) in enumerate(
+        (
+            (sides[0], "visitingTeam", "periodScoresAway"),
+            (sides[1], "homeTeam", "periodScoresHome"),
+        )
+    ):
+        summary = side.get("scoreSummary")
+        summary = summary if isinstance(summary, dict) else {}
+        name = _nuxt_text(side.get("name")) or _nuxt_text(box.get(f"{prefix}Name"))
+        abbr = ids[index] or _nuxt_text(box.get(f"{prefix}Id"))
+        if not name and not abbr:
+            return None
+        team: dict[str, object] = {"name": name or abbr}
+        if abbr:
+            team["abbr"] = abbr
+        score = _stat_int(_nuxt_text(summary.get("score")))
+        if score is None:
+            score = _stat_int(_nuxt_text(box.get(f"{prefix}Score")))
+        if score is not None:
+            team["score"] = score
+        periods = int_list(box.get(periods_key))
+        if periods is None:
+            by_period = _nuxt_text(summary.get("scoreByPeriod"))
+            periods = int_list(by_period.split(",")) if by_period else []
+        team["periods"] = periods or []
+        other = ids[1 - index]
+        if (
+            ids[index]
+            and other
+            and ids[index] != other
+            and _nuxt_text(box.get("winningTeamId")) == ids[index]
+            and _nuxt_text(box.get("losingTeamId")) == other
+        ):
+            team["winner"] = True
+
+        per_period = summary.get("periodSummaries")
+        if isinstance(per_period, list) and per_period:
+            for source, field in (
+                ("shots", "shots"),
+                ("saves", "saves"),
+                ("corners", "corners"),
+                ("fouls", "fouls"),
+                ("offsides", "offsides"),
+            ):
+                counts = [
+                    _stat_int(_nuxt_text(row.get(source)))
+                    if isinstance(row, dict)
+                    else None
+                    for row in per_period
+                ]
+                if all(count is not None for count in counts):
+                    team[field] = sum(counts)  # type: ignore[arg-type]
+        totals = side.get("totals")
+        shot_totals = totals.get("shots") if isinstance(totals, dict) else None
+        if isinstance(shot_totals, dict):
+            on_goal = _stat_int(_nuxt_text(shot_totals.get("shotsOnGoal")))
+            if on_goal is not None:
+                team["sog"] = on_goal
+
+        players: list[dict[str, object]] = []
+        keepers: list[dict[str, object]] = []
+        roster = side.get("players")
+        for raw in roster if isinstance(roster, list) else []:
+            if not isinstance(raw, dict):
+                continue
+            # The store lists the whole squad; the page lists who played.
+            if _integer(_nuxt_text(raw.get("gamePlayed"))) == 0:
+                continue
+            line = line_of(raw)
+            if line is None:
+                continue
+            minutes = _stat_minutes(_nuxt_text(raw.get("minutesPlayed")))
+            player = dict(line)
+            started = _integer(_nuxt_text(raw.get("gameStarted")))
+            if started is not None:
+                player["started"] = started > 0
+            shots = raw.get("shots")
+            shots = shots if isinstance(shots, dict) else {}
+            for source, field in (
+                ("numberOfShots", "shots"),
+                ("shotsOnGoal", "sog"),
+                ("goals", "goals"),
+                ("assists", "assists"),
+            ):
+                value = _stat_int(_nuxt_text(shots.get(source)))
+                if value is not None:
+                    player[field] = value
+            if minutes is not None:
+                player["minutes"] = minutes
+            players.append(player)
+            goalie = raw.get("goalie")
+            if raw.get("isAGoalie") is True and isinstance(goalie, dict):
+                keeper = dict(line)
+                if minutes is not None:
+                    keeper["minutes"] = minutes
+                for source, field in (
+                    ("goalsAllowed", "goals_against"),
+                    ("saves", "saves"),
+                ):
+                    value = _stat_int(_nuxt_text(goalie.get(source)))
+                    if value is not None:
+                        keeper[field] = value
+                keepers.append(keeper)
+        if players:
+            # Starters first, as the page groups them; the store's own
+            # (shirt-number) order holds within each group.
+            players.sort(key=lambda entry: entry.get("started") is not True)
+            team["players"] = players
+        if keepers:
+            team["keepers"] = keepers
+        teams.append(team)
+
+    scoring: list[dict[str, object]] = []
+    goals = box.get("scores")
+    for raw in goals if isinstance(goals, list) else []:
+        if not isinstance(raw, dict):
+            continue
+        entry: dict[str, object] = {}
+        clock = _nuxt_text(raw.get("time"))
+        if clock:
+            entry["time"] = clock
+        index = side_of(raw.get("teamId"), raw.get("isAHomeTeam"))
+        if index is not None:
+            entry["team"] = index
+        scorer = _nuxt_text(raw.get("nameOfPlayer"))
+        if not scorer:
+            continue
+        entry["scorer"] = scorer
+        season_total = _stat_int(_nuxt_text(raw.get("seasonGoalNumber")))
+        if season_total is not None:
+            entry["season_total"] = season_total
+        assist = _nuxt_text(raw.get("scoringAssistsOutput"))
+        if assist:
+            entry["assist"] = assist
+        description = _nuxt_text(raw.get("description"))
+        if description:
+            entry["description"] = description
+        scoring.append(entry)
+
+    cards: list[dict[str, object]] = []
+    penalties = box.get("penalties")
+    for raw in penalties if isinstance(penalties, list) else []:
+        if not isinstance(raw, dict):
+            continue
+        player = _nuxt_text(raw.get("nameOfPlayer"))
+        if not player:
+            continue
+        kind = _nuxt_text(raw.get("type")).lower()
+        card: dict[str, object] = {
+            "type": kind if kind in {"yellow", "red"} else "unknown",
+            "player": player,
+        }
+        number = _nuxt_text(raw.get("uniformNumber"))
+        if re.fullmatch(r"\d+", number):
+            card["number"] = number
+        clock = _nuxt_text(raw.get("time"))
+        if clock:
+            card["time"] = clock
+        index = side_of(raw.get("teamId"))
+        if index is not None:
+            card["team"] = index
+        cards.append(card)
+
+    # A play is a scoring play when it is one of the store's ``scores``
+    # entries — same team, clock and text — which is how the page marks the
+    # rows it renders a running score beside (a penalty logged as PENSHOT
+    # included, which no action or wording test would catch).
+    unmatched = [
+        (
+            _nuxt_text(raw.get("teamId")),
+            _nuxt_text(raw.get("time")),
+            _nuxt_text(raw.get("description")),
+        )
+        for raw in (goals if isinstance(goals, list) else [])
+        if isinstance(raw, dict)
+    ]
+    plays: list[dict[str, object]] = []
+    goal_plays: list[dict[str, object]] = []
+    feed = box.get("plays")
+    for raw in feed if isinstance(feed, list) else []:
+        if not isinstance(raw, dict):
+            continue
+        text = _nuxt_text(raw.get("text"))
+        period = _nuxt_text(raw.get("period"))
+        if not period or not re.search(r"[A-Za-z]", text):
+            continue
+        play: dict[str, object] = {"period": period, "text": text}
+        clock = _nuxt_text(raw.get("clock"))
+        if re.fullmatch(r"\d+:\d{2}", clock):
+            play["clock"] = clock
+        index = side_of(raw.get("team"), raw.get("isAHomeTeam"))
+        if index is not None:
+            play["team"] = index
+        kind = _play_type(text)
+        if kind:
+            play["type"] = kind
+        key = (_nuxt_text(raw.get("team")), clock, text)
+        if key in unmatched:
+            unmatched.remove(key)
+            goal_plays.append(play)
+        plays.append(play)
+    if not unmatched and all("team" in play for play in goal_plays):
+        tally = [0, 0]
+        running: list[list[int]] = []
+        for play in goal_plays:
+            tally[play["team"]] += 1  # type: ignore[index]
+            running.append(list(tally))
+        if tally == [team.get("score") for team in teams]:
+            for play, score in zip(goal_plays, running, strict=True):
+                play["score"] = score
+
+    detail: dict[str, object] = {"source_url": page_url, "teams": teams}
+    if scoring:
+        detail["scoring"] = scoring
+    if cards:
+        detail["cards"] = cards
+    if plays:
+        detail["plays"] = plays
+
+    venue = box.get("venue")
+    venue = venue if isinstance(venue, dict) else {}
+    stadium = _nuxt_text(venue.get("stadium"))
+    if stadium:
+        detail["stadium"] = stadium
+    attendance = _stat_int(_nuxt_text(venue.get("attendance")))
+    if attendance is not None:
+        detail["attendance"] = attendance
+    kickoff = _nuxt_text(venue.get("start"))
+    if kickoff:
+        detail["kickoff"] = kickoff
+    officials = [
+        f"{_nuxt_text(raw.get('title'))}: {_nuxt_text(raw.get('name'))}"
+        for raw in venue.get("officials") or []  # type: ignore[union-attr]
+        if isinstance(raw, dict)
+        and _nuxt_text(raw.get("title"))
+        and _nuxt_text(raw.get("name"))
+    ]
+    if officials:
+        detail["officials"] = officials
+    return detail
 
 
 def parse_boxscore_page(html: str, *, page_url: str) -> dict[str, object]:
@@ -3049,6 +3415,14 @@ def parse_boxscore_page(html: str, *, page_url: str) -> dict[str, object]:
                 team["winner"] = True
             teams.append(team)
         break
+
+    # The Nuxt ("nextgen") skin captions none of these tables; its page
+    # carries the whole match in the Pinia store it renders from.  A page
+    # with neither layout falls through with no teams, and is refused.
+    if not teams:
+        nuxt = _parse_nuxt_boxscore(html, page_url=page_url)
+        if nuxt is not None:
+            return nuxt
 
     def side(reference: str) -> int | None:
         text = reference.strip()
@@ -3283,13 +3657,7 @@ def parse_boxscore_page(html: str, *, page_url: str) -> dict[str, object]:
                 name, player_id = _box_player_name(name_cell)
                 # Footer rows ("Totals", "TM Team") carry data-labelled cells
                 # too; only real people belong in a match line.
-                if not name or name.lower() in {
-                    "totals",
-                    "team",
-                    "tm",
-                    "tm team",
-                    "team tm",
-                }:
+                if not name or name.lower() in _BOX_FOOTER_NAMES:
                     continue
                 line: dict[str, object] = {"name": name}
                 if player_id:
