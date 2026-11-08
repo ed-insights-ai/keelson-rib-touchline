@@ -96,8 +96,23 @@ const FAKE_KEELSON = `#!/bin/sh
 # CADENCE_FAKE_SIDE_WRITE=<path> makes the failed and locked actions also
 # write that path under the data home: another writer's file landing while
 # this collect runs, which a rollback must leave alone.
+# CADENCE_FAKE_SERVER_DOWN=1 makes every call answer the real NO_SERVER
+# envelope (exit 3) until \`keelson start\` brings the fake server up (a marker
+# beside the fake log); CADENCE_FAKE_START_FAIL=1 makes that start fail.
 printf 'keelson %s\\n' "$*" >>"$CADENCE_FAKE_LOG"
 home="$TOUCHLINE_DATA_HOME"
+if [ -n "\${CADENCE_FAKE_SERVER_DOWN:-}" ] && [ ! -f "$CADENCE_FAKE_LOG.up" ]; then
+  if [ "$1" = "start" ]; then
+    if [ -n "\${CADENCE_FAKE_START_FAIL:-}" ]; then
+      printf 'keelson start: the server did not come up\\n'; exit 1
+    fi
+    : >"$CADENCE_FAKE_LOG.up"
+    printf 'keelson server running at http://127.0.0.1:4100\\n'
+    exit 0
+  fi
+  printf '{"ok":false,"error":"workflow status requires a running server; start it with keelson start first","code":"NO_SERVER"}\\n'
+  exit 3
+fi
 if [ "$1 $2" = "workflow status" ]; then
   if [ -n "\${CADENCE_FAKE_BUSY:-}" ]; then
     bw=$(printf '%s' "$CADENCE_FAKE_BUSY" | cut -d: -f1)
@@ -165,6 +180,18 @@ case "$action" in
     printf 'collect %s: 1 fixture landed\\n' "$conf"
     printf '{"ok":true,"data":{"status":"succeeded"}}\\n'
     ;;
+  lost)
+    # the collector's named gap: <lc>-alpha could not be fetched, so every
+    # layer lists it under missing (the real collector drops its records too)
+    for l in fixtures rosters stats matches; do write_board "$l" '"new-row"'; done
+    for l in fixtures rosters stats; do
+      f="$home/data/$l/\${TOUCHLINE_SEASON}-\${TOUCHLINE_GENDER}-\${lc}.json"
+      jq --arg s "\${lc}-alpha" '.missing = [$s]' "$f" >"$f.tmp" && mv "$f.tmp" "$f"
+    done
+    write_churn
+    printf 'collect %s: %s-alpha is a named gap\\n' "$conf" "$lc"
+    printf '{"ok":true,"data":{"status":"succeeded"}}\\n'
+    ;;
   churn)
     for l in fixtures rosters stats matches; do write_board "$l" ''; done
     write_churn
@@ -195,6 +222,9 @@ const FAKE_BUN = `#!/bin/sh
 # from fixed strings; \`bun -e\` (resolve_programmes) reads RESOLVE_CONF; the
 # journal run touches the journal + validation files for each key.
 printf 'bun %s\\n' "$*" >>"$CADENCE_FAKE_LOG"
+if [ "$1" = "run" ] && [ "$2" = "journal" ] && [ -n "\${TOUCHLINE_RECOLLECTED:-}" ]; then
+  printf 'bun env TOUCHLINE_RECOLLECTED=%s\\n' "$TOUCHLINE_RECOLLECTED" >>"$CADENCE_FAKE_LOG"
+fi
 case "$1" in
   *resolve-membership.ts)
     case "$2" in
@@ -244,6 +274,9 @@ const FAKE_JUST = `#!/bin/sh
 # touchline-build meta the cadence reads for its build stamp.
 printf 'just %s (cwd %s)\\n' "$*" "$(pwd)" >>"$CADENCE_FAKE_LOG"
 if [ "$1" != "publish" ]; then printf 'fake just: unknown recipe %s\\n' "$1" >&2; exit 98; fi
+if [ -n "\${TOUCHLINE_RECOLLECTED:-}" ]; then
+  printf 'just env TOUCHLINE_RECOLLECTED=%s\\n' "$TOUCHLINE_RECOLLECTED" >>"$CADENCE_FAKE_LOG"
+fi
 if [ -n "\${CADENCE_FAKE_PUBLISH_FAIL:-}" ]; then
   printf 'publish: deployed host assertion FAILED\\n'; exit 1
 fi
@@ -717,26 +750,84 @@ describe("bin/touchline-collect-cadence.sh", () => {
     LOOP_TIMEOUT,
   );
 
-  test("a quiet loop run journals nothing, publishes nothing, and still records the run", async () => {
+  test(
+    "a conference that came back unchanged hands its fresh stamp to the publish, while its board keeps the committed one",
+    async () => {
+      const h = await makeHarness();
+      const r = await h.cadence("loop", {
+        TOUCHLINE_CONFERENCES: "GAC LSC",
+        CADENCE_FAKE_PLAN: "GAC=changed,LSC=churn",
+      });
+      expect(r.code).toBe(0);
+      // the board is rolled back to its committed stamp...
+      expect(await boardFile(h, "fixtures", "lsc")).toBe(initialBoard("lsc"));
+      // ...and the stamp the collect wrote reaches the site's build, and the
+      // journal legs before it, so both date the quiet conference alike
+      const lines = (await h.calls()).split("\n");
+      const env = lines.find((l) => l.startsWith("just env TOUCHLINE_RECOLLECTED="));
+      expect(env).toMatch(
+        /^just env TOUCHLINE_RECOLLECTED=lsc=\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/,
+      );
+      const journalEnv = lines.filter((l) => l.startsWith("bun env TOUCHLINE_RECOLLECTED="));
+      expect(journalEnv).toHaveLength(2); // the conference leg and the national leg
+      for (const l of journalEnv) expect(l.slice(4)).toBe((env as string).slice(5));
+      const [rec] = await h.records();
+      expect(rec.collect).toEqual({ GAC: "changed", LSC: "no-change" });
+      expect(rec.publish).toBe("succeeded");
+    },
+    LOOP_TIMEOUT,
+  );
+
+  test(
+    "a quiet loop run journals nothing and commits nothing, but republishes so the site is dated by the look",
+    async () => {
+      const h = await makeHarness();
+      const before = await h.git(h.data, "rev-parse", "--short", "HEAD");
+      const r = await h.cadence("loop", {
+        TOUCHLINE_CONFERENCES: "GAC",
+        CADENCE_FAKE_PLAN: "GAC=churn",
+      });
+      expect(r.code).toBe(0);
+      const calls = await h.calls();
+      expect(calls).not.toContain("run journal");
+      expect(calls).toContain(`just publish (cwd ${h.site})`);
+      expect(calls).toMatch(/^just env TOUCHLINE_RECOLLECTED=gac=\S+$/m);
+      expect(await h.log()).toContain(
+        "no conference changed — nothing to journal; republishing so the site is dated by this run's look.",
+      );
+      expect(await h.git(h.data, "rev-parse", "--short", "HEAD")).toBe(before);
+      const [rec] = await h.records();
+      expect(rec.mode).toBe("loop");
+      expect(rec.collect).toEqual({ GAC: "no-change" });
+      expect(rec.journal_model_calls).toBe(0);
+      expect(rec.journal_commit).toBe("none");
+      expect(rec.publish).toBe("succeeded");
+      expect(rec.data_push).toBe("skipped");
+      expect(rec.exit).toBe(0);
+    },
+    LOOP_TIMEOUT,
+  );
+
+  test("a loop run where nothing collected journals nothing and publishes nothing", async () => {
+    // Every collect failed: there is no look to date the site by, so the
+    // published site keeps the stamps it has — which now read as old, the
+    // signal a reader is owed.
     const h = await makeHarness();
     const r = await h.cadence("loop", {
       TOUCHLINE_CONFERENCES: "GAC",
-      CADENCE_FAKE_PLAN: "GAC=churn",
+      CADENCE_FAKE_PLAN: "GAC=failed",
     });
-    expect(r.code).toBe(0);
+    expect(r.code).toBe(1);
     const calls = await h.calls();
     expect(calls).not.toContain("run journal");
     expect(calls).not.toContain("just publish");
     expect(await h.log()).toContain(
-      "no conference changed — nothing to journal, nothing to publish. No-op run complete.",
+      "no conference changed and none collected — nothing to journal, nothing to publish. No-op run complete.",
     );
     const [rec] = await h.records();
-    expect(rec.mode).toBe("loop");
-    expect(rec.collect).toEqual({ GAC: "no-change" });
+    expect(rec.collect).toEqual({ GAC: "failed" });
     expect(rec.publish).toBe("skipped (no change)");
-    expect(rec.data_push).toBe("skipped");
     expect(rec.build_stamp).toBeNull();
-    expect(rec.exit).toBe(0);
   });
 
   test("(f) the lock: a second concurrent start is a logged no-op", async () => {
@@ -969,6 +1060,135 @@ describe("bin/touchline-collect-cadence.sh", () => {
     expect(rec.changed).toEqual(["gac", "lsc"]);
     expect(rec.collect).toEqual({ GAC: "changed", LSC: "changed" });
     expect(rec.exit).toBe(0);
+  });
+
+  test("(k) a down keelson server is started before collecting, and the run goes on", async () => {
+    const h = await makeHarness();
+    const r = await h.cadence("collect", {
+      TOUCHLINE_CONFERENCES: "GAC",
+      CADENCE_FAKE_PLAN: "GAC=changed",
+      CADENCE_FAKE_SERVER_DOWN: "1",
+    });
+    expect(r.code).toBe(0);
+
+    const calls = await h.calls();
+    expect(calls).toContain("keelson start");
+    expect(calls).toContain("keelson workflow run touchline-collect");
+    expect(await boardFile(h, "fixtures", "gac")).toContain('"new-row"');
+
+    const log = await h.log();
+    expect(log).toContain(
+      "keelson server is down — starting it (keelson start) before collecting.",
+    );
+    expect(log).toContain("keelson server started — continuing.");
+    expect(log).not.toContain("NO_SERVER): --project");
+
+    const [rec] = await h.records();
+    expect(rec.collect).toEqual({ GAC: "changed" });
+    expect(rec.exit).toBe(0);
+  });
+
+  test("(l) a server that stays down stops the run with one FATAL: no sweep, no collect", async () => {
+    const h = await makeHarness();
+    const before = await h.git(h.data, "rev-parse", "--short", "HEAD");
+    const sibling = join(h.data, "data", "fixtures", `${SEASON}-${GENDER}-lsc.json`);
+    await writeFile(sibling, board("lsc", "2026-09-05T00:00:00Z", '"leftover-row"'));
+    const r = await h.cadence("loop", {
+      TOUCHLINE_CONFERENCES: "GAC LSC",
+      CADENCE_FAKE_SERVER_DOWN: "1",
+      CADENCE_FAKE_START_FAIL: "1",
+    });
+    expect(r.code).toBe(1);
+
+    expect(await h.git(h.data, "rev-parse", "--short", "HEAD")).toBe(before);
+    expect(await h.git(h.data, "status", "--porcelain")).toBe(
+      `M data/fixtures/${SEASON}-${GENDER}-lsc.json`,
+    );
+    const calls = await h.calls();
+    expect(calls).toContain("keelson start");
+    expect(calls).not.toContain("keelson workflow run");
+    expect(calls).not.toContain("run journal");
+    expect(calls).not.toContain("just publish");
+
+    const log = await h.log();
+    expect(log).toContain(
+      "FATAL: keelson server is down and keelson start did not bring it up — every collect needs it, so nothing was swept or collected.",
+    );
+    expect(log).not.toContain("sweeping leftovers");
+    expect(log).not.toContain("collect GAC");
+
+    const [rec] = await h.records();
+    expect(rec.collect).toEqual({});
+    expect(rec.failed).toEqual([]);
+    expect(rec.data_head).toBe(before);
+    expect(rec.exit).toBe(1);
+  });
+
+  test("(m) a collect that drops a programme HEAD held is rolled back as lost, counted failed, and the run goes on", async () => {
+    const h = await makeHarness();
+    const before = await h.git(h.data, "rev-parse", "--short", "HEAD");
+    const r = await h.cadence("collect", {
+      TOUCHLINE_CONFERENCES: "GAC LSC",
+      CADENCE_FAKE_PLAN: "GAC=lost,LSC=changed",
+    });
+    expect(r.code).toBe(1);
+
+    // GAC keeps its last commit, gap and all gone; LSC's real change lands
+    for (const layer of LAYERS) {
+      expect(await boardFile(h, layer, "gac")).toBe(initialBoard("gac"));
+    }
+    expect(existsSync(join(h.data, "data", "raw_html", "gac-alpha"))).toBe(false);
+    expect(await boardFile(h, "fixtures", "lsc")).toContain('"new-row"');
+    expect(await h.git(h.data, "status", "--porcelain")).toBe("");
+    expect(await h.git(h.data, "log", "--format=%s", `${before}..HEAD`)).toBe(
+      `chore(data): cadence collect LSC ${GENDER} ${SEASON}`,
+    );
+
+    const log = await h.log();
+    // the fake board holds no rosters or teams map, so only fixtures had gac-alpha to lose
+    expect(log).toContain(
+      "  GAC: collect LOST data HEAD held (fixtures:gac-alpha) — a programme that served before is a named gap now; board rolled back to its last commit",
+    );
+    expect(log).toMatch(/run summary: mode=collect .* failed=\[GAC\] .* exit=1 /);
+
+    const [rec] = await h.records();
+    expect(rec.collect).toEqual({ GAC: "lost", LSC: "changed" });
+    expect(rec.failed).toEqual(["GAC"]);
+    expect(rec.changed).toEqual(["lsc"]);
+    expect(rec.exit).toBe(1);
+  });
+
+  test("(n) a gap HEAD already carried is not a loss, and TOUCHLINE_ACCEPT_LOSS lands a real one", async () => {
+    // a gap the board already records: the same slug missing again is no loss
+    const chronic = await makeHarness();
+    for (const layer of ["fixtures", "rosters", "stats"]) {
+      const f = join(chronic.data, "data", layer, `${SEASON}-${GENDER}-gac.json`);
+      const doc = JSON.parse(await readFile(f, "utf8"));
+      doc.missing = ["gac-alpha"];
+      await writeFile(f, `${JSON.stringify(doc, null, 2)}\n`);
+    }
+    await chronic.git(chronic.data, "commit", "-qam", "chore(data): gac-alpha already a gap");
+    const r1 = await chronic.cadence("collect", {
+      TOUCHLINE_CONFERENCES: "GAC",
+      CADENCE_FAKE_PLAN: "GAC=lost",
+    });
+    expect(r1.code).toBe(0);
+    expect(await chronic.log()).not.toContain("LOST");
+    expect((await chronic.records())[0].collect).toEqual({ GAC: "changed" });
+
+    // a loss the owner says is real lands, and says so
+    const accepted = await makeHarness();
+    const r2 = await accepted.cadence("collect", {
+      TOUCHLINE_CONFERENCES: "GAC",
+      CADENCE_FAKE_PLAN: "GAC=lost",
+      TOUCHLINE_ACCEPT_LOSS: "lsc,GAC",
+    });
+    expect(r2.code).toBe(0);
+    expect(await accepted.log()).toContain(
+      "  GAC: collect drops data HEAD held (fixtures:gac-alpha) — accepted by TOUCHLINE_ACCEPT_LOSS.",
+    );
+    expect(JSON.parse(await boardFile(accepted, "fixtures", "gac")).missing).toEqual(["gac-alpha"]);
+    expect((await accepted.records())[0].collect).toEqual({ GAC: "changed" });
   });
 
   test("an unknown mode is a logged FATAL", async () => {

@@ -26,7 +26,13 @@
 #               BEYOND that stamp (or a new board file). Real change -> commit
 #               in the data home (collects are the only writer there, and the
 #               collect step owns its commits). Stamp-only churn -> rolled
-#               back, so a quiet day leaves no commit and spends nothing.
+#               back, so a quiet day leaves no commit and spends nothing. A
+#               collect that drops a programme HEAD held (it went `missing`)
+#               -> rolled back and counted failed (`lost`), so one site's bad
+#               morning never erases the board; TOUCHLINE_ACCEPT_LOSS=<CONF>
+#               lands a loss that is real (lost_programmes, tui-8ec).
+#               Before any of this, a keelson server that is down is started,
+#               and one that stays down stops the run with one FATAL (tui-7b8).
 #   3. JOURNAL  regenerate only the changed conferences (`bun run journal run
 #               --conference <key> --write` in touchline-ui, as a consumer of
 #               its recipes). EACH CALL IS A LIVE MODEL CALL (claude -p): at
@@ -39,12 +45,18 @@
 #               deployed site ahead of its own source. Committed on main only
 #               (any other checkout is logged and skipped), then pushed —
 #               a push failure is loud but never blocks the publish.
-#   4. PUBLISH  once at the end, only if a conference changed: `just publish`
+#   4. PUBLISH  once at the end, if any conference collected (a day where
+#               all came back unchanged still republishes, journal-free, so
+#               the site's dates move with the look): `just publish`
 #               in touchline-ui. Its recipe already rebuilds with the base
 #               path, link-checks the artefact, pushes gh-pages, and asserts
 #               the DEPLOYED host serves correctly — that gate is trusted
 #               here, not duplicated (so no separate `just build` first).
 #               A publish failure is loud: logged and exits non-zero.
+#               Conferences that came back unchanged are passed to the
+#               journal legs and the publish as TOUCHLINE_RECOLLECTED
+#               (lc=collected_at), so the site dates them by when it last
+#               looked, not by when the board last moved.
 #   5. PUSH     the data home's branch (tl-151, full loop only): every commit
 #               ahead of upstream is pushed, so the collected record leaves
 #               this machine without a hand reconciliation.
@@ -323,6 +335,37 @@ restore_conference() { # $1 = lowercase conference key, $2 = comma-separated pro
   done
 }
 
+# Lost data (tui-8ec): the collector reports a programme it could not fetch
+# as a named gap — the layer file lists it under `missing` and drops its
+# records — and exits 0, which is right for the collector (a gap is data) and
+# wrong for the committed board when the same programme served at HEAD: a
+# site's bad morning would erase what the data home already holds. Nov 5 GAC
+# did exactly that (northeastern-state answering 500s took 12 match records,
+# 7 fixtures, a roster and a stats team with it). A loss is a slug that is
+# in the collected layer file's `missing`, was not in HEAD's `missing`, and
+# HEAD held data for: a fixtures `.programmes[].slug`, a rosters `.rosters`
+# key, a stats `.teams` key. A gap HEAD already carried is not a loss, nor is
+# a programme HEAD never held. Prints "layer:slug" words, nothing when none.
+lost_programmes() { # $1 = lowercase conference key
+  _lc="$1"
+  for _layer in fixtures rosters stats; do
+    _p="data/$_layer/${SEASON}-${GENDER}-${_lc}.json"
+    [ -f "$DATA_HOME/$_p" ] || continue
+    git -C "$DATA_HOME" show "HEAD:$_p" >"$PROG_CACHE/lost.head" 2>/dev/null || continue
+    jq -r -n --arg layer "$_layer" \
+        --slurpfile h "$PROG_CACHE/lost.head" --slurpfile n "$DATA_HOME/$_p" '
+      def held($H; $s):
+        if $layer == "rosters" then ($H.rosters | type == "object" and has($s))
+        elif $layer == "stats" then ($H.teams | type == "object" and has($s))
+        else ([($H.programmes // [])[]? | .slug?] | index($s)) != null end;
+      ($h[0]) as $H
+      | (($n[0].missing // [])[] | strings) as $s
+      | select((($H.missing // []) | index($s)) == null)
+      | select(held($H; $s))
+      | "\($layer):\($s)"' 2>/dev/null
+  done | paste -sd ' ' -
+}
+
 # Sweep attribution (tl-5go): names the owner of every dirty path the pre-run
 # sweep is about to commit. Board and errors files carry the conference in
 # their <season>-<gender>-<conf> suffix, raw_html pages belong to whichever
@@ -384,12 +427,12 @@ capped() { # $1 = seconds, rest = command; returns 124 on timeout
   wait "$_cpid"
 }
 
-# shellcheck disable=SC2317 # invoked indirectly through capped.
+# shellcheck disable=SC2317,SC2329 # invoked indirectly through capped.
 journal_leg() { cd "$UI_DIR" && bun run journal run --conference "$JR_KEYS" --write; }
 # The national leg runs AFTER the conference legs: its brief reads the cards'
 # lines and the wires, so it must see today's conference journals (justfile
 # `journal` orders them the same way). One more model call per run.
-# shellcheck disable=SC2317 # invoked indirectly through capped.
+# shellcheck disable=SC2317,SC2329 # invoked indirectly through capped.
 national_leg() { cd "$UI_DIR" && bun run journal run --national --write; }
 
 # ── build stamp: the deployed site's touchline-build meta, read from the
@@ -578,6 +621,7 @@ archive_step() {
 # ── state ────────────────────────────────────────────────────────────────────
 ARCHIVE_RESULT="skipped (not reached)"
 CHANGED=""
+RECOLLECTED=""
 JOURNALED=""
 COLLECT_SUMMARY=""
 FAILED_COLLECTS=""
@@ -646,12 +690,36 @@ fi
 #    project's UUID, not its name) and workingDir (the project's root path).
 #    The cadence passes --project d2-soccer by name, so the match is on
 #    workingDir against the data home, raw and physical (macOS tmp dirs are
-#    symlinks). A status call that fails (exit 3 with the server down, or an
-#    envelope jq cannot read) is logged and the run continues as before: the
-#    server-side lock still refuses a collect that races another run. ───────
+#    symlinks). A server that answers NO_SERVER is started first, and a run
+#    whose server stays down stops before the sweep (below). Any other status
+#    call that fails, or an envelope jq cannot read, is logged and the run
+#    continues: the server-side lock still refuses a collect that races
+#    another run. ─────────────────────────────────────────────────────────────
 DATA_HOME_P=$(cd "$DATA_HOME" 2>/dev/null && pwd -P)
 SOUT=$(keelson workflow status --json 2>&1)
 src=$?
+# A down server (tui-7b8): every collect below needs it (`--project` resolves
+# through the server), so a run that carried on would log one NO_SERVER
+# failure per conference and collect nothing — Oct 31 to Nov 2 did exactly
+# that, three fires in a row. Start it once; if it still answers NO_SERVER,
+# stop here with one FATAL naming the cause, before the sweep or a collect.
+case "$SOUT" in
+  *'"code":"NO_SERVER"'*)
+    log "keelson server is down — starting it (keelson start) before collecting."
+    keelson start 2>&1 | tail -3 | logblock
+    SOUT=$(keelson workflow status --json 2>&1)
+    src=$?
+    case "$SOUT" in
+      *'"code":"NO_SERVER"'*)
+        log "FATAL: keelson server is down and keelson start did not bring it up — every collect needs it, so nothing was swept or collected. Start it by hand (keelson start, then keelson status); the next fire retries."
+        RUN_RC=1
+        finish_run
+        exit 1
+        ;;
+    esac
+    log "keelson server started — continuing."
+    ;;
+esac
 if [ "$src" -ne 0 ]; then
   log "workflow status unavailable (exit $src): $(printf '%s\n' "$SOUT" | tail -1) — busy check skipped; a collect that races another run is still refused by the server's lock."
 elif BUSY_LINE=$(printf '%s\n' "$SOUT" | tail -1 | jq -r --arg home "$DATA_HOME" --arg home_p "${DATA_HOME_P:-$DATA_HOME}" '
@@ -749,12 +817,37 @@ for CONF in $CONFERENCES; do
   case "${ERR:-}" in *"is locked by"*) LOCKED_NOW=1 ;; *) LOCKED_NOW=0 ;; esac
 
   if [ "$crc" -eq 0 ] && [ "$STATUS" = "succeeded" ]; then
-    if has_signal "$lc"; then
+    LOST=$(lost_programmes "$lc")
+    # TOUCHLINE_ACCEPT_LOSS names the conferences (comma or space separated)
+    # whose loss is real and should land — a programme that left, or a site
+    # gone for good — for the one run that commits it.
+    case " $(lower "${TOUCHLINE_ACCEPT_LOSS:-}" | tr ',' ' ') " in
+      *" $lc "*) ACCEPT_LOSS=1 ;;
+      *) ACCEPT_LOSS=0 ;;
+    esac
+    if [ -n "$LOST" ] && [ "$ACCEPT_LOSS" -eq 1 ]; then
+      log "  $CONF: collect drops data HEAD held ($LOST) — accepted by TOUCHLINE_ACCEPT_LOSS."
+    fi
+    if [ -n "$LOST" ] && [ "$ACCEPT_LOSS" -eq 0 ]; then
+      restore_conference "$lc" "$PROGRAMMES"
+      log "  $CONF: collect LOST data HEAD held ($LOST) — a programme that served before is a named gap now; board rolled back to its last commit so the site keeps the complete record. The next fire retries; TOUCHLINE_ACCEPT_LOSS=$CONF lands a loss that is real."
+      FAILED_COLLECTS="${FAILED_COLLECTS:+$FAILED_COLLECTS }$CONF"
+      COLLECT_SUMMARY="${COLLECT_SUMMARY:+$COLLECT_SUMMARY }$CONF=lost"
+      RUN_RC=1
+    elif has_signal "$lc"; then
       commit_home "chore(data): cadence collect $CONF $GENDER $SEASON"
       mark_changed "$lc"
       log "  $CONF: board CHANGED — committed $(git -C "$DATA_HOME" rev-parse --short HEAD)."
       COLLECT_SUMMARY="${COLLECT_SUMMARY:+$COLLECT_SUMMARY }$CONF=changed"
     else
+      # The rollback puts back the stamp of the collect that last changed the
+      # board, so the file stops saying this conference was looked at today.
+      # Keep the stamp this collect wrote before it goes: the publish leg
+      # hands it to the site, whose "Data collected" line would otherwise
+      # read a quiet conference as a stale one.
+      _seen=$(jq -r '.collected_at // empty' \
+        "$DATA_HOME/data/fixtures/${SEASON}-${GENDER}-${lc}.json" 2>/dev/null || true)
+      if [ -n "$_seen" ]; then RECOLLECTED="${RECOLLECTED:+$RECOLLECTED }$lc=$_seen"; fi
       restore_conference "$lc" "$PROGRAMMES"
       log "  $CONF: no change beyond the collected_at stamp — churn rolled back, journal skipped."
       COLLECT_SUMMARY="${COLLECT_SUMMARY:+$COLLECT_SUMMARY }$CONF=no-change"
@@ -786,12 +879,43 @@ for CONF in $CONFERENCES; do
   fi
 done
 
+# The journal legs and the publish read the same report, so the national
+# journal is written against the same "today" the pages are built with.
+export TOUCHLINE_RECOLLECTED="$RECOLLECTED"
+
+# `just publish` in touchline-ui, recorded. TOUCHLINE_RECOLLECTED (exported
+# above): "<lc>=<collected_at> ..." for each conference this run collected
+# that came back unchanged (its stamp rolled back above). The site dates a
+# quiet conference by it — its freshness line and its "today" — while the
+# board files stay as committed.
+publish_site() {
+  POUT=$(cd "$UI_DIR" && just publish 2>&1)
+  prc=$?
+  printf '%s\n' "$POUT" | tail -25 | logblock
+  if [ "$prc" -ne 0 ]; then
+    PUBLISH_RESULT="FAILED (exit $prc)"
+    log "PUBLISH FAILED (exit $prc) — the live site did NOT update. Data home commits are intact; fix and re-run 'just publish' in $UI_DIR."
+    RUN_RC=1
+  else
+    PUBLISH_RESULT="succeeded"
+    BUILD_STAMP=$(build_stamp)
+    log "publish succeeded — the deployed host was asserted by the recipe itself. build=${BUILD_STAMP:-none}"
+  fi
+}
+
 # ── 3+4: journal the changed conferences, then publish once ──────────────────
 if [ "$MODE" = "collect" ]; then
   log "mode=collect — stopping after collect+detect (no journal, no publish)."
   ARCHIVE_RESULT="skipped (mode collect)"
+elif [ -z "$CHANGED" ] && [ -n "$RECOLLECTED" ]; then
+  # Every conference that collected came back unchanged. Nothing to journal
+  # (no model call), but the site is dated by when it last looked, so it is
+  # rebuilt and published: otherwise its "today", countdowns and freshness
+  # line would sit on yesterday's run until a board moved again.
+  log "no conference changed — nothing to journal; republishing so the site is dated by this run's look. Running 'just publish' in $UI_DIR."
+  publish_site
 elif [ -z "$CHANGED" ]; then
-  log "no conference changed — nothing to journal, nothing to publish. No-op run complete."
+  log "no conference changed and none collected — nothing to journal, nothing to publish. No-op run complete."
 else
   # one call for every changed conference: the CLI runs them under its pool
   # (cap 4) and reports each by key; a failure is exit 1 at the end, never a
@@ -892,18 +1016,7 @@ else
   fi
 
   log "publish: changed=[$CHANGED] — running 'just publish' in $UI_DIR (rebuild + link check + gh-pages push + deployed-host assertion)."
-  POUT=$(cd "$UI_DIR" && just publish 2>&1)
-  prc=$?
-  printf '%s\n' "$POUT" | tail -25 | logblock
-  if [ "$prc" -ne 0 ]; then
-    PUBLISH_RESULT="FAILED (exit $prc)"
-    log "PUBLISH FAILED (exit $prc) — the live site did NOT update. Data home commits are intact; fix and re-run 'just publish' in $UI_DIR."
-    RUN_RC=1
-  else
-    PUBLISH_RESULT="succeeded"
-    BUILD_STAMP=$(build_stamp)
-    log "publish succeeded — the deployed host was asserted by the recipe itself. build=${BUILD_STAMP:-none}"
-  fi
+  publish_site
 fi
 
 # ── push the data home's record (tl-151, full loop only): collects commit

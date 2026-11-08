@@ -12,6 +12,7 @@ coverage/
 *.db
 .beads-credential-key
 .beads/
+.beads.gate.lock
 __pycache__/
 
 # Local Keelson runtime plumbing and browser-session artifacts — never repo source.

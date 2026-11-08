@@ -2754,6 +2754,414 @@ def test_the_nuxt_stats_store_reads_both_tables_and_skips_the_totals() -> None:
     assert (massimi["shutouts"], massimi["shots_faced"]) == (5, 133)
 
 
+_MILLERSVILLE_BOX_URL = (
+    "https://millersvilleathletics.com/sports/mens-soccer/stats/2026/"
+    "lackawanna/boxscore/10767"
+)
+_MILLERSVILLE_BOX_FIXTURE = {
+    "id": "sidearm:millersville:10767",
+    "date": "2026-10-24",
+    "home": "millersville",
+    "away": "lackawanna",
+    "home_score": 3,
+    "away_score": 0,
+    "status": "final",
+}
+
+
+def test_the_nuxt_box_score_reads_the_whole_match_off_its_store() -> None:
+    """The nextgen box score (millersvilleathletics.com, 2026-11-08) captions
+    no table; the match rides in its Pinia boxscore store, read into the
+    classic parser's shape and proved and oriented exactly as before."""
+    from src.sidearm_live import parse_match_page
+
+    page = PublishedPage(
+        _MILLERSVILLE_BOX_URL,
+        _MILLERSVILLE_BOX_URL,
+        (FIXTURES / "sidearm_millersville_box_2026_10767.html").read_text(),
+    )
+    detail = parse_match_page(page, 2026, dict(_MILLERSVILLE_BOX_FIXTURE))
+
+    lackawanna, millersville = detail["teams"]
+    assert {
+        key: value
+        for key, value in lackawanna.items()
+        if key not in {"players", "keepers"}
+    } == {
+        "name": "Lackawanna",
+        "abbr": "LACK",
+        "score": 0,
+        "periods": [0, 0],
+        "shots": 3,
+        "saves": 6,
+        "corners": 2,
+        "fouls": 12,
+        "offsides": 2,
+        "sog": 1,
+    }
+    assert millersville["name"] == "Millersville" and millersville["abbr"] == "VILLE"
+    assert millersville["score"] == 3 and millersville["periods"] == [2, 1]
+    assert millersville["winner"] is True and "winner" not in lackawanna
+    # The store's totals.miscStats prints zero corners and offsides; the
+    # Team Statistics table the page renders sums the per-period rows.
+    assert (millersville["shots"], millersville["sog"]) == (26, 9)
+    assert (millersville["corners"], millersville["offsides"]) == (7, 3)
+    assert detail["home_index"] == 1
+
+    # Only who played, starters first; the roster-linked side carries ids.
+    assert millersville["players"][0] == {
+        "name": "Kieran Finegan",
+        "player_id": "12536",
+        "position": "GK",
+        "number": "0",
+        "started": True,
+        "shots": 0,
+        "sog": 0,
+        "goals": 0,
+        "assists": 0,
+        "minutes": 72,
+    }
+    names = [line["name"] for line in millersville["players"]]
+    assert "Gavin Massimi" not in names and "Aidan Thomas" not in names
+    assert len(names) == 23 and len(lackawanna["players"]) == 21
+    assert "Abass Ndiaye" in names  # the store's "Ndiaye, Abass " flipped
+    started = [line["started"] for line in millersville["players"]]
+    assert started == sorted(started, reverse=True)
+    assert lackawanna["players"][0] == {
+        "name": "Kevin Nievas",
+        "position": "GK",
+        "number": "1",
+        "started": True,
+        "shots": 0,
+        "sog": 0,
+        "goals": 0,
+        "assists": 0,
+        "minutes": 90,
+    }
+    assert lackawanna["keepers"] == [
+        {
+            "name": "Kevin Nievas",
+            "position": "GK",
+            "number": "1",
+            "minutes": 90,
+            "goals_against": 3,
+            "saves": 6,
+        }
+    ]
+    assert [k["name"] for k in millersville["keepers"]] == [
+        "Kieran Finegan",
+        "Logan Kratz",
+    ]
+
+    assert detail["scoring"] == [
+        {
+            "time": "00:50",
+            "team": 1,
+            "scorer": "Zander Leik",
+            "season_total": 6,
+            "assist": "Matias Schmidt , Brian ONeill",
+            "description": (
+                "GOAL by VILLE Leik, Zander Assist by Schmidt, Matias and ONeill, Brian."
+            ),
+        },
+        {
+            "time": "21:15",
+            "team": 1,
+            "scorer": "Roy Parkyn",
+            "season_total": 8,
+            "description": "GOAL by VILLE Parkyn, Roy.",
+        },
+        {
+            "time": "65:58",
+            "team": 1,
+            "scorer": "Omar Warthen Jr",
+            "season_total": 3,
+            "assist": "John Fiorillo",
+            "description": "GOAL by VILLE Warthen Jr, Omar Assist by Fiorillo, John.",
+        },
+    ]
+    assert detail["cards"] == [
+        {
+            "type": "yellow",
+            "player": "Will Claugh",
+            "number": "8",
+            "time": "78:37",
+            "team": 0,
+        }
+    ]
+
+    plays = detail["plays"]
+    assert len(plays) == 113
+    assert plays[0] == {
+        "period": "1",
+        "text": "Finegan, Kieran at goalie for Millersville",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie",
+    }
+    assert plays[7] == {
+        "period": "1",
+        "text": "Shot by VILLE Jones, Andrew, top right, saved by Nievas, Kevin.",
+        "clock": "11:32",
+        "team": 1,
+        "type": "shot",
+    }
+    assert plays[97]["text"] == "Yellow card on LACK Claugh, Will."
+    assert (plays[97]["team"], plays[97]["type"]) == (0, "yellow")
+    # The period markers name team "0": no side, so no attribution.
+    assert plays[47] == {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "type": "period",
+    }
+    assert sum("team" not in play for play in plays) == 3
+    goals = [play for play in plays if play.get("type") == "goal"]
+    assert [goal["score"] for goal in goals] == [[0, 1], [0, 2], [0, 3]]
+
+    assert detail["stadium"] == "Pucillo Field"
+    assert detail["attendance"] == 127 and detail["kickoff"] == "01:00"
+    assert detail["officials"] == [
+        "Referee: Brian Holden",
+        "Asst. Referee: Ryan Difiore",
+        "Asst. Referee: Bukhosi Ndlovu",
+    ]
+
+
+def _nuxt_box_page(
+    box: dict[str, object],
+    *,
+    title: str = "Men's Soccer vs Beta on 9/9/2026 - Box Score - Example",
+    body: str = "",
+) -> str:
+    """A minimal Nuxt page whose devalue payload holds one boxscore store,
+    with ``body`` as the server-rendered markup beside it."""
+    values: list[object] = []
+
+    def encode(value: object) -> int:
+        if value is None:
+            return -1
+        index = len(values)
+        values.append(None)
+        if isinstance(value, dict):
+            values[index] = {key: encode(item) for key, item in value.items()}
+        elif isinstance(value, list):
+            values[index] = [encode(item) for item in value]
+        else:
+            values[index] = value
+        return index
+
+    encode({"pinia": {"boxscore": {"boxscore": {"1": box}, "isLoading": False}}})
+    return (
+        f"<html><head><title>{title}</title></head><body>{body}"
+        '<script type="application/json" id="__NUXT_DATA__">'
+        f"{json.dumps(values)}</script></body></html>"
+    )
+
+
+def _nuxt_side(team_id: str, name: str, score: str) -> dict[str, object]:
+    first = {"shots": "2", "saves": "3", "fouls": "4", "corners": "1", "offsides": "0"}
+    second = {"shots": "7", "saves": "1", "fouls": "4", "corners": "2"}
+    return {
+        "id": team_id,
+        "name": name,
+        "scoreSummary": {"score": score, "periodSummaries": [first, second]},
+        "players": [],
+    }
+
+
+def _nuxt_play(team: str, home: bool, action: str, text: str) -> dict[str, object]:
+    return {
+        "period": "1",
+        "action": action,
+        "isAHomeTeam": home,
+        "team": team,
+        "clock": "10:00",
+        "text": text,
+    }
+
+
+def test_a_nuxt_box_score_leaves_unresolvable_references_unattributed() -> None:
+    from src.sidearm_live import parse_boxscore_page
+
+    box = {
+        "visitingTeam": _nuxt_side("BU", "Beta", "1"),
+        "homeTeam": _nuxt_side("AU", "Alpha", "0"),
+        "winningTeamId": "BU",
+        "losingTeamId": "AU",
+        "periodScoresAway": ["1", "0"],
+        "periodScoresHome": ["0", "0"],
+        "scores": [
+            {
+                "isAHomeTeam": False,
+                "teamId": "BU",
+                "time": "10:00",
+                "nameOfPlayer": "Sam Roe",
+                "seasonGoalNumber": "2",
+                "description": "GOAL by BU Roe, Sam.",
+                "scoringAssistsOutput": "",
+            }
+        ],
+        "penalties": [
+            # The site's own anonymous bench caution, printed "#0 0".
+            {
+                "teamId": "BU",
+                "time": "82:43",
+                "type": "YELLOW",
+                "nameOfPlayer": "0",
+                "uniformNumber": "0",
+            },
+            {
+                "teamId": "ZZ",
+                "time": "88:00",
+                "type": "YELLOW-RED",
+                "nameOfPlayer": "Al Roe",
+                "uniformNumber": "5",
+            },
+        ],
+        "plays": [
+            _nuxt_play("XYZ", True, "SHOT", "Shot by XYZ Doe, Jan."),
+            # The side flag contradicts the id: neither is trusted.
+            _nuxt_play("BU", True, "GOAL", "GOAL by BU Roe, Sam."),
+            _nuxt_play("AU", True, "FOUL", "Foul on Poe, Kim."),
+        ],
+    }
+    detail = parse_boxscore_page(_nuxt_box_page(box), page_url="x")
+
+    beta, alpha = detail["teams"]
+    assert (beta["name"], beta["score"], beta["winner"]) == ("Beta", 1, True)
+    assert beta["periods"] == [1, 0] and "winner" not in alpha
+    assert (beta["shots"], beta["corners"], beta["fouls"]) == (9, 3, 8)
+    # A per-period field one period leaves out is not totalled.
+    assert "offsides" not in beta and "sog" not in beta and "players" not in beta
+    bench, unknown = detail["cards"]
+    assert bench == {
+        "type": "yellow",
+        "player": "0",
+        "number": "0",
+        "time": "82:43",
+        "team": 0,
+    }
+    assert unknown == {
+        "type": "unknown",
+        "player": "Al Roe",
+        "number": "5",
+        "time": "88:00",
+    }
+    # The scoring entry's own flag agrees with its id; the play's does not.
+    assert detail["scoring"] == [
+        {
+            "time": "10:00",
+            "team": 0,
+            "scorer": "Sam Roe",
+            "season_total": 2,
+            "description": "GOAL by BU Roe, Sam.",
+        }
+    ]
+    stray, goal, foul = detail["plays"]
+    assert "team" not in stray and "team" not in goal and foul["team"] == 1
+    # An unattributed goal leaves the running score unproven: none is kept.
+    assert goal["type"] == "goal" and "score" not in goal
+    assert not {"stadium", "attendance", "kickoff", "officials"} & set(detail)
+
+
+def test_a_nuxt_penalty_logged_apart_from_goals_still_carries_its_score() -> None:
+    """Measured 2026-11-08 (millersvilleathletics.com/…/boxscore/10757): a
+    penalty goal arrives as action PENSHOT with its own wording; the page
+    prints the running score beside it because it is a ``scores`` entry."""
+    from src.sidearm_live import parse_boxscore_page
+
+    penalty = "MIL Roy Parkyn PENALTY KICK GOAL."
+    box = {
+        "visitingTeam": _nuxt_side("HFU", "Holy Family", "0"),
+        "homeTeam": _nuxt_side("MIL", "Millersville", "2"),
+        "scores": [
+            {
+                "teamId": "MIL",
+                "time": "10:00",
+                "nameOfPlayer": "Ann Lee",
+                "description": "GOAL by MIL Lee, Ann.",
+            },
+            {
+                "teamId": "MIL",
+                "time": "10:00",
+                "nameOfPlayer": "Roy Parkyn",
+                "seasonGoalNumber": "0",
+                "description": penalty,
+            },
+        ],
+        "plays": [
+            _nuxt_play("MIL", True, "GOAL", "GOAL by MIL Lee, Ann."),
+            _nuxt_play("MIL", True, "SHOT", "Shot by MIL Lee, Ann."),
+            _nuxt_play("MIL", True, "PENSHOT", penalty),
+        ],
+    }
+    goal, shot, kick = parse_boxscore_page(_nuxt_box_page(box), page_url="x")["plays"]
+    assert goal["score"] == [0, 1] and "score" not in shot
+    assert kick == {
+        "period": "1",
+        "text": penalty,
+        "clock": "10:00",
+        "team": 1,
+        # typed a penalty, as the classic data types it; the score says goal
+        "type": "penalty",
+        "score": [0, 2],
+    }
+
+
+def test_a_nuxt_player_line_takes_the_printed_name_not_the_roster_name() -> None:
+    """The store's ``name`` is the roster's ("Woodfill, Nick"); the page's
+    player table prints the stat crew's ``checkName``, recased ("Woodfill,
+    Nicholas"). Text as published: the line takes the printed cell, and with
+    no unique cell the ``checkName`` as the store gives it — never the roster
+    name the box score does not print."""
+    from src.sidearm_live import parse_boxscore_page
+
+    def player(name: str, check: str, number: str) -> dict[str, object]:
+        return {
+            "name": name,
+            "checkName": check,
+            "uniform": number,
+            "position": "def",
+            "gamePlayed": "1",
+            "gameStarted": "1",
+        }
+
+    home = _nuxt_side("AU", "Alpha", "0")
+    home["players"] = [
+        player("Woodfill, Nick", "WOODFILL,NICHOLAS", "2"),
+        player("Jones, Drew", "JONES,ANDREW", "8"),
+    ]
+    box = {
+        "visitingTeam": _nuxt_side("BU", "Beta", "1"),
+        "homeTeam": home,
+        "periodScoresAway": ["1", "0"],
+        "periodScoresHome": ["0", "0"],
+    }
+    # only Woodfill's row is rendered: Jones falls back to the checkName
+    body = (
+        '<table><tr><td class="s-table-whole-td-clickable">'
+        '<a href="/roster/nick-woodfill/1"> Woodfill, Nicholas</a></td></tr></table>'
+    )
+    detail = parse_boxscore_page(_nuxt_box_page(box, body=body), page_url="x")
+    names = [line["name"] for line in detail["teams"][1]["players"]]
+    assert names == ["Nicholas Woodfill", "ANDREW JONES"]
+
+
+def test_a_box_score_page_with_neither_layout_is_still_refused() -> None:
+    from src.sidearm_live import parse_match_page
+
+    url = "https://example.test/sports/mens-soccer/stats/2026/beta/boxscore/1"
+    fixture = {"id": "sidearm:example:1", "date": "2026-09-09"}
+    title = "Men's Soccer vs Beta on 9/9/2026 - Box Score - Example"
+    bare = f"<html><head><title>{title}</title></head><body><p>Final</p></body></html>"
+    # A Nuxt page whose store carries no match is no box score either.
+    storeless = _nuxt_box_page({"isLoading": False}, title=title)
+    for html in (bare, storeless):
+        with pytest.raises(LiveCollectionError, match="rendered 0 team"):
+            parse_match_page(PublishedPage(url, url, html), 2026, fixture)
+
+
 def test_the_two_team_list_skin_reads_scores_and_dates_off_each_row() -> None:
     """Bead tl-4sg.29 (daemenwildcats.com): rendered rows, but the date sits
     in div.sidearm-schedule-game-date and the result is one bare number per
