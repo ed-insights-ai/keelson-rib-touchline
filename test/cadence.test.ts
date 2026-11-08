@@ -277,6 +277,9 @@ if [ "$1" != "publish" ]; then printf 'fake just: unknown recipe %s\\n' "$1" >&2
 if [ -n "\${TOUCHLINE_RECOLLECTED:-}" ]; then
   printf 'just env TOUCHLINE_RECOLLECTED=%s\\n' "$TOUCHLINE_RECOLLECTED" >>"$CADENCE_FAKE_LOG"
 fi
+if [ -n "\${TOUCHLINE_GENDERS:-}" ]; then
+  printf 'just env TOUCHLINE_GENDERS=%s\\n' "$TOUCHLINE_GENDERS" >>"$CADENCE_FAKE_LOG"
+fi
 if [ -n "\${CADENCE_FAKE_PUBLISH_FAIL:-}" ]; then
   printf 'publish: deployed host assertion FAILED\\n'; exit 1
 fi
@@ -1189,6 +1192,99 @@ describe("bin/touchline-collect-cadence.sh", () => {
     );
     expect(JSON.parse(await boardFile(accepted, "fixtures", "gac")).missing).toEqual(["gac-alpha"]);
     expect((await accepted.records())[0].collect).toEqual({ GAC: "changed" });
+  });
+
+  // ── divisions: the rib config names more than one gender ──────────────────
+  // The harness pins TOUCHLINE_GENDER=men for every other scenario; these
+  // clear it, as launchd does, so the config's divisions decide.
+  async function withDivisions(h: Harness, cfg: Record<string, unknown>): Promise<void> {
+    await writeFile(
+      join(h.home, ".keelson", "rib-touchline", "config.json"),
+      JSON.stringify({ packageDir: h.pkg, dataDir: h.site, ...cfg }, null, 2),
+    );
+  }
+
+  test("divisions: one collect run per gender in config order, the women's pinned to its conferences", async () => {
+    const h = await makeHarness();
+    await withDivisions(h, { genders: ["men", "women"], conferences: { women: ["GAC"] } });
+    const r = await h.cadence("collect", { TOUCHLINE_GENDER: "" });
+    expect(r.code).toBe(0);
+
+    const recs = await h.records();
+    expect(recs.map((x) => x.gender)).toEqual(["men", "women"]);
+    // men resolve their set from membership as before; women follow the pin
+    expect(recs[0].conferences).toEqual(["GAC", "LSC"]);
+    expect(recs[1].conferences).toEqual(["GAC"]);
+    expect(recs[1].collect).toEqual({ GAC: "changed" });
+
+    const calls = await h.calls();
+    expect(calls).toContain("resolve-membership.ts conferences men");
+    expect(calls).not.toContain("resolve-membership.ts conferences women");
+
+    // the women's board landed beside the men's, committed in the data home
+    expect(existsSync(join(h.data, "data", "fixtures", `${SEASON}-women-gac.json`))).toBe(true);
+    expect(existsSync(join(h.data, "data", "fixtures", `${SEASON}-women-lsc.json`))).toBe(false);
+    expect(await h.git(h.data, "status", "--porcelain")).toBe("");
+
+    const log = await h.log();
+    expect(log).toContain(
+      "touchline cadence: divisions [men,women] — one run per gender, in order (mode=collect).",
+    );
+    expect(log).toContain("touchline cadence: division women — conferences [GAC].");
+    expect(log).toContain("touchline cadence: divisions done [men,women] — exit 0.");
+  });
+
+  test(
+    "divisions: every publish builds both sites, and only the first run may archive",
+    async () => {
+      const h = await makeHarness();
+      await withDivisions(h, { genders: ["men", "women"], conferences: { women: ["GAC"] } });
+      const r = await h.cadence("", { TOUCHLINE_GENDER: "", TOUCHLINE_ARCHIVE_DAY: "always" });
+      expect(r.code).toBe(0);
+
+      const calls = await h.calls();
+      expect(calls.match(/^just publish/gm)).toHaveLength(2);
+      expect(calls.match(/^just env TOUCHLINE_GENDERS=men,women$/gm)).toHaveLength(2);
+
+      const [men, women] = await h.records();
+      expect(men?.gender).toBe("men");
+      expect(women?.gender).toBe("women");
+      expect(men?.archive).not.toMatch(/^skipped/);
+      expect(women?.archive).toMatch(/^skipped \(disabled/);
+      // each run journals its own gender's files on the site's main
+      expect(existsSync(join(h.site, "journal", `journal-${SEASON}-women-gac.json`))).toBe(true);
+      expect(existsSync(join(h.site, "journal", `journal-${SEASON}-women-lsc.json`))).toBe(false);
+    },
+    LOOP_TIMEOUT,
+  );
+
+  test("divisions: a run pinned by TOUCHLINE_GENDER, or a config naming one gender, is the single run it was", async () => {
+    const pinned = await makeHarness();
+    await withDivisions(pinned, { genders: ["men", "women"] });
+    expect((await pinned.cadence("collect", { TOUCHLINE_CONFERENCES: "GAC" })).code).toBe(0);
+    expect((await pinned.records()).map((x) => x.gender)).toEqual(["men"]);
+    expect(await pinned.log()).not.toContain("divisions [");
+
+    const single = await makeHarness();
+    await withDivisions(single, { genders: ["men"] });
+    expect(
+      (await single.cadence("collect", { TOUCHLINE_GENDER: "", TOUCHLINE_CONFERENCES: "GAC" }))
+        .code,
+    ).toBe(0);
+    expect((await single.records()).map((x) => x.gender)).toEqual(["men"]);
+    expect(await single.log()).not.toContain("divisions [");
+  });
+
+  test("divisions: TOUCHLINE_GENDERS overrides the config, and an unknown gender is skipped with exit 1", async () => {
+    const h = await makeHarness();
+    const r = await h.cadence("collect", {
+      TOUCHLINE_GENDER: "",
+      TOUCHLINE_GENDERS: "men,mixed",
+      TOUCHLINE_CONFERENCES: "GAC",
+    });
+    expect(r.code).toBe(1);
+    expect((await h.records()).map((x) => x.gender)).toEqual(["men"]);
+    expect(await h.log()).toContain("WARNING: divisions name unknown gender 'mixed' — skipped.");
   });
 
   test("an unknown mode is a logged FATAL", async () => {
