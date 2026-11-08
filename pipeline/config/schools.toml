@@ -1902,7 +1902,10 @@ scraper      = "prestosports"
 live_scraper = "prestosports"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Wilmington University", "Wilmington (Del.)", "WilmU"]
+# "Wilimington (DE) University" (sic) is Roberts Wesleyan's 2025 spelling of
+# this programme on its NCAA first-round row (game 5530, at Franklin Pierce),
+# which minted a programme called "wilimington" in the bracket.
+aliases      = ["Wilmington University", "Wilmington (Del.)", "WilmU", "Wilimington (DE) University"]
 city         = "New Castle, Del."
 city_source  = "design/batch1-membership-2026-09-02.md (campus town; the schedule page prints no home town)"
 identity_accessed = "2026-09-02"

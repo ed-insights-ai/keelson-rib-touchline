@@ -86,6 +86,8 @@ FIXTURES = Contract(
             ("fixtures", ITEM, "match_type"),
             ("fixtures", ITEM, "forfeit"),
             ("fixtures", ITEM, "conference_game_source"),
+            ("fixtures", ITEM, "stage", "phase"),
+            ("fixtures", ITEM, "stage", "competition"),
         }
     ),
 )

@@ -122,6 +122,24 @@ def test_fixtures_fixture_exercises_every_status_and_marking() -> None:
     ) == {"published:schedule-page"}
     assert document["membership_extrapolated"] is True
     assert document["missing"]
+    # The stage is evidence-tiered: the writer may emit every phase and both
+    # competitions, so the fixture must carry each.
+    assert contracts.values(document, contracts.FIXTURES, (*row, "stage", "phase")) == {
+        "regular",
+        "postseason",
+        "unknown",
+    }
+    assert contracts.values(
+        document, contracts.FIXTURES, (*row, "stage", "competition")
+    ) == {"conference", "ncaa"}
+    # A shootout rides only a level final, beside the text it was read from;
+    # the text may stand alone when it names no winner.
+    shootouts = [f for f in document["fixtures"] if "result_published" in f]
+    assert any("shootout" in f for f in shootouts)
+    assert any("shootout" not in f for f in shootouts)
+    assert all(
+        f["status"] == "final" and f["home_score"] == f["away_score"] for f in shootouts
+    )
     # The neutral-site marker is a boolean the writer sets only when the page
     # itself says so; the fixture must carry one so the writer may.
     assert any(fixture.get("neutral") is True for fixture in document["fixtures"])
@@ -480,6 +498,9 @@ OPTIONAL_FIXTURE_FIELDS = (
     "match_type",
     "neutral",
     "forfeit",
+    "stage",
+    "result_published",
+    "shootout",
     "conference_game_source",
     "home_score",
     "away_score",
