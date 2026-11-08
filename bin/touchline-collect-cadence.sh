@@ -421,12 +421,12 @@ capped() { # $1 = seconds, rest = command; returns 124 on timeout
   wait "$_cpid"
 }
 
-# shellcheck disable=SC2317 # invoked indirectly through capped.
+# shellcheck disable=SC2317,SC2329 # invoked indirectly through capped.
 journal_leg() { cd "$UI_DIR" && bun run journal run --conference "$JR_KEYS" --write; }
 # The national leg runs AFTER the conference legs: its brief reads the cards'
 # lines and the wires, so it must see today's conference journals (justfile
 # `journal` orders them the same way). One more model call per run.
-# shellcheck disable=SC2317 # invoked indirectly through capped.
+# shellcheck disable=SC2317,SC2329 # invoked indirectly through capped.
 national_leg() { cd "$UI_DIR" && bun run journal run --national --write; }
 
 # ── build stamp: the deployed site's touchline-build meta, read from the
