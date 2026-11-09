@@ -207,6 +207,9 @@ identity_accessed = "2026-09-02"
 [[schools]]
 name         = "Northwestern Oklahoma State"
 abbreviation = "NWOSU"
+# Peers' 2026 women's pages print "Northwestern Okla."; collected as a
+# stranger in the MIAA women's file.
+aliases      = ["Northwestern Okla.", "Northwestern Oklahoma"]
 conference   = "GAC"
 mascot       = "Rangers"
 gender       = "women"
@@ -267,6 +270,9 @@ enabled      = true
 [[schools]]
 name         = "Southwestern Oklahoma State"
 abbreviation = "SWOSU"
+# Peers' 2026 women's pages print the short forms; both were collected as
+# strangers in the MIAA and GAC women's files (one is Harding's GAC final).
+aliases      = ["Southwestern Okla.", "Southwestern Oklahoma"]
 conference   = "GAC"
 mascot       = "Bulldogs"
 gender       = "women"
