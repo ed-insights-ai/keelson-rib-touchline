@@ -1073,6 +1073,285 @@ city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style t
 identity_accessed = "2026-09-02"
 
 # ============================================================
+# GLVC WOMEN'S SOCCER — 15 programmes, authored depth 2026 only
+# ============================================================
+# Source of truth: GLVC women's soccer records, enumerated from the
+# conference's own wsoc pages, never copied from the men's windows:
+# https://glvcsports.com/standings.aspx?path=wsoc and
+# https://glvcsports.com/stats.aspx?path=wsoc&year=2026&conf=true
+# (accessed 2026-11-08) list the same fifteen programmes, and the 2025
+# records (year=2025) list the same fifteen again, so nobody arrived or left
+# across 2026. The set happens to equal the men's GLVC 2026 set exactly:
+# every GLVC member sponsors both genders. Depth is 2026 only (the owner's
+# ruling for the women's onboarding); each window opens at 2026 as a depth
+# decision, not an arrival claim, and every years list equals the window.
+#
+# All 15 sites probed 2026-11-08 (uv run probe --conference GLVC --seasons
+# 2026, hosts from the athletics links glvcsports.com embeds in its member
+# data): SideArm, schedule / roster / stats / matches present on every one,
+# 2026 served. No collect has run yet, so every stanza is
+# data_status = unverified. No ordinals.
+#
+# Same institution, same slug: every `name` here is the men's GLVC stanza's
+# own name, so both genders share one slug and one programmes.json row (the
+# men's stanza, first in file order, supplies that row; the women's city
+# and pins below agree with it). Mascots are what the women's schedule pages
+# publish, the same as the men's in every case. Abbreviations are the men's
+# stanzas' short forms; the women's identity table is its own, but RU and DU
+# stay display-only because the bare initialisms are shared across D2
+# (Roosevelt, Daemen, Davenport) and a later women's conference would
+# re-point them. Aliases cover the opponent spellings the fifteen women's
+# 2026 schedules print for one another (read 2026-11-08).
+
+[[schools]]
+name         = "Indianapolis"
+abbreviation = "UINDY"
+conference   = "GLVC"
+mascot       = "Greyhounds"
+gender       = "women"
+base_url     = "https://athletics.uindy.edu/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["UIndy", "University of Indianapolis"]
+city         = "Indianapolis, Ind."
+city_source  = "schedule-page home venue location, https://athletics.uindy.edu/sports/womens-soccer/schedule/2026"
+gazetteer_geoid = "1836003"
+identity_accessed = "2026-11-08"
+[[schools]]
+name         = "Maryville"
+abbreviation = "MARY"
+conference   = "GLVC"
+mascot       = "Saints"
+gender       = "women"
+base_url     = "https://maryvillesaints.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Maryville University"]
+city         = "St. Louis, Mo."
+city_source  = "schedule-page home venue location, https://maryvillesaints.com/sports/womens-soccer/schedule/2026"
+gazetteer_geoid = "2965000"
+identity_accessed = "2026-11-08"
+[[schools]]
+name         = "Missouri S&T"
+abbreviation = "MST"
+conference   = "GLVC"
+mascot       = "Miners"
+gender       = "women"
+base_url     = "https://minerathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Missouri University of Science and Technology"]
+city         = "Rolla, Mo."
+city_source  = "schedule-page home venue location, https://minerathletics.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+[[schools]]
+name         = "Illinois Springfield"
+abbreviation = "UIS"
+conference   = "GLVC"
+mascot       = "Prairie Stars"
+gender       = "women"
+base_url     = "https://uisprairiestars.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Illinois-Springfield", "University of Illinois Springfield"]
+city         = "Springfield, Ill."
+city_source  = "schedule-page home venue location, https://uisprairiestars.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# William Jewell's 2026 women's schedule prints the misspelling "Lewis
+# Univeristy" (2026-09-05 fixture, read 2026-11-08); a one-token name never
+# reaches it by the token fallback, so it is claimed here.
+[[schools]]
+name         = "Lewis"
+abbreviation = "LEW"
+conference   = "GLVC"
+mascot       = "Flyers"
+gender       = "women"
+base_url     = "https://lewisflyers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lewis University", "Lewis Univeristy"]
+city         = "Romeoville, Ill."
+city_source  = "schedule-page home venue location, https://lewisflyers.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+[[schools]]
+name         = "Rockhurst"
+abbreviation = "RU"
+abbreviation_resolves = false  # "RU" is also Roosevelt's on the men's side; kept display-only here too
+conference   = "GLVC"
+mascot       = "Hawks"
+gender       = "women"
+base_url     = "https://rockhursthawks.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Rockhurst University"]
+city         = "Kansas City, Mo."
+city_source  = "schedule-page home venue location, https://rockhursthawks.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# Conference records say "Truman"; the women's peers print "Truman State" and
+# "Truman State University" (2026 schedules, read 2026-11-08).
+[[schools]]
+name         = "Truman"
+abbreviation = "TRU"
+conference   = "GLVC"
+mascot       = "Bulldogs"
+gender       = "women"
+base_url     = "https://trumanbulldogs.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Truman State", "Truman State University"]
+city         = "Kirksville, Mo."
+city_source  = "schedule-page home venue location, https://trumanbulldogs.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+[[schools]]
+name         = "William Jewell"
+abbreviation = "WJC"
+conference   = "GLVC"
+mascot       = "Cardinals"
+gender       = "women"
+base_url     = "https://jewellcardinals.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["William Jewell College"]
+city         = "Liberty, Mo."
+city_source  = "schedule-page home venue location, https://jewellcardinals.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+[[schools]]
+name         = "Drury"
+abbreviation = "DU"
+abbreviation_resolves = false  # "DU" is also Daemen and Davenport's on the men's side; kept display-only here too
+conference   = "GLVC"
+mascot       = "Panthers"
+gender       = "women"
+base_url     = "https://drurypanthers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Drury University"]
+city         = "Springfield, Mo."
+city_source  = "schedule-page home venue location, https://drurypanthers.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# Conference records say "Missouri-St. Louis"; the women's peers print "UMSL",
+# "Missouri - St. Louis" and "University of Missouri - St. Louis" (2026
+# schedules, read 2026-11-08), all of which the name, abbreviation and
+# aliases below resolve.
+[[schools]]
+name         = "Missouri-St. Louis"
+abbreviation = "UMSL"
+conference   = "GLVC"
+mascot       = "Tritons"
+gender       = "women"
+base_url     = "https://umsltritons.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Missouri -St. Louis", "Mo.-St. Louis", "University of Missouri-St. Louis"]
+city         = "St. Louis, Mo."
+city_source  = "schedule-page home venue location, https://umsltritons.com/sports/womens-soccer/schedule/2026"
+gazetteer_geoid = "2965000"
+identity_accessed = "2026-11-08"
+[[schools]]
+name         = "Quincy"
+abbreviation = "QU"
+conference   = "GLVC"
+mascot       = "Hawks"
+gender       = "women"
+base_url     = "https://quhawks.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Quincy University"]
+city         = "Quincy, Ill."
+city_source  = "schedule-page home venue location, https://quhawks.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+[[schools]]
+name         = "McKendree"
+abbreviation = "MCK"
+conference   = "GLVC"
+mascot       = "Bearcats"
+gender       = "women"
+base_url     = "https://mckbearcats.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["McKendree University"]
+city         = "Lebanon, Ill."
+city_source  = "schedule-page home venue location, https://mckbearcats.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+[[schools]]
+name         = "Southwest Baptist"
+abbreviation = "SBU"
+conference   = "GLVC"
+mascot       = "Bearcats"
+gender       = "women"
+base_url     = "https://sbubearcats.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Southwest Baptist University"]
+city         = "Bolivar, Mo."
+city_source  = "schedule-page home venue location, https://sbubearcats.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+[[schools]]
+name         = "Upper Iowa"
+abbreviation = "UIU"
+conference   = "GLVC"
+mascot       = "Peacocks"
+gender       = "women"
+base_url     = "https://uiupeacocks.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Upper Iowa University"]
+city         = "Fayette, Iowa"
+city_source  = "schedule-page home venue location, https://uiupeacocks.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# Lincoln University (Jefferson City, Mo.), not Lincoln Memorial. Peers print
+# "Lincoln University of Missouri" on six 2026 women's schedules (read
+# 2026-11-08), the spelling the men's alias round had to add (tl-v7p). The
+# parenthetical forms "Lincoln (Mo.)" and "Lincoln (MO)" fold to the name.
+[[schools]]
+name         = "Lincoln"
+abbreviation = "LU"
+conference   = "GLVC"
+mascot       = "Blue Tigers"
+gender       = "women"
+base_url     = "https://lubluetigers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lincoln University", "Lincoln University of Missouri"]
+city         = "Jefferson City, Mo."
+city_source  = "schedule-page home venue location, https://lubluetigers.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# ============================================================
 # RMAC MEN'S SOCCER — 11 programmes, backfill window 2022-2026
 # ============================================================
 # Source of truth: RMAC per-season records (rmacsports.org conference
