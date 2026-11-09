@@ -692,10 +692,16 @@ def test_all_or_none_divisions_pass_on_a_divisional_and_a_plain_season():
 def test_the_shipped_conferences_carry_divisions_only_where_printed(
     membership_document,
 ):
-    # Every shipped conference publishes one table except Conference
-    # Carolinas, which prints three divisions from 2023 (batch 4): the
-    # all-or-none rule holds on the shipped file, nothing labelled anywhere
-    # else, and every CC member labelled from 2023 on.
+    # The labelled conference-gender-seasons, each from the season its
+    # standings first print divisions: Conference Carolinas men from 2023
+    # (three divisions, batch 4) and PSAC women from 2026 (East and West,
+    # authored for 2026 only). The all-or-none rule holds on the shipped
+    # file, nothing is labelled anywhere else, and every member of a
+    # labelled conference-season carries one of its printed divisions.
+    divisional = {
+        ("CC", "men"): (2023, {"East", "Northwest", "Southwest"}),
+        ("PSAC", "women"): (2026, {"East", "West"}),
+    }
     span = membership_document["seasons"]
     for conference in membership_document["conferences"]:
         for gender in ("men", "women"):
@@ -703,12 +709,13 @@ def test_the_shipped_conferences_carry_divisions_only_where_printed(
                 divisions = membership.divisions_of(
                     conference, gender, season, document=membership_document
                 )
-                if conference == "CC" and gender == "men" and season >= 2023:
+                labelled = divisional.get((conference, gender))
+                if labelled is not None and season >= labelled[0]:
                     members = membership.members_of(
                         conference, gender, season, document=membership_document
                     )
                     assert set(divisions) == set(members)
-                    assert set(divisions.values()) == {"East", "Northwest", "Southwest"}
+                    assert set(divisions.values()) == labelled[1]
                 else:
                     assert divisions == {}
     # The one split on a slug with the conference unchanged.

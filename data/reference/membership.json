@@ -217,6 +217,15 @@
           "to_season": 2026,
           "source": "Pennsylvania State Athletic Conference, 2022 and 2026 Men's Soccer records, https://psacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://psacsports.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same thirteen programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "PSAC",
+          "division": "East",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pennsylvania State Athletic Conference, 2026 Women's Soccer standings and records, https://psacsports.org/standings.aspx?path=wsoc and https://psacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Bloomsburg, in the East division as the 2026 standings print it (two divisions, East and West, seventeen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://psacsports.org/standings.aspx?standings=265 and standings=252) list the same seventeen programmes."
+        }
       ]
     },
     "bridgeport": {
@@ -327,6 +336,15 @@
           "to_season": 2026,
           "source": "Pennsylvania State Athletic Conference, 2022 and 2026 Men's Soccer records, https://psacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://psacsports.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same thirteen programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "PSAC",
+          "division": "West",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pennsylvania State Athletic Conference, 2026 Women's Soccer standings and records, https://psacsports.org/standings.aspx?path=wsoc and https://psacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label California (Pa.), in the West division as the 2026 standings print it (two divisions, East and West, seventeen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://psacsports.org/standings.aspx?standings=265 and standings=252) list the same seventeen programmes."
+        }
       ]
     },
     "carson-newman": {
@@ -423,6 +441,17 @@
           "from_season": 2016,
           "to_season": 2026,
           "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both."
+        }
+      ]
+    },
+    "clarion": {
+      "women": [
+        {
+          "conference": "PSAC",
+          "division": "West",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pennsylvania State Athletic Conference, 2026 Women's Soccer standings and records, https://psacsports.org/standings.aspx?path=wsoc and https://psacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Clarion, in the West division as the 2026 standings print it (two divisions, East and West, seventeen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://psacsports.org/standings.aspx?standings=265 and standings=252) list the same seventeen programmes."
         }
       ]
     },
@@ -639,6 +668,15 @@
           "to_season": 2026,
           "source": "Pennsylvania State Athletic Conference, 2022 and 2026 Men's Soccer records, https://psacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://psacsports.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same thirteen programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "PSAC",
+          "division": "East",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pennsylvania State Athletic Conference, 2026 Women's Soccer standings and records, https://psacsports.org/standings.aspx?path=wsoc and https://psacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label E. Stroudsburg, in the East division as the 2026 standings print it (two divisions, East and West, seventeen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://psacsports.org/standings.aspx?standings=265 and standings=252) list the same seventeen programmes."
+        }
       ]
     },
     "east-central": {
@@ -668,6 +706,17 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "edinboro": {
+      "women": [
+        {
+          "conference": "PSAC",
+          "division": "West",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pennsylvania State Athletic Conference, 2026 Women's Soccer standings and records, https://psacsports.org/standings.aspx?path=wsoc and https://psacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Edinboro, in the West division as the 2026 standings print it (two divisions, East and West, seventeen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://psacsports.org/standings.aspx?standings=265 and standings=252) list the same seventeen programmes."
         }
       ]
     },
@@ -881,6 +930,15 @@
           "to_season": 2026,
           "source": "Pennsylvania State Athletic Conference, 2022 and 2026 Men's Soccer records, https://psacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://psacsports.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same thirteen programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "PSAC",
+          "division": "West",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pennsylvania State Athletic Conference, 2026 Women's Soccer standings and records, https://psacsports.org/standings.aspx?path=wsoc and https://psacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Gannon, in the West division as the 2026 standings print it (two divisions, East and West, seventeen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://psacsports.org/standings.aspx?standings=265 and standings=252) list the same seventeen programmes."
+        }
       ]
     },
     "georgia-southwestern": {
@@ -1007,6 +1065,17 @@
         }
       ]
     },
+    "iup": {
+      "women": [
+        {
+          "conference": "PSAC",
+          "division": "West",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pennsylvania State Athletic Conference, 2026 Women's Soccer standings and records, https://psacsports.org/standings.aspx?path=wsoc and https://psacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label IUP, in the West division as the 2026 standings print it (two divisions, East and West, seventeen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://psacsports.org/standings.aspx?standings=265 and standings=252) list the same seventeen programmes."
+        }
+      ]
+    },
     "jefferson": {
       "men": [
         {
@@ -1051,6 +1120,17 @@
           "from_season": 2023,
           "to_season": 2026,
           "source": "Conference Carolinas, 2023 and 2026 Men's Soccer records, https://conferencecarolinas.com/stats.aspx?path=msoc&year=2023&conf=true and https://conferencecarolinas.com/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2024, 2025) under the label King. Division Northwest as printed on the standings pages https://conferencecarolinas.com/standings.aspx?standings=125 (2023), https://conferencecarolinas.com/standings.aspx?standings=140 (2024), https://conferencecarolinas.com/standings.aspx?standings=160 (2025) and the live 2026 table (https://conferencecarolinas.com/standings.aspx?path=msoc, archive id 173)."
+        }
+      ]
+    },
+    "kutztown": {
+      "women": [
+        {
+          "conference": "PSAC",
+          "division": "East",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pennsylvania State Athletic Conference, 2026 Women's Soccer standings and records, https://psacsports.org/standings.aspx?path=wsoc and https://psacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Kutztown, in the East division as the 2026 standings print it (two divisions, East and West, seventeen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://psacsports.org/standings.aspx?standings=265 and standings=252) list the same seventeen programmes."
         }
       ]
     },
@@ -1185,6 +1265,15 @@
           "to_season": 2026,
           "source": "Pennsylvania State Athletic Conference, 2022 and 2026 Men's Soccer records, https://psacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://psacsports.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same thirteen programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "PSAC",
+          "division": "West",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pennsylvania State Athletic Conference, 2026 Women's Soccer standings and records, https://psacsports.org/standings.aspx?path=wsoc and https://psacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Lock Haven, in the West division as the 2026 standings print it (two divisions, East and West, seventeen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://psacsports.org/standings.aspx?standings=265 and standings=252) list the same seventeen programmes. The 2024 and 2025 standings print Lock Haven in the East; the 2026 table prints it in the West, so the 2026 division is West."
+        }
       ]
     },
     "lubbock-christian": {
@@ -1214,6 +1303,17 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Great Midwest Athletic Conference, 2022 and 2026 Men's Soccer records, https://greatmidwestsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://greatmidwestsports.com/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
+    "mansfield": {
+      "women": [
+        {
+          "conference": "PSAC",
+          "division": "East",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pennsylvania State Athletic Conference, 2026 Women's Soccer standings and records, https://psacsports.org/standings.aspx?path=wsoc and https://psacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Mansfield, in the East division as the 2026 standings print it (two divisions, East and West, seventeen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://psacsports.org/standings.aspx?standings=265 and standings=252) list the same seventeen programmes. The 2025 standings list Mansfield with a 0-0 conference record (0-10 overall) and the 2025 records with no conference games; it played a full 0-14 conference slate in 2026."
         }
       ]
     },
@@ -1326,6 +1426,15 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Pennsylvania State Athletic Conference, 2022 and 2026 Men's Soccer records, https://psacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://psacsports.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same thirteen programmes, so nobody arrived at or left across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "PSAC",
+          "division": "East",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pennsylvania State Athletic Conference, 2026 Women's Soccer standings and records, https://psacsports.org/standings.aspx?path=wsoc and https://psacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Millersville, in the East division as the 2026 standings print it (two divisions, East and West, seventeen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://psacsports.org/standings.aspx?standings=265 and standings=252) list the same seventeen programmes."
         }
       ]
     },
@@ -1690,6 +1799,15 @@
           "to_season": 2026,
           "source": "Pennsylvania State Athletic Conference, 2022 and 2026 Men's Soccer records, https://psacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://psacsports.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same thirteen programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "PSAC",
+          "division": "West",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pennsylvania State Athletic Conference, 2026 Women's Soccer standings and records, https://psacsports.org/standings.aspx?path=wsoc and https://psacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Pitt-Johnstown, in the West division as the 2026 standings print it (two divisions, East and West, seventeen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://psacsports.org/standings.aspx?standings=265 and standings=252) list the same seventeen programmes."
+        }
       ]
     },
     "point-loma": {
@@ -1966,6 +2084,15 @@
           "to_season": 2026,
           "source": "Pennsylvania State Athletic Conference, 2022 and 2026 Men's Soccer records, https://psacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://psacsports.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same thirteen programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "PSAC",
+          "division": "West",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pennsylvania State Athletic Conference, 2026 Women's Soccer standings and records, https://psacsports.org/standings.aspx?path=wsoc and https://psacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Seton Hill, in the West division as the 2026 standings print it (two divisions, East and West, seventeen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://psacsports.org/standings.aspx?standings=265 and standings=252) list the same seventeen programmes."
+        }
       ]
     },
     "shawnee-state": {
@@ -1986,6 +2113,15 @@
           "to_season": 2026,
           "source": "Pennsylvania State Athletic Conference, 2022 and 2026 Men's Soccer records, https://psacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://psacsports.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same thirteen programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "PSAC",
+          "division": "East",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pennsylvania State Athletic Conference, 2026 Women's Soccer standings and records, https://psacsports.org/standings.aspx?path=wsoc and https://psacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Shepherd, in the East division as the 2026 standings print it (two divisions, East and West, seventeen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://psacsports.org/standings.aspx?standings=265 and standings=252) list the same seventeen programmes."
+        }
       ]
     },
     "shippensburg": {
@@ -1995,6 +2131,15 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Pennsylvania State Athletic Conference, 2022 and 2026 Men's Soccer records, https://psacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://psacsports.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same thirteen programmes, so nobody arrived at or left across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "PSAC",
+          "division": "East",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pennsylvania State Athletic Conference, 2026 Women's Soccer standings and records, https://psacsports.org/standings.aspx?path=wsoc and https://psacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Shippensburg, in the East division as the 2026 standings print it (two divisions, East and West, seventeen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://psacsports.org/standings.aspx?standings=265 and standings=252) list the same seventeen programmes."
         }
       ]
     },
@@ -2032,6 +2177,15 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Pennsylvania State Athletic Conference, 2022 and 2026 Men's Soccer records, https://psacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://psacsports.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same thirteen programmes, so nobody arrived at or left across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "PSAC",
+          "division": "West",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pennsylvania State Athletic Conference, 2026 Women's Soccer standings and records, https://psacsports.org/standings.aspx?path=wsoc and https://psacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Slippery Rock, in the West division as the 2026 standings print it (two divisions, East and West, seventeen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://psacsports.org/standings.aspx?standings=265 and standings=252) list the same seventeen programmes."
         }
       ]
     },
@@ -2423,6 +2577,15 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Pennsylvania State Athletic Conference, 2022 and 2026 Men's Soccer records, https://psacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://psacsports.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same thirteen programmes, so nobody arrived at or left across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "PSAC",
+          "division": "East",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pennsylvania State Athletic Conference, 2026 Women's Soccer standings and records, https://psacsports.org/standings.aspx?path=wsoc and https://psacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label West Chester, in the East division as the 2026 standings print it (two divisions, East and West, seventeen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://psacsports.org/standings.aspx?standings=265 and standings=252) list the same seventeen programmes."
         }
       ]
     },

@@ -2833,6 +2833,358 @@ city_source  = "schedule-page home venue location, https://hurstathletics.com/sp
 identity_accessed = "2026-09-03"
 
 # ============================================================
+# PSAC WOMEN'S SOCCER - 17 programmes, authored depth 2026 only
+# ============================================================
+# Source of truth: the PSAC's own women's soccer pages, read 2026-11-08:
+# the live standings (psacsports.org/standings.aspx?path=wsoc, "2026
+# Women's Soccer Standings") and the 2026 conference statistics
+# (stats.aspx?path=wsoc&year=2026&conf=true). Both list the same seventeen
+# programmes; the standings print two divisions, East (8) and West (9), so
+# every 2026 women's window carries its division. Depth is 2026 only (the
+# owner's ruling, no historical seasons), so every year-list is [2026].
+#
+# Not the men's set: the twelve 2026 men's programmes all sponsor women's
+# soccer, and five schools sponsor women's soccer only (Clarion, Edinboro,
+# IUP, Kutztown, Mansfield). Those five are new institutions to the rib;
+# every other stanza here shares its name, and so its slug, with the PSAC
+# men's stanza above. Mercyhurst women left after 2023 (in the 2023
+# standings, standings=238; absent from 2024, standings=252), outside the
+# depth. Lackawanna appears on 2026 schedules but is absent from the 2026
+# standings and records; the conference's Lackawanna FAQ
+# (psacsports.org/sports/2026/7/10/GEN_0710264525.aspx) says games against
+# it do not count in the conference standings, so it has no stanza.
+#
+# Probe (uv run probe --conference PSAC --seasons 2026, 2026-11-08): all 17
+# hosts SideArm, schedule / roster / stats / matches present, 2026 served on
+# every one. Hosts for the five new schools came from the conference home
+# page's member links (psacsports.org/members now answers 404). No collect
+# has run, so every stanza is data_status = unverified. No ordinals.
+#
+# Short forms: the existing schools keep their men's abbreviation; the five
+# new ones carry the short form the school's own SideArm scoreboard JSON
+# prints (home_short_name / away_short_name: KUTZ, MANS, EDI, IUP), and
+# Clarion the conference's own team code (the site prints "Clar"). Peer
+# spellings are from a scan of all seventeen 2026 schedule pages.
+
+[[schools]]
+name         = "Bloomsburg"
+abbreviation = "BU"
+abbreviation_resolves = false  # "BU" is also Barry and Bentley's (see the men's stanza)
+conference   = "PSAC"
+mascot       = "Huskies"
+gender       = "women"
+base_url     = "https://bloomsburgathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Bloomsburg University", "Commonwealth University-Bloomsburg"]
+city         = "Bloomsburg, Pa."
+city_source  = "schedule-page home venue location, https://bloomsburgathletics.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# Peers print "California (PA)" twelve times and "California (Pa.)" eight;
+# both fold to the name's key once the parenthetical drops.
+[[schools]]
+name         = "California (Pa.)"
+abbreviation = "CUP"
+conference   = "PSAC"
+mascot       = "Vulcans"
+gender       = "women"
+base_url     = "https://calvulcans.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["California University of Pennsylvania", "PennWest California", "Cal U"]
+city         = "California, Pa."
+city_source  = "schedule-page home venue location, https://calvulcans.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only). PennWest Clarion since the 2022
+# integration; the records and every peer print "Clarion". The site prints
+# "Clar" as its scoreboard short form; CLAR is the conference's team code
+# (teamstats.aspx?path=wsoc&year=2026&school=clar).
+[[schools]]
+name         = "Clarion"
+abbreviation = "CLAR"
+conference   = "PSAC"
+mascot       = "Golden Eagles"
+gender       = "women"
+base_url     = "https://clariongoldeneagles.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Clarion University", "PennWest Clarion"]
+city         = "Clarion, Pa."
+city_source  = "schedule-page home venue location, https://clariongoldeneagles.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# "ESU" is also Emporia State's short form, and the MIAA women's onboarding
+# brings Emporia State into the same women's identity table, so the bare
+# initialism stays display-only here.
+[[schools]]
+name         = "E. Stroudsburg"
+abbreviation = "ESU"
+abbreviation_resolves = false  # "ESU" is also Emporia State's (MIAA women)
+conference   = "PSAC"
+mascot       = "Warriors"
+gender       = "women"
+base_url     = "https://esuwarriors.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["East Stroudsburg University", "East Stroudsburg"]
+city         = "East Stroudsburg, Pa."
+city_source  = "schedule-page home venue location, https://esuwarriors.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only). PennWest Edinboro since the 2022
+# integration; the site still names itself "Edinboro University Athletics".
+# EDI is the site's own scoreboard short form; IUP's prints "EU", which is
+# Emmanuel's abbreviation on its men's stanza (Conference Carolinas).
+[[schools]]
+name         = "Edinboro"
+abbreviation = "EDI"
+conference   = "PSAC"
+mascot       = "Fighting Scots"
+gender       = "women"
+base_url     = "https://gofightingscots.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Edinboro University", "PennWest Edinboro"]
+city         = "Edinboro, Pa."
+city_source  = "schedule-page home venue location, https://gofightingscots.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The probe read "Knights" and a split alias; "Golden Knights" is the
+# women's schedule page's own description.
+[[schools]]
+name         = "Gannon"
+abbreviation = "GU"
+conference   = "PSAC"
+mascot       = "Golden Knights"
+gender       = "women"
+base_url     = "https://gannonsports.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Gannon University"]
+city         = "Erie, Pa."
+city_source  = "schedule-page home venue location, https://gannonsports.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only). The records, the standings and the
+# site's own scoreboard print "IUP", which mints the slug iup. Peers also
+# print "Indiana (Pa.)", "Indiana University (PA)" and "Indiana University
+# (Pa.)" (six rows on 2026 PSAC schedules), all of which fold to the bare
+# key "indiana" once the parenthetical and "University" drop. That key is
+# claimed as a member alias only, so it resolves inside a PSAC collect and
+# never hands a bare "Indiana" elsewhere to this programme. The probe read
+# "Hawks"; the site names itself the Crimson Hawks.
+[[schools]]
+name         = "IUP"
+abbreviation = "IUP"
+conference   = "PSAC"
+mascot       = "Crimson Hawks"
+gender       = "women"
+base_url     = "https://iupathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Indiana University of Pennsylvania"]
+member_aliases = ["Indiana"]
+city         = "Indiana, Pa."
+city_source  = "schedule-page home venue location, https://iupathletics.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only). The probe read "Bears"; the site
+# names itself the Golden Bears. KUTZ is the site's own scoreboard short
+# form (it also prints "KTZ"; peers' scoreboards print both).
+[[schools]]
+name         = "Kutztown"
+abbreviation = "KUTZ"
+conference   = "PSAC"
+mascot       = "Golden Bears"
+gender       = "women"
+base_url     = "https://kubears.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Kutztown University"]
+city         = "Kutztown, Pa."
+city_source  = "schedule-page home venue location, https://kubears.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# West division in 2026 (East in 2024 and 2025). "Bald Eagles" is the
+# women's schedule page's own description; the probe read "Eagles".
+[[schools]]
+name         = "Lock Haven"
+abbreviation = "LHUP"
+conference   = "PSAC"
+mascot       = "Bald Eagles"
+gender       = "women"
+base_url     = "https://www.lockhavenathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lock Haven University", "Commonwealth University-Lock Haven"]
+city         = "Lock Haven, Pa."
+city_source  = "schedule-page home venue location, https://www.lockhavenathletics.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only). Commonwealth University-Mansfield
+# since the 2022 integration; records and peers print "Mansfield". MANS is
+# the site's own scoreboard short form and the conference's team code.
+[[schools]]
+name         = "Mansfield"
+abbreviation = "MANS"
+conference   = "PSAC"
+mascot       = "Mounties"
+gender       = "women"
+base_url     = "https://gomounties.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Mansfield University", "Commonwealth University-Mansfield"]
+city         = "Mansfield, Pa."
+city_source  = "schedule-page home venue location, https://gomounties.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The probe read no home town off this theme; the 2026 schedule page prints
+# "Millersville, PA" on its home rows.
+[[schools]]
+name         = "Millersville"
+abbreviation = "MU"
+abbreviation_resolves = false  # "MU" is also Malone and Molloy's (see the men's stanza)
+conference   = "PSAC"
+mascot       = "Marauders"
+gender       = "women"
+base_url     = "https://millersvilleathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Millersville University"]
+city         = "Millersville, Pa."
+city_source  = "schedule-page home venue location, https://millersvilleathletics.com/sports/womens-soccer/schedule/2026 (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# "Mountain Cats" is the women's schedule page's own description (the
+# probe read "Cats"). Peers print "University of Pittsburgh at Johnstown".
+[[schools]]
+name         = "Pitt-Johnstown"
+abbreviation = "UPJ"
+conference   = "PSAC"
+mascot       = "Mountain Cats"
+gender       = "women"
+base_url     = "https://pittjohnstownathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Pittsburgh at Johnstown", "Pitt Johnstown", "UPJ"]
+city         = "Johnstown, Pa."
+city_source  = "schedule-page home venue location, https://pittjohnstownathletics.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Seton Hill"
+abbreviation = "SHU"
+conference   = "PSAC"
+mascot       = "Griffins"
+gender       = "women"
+base_url     = "https://athletics.setonhill.edu/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Seton Hill University"]
+city         = "Greensburg, Pa."
+city_source  = "schedule-page home venue location, https://athletics.setonhill.edu/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The only member outside Pennsylvania.
+[[schools]]
+name         = "Shepherd"
+abbreviation = "SU"
+abbreviation_resolves = false  # "SU" is also Salem and Shorter's (see the men's stanza)
+conference   = "PSAC"
+mascot       = "Rams"
+gender       = "women"
+base_url     = "https://shepherdrams.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Shepherd University"]
+city         = "Shepherdstown, W.Va."
+city_source  = "schedule-page home venue location, https://shepherdrams.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The probe read no home town off this theme; the 2026 schedule page prints
+# "Shippensburg, PA" on its home rows.
+[[schools]]
+name         = "Shippensburg"
+abbreviation = "SHIP"
+conference   = "PSAC"
+mascot       = "Raiders"
+gender       = "women"
+base_url     = "https://shipraiders.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Shippensburg University"]
+city         = "Shippensburg, Pa."
+city_source  = "schedule-page home venue location, https://shipraiders.com/sports/womens-soccer/schedule/2026 (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# The probe found no mascot where it reads and drafted a mascot-laden alias;
+# "The Rock" is the women's schedule page's own description.
+[[schools]]
+name         = "Slippery Rock"
+abbreviation = "SRU"
+conference   = "PSAC"
+mascot       = "The Rock"
+gender       = "women"
+base_url     = "https://rockathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Slippery Rock University"]
+city         = "Slippery Rock, Pa."
+city_source  = "schedule-page home venue location, https://rockathletics.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# Peers also print "West Chester University of Pennsylvania" (four rows).
+[[schools]]
+name         = "West Chester"
+abbreviation = "WCUPA"
+conference   = "PSAC"
+mascot       = "Golden Rams"
+gender       = "women"
+base_url     = "https://wcupagoldenrams.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["West Chester University", "West Chester University of Pennsylvania"]
+city         = "West Chester, Pa."
+city_source  = "schedule-page home venue location, https://wcupagoldenrams.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# ============================================================
 # MEC MEN'S SOCCER - 12 programmes, backfill window 2022-2026
 # ============================================================
 # Source of truth: Mountain East Conference per-season records
