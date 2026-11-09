@@ -109,6 +109,14 @@
           "to_season": 2026,
           "source": "South Atlantic Conference, 2022 and 2026 Men's Soccer standings, https://thesac.com/standings.aspx?standings=73 (the archived 2022 table) and https://thesac.com/standings.aspx?path=msoc (the live 2026 table, archive id 191) (accessed 2026-09-04); listed in both under the label Anderson, and in every season between (https://thesac.com/standings.aspx?standings=74, 75 and 178). The 2021 standings (https://thesac.com/standings.aspx?standings=72) list it too, so it did not arrive across the window's edge. The SAC publishes no per-season records pages (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for every year 2021-2026), so the standings archive is source 1 (standings_archives.SAC)."
         }
+      ],
+      "women": [
+        {
+          "conference": "SAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "South Atlantic Conference, 2026 Women's Soccer standings and records, https://thesac.com/standings.aspx?path=wsoc (the live 2026 table, archive id 192: https://thesac.com/standings.aspx?standings=192) and https://thesac.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Anderson (one table, no divisions, eleven programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thesac.com/standings.aspx?standings=183) list the same eleven programmes, and the 2024 standings (https://thesac.com/standings.aspx?standings=144) list them with Limestone, which closed after 2024-25 and has no women's window."
+        }
       ]
     },
     "ashland": {
@@ -184,6 +192,15 @@
           "to_season": 2026,
           "source": "Conference Carolinas, 2023 and 2026 Men's Soccer records, https://conferencecarolinas.com/stats.aspx?path=msoc&year=2023&conf=true and https://conferencecarolinas.com/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2024, 2025) under the label Barton. Division East as printed on the standings pages https://conferencecarolinas.com/standings.aspx?standings=125 (2023), https://conferencecarolinas.com/standings.aspx?standings=140 (2024), https://conferencecarolinas.com/standings.aspx?standings=160 (2025) and the live 2026 table (https://conferencecarolinas.com/standings.aspx?path=msoc, archive id 173)."
         }
+      ],
+      "women": [
+        {
+          "conference": "CC",
+          "division": "East",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Conference Carolinas, 2026 Women's Soccer standings and records, https://conferencecarolinas.com/standings.aspx?path=wsoc (the live 2026 table, archive id 174: https://conferencecarolinas.com/standings.aspx?standings=174) and https://conferencecarolinas.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Barton, in the East division as the 2026 standings print it (three divisions, East, Northwest and Southwest, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://conferencecarolinas.com/standings.aspx?standings=168) list the same sixteen programmes in the same three divisions."
+        }
       ]
     },
     "belmont-abbey": {
@@ -200,6 +217,15 @@
           "from_season": 2023,
           "to_season": 2026,
           "source": "Conference Carolinas, 2023 and 2026 Men's Soccer records, https://conferencecarolinas.com/stats.aspx?path=msoc&year=2023&conf=true and https://conferencecarolinas.com/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2024, 2025) under the label Belmont Abbey. Division Northwest as printed on the standings pages https://conferencecarolinas.com/standings.aspx?standings=125 (2023), https://conferencecarolinas.com/standings.aspx?standings=140 (2024), https://conferencecarolinas.com/standings.aspx?standings=160 (2025) and the live 2026 table (https://conferencecarolinas.com/standings.aspx?path=msoc, archive id 173)."
+        }
+      ],
+      "women": [
+        {
+          "conference": "CC",
+          "division": "Northwest",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Conference Carolinas, 2026 Women's Soccer standings and records, https://conferencecarolinas.com/standings.aspx?path=wsoc (the live 2026 table, archive id 174: https://conferencecarolinas.com/standings.aspx?standings=174) and https://conferencecarolinas.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Belmont Abbey, in the Northwest division as the 2026 standings print it (three divisions, East, Northwest and Southwest, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://conferencecarolinas.com/standings.aspx?standings=168) list the same sixteen programmes in the same three divisions."
         }
       ]
     },
@@ -403,6 +429,14 @@
           "to_season": 2026,
           "source": "South Atlantic Conference, 2022 and 2026 Men's Soccer standings, https://thesac.com/standings.aspx?standings=73 (the archived 2022 table) and https://thesac.com/standings.aspx?path=msoc (the live 2026 table, archive id 191) (accessed 2026-09-04); listed in both under the label Carson-Newman, and in every season between (https://thesac.com/standings.aspx?standings=74, 75 and 178). The 2021 standings (https://thesac.com/standings.aspx?standings=72) list it too, so it did not arrive across the window's edge. The SAC publishes no per-season records pages (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for every year 2021-2026), so the standings archive is source 1 (standings_archives.SAC)."
         }
+      ],
+      "women": [
+        {
+          "conference": "SAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "South Atlantic Conference, 2026 Women's Soccer standings and records, https://thesac.com/standings.aspx?path=wsoc (the live 2026 table, archive id 192: https://thesac.com/standings.aspx?standings=192) and https://thesac.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Carson-Newman (one table, no divisions, eleven programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thesac.com/standings.aspx?standings=183) list the same eleven programmes, and the 2024 standings (https://thesac.com/standings.aspx?standings=144) list them with Limestone, which closed after 2024-25 and has no women's window."
+        }
       ]
     },
     "catawba": {
@@ -412,6 +446,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "South Atlantic Conference, 2022 and 2026 Men's Soccer standings, https://thesac.com/standings.aspx?standings=73 (the archived 2022 table) and https://thesac.com/standings.aspx?path=msoc (the live 2026 table, archive id 191) (accessed 2026-09-04); listed in both under the label Catawba, and in every season between (https://thesac.com/standings.aspx?standings=74, 75 and 178). The 2021 standings (https://thesac.com/standings.aspx?standings=72) list it too, so it did not arrive across the window's edge. The SAC publishes no per-season records pages (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for every year 2021-2026), so the standings archive is source 1 (standings_archives.SAC)."
+        }
+      ],
+      "women": [
+        {
+          "conference": "SAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "South Atlantic Conference, 2026 Women's Soccer standings and records, https://thesac.com/standings.aspx?path=wsoc (the live 2026 table, archive id 192: https://thesac.com/standings.aspx?standings=192) and https://thesac.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Catawba (one table, no divisions, eleven programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thesac.com/standings.aspx?standings=183) list the same eleven programmes, and the 2024 standings (https://thesac.com/standings.aspx?standings=144) list them with Limestone, which closed after 2024-25 and has no women's window."
         }
       ]
     },
@@ -508,6 +550,15 @@
           "to_season": 2026,
           "source": "Conference Carolinas, 2023 and 2026 Men's Soccer records, https://conferencecarolinas.com/stats.aspx?path=msoc&year=2023&conf=true and https://conferencecarolinas.com/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2024, 2025) under the label Chowan. Division East as printed on the standings pages https://conferencecarolinas.com/standings.aspx?standings=125 (2023), https://conferencecarolinas.com/standings.aspx?standings=140 (2024), https://conferencecarolinas.com/standings.aspx?standings=160 (2025) and the live 2026 table (https://conferencecarolinas.com/standings.aspx?path=msoc, archive id 173)."
         }
+      ],
+      "women": [
+        {
+          "conference": "CC",
+          "division": "East",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Conference Carolinas, 2026 Women's Soccer standings and records, https://conferencecarolinas.com/standings.aspx?path=wsoc (the live 2026 table, archive id 174: https://conferencecarolinas.com/standings.aspx?standings=174) and https://conferencecarolinas.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Chowan, in the East division as the 2026 standings print it (three divisions, East, Northwest and Southwest, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://conferencecarolinas.com/standings.aspx?standings=168) list the same sixteen programmes in the same three divisions."
+        }
       ]
     },
     "christian-brothers": {
@@ -539,6 +590,14 @@
           "to_season": 2026,
           "source": "Peach Belt Conference, 2022 and 2026 Men's Soccer records, https://peachbeltconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://peachbeltconference.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both under the label Clayton State, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "PBC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Peach Belt Conference, 2026 Women's Soccer standings and records, https://peachbeltconference.org/standings.aspx?path=wsoc (the live 2026 table, archive id 213: https://peachbeltconference.org/standings.aspx?standings=213) and https://peachbeltconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Clayton State (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://peachbeltconference.org/standings.aspx?standings=194) list the same ten programmes plus Albany St. (Ga.), which is absent from the 2026 standings and records and has no women's window."
+        }
       ]
     },
     "coker": {
@@ -548,6 +607,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "South Atlantic Conference, 2022 and 2026 Men's Soccer standings, https://thesac.com/standings.aspx?standings=73 (the archived 2022 table) and https://thesac.com/standings.aspx?path=msoc (the live 2026 table, archive id 191) (accessed 2026-09-04); listed in both under the label Coker, and in every season between (https://thesac.com/standings.aspx?standings=74, 75 and 178). The 2021 standings (https://thesac.com/standings.aspx?standings=72) list it too, so it did not arrive across the window's edge. The SAC publishes no per-season records pages (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for every year 2021-2026), so the standings archive is source 1 (standings_archives.SAC)."
+        }
+      ],
+      "women": [
+        {
+          "conference": "SAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "South Atlantic Conference, 2026 Women's Soccer standings and records, https://thesac.com/standings.aspx?path=wsoc (the live 2026 table, archive id 192: https://thesac.com/standings.aspx?standings=192) and https://thesac.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Coker (one table, no divisions, eleven programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thesac.com/standings.aspx?standings=183) list the same eleven programmes, and the 2024 standings (https://thesac.com/standings.aspx?standings=144) list them with Limestone, which closed after 2024-25 and has no women's window."
         }
       ]
     },
@@ -578,6 +645,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "columbus-state": {
+      "women": [
+        {
+          "conference": "PBC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Peach Belt Conference, 2026 Women's Soccer standings and records, https://peachbeltconference.org/standings.aspx?path=wsoc (the live 2026 table, archive id 213: https://peachbeltconference.org/standings.aspx?standings=213) and https://peachbeltconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Columbus State (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://peachbeltconference.org/standings.aspx?standings=194) list the same ten programmes plus Albany St. (Ga.), which is absent from the 2026 standings and records and has no women's window."
         }
       ]
     },
@@ -615,6 +692,15 @@
           "from_season": 2023,
           "to_season": 2026,
           "source": "Conference Carolinas, 2023 and 2026 Men's Soccer records, https://conferencecarolinas.com/stats.aspx?path=msoc&year=2023&conf=true and https://conferencecarolinas.com/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2024, 2025) under the label Converse. Division Northwest as printed on the standings pages https://conferencecarolinas.com/standings.aspx?standings=125 (2023), https://conferencecarolinas.com/standings.aspx?standings=140 (2024), https://conferencecarolinas.com/standings.aspx?standings=160 (2025) and the live 2026 table (https://conferencecarolinas.com/standings.aspx?path=msoc, archive id 173)."
+        }
+      ],
+      "women": [
+        {
+          "conference": "CC",
+          "division": "Northwest",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Conference Carolinas, 2026 Women's Soccer standings and records, https://conferencecarolinas.com/standings.aspx?path=wsoc (the live 2026 table, archive id 174: https://conferencecarolinas.com/standings.aspx?standings=174) and https://conferencecarolinas.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Converse, in the Northwest division as the 2026 standings print it (three divisions, East, Northwest and Southwest, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://conferencecarolinas.com/standings.aspx?standings=168) list the same sixteen programmes in the same three divisions."
         }
       ]
     },
@@ -845,6 +931,15 @@
           "to_season": 2026,
           "source": "Conference Carolinas, 2023 and 2026 Men's Soccer records, https://conferencecarolinas.com/stats.aspx?path=msoc&year=2023&conf=true and https://conferencecarolinas.com/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2024, 2025) under the label Emmanuel. Division Southwest as printed on the standings pages https://conferencecarolinas.com/standings.aspx?standings=125 (2023), https://conferencecarolinas.com/standings.aspx?standings=140 (2024), https://conferencecarolinas.com/standings.aspx?standings=160 (2025) and the live 2026 table (https://conferencecarolinas.com/standings.aspx?path=msoc, archive id 173)."
         }
+      ],
+      "women": [
+        {
+          "conference": "CC",
+          "division": "Southwest",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Conference Carolinas, 2026 Women's Soccer standings and records, https://conferencecarolinas.com/standings.aspx?path=wsoc (the live 2026 table, archive id 174: https://conferencecarolinas.com/standings.aspx?standings=174) and https://conferencecarolinas.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Emmanuel, in the Southwest division as the 2026 standings print it (three divisions, East, Northwest and Southwest, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://conferencecarolinas.com/standings.aspx?standings=168) list the same sixteen programmes in the same three divisions."
+        }
       ]
     },
     "emory-henry": {
@@ -854,6 +949,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "South Atlantic Conference, 2022 and 2026 Men's Soccer standings, https://thesac.com/standings.aspx?standings=73 (the archived 2022 table) and https://thesac.com/standings.aspx?path=msoc (the live 2026 table, archive id 191) (accessed 2026-09-04); listed in both under the label Emory & Henry, and in every season between (https://thesac.com/standings.aspx?standings=74, 75 and 178). Absent from the 2021 standings (https://thesac.com/standings.aspx?standings=72): Emory & Henry joined the SAC for 2022-23 after a Division II independent year (https://www.emoryhenry.edu/live/news/2392-emory-henry-officially-joins-the-south, 2022-07-05), and the 2022 table lists it with 11 conference games played, so it fielded men's soccer from its first SAC season. The SAC publishes no per-season records pages (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for every year 2021-2026), so the standings archive is source 1 (standings_archives.SAC)."
+        }
+      ],
+      "women": [
+        {
+          "conference": "SAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "South Atlantic Conference, 2026 Women's Soccer standings and records, https://thesac.com/standings.aspx?path=wsoc (the live 2026 table, archive id 192: https://thesac.com/standings.aspx?standings=192) and https://thesac.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Emory & Henry (one table, no divisions, eleven programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thesac.com/standings.aspx?standings=183) list the same eleven programmes, and the 2024 standings (https://thesac.com/standings.aspx?standings=144) list them with Limestone, which closed after 2024-25 and has no women's window."
         }
       ]
     },
@@ -881,6 +984,15 @@
           "from_season": 2023,
           "to_season": 2026,
           "source": "Conference Carolinas, 2023 and 2026 Men's Soccer records, https://conferencecarolinas.com/stats.aspx?path=msoc&year=2023&conf=true and https://conferencecarolinas.com/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2024, 2025) under the label Erskine. Division Southwest as printed on the standings pages https://conferencecarolinas.com/standings.aspx?standings=125 (2023), https://conferencecarolinas.com/standings.aspx?standings=140 (2024), https://conferencecarolinas.com/standings.aspx?standings=160 (2025) and the live 2026 table (https://conferencecarolinas.com/standings.aspx?path=msoc, archive id 173)."
+        }
+      ],
+      "women": [
+        {
+          "conference": "CC",
+          "division": "Southwest",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Conference Carolinas, 2026 Women's Soccer standings and records, https://conferencecarolinas.com/standings.aspx?path=wsoc (the live 2026 table, archive id 174: https://conferencecarolinas.com/standings.aspx?standings=174) and https://conferencecarolinas.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Erskine, in the Southwest division as the 2026 standings print it (three divisions, East, Northwest and Southwest, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://conferencecarolinas.com/standings.aspx?standings=168) list the same sixteen programmes in the same three divisions."
         }
       ]
     },
@@ -911,6 +1023,15 @@
           "to_season": 2026,
           "source": "Conference Carolinas, 2025 and 2026 Men's Soccer records, https://conferencecarolinas.com/stats.aspx?path=msoc&year=2025&conf=true and https://conferencecarolinas.com/standings.aspx?path=msoc (accessed 2026-09-04); listed in both under the label Ferrum. Division East as printed on the standings pages https://conferencecarolinas.com/standings.aspx?standings=125 (2023), https://conferencecarolinas.com/standings.aspx?standings=140 (2024), https://conferencecarolinas.com/standings.aspx?standings=160 (2025) and the live 2026 table (https://conferencecarolinas.com/standings.aspx?path=msoc, archive id 173). Absent from the 2024 records (https://conferencecarolinas.com/stats.aspx?path=msoc&year=2024&conf=true) and from every earlier season: Ferrum moved from Division III (the ODAC) with Conference Carolinas competition from fall 2025 (https://ferrumpanthers.com/news/2024/4/5/general-ferrum-college-set-to-move-to-division-ii-and-join-conference-carolinas.aspx and https://conferencecarolinas.com/news/2025/6/25/general-conference-carolinas-welcomes-ferrum-as-16th-member.aspx), and it counted in the East table at once (2025 standings, https://conferencecarolinas.com/standings.aspx?standings=160)."
         }
+      ],
+      "women": [
+        {
+          "conference": "CC",
+          "division": "East",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Conference Carolinas, 2026 Women's Soccer standings and records, https://conferencecarolinas.com/standings.aspx?path=wsoc (the live 2026 table, archive id 174: https://conferencecarolinas.com/standings.aspx?standings=174) and https://conferencecarolinas.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Ferrum, in the East division as the 2026 standings print it (three divisions, East, Northwest and Southwest, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://conferencecarolinas.com/standings.aspx?standings=168) list the same sixteen programmes in the same three divisions. Ferrum is absent from the 2024 standings (https://conferencecarolinas.com/standings.aspx?standings=141) and first listed in 2025, outside the depth either way."
+        }
       ]
     },
     "findlay": {
@@ -930,6 +1051,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Peach Belt Conference, 2022 and 2026 Men's Soccer records, https://peachbeltconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://peachbeltconference.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both under the label Flagler, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "PBC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Peach Belt Conference, 2026 Women's Soccer standings and records, https://peachbeltconference.org/standings.aspx?path=wsoc (the live 2026 table, archive id 213: https://peachbeltconference.org/standings.aspx?standings=213) and https://peachbeltconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Flagler (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://peachbeltconference.org/standings.aspx?standings=194) list the same ten programmes plus Albany St. (Ga.), which is absent from the 2026 standings and records and has no women's window."
         }
       ]
     },
@@ -1002,6 +1131,15 @@
           "to_season": 2026,
           "source": "Conference Carolinas, 2023 and 2026 Men's Soccer records, https://conferencecarolinas.com/stats.aspx?path=msoc&year=2023&conf=true and https://conferencecarolinas.com/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2024, 2025) under the label Francis Marion. Division East as printed on the standings pages https://conferencecarolinas.com/standings.aspx?standings=125 (2023), https://conferencecarolinas.com/standings.aspx?standings=140 (2024), https://conferencecarolinas.com/standings.aspx?standings=160 (2025) and the live 2026 table (https://conferencecarolinas.com/standings.aspx?path=msoc, archive id 173)."
         }
+      ],
+      "women": [
+        {
+          "conference": "CC",
+          "division": "East",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Conference Carolinas, 2026 Women's Soccer standings and records, https://conferencecarolinas.com/standings.aspx?path=wsoc (the live 2026 table, archive id 174: https://conferencecarolinas.com/standings.aspx?standings=174) and https://conferencecarolinas.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Francis Marion, in the East division as the 2026 standings print it (three divisions, East, Northwest and Southwest, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://conferencecarolinas.com/standings.aspx?standings=168) list the same sixteen programmes in the same three divisions."
+        }
       ]
     },
     "franklin-pierce": {
@@ -1067,6 +1205,16 @@
         }
       ]
     },
+    "georgia-college": {
+      "women": [
+        {
+          "conference": "PBC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Peach Belt Conference, 2026 Women's Soccer standings and records, https://peachbeltconference.org/standings.aspx?path=wsoc (the live 2026 table, archive id 213: https://peachbeltconference.org/standings.aspx?standings=213) and https://peachbeltconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label GCSU (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://peachbeltconference.org/standings.aspx?standings=194) list the same ten programmes plus Albany St. (Ga.), which is absent from the 2026 standings and records and has no women's window."
+        }
+      ]
+    },
     "georgia-southwestern": {
       "men": [
         {
@@ -1074,6 +1222,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Peach Belt Conference, 2022 and 2026 Men's Soccer records, https://peachbeltconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://peachbeltconference.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both under the label Georgia Southwestern, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "PBC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Peach Belt Conference, 2026 Women's Soccer standings and records, https://peachbeltconference.org/standings.aspx?path=wsoc (the live 2026 table, archive id 213: https://peachbeltconference.org/standings.aspx?standings=213) and https://peachbeltconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Georgia Southwestern (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://peachbeltconference.org/standings.aspx?standings=194) list the same ten programmes plus Albany St. (Ga.), which is absent from the 2026 standings and records and has no women's window."
         }
       ]
     },
@@ -1279,6 +1435,15 @@
           "to_season": 2026,
           "source": "Conference Carolinas, 2023 and 2026 Men's Soccer records, https://conferencecarolinas.com/stats.aspx?path=msoc&year=2023&conf=true and https://conferencecarolinas.com/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2024, 2025) under the label King. Division Northwest as printed on the standings pages https://conferencecarolinas.com/standings.aspx?standings=125 (2023), https://conferencecarolinas.com/standings.aspx?standings=140 (2024), https://conferencecarolinas.com/standings.aspx?standings=160 (2025) and the live 2026 table (https://conferencecarolinas.com/standings.aspx?path=msoc, archive id 173)."
         }
+      ],
+      "women": [
+        {
+          "conference": "CC",
+          "division": "Northwest",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Conference Carolinas, 2026 Women's Soccer standings and records, https://conferencecarolinas.com/standings.aspx?path=wsoc (the live 2026 table, archive id 174: https://conferencecarolinas.com/standings.aspx?standings=174) and https://conferencecarolinas.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label King, in the Northwest division as the 2026 standings print it (three divisions, East, Northwest and Southwest, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://conferencecarolinas.com/standings.aspx?standings=168) list the same sixteen programmes in the same three divisions."
+        }
       ]
     },
     "kutztown": {
@@ -1309,6 +1474,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Peach Belt Conference, 2022 and 2026 Men's Soccer records, https://peachbeltconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://peachbeltconference.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both under the label Lander, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "PBC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Peach Belt Conference, 2026 Women's Soccer standings and records, https://peachbeltconference.org/standings.aspx?path=wsoc (the live 2026 table, archive id 213: https://peachbeltconference.org/standings.aspx?standings=213) and https://peachbeltconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Lander (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://peachbeltconference.org/standings.aspx?standings=194) list the same ten programmes plus Albany St. (Ga.), which is absent from the 2026 standings and records and has no women's window."
         }
       ]
     },
@@ -1347,6 +1520,15 @@
           "to_season": 2026,
           "source": "Conference Carolinas, 2023 and 2026 Men's Soccer records, https://conferencecarolinas.com/stats.aspx?path=msoc&year=2023&conf=true and https://conferencecarolinas.com/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2024, 2025) under the label Lees-McRae. Division Northwest as printed on the standings pages https://conferencecarolinas.com/standings.aspx?standings=125 (2023), https://conferencecarolinas.com/standings.aspx?standings=140 (2024), https://conferencecarolinas.com/standings.aspx?standings=160 (2025) and the live 2026 table (https://conferencecarolinas.com/standings.aspx?path=msoc, archive id 173)."
         }
+      ],
+      "women": [
+        {
+          "conference": "CC",
+          "division": "Northwest",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Conference Carolinas, 2026 Women's Soccer standings and records, https://conferencecarolinas.com/standings.aspx?path=wsoc (the live 2026 table, archive id 174: https://conferencecarolinas.com/standings.aspx?standings=174) and https://conferencecarolinas.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Lees-McRae, in the Northwest division as the 2026 standings print it (three divisions, East, Northwest and Southwest, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://conferencecarolinas.com/standings.aspx?standings=168) list the same sixteen programmes in the same three divisions."
+        }
       ]
     },
     "lenoir-rhyne": {
@@ -1356,6 +1538,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "South Atlantic Conference, 2022 and 2026 Men's Soccer standings, https://thesac.com/standings.aspx?standings=73 (the archived 2022 table) and https://thesac.com/standings.aspx?path=msoc (the live 2026 table, archive id 191) (accessed 2026-09-04); listed in both under the label Lenoir-Rhyne, and in every season between (https://thesac.com/standings.aspx?standings=74, 75 and 178). The 2021 standings (https://thesac.com/standings.aspx?standings=72) list it too, so it did not arrive across the window's edge. The SAC publishes no per-season records pages (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for every year 2021-2026), so the standings archive is source 1 (standings_archives.SAC)."
+        }
+      ],
+      "women": [
+        {
+          "conference": "SAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "South Atlantic Conference, 2026 Women's Soccer standings and records, https://thesac.com/standings.aspx?path=wsoc (the live 2026 table, archive id 192: https://thesac.com/standings.aspx?standings=192) and https://thesac.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Lenoir-Rhyne (one table, no divisions, eleven programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thesac.com/standings.aspx?standings=183) list the same eleven programmes, and the 2024 standings (https://thesac.com/standings.aspx?standings=144) list them with Limestone, which closed after 2024-25 and has no women's window."
         }
       ]
     },
@@ -1412,6 +1602,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "South Atlantic Conference, 2022 and 2026 Men's Soccer standings, https://thesac.com/standings.aspx?standings=73 (the archived 2022 table) and https://thesac.com/standings.aspx?path=msoc (the live 2026 table, archive id 191) (accessed 2026-09-04); listed in both under the label Lincoln Memorial, and in every season between (https://thesac.com/standings.aspx?standings=74, 75 and 178). The 2021 standings (https://thesac.com/standings.aspx?standings=72) list it too, so it did not arrive across the window's edge. The SAC publishes no per-season records pages (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for every year 2021-2026), so the standings archive is source 1 (standings_archives.SAC)."
+        }
+      ],
+      "women": [
+        {
+          "conference": "SAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "South Atlantic Conference, 2026 Women's Soccer standings and records, https://thesac.com/standings.aspx?path=wsoc (the live 2026 table, archive id 192: https://thesac.com/standings.aspx?standings=192) and https://thesac.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Lincoln Memorial (one table, no divisions, eleven programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thesac.com/standings.aspx?standings=183) list the same eleven programmes, and the 2024 standings (https://thesac.com/standings.aspx?standings=144) list them with Limestone, which closed after 2024-25 and has no women's window."
         }
       ]
     },
@@ -1492,6 +1690,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "South Atlantic Conference, 2022 and 2026 Men's Soccer standings, https://thesac.com/standings.aspx?standings=73 (the archived 2022 table) and https://thesac.com/standings.aspx?path=msoc (the live 2026 table, archive id 191) (accessed 2026-09-04); listed in both under the label Mars Hill, and in every season between (https://thesac.com/standings.aspx?standings=74, 75 and 178). The 2021 standings (https://thesac.com/standings.aspx?standings=72) list it too, so it did not arrive across the window's edge. The SAC publishes no per-season records pages (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for every year 2021-2026), so the standings archive is source 1 (standings_archives.SAC)."
+        }
+      ],
+      "women": [
+        {
+          "conference": "SAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "South Atlantic Conference, 2026 Women's Soccer standings and records, https://thesac.com/standings.aspx?path=wsoc (the live 2026 table, archive id 192: https://thesac.com/standings.aspx?standings=192) and https://thesac.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Mars Hill (one table, no divisions, eleven programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thesac.com/standings.aspx?standings=183) list the same eleven programmes, and the 2024 standings (https://thesac.com/standings.aspx?standings=144) list them with Limestone, which closed after 2024-25 and has no women's window."
         }
       ]
     },
@@ -1582,6 +1788,14 @@
           "from_season": 2025,
           "to_season": 2026,
           "source": "Peach Belt Conference, 2025 and 2026 Men's Soccer records, https://peachbeltconference.org/stats.aspx?path=msoc&year=2025&conf=true and https://peachbeltconference.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both under the label Middle Georgia (team key mga). Absent from the 2024 records (https://peachbeltconference.org/stats.aspx?path=msoc&year=2024&conf=true) and every earlier season: the Peach Belt invited Middle Georgia State with competition from fall 2025 (https://mgaknights.com/news/2024/1/10/general-peach-belt-extends-invitation-to-middle-georgia-state-university-for-conference-membership.aspx), and the 2025 records list it as a plain row. The records label mints middle-georgia; the slug is minted from the school's name, which opponents' pages already carry, and Middle Georgia is an alias."
+        }
+      ],
+      "women": [
+        {
+          "conference": "PBC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Peach Belt Conference, 2026 Women's Soccer standings and records, https://peachbeltconference.org/standings.aspx?path=wsoc (the live 2026 table, archive id 213: https://peachbeltconference.org/standings.aspx?standings=213) and https://peachbeltconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Middle Georgia (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://peachbeltconference.org/standings.aspx?standings=194) list the same ten programmes plus Albany St. (Ga.), which is absent from the 2026 standings and records and has no women's window. Middle Georgia State is absent from the 2024 standings (https://peachbeltconference.org/standings.aspx?standings=180) and first listed in 2025, outside the depth either way."
         }
       ]
     },
@@ -1733,6 +1947,15 @@
           "to_season": 2026,
           "source": "Conference Carolinas, 2023 and 2026 Men's Soccer records, https://conferencecarolinas.com/stats.aspx?path=msoc&year=2023&conf=true and https://conferencecarolinas.com/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2024, 2025) under the label Mount Olive. Division East as printed on the standings pages https://conferencecarolinas.com/standings.aspx?standings=125 (2023), https://conferencecarolinas.com/standings.aspx?standings=140 (2024), https://conferencecarolinas.com/standings.aspx?standings=160 (2025) and the live 2026 table (https://conferencecarolinas.com/standings.aspx?path=msoc, archive id 173)."
         }
+      ],
+      "women": [
+        {
+          "conference": "CC",
+          "division": "East",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Conference Carolinas, 2026 Women's Soccer standings and records, https://conferencecarolinas.com/standings.aspx?path=wsoc (the live 2026 table, archive id 174: https://conferencecarolinas.com/standings.aspx?standings=174) and https://conferencecarolinas.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Mount Olive, in the East division as the 2026 standings print it (three divisions, East, Northwest and Southwest, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://conferencecarolinas.com/standings.aspx?standings=168) list the same sixteen programmes in the same three divisions."
+        }
       ]
     },
     "msu-denver": {
@@ -1772,6 +1995,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "South Atlantic Conference, 2022 and 2026 Men's Soccer standings, https://thesac.com/standings.aspx?standings=73 (the archived 2022 table) and https://thesac.com/standings.aspx?path=msoc (the live 2026 table, archive id 191) (accessed 2026-09-04); listed in both under the label Newberry, and in every season between (https://thesac.com/standings.aspx?standings=74, 75 and 178). The 2021 standings (https://thesac.com/standings.aspx?standings=72) list it too, so it did not arrive across the window's edge. The SAC publishes no per-season records pages (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for every year 2021-2026), so the standings archive is source 1 (standings_archives.SAC)."
+        }
+      ],
+      "women": [
+        {
+          "conference": "SAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "South Atlantic Conference, 2026 Women's Soccer standings and records, https://thesac.com/standings.aspx?path=wsoc (the live 2026 table, archive id 192: https://thesac.com/standings.aspx?standings=192) and https://thesac.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Newberry (one table, no divisions, eleven programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thesac.com/standings.aspx?standings=183) list the same eleven programmes, and the 2024 standings (https://thesac.com/standings.aspx?standings=144) list them with Limestone, which closed after 2024-25 and has no women's window."
         }
       ]
     },
@@ -1813,6 +2044,14 @@
           "to_season": 2026,
           "source": "Peach Belt Conference, 2022 and 2026 Men's Soccer records, https://peachbeltconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://peachbeltconference.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both under the label North Georgia, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "PBC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Peach Belt Conference, 2026 Women's Soccer standings and records, https://peachbeltconference.org/standings.aspx?path=wsoc (the live 2026 table, archive id 213: https://peachbeltconference.org/standings.aspx?standings=213) and https://peachbeltconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label North Georgia (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://peachbeltconference.org/standings.aspx?standings=194) list the same ten programmes plus Albany St. (Ga.), which is absent from the 2026 standings and records and has no women's window."
+        }
       ]
     },
     "north-greenville": {
@@ -1836,6 +2075,15 @@
           "from_season": 2024,
           "to_season": 2026,
           "source": "Conference Carolinas, 2024 and 2026 Men's Soccer records, https://conferencecarolinas.com/stats.aspx?path=msoc&year=2024&conf=true and https://conferencecarolinas.com/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2025) under the label North Greenville. Division Northwest as printed on the standings pages https://conferencecarolinas.com/standings.aspx?standings=125 (2023), https://conferencecarolinas.com/standings.aspx?standings=140 (2024), https://conferencecarolinas.com/standings.aspx?standings=160 (2025) and the live 2026 table (https://conferencecarolinas.com/standings.aspx?path=msoc, archive id 173). Printed in the Southwest on the 2023 standings (https://conferencecarolinas.com/standings.aspx?standings=125) and in the Northwest from 2024, the season Shorter joined the Southwest."
+        }
+      ],
+      "women": [
+        {
+          "conference": "CC",
+          "division": "Northwest",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Conference Carolinas, 2026 Women's Soccer standings and records, https://conferencecarolinas.com/standings.aspx?path=wsoc (the live 2026 table, archive id 174: https://conferencecarolinas.com/standings.aspx?standings=174) and https://conferencecarolinas.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label North Greenville, in the Northwest division as the 2026 standings print it (three divisions, East, Northwest and Southwest, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://conferencecarolinas.com/standings.aspx?standings=168) list the same sixteen programmes in the same three divisions."
         }
       ]
     },
@@ -2440,6 +2688,15 @@
           "to_season": 2026,
           "source": "Conference Carolinas, 2024 and 2026 Men's Soccer records, https://conferencecarolinas.com/stats.aspx?path=msoc&year=2024&conf=true and https://conferencecarolinas.com/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2025) under the label Shorter. Division Southwest as printed on the standings pages https://conferencecarolinas.com/standings.aspx?standings=125 (2023), https://conferencecarolinas.com/standings.aspx?standings=140 (2024), https://conferencecarolinas.com/standings.aspx?standings=160 (2025) and the live 2026 table (https://conferencecarolinas.com/standings.aspx?path=msoc, archive id 173). Absent from the 2023 records (https://conferencecarolinas.com/stats.aspx?path=msoc&year=2023&conf=true); first listed 2024, matching Shorter's 2024-25 move from the Gulf South Conference (https://goshorterhawks.com/news/2023/1/27/general-shorter-athletics-annouces-their-move-to-conference-carolinas.aspx and https://conferencecarolinas.com/news/2024/6/19/general-conference-carolinas-welcomes-shorter-as-15th-member.aspx)."
         }
+      ],
+      "women": [
+        {
+          "conference": "CC",
+          "division": "Southwest",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Conference Carolinas, 2026 Women's Soccer standings and records, https://conferencecarolinas.com/standings.aspx?path=wsoc (the live 2026 table, archive id 174: https://conferencecarolinas.com/standings.aspx?standings=174) and https://conferencecarolinas.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Shorter, in the Southwest division as the 2026 standings print it (three divisions, East, Northwest and Southwest, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://conferencecarolinas.com/standings.aspx?standings=168) list the same sixteen programmes in the same three divisions."
+        }
       ]
     },
     "simon-fraser": {
@@ -2559,6 +2816,15 @@
           "from_season": 2023,
           "to_season": 2026,
           "source": "Conference Carolinas, 2023 and 2026 Men's Soccer records, https://conferencecarolinas.com/stats.aspx?path=msoc&year=2023&conf=true and https://conferencecarolinas.com/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2024, 2025) under the label Southern Wesleyan. Division Southwest as printed on the standings pages https://conferencecarolinas.com/standings.aspx?standings=125 (2023), https://conferencecarolinas.com/standings.aspx?standings=140 (2024), https://conferencecarolinas.com/standings.aspx?standings=160 (2025) and the live 2026 table (https://conferencecarolinas.com/standings.aspx?path=msoc, archive id 173)."
+        }
+      ],
+      "women": [
+        {
+          "conference": "CC",
+          "division": "Southwest",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Conference Carolinas, 2026 Women's Soccer standings and records, https://conferencecarolinas.com/standings.aspx?path=wsoc (the live 2026 table, archive id 174: https://conferencecarolinas.com/standings.aspx?standings=174) and https://conferencecarolinas.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Southern Wesleyan, in the Southwest division as the 2026 standings print it (three divisions, East, Northwest and Southwest, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://conferencecarolinas.com/standings.aspx?standings=168) list the same sixteen programmes in the same three divisions."
         }
       ]
     },
@@ -2748,6 +3014,14 @@
           "to_season": 2026,
           "source": "South Atlantic Conference, 2022 and 2026 Men's Soccer standings, https://thesac.com/standings.aspx?standings=73 (the archived 2022 table) and https://thesac.com/standings.aspx?path=msoc (the live 2026 table, archive id 191) (accessed 2026-09-04); listed in both under the label Tusculum, and in every season between (https://thesac.com/standings.aspx?standings=74, 75 and 178). The 2021 standings (https://thesac.com/standings.aspx?standings=72) list it too, so it did not arrive across the window's edge. The SAC publishes no per-season records pages (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for every year 2021-2026), so the standings archive is source 1 (standings_archives.SAC)."
         }
+      ],
+      "women": [
+        {
+          "conference": "SAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "South Atlantic Conference, 2026 Women's Soccer standings and records, https://thesac.com/standings.aspx?path=wsoc (the live 2026 table, archive id 192: https://thesac.com/standings.aspx?standings=192) and https://thesac.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Tusculum (one table, no divisions, eleven programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thesac.com/standings.aspx?standings=183) list the same eleven programmes, and the 2024 standings (https://thesac.com/standings.aspx?standings=144) list them with Limestone, which closed after 2024-25 and has no women's window."
+        }
       ]
     },
     "uah": {
@@ -2777,6 +3051,17 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ]
+    },
+    "unc-pembroke": {
+      "women": [
+        {
+          "conference": "CC",
+          "division": "East",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Conference Carolinas, 2026 Women's Soccer standings and records, https://conferencecarolinas.com/standings.aspx?path=wsoc (the live 2026 table, archive id 174: https://conferencecarolinas.com/standings.aspx?standings=174) and https://conferencecarolinas.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label UNC Pembroke, in the East division as the 2026 standings print it (three divisions, East, Northwest and Southwest, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://conferencecarolinas.com/standings.aspx?standings=168) list the same sixteen programmes in the same three divisions."
         }
       ]
     },
@@ -2821,6 +3106,24 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Peach Belt Conference, 2022 and 2026 Men's Soccer records, https://peachbeltconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://peachbeltconference.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both under the label USCA, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The records label USCA mints usca; the slug is minted from the school's own short name USC Aiken, which opponents' pages already carry, and USCA is an alias."
+        }
+      ],
+      "women": [
+        {
+          "conference": "PBC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Peach Belt Conference, 2026 Women's Soccer standings and records, https://peachbeltconference.org/standings.aspx?path=wsoc (the live 2026 table, archive id 213: https://peachbeltconference.org/standings.aspx?standings=213) and https://peachbeltconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label USCA (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://peachbeltconference.org/standings.aspx?standings=194) list the same ten programmes plus Albany St. (Ga.), which is absent from the 2026 standings and records and has no women's window."
+        }
+      ]
+    },
+    "usc-beaufort": {
+      "women": [
+        {
+          "conference": "PBC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Peach Belt Conference, 2026 Women's Soccer standings and records, https://peachbeltconference.org/standings.aspx?path=wsoc (the live 2026 table, archive id 213: https://peachbeltconference.org/standings.aspx?standings=213) and https://peachbeltconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label USC Beaufort (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://peachbeltconference.org/standings.aspx?standings=194) list the same ten programmes plus Albany St. (Ga.), which is absent from the 2026 standings and records and has no women's window."
         }
       ]
     },
@@ -3047,6 +3350,14 @@
           "to_season": 2026,
           "source": "South Atlantic Conference, 2022 and 2026 Men's Soccer standings, https://thesac.com/standings.aspx?standings=73 (the archived 2022 table) and https://thesac.com/standings.aspx?path=msoc (the live 2026 table, archive id 191) (accessed 2026-09-04); listed in both under the label Wingate, and in every season between (https://thesac.com/standings.aspx?standings=74, 75 and 178). The 2021 standings (https://thesac.com/standings.aspx?standings=72) list it too, so it did not arrive across the window's edge. The SAC publishes no per-season records pages (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for every year 2021-2026), so the standings archive is source 1 (standings_archives.SAC)."
         }
+      ],
+      "women": [
+        {
+          "conference": "SAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "South Atlantic Conference, 2026 Women's Soccer standings and records, https://thesac.com/standings.aspx?path=wsoc (the live 2026 table, archive id 192: https://thesac.com/standings.aspx?standings=192) and https://thesac.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Wingate (one table, no divisions, eleven programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thesac.com/standings.aspx?standings=183) list the same eleven programmes, and the 2024 standings (https://thesac.com/standings.aspx?standings=144) list them with Limestone, which closed after 2024-25 and has no women's window."
+        }
       ]
     },
     "wisconsin-parkside": {
@@ -3073,6 +3384,15 @@
           "from_season": 2023,
           "to_season": 2026,
           "source": "Conference Carolinas, 2023 and 2026 Men's Soccer records, https://conferencecarolinas.com/stats.aspx?path=msoc&year=2023&conf=true and https://conferencecarolinas.com/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2024, 2025) under the label Young Harris. Division Southwest as printed on the standings pages https://conferencecarolinas.com/standings.aspx?standings=125 (2023), https://conferencecarolinas.com/standings.aspx?standings=140 (2024), https://conferencecarolinas.com/standings.aspx?standings=160 (2025) and the live 2026 table (https://conferencecarolinas.com/standings.aspx?path=msoc, archive id 173). Absent from the 2022 records (https://conferencecarolinas.com/stats.aspx?path=msoc&year=2022&conf=true); first listed 2023, matching Young Harris's 2023-24 move from the Peach Belt (https://conferencecarolinas.com/news/2023/6/29/general-conference-carolinas-officially-welcomes-young-harris-college.aspx)."
+        }
+      ],
+      "women": [
+        {
+          "conference": "CC",
+          "division": "Southwest",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Conference Carolinas, 2026 Women's Soccer standings and records, https://conferencecarolinas.com/standings.aspx?path=wsoc (the live 2026 table, archive id 174: https://conferencecarolinas.com/standings.aspx?standings=174) and https://conferencecarolinas.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Young Harris, in the Southwest division as the 2026 standings print it (three divisions, East, Northwest and Southwest, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://conferencecarolinas.com/standings.aspx?standings=168) list the same sixteen programmes in the same three divisions."
         }
       ]
     }

@@ -4935,6 +4935,290 @@ city_source  = "the university's main site, https://www.limestone.edu/ (title 'L
 identity_accessed = "2026-09-05"
 
 # ============================================================
+# SAC WOMEN'S SOCCER - 11 programmes, authored depth 2026 only
+# ============================================================
+# Source of truth: the South Atlantic Conference's own women's soccer
+# pages, read 2026-11-08: the live standings
+# (thesac.com/standings.aspx?path=wsoc, "2026 Women's Soccer Standings",
+# archive id 192) and the 2026 conference statistics
+# (stats.aspx?path=wsoc&year=2026&conf=true). Unlike the men's side, the
+# women's records page is populated: it links the same eleven team pages.
+# One table, no divisions, so no window carries one. Depth is 2026 only
+# (the owner's ruling, no historical seasons), so every year-list is [2026].
+# The women's standings archive ids (2026 192, 2025 183, 2024 144, 2023
+# 143, 2022 142) differ from the men's ids in standings_archives.SAC; that
+# map is keyed by conference only, so the women's ids are cited in the
+# window sources, not added to it.
+#
+# The same eleven as the 2026 men's SAC: every stanza here shares its name,
+# and so its slug, with the SAC men's stanza above; no new institution.
+# Realignment traps, each read off a standings page: the 2025 standings
+# (standings=183) list the same eleven. The 2024 standings (standings=144)
+# list twelve: Limestone, absent from 2025 and 2026 (the college closed
+# after 2024-25; its athletics host is dead), outside the depth, so no
+# women's window or stanza. UVA Wise is a member (member JSON on the
+# standings page) on no women's table and gets nothing. No renames, no D1
+# departures at the edge, no provisional member on the table.
+#
+# Probe (uv run probe --conference SAC --seasons 2026, 2026-11-08): six
+# SideArm hosts (Wingate, Anderson, Catawba, Lincoln Memorial, Lenoir-Rhyne,
+# Newberry), schedule / roster / stats / matches present, 2026 served.
+# Five PrestoSports hosts (Mars Hill, Coker, Emory & Henry, Tusculum at
+# /sports/wsoc; Carson-Newman at /sports/w-soccer), written in the Tampa
+# shape. The probe's first burst got an empty HTTP 202 (the CloudFront
+# challenge, not a dead host) on every page of the four wsoc hosts. A
+# paced curl pass then read every 2026 schedule and roster page (titles
+# "2026 {school} Women's Soccer Schedule", event rows, box-score links),
+# and lone re-probes 90 s apart read Mars Hill, Coker and Emory & Henry as
+# PrestoSports with all four layers present and 2026 served. Tusculum's
+# lone re-probes read HTTP 404 twice although curl reads its pages 200,
+# and Carson-Newman's w-soccer path is one the probe refuses (bead
+# tl-7lu): both rest on the paced curl pass, as their men's stanzas do.
+# Hosts from the athletics_website fields of the member JSON embedded in
+# the standings page. No collect has run, so every stanza is
+# data_status = unverified. No ordinals.
+#
+# Short forms, mascots and aliases are the men's stanzas'; WU, AU and TU
+# stay display-only as there. Peer spellings are from a scan of the six
+# SideArm and five PrestoSports 2026 women's schedule pages (and the CC and
+# PBC members', which play SAC sides): every one equals a claimed spelling
+# or folds onto one ("Anderson (S.C.)", "Anderson University (SC)",
+# "Emory & Henry University", "Wingate University", "King (Tenn.)").
+
+[[schools]]
+name         = "Wingate"
+abbreviation = "WU"
+abbreviation_resolves = false  # "WU" is also Washburn's (MIAA women) and Walsh, Westminster, Wheeling and Wilmington's
+conference   = "SAC"
+mascot       = "Bulldogs"
+gender       = "women"
+base_url     = "https://wingatebulldogs.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Wingate University", "WIN"]
+city         = "Wingate, N.C."
+city_source  = "schedule-page home venue location, https://wingatebulldogs.com/sports/womens-soccer/schedule/2026 (Wingate, N.C. on 11 home rows, read 2026-11-08); the thesac.com member JSON prints Wingate, NC"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Anderson"
+abbreviation = "AU"
+abbreviation_resolves = false  # "AU" is also Adelphi, Alliance and Ashland's (see the men's stanza)
+conference   = "SAC"
+mascot       = "Trojans"
+gender       = "women"
+base_url     = "https://autrojans.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Anderson University", "Anderson (S.C.)", "Anderson (SC)", "AND"]
+city         = "Anderson, S.C."
+city_source  = "schedule-page home venue location, https://autrojans.com/sports/womens-soccer/schedule/2026 (Anderson, S.C. on 8 home rows, read 2026-11-08); the thesac.com member JSON prints Anderson, SC"
+identity_accessed = "2026-11-08"
+
+# PrestoSports (marshilllions.com/sports/wsoc). The probe's first run
+# answered an empty HTTP 202 on every page (the CloudFront challenge, not a
+# dead host). A paced curl pass (browser User-Agent, 12 s apart, 45 s after
+# a 202) read /2026-27/schedule ("2026 Mars Hill Women's Soccer Schedule",
+# 20 event rows, box-score links) on its third try and /2026-27/roster
+# ("2026 Mars Hill Women's Soccer Roster") first time; a lone re-probe
+# 90 s later read PrestoSports with all four layers present and 2026
+# served.
+# The footer address prints Mars Hill, N.C., 28754.
+[[schools]]
+name         = "Mars Hill"
+abbreviation = "MH"
+conference   = "SAC"
+mascot       = "Lions"
+gender       = "women"
+base_url     = "https://marshilllions.com/sports/wsoc"
+years        = [2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Mars Hill University", "MHU"]
+city         = "Mars Hill, N.C."
+city_source  = "the site's own schedule page, https://marshilllions.com/sports/wsoc/2026-27/schedule (Mars Hill, N.C., 28754 in the footer address, read 2026-11-08); the thesac.com member JSON prints Mars Hill, NC"
+identity_accessed = "2026-11-08"
+
+# The probe drafted no abbreviation and no mascot; the men's stanza carries
+# "CAT" (the conference's team key too, school=cat) and "Indians".
+[[schools]]
+name         = "Catawba"
+abbreviation = "CAT"
+conference   = "SAC"
+mascot       = "Indians"
+gender       = "women"
+base_url     = "https://catawbaathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Catawba College"]
+city         = "Salisbury, N.C."
+city_source  = "schedule-page home venue location, https://catawbaathletics.com/sports/womens-soccer/schedule/2026 (Salisbury, N.C. on 10 home rows, read 2026-11-08); the thesac.com member JSON prints Salisbury, NC"
+identity_accessed = "2026-11-08"
+
+# PrestoSports behind CloudFront; the site keys women's soccer under
+# w-soccer (men's under m-soccer), a slug the probe refuses (bead tl-7lu),
+# so it was not probed. Settled by a paced curl pass on 2026-11-08 (browser
+# User-Agent, 12 s apart, every page HTTP 200 first time):
+# /sports/w-soccer/2026-27/schedule is "2026 Carson-Newman Women's Soccer
+# Schedule" (19 event rows, box-score links) and /2026-27/roster "2026
+# Carson-Newman Women's Soccer Roster". The host answers an empty HTTP 202
+# to bursts: a 202 is the challenge, not a dead host.
+[[schools]]
+name         = "Carson-Newman"
+abbreviation = "CN"
+conference   = "SAC"
+mascot       = "Eagles"
+gender       = "women"
+base_url     = "https://cneagles.com/sports/w-soccer"
+years        = [2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Carson-Newman University", "Carson Newman", "C-N", "CNU"]
+city         = "Jefferson City, Tenn."
+city_source  = "the site's own schedule page, https://cneagles.com/sports/w-soccer/2026-27/schedule (Jefferson City, TN 37760 in the footer address, read 2026-11-08); the thesac.com member JSON prints Jefferson City, TN"
+identity_accessed = "2026-11-08"
+
+# PrestoSports (cokercobras.com/sports/wsoc). The probe's first run
+# answered an empty HTTP 202 on every page (the CloudFront challenge, not a
+# dead host). A paced curl pass read /2026-27/schedule ("2026 Coker Women's
+# Soccer Schedule", 18 event rows, box-score links) on its second try and
+# /2026-27/roster first time; a lone re-probe
+# 90 s later read PrestoSports with all four layers present and 2026
+# served. The footer address prints
+# HARTSVILLE, SC 29550.
+[[schools]]
+name         = "Coker"
+abbreviation = "COK"
+conference   = "SAC"
+mascot       = "Cobras"
+gender       = "women"
+base_url     = "https://cokercobras.com/sports/wsoc"
+years        = [2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Coker University", "Coker College"]
+city         = "Hartsville, S.C."
+city_source  = "the site's own schedule page, https://cokercobras.com/sports/wsoc/2026-27/schedule (HARTSVILLE, SC 29550 in the footer address, read 2026-11-08, case normalised); the thesac.com member JSON prints Hartsville, SC"
+identity_accessed = "2026-11-08"
+
+# PrestoSports (gowasps.com/sports/wsoc). The probe's first run answered an
+# empty HTTP 202 on every page (the CloudFront challenge, not a dead host).
+# A paced curl pass read /2026-27/schedule ("2026 Emory & Henry Women's
+# Soccer Schedule", 20 event rows, box-score links) and /2026-27/roster
+# first time; the roster prints its numbers in a different skin
+# (td.number, not jersey-number cells), though the lone re-probe
+# 90 s later read PrestoSports with all four layers present (roster
+# included) and 2026 served. The footer address prints Emory, VA 24327.
+[[schools]]
+name         = "Emory & Henry"
+abbreviation = "E&H"
+conference   = "SAC"
+mascot       = "Wasps"
+gender       = "women"
+base_url     = "https://gowasps.com/sports/wsoc"
+years        = [2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Emory & Henry University", "Emory & Henry College", "Emory and Henry", "EHC"]
+city         = "Emory, Va."
+city_source  = "the site's own schedule page, https://gowasps.com/sports/wsoc/2026-27/schedule (Emory, VA 24327 in the footer address, read 2026-11-08); the thesac.com member JSON prints Emory, VA"
+identity_accessed = "2026-11-08"
+
+# Lincoln Memorial University (Harrogate, Tenn.), not the GLVC's Lincoln
+# (whose women's stanza claims "Lincoln University"). Never alias the bare
+# "Lincoln".
+[[schools]]
+name         = "Lincoln Memorial"
+abbreviation = "LMU"
+conference   = "SAC"
+mascot       = "Railsplitters"
+gender       = "women"
+base_url     = "https://lmurailsplitters.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lincoln Memorial University"]
+city         = "Harrogate, Tenn."
+city_source  = "schedule-page home venue location, https://lmurailsplitters.com/sports/womens-soccer/schedule/2026 (Harrogate, TN on 8 home rows, read 2026-11-08); the thesac.com member JSON prints Harrogate, TN"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Lenoir-Rhyne"
+abbreviation = "LR"
+conference   = "SAC"
+mascot       = "Bears"
+gender       = "women"
+base_url     = "https://lrbears.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lenoir-Rhyne University", "Lenoir Rhyne", "L-R", "LRU"]
+city         = "Hickory, N.C."
+city_source  = "schedule-page home venue location, https://lrbears.com/sports/womens-soccer/schedule/2026 (Hickory, N.C. on 10 home rows, read 2026-11-08); the thesac.com member JSON prints Hickory, N.C."
+identity_accessed = "2026-11-08"
+
+# PrestoSports behind CloudFront (tusculumpioneers.com/sports/wsoc). The
+# probe's first run answered an empty HTTP 202 on every page (the
+# challenge, not a dead host). A paced curl pass read /2026-27/schedule
+# ("2026 Tusculum Women's Soccer Schedule", 15 event rows, box-score links)
+# and /2026-27/roster first time. Two lone
+# re-probes (2026-11-08) read HTTP 404 on every layer, while the same
+# pages answer 200 to curl with the pipeline's own User-Agent; the men's
+# Tusculum stanza was settled the same way (paced curl, not the probe).
+# Its schedule page carries no teams/ "Current Season" link, so the stats
+# layer is the one to watch on the first collect. The footer address prints
+# GREENEVILLE, TN 37745.
+[[schools]]
+name         = "Tusculum"
+abbreviation = "TU"
+abbreviation_resolves = false  # "TU" is also Tiffin's (see the men's stanza)
+conference   = "SAC"
+mascot       = "Pioneers"
+gender       = "women"
+base_url     = "https://tusculumpioneers.com/sports/wsoc"
+years        = [2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Tusculum University"]
+city         = "Greeneville, Tenn."
+city_source  = "the site's own schedule page, https://tusculumpioneers.com/sports/wsoc/2026-27/schedule (GREENEVILLE, TN 37745 in the footer address, read 2026-11-08, case normalised); the thesac.com member JSON prints Greeneville, TN"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Newberry"
+abbreviation = "NEW"
+conference   = "SAC"
+mascot       = "Wolves"
+gender       = "women"
+base_url     = "https://newberrywolves.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Newberry College"]
+city         = "Newberry, S.C."
+city_source  = "schedule-page home venue location, https://newberrywolves.com/sports/womens-soccer/schedule/2026 (Newberry, S.C. on 7 home rows, read 2026-11-08); the thesac.com member JSON prints Newberry, SC"
+identity_accessed = "2026-11-08"
+
+# ============================================================
 # CC MEN'S SOCCER - 14 programmes, backfill window 2022-2026
 # ============================================================
 # 28 windows in the depth on 15 slugs: the fifteenth is Shorter, whose
@@ -5257,6 +5541,339 @@ city_source  = "schedule-page home venue location, https://goeulions.com/sports/
 identity_accessed = "2026-09-04"
 
 # ============================================================
+# CC WOMEN'S SOCCER - 16 programmes, authored depth 2026 only
+# ============================================================
+# Source of truth: Conference Carolinas' own women's soccer pages, read
+# 2026-11-08: the live standings
+# (conferencecarolinas.com/standings.aspx?path=wsoc, "2026 Women's Soccer
+# Standings", archive id 174) and the 2026 conference statistics
+# (stats.aspx?path=wsoc&year=2026&conf=true). Both list the same sixteen
+# programmes; the standings print three divisions headed exactly "East"
+# (6), "Northwest" (5) and "Southwest" (5), so every 2026 women's window
+# carries its division (all-or-none holds). Depth is 2026 only (the owner's
+# ruling, no historical seasons), so every year-list is [2026].
+#
+# Realignment traps, each read off a standings page: the 2025 standings
+# (standings=168) list the same sixteen in the same three divisions, so
+# nothing moves at the 2025/2026 edge. Ferrum is absent from the 2024
+# standings (standings=141, fifteen programmes) and first listed in 2025,
+# outside the depth. Not the men's set: UNC Pembroke sponsors women's
+# soccer only and is the one new institution here; the other fifteen share
+# their name, and so their slug, with a men's stanza. Fourteen of those sit
+# in the CC men's section above; Shorter's men's stanza sits in the GSC
+# section (GSC men to 2023, CC from 2024), and the women's stanza below
+# carries conference CC. Every member's women's division matches its men's
+# 2026 division (North Greenville Northwest, Shorter Southwest). No renames;
+# no same-named collision (unc-pembroke is minted by no other stanza).
+#
+# Probe (uv run probe --conference CC --seasons 2026, 2026-11-08): all 16
+# hosts SideArm, schedule / roster / stats / matches present, 2026 served
+# on every one. Hosts from the athletics_website fields of the member JSON
+# embedded in the standings page (Emmanuel's goeclions.com 301s to
+# goeulions.com, as on the men's side). No collect has run, so every stanza
+# is data_status = unverified. No ordinals.
+#
+# Short forms: the shared schools keep their men's abbreviation (and its
+# abbreviation_resolves). UNC Pembroke carries UNCP, which its own SideArm
+# scoreboard JSON prints (home_short_name / away_short_name) as do Ferrum's,
+# Francis Marion's, North Greenville's and Mount Olive's. Peer spellings are
+# from a scan of all sixteen 2026 women's schedule pages; every member's
+# peer spellings either equal a claimed spelling or fold onto one once the
+# parenthetical and "University"/"College" drop ("Anderson University
+# (SC)", "Emmanuel University (Ga.)", "King University (Tenn.)", "Shorter
+# University (Ga.)", "Southern Wesleyan University (S.C.)").
+
+[[schools]]
+name         = "Francis Marion"
+abbreviation = "FMU"
+conference   = "CC"
+mascot       = "Patriots"
+gender       = "women"
+base_url     = "https://fmupatriots.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Francis Marion University"]
+city         = "Florence, S.C."
+city_source  = "schedule-page home venue location, https://fmupatriots.com/sports/womens-soccer/schedule/2026 (Florence, SC on 10 home rows, read 2026-11-08); the conferencecarolinas.com member JSON prints Florence, SC"
+identity_accessed = "2026-11-08"
+
+# First Conference Carolinas women's season 2025 (absent from the 2024
+# standings, standings=141), outside the depth.
+[[schools]]
+name         = "Ferrum"
+abbreviation = "FER"
+conference   = "CC"
+mascot       = "Panthers"
+gender       = "women"
+base_url     = "https://ferrumpanthers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Ferrum College"]
+city         = "Ferrum, Va."
+city_source  = "schedule-page home venue location, https://ferrumpanthers.com/sports/womens-soccer/schedule/2026 (Ferrum, Va. on 9 home rows, read 2026-11-08); the conferencecarolinas.com member JSON prints Ferrum, VA"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Barton"
+abbreviation = "BAR"
+conference   = "CC"
+mascot       = "Bulldogs"
+gender       = "women"
+base_url     = "https://bartonbulldogs.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Barton College"]
+city         = "Wilson, N.C."
+city_source  = "schedule-page home venue location, https://bartonbulldogs.com/sports/womens-soccer/schedule/2026 (Wilson, N.C. on 13 home rows, read 2026-11-08); the conferencecarolinas.com member JSON prints Wilson, NC"
+identity_accessed = "2026-11-08"
+
+# The probe drafted "MO"; the men's stanza and four peers' scoreboards
+# carry "UMO".
+[[schools]]
+name         = "Mount Olive"
+abbreviation = "UMO"
+conference   = "CC"
+mascot       = "Trojans"
+gender       = "women"
+base_url     = "https://umotrojans.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Mount Olive", "Mt. Olive"]
+city         = "Mount Olive, N.C."
+city_source  = "schedule-page home venue location, https://umotrojans.com/sports/womens-soccer/schedule/2026 (Mount Olive, NC on 9 home rows, read 2026-11-08); the conferencecarolinas.com member JSON prints Mount Olive, NC"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Chowan"
+abbreviation = "CHO"
+conference   = "CC"
+mascot       = "Hawks"
+gender       = "women"
+base_url     = "https://gocuhawks.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Chowan University"]
+city         = "Murfreesboro, N.C."
+city_source  = "schedule-page home venue location, https://gocuhawks.com/sports/womens-soccer/schedule/2026 (Murfreesboro, N.C. on 8 home rows, read 2026-11-08); the conferencecarolinas.com member JSON prints Murfreesboro, NC"
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only; no men's soccer on any CC table).
+# The standings, the records and all eighteen peer schedule rows print "UNC
+# Pembroke", which mints unc-pembroke. UNCP is the site's own scoreboard
+# short form and Ferrum's, Francis Marion's, North Greenville's and Mount
+# Olive's (some also print "PEM"). The site titles the page "2026 Soccer
+# Schedule" (no men's team), at /sports/womens-soccer.
+[[schools]]
+name         = "UNC Pembroke"
+abbreviation = "UNCP"
+conference   = "CC"
+mascot       = "Braves"
+gender       = "women"
+base_url     = "https://uncpbraves.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of North Carolina Pembroke"]
+city         = "Pembroke, N.C."
+city_source  = "schedule-page home venue location, https://uncpbraves.com/sports/womens-soccer/schedule/2026 (Pembroke, N.C. at Lumbee River EMC Stadium on 8 home rows, read 2026-11-08); the conferencecarolinas.com member JSON prints Pembroke, NC"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Lees-McRae"
+abbreviation = "LMC"
+abbreviation_resolves = false  # "LMC" is also Le Moyne's (see the men's stanza)
+conference   = "CC"
+mascot       = "Bobcats"
+gender       = "women"
+base_url     = "https://lmcbobcats.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lees-McRae College", "Lees McRae"]
+city         = "Banner Elk, N.C."
+city_source  = "schedule-page home venue location, https://lmcbobcats.com/sports/womens-soccer/schedule/2026 (Banner Elk, N.C. on 10 home rows, read 2026-11-08); the conferencecarolinas.com member JSON prints Banner Elk, NC"
+identity_accessed = "2026-11-08"
+
+# The women's schedule page prints no town on its home rows (the probe
+# drafted no city); the footer address prints Belmont, NC 28012, as on the
+# men's side. The probe drafted "BA"; the men's stanza and eight
+# scoreboards carry "BAC".
+[[schools]]
+name         = "Belmont Abbey"
+abbreviation = "BAC"
+conference   = "CC"
+mascot       = "Crusaders"
+gender       = "women"
+base_url     = "https://abbeyathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Belmont Abbey College"]
+city         = "Belmont, N.C."
+city_source  = "the site's own footer address, https://abbeyathletics.com/sports/womens-soccer/schedule/2026 (Belmont, NC 28012, read 2026-11-08; the home rows print no town); the conferencecarolinas.com member JSON prints Belmont, NC"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Converse"
+abbreviation = "CON"
+conference   = "CC"
+mascot       = "Valkyries"
+gender       = "women"
+base_url     = "https://govalkyries.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Converse University", "Converse College"]
+city         = "Spartanburg, S.C."
+city_source  = "schedule-page home venue location, https://govalkyries.com/sports/womens-soccer/schedule/2026 (Spartanburg, S.C. on 11 home rows, read 2026-11-08); the conferencecarolinas.com member JSON prints Spartanburg, S.C."
+identity_accessed = "2026-11-08"
+
+# Northwest in 2026 (and 2025), as on the men's side. The member JSON still
+# prints the old "Crusaders"; the men's stanza carries the site's current
+# "Trailblazers". The probe drafted "NG"; the men's stanza carries "NGU".
+[[schools]]
+name         = "North Greenville"
+abbreviation = "NGU"
+conference   = "CC"
+mascot       = "Trailblazers"
+gender       = "women"
+base_url     = "https://nguathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["North Greenville University"]
+city         = "Tigerville, S.C."
+city_source  = "schedule-page home venue location, https://nguathletics.com/sports/womens-soccer/schedule/2026 (Tigerville, SC on 8 home rows, read 2026-11-08); the conferencecarolinas.com member JSON prints Tigerville, S.C."
+identity_accessed = "2026-11-08"
+
+# The probe read the site's title block as the mascot ("ATHLETICS") and an
+# alias ("THE OFFICIAL SITE OF KING UNIVERSITY TORNADO"); both dropped.
+[[schools]]
+name         = "King"
+abbreviation = "KING"
+conference   = "CC"
+mascot       = "Tornado"
+gender       = "women"
+base_url     = "https://kingtornado.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["King University", "King (Tenn.)", "King (TN)"]
+city         = "Bristol, Tenn."
+city_source  = "schedule-page home venue location, https://kingtornado.com/sports/womens-soccer/schedule/2026 (Bristol, Tenn. on 8 home rows, read 2026-11-08); the conferencecarolinas.com member JSON prints Bristol, Tenn."
+identity_accessed = "2026-11-08"
+
+# The probe drafted "SW"; the men's stanza and five scoreboards carry "SWU".
+[[schools]]
+name         = "Southern Wesleyan"
+abbreviation = "SWU"
+conference   = "CC"
+mascot       = "Warriors"
+gender       = "women"
+base_url     = "https://swuathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Southern Wesleyan University", "Southern Wesleyan University (S.C.)"]
+city         = "Central, S.C."
+city_source  = "schedule-page home venue location, https://swuathletics.com/sports/womens-soccer/schedule/2026 (Central, SC on 9 home rows, read 2026-11-08); the conferencecarolinas.com member JSON prints Central, S.C."
+identity_accessed = "2026-11-08"
+
+# The probe read "Lions" and the mascot-laden alias "Young Harris College
+# Mountain"; the site names itself the Mountain Lions.
+[[schools]]
+name         = "Young Harris"
+abbreviation = "YHC"
+conference   = "CC"
+mascot       = "Mountain Lions"
+gender       = "women"
+base_url     = "https://yhcathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Young Harris College"]
+city         = "Young Harris, Ga."
+city_source  = "schedule-page home venue location, https://yhcathletics.com/sports/womens-soccer/schedule/2026 (Young Harris, Ga. on 9 home rows, read 2026-11-08); the conferencecarolinas.com member JSON prints Young Harris, Ga."
+identity_accessed = "2026-11-08"
+
+# The probe read "Fleet" and the mascot-laden alias "Erskine College
+# Flying"; the site names itself the Flying Fleet.
+[[schools]]
+name         = "Erskine"
+abbreviation = "ERS"
+conference   = "CC"
+mascot       = "Flying Fleet"
+gender       = "women"
+base_url     = "https://erskinesports.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Erskine College"]
+city         = "Due West, S.C."
+city_source  = "schedule-page home venue location, https://erskinesports.com/sports/womens-soccer/schedule/2026 (Due West, SC on 11 home rows, read 2026-11-08); the conferencecarolinas.com member JSON prints Due West, SC"
+identity_accessed = "2026-11-08"
+
+# The probe drafted "EG" and no mascot; the men's stanza carries "EU" and
+# "Lions". Thirteen peer rows print "Emmanuel University (Ga.)", which folds
+# onto the alias "Emmanuel University".
+[[schools]]
+name         = "Emmanuel"
+abbreviation = "EU"
+conference   = "CC"
+mascot       = "Lions"
+gender       = "women"
+base_url     = "https://goeulions.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Emmanuel University", "Emmanuel College", "Emmanuel (Ga.)", "Emmanuel (GA)", "EMM"]
+city         = "Franklin Springs, Ga."
+city_source  = "schedule-page home venue location, https://goeulions.com/sports/womens-soccer/schedule/2026 (Franklin Springs, GA on 8 home rows, read 2026-11-08); the conferencecarolinas.com member JSON prints Franklin Springs, GA"
+identity_accessed = "2026-11-08"
+
+# Shorter's men's stanza sits in the GSC section (GSC men 2016-2023, CC
+# from 2024); this women's stanza shares its name and slug and carries
+# conference CC, the only conference its women's window names. "SU" is kept
+# display-only as on the men's side. Eight peer rows print "Shorter
+# University (Ga.)", which folds onto the alias "Shorter University".
+[[schools]]
+name         = "Shorter"
+abbreviation = "SU"
+abbreviation_resolves = false  # "SU" is also Salem and Shepherd's (see the men's stanza)
+conference   = "CC"
+mascot       = "Hawks"
+gender       = "women"
+base_url     = "https://goshorterhawks.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Shorter University"]
+city         = "Rome, Ga."
+city_source  = "schedule-page home venue location, https://goshorterhawks.com/sports/womens-soccer/schedule/2026 (Rome, GA on 9 home rows, read 2026-11-08); the conferencecarolinas.com member JSON prints Rome, GA"
+identity_accessed = "2026-11-08"
+
+# ============================================================
 # PBC MEN'S SOCCER - 7 programmes, backfill window 2022-2026
 # ============================================================
 # 8 windows in the depth: the eighth is Young Harris's 2022 season, a Peach
@@ -5425,6 +6042,251 @@ aliases      = ["Lander University"]
 city         = "Greenwood, S.C."
 city_source  = "schedule-page home venue location, https://landerbearcats.com/sports/mens-soccer (Greenwood, S.C., read by the probe 2026-09-04); the peachbeltconference.org member JSON prints Greenwood, S.C."
 identity_accessed = "2026-09-04"
+
+# ============================================================
+# PBC WOMEN'S SOCCER - 10 programmes, authored depth 2026 only
+# ============================================================
+# Source of truth: the Peach Belt Conference's own women's soccer pages,
+# read 2026-11-08: the live standings
+# (peachbeltconference.org/standings.aspx?path=wsoc, "2026 Women's Soccer
+# Standings", archive id 213) and the 2026 conference statistics
+# (stats.aspx?path=wsoc&year=2026&conf=true). Both list the same ten
+# programmes in one table; no division is printed, so no window carries
+# one. Depth is 2026 only (the owner's ruling, no historical seasons), so
+# every year-list is [2026].
+#
+# Not the men's set: the seven 2026 men's programmes all sponsor women's
+# soccer, and three schools sponsor women's soccer only (Columbus State,
+# Georgia College, USC Beaufort). Those three are new institutions to the
+# rib; the other seven share their name, and so their slug, with the PBC
+# men's stanzas above. Augusta is a member (member JSON on the standings
+# page) on no women's table and gets no window or stanza.
+#
+# Realignment traps, each read off a standings page: Albany St. (Ga.) is on
+# the 2024 (standings=180) and 2025 (standings=194) women's tables and
+# absent from the 2026 standings and records; asugoldenrams.com's
+# /sports/womens-soccer/schedule/2026 redirects to the 2025 schedule (no
+# 2026 season published, read 2026-11-08). It gets no window. Middle
+# Georgia State is absent from the 2024 table and first listed 2025,
+# outside the depth. Young Harris's PBC women's seasons ended before the
+# depth (it is a CC member). No renames.
+#
+# Probe (uv run probe --conference PBC --seasons 2026, 2026-11-08): all 10
+# hosts SideArm, schedule / roster / stats / matches present, 2026 served
+# on every one. Hosts from the athletics_website fields of the member JSON
+# embedded in the standings page. No collect has run, so every stanza is
+# data_status = unverified. No ordinals.
+#
+# Names: the records print "USCA", "Middle Georgia" and "GCSU"; as on the
+# men's side, "USC Aiken" and "Middle Georgia State" are the stanza names
+# and the labels are aliases. Georgia College is named as eleven peer rows
+# print it (mints georgia-college); "GCSU" (the records label, UNG's
+# schedule and six scoreboards) is its resolving abbreviation.
+#
+# Short forms: the shared schools keep their men's abbreviation; the new
+# ones carry what the school's own SideArm scoreboard JSON and its peers'
+# print (home_short_name / away_short_name): CSU, GCSU, USCB. "CSU" is both
+# Clayton State's and Columbus State's on every PBC scoreboard, so both
+# women's stanzas carry it display-only. Peer spellings are from a scan of
+# all ten 2026 women's schedule pages.
+
+# Clayton State keeps its men's "CSU", display-only here: Columbus State
+# (women only) prints "CSU" on its own and seven peers' scoreboards.
+[[schools]]
+name         = "Clayton State"
+abbreviation = "CSU"
+abbreviation_resolves = false  # "CSU" is also Columbus State's (PBC women)
+conference   = "PBC"
+mascot       = "Lakers"
+gender       = "women"
+base_url     = "https://claytonstatesports.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Clayton State University", "Clayton St."]
+city         = "Morrow, Ga."
+city_source  = "schedule-page home venue location, https://claytonstatesports.com/sports/womens-soccer/schedule/2026 (Morrow, GA on 11 home rows, read 2026-11-08); the peachbeltconference.org member JSON prints Morrow, Ga."
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only). The standings, the records and ten
+# peer rows print "Columbus State" (one "Columbus State University"), which
+# mints columbus-state. The home rows print only "Columbus" (Walden Soccer
+# Complex); USC Beaufort's schedule prints that venue as "Columbus, Georgia".
+[[schools]]
+name         = "Columbus State"
+abbreviation = "CSU"
+abbreviation_resolves = false  # "CSU" is also Clayton State's
+conference   = "PBC"
+mascot       = "Cougars"
+gender       = "women"
+base_url     = "https://csucougars.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Columbus State University"]
+city         = "Columbus, Ga."
+city_source  = "schedule-page home venue location, https://csucougars.com/sports/womens-soccer/schedule/2026 (Columbus, Walden Soccer Complex, on the home rows, read 2026-11-08); the peachbeltconference.org member JSON prints Columbus, Ga."
+identity_accessed = "2026-11-08"
+
+# The probe read "Nighthawk" (the description's truncation) and no town:
+# the women's page renders its schedule by script (no server-rendered
+# rows), and the page prints "Dahlonega, Ga." 22 times. Men's stanza:
+# Nighthawks, UNG, Dahlonega.
+[[schools]]
+name         = "North Georgia"
+abbreviation = "UNG"
+conference   = "PBC"
+mascot       = "Nighthawks"
+gender       = "women"
+base_url     = "https://ungathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of North Georgia"]
+city         = "Dahlonega, Ga."
+city_source  = "the site's own schedule page, https://ungathletics.com/sports/womens-soccer/schedule/2026 (Dahlonega, Ga., read 2026-11-08); the peachbeltconference.org member JSON prints Dahlonega, Ga."
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Flagler"
+abbreviation = "FLG"
+conference   = "PBC"
+mascot       = "Saints"
+gender       = "women"
+base_url     = "https://flaglerathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Flagler College"]
+city         = "St. Augustine, Fla."
+city_source  = "schedule-page home venue location, https://flaglerathletics.com/sports/womens-soccer/schedule/2026 (St. Augustine, Fla. on 7 home rows, read 2026-11-08); the peachbeltconference.org member JSON prints St. Augustine, Fla."
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only). Georgia College & State
+# University; peers print "Georgia College" (11 rows), "Georgia College &
+# State" (3) and "Georgia College & State University" (1), the records and
+# UNG's schedule "GCSU". Note the fold: the name's identity key is the bare
+# "georgia" once "College" drops, so a bare "Georgia" on a women's schedule
+# would resolve here; no such opponent appears on any 2026 schedule of the
+# three conferences scanned. The site's own scoreboard prints "GCB" and
+# "GaCol"; six peers' print "GCSU", the conference's team key.
+[[schools]]
+name         = "Georgia College"
+abbreviation = "GCSU"
+conference   = "PBC"
+mascot       = "Bobcats"
+gender       = "women"
+base_url     = "https://gcsubobcats.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Georgia College & State University"]
+city         = "Milledgeville, Ga."
+city_source  = "schedule-page home venue location, https://gcsubobcats.com/sports/womens-soccer/schedule/2026 (Milledgeville, Ga. at Bobcat Soccer Field on 10 home rows, read 2026-11-08); the peachbeltconference.org member JSON prints Milledgeville, Ga."
+identity_accessed = "2026-11-08"
+
+# University of South Carolina Aiken; the records print "USCA". The
+# schedule page prints the town in capitals ("AIKEN, SC").
+[[schools]]
+name         = "USC Aiken"
+abbreviation = "USCA"
+conference   = "PBC"
+mascot       = "Pacers"
+gender       = "women"
+base_url     = "https://pacersports.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of South Carolina Aiken", "South Carolina Aiken", "USC-Aiken"]
+city         = "Aiken, S.C."
+city_source  = "schedule-page home venue location, https://pacersports.com/sports/womens-soccer/schedule/2026 (AIKEN, SC on 7 home rows, read 2026-11-08, case normalised); the peachbeltconference.org member JSON prints Aiken, S.C."
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only). The standings, the records and
+# seven peer rows print "USC Beaufort" (mints usc-beaufort), five print
+# "University of South Carolina Beaufort". The probe read "Sharks" and the
+# alias "USC Beaufort Sand"; the site names itself the Sand Sharks. Home
+# matches are at Finland Field in Bluffton (the Hilton Head Gateway
+# campus), which is where the schedule page places every home row and the
+# Gazetteer's Bluffton town, S.C.; the member JSON prints the university's
+# historic seat, Beaufort, S.C.
+[[schools]]
+name         = "USC Beaufort"
+abbreviation = "USCB"
+conference   = "PBC"
+mascot       = "Sand Sharks"
+gender       = "women"
+base_url     = "https://uscbathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of South Carolina Beaufort"]
+city         = "Bluffton, S.C."
+city_source  = "schedule-page home venue location, https://uscbathletics.com/sports/womens-soccer/schedule/2026 (Bluffton, South Carolina at Finland Field on 11 home rows, read 2026-11-08); Georgia College's schedule prints the venue as Bluffton, S.C.; the peachbeltconference.org member JSON prints Beaufort, S.C."
+identity_accessed = "2026-11-08"
+
+# The probe drafted "GSSU" and no mascot; the men's stanza carries GSW (the
+# conference's team key) and "Hurricanes". Six scoreboards print the box
+# vocabulary "Ga. Southwestern", added as an alias.
+[[schools]]
+name         = "Georgia Southwestern"
+abbreviation = "GSW"
+conference   = "PBC"
+mascot       = "Hurricanes"
+gender       = "women"
+base_url     = "https://gswcanes.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Georgia Southwestern State University", "Georgia Southwestern State", "Ga. Southwestern"]
+city         = "Americus, Ga."
+city_source  = "schedule-page home venue location, https://gswcanes.com/sports/womens-soccer/schedule/2026 (Americus, Ga. on 6 home rows, read 2026-11-08); the peachbeltconference.org member JSON prints Americus, Ga."
+identity_accessed = "2026-11-08"
+
+# First Peach Belt women's season 2025 (absent from standings=180), outside
+# the depth. The records print "Middle Georgia", an alias. The probe drafted
+# "MGS" and no mascot; the men's stanza carries "MGA" and "Knights".
+[[schools]]
+name         = "Middle Georgia State"
+abbreviation = "MGA"
+conference   = "PBC"
+mascot       = "Knights"
+gender       = "women"
+base_url     = "https://mgaknights.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Middle Georgia State University", "Middle Georgia"]
+city         = "Cochran, Ga."
+city_source  = "schedule-page home venue location, https://mgaknights.com/sports/womens-soccer/schedule/2026 (Cochran, Ga. on 9 home rows, read 2026-11-08); the peachbeltconference.org member JSON prints Cochran, Ga."
+identity_accessed = "2026-11-08"
+
+# The probe drafted "LAND"; the men's stanza carries "LAN" (LU is
+# Lincoln's, GLVC women included).
+[[schools]]
+name         = "Lander"
+abbreviation = "LAN"
+conference   = "PBC"
+mascot       = "Bearcats"
+gender       = "women"
+base_url     = "https://landerbearcats.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lander University"]
+city         = "Greenwood, S.C."
+city_source  = "schedule-page home venue location, https://landerbearcats.com/sports/womens-soccer/schedule/2026 (Greenwood, S.C. on 8 home rows, read 2026-11-08); the peachbeltconference.org member JSON prints Greenwood, S.C."
+identity_accessed = "2026-11-08"
 
 # ============================================================
 # CCAA MEN'S SOCCER - 15 programmes, backfill window 2022-2026
