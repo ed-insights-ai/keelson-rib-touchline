@@ -6541,6 +6541,9 @@ mascot       = "Warriors"
 gender       = "women"
 base_url     = "https://wsuathletics.com/sports/womens-soccer"
 years        = [2026]
+# Women's soccer began here in 2026, so a 2022-2025 page's "Wayne State
+# College" is never this programme (resolution_scope's tiebreak).
+first_season = 2026
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true

@@ -692,16 +692,18 @@ def verify_standings(
 ) -> StandingsVerdict:
     """Compare a standings page's team names with the resolved members.
 
-    Names are minted the way opponent text is at collect time: through the
-    gender's identity map (every spelling a stanza claims), falling back to
-    ``programme_slug`` for a school no stanza knows yet, so the verdict for a
-    conference not yet in schools.toml still reads as the slugs its stanzas
-    will mint.
+    Names are minted the way opponent text is at collect time: inside the
+    conference-season's resolution scope (so a member's ``member_aliases``
+    claim its own spelling, "Lincoln University (Pa.)" on a CACC table or
+    "Wayne State College" on an NSIC one), then through the gender's identity
+    map (every spelling a stanza claims), falling back to ``programme_slug``
+    for a school no stanza knows yet, so the verdict for a conference not yet
+    in schools.toml still reads as the slugs its stanzas will mint.
 
     Raises ``ValueError`` when the page names another season or gender than
     the one asked about, so a wrong archive id cannot pass as agreement.
     """
-    from src.sidearm_live import identity_aliases, opponent_slug
+    from src.sidearm_live import identity_aliases, opponent_slug, resolution_scope
 
     membership_document = document if document is not None else load_membership()
     page = parse_standings_page(html)
@@ -714,11 +716,13 @@ def verify_standings(
     if not page.names:
         raise ValueError("standings page carries no team rows")
 
-    aliases = identity_aliases(
-        schools if schools is not None else load_schools(), gender
-    )
-    slugs = {name: opponent_slug(name, aliases) for name in page.names}
+    stanzas = schools if schools is not None else load_schools()
+    aliases = identity_aliases(stanzas, gender)
     expected = members_of(conference, gender, season_year, document=membership_document)
+    scope = resolution_scope(
+        stanzas, gender, set(expected), conference=conference, season=season_year
+    )
+    slugs = {name: opponent_slug(name, aliases, scope=scope) for name in page.names}
     return StandingsVerdict(
         url=standings_archive_url(
             conference, season_year, document=membership_document
