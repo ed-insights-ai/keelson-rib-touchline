@@ -110,11 +110,32 @@ export async function ensureActivationConfig(
         ? { dataDir: existing.value.dataDir }
         : {}),
   };
+  // Activation owns packageDir and dataDir and nothing else. The file also
+  // carries settings other readers own — the daily cadence's "genders" and
+  // "conferences" (bin/touchline-collect-cadence.sh) — and rewriting it with
+  // only the two keys this function sets silently erased them on every server
+  // start. Every other key the file holds is kept as it was.
+  const kept = await readOtherKeys(path);
   await mkdir(dirname(path), { recursive: true });
   const temp = `${path}.${process.pid}.${randomUUID()}.tmp`;
-  await writeFile(temp, `${JSON.stringify(value, null, 2)}\n`, "utf8");
+  await writeFile(temp, `${JSON.stringify({ ...kept, ...value }, null, 2)}\n`, "utf8");
   await rename(temp, path);
   return value;
+}
+
+/** The keys of the config file activation does not own, as written. The file
+ *  was already validated by readActivationConfig, so a missing file is the
+ *  only case left to tolerate. */
+async function readOtherKeys(path: string): Promise<Record<string, unknown>> {
+  let raw: unknown;
+  try {
+    raw = JSON.parse(await readFile(path, "utf8"));
+  } catch {
+    return {};
+  }
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return {};
+  const { packageDir: _p, dataDir: _d, ...rest } = raw as Record<string, unknown>;
+  return rest;
 }
 
 export async function resolveActivationDataDir(

@@ -118,6 +118,35 @@ describe("activation config", () => {
     );
   });
 
+  test("activation keeps the config keys it does not own (the cadence's divisions)", async () => {
+    const root = await tempRoot("activation-keep");
+    const configPath = join(root, "config.json");
+    await writeFile(
+      configPath,
+      JSON.stringify({
+        packageDir: "/stale/package",
+        dataDir: "/data/home",
+        genders: ["men", "women"],
+        conferences: { women: ["GAC"] },
+      }),
+      "utf8",
+    );
+
+    // a server start re-activates with no dataDir: the remembered one stands
+    await ensureActivationConfig(undefined, { configPath });
+    let written = JSON.parse(await readFile(configPath, "utf8"));
+    expect(written.dataDir).toBe("/data/home");
+    expect(written.packageDir).not.toBe("/stale/package");
+    expect(written.genders).toEqual(["men", "women"]);
+    expect(written.conferences).toEqual({ women: ["GAC"] });
+
+    // a new dataDir replaces the old one and still keeps the rest
+    await ensureActivationConfig("/data/other", { configPath });
+    written = JSON.parse(await readFile(configPath, "utf8"));
+    expect(written.dataDir).toBe("/data/other");
+    expect(written.genders).toEqual(["men", "women"]);
+  });
+
   test("auth status distinguishes an unmarked folder from an invalid config", async () => {
     const root = await tempRoot("activation-status");
     const emptyHome = join(root, "empty-home");
