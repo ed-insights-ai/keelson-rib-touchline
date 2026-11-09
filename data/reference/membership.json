@@ -43,6 +43,14 @@
           "to_season": 2026,
           "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "RMAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2026 Women's Soccer standings and records, https://rmacsports.org/standings.aspx?path=wsoc (archive id 212, https://rmacsports.org/standings.aspx?standings=212) and https://rmacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Adams State (one table, no divisions, thirteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://rmacsports.org/standings.aspx?standings=201 and standings=187) list the same thirteen programmes."
+        }
       ]
     },
     "adelphi": {
@@ -157,6 +165,16 @@
         }
       ]
     },
+    "augustana": {
+      "women": [
+        {
+          "conference": "NSIC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northern Sun Intercollegiate Conference, 2026 Women's Soccer standings and records, https://northernsun.org/standings.aspx?path=wsoc (archive id 164, https://northernsun.org/standings.aspx?standings=164) and https://northernsun.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Augustana (one table, no divisions, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://northernsun.org/standings.aspx?standings=155) list the same sixteen programmes."
+        }
+      ]
+    },
     "aum": {
       "men": [
         {
@@ -255,6 +273,16 @@
         }
       ]
     },
+    "bemidji-state": {
+      "women": [
+        {
+          "conference": "NSIC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northern Sun Intercollegiate Conference, 2026 Women's Soccer standings and records, https://northernsun.org/standings.aspx?path=wsoc (archive id 164, https://northernsun.org/standings.aspx?standings=164) and https://northernsun.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Bemidji State (one table, no divisions, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://northernsun.org/standings.aspx?standings=155) list the same sixteen programmes."
+        }
+      ]
+    },
     "bentley": {
       "men": [
         {
@@ -288,6 +316,16 @@
           "from_season": 2026,
           "to_season": 2026,
           "source": "Pacific West Conference, 2026 Women's Soccer standings and records, https://thepacwest.com/standings.aspx?path=wsoc (archive id 214, https://thepacwest.com/standings.aspx?standings=214) and https://thepacwest.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Biola (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thepacwest.com/standings.aspx?standings=201) list it too."
+        }
+      ]
+    },
+    "black-hills-state": {
+      "women": [
+        {
+          "conference": "RMAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2026 Women's Soccer standings and records, https://rmacsports.org/standings.aspx?path=wsoc (archive id 212, https://rmacsports.org/standings.aspx?standings=212) and https://rmacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Black Hills State (one table, no divisions, thirteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://rmacsports.org/standings.aspx?standings=201 and standings=187) list the same thirteen programmes."
         }
       ]
     },
@@ -758,6 +796,14 @@
           "to_season": 2026,
           "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "RMAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2026 Women's Soccer standings and records, https://rmacsports.org/standings.aspx?path=wsoc (archive id 212, https://rmacsports.org/standings.aspx?standings=212) and https://rmacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Colorado Christian (one table, no divisions, thirteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://rmacsports.org/standings.aspx?standings=201 and standings=187) list the same thirteen programmes."
+        }
       ]
     },
     "colorado-mesa": {
@@ -768,6 +814,14 @@
           "to_season": 2026,
           "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "RMAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2026 Women's Soccer standings and records, https://rmacsports.org/standings.aspx?path=wsoc (archive id 212, https://rmacsports.org/standings.aspx?standings=212) and https://rmacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Colorado Mesa (one table, no divisions, thirteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://rmacsports.org/standings.aspx?standings=201 and standings=187) list the same thirteen programmes."
+        }
       ]
     },
     "colorado-school-of-mines": {
@@ -777,6 +831,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "RMAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2026 Women's Soccer standings and records, https://rmacsports.org/standings.aspx?path=wsoc (archive id 212, https://rmacsports.org/standings.aspx?standings=212) and https://rmacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Colorado School of Mines (one table, no divisions, thirteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://rmacsports.org/standings.aspx?standings=201 and standings=187) list the same thirteen programmes."
         }
       ]
     },
@@ -818,6 +880,16 @@
         }
       ]
     },
+    "concordia-saint-paul": {
+      "women": [
+        {
+          "conference": "NSIC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northern Sun Intercollegiate Conference, 2026 Women's Soccer standings and records, https://northernsun.org/standings.aspx?path=wsoc (archive id 164, https://northernsun.org/standings.aspx?standings=164) and https://northernsun.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Concordia-St. Paul (one table, no divisions, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://northernsun.org/standings.aspx?standings=155) list the same sixteen programmes."
+        }
+      ]
+    },
     "converse": {
       "men": [
         {
@@ -851,6 +923,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "RMAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2026 Women's Soccer standings and records, https://rmacsports.org/standings.aspx?path=wsoc (archive id 212, https://rmacsports.org/standings.aspx?standings=212) and https://rmacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label CSU Pueblo (one table, no divisions, thirteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://rmacsports.org/standings.aspx?standings=201 and standings=187) list the same thirteen programmes."
         }
       ]
     },
@@ -1318,6 +1398,14 @@
           "to_season": 2026,
           "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "RMAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2026 Women's Soccer standings and records, https://rmacsports.org/standings.aspx?path=wsoc (archive id 212, https://rmacsports.org/standings.aspx?standings=212) and https://rmacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Fort Lewis (one table, no divisions, thirteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://rmacsports.org/standings.aspx?standings=201 and standings=187) list the same thirteen programmes."
+        }
       ]
     },
     "francis-marion": {
@@ -1607,6 +1695,16 @@
           "from_season": 2026,
           "to_season": 2026,
           "source": "Pennsylvania State Athletic Conference, 2026 Women's Soccer standings and records, https://psacsports.org/standings.aspx?path=wsoc and https://psacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label IUP, in the West division as the 2026 standings print it (two divisions, East and West, seventeen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://psacsports.org/standings.aspx?standings=265 and standings=252) list the same seventeen programmes."
+        }
+      ]
+    },
+    "jamestown": {
+      "women": [
+        {
+          "conference": "NSIC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northern Sun Intercollegiate Conference, 2026 Women's Soccer standings and records, https://northernsun.org/standings.aspx?path=wsoc (archive id 164, https://northernsun.org/standings.aspx?standings=164) and https://northernsun.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Jamestown (one table, no divisions, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://northernsun.org/standings.aspx?standings=155) list the same sixteen programmes. Jamestown is absent from the 2024 standings (standings=146), so it arrived in 2025; that move falls outside the depth."
         }
       ]
     },
@@ -2104,6 +2202,46 @@
         }
       ]
     },
+    "minnesota-crookston": {
+      "women": [
+        {
+          "conference": "NSIC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northern Sun Intercollegiate Conference, 2026 Women's Soccer standings and records, https://northernsun.org/standings.aspx?path=wsoc (archive id 164, https://northernsun.org/standings.aspx?standings=164) and https://northernsun.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Minnesota Crookston (one table, no divisions, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://northernsun.org/standings.aspx?standings=155) list the same sixteen programmes."
+        }
+      ]
+    },
+    "minnesota-duluth": {
+      "women": [
+        {
+          "conference": "NSIC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northern Sun Intercollegiate Conference, 2026 Women's Soccer standings and records, https://northernsun.org/standings.aspx?path=wsoc (archive id 164, https://northernsun.org/standings.aspx?standings=164) and https://northernsun.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Minnesota Duluth (one table, no divisions, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://northernsun.org/standings.aspx?standings=155) list the same sixteen programmes."
+        }
+      ]
+    },
+    "minnesota-state": {
+      "women": [
+        {
+          "conference": "NSIC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northern Sun Intercollegiate Conference, 2026 Women's Soccer standings and records, https://northernsun.org/standings.aspx?path=wsoc (archive id 164, https://northernsun.org/standings.aspx?standings=164) and https://northernsun.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Minnesota State (one table, no divisions, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://northernsun.org/standings.aspx?standings=155) list the same sixteen programmes."
+        }
+      ]
+    },
+    "minot-state": {
+      "women": [
+        {
+          "conference": "NSIC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northern Sun Intercollegiate Conference, 2026 Women's Soccer standings and records, https://northernsun.org/standings.aspx?path=wsoc (archive id 164, https://northernsun.org/standings.aspx?standings=164) and https://northernsun.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Minot State (one table, no divisions, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://northernsun.org/standings.aspx?standings=155) list the same sixteen programmes."
+        }
+      ]
+    },
     "mississippi-college": {
       "men": [
         {
@@ -2266,6 +2404,24 @@
           "to_season": 2026,
           "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "RMAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2026 Women's Soccer standings and records, https://rmacsports.org/standings.aspx?path=wsoc (archive id 212, https://rmacsports.org/standings.aspx?standings=212) and https://rmacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label MSU Denver (one table, no divisions, thirteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://rmacsports.org/standings.aspx?standings=201 and standings=187) list the same thirteen programmes."
+        }
+      ]
+    },
+    "msu-moorhead": {
+      "women": [
+        {
+          "conference": "NSIC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northern Sun Intercollegiate Conference, 2026 Women's Soccer standings and records, https://northernsun.org/standings.aspx?path=wsoc (archive id 164, https://northernsun.org/standings.aspx?standings=164) and https://northernsun.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label MSU Moorhead (one table, no divisions, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://northernsun.org/standings.aspx?standings=155) list the same sixteen programmes."
+        }
       ]
     },
     "nebraska-kearney": {
@@ -2285,6 +2441,16 @@
           "from_season": 2022,
           "to_season": 2024,
           "source": "Northeast-10 Conference, 2022 and 2024 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/stats.aspx?path=msoc&year=2024&conf=true (accessed 2026-09-02); listed in both and in 2023. Absent from the 2025 records (https://northeast10.org/stats.aspx?path=msoc&year=2025&conf=true); left NE10 men's soccer after 2024 for the Northeast Conference (Division I) (https://newhavenchargers.com/news/2025/5/6/general-charging-ahead-university-of-new-haven-accepts-northeast-conference-membership-invite.aspx). The 2021 records (year=2021) list it too."
+        }
+      ]
+    },
+    "new-mexico-highlands": {
+      "women": [
+        {
+          "conference": "RMAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2026 Women's Soccer standings and records, https://rmacsports.org/standings.aspx?path=wsoc (archive id 212, https://rmacsports.org/standings.aspx?standings=212) and https://rmacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label New Mexico Highlands (one table, no divisions, thirteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://rmacsports.org/standings.aspx?standings=201 and standings=187) list the same thirteen programmes."
         }
       ]
     },
@@ -2418,6 +2584,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Great Lakes Intercollegiate Athletic Conference, 2022 and 2026 Men's Soccer records, https://gliac.org/stats.aspx?path=msoc&year=2022&conf=true and https://gliac.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
+    "northern-state": {
+      "women": [
+        {
+          "conference": "NSIC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northern Sun Intercollegiate Conference, 2026 Women's Soccer standings and records, https://northernsun.org/standings.aspx?path=wsoc (archive id 164, https://northernsun.org/standings.aspx?standings=164) and https://northernsun.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Northern State (one table, no divisions, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://northernsun.org/standings.aspx?standings=155) list the same sixteen programmes."
         }
       ]
     },
@@ -2731,6 +2907,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "RMAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2026 Women's Soccer standings and records, https://rmacsports.org/standings.aspx?path=wsoc (archive id 212, https://rmacsports.org/standings.aspx?standings=212) and https://rmacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Regis (one table, no divisions, thirteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://rmacsports.org/standings.aspx?standings=201 and standings=187) list the same thirteen programmes."
         }
       ]
     },
@@ -3113,6 +3297,16 @@
         }
       ]
     },
+    "sioux-falls": {
+      "women": [
+        {
+          "conference": "NSIC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northern Sun Intercollegiate Conference, 2026 Women's Soccer standings and records, https://northernsun.org/standings.aspx?path=wsoc (archive id 164, https://northernsun.org/standings.aspx?standings=164) and https://northernsun.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Sioux Falls (one table, no divisions, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://northernsun.org/standings.aspx?standings=155) list the same sixteen programmes."
+        }
+      ]
+    },
     "slippery-rock": {
       "men": [
         {
@@ -3250,6 +3444,16 @@
         }
       ]
     },
+    "southwest-minnesota-state": {
+      "women": [
+        {
+          "conference": "NSIC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northern Sun Intercollegiate Conference, 2026 Women's Soccer standings and records, https://northernsun.org/standings.aspx?path=wsoc (archive id 164, https://northernsun.org/standings.aspx?standings=164) and https://northernsun.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Southwest Minnesota State (one table, no divisions, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://northernsun.org/standings.aspx?standings=155) list the same sixteen programmes."
+        }
+      ]
+    },
     "southwestern-oklahoma-state": {
       "women": [
         {
@@ -3285,6 +3489,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Great Lakes Intercollegiate Athletic Conference, 2022 and 2026 Men's Soccer records, https://gliac.org/stats.aspx?path=msoc&year=2022&conf=true and https://gliac.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too: St. Cloud State men's soccer joined the GLIAC as an affiliate member for 2021-22, its first Division II season (https://scsuhuskies.com/news/2021/4/27/mens-soccer-mens-soccer-accepted-into-gliac), so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "NSIC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northern Sun Intercollegiate Conference, 2026 Women's Soccer standings and records, https://northernsun.org/standings.aspx?path=wsoc (archive id 164, https://northernsun.org/standings.aspx?standings=164) and https://northernsun.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label St. Cloud State (one table, no divisions, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://northernsun.org/standings.aspx?standings=155) list the same sixteen programmes."
         }
       ]
     },
@@ -3530,6 +3742,24 @@
           "to_season": 2026,
           "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "RMAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2026 Women's Soccer standings and records, https://rmacsports.org/standings.aspx?path=wsoc (archive id 212, https://rmacsports.org/standings.aspx?standings=212) and https://rmacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label UCCS (one table, no divisions, thirteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://rmacsports.org/standings.aspx?standings=201 and standings=187) list the same thirteen programmes."
+        }
+      ]
+    },
+    "umary": {
+      "women": [
+        {
+          "conference": "NSIC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northern Sun Intercollegiate Conference, 2026 Women's Soccer standings and records, https://northernsun.org/standings.aspx?path=wsoc (archive id 164, https://northernsun.org/standings.aspx?standings=164) and https://northernsun.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label UMary (one table, no divisions, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://northernsun.org/standings.aspx?standings=155) list the same sixteen programmes."
+        }
       ]
     },
     "unc-pembroke": {
@@ -3715,6 +3945,16 @@
         }
       ]
     },
+    "wayne-state-nebraska": {
+      "women": [
+        {
+          "conference": "NSIC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northern Sun Intercollegiate Conference, 2026 Women's Soccer standings and records, https://northernsun.org/standings.aspx?path=wsoc (archive id 164, https://northernsun.org/standings.aspx?standings=164) and https://northernsun.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Wayne State College (one table, no divisions, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://northernsun.org/standings.aspx?standings=155) list the same sixteen programmes."
+        }
+      ]
+    },
     "west-alabama": {
       "men": [
         {
@@ -3800,6 +4040,16 @@
         }
       ]
     },
+    "western-colorado": {
+      "women": [
+        {
+          "conference": "RMAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2026 Women's Soccer standings and records, https://rmacsports.org/standings.aspx?path=wsoc (archive id 212, https://rmacsports.org/standings.aspx?standings=212) and https://rmacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Western Colorado (one table, no divisions, thirteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://rmacsports.org/standings.aspx?standings=201 and standings=187) list the same thirteen programmes."
+        }
+      ]
+    },
     "western-oregon": {
       "men": [
         {
@@ -3843,6 +4093,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Men's Soccer records, https://rmacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://rmacsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "RMAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Rocky Mountain Athletic Conference, 2026 Women's Soccer standings and records, https://rmacsports.org/standings.aspx?path=wsoc (archive id 212, https://rmacsports.org/standings.aspx?standings=212) and https://rmacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Westminster (one table, no divisions, thirteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://rmacsports.org/standings.aspx?standings=201 and standings=187) list the same thirteen programmes."
         }
       ]
     },
@@ -3925,6 +4183,16 @@
           "from_season": 2026,
           "to_season": 2026,
           "source": "South Atlantic Conference, 2026 Women's Soccer standings and records, https://thesac.com/standings.aspx?path=wsoc (the live 2026 table, archive id 192: https://thesac.com/standings.aspx?standings=192) and https://thesac.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Wingate (one table, no divisions, eleven programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thesac.com/standings.aspx?standings=183) list the same eleven programmes, and the 2024 standings (https://thesac.com/standings.aspx?standings=144) list them with Limestone, which closed after 2024-25 and has no women's window."
+        }
+      ]
+    },
+    "winona-state": {
+      "women": [
+        {
+          "conference": "NSIC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northern Sun Intercollegiate Conference, 2026 Women's Soccer standings and records, https://northernsun.org/standings.aspx?path=wsoc (archive id 164, https://northernsun.org/standings.aspx?standings=164) and https://northernsun.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Winona State (one table, no divisions, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://northernsun.org/standings.aspx?standings=155) list the same sixteen programmes."
         }
       ]
     },

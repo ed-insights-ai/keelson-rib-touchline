@@ -2187,6 +2187,298 @@ city         = "Salt Lake City, Utah"
 city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
 identity_accessed = "2026-09-02"
 
+
+# ============================================================
+# RMAC WOMEN'S SOCCER - 13 programmes, authored depth 2026 only
+# ============================================================
+# Source of truth: the Rocky Mountain Athletic Conference's own women's
+# soccer pages, read 2026-11-08: the live standings
+# (rmacsports.org/standings.aspx?path=wsoc, "2026 Women's Soccer Standings",
+# archive id 212) and the 2026 conference statistics
+# (stats.aspx?path=wsoc&year=2026&conf=true). Both list the same thirteen
+# programmes in one table, no divisions. The NCAA's 2026 Division II
+# Women's Soccer Pre-Championship Manual (Appendix A) lists the same
+# thirteen under the RMAC. Depth is 2026 only (the owner's ruling, no
+# historical seasons), so every year-list is [2026].
+#
+# Not the men's set: ten of the eleven RMAC men's programmes also sponsor
+# women's soccer and share their name, and so their slug, with the men's
+# stanza above. South Dakota Mines fields men's soccer only (its site
+# serves no women's soccer sport and the standings never list it). Three
+# schools sponsor women's soccer only and are new institutions to the rib:
+# Black Hills State, New Mexico Highlands and Western Colorado. Chadron
+# State is a full RMAC member (member JSON on the standings page) with no
+# women's soccer, so it has no window and no stanza. The 2025 and 2024
+# standings (standings=201 and standings=187) list the same thirteen, so
+# nothing moves at the edge of the depth.
+#
+# Probe (uv run probe --conference RMAC --seasons 2026 --name ..., 2026-11-08):
+# all 13 hosts SideArm; schedule / roster / stats / matches present and
+# 2026 served on every one. New Mexico Highlands was fingerprinted from
+# asset evidence only (a different theme), as Millersville was for the
+# PSAC; every layer still read. No PrestoSports host, no dead host, no 403.
+# Hosts are the men's stanzas' for the ten shared schools and the member
+# JSON's athletics_website for the three new ones. No collect has run, so
+# every stanza is data_status = unverified. No ordinals.
+#
+# Short forms: the ten shared schools keep their men's abbreviation;
+# Adams State's "ASU" is display-only here because Angelo State (LSC
+# women, onboarding in parallel) carries the same initialism in the
+# women's identity table. The new schools carry the conference's own team
+# code, which their own boxes print too (BHSU, NMHU, WCU). Aliases add the
+# published long names and the vocabulary peers print on their 2026
+# schedules and in their scoreboard JSON that the fold does not reach
+# ("N.M. Highlands", "Western Colo.", "Metropolitan State University
+# Denver", "Colo. Christian", "Colo. Sch. of Mines"). Towns are the probe's
+# schedule-page reading, second-sourced to the rmacsports.org member JSON
+# `location`.
+
+[[schools]]
+name         = "Adams State"
+abbreviation = "ASU"
+abbreviation_resolves = false  # "ASU" is also Angelo State's (LSC women)
+conference   = "RMAC"
+mascot       = "Grizzlies"
+gender       = "women"
+base_url     = "https://asugrizzlies.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Adams State University"]
+city         = "Alamosa, Colo."
+city_source  = "schedule-page home venue location, https://asugrizzlies.com/sports/womens-soccer (Alamosa, Colo., read by the probe 2026-11-08); the rmacsports.org member JSON prints Alamosa, Colo."
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only). The site prints "Black Hills
+# State University Yellow Jackets"; the probe read the mascot as "Jackets"
+# and drafted the title (mascot half included) as an alias.
+[[schools]]
+name         = "Black Hills State"
+abbreviation = "BHSU"
+conference   = "RMAC"
+mascot       = "Yellow Jackets"
+gender       = "women"
+base_url     = "https://www.bhsuathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Black Hills State University"]
+city         = "Spearfish, S.D."
+city_source  = "schedule-page home venue location, https://www.bhsuathletics.com/sports/womens-soccer (Spearfish, S.D., read by the probe 2026-11-08); the rmacsports.org member JSON prints Spearfish, S.D."
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Colorado Christian"
+abbreviation = "CCU"
+conference   = "RMAC"
+mascot       = "Cougars"
+gender       = "women"
+base_url     = "https://ccucougars.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Adams State's and Colorado Christian's own scoreboards print "Colo. Christian".
+aliases      = ["Colorado Christian University", "Colo. Christian"]
+city         = "Lakewood, Colo."
+city_source  = "schedule-page home venue location, https://ccucougars.com/sports/womens-soccer (Lakewood, Colo., read by the probe 2026-11-08); the rmacsports.org member JSON prints Lakewood, Colo."
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Colorado Mesa"
+abbreviation = "CMU"
+conference   = "RMAC"
+mascot       = "Mavericks"
+gender       = "women"
+base_url     = "https://cmumavericks.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Colorado Mesa University"]
+city         = "Grand Junction, Colo."
+city_source  = "schedule-page home venue location, https://cmumavericks.com/sports/womens-soccer (Grand Junction, Colo., read by the probe 2026-11-08); the rmacsports.org member JSON prints Grand Junction, Colo."
+identity_accessed = "2026-11-08"
+
+# The records and ten peers print "Colorado School of Mines"; CSU Pueblo and
+# Fort Lewis print "Mines"; five members' scoreboards print "Colo. Sch. of Mines".
+[[schools]]
+name         = "Colorado School of Mines"
+abbreviation = "MINES"
+conference   = "RMAC"
+mascot       = "Orediggers"
+gender       = "women"
+base_url     = "https://minesathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Colorado Mines", "Mines", "Colo. Sch. of Mines"]
+city         = "Golden, Colo."
+city_source  = "schedule-page home venue location, https://minesathletics.com/sports/womens-soccer (Golden, Colo., read by the probe 2026-11-08); the rmacsports.org member JSON prints Golden, Colo."
+identity_accessed = "2026-11-08"
+
+# The site's description meta prints no school name or mascot ("schedule
+# for the  "); "ThunderWolves" is the member JSON's mascot and the site's
+# own. The probe drafted "CSP", which is Concordia-St. Paul's (NSIC women).
+[[schools]]
+name         = "CSU Pueblo"
+abbreviation = "CSUP"
+conference   = "RMAC"
+mascot       = "ThunderWolves"
+gender       = "women"
+base_url     = "https://gothunderwolves.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Six peers print "Colorado State University Pueblo".
+aliases      = ["Colorado State University Pueblo", "CSU-Pueblo", "Colorado State-Pueblo", "Colorado St.-Pueblo"]
+city         = "Pueblo, Colo."
+city_source  = "schedule-page home venue location, https://gothunderwolves.com/sports/womens-soccer (Pueblo, Colo., read by the probe 2026-11-08); the rmacsports.org member JSON prints Pueblo, Colo."
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Fort Lewis"
+abbreviation = "FLC"
+conference   = "RMAC"
+mascot       = "Skyhawks"
+gender       = "women"
+base_url     = "https://goskyhawks.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Fort Lewis College"]
+city         = "Durango, Colo."
+city_source  = "schedule-page home venue location, https://goskyhawks.com/sports/womens-soccer (Durango, Colo., read by the probe 2026-11-08); the rmacsports.org member JSON prints Durango, Colo."
+identity_accessed = "2026-11-08"
+
+# The probe found no mascot and drafted "Metropolitan State University
+# Roadrunners" (the site's title, mascot included) as an alias; the
+# aliases here are the spellings peers publish. Western Colorado prints
+# "Metropolitan State University Denver" (no "of"), which keys apart from
+# the long name. The probe read no home town; the schedule page's home
+# rows print "Denver".
+[[schools]]
+name         = "MSU Denver"
+abbreviation = "MSUD"
+conference   = "RMAC"
+mascot       = "Roadrunners"
+gender       = "women"
+base_url     = "https://roadrunnersathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Metropolitan State University of Denver", "Metropolitan State University Denver", "Metro State", "Metropolitan State"]
+city         = "Denver, Colo."
+city_source  = "schedule-page home rows print Denver, https://roadrunnersathletics.com/sports/womens-soccer/schedule/2026; the rmacsports.org member JSON prints Denver, Colo."
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only). The site names its teams the
+# "Cowboys & Cowgirls" (site header) and the description meta prints
+# "Cowboys" for every sport; the women's teams are the Cowgirls (the
+# Central Missouri "Jennies" precedent). Fingerprinted from asset evidence
+# only; every layer read. Peers print "N.M. Highlands" in their boxes
+# (five members' scoreboards).
+[[schools]]
+name         = "New Mexico Highlands"
+abbreviation = "NMHU"
+conference   = "RMAC"
+mascot       = "Cowgirls"
+gender       = "women"
+base_url     = "https://nmhuathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["New Mexico Highlands University", "N.M. Highlands"]
+city         = "Las Vegas, N.M."
+city_source  = "schedule-page home venue location, https://nmhuathletics.com/sports/womens-soccer (Las Vegas, N.M., read by the probe 2026-11-08); the rmacsports.org member JSON prints Las Vegas, N.M."
+identity_accessed = "2026-11-08"
+
+# The site prints no short form the probe could read; REG is the men's
+# stanza's, and Regis's own and two peers' scoreboards print it.
+[[schools]]
+name         = "Regis"
+abbreviation = "REG"
+conference   = "RMAC"
+mascot       = "Rangers"
+gender       = "women"
+base_url     = "https://regisrangers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Regis University"]
+city         = "Denver, Colo."
+city_source  = "schedule-page home venue location, https://regisrangers.com/sports/womens-soccer (Denver, Colo., read by the probe 2026-11-08); the rmacsports.org member JSON prints Denver, Colo."
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "UCCS"
+abbreviation = "UCCS"
+conference   = "RMAC"
+mascot       = "Mountain Lions"
+gender       = "women"
+base_url     = "https://gomountainlions.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Peers print both long forms (Regis and Western Colorado without "at",
+# four others with it); "UC-Colo. Springs" is the West's box form (men's stanza).
+aliases      = ["University of Colorado Colorado Springs", "University of Colorado at Colorado Springs", "Colorado-Colorado Springs", "UC-Colo. Springs"]
+city         = "Colorado Springs, Colo."
+city_source  = "schedule-page home venue location, https://gomountainlions.com/sports/womens-soccer (Colorado Springs, Colo., read by the probe 2026-11-08); the rmacsports.org member JSON prints Colorado Springs, Colo."
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only). Western State Colorado University
+# until 2018 (the member JSON's shortname is still "western_state"). The
+# description meta prints "Mountaineer"; the site's logo alt text and the
+# member JSON print "Mountaineers". Three peers' scoreboards print
+# "Western Colo." The probe drafted "WC" (initials); WCU is the
+# conference's team code (teamstats school=wcu) and the member JSON's.
+[[schools]]
+name         = "Western Colorado"
+abbreviation = "WCU"
+conference   = "RMAC"
+mascot       = "Mountaineers"
+gender       = "women"
+base_url     = "https://gomountaineers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Western Colorado University", "Western Colo."]
+city         = "Gunnison, Colo."
+city_source  = "schedule-page home venue location, https://gomountaineers.com/sports/womens-soccer (Gunnison, Colo., read by the probe 2026-11-08); the rmacsports.org member JSON prints Gunnison, Colo."
+identity_accessed = "2026-11-08"
+
+# Westminster University, Salt Lake City (Westminster College until 2023;
+# the NCAA's 2026 manual still prints "Westminster College (Utah)").
+# Peers print "Westminster University (Utah)"; the parenthetical drops
+# before matching, so the alias is the bare long name.
+[[schools]]
+name         = "Westminster"
+abbreviation = "WU"
+abbreviation_resolves = false  # "WU" is also Walsh and Wheeling and Wilmington's, and Washburn's (MIAA women)
+conference   = "RMAC"
+mascot       = "Griffins"
+gender       = "women"
+base_url     = "https://westminstergriffins.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Westminster University", "Westminster College"]
+city         = "Salt Lake City, Utah"
+city_source  = "schedule-page home venue location, https://westminstergriffins.com/sports/womens-soccer (Salt Lake City, Utah, read by the probe 2026-11-08); the rmacsports.org member JSON prints Salt Lake City, Utah"
+identity_accessed = "2026-11-08"
+
 # ============================================================
 # SSC MEN'S SOCCER — 11 programmes, backfill window 2022-2026
 # ============================================================
@@ -9208,4 +9500,390 @@ enabled      = true
 aliases      = ["Washburn University"]
 city         = "Topeka, Kan."
 city_source  = "schedule-page home venue location, https://wusports.com/sports/womens-soccer (Topeka, Kan., read by the probe 2026-11-08); the themiaa.com member JSON prints Topeka, Kan."
+identity_accessed = "2026-11-08"
+
+
+# ============================================================
+# NSIC WOMEN'S SOCCER - 16 programmes, authored depth 2026 only
+# ============================================================
+# Source of truth: the Northern Sun Intercollegiate Conference's own women's
+# soccer pages, read 2026-11-08: the live standings
+# (northernsun.org/standings.aspx?path=wsoc, "2026 Women's Soccer
+# Standings", archive id 164) and the 2026 conference statistics
+# (stats.aspx?path=wsoc&year=2026&conf=true). Both list the same sixteen
+# programmes in one table, no divisions; the NCAA's 2026 Division II
+# Women's Soccer Pre-Championship Manual (Appendix A) lists the same
+# sixteen under the NSIC. The NSIC sponsors no men's soccer, so it is a new
+# conference code for the rib and no men's window was leaned on. Depth is
+# 2026 only (the owner's ruling, no historical seasons), so every
+# year-list is [2026].
+#
+# Realignment traps, each read off a standings page: the 2025 standings
+# (standings=155) list the same sixteen, so nothing moves at the 2025/2026
+# edge. Jamestown is absent from 2024 (standings=146) and present from 2025:
+# an arrival outside the depth (the NCAA manual does not mark it
+# ineligible). Upper Iowa is in the 2022 table (standings=128) and absent
+# from 2023 (standings=137): it left for the GLVC, where its women's
+# stanza already lives, outside the depth. All sixteen full members field
+# women's soccer (member JSON on the standings page), so no member is
+# windowless. No renames inside the depth.
+#
+# Fifteen are new institutions to the rib. St. Cloud State is the one
+# shared slug: its men play GLIAC soccer (stanza above), so the women's
+# stanza reuses the men's `name` and abbreviation.
+#
+# Same-named programmes (the identity traps of this block):
+# - Wayne State College (Neb.) folds to "wayne state", the key Wayne State
+#   University (Mich.), GLIAC women (onboarding in parallel), mints. The
+#   name is qualified ("Wayne State Nebraska") and the bare spellings the
+#   NSIC prints ("Wayne State", "Wayne State College") are member aliases.
+# - "University of Mary" and its boxes' "Mary" fold to "mary", which the
+#   GLVC's Maryville claims through its resolving abbreviation "MARY" (both
+#   genders). The name is the records label "UMary" and the long name is a
+#   member alias; the abbreviation is the site's "UMARY", not the member
+#   JSON's "MARY".
+# - "Minnesota State University Moorhead" and "Southwest Minn. St." each
+#   contain every token of "Minnesota State" (Mankato), so without an exact
+#   alias the unique-token fallback hands them to Mankato. Both are aliases
+#   on their own stanzas.
+# - "Concordia (Minn.)" and "Concordia College" on NSIC pages are Concordia
+#   College, Moorhead (Division III), not Concordia-St. Paul; the bare word
+#   is not claimed.
+#
+# Probe (uv run probe --conference NSIC --seasons 2026 --name ..., 2026-11-08):
+# all 16 hosts SideArm; schedule / stats / matches present and 2026 served
+# on every one; roster present on 15. St. Cloud State's roster reads absent:
+# /sports/womens-soccer/roster/2026 serves an empty template titled
+# "@season Women's Soccer Roster", while the roster lives at
+# /roster/2026-27. Hosts from the member JSON's athletics_website (https
+# forced; St. Cloud State's "admin." host replaced by the men's stanza's).
+# No PrestoSports host, no dead host, no 403. No collect has run, so every
+# stanza is data_status = unverified. No ordinals.
+#
+# Short forms: each site's own scoreboard or site token where it is not
+# initials (AUGIE, CSP, UJ, UMARY, UMC, UMD, MNSU, MSUM, SMSU, WSC) or the
+# conference's team code (BSU, MISU, NSU, USF, WSU). NSU and WSU are
+# display-only (Northeastern State and Nova Southeastern; Wayne State
+# (Mich.)), as is the shared SCSU. Aliases add the published long names and
+# the spellings peers print on their 2026 schedules and in their
+# scoreboard JSON that the fold does not reach. Towns are the schedule
+# page's home rows, second-sourced to the northernsun.org member JSON
+# `location`.
+
+[[schools]]
+name         = "Augustana"
+abbreviation = "AUGIE"
+conference   = "NSIC"
+mascot       = "Vikings"
+gender       = "women"
+base_url     = "https://www.goaugie.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Peers print "Augustana (S.D.)", "Augustana (SD)" and "Augustana University
+# (SD)"; each folds to the name once the parenthetical drops.
+aliases      = ["Augustana University"]
+city         = "Sioux Falls, S.D."
+city_source  = "schedule-page home venue location, https://www.goaugie.com/sports/womens-soccer (Sioux Falls, S.D., read by the probe 2026-11-08); the northernsun.org member JSON prints Sioux Falls, SD"
+identity_accessed = "2026-11-08"
+
+# The probe found no mascot where it reads (the description meta ends at
+# the school name) and drafted "BS"; "Beavers" is the site's own name
+# (bsubeavers.com) and BSU the conference's team code and peers' boxes'.
+[[schools]]
+name         = "Bemidji State"
+abbreviation = "BSU"
+conference   = "NSIC"
+mascot       = "Beavers"
+gender       = "women"
+base_url     = "https://www.bsubeavers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Bemidji State University"]
+city         = "Bemidji, Minn."
+city_source  = "schedule-page home venue location, https://www.bsubeavers.com/sports/womens-soccer (Bemidji, Minn., read by the probe 2026-11-08); the northernsun.org member JSON prints Bemidji, Minn."
+identity_accessed = "2026-11-08"
+
+# Concordia University, St. Paul. The records print "Concordia-St. Paul",
+# which opponent text mints as concordia-saint-paul ("St." before a word
+# reads Saint), so `name` spells Saint and display_name carries the records
+# label. The probe read "Bears" and drafted "Concordia University, St. Paul
+# Golden" (the title, mascot half included); the site names itself the
+# Golden Bears.
+[[schools]]
+name         = "Concordia Saint Paul"
+display_name = "Concordia-St. Paul"
+abbreviation = "CSP"
+conference   = "NSIC"
+mascot       = "Golden Bears"
+gender       = "women"
+base_url     = "https://cspbears.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Fourteen peers print "Concordia-St. Paul", Sioux Falls "Concordia - St. Paul".
+aliases      = ["Concordia University, St. Paul", "Concordia-St. Paul"]
+city         = "St. Paul, Minn."
+city_source  = "schedule-page home venue location, https://cspbears.com/sports/womens-soccer (St. Paul, Minn., read by the probe 2026-11-08); the northernsun.org member JSON prints St. Paul, Minn."
+identity_accessed = "2026-11-08"
+
+# University of Jamestown (N.D.). In the NSIC from 2025 (absent from the
+# 2024 standings, standings=146). The site prints no short form the probe
+# could read; UJ is the member JSON's and the site's own scoreboard's. The
+# description meta prints no mascot; "Jimmies" is the site's own name.
+[[schools]]
+name         = "Jamestown"
+abbreviation = "UJ"
+conference   = "NSIC"
+mascot       = "Jimmies"
+gender       = "women"
+base_url     = "https://jimmiepride.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Jamestown"]
+city         = "Jamestown, N.D."
+city_source  = "schedule-page home rows print Jamestown, N.D., https://jimmiepride.com/sports/womens-soccer/schedule/2026 (the probe read none); the northernsun.org member JSON prints Jamestown, N.D."
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Minnesota Crookston"
+abbreviation = "UMC"
+conference   = "NSIC"
+mascot       = "Golden Eagles"
+gender       = "women"
+base_url     = "https://www.goldeneaglesports.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Crookston's and Northern State's scoreboards print "Minn.-Crookston".
+aliases      = ["University of Minnesota Crookston", "Minn.-Crookston"]
+city         = "Crookston, Minn."
+city_source  = "schedule-page home venue location, https://www.goldeneaglesports.com/sports/womens-soccer (Crookston, Minn., read by the probe 2026-11-08); the northernsun.org member JSON prints Crookston, Minn."
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Minnesota Duluth"
+abbreviation = "UMD"
+conference   = "NSIC"
+mascot       = "Bulldogs"
+gender       = "women"
+base_url     = "https://www.umdbulldogs.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Duluth's and UMary's scoreboards print "Minn. Duluth".
+aliases      = ["University of Minnesota Duluth", "Minn. Duluth"]
+city         = "Duluth, Minn."
+city_source  = "schedule-page home venue location, https://www.umdbulldogs.com/sports/womens-soccer (Duluth, Minn., read by the probe 2026-11-08); the northernsun.org member JSON prints Duluth, Minn."
+identity_accessed = "2026-11-08"
+
+# Minnesota State University, Mankato. MNSU is the site's own opaque short
+# token (site_name "mnsu", the UMSL precedent); its scoreboard and the
+# member JSON print "MSU", which Midwestern State (LSC) already resolves and
+# which MSU Moorhead and Minot State boxes also print. The probe drafted
+# "Southwest Minnesota State" as an alias (an opponent spelling carrying
+# every word of the name); it is another member and is dropped.
+[[schools]]
+name         = "Minnesota State"
+abbreviation = "MNSU"
+conference   = "NSIC"
+mascot       = "Mavericks"
+gender       = "women"
+base_url     = "https://www.msumavericks.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Six peers print "Minnesota State University, Mankato"; the site titles
+# itself "Minnesota State University - Mankato".
+aliases      = ["Minnesota State University, Mankato"]
+city         = "Mankato, Minn."
+city_source  = "schedule-page home venue location, https://www.msumavericks.com/sports/womens-soccer (Mankato, Minn., read by the probe 2026-11-08); the northernsun.org member JSON prints Mankato, Minn."
+identity_accessed = "2026-11-08"
+
+# The probe found no mascot where it reads and drafted "Minnesota State
+# University Moorhead Dragons" (the title, mascot included). Five peers
+# print "Minnesota State University Moorhead", which contains every token
+# of "Minnesota State" and would fall to Mankato without this exact alias.
+[[schools]]
+name         = "MSU Moorhead"
+abbreviation = "MSUM"
+conference   = "NSIC"
+mascot       = "Dragons"
+gender       = "women"
+base_url     = "https://www.msumdragons.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Minnesota State University Moorhead"]
+city         = "Moorhead, Minn."
+city_source  = "schedule-page home venue location, https://www.msumdragons.com/sports/womens-soccer (Moorhead, Minn., read by the probe 2026-11-08); the northernsun.org member JSON prints Moorhead, Minn."
+identity_accessed = "2026-11-08"
+
+# The probe drafted "MS" and the alias "MSU" (Northern State's box short
+# form); MISU is the member JSON's and Duluth's scoreboard's.
+[[schools]]
+name         = "Minot State"
+abbreviation = "MISU"
+conference   = "NSIC"
+mascot       = "Beavers"
+gender       = "women"
+base_url     = "https://www.msubeavers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Minot State University"]
+city         = "Minot, N.D."
+city_source  = "schedule-page home venue location, https://www.msubeavers.com/sports/womens-soccer (Minot, N.D., read by the probe 2026-11-08); the northernsun.org member JSON prints Minot, N.D."
+identity_accessed = "2026-11-08"
+
+# The schedule page prints the home town in capitals ("ABERDEEN, S.D.").
+[[schools]]
+name         = "Northern State"
+abbreviation = "NSU"
+abbreviation_resolves = false  # "NSU" is also Northeastern State's (MIAA women) and Nova Southeastern's
+conference   = "NSIC"
+mascot       = "Wolves"
+gender       = "women"
+base_url     = "https://www.nsuwolvesathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Northern State University"]
+city         = "Aberdeen, S.D."
+city_source  = "schedule-page home venue location, https://www.nsuwolvesathletics.com/sports/womens-soccer (ABERDEEN, S.D., read by the probe 2026-11-08); the northernsun.org member JSON prints Aberdeen, S.D."
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Sioux Falls"
+abbreviation = "USF"
+conference   = "NSIC"
+mascot       = "Cougars"
+gender       = "women"
+base_url     = "https://www.usfcougars.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Sioux Falls"]
+city         = "Sioux Falls, S.D."
+city_source  = "schedule-page home venue location, https://www.usfcougars.com/sports/womens-soccer (Sioux Falls, S.D., read by the probe 2026-11-08); the northernsun.org member JSON prints Sioux Falls, S.D."
+identity_accessed = "2026-11-08"
+
+# Concordia-St. Paul's scoreboard prints "Southwest Minn. St.", which would
+# otherwise key to "southwest minn state" and stand apart.
+[[schools]]
+name         = "Southwest Minnesota State"
+abbreviation = "SMSU"
+conference   = "NSIC"
+mascot       = "Mustangs"
+gender       = "women"
+base_url     = "https://smsumustangs.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Southwest Minnesota State University", "Southwest Minn. St."]
+city         = "Marshall, Minn."
+city_source  = "schedule-page home venue location, https://smsumustangs.com/sports/womens-soccer (Marshall, Minn., read by the probe 2026-11-08); the northernsun.org member JSON prints Marshall, Minn."
+identity_accessed = "2026-11-08"
+
+# Shares its name, and so its slug, with the GLIAC men's stanza; keeps the
+# men's display-only SCSU (Southern Connecticut's too). "St. Cloud State"
+# mints st-cloud-state while opponent text mints saint-cloud-state, hence
+# the alias, as on the men's side. The roster layer read absent: the
+# year-only roster URL serves an empty "@season" template and the roster
+# lives at /roster/2026-27. The probe read no home town; the schedule page
+# prints "St. Cloud, Minn." on its home rows.
+[[schools]]
+name         = "St. Cloud State"
+abbreviation = "SCSU"
+abbreviation_resolves = false  # "SCSU" is also Southern Connecticut's (see the men's stanza)
+conference   = "NSIC"
+mascot       = "Huskies"
+gender       = "women"
+base_url     = "https://scsuhuskies.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["St. Cloud State University", "St. Cloud St.", "Saint Cloud State"]
+city         = "St. Cloud, Minn."
+city_source  = "schedule-page home rows print St. Cloud, Minn., https://scsuhuskies.com/sports/womens-soccer/schedule/2026 (the probe read none); the northernsun.org member JSON prints St. Cloud, MN"
+identity_accessed = "2026-11-08"
+
+# University of Mary (Bismarck). The records print "UMary", which opponent
+# text mints as umary; eight peers print it. Seven peers print "University
+# of Mary" and boxes print "Mary", which fold to "mary", the key the GLVC's
+# Maryville claims through its resolving abbreviation "MARY". So the long
+# name is a member alias: it resolves here inside an NSIC collect, and by
+# the nearest-claimant rule elsewhere (tl-b3v, tl-4sg.9.1). The member
+# JSON's short form "MARY" is Maryville's; UMARY is the site's own
+# scoreboard form.
+[[schools]]
+name         = "UMary"
+abbreviation = "UMARY"
+conference   = "NSIC"
+mascot       = "Marauders"
+gender       = "women"
+base_url     = "https://www.goumary.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+member_aliases = ["University of Mary"]
+city         = "Bismarck, N.D."
+city_source  = "schedule-page home venue location, https://www.goumary.com/sports/womens-soccer (Bismarck, N.D., read by the probe 2026-11-08); the northernsun.org member JSON prints Bismarck, N.D."
+identity_accessed = "2026-11-08"
+
+# Wayne State College (Wayne, Neb.), not Wayne State University (Detroit,
+# GLIAC women). Every NSIC spelling ("Wayne State", "Wayne State College",
+# "Wayne State (Neb.)", boxes' "Wayne St. (NE)") folds to "wayne state",
+# which the Michigan school mints, so `name` is qualified and the NSIC's
+# spellings are member aliases: they resolve here inside an NSIC collect,
+# and by the nearest-claimant rule elsewhere. display_name carries the
+# records label. WSC is the member JSON's and the site's own token.
+[[schools]]
+name         = "Wayne State Nebraska"
+display_name = "Wayne State College"
+abbreviation = "WSC"
+conference   = "NSIC"
+mascot       = "Wildcats"
+gender       = "women"
+base_url     = "https://www.wscwildcats.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+member_aliases = ["Wayne State College"]
+city         = "Wayne, Neb."
+city_source  = "schedule-page home venue location, https://www.wscwildcats.com/sports/womens-soccer (Wayne, Neb., read by the probe 2026-11-08); the northernsun.org member JSON prints Wayne, Neb."
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Winona State"
+abbreviation = "WSU"
+abbreviation_resolves = false  # "WSU" is also Wayne State (Mich.)'s (GLIAC women)
+conference   = "NSIC"
+mascot       = "Warriors"
+gender       = "women"
+base_url     = "https://www.winonastatewarriors.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Winona State University"]
+city         = "Winona, Minn."
+city_source  = "schedule-page home venue location, https://www.winonastatewarriors.com/sports/womens-soccer (Winona, Minn., read by the probe 2026-11-08); the northernsun.org member JSON prints Winona, Minn."
 identity_accessed = "2026-11-08"
