@@ -259,7 +259,16 @@ adds, 2026-09-02, beads tl-clk.5 and tl-891):
    row's point provenance cites that source with no GEOID. The build
    honours a `point` only when the Gazetteer resolves the city to nothing
    at all and refuses one on a city it does resolve, so a pin can never
-   silently override a real place.
+   silently override a real place. The one exception is a resolved town
+   whose Gazetteer internal point lies outside its land: San Francisco's
+   boundary takes in the Farallon Islands, so its internal point sits 46 km
+   out in the Pacific (tui-vu9). Such a stanza carries `point` and
+   `point_source` plus a `point_reason` saying why; the row keeps the
+   Gazetteer place's GEOID, name and state, the note records the internal
+   point it replaced and the reason, and the build refuses an override more
+   than 60 km from that point (`OVERRIDE_MAX_KM`), so it corrects a point and
+   never relocates a programme. A `point_reason` on a town the Gazetteer does
+   not cover, or without a `point`, is refused.
    The offline Gazetteer fixtures under
    `pipeline/data/gazetteer/` are rewritten by the same run.
 4. `contracts/membership.json` + `contracts/CHANGELOG.md`: the membership

@@ -104,6 +104,16 @@ class SchoolConfig:
     # pin can never silently override a real place. Never beside a GEOID pin.
     point: tuple[float, float] | None = None
     point_source: str = ""
+    # The one exception to the rule above (tui-vu9): a town the Gazetteer
+    # DOES resolve, whose internal point lies outside the town's land, takes
+    # the stanza's point when the stanza says why. San Francisco's boundary
+    # takes in the Farallon Islands, and the 2023 Gazetteer's internal point
+    # for it sits 46 km out in the Pacific. The reason is required, the
+    # Gazetteer place stays in the row's provenance beside the point it
+    # replaced, and the build refuses an override more than
+    # programmes.OVERRIDE_MAX_KM from that point, so it can correct a point
+    # and never relocate a programme.
+    point_reason: str = ""
     # Namespaces the legacy game_id space (ordinal * 1_000_000 + year * 100 +
     # game_num), so it must be globally unique among the schools that have one.
     # Only the StatCrew lineage builds game_ids; the live collector never reads
@@ -151,9 +161,11 @@ def _read_point(entry: dict) -> tuple[float, float] | None:
     the Gazetteer does cover the town is the build's question, not this one.
     """
     raw = entry.get("point")
-    if raw is None:
-        return None
     label = f"School '{entry.get('name', '?')}' ({entry.get('abbreviation', '?')})"
+    if raw is None:
+        if str(entry.get("point_reason", "")).strip():
+            raise ValueError(f"{label}: point_reason without a point overrides nothing")
+        return None
     if (
         not isinstance(raw, dict)
         or set(raw) != {"lat", "lon"}
@@ -175,7 +187,7 @@ def _read_point(entry: dict) -> tuple[float, float] | None:
         raise ValueError(
             f"{label}: point needs point_source saying where the coordinates were read"
         )
-    if entry.get("gazetteer_geoid"):
+    if entry.get("gazetteer_geoid") and not str(entry.get("point_reason", "")).strip():
         raise ValueError(
             f"{label}: point and gazetteer_geoid are alternatives: a GEOID pin "
             "names a Gazetteer place, a point stands in for a town the "
@@ -224,6 +236,7 @@ def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
             gazetteer_note=entry.get("gazetteer_note", ""),
             point=_read_point(entry),
             point_source=entry.get("point_source", ""),
+            point_reason=str(entry.get("point_reason", "")).strip(),
             ordinal=entry.get("ordinal", 0),
             gender=entry.get("gender", "men"),
             scraper=entry.get("scraper", "statcrew"),

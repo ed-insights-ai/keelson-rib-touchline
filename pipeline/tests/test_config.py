@@ -175,3 +175,21 @@ def test_a_point_beside_a_geoid_pin_is_refused(tmp_path):
     )
     with pytest.raises(ValueError, match="alternatives"):
         load_schools(config)
+
+
+def test_a_point_reason_loads_with_its_point(tmp_path):
+    config = _write(
+        tmp_path,
+        _point_entry(
+            'point = { lat = 37.7775, lon = -122.41639 }\npoint_source = "x"\n'
+            'point_reason = "  the internal point lies offshore  "'
+        ),
+    )
+    (school,) = load_schools(config)
+    assert school.point_reason == "the internal point lies offshore"
+
+
+def test_a_point_reason_without_a_point_is_refused(tmp_path):
+    config = _write(tmp_path, _point_entry('point_reason = "why"'))
+    with pytest.raises(ValueError, match="overrides nothing"):
+        load_schools(config)
