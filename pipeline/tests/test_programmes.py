@@ -243,3 +243,68 @@ def test_the_shipped_simon_fraser_row_carries_the_stanza_point() -> None:
     assert row["point"] == {"lat": 49.242778, "lon": -122.972778}
     assert row["provenance"]["point"]["note"] == programmes.POINT_NOTE
     assert "geoid" not in row["provenance"]["point"]
+
+
+def test_a_reasoned_override_corrects_a_resolved_towns_point() -> None:
+    # tui-vu9: the Gazetteer's internal point for San Francisco lies 46 km out
+    # in the Pacific (the boundary takes in the Farallons). With a reason the
+    # stanza's point stands; the town, its GEOID and the replaced point stay
+    # in the provenance.
+    stanza = _school(
+        name="San Francisco State",
+        city="San Francisco, Calif.",
+        point=(37.7775, -122.41639),
+        point_source="a test source",
+        point_reason="the boundary takes in the Farallon Islands",
+    )
+    row = programmes.build([stanza], _offline()).document["programmes"][
+        "san-francisco-state"
+    ]
+    assert row["city"] == "San Francisco, Calif."
+    assert row["point"] == {"lat": 37.7775, "lon": -122.41639}
+    point = row["provenance"]["point"]
+    assert point["source"] == "a test source"
+    assert (point["geoid"], point["name"], point["state"]) == (
+        "0667000",
+        "San Francisco city",
+        "CA",
+    )
+    assert "(37.7272, -123.0322)" in point["note"]
+    assert point["note"].endswith("because the boundary takes in the Farallon Islands")
+
+
+def test_an_override_may_correct_a_point_never_relocate_a_programme() -> None:
+    # Oakland is 15 km away and would pass; Sacramento is 120 km away.
+    far = _school(
+        name="San Francisco State",
+        city="San Francisco, Calif.",
+        point=(38.5816, -121.4944),
+        point_source="a test source",
+        point_reason="a reason",
+    )
+    with pytest.raises(programmes.ProgrammeError) as caught:
+        programmes.build([far], _offline())
+    assert "san-francisco-state: point override refused" in str(caught.value)
+
+
+def test_a_reason_on_a_town_the_gazetteer_lacks_is_refused() -> None:
+    stanza = _school(
+        name="Simon Fraser",
+        city="Burnaby, B.C.",
+        point=(49.242778, -122.972778),
+        point_source="a test source",
+        point_reason="nothing to override",
+    )
+    with pytest.raises(programmes.ProgrammeError) as caught:
+        programmes.build([stanza], _offline())
+    assert "simon-fraser: point_reason refused" in str(caught.value)
+
+
+def test_the_shipped_san_francisco_state_row_is_on_the_peninsula() -> None:
+    rows = json.loads(paths.packaged_programmes_path().read_text(encoding="utf-8"))[
+        "programmes"
+    ]
+    lat = rows["san-francisco-state"]["point"]["lat"]
+    lon = rows["san-francisco-state"]["point"]["lon"]
+    assert 37.70 < lat < 37.82 and -122.52 < lon < -122.35
+    assert rows["san-francisco-state"]["provenance"]["point"]["geoid"] == "0667000"

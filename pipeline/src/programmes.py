@@ -21,6 +21,7 @@ with ``uv run build-programmes`` and must equal a fresh build byte for byte.
 from __future__ import annotations
 
 import json
+import math
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -36,6 +37,32 @@ POINT_NOTE = (
     "stanza point: the Gazetteer covers no place for this town, so the point "
     "is the stanza's own, read from point_source"
 )
+
+# A reasoned override (tui-vu9) may move a resolved town's point this far
+# from the Gazetteer's internal point and no further: far enough to bring
+# San Francisco's (46 km out, past the Golden Gate) back onto the peninsula,
+# not far enough to put a programme in another town.
+OVERRIDE_MAX_KM = 60.0
+
+
+def _km(a: tuple[float, float], b: tuple[float, float]) -> float:
+    """Great-circle distance in kilometres between two (lat, lon) points."""
+    lat1, lon1, lat2, lon2 = map(math.radians, (*a, *b))
+    h = (
+        math.sin((lat2 - lat1) / 2) ** 2
+        + math.cos(lat1) * math.cos(lat2) * math.sin((lon2 - lon1) / 2) ** 2
+    )
+    return 2 * 6371.0088 * math.asin(math.sqrt(h))
+
+
+def override_note(place: gz.Place, reason: str) -> str:
+    """The provenance note of a reasoned override: what it replaced, and why."""
+    return (
+        f"point override: the {gz.GAZETTEER_VINTAGE} Gazetteer internal point of "
+        f"{place.name} ({place.lat}, {place.lon}) is replaced by the stanza's "
+        f"point, read from the source above, because {reason}"
+    )
+
 
 DESCRIPTION = (
     "Programme identity that no collected page publishes as data: the nickname "
@@ -122,7 +149,19 @@ def _row(
         city_source["url"] = (
             f"{live}/schedule/{max(school.years)}" if school.years else live
         )
-    if place is None:
+    if place is not None and school.point is not None:
+        # A reasoned override: the town is the Gazetteer's, the point is not.
+        assert town is not None and school.point_reason
+        lat, lon = school.point
+        city = town.ap
+        point_source = {
+            "source": school.point_source,
+            "accessed": accessed,
+            "geoid": place.geoid,
+            "name": place.name,
+            "state": place.state,
+        }
+    elif place is None:
         assert school.point is not None
         lat, lon = school.point
         point_source: dict[str, object] = {
@@ -155,6 +194,8 @@ def _row(
         notes.append(COUSUB_NOTE)
     if school.gazetteer_note:
         notes.append(school.gazetteer_note.strip())
+    if place is not None and school.point is not None:
+        notes.append(override_note(place, school.point_reason))
     if notes:
         point_source["note"] = "; ".join(notes)
     row: dict[str, object] = {
@@ -217,12 +258,38 @@ def build(schools: list[SchoolConfig], gazetteer: gz.Gazetteer) -> Build:
             # refused: the pin would otherwise override a real place in
             # silence, and a several-place town wants gazetteer_geoid.
             found = gazetteer.candidates(town) if town is not None else []
+            if found and school.point_reason:
+                try:
+                    place = gazetteer.resolve(
+                        town, pin=school.gazetteer_geoid, note=school.gazetteer_note
+                    )
+                except gz.GazetteerError as error:
+                    problems.append(f"{slug}: {error}")
+                    continue
+                away = _km((place.lat, place.lon), school.point)
+                if away > OVERRIDE_MAX_KM:
+                    problems.append(
+                        f"{slug}: point override refused: it lies {away:.0f} km from "
+                        f"the Gazetteer's point for {place.name}, beyond the "
+                        f"{OVERRIDE_MAX_KM:.0f} km an override may correct"
+                    )
+                    continue
+                rows[slug] = _row(school, place, town)
+                continue
             if found:
                 names = ", ".join(f"{p.geoid} {p.name}" for p in found)
                 problems.append(
                     f"{slug}: point refused: the {gz.GAZETTEER_VINTAGE} Gazetteer "
-                    f"resolves {school.city!r} ({names}); drop point, or pin one "
-                    "of them with gazetteer_geoid"
+                    f"resolves {school.city!r} ({names}); drop point, pin one "
+                    "of them with gazetteer_geoid, or say why its internal point "
+                    "is wrong with point_reason"
+                )
+                continue
+            if school.point_reason:
+                problems.append(
+                    f"{slug}: point_reason refused: the {gz.GAZETTEER_VINTAGE} "
+                    f"Gazetteer resolves nothing for {school.city!r}, so there is "
+                    "no point to override; drop point_reason"
                 )
                 continue
             rows[slug] = _row(school, None, town)

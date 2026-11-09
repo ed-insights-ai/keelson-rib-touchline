@@ -6758,8 +6758,8 @@
       "abbreviation": "SFSU",
       "city": "San Francisco, Calif.",
       "point": {
-        "lat": 37.7272,
-        "lon": -123.0322
+        "lat": 37.7775,
+        "lon": -122.41639
       },
       "provenance": {
         "nickname": {
@@ -6777,12 +6777,12 @@
           "accessed": "2026-09-05"
         },
         "point": {
-          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
-          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "source": "Wikipedia, San Francisco, the article's title coordinates 37°46′39″N 122°24′59″W, https://en.wikipedia.org/wiki/San_Francisco (read 2026-11-09)",
+          "accessed": "2026-09-05",
           "geoid": "0667000",
           "name": "San Francisco city",
           "state": "CA",
-          "accessed": "2023-09-26"
+          "note": "point override: the 2023 Gazetteer internal point of San Francisco city (37.7272, -123.0322) is replaced by the stanza's point, read from the source above, because the city's boundary takes in the Farallon Islands, so the internal point lies in the Pacific, 46 km west of the peninsula the city stands on (tui-vu9)"
         }
       }
     },

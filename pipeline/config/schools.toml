@@ -8607,6 +8607,13 @@ aliases      = ["San Francisco State University", "SF State", "San Fran. St."]
 city         = "San Francisco, Calif."
 city_source  = "schedule-page home venue location, https://sfstategators.com/sports/mens-soccer/schedule/2024 (San Francisco, Cox Stadium, for every 2024 home match; footer address 1600 Holloway Ave, San Francisco, CA 94132; read 2026-09-05); the goccaa.org member JSON prints San Francisco"
 identity_accessed = "2026-09-05"
+# The 2023 Gazetteer resolves San Francisco (GEOID 0667000), but its
+# internal point (37.7272, -123.0322) sits 46 km out in the Pacific: the
+# city's boundary takes in the Farallon Islands. This stanza supplies the
+# shared row (the women's below shares the slug), so the override is here.
+point        = { lat = 37.7775, lon = -122.41639 }
+point_source = "Wikipedia, San Francisco, the article's title coordinates 37°46′39″N 122°24′59″W, https://en.wikipedia.org/wiki/San_Francisco (read 2026-11-09)"
+point_reason = "the city's boundary takes in the Farallon Islands, so the internal point lies in the Pacific, 46 km west of the peninsula the city stands on (tui-vu9)"
 
 # ============================================================
 # CCAA WOMEN'S SOCCER - 14 programmes, authored depth 2026 only
