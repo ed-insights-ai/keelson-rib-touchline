@@ -53,6 +53,14 @@
           "to_season": 2026,
           "source": "Northeast-10 Conference, 2022 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "NE10",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2026 Women's Soccer standings and records, https://northeast10.org/standings.aspx?path=wsoc and https://northeast10.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Adelphi (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://northeast10.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same ten programmes."
+        }
       ]
     },
     "alderson-broaddus": {
@@ -83,6 +91,14 @@
           "to_season": 2026,
           "source": "Northeast-10 Conference, 2022 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "NE10",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2026 Women's Soccer standings and records, https://northeast10.org/standings.aspx?path=wsoc and https://northeast10.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label American International (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://northeast10.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same ten programmes."
+        }
       ]
     },
     "anderson": {
@@ -112,6 +128,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Northeast-10 Conference, 2022 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "NE10",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2026 Women's Soccer standings and records, https://northeast10.org/standings.aspx?path=wsoc and https://northeast10.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Assumption (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://northeast10.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same ten programmes."
         }
       ]
     },
@@ -187,6 +211,14 @@
           "to_season": 2026,
           "source": "Northeast-10 Conference, 2022 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "NE10",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2026 Women's Soccer standings and records, https://northeast10.org/standings.aspx?path=wsoc and https://northeast10.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Bentley (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://northeast10.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same ten programmes."
+        }
       ]
     },
     "biola": {
@@ -235,6 +267,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). Absent from the 2021 records (https://caccathletics.org/stats.aspx?path=msoc&year=2021&conf=true), which list it in the East Coast Conference instead (https://eccsports.org/stats.aspx?path=msoc&year=2021&conf=true); first listed 2022, matching Bridgeport's move from the ECC to the CACC (https://www.ubknights.com/general/2021-22/releases/20211213ngwsnj)."
+        }
+      ],
+      "women": [
+        {
+          "conference": "CACC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2026 Women's Soccer standings and records, https://caccathletics.org/standings.aspx?path=wsoc and https://caccathletics.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Bridgeport (one table, no divisions, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://caccathletics.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same twelve programmes."
         }
       ]
     },
@@ -325,6 +365,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "CACC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2026 Women's Soccer standings and records, https://caccathletics.org/standings.aspx?path=wsoc and https://caccathletics.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Caldwell (one table, no divisions, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://caccathletics.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same twelve programmes."
         }
       ]
     },
@@ -424,6 +472,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "CACC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2026 Women's Soccer standings and records, https://caccathletics.org/standings.aspx?path=wsoc and https://caccathletics.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Chestnut Hill (one table, no divisions, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://caccathletics.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same twelve programmes."
         }
       ]
     },
@@ -580,6 +636,14 @@
           "to_season": 2026,
           "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "ECC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "East Coast Conference, 2026 Women's Soccer standings and records, https://eccsports.org/standings.aspx?path=wsoc and https://eccsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label D'Youville (one table, no divisions, eight programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://eccsports.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same eight programmes."
+        }
       ]
     },
     "daemen": {
@@ -589,6 +653,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "ECC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "East Coast Conference, 2026 Women's Soccer standings and records, https://eccsports.org/standings.aspx?path=wsoc and https://eccsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Daemen (one table, no divisions, eight programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://eccsports.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same eight programmes."
         }
       ]
     },
@@ -649,6 +721,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "CACC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2026 Women's Soccer standings and records, https://caccathletics.org/standings.aspx?path=wsoc and https://caccathletics.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Dominican (one table, no divisions, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://caccathletics.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same twelve programmes."
         }
       ]
     },
@@ -812,6 +892,14 @@
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "CACC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2026 Women's Soccer standings and records, https://caccathletics.org/standings.aspx?path=wsoc and https://caccathletics.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Felician (one table, no divisions, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://caccathletics.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same twelve programmes."
+        }
       ]
     },
     "ferrum": {
@@ -924,6 +1012,14 @@
           "to_season": 2026,
           "source": "Northeast-10 Conference, 2022 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "NE10",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2026 Women's Soccer standings and records, https://northeast10.org/standings.aspx?path=wsoc and https://northeast10.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Franklin Pierce (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://northeast10.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same ten programmes."
+        }
       ]
     },
     "fresno-pacific": {
@@ -989,6 +1085,14 @@
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "CACC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2026 Women's Soccer standings and records, https://caccathletics.org/standings.aspx?path=wsoc and https://caccathletics.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Georgian Court (one table, no divisions, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://caccathletics.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same twelve programmes."
+        }
       ]
     },
     "goldey-beacom": {
@@ -998,6 +1102,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "CACC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2026 Women's Soccer standings and records, https://caccathletics.org/standings.aspx?path=wsoc and https://caccathletics.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Goldey-Beacom (one table, no divisions, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://caccathletics.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same twelve programmes."
         }
       ]
     },
@@ -1046,6 +1158,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "CACC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2026 Women's Soccer standings and records, https://caccathletics.org/standings.aspx?path=wsoc and https://caccathletics.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Holy Family (one table, no divisions, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://caccathletics.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same twelve programmes."
         }
       ]
     },
@@ -1113,6 +1233,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "CACC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2026 Women's Soccer standings and records, https://caccathletics.org/standings.aspx?path=wsoc and https://caccathletics.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Jefferson (one table, no divisions, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://caccathletics.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same twelve programmes."
         }
       ]
     },
@@ -1287,6 +1415,16 @@
         }
       ]
     },
+    "lincoln-pa": {
+      "women": [
+        {
+          "conference": "CACC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2026 Women's Soccer standings and records, https://caccathletics.org/standings.aspx?path=wsoc and https://caccathletics.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Lincoln University (Pa.) (one table, no divisions, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://caccathletics.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same twelve programmes, and the East Coast Conference's 2022 and 2023 women's records list the school as \"Lincoln PA\" (https://eccsports.org/stats.aspx?path=wsoc&year=2023&conf=true), outside the depth. The key lincoln-pa is that ECC label's slug, since \"Lincoln University (Pa.)\" folds to the GLVC's lincoln."
+        }
+      ]
+    },
     "lock-haven": {
       "men": [
         {
@@ -1417,6 +1555,14 @@
           "to_season": 2026,
           "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "ECC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "East Coast Conference, 2026 Women's Soccer standings and records, https://eccsports.org/standings.aspx?path=wsoc and https://eccsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Mercy (one table, no divisions, eight programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://eccsports.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same eight programmes."
+        }
       ]
     },
     "mercyhurst": {
@@ -1541,6 +1687,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "ECC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "East Coast Conference, 2026 Women's Soccer standings and records, https://eccsports.org/standings.aspx?path=wsoc and https://eccsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Molloy (one table, no divisions, eight programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://eccsports.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same eight programmes."
         }
       ]
     },
@@ -1849,6 +2003,14 @@
           "to_season": 2026,
           "source": "Northeast-10 Conference, 2025 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2025&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both. Absent from the 2024 records (https://northeast10.org/stats.aspx?path=msoc&year=2024&conf=true) and every earlier season 2021-2023: Pace is an institutional NE10 member that fielded no men's soccer from 1991 to 2024 and relaunched the programme for fall 2025 (https://northeast10.org/news/2024/7/25/pace-to-play-mens-soccer-in-2025.aspx and https://paceuathletics.com/news/2024/7/23/general-pace-university-to-restart-mens-soccer-program-in-2025.aspx); first listed 2025."
         }
+      ],
+      "women": [
+        {
+          "conference": "NE10",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2026 Women's Soccer standings and records, https://northeast10.org/standings.aspx?path=wsoc and https://northeast10.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Pace (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://northeast10.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same ten programmes."
+        }
       ]
     },
     "palm-beach-atlantic": {
@@ -1918,6 +2080,14 @@
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "CACC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2026 Women's Soccer standings and records, https://caccathletics.org/standings.aspx?path=wsoc and https://caccathletics.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Post (one table, no divisions, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://caccathletics.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same twelve programmes."
+        }
       ]
     },
     "purdue-northwest": {
@@ -1937,6 +2107,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "ECC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "East Coast Conference, 2026 Women's Soccer standings and records, https://eccsports.org/standings.aspx?path=wsoc and https://eccsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Queens (one table, no divisions, eight programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://eccsports.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same eight programmes."
         }
       ]
     },
@@ -1975,6 +2153,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "ECC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "East Coast Conference, 2026 Women's Soccer standings and records, https://eccsports.org/standings.aspx?path=wsoc and https://eccsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Roberts Wesleyan (one table, no divisions, eight programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://eccsports.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same eight programmes."
         }
       ]
     },
@@ -2064,6 +2250,14 @@
           "to_season": 2026,
           "source": "Northeast-10 Conference, 2022 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "NE10",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2026 Women's Soccer standings and records, https://northeast10.org/standings.aspx?path=wsoc and https://northeast10.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Saint Anselm (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://northeast10.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same ten programmes."
+        }
       ]
     },
     "saint-edwards": {
@@ -2113,6 +2307,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Northeast-10 Conference, 2022 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "NE10",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2026 Women's Soccer standings and records, https://northeast10.org/standings.aspx?path=wsoc and https://northeast10.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Saint Michael's (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://northeast10.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same ten programmes."
         }
       ]
     },
@@ -2297,6 +2499,14 @@
           "to_season": 2026,
           "source": "Northeast-10 Conference, 2022 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "NE10",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2026 Women's Soccer standings and records, https://northeast10.org/standings.aspx?path=wsoc and https://northeast10.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Southern Connecticut (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://northeast10.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same ten programmes."
+        }
       ]
     },
     "southern-nazarene": {
@@ -2324,6 +2534,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Northeast-10 Conference, 2022 and 2026 Men's Soccer records, https://northeast10.org/stats.aspx?path=msoc&year=2022&conf=true and https://northeast10.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "NE10",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northeast-10 Conference, 2026 Women's Soccer standings and records, https://northeast10.org/standings.aspx?path=wsoc and https://northeast10.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Southern New Hampshire (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://northeast10.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same ten programmes."
         }
       ]
     },
@@ -2400,6 +2618,14 @@
           "to_season": 2026,
           "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "ECC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "East Coast Conference, 2026 Women's Soccer standings and records, https://eccsports.org/standings.aspx?path=wsoc and https://eccsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label St. Thomas Aquinas (one table, no divisions, eight programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://eccsports.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same eight programmes."
+        }
       ]
     },
     "stanislaus-state": {
@@ -2419,6 +2645,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "East Coast Conference, 2022 and 2026 Men's Soccer records, https://eccsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://eccsports.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes plus Bridgeport, which left for the CACC, so nobody arrived across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "ECC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "East Coast Conference, 2026 Women's Soccer standings and records, https://eccsports.org/standings.aspx?path=wsoc and https://eccsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Staten Island (one table, no divisions, eight programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://eccsports.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same eight programmes."
         }
       ]
     },
@@ -2794,6 +3028,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2022 and 2026 Men's Soccer records, https://caccathletics.org/stats.aspx?path=msoc&year=2022&conf=true and https://caccathletics.org/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "CACC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Central Atlantic Collegiate Conference, 2026 Women's Soccer standings and records, https://caccathletics.org/standings.aspx?path=wsoc and https://caccathletics.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Wilmington (one table, no divisions, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://caccathletics.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same twelve programmes."
         }
       ]
     },

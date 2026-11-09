@@ -2075,6 +2075,230 @@ city_source  = "design/batch1-membership-2026-09-02.md (host dead, town not read
 identity_accessed = "2026-09-02"
 
 # ============================================================
+# NE10 WOMEN'S SOCCER - 10 programmes, authored depth 2026 only
+# ============================================================
+# Source of truth: the Northeast-10's own women's soccer pages, read
+# 2026-11-08: the live standings (northeast10.org/standings.aspx?path=wsoc,
+# "2026 Women's Soccer Standings") and the 2026 conference statistics
+# (stats.aspx?path=wsoc&year=2026&conf=true). Both list the same ten
+# programmes in one table, so no window carries a division. Depth is 2026
+# only (the owner's ruling, no historical seasons), so every year-list is
+# [2026]. The 2025, 2024, 2023 and 2022 records (year=2025 ... year=2022)
+# list the same ten, so nobody arrives or leaves at the depth's edge.
+#
+# The same set as the 2026 men's NE10 (ten programmes): every stanza here
+# shares its name, and so its slug, with the NE10 men's stanza above, and
+# keeps its abbreviation. No women-only school. New Haven, Le Moyne and
+# Saint Rose, which carry men's windows, appear on no women's records page
+# 2022-2026, so they have no women's window or stanza.
+#
+# Probe (uv run probe --conference NE10 --seasons 2026, 2026-11-08): all 10
+# hosts SideArm, schedule / roster / stats / matches present, 2026 served on
+# every one. Hosts are the men's stanzas' hosts, which came from
+# northeast10.org/members and agree with the athletics_website fields of the
+# member JSON embedded in the 2026 women's standings page. No collect has
+# run, so every stanza is data_status = unverified. No ordinals.
+#
+# Hand corrections: abbreviations restored from the men's stanzas (the
+# probe left four blank and minted FP, SA, SM from initials); mascots
+# restored where the probe read none (AIC, Assumption, Bentley, Franklin
+# Pierce, Saint Michael's, Southern New Hampshire: the women's schedule
+# description prints the school name without a mascot); enabled = true;
+# aliases last. Every city is the town the 2026 women's schedule page
+# prints on its home rows, and equals the men's stanza's. Peer spellings
+# are from a scan of the 2026 women's schedule pages of all 30 members of
+# the NE10, ECC and CACC (26 SideArm, 4 PrestoSports; read 2026-11-08).
+
+[[schools]]
+name         = "Adelphi"
+abbreviation = "AU"
+abbreviation_resolves = false  # "AU" is also Alliance and Ashland's (see the men's stanza)
+conference   = "NE10"
+mascot       = "Panthers"
+gender       = "women"
+base_url     = "https://aupanthers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Adelphi University"]
+city         = "Garden City, N.Y."
+city_source  = "schedule-page home venue location, https://aupanthers.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The probe found no mascot where it reads (the description prints
+# "American International College" alone); "Yellow Jackets" is the site's
+# own name (aicyellowjackets.com). Saint Anselm 2026 prints "American Int'l".
+[[schools]]
+name         = "American International"
+abbreviation = "AIC"
+conference   = "NE10"
+mascot       = "Yellow Jackets"
+gender       = "women"
+base_url     = "https://aicyellowjackets.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["American International College", "AIC", "American Int'l"]
+city         = "Springfield, Mass."
+city_source  = "schedule-page home venue location, https://aicyellowjackets.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The probe found no mascot where it reads; "Greyhounds" is the site's own
+# name (assumptiongreyhounds.com). "Assumption Univerity" (sic) is Franklin
+# Pierce's 2026 spelling; it keys to "assumption univerity" and would mint a
+# stranger, so it is carried as an alias.
+[[schools]]
+name         = "Assumption"
+abbreviation = "ASSUMP"
+conference   = "NE10"
+mascot       = "Greyhounds"
+gender       = "women"
+base_url     = "https://assumptiongreyhounds.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Assumption University", "Assumption Univerity"]
+city         = "Worcester, Mass."
+city_source  = "schedule-page home venue location, https://assumptiongreyhounds.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The probe found no mascot where it reads; "Falcons" is the site's own name
+# (bentleyfalcons.com).
+[[schools]]
+name         = "Bentley"
+abbreviation = "BU"
+abbreviation_resolves = false  # "BU" is also Barry and Bloomsburg's (see the men's stanza)
+conference   = "NE10"
+mascot       = "Falcons"
+gender       = "women"
+base_url     = "https://bentleyfalcons.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Bentley University"]
+city         = "Waltham, Mass."
+city_source  = "schedule-page home venue location, https://bentleyfalcons.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The probe found no mascot where it reads and minted "FP"; "Ravens" is the
+# site's own name (fpuravens.com) and FPU the men's stanza's short form.
+[[schools]]
+name         = "Franklin Pierce"
+abbreviation = "FPU"
+conference   = "NE10"
+mascot       = "Ravens"
+gender       = "women"
+base_url     = "https://fpuravens.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Franklin Pierce University"]
+city         = "Rindge, N.H."
+city_source  = "schedule-page home venue location, https://fpuravens.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# Pace women are on every NE10 women's records page 2022-2026 (the men's
+# window starts 2025 only because the men's programme relaunched then).
+[[schools]]
+name         = "Pace"
+abbreviation = "PU"
+abbreviation_resolves = false  # "PU" is also Post's
+conference   = "NE10"
+mascot       = "Setters"
+gender       = "women"
+base_url     = "https://paceuathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Pace University"]
+city         = "Pleasantville, N.Y."
+city_source  = "schedule-page home venue location, https://paceuathletics.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The campus is in Goffstown (Manchester mailing address); the schedule page
+# prints Manchester, N.H., and that is the town used, as on the men's stanza.
+[[schools]]
+name         = "Saint Anselm"
+abbreviation = "SAC"
+conference   = "NE10"
+mascot       = "Hawks"
+gender       = "women"
+base_url     = "https://saintanselmhawks.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Saint Anselm College", "St. Anselm", "St. Anselm College"]
+city         = "Manchester, N.H."
+city_source  = "schedule-page home venue location, https://saintanselmhawks.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The probe found no mascot where it reads and minted "SM"; "Purple Knights"
+# is the site's own name (smcathletics.com). The apostrophe mints slug
+# saint-michael-s, the men's key. Chestnut Hill 2026 prints "St. Michael's
+# College", which already folds to the name.
+[[schools]]
+name         = "Saint Michael's"
+abbreviation = "SMC"
+conference   = "NE10"
+mascot       = "Purple Knights"
+gender       = "women"
+base_url     = "https://smcathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Saint Michael's College", "St. Michael's", "St. Michael's College"]
+city         = "Colchester, Vt."
+city_source  = "schedule-page home venue location, https://smcathletics.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# Peers print "Southern Connecticut State" (Saint Anselm and Saint Michael's
+# 2026) and the bare "Southern Connecticut" (Georgian Court 2026).
+[[schools]]
+name         = "Southern Connecticut"
+abbreviation = "SCSU"
+abbreviation_resolves = false  # "SCSU" is also St. Cloud State's
+conference   = "NE10"
+mascot       = "Owls"
+gender       = "women"
+base_url     = "https://scsuowls.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Southern Connecticut State University", "Southern Connecticut State", "Southern Conn. St."]
+city         = "New Haven, Conn."
+city_source  = "schedule-page home venue location, https://scsuowls.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The probe found no mascot where it reads (the women's description prints
+# no name at all); "Penmen" is the site's own name (snhupenmen.com). The
+# campus is in Hooksett (Manchester mailing address); the schedule page
+# prints Hooksett, N.H., and that is the town used.
+[[schools]]
+name         = "Southern New Hampshire"
+abbreviation = "SNHU"
+conference   = "NE10"
+mascot       = "Penmen"
+gender       = "women"
+base_url     = "https://snhupenmen.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Southern New Hampshire University", "Southern N.H."]
+city         = "Hooksett, N.H."
+city_source  = "schedule-page home venue location, https://snhupenmen.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# ============================================================
 # CACC MEN'S SOCCER - 13 programmes, backfill window 2022-2026
 # ============================================================
 # Source of truth: Central Atlantic Collegiate Conference per-season records
@@ -2370,6 +2594,316 @@ city_source  = "design/batch1-membership-2026-09-02.md (host dead, town not read
 identity_accessed = "2026-09-02"
 
 # ============================================================
+# CACC WOMEN'S SOCCER - 12 programmes, authored depth 2026 only
+# ============================================================
+# Source of truth: the Central Atlantic Collegiate Conference's own women's
+# soccer pages, read 2026-11-08: the live standings
+# (caccathletics.org/standings.aspx?path=wsoc, "2026 Women's Soccer
+# Standings") and the 2026 conference statistics
+# (stats.aspx?path=wsoc&year=2026&conf=true). Both list the same twelve
+# programmes in one table, so no window carries a division (the "#1".."#8"
+# beside names are tournament seeds). Depth is 2026 only (the owner's
+# ruling, no historical seasons), so every year-list is [2026]. The 2025
+# and 2024 records (year=2025, year=2024) list the same twelve.
+#
+# Not the men's set: the eleven 2026 men's CACC programmes all sponsor
+# women's soccer, and one school sponsors women's soccer only: Lincoln
+# University (Pa.), new to the rib. It played ECC women's soccer in 2022
+# and 2023 (eccsports.org records label "Lincoln PA") and is on every CACC
+# women's records page from 2024, outside the depth. Every other stanza here
+# shares its name, and so its slug, with the CACC men's stanza above, and
+# keeps its abbreviation. Alliance (closed 2023) is on the 2022 women's
+# records only; Bloomfield, which carries men's windows to 2024, is on no
+# women's records page 2022-2026; neither has a women's window.
+#
+# Probe (uv run probe --conference CACC --seasons 2026, 2026-11-08): nine
+# SideArm hosts and three PrestoSports (Wilmington, Bridgeport, Dominican),
+# 2026 served on all twelve; schedule / roster / stats / matches present on
+# every host but Goldey-Beacom, whose schedule links no box scores (matches
+# absent, as on the men's side). Bridgeport and Dominican answered HTTP 202
+# to the first probe's burst (Dominican on every layer, Bridgeport on roster
+# and stats) and read every layer and 2026 on a re-probe the same day: a 202
+# on these hosts is the CloudFront challenge, not a dead host. Hosts are the
+# men's stanzas' hosts (caccathletics.org/members, now a 404) and agree with
+# the athletics_website fields of the member JSON embedded in the 2026
+# women's standings page, which also gave Lincoln's (www.lulions.com).
+# No collect has run, so every stanza is data_status = unverified.
+# No ordinals.
+#
+# Hand corrections: abbreviations restored from the men's stanzas (the
+# probe left six blank and minted GC, HFC, TJ, OSB and DNY); mascots
+# restored where the probe read none (Felician, Wilmington, Bridgeport,
+# Jefferson, Dominican); the drafted title alias "Official Site of
+# University of Bridgeport" and Georgian Court's "GCU" alias dropped (GCU is
+# its abbreviation already); Lincoln's drafted alias "Lincoln University"
+# dropped for a member alias on the same key (see its stanza), and its blank
+# abbreviation set to LUPA; enabled = true; aliases last.
+# Cities equal the men's stanzas'. Peer spellings are from a scan of the
+# 2026 women's schedule pages of all 30 NE10, ECC and CACC members (26
+# SideArm, 4 PrestoSports; read 2026-11-08).
+
+[[schools]]
+name         = "Post"
+abbreviation = "PU"
+abbreviation_resolves = false  # "PU" is also Pace's
+conference   = "CACC"
+mascot       = "Eagles"
+gender       = "women"
+base_url     = "https://posteagles.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Post University"]
+city         = "Waterbury, Conn."
+city_source  = "schedule-page home venue location, https://posteagles.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Caldwell"
+abbreviation = "CU"
+abbreviation_resolves = false  # "CU" is also Cedarville and Concord's (see the men's stanza)
+conference   = "CACC"
+mascot       = "Cougars"
+gender       = "women"
+base_url     = "https://caldwellathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Caldwell University"]
+city         = "Caldwell, N.J."
+city_source  = "schedule-page home venue location, https://caldwellathletics.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Chestnut Hill"
+abbreviation = "CHC"
+conference   = "CACC"
+mascot       = "Griffins"
+gender       = "women"
+base_url     = "https://griffinathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Chestnut Hill College"]
+city         = "Philadelphia, Pa."
+city_source  = "schedule-page home venue location, https://griffinathletics.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The probe found no mascot where it reads; "Golden Falcons" is the site's
+# own name (felicianuathletics.com). The member JSON prints
+# www.felicianathletics.com, which redirects to this host.
+[[schools]]
+name         = "Felician"
+abbreviation = "FU"
+conference   = "CACC"
+mascot       = "Golden Falcons"
+gender       = "women"
+base_url     = "https://felicianuathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Felician University"]
+city         = "Rutherford, N.J."
+city_source  = "schedule-page home venue location, https://felicianuathletics.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# PrestoSports (wildcats.athletics.wilmu.edu/sports/wsoc): every layer
+# present, 2026 served (2026-27/schedule). The schedule page prints no home
+# town; New Castle is the men's stanza's town
+# (design/batch1-membership-2026-09-02.md); the member JSON prints
+# "Wilmington", the mailing address. Peers print "Wilmington University
+# (Del.)" (eight rows), "Wilmington (Del.)", "Wilmington (DE)" and
+# "Wilmington (Del.) University"; every one folds to the name.
+[[schools]]
+name         = "Wilmington"
+abbreviation = "WU"
+abbreviation_resolves = false  # "WU" is also Walsh and Westminster and Wheeling's
+conference   = "CACC"
+mascot       = "Wildcats"
+gender       = "women"
+base_url     = "https://wildcats.athletics.wilmu.edu/sports/wsoc"
+years        = [2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Wilmington University", "Wilmington (Del.)", "WilmU", "Wilimington (DE) University"]
+city         = "New Castle, Del."
+city_source  = "design/batch1-membership-2026-09-02.md (campus town; the schedule page prints no home town)"
+identity_accessed = "2026-11-08"
+
+# PrestoSports behind CloudFront (ubknights.com/sports/wsoc): the first
+# probe got HTTP 202 on roster and stats and no season proof; the re-probe
+# the same day read every layer and 2026. The probe drafted "OSB" and the
+# page title "Official Site of University of Bridgeport" as an alias; UB is
+# the men's short form and the title alias is dropped. The schedule page
+# prints no home town; Bridgeport is the men's stanza's town and the member
+# JSON's location.
+[[schools]]
+name         = "Bridgeport"
+abbreviation = "UB"
+conference   = "CACC"
+mascot       = "Purple Knights"
+gender       = "women"
+base_url     = "https://ubknights.com/sports/wsoc"
+years        = [2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Bridgeport"]
+city         = "Bridgeport, Conn."
+city_source  = "design/batch1-membership-2026-09-02.md (campus town; the schedule page prints no home town), with the caccathletics.org member JSON location (Bridgeport) on the 2026 women's standings page"
+identity_accessed = "2026-11-08"
+
+# The probe minted "GC" and drafted "GCU" as an alias; GCU is the men's
+# stanza's abbreviation and already resolves, so the alias is dropped.
+[[schools]]
+name         = "Georgian Court"
+abbreviation = "GCU"
+conference   = "CACC"
+mascot       = "Lions"
+gender       = "women"
+base_url     = "https://gculions.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Georgian Court University"]
+city         = "Lakewood, N.J."
+city_source  = "schedule-page home venue location, https://gculions.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The probe found schedule, roster and stats but no box-score links
+# (matches absent), as on the men's side, so expect match gaps.
+[[schools]]
+name         = "Goldey-Beacom"
+abbreviation = "GBC"
+conference   = "CACC"
+mascot       = "Lightning"
+gender       = "women"
+base_url     = "https://www.gbcathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Goldey-Beacom College", "Goldey Beacom"]
+city         = "Wilmington, Del."
+city_source  = "schedule-page home venue location, https://www.gbcathletics.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The schedule page prints the venue only ("Tiger Field", read 2026-11-08);
+# the probe minted "HFC" and HFU is the school's short form (the men's
+# stanza's). Philadelphia is the men's stanza's town
+# (design/batch1-membership-2026-09-02.md) and the member JSON's location.
+[[schools]]
+name         = "Holy Family"
+abbreviation = "HFU"
+conference   = "CACC"
+mascot       = "Tigers"
+gender       = "women"
+base_url     = "https://athletics.holyfamily.edu/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Holy Family University"]
+city         = "Philadelphia, Pa."
+city_source  = "design/batch1-membership-2026-09-02.md (campus town; the schedule page prints the venue only), with the caccathletics.org member JSON location (Philadelphia) on the 2026 women's standings page"
+identity_accessed = "2026-11-08"
+
+# The probe found no mascot where it reads and minted "TJ"; "Rams" is the
+# site's own name (jeffersonrams.com) and TJU the men's short form. Peers
+# print "Jefferson University" (Chestnut Hill, Post), "Thomas Jefferson
+# University" (Caldwell, Southern New Hampshire) and "Thomas Jefferson
+# Univ." (Dominican); all three fold to the name or an alias.
+[[schools]]
+name         = "Jefferson"
+abbreviation = "TJU"
+conference   = "CACC"
+mascot       = "Rams"
+gender       = "women"
+base_url     = "https://jeffersonrams.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Thomas Jefferson University", "Thomas Jefferson"]
+city         = "Philadelphia, Pa."
+city_source  = "schedule-page home venue location, https://jeffersonrams.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# PrestoSports (www.chargerathletics.com/sports/wsoc): the first probe got
+# HTTP 202 on every layer; the re-probe the same day read every layer and
+# 2026. The probe drafted "DNY"; DUNY is the men's short form. The schedule
+# page prints no home town; Orangeburg is the men's stanza's town and the
+# member JSON's location. Nine peer rows print "Dominican University of New
+# York", which keys to "dominican of new york" (the men's "Dominican
+# University of N.Y." keys to "dominican of n y"), so it is an alias.
+[[schools]]
+name         = "Dominican"
+# display_name never enters identity (tl-4an.31); the bare "Dominican"
+# resolves here by name, as on the men's stanza.
+display_name = "Dominican (N.Y.)"
+abbreviation = "DUNY"
+conference   = "CACC"
+mascot       = "Chargers"
+gender       = "women"
+base_url     = "https://www.chargerathletics.com/sports/wsoc"
+years        = [2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Dominican University New York", "Dominican College", "Dominican (N.Y.)", "Dominican NY", "Dominican University of N.Y.", "Dominican University of New York"]
+city         = "Orangeburg, N.Y."
+city_source  = "design/batch1-membership-2026-09-02.md (campus town; the schedule page prints no home town), with the caccathletics.org member JSON location (Orangeburg) on the 2026 women's standings page"
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only): Lincoln University, Lincoln
+# University, Pa. (Chester County), not the GLVC's Lincoln (Jefferson City,
+# Mo.), whose women's stanza already claims the name "Lincoln" and the alias
+# "Lincoln University". Every way CACC peers print this school, "Lincoln
+# University (Pa.)" (the records' and standings' label, six peer rows),
+# "Lincoln (Pa.)", "Lincoln (PA)", "Lincoln University" and the bare
+# "Lincoln", folds to that same key "lincoln" once the parenthetical and
+# "University" drop, so none can be an alias here: check-membership would
+# refuse the pair. The records name is therefore qualified the way opponent
+# text already minted it: the ECC's 2022 and 2023 women's records label the
+# school "Lincoln PA" (eccsports.org stats.aspx?path=wsoc&year=2023), which
+# mints lincoln-pa, the membership key. The folded key is claimed as a
+# member alias only: inside a CACC collect it resolves here, and outside it
+# the key is ambiguous between the two Lincolns and the nearest claimant to
+# the collecting school decides (tl-4sg.9.1). display_name carries the
+# qualifier the site prints. LUPA is the short form the site's own
+# scoreboard JSON prints most (home_short_name, lulions.com root page; it
+# also prints "LIN" and "Linc"). The member JSON's location and the home
+# rows print "Lincoln University, Pa", a 2023 Gazetteer CDP (4243544).
+# No plain alias: the site prints only "Lincoln University", "Lincoln
+# University (PA)" and "Lincoln University, Pa", which fold to "lincoln" or
+# to the name's own key "lincoln pa".
+[[schools]]
+name         = "Lincoln PA"
+display_name = "Lincoln (Pa.)"
+abbreviation = "LUPA"
+conference   = "CACC"
+mascot       = "Lions"
+gender       = "women"
+base_url     = "https://lulions.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+member_aliases = ["Lincoln University (Pa.)"]
+city         = "Lincoln University, Pa."
+city_source  = "schedule-page home venue location, https://lulions.com/sports/womens-soccer/schedule/2026, with the caccathletics.org member JSON location (Lincoln University, PA) on the 2026 women's standings page"
+identity_accessed = "2026-11-08"
+
+# ============================================================
 # ECC MEN'S SOCCER - 9 programmes, backfill window 2022-2026
 # ============================================================
 # Source of truth: East Coast Conference per-season records (eccsports.org
@@ -2566,6 +3100,201 @@ aliases      = ["Daemen University", "Daemen College"]
 city         = "Amherst, N.Y."
 city_source  = "design/batch1-membership-2026-09-02.md (campus town; the schedule page prints no home town)"
 identity_accessed = "2026-09-02"
+
+# ============================================================
+# ECC WOMEN'S SOCCER - 8 programmes, authored depth 2026 only
+# ============================================================
+# Source of truth: the East Coast Conference's own women's soccer pages,
+# read 2026-11-08: the live standings (eccsports.org/standings.aspx?path=wsoc,
+# "2026 Women's Soccer Standings") and the 2026 conference statistics
+# (stats.aspx?path=wsoc&year=2026&conf=true). Both list the same eight
+# programmes in one table, so no window carries a division (the asterisk
+# the standings print beside six names marks a tournament berth, not a
+# division). Depth is 2026 only (the owner's ruling, no historical
+# seasons), so every year-list is [2026]. The 2025 and 2024 records
+# (year=2025, year=2024) list the same eight.
+#
+# Not the men's set: the nine 2026 men's ECC programmes less District of
+# Columbia, which is on the conference's member list (the member JSON on
+# the 2026 women's standings page) but on no women's soccer records page
+# 2022-2026, so it has no women's window or stanza. Every stanza here
+# shares its name, and so its slug, with the ECC men's stanza above, and
+# keeps its abbreviation. No women-only school. Lincoln (Pa.) played ECC
+# women's soccer in 2022 and 2023 (records label "Lincoln PA") and is in
+# the CACC from 2024, outside the depth; its 2026 window is the CACC's.
+#
+# Probe (uv run probe --conference ECC --seasons 2026, 2026-11-08): seven
+# SideArm hosts and one PrestoSports host (St. Thomas Aquinas), schedule /
+# roster / stats / matches present and 2026 served on all eight. Hosts are
+# the men's stanzas' hosts (eccsports.org/members), and agree with the
+# member JSON's athletics_website fields. No collect has run, so every
+# stanza is data_status = unverified. No ordinals.
+#
+# Hand corrections: abbreviations restored from the men's stanzas (the
+# probe left four blank and minted RW and STA from initials); mascots
+# restored where the probe read none (Queens, St. Thomas Aquinas,
+# D'Youville); enabled = true; aliases last. Cities equal the men's
+# stanzas': Queens and Staten Island print neighbourhood or borough names
+# the 2023 Gazetteer places file lacks, so the containing place, New York
+# city, is used; Daemen and St. Thomas Aquinas print no home town. Peer
+# spellings are from a scan of the 2026 women's schedule pages of all 30
+# NE10, ECC and CACC members (26 SideArm, 4 PrestoSports; read 2026-11-08).
+
+[[schools]]
+name         = "Molloy"
+abbreviation = "MU"
+abbreviation_resolves = false  # "MU" is also Malone and Millersville's (see the men's stanza)
+conference   = "ECC"
+mascot       = "Lions"
+gender       = "women"
+base_url     = "https://molloylions.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Molloy University", "Molloy College"]
+city         = "Rockville Centre, N.Y."
+city_source  = "schedule-page home venue location, https://molloylions.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The probe minted "RW" from initials; RWU is the men's stanza's short form.
+[[schools]]
+name         = "Roberts Wesleyan"
+abbreviation = "RWU"
+conference   = "ECC"
+mascot       = "Redhawks"
+gender       = "women"
+base_url     = "https://robertsredhawks.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Roberts Wesleyan University", "Roberts Wesleyan College", "Roberts"]
+city         = "Rochester, N.Y."
+city_source  = "schedule-page home venue location, https://robertsredhawks.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The probe found no mascot where it reads; "Knights" is the site's own name
+# (queensknights.com). The schedule page prints Flushing, NY, a Queens
+# neighbourhood the Census places file does not list; the city is the place
+# that contains it, New York city, as on the men's stanza. Saint Anselm and
+# St. Thomas Aquinas print "Queens (N.Y.)", which folds to the name.
+[[schools]]
+name         = "Queens"
+abbreviation = "QC"
+conference   = "ECC"
+mascot       = "Knights"
+gender       = "women"
+base_url     = "https://queensknights.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Queens College", "Queens (N.Y.)", "Queens (NY)", "CUNY Queens"]
+city         = "New York, N.Y."
+city_source  = "the schedule page prints Flushing, NY (Queens), https://queensknights.com/sports/womens-soccer/schedule/2026; the 2023 Gazetteer places file lists no Flushing, so the containing place, New York city, is used"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Mercy"
+abbreviation = "MERCY"
+conference   = "ECC"
+mascot       = "Mavericks"
+gender       = "women"
+base_url     = "https://mercyathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Mercy University", "Mercy College"]
+city         = "Dobbs Ferry, N.Y."
+city_source  = "schedule-page home venue location, https://mercyathletics.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# PrestoSports (www.stacathletics.com/sports/wsoc); the probe read every
+# layer and 2026 (2026-27/schedule) on 2026-11-08. A later burst answered
+# HTTP 202 with an empty body (the CloudFront challenge) and read 200 a few
+# minutes on: a 202 here is the challenge, not a dead host. The probe found
+# no mascot ("Spartans" is the men's stanza's) and minted "STA"; STAC is the
+# men's short form. The schedule page prints no home town; Sparkill is the
+# men's stanza's town (design/batch1-membership-2026-09-02.md), and the
+# member JSON's location prints Sparkill too.
+[[schools]]
+name         = "St. Thomas Aquinas"
+abbreviation = "STAC"
+conference   = "ECC"
+mascot       = "Spartans"
+gender       = "women"
+base_url     = "https://www.stacathletics.com/sports/wsoc"
+years        = [2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["St. Thomas Aquinas College", "Saint Thomas Aquinas", "Saint Thomas Aquinas College", "STAC"]
+city         = "Sparkill, N.Y."
+city_source  = "design/batch1-membership-2026-09-02.md (campus town; the schedule page prints no home town), with the eccsports.org member JSON location (Sparkill) on the 2026 women's standings page"
+identity_accessed = "2026-11-08"
+
+# The probe found no mascot where it reads; "Saints" is the site's own name
+# (dyusaints.com). The apostrophe mints slug d-youville, the men's key;
+# peers' "D’Youville" (curly apostrophe, Saint Michael's 2026) folds
+# to it.
+[[schools]]
+name         = "D'Youville"
+abbreviation = "DYU"
+conference   = "ECC"
+mascot       = "Saints"
+gender       = "women"
+base_url     = "https://dyusaints.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["D'Youville University", "D'Youville College"]
+city         = "Buffalo, N.Y."
+city_source  = "schedule-page home venue location, https://dyusaints.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The schedule page prints Staten Island, NY, a borough the Census places
+# file does not list; the city is the place that contains it, New York city,
+# as on the men's stanza.
+[[schools]]
+name         = "Staten Island"
+abbreviation = "CSI"
+conference   = "ECC"
+mascot       = "Dolphins"
+gender       = "women"
+base_url     = "https://csidolphins.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["College of Staten Island", "CSI", "CUNY Staten Island"]
+city         = "New York, N.Y."
+city_source  = "the schedule page prints Staten Island, NY, https://csidolphins.com/sports/womens-soccer/schedule/2026; the 2023 Gazetteer places file lists no Staten Island, so the containing place, New York city, is used"
+identity_accessed = "2026-11-08"
+
+# The schedule page prints the venue only ("Royal Park"); Amherst is the
+# men's stanza's town (design/batch1-membership-2026-09-02.md) and the
+# member JSON's location. Ten peer rows print "Daemen University (N.Y.)" and
+# one "Daemen (N.Y.)"; both fold to the name once the parenthetical drops.
+[[schools]]
+name         = "Daemen"
+abbreviation = "DU"
+abbreviation_resolves = false  # "DU" is also Davenport and Drury's
+conference   = "ECC"
+mascot       = "Wildcats"
+gender       = "women"
+base_url     = "https://daemenwildcats.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Daemen University", "Daemen College"]
+city         = "Amherst, N.Y."
+city_source  = "design/batch1-membership-2026-09-02.md (campus town; the schedule page prints the venue only), with the eccsports.org member JSON location (Amherst) on the 2026 women's standings page"
+identity_accessed = "2026-11-08"
 
 # ============================================================
 # PSAC MEN'S SOCCER - 13 programmes, backfill window 2022-2026
