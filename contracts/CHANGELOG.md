@@ -6,6 +6,10 @@ fails `pipeline/tests/test_contracts.py`.
 
 ## 2026-11-08
 
+- Membership reference: `NSIC` joins `conferences`, with one window
+  (Minnesota State, women, 2026) so the fixture exhibits it; the fixture's
+  conference list must equal the packaged file's. NSIC is the first code with
+  no men's window.
 - `touchline.fixtures/2`: a fixture may carry `stage`, where in the season the
   match sits, as its schedule page groups it. `stage.phase` is `regular`,
   `postseason` or `unknown`; a postseason stage carries `competition`

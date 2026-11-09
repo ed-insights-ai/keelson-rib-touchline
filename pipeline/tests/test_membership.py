@@ -694,13 +694,19 @@ def test_the_shipped_conferences_carry_divisions_only_where_printed(
 ):
     # The labelled conference-gender-seasons, each from the season its
     # standings first print divisions: Conference Carolinas men from 2023
-    # (three divisions, batch 4) and PSAC women from 2026 (East and West,
-    # authored for 2026 only). The all-or-none rule holds on the shipped
+    # (three divisions, batch 4), and three women's conferences authored for
+    # 2026 only: the PSAC (East and West), Conference Carolinas (East,
+    # Northwest, Southwest) and the MEC (North and South). The MEC's men's
+    # standings print North and South too, but the men's windows were
+    # authored without them, so they stay unlabelled until a ruling adds
+    # them. The all-or-none rule holds on the shipped
     # file, nothing is labelled anywhere else, and every member of a
     # labelled conference-season carries one of its printed divisions.
     divisional = {
         ("CC", "men"): (2023, {"East", "Northwest", "Southwest"}),
         ("PSAC", "women"): (2026, {"East", "West"}),
+        ("CC", "women"): (2026, {"East", "Northwest", "Southwest"}),
+        ("MEC", "women"): (2026, {"North", "South"}),
     }
     span = membership_document["seasons"]
     for conference in membership_document["conferences"]:

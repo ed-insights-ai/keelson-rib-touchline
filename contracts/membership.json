@@ -19,6 +19,7 @@
     "MEC",
     "MIAA",
     "NE10",
+    "NSIC",
     "PACWEST",
     "PBC",
     "PSAC",
@@ -243,6 +244,16 @@
           "from_season": 2024,
           "to_season": 2026,
           "source": "Contract fixture, synthetic: the second window of the divisional split above; see that window's sentence."
+        }
+      ]
+    },
+    "minnesota-state": {
+      "women": [
+        {
+          "conference": "NSIC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Northern Sun Intercollegiate Conference, 2026 Women's Soccer standings and records, https://northernsun.org/standings.aspx?path=wsoc (archive id 164, https://northernsun.org/standings.aspx?standings=164) and https://northernsun.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Minnesota State (one table, no divisions, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://northernsun.org/standings.aspx?standings=155) list the same sixteen programmes."
         }
       ]
     }
