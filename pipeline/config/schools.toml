@@ -5669,3 +5669,266 @@ aliases      = ["MSU Billings", "Montana State University Billings", "Montana St
 city         = "Billings, Mont."
 city_source  = "schedule-page home venue location, https://msubsports.com/sports/mens-soccer (Billings, Mont., read by the probe 2026-09-05); the gnacsports.com member JSON prints Billings, Mont."
 identity_accessed = "2026-09-05"
+
+# ============================================================
+# MIAA WOMEN'S SOCCER - 13 programmes, depth 2026 only
+# ============================================================
+# Source of truth: the Mid-America Intercollegiate Athletics Association's
+# own women's soccer records, https://themiaa.com/stats.aspx?path=wsoc&year=2026&conf=true
+# and the live table https://themiaa.com/standings.aspx?path=wsoc (archive id
+# 170), both read 2026-11-08: 13 members. The MIAA sponsors no men's soccer,
+# so no men's window was leaned on. The depth is 2026 only (owner's ruling
+# for the women's onboarding): every window this block adds opens at 2026
+# as a depth decision, and `years` is [2026] on every stanza. Fort Hays
+# State, Newman, Northeastern State and Rogers State already carried women's
+# MIAA windows from the GAC-era authoring (2016/2019-2025); those windows are
+# extended to 2026 rather than duplicated.
+#
+# Realignment traps, each read off a records or standings page: the 2025
+# standings (standings=158) list the same 13, so nothing moves at the
+# 2025/2026 edge. Arkansas-Fort Smith is a full MIAA member (member JSON on
+# the standings page) with no women's soccer on any table and gets no
+# window or stanza. Lincoln (Mo.) left the MIAA for the GLVC in 2024 and is
+# absent from every women's table read (2016, 2018, 2019, 2025, 2026).
+# Pittsburg State is absent from the 2019 table (standings=85) and present
+# in 2025: a programme start outside the depth. Lindenwood and Southwest
+# Baptist left before 2019, outside the depth. No renames.
+#
+# Sites: hosts from the member JSON on the standings page (athletics_website).
+# All 13 probed 2026-11-08 (uv run probe --conference MIAA --seasons 2026
+# --name ...): SideArm on every host, schedule / roster / stats / matches
+# present, 2026 served. No PrestoSports host, no dead host. Live schedule
+# URLs are {base_url}/schedule/2026. No collect has run, so every stanza is
+# data_status = unverified. No ordinals.
+#
+# Names: the records labels, except Northwest Missouri, whose records label
+# "Northwest Missouri" drops the State the school and its site print
+# ("Northwest Missouri State Bearcats"); the stanza carries the school's
+# name and the label is an alias (the Wisconsin-Parkside precedent). Fort
+# Hays State, Newman, Northeastern State and Rogers State reuse their men's
+# stanzas' `name` so both genders share one slug. Abbreviations are the
+# short forms the schools' own scoreboards print (UCM, UCO, ESU, FHSU,
+# MSSU, MWSU, UNK, NSU, NWMSU, PSU, RSU) or the MIAA member JSON's
+# shortname (Newman "NU", Washburn "WU"); NU, NSU and WU stay display-only
+# as on the men's side, and ESU is display-only because East Stroudsburg
+# carries it in the PSAC. Aliases add the published long name and the box
+# vocabulary peers print that the fold does not reach ("Central Mo.",
+# "Central Okla.", "Mo. Southern St.", "MoWest", "Neb.-Kearney",
+# "Northwest Mo. St."), read off the members' 2026 scoreboard JSON.
+# Towns are the probe's schedule-page reading, second-sourced to the member
+# JSON's `location`; Central Oklahoma's home rows print only "EDMOND".
+
+[[schools]]
+name         = "Central Missouri"
+abbreviation = "UCM"
+conference   = "MIAA"
+mascot       = "Jennies"
+gender       = "women"
+base_url     = "https://ucmathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# The site names its teams "Mules & Jennies"; the women's teams are the Jennies.
+aliases      = ["University of Central Missouri", "Central Mo."]
+city         = "Warrensburg, Mo."
+city_source  = "schedule-page home venue location, https://ucmathletics.com/sports/womens-soccer (Warrensburg, Mo., read by the probe 2026-11-08); the themiaa.com member JSON prints Warrensburg, MO"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Central Oklahoma"
+abbreviation = "UCO"
+conference   = "MIAA"
+mascot       = "Bronchos"
+gender       = "women"
+base_url     = "https://bronchosports.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Central Oklahoma", "Central Okla."]
+city         = "Edmond, Okla."
+city_source  = "the themiaa.com member JSON prints Edmond, Okla. (read 2026-11-08); the schedule page's home rows print EDMOND at Tom Thompson Field, https://bronchosports.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Emporia State"
+abbreviation = "ESU"
+abbreviation_resolves = false  # "ESU" is also East Stroudsburg's
+conference   = "MIAA"
+mascot       = "Hornets"
+gender       = "women"
+base_url     = "https://esuhornets.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Emporia State University"]
+city         = "Emporia, Kan."
+city_source  = "schedule-page home venue location, https://esuhornets.com/sports/womens-soccer (Emporia, Kan., read by the probe 2026-11-08); the themiaa.com member JSON prints Emporia, Kan."
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Fort Hays State"
+abbreviation = "FHSU"
+conference   = "MIAA"
+mascot       = "Tigers"
+gender       = "women"
+base_url     = "https://fhsuathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Fort Hays State University", "Fort Hays"]
+city         = "Hays, Kan."
+city_source  = "schedule-page home venue location, https://fhsuathletics.com/sports/womens-soccer (Hays, Kan., read by the probe 2026-11-08); the themiaa.com member JSON prints Hays, Kan."
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Missouri Southern"
+abbreviation = "MSSU"
+conference   = "MIAA"
+mascot       = "Lions"
+gender       = "women"
+base_url     = "https://mssulions.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Missouri Southern State University", "Mo. Southern St."]
+city         = "Joplin, Mo."
+city_source  = "schedule-page home venue location, https://mssulions.com/sports/womens-soccer (Joplin, Mo., read by the probe 2026-11-08); the themiaa.com member JSON prints Joplin, Mo."
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Missouri Western"
+abbreviation = "MWSU"
+conference   = "MIAA"
+mascot       = "Griffons"
+gender       = "women"
+base_url     = "https://gogriffons.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Missouri Western State University", "MoWest"]
+city         = "St. Joseph, Mo."
+city_source  = "schedule-page home venue location, https://gogriffons.com/sports/womens-soccer (St. Joseph, Mo., read by the probe 2026-11-08); the themiaa.com member JSON prints St. Joseph, Mo."
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Nebraska Kearney"
+abbreviation = "UNK"
+conference   = "MIAA"
+mascot       = "Lopers"
+gender       = "women"
+base_url     = "https://lopers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Nebraska at Kearney", "Neb.-Kearney"]
+city         = "Kearney, Neb."
+city_source  = "schedule-page home venue location, https://lopers.com/sports/womens-soccer (Kearney, Neb., read by the probe 2026-11-08); the themiaa.com member JSON prints Kearney, Neb."
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Newman"
+abbreviation = "NU"
+abbreviation_resolves = false  # "NU" is also Northwood's (men's side; kept display-only to match)
+conference   = "MIAA"
+mascot       = "Jets"
+gender       = "women"
+base_url     = "https://newmanjets.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Newman University"]
+city         = "Wichita, Kan."
+city_source  = "schedule-page home venue location, https://newmanjets.com/sports/womens-soccer (Wichita, Kan., read by the probe 2026-11-08); the themiaa.com member JSON prints Wichita, KS"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Northeastern State"
+abbreviation = "NSU"
+abbreviation_resolves = false  # "NSU" is also Nova Southeastern's (men's side; kept display-only to match)
+conference   = "MIAA"
+mascot       = "River Hawks"
+gender       = "women"
+base_url     = "https://goriverhawksgo.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Northeastern State University"]
+city         = "Tahlequah, Okla."
+city_source  = "schedule-page home venue location, https://goriverhawksgo.com/sports/womens-soccer (Tahlequah, Okla., read by the probe 2026-11-08); the themiaa.com member JSON prints Tahlequah, Okla."
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Northwest Missouri State"
+abbreviation = "NWMSU"
+conference   = "MIAA"
+mascot       = "Bearcats"
+gender       = "women"
+base_url     = "https://bearcatsports.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# The MIAA records and standings print "Northwest Missouri"; boxes print
+# "Northwest Mo. St." (bearcatsports.com scoreboard JSON, 2026-11-08).
+aliases      = ["Northwest Missouri State University", "Northwest Missouri", "Northwest Mo. St."]
+city         = "Maryville, Mo."
+city_source  = "schedule-page home venue location, https://bearcatsports.com/sports/womens-soccer (Maryville, Mo., read by the probe 2026-11-08); the themiaa.com member JSON prints Maryville, Mo."
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Pittsburg State"
+abbreviation = "PSU"
+conference   = "MIAA"
+mascot       = "Gorillas"
+gender       = "women"
+base_url     = "https://pittstategorillas.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Pittsburg State University"]
+city         = "Pittsburg, Kan."
+city_source  = "schedule-page home venue location, https://pittstategorillas.com/sports/womens-soccer (Pittsburg, Kan., read by the probe 2026-11-08); the themiaa.com member JSON prints Pittsburg, Kan."
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Rogers State"
+abbreviation = "RSU"
+conference   = "MIAA"
+mascot       = "Hillcats"
+gender       = "women"
+base_url     = "https://rsuhillcats.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Rogers State University"]
+city         = "Claremore, Okla."
+city_source  = "schedule-page home venue location, https://rsuhillcats.com/sports/womens-soccer (Claremore, Okla., read by the probe 2026-11-08); the themiaa.com member JSON prints Claremore, OK"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Washburn"
+abbreviation = "WU"
+abbreviation_resolves = false  # "WU" is also Walsh, Westminster, Wheeling and Wilmington's (men's side)
+conference   = "MIAA"
+mascot       = "Ichabods"
+gender       = "women"
+base_url     = "https://wusports.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Washburn University"]
+city         = "Topeka, Kan."
+city_source  = "schedule-page home venue location, https://wusports.com/sports/womens-soccer (Topeka, Kan., read by the probe 2026-11-08); the themiaa.com member JSON prints Topeka, Kan."
+identity_accessed = "2026-11-08"

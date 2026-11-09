@@ -1097,6 +1097,74 @@
         }
       }
     },
+    "central-missouri": {
+      "name": "Central Missouri",
+      "nickname": "Jennies",
+      "abbreviation": "UCM",
+      "city": "Warrensburg, Mo.",
+      "point": {
+        "lat": 38.7624,
+        "lon": -93.7253
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://ucmathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://ucmathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://ucmathletics.com/sports/womens-soccer (Warrensburg, Mo., read by the probe 2026-11-08); the themiaa.com member JSON prints Warrensburg, MO",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2977092",
+          "name": "Warrensburg city",
+          "state": "MO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "central-oklahoma": {
+      "name": "Central Oklahoma",
+      "nickname": "Bronchos",
+      "abbreviation": "UCO",
+      "city": "Edmond, Okla.",
+      "point": {
+        "lat": 35.6738,
+        "lon": -97.4131
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://bronchosports.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://bronchosports.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "the themiaa.com member JSON prints Edmond, Okla. (read 2026-11-08); the schedule page's home rows print EDMOND at Tom Thompson Field, https://bronchosports.com/sports/womens-soccer/schedule/2026",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4023200",
+          "name": "Edmond city",
+          "state": "OK",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "chaminade": {
       "name": "Chaminade",
       "nickname": "Silverswords",
@@ -2252,6 +2320,40 @@
           "geoid": "5125792",
           "name": "Emory CDP",
           "state": "VA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "emporia-state": {
+      "name": "Emporia State",
+      "nickname": "Hornets",
+      "abbreviation": "ESU",
+      "city": "Emporia, Kan.",
+      "point": {
+        "lat": 38.4029,
+        "lon": -96.1929
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://esuhornets.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://esuhornets.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://esuhornets.com/sports/womens-soccer (Emporia, Kan., read by the probe 2026-11-08); the themiaa.com member JSON prints Emporia, Kan.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2021275",
+          "name": "Emporia city",
+          "state": "KS",
           "accessed": "2023-09-26"
         }
       }
@@ -4164,6 +4266,40 @@
         }
       }
     },
+    "missouri-southern": {
+      "name": "Missouri Southern",
+      "nickname": "Lions",
+      "abbreviation": "MSSU",
+      "city": "Joplin, Mo.",
+      "point": {
+        "lat": 37.0752,
+        "lon": -94.5013
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://mssulions.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://mssulions.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://mssulions.com/sports/womens-soccer (Joplin, Mo., read by the probe 2026-11-08); the themiaa.com member JSON prints Joplin, Mo.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2937592",
+          "name": "Joplin city",
+          "state": "MO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "missouri-st-louis": {
       "name": "Missouri-St. Louis",
       "nickname": "Tritons",
@@ -4196,6 +4332,40 @@
           "state": "MO",
           "accessed": "2023-09-26",
           "note": "matched explicitly by GEOID: the programme prints 'St. Louis' and the Gazetteer lists the place as 'St. Louis city'"
+        }
+      }
+    },
+    "missouri-western": {
+      "name": "Missouri Western",
+      "nickname": "Griffons",
+      "abbreviation": "MWSU",
+      "city": "St. Joseph, Mo.",
+      "point": {
+        "lat": 39.7595,
+        "lon": -94.8211
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gogriffons.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gogriffons.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://gogriffons.com/sports/womens-soccer (St. Joseph, Mo., read by the probe 2026-11-08); the themiaa.com member JSON prints St. Joseph, Mo.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2964550",
+          "name": "St. Joseph city",
+          "state": "MO",
+          "accessed": "2023-09-26"
         }
       }
     },
@@ -4365,6 +4535,40 @@
           "geoid": "0820000",
           "name": "Denver city",
           "state": "CO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "nebraska-kearney": {
+      "name": "Nebraska Kearney",
+      "nickname": "Lopers",
+      "abbreviation": "UNK",
+      "city": "Kearney, Neb.",
+      "point": {
+        "lat": 40.7017,
+        "lon": -99.0823
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://lopers.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://lopers.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://lopers.com/sports/womens-soccer (Kearney, Neb., read by the probe 2026-11-08); the themiaa.com member JSON prints Kearney, Neb.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3125055",
+          "name": "Kearney city",
+          "state": "NE",
           "accessed": "2023-09-26"
         }
       }
@@ -4603,6 +4807,40 @@
           "geoid": "2651900",
           "name": "Marquette city",
           "state": "MI",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "northwest-missouri-state": {
+      "name": "Northwest Missouri State",
+      "nickname": "Bearcats",
+      "abbreviation": "NWMSU",
+      "city": "Maryville, Mo.",
+      "point": {
+        "lat": 40.3425,
+        "lon": -94.87
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://bearcatsports.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://bearcatsports.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://bearcatsports.com/sports/womens-soccer (Maryville, Mo., read by the probe 2026-11-08); the themiaa.com member JSON prints Maryville, Mo.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2946640",
+          "name": "Maryville city",
+          "state": "MO",
           "accessed": "2023-09-26"
         }
       }
@@ -5011,6 +5249,40 @@
           "geoid": "4238288",
           "name": "Johnstown city",
           "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "pittsburg-state": {
+      "name": "Pittsburg State",
+      "nickname": "Gorillas",
+      "abbreviation": "PSU",
+      "city": "Pittsburg, Kan.",
+      "point": {
+        "lat": 37.4126,
+        "lon": -94.6983
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://pittstategorillas.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://pittstategorillas.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://pittstategorillas.com/sports/womens-soccer (Pittsburg, Kan., read by the probe 2026-11-08); the themiaa.com member JSON prints Pittsburg, Kan.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2056025",
+          "name": "Pittsburg city",
+          "state": "KS",
           "accessed": "2023-09-26"
         }
       }
@@ -7120,6 +7392,40 @@
           "geoid": "3956294",
           "name": "North Canton city",
           "state": "OH",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "washburn": {
+      "name": "Washburn",
+      "nickname": "Ichabods",
+      "abbreviation": "WU",
+      "city": "Topeka, Kan.",
+      "point": {
+        "lat": 39.0347,
+        "lon": -95.6948
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://wusports.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://wusports.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://wusports.com/sports/womens-soccer (Topeka, Kan., read by the probe 2026-11-08); the themiaa.com member JSON prints Topeka, Kan.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2071000",
+          "name": "Topeka city",
+          "state": "KS",
           "accessed": "2023-09-26"
         }
       }
