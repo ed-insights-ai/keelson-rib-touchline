@@ -80,6 +80,13 @@ class SchoolConfig:
     # other programme. check-membership refuses a member alias that another
     # stanza of the same conference and gender claims.
     member_aliases: list[str] = field(default_factory=list)
+    # The programme's first season, for a programme that STARTED inside the
+    # rib's depth (Wayne State (Mich.) women, 2026). 0, the default, says
+    # nothing: a window's from_season is often a depth decision, not a
+    # founding, so it is never read as one. A claimant whose first season is
+    # after the season being collected drops out of the distance tiebreak
+    # (resolution_scope): a name cannot mean a team that did not exist yet.
+    first_season: int = 0
     # The town the programme plays in, as its schedule page prints it
     # ("Alamosa, Colo.", "Ada, OK"); the programmes reference normalises it to
     # AP style and resolves it to one Gazetteer place. city_source cites where
@@ -217,6 +224,7 @@ def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
             aliases=entry.get("aliases", []),
             abbreviation_resolves=entry.get("abbreviation_resolves", True),
             member_aliases=entry.get("member_aliases", []),
+            first_season=int(entry.get("first_season", 0)),
             city=entry.get("city", ""),
             city_source=entry.get("city_source", ""),
             identity_accessed=entry.get("identity_accessed", ""),

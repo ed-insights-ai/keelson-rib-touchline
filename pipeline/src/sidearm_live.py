@@ -1211,10 +1211,15 @@ class ResolutionScope:
         """Record that ``printed`` on ``owner``'s page read as the nearest claimant."""
         chosen, nearest = ranked[0]
         others = ", ".join(f"{slug} ({km:,.0f} km)" for slug, km in ranked[1:])
+        over = (
+            f"over {others}"
+            if others
+            else f"the only claimant playing in {self.season}"
+        )
         self._record(
             printed,
             f"resolution: {printed!r} on {owner}'s page read as {chosen} "
-            f"({nearest:,.0f} km) over {others}",
+            f"({nearest:,.0f} km) {over}",
         )
 
     def _record(self, printed: str, line: str) -> None:
@@ -1308,6 +1313,17 @@ def resolution_scope(
     claims: dict[str, str] = {}
     claimed: dict[str, set[str]] = {}
     abbreviations: dict[str, str] = {}
+    # Programmes that had not started by this season (an explicit
+    # first_season, never inferred from a window): a printed name cannot
+    # mean them, so they leave the tiebreak. McKendree's and Rockhurst's 2023
+    # pages print "Wayne State College" for the NSIC's Wayne State (Neb.),
+    # and the nearest claimant was Wayne State (Mich.), whose women's soccer
+    # began in 2026.
+    unborn = {
+        programme_slug(school.name)
+        for school in schools
+        if school.gender == gender and school.first_season > season
+    }
     for school in schools:
         if school.gender != gender:
             continue
@@ -1327,7 +1343,9 @@ def resolution_scope(
         members=frozenset(members),
         claims=claims,
         claimants={
-            key: frozenset(slugs) for key, slugs in claimed.items() if len(slugs) > 1
+            key: frozenset(slugs - unborn or slugs)
+            for key, slugs in claimed.items()
+            if len(slugs) > 1
         },
         points=dict(points or {}),
         abbreviations=abbreviations,
@@ -1413,6 +1431,7 @@ def opponent_slug(
     key = _identity_key(name)
     if not key:
         return programme_slug(_clean_team_name(name))
+    key = _division_seed_key(name, key, aliases, scope)
     if scope is not None and key in scope.claims:
         chosen = scope.claims[key]
         otherwise = _unscoped_slug(key, aliases)
@@ -1427,6 +1446,41 @@ def opponent_slug(
                 scope.note_distance(_clean_team_name(name), owner, ranked)
             return chosen
     return _unscoped_slug(key, aliases)
+
+
+# A conference that seeds its tournament by division can spell the division
+# out as a word after the seed: bloomsburgathletics.com 2026 (women, game
+# 18292) prints "<span>#4 East</span>" before "Millersville University", so
+# the rank prefix strips "#4" and leaves "East Millersville", minted as
+# east-millersville beside Millersville's own record of the same match. The
+# word cannot be stripped by grammar: "#2 West Chester" and "#4 East
+# Stroudsburg" are ranked schools whose names begin with it. So the word goes
+# only when everything else agrees it is not a name: the string carried a
+# rank prefix, the whole key is claimed by no programme and no member, and
+# the rest of the key is claimed by a MEMBER of the collecting conference,
+# the only side a conference tournament's seed is ever printed for.
+_DIVISION_WORDS = frozenset({"east", "west", "north", "south"})
+
+
+def _division_seed_key(
+    name: str,
+    key: str,
+    aliases: dict[str, str],
+    scope: ResolutionScope | None,
+) -> str:
+    """The key without a spelled-out division word after a seed, or the key."""
+    if scope is None or not _RANK_PREFIX.match(str(name or "").strip()):
+        return key
+    head, _, rest = key.partition(" ")
+    if (
+        head in _DIVISION_WORDS
+        and rest
+        and key not in aliases
+        and key not in scope.claims
+        and rest in scope.claims
+    ):
+        return rest
+    return key
 
 
 def _unscoped_slug(key: str, aliases: dict[str, str]) -> str:

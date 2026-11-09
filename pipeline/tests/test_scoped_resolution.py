@@ -671,3 +671,71 @@ def test_collect_reads_the_points_once_and_survives_their_absence(monkeypatch):
 
     monkeypatch.setattr(collect_board, "load_programmes", missing)
     assert collect_board._programme_points() == {}
+
+
+def test_a_division_word_after_a_seed_is_dropped_only_onto_a_member():
+    """Bloomsburg's 2026 women's page (game 18292) seeds the PSAC tournament
+    by division and prints "#4 East" before "Millersville University". The
+    rank prefix stripped "#4" and left "East Millersville", filed as
+    east-millersville beside Millersville's own record of the same match.
+    The word goes only after a rank, only when nothing claims the whole key,
+    and only onto a member of the collecting conference: the schools whose
+    names begin with the word keep it, ranked or not."""
+    women = identity_aliases(SCHOOLS, "women")
+    members = conference_members(
+        SCHOOLS, "women", "PSAC", season=2026, document=MEMBERSHIP
+    )
+    scope = resolution_scope(SCHOOLS, "women", members, conference="PSAC", season=2026)
+    seeded = "#4 East Millersville University"
+    assert opponent_slug(seeded, women, scope=scope) == "millersville"
+    for ranked, plain in (
+        ("#2 West Chester University", "West Chester University"),
+        ("#1 East Stroudsburg", "East Stroudsburg"),
+    ):
+        own = opponent_slug(plain, women, scope=scope)
+        assert own in members
+        assert opponent_slug(ranked, women, scope=scope) == own
+    # No rank, no scope, or a remainder no member claims: the key stands.
+    assert opponent_slug("East Millersville University", women, scope=scope) == (
+        "east-millersville"
+    )
+    assert opponent_slug(seeded, women) == "east-millersville"
+    assert opponent_slug("#3 West Harding", women, scope=scope) == "west-harding"
+
+
+def test_a_programme_that_had_not_started_leaves_the_tiebreak():
+    """McKendree's 2023 women's page prints "Wayne State College" for the
+    NSIC's Wayne State (Neb.). Outside an NSIC collect the key is ambiguous
+    between it (member alias) and Wayne State (Mich.) (name), and the
+    distance tiebreak picked Detroit, whose women's soccer began in 2026.
+    An explicit first_season takes the unborn programme out of the tiebreak
+    for earlier seasons, and leaves it in from its first."""
+    from scripts.collect_board import _programme_points
+
+    points = _programme_points()
+
+    def scope(season):
+        members = conference_members(
+            SCHOOLS, "women", "GLVC", season=season, document=MEMBERSHIP
+        )
+        return resolution_scope(
+            SCHOOLS,
+            "women",
+            members,
+            conference="GLVC",
+            season=season,
+            points=points,
+        )
+
+    women = identity_aliases(SCHOOLS, "women")
+    early = scope(2023)
+    assert early.claimants.get("wayne state") == frozenset({"wayne-state-nebraska"})
+    assert (
+        opponent_slug("Wayne State College", women, scope=early, owner="mckendree")
+        == "wayne-state-nebraska"
+    )
+    assert any("the only claimant playing in 2023" in n for n in early.notes())
+    later = scope(2026)
+    assert later.claimants.get("wayne state") == frozenset(
+        {"wayne-state", "wayne-state-nebraska"}
+    )
