@@ -220,6 +220,29 @@ def test_every_measured_shootout_phrasing_reads_its_winner_from_a_letter_or_name
     }
 
 
+def test_the_owners_result_spelled_out_as_a_word_reads_like_its_letter() -> None:
+    """Harding 2026 women 15540 and Lenoir-Rhyne 2026 men 15034: the owner's
+    verdict on the shootout written as a word, in parentheses or bare."""
+    # The owner lost, winner's count first: the other side takes the 4.
+    assert _shootout("T, 0-0 (Lost 4-2 in PKs)") == {
+        "winner": "tiffin",
+        "home": 2,
+        "away": 4,
+    }
+    assert _shootout("T, 1-1 Lost 4-3 in PK's", home=False) == {
+        "winner": "tiffin",
+        "home": 4,
+        "away": 3,
+    }
+    assert _shootout("T, 2-2 (Won 5-4 on penalties)") == {
+        "winner": "lincoln",
+        "home": 5,
+        "away": 4,
+    }
+    # A word in someone else's sentence is not the owner's verdict.
+    assert _shootout("T, 1-1 (Quincy won 4-2 on PKs)") is None
+
+
 def test_a_display_only_abbreviation_names_one_side_of_the_tie() -> None:
     """Rockhurst's "RU" does not resolve (Roosevelt shares it), but between
     Rockhurst and Maryville it names exactly one side."""
