@@ -1302,6 +1302,40 @@
         }
       }
     },
+    "clarion": {
+      "name": "Clarion",
+      "nickname": "Golden Eagles",
+      "abbreviation": "CLAR",
+      "city": "Clarion, Pa.",
+      "point": {
+        "lat": 41.2094,
+        "lon": -79.3801
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://clariongoldeneagles.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://clariongoldeneagles.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://clariongoldeneagles.com/sports/womens-soccer/schedule/2026",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4213800",
+          "name": "Clarion borough",
+          "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "clayton-state": {
       "name": "Clayton State",
       "nickname": "Lakers",
@@ -2083,6 +2117,40 @@
           "state": "FL",
           "accessed": "2023-09-26",
           "note": "matched explicitly by GEOID: the programme prints 'St. Petersburg' and the Gazetteer lists the place as 'St. Petersburg city'"
+        }
+      }
+    },
+    "edinboro": {
+      "name": "Edinboro",
+      "nickname": "Fighting Scots",
+      "abbreviation": "EDI",
+      "city": "Edinboro, Pa.",
+      "point": {
+        "lat": 41.875,
+        "lon": -80.1242
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gofightingscots.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gofightingscots.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://gofightingscots.com/sports/womens-soccer/schedule/2026",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4222608",
+          "name": "Edinboro borough",
+          "state": "PA",
+          "accessed": "2023-09-26"
         }
       }
     },
@@ -3007,6 +3075,40 @@
         }
       }
     },
+    "iup": {
+      "name": "IUP",
+      "nickname": "Crimson Hawks",
+      "abbreviation": "IUP",
+      "city": "Indiana, Pa.",
+      "point": {
+        "lat": 40.622,
+        "lon": -79.1553
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://iupathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://iupathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://iupathletics.com/sports/womens-soccer/schedule/2026",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4236816",
+          "name": "Indiana borough",
+          "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "jefferson": {
       "name": "Jefferson",
       "nickname": "Rams",
@@ -3139,6 +3241,40 @@
           "geoid": "4708540",
           "name": "Bristol city",
           "state": "TN",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "kutztown": {
+      "name": "Kutztown",
+      "nickname": "Golden Bears",
+      "abbreviation": "KUTZ",
+      "city": "Kutztown, Pa.",
+      "point": {
+        "lat": 40.5213,
+        "lon": -75.7773
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://kubears.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://kubears.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://kubears.com/sports/womens-soccer/schedule/2026",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4240656",
+          "name": "Kutztown borough",
+          "state": "PA",
           "accessed": "2023-09-26"
         }
       }
@@ -3615,6 +3751,40 @@
           "geoid": "3912000",
           "name": "Canton city",
           "state": "OH",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "mansfield": {
+      "name": "Mansfield",
+      "nickname": "Mounties",
+      "abbreviation": "MANS",
+      "city": "Mansfield, Pa.",
+      "point": {
+        "lat": 41.8062,
+        "lon": -77.0784
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gomounties.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gomounties.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://gomounties.com/sports/womens-soccer/schedule/2026",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4247080",
+          "name": "Mansfield borough",
+          "state": "PA",
           "accessed": "2023-09-26"
         }
       }
