@@ -145,6 +145,14 @@
           "to_season": 2026,
           "source": "Great Midwest Athletic Conference, 2022 and 2026 Men's Soccer records, https://greatmidwestsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://greatmidwestsports.com/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "G-MAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Midwest Athletic Conference, 2026 Women's Soccer standings and records, https://greatmidwestsports.com/standings.aspx?path=wsoc (archive id 191, https://greatmidwestsports.com/standings.aspx?standings=191) and https://greatmidwestsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Ashland (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://greatmidwestsports.com/standings.aspx?standings=178) list the same twelve programmes."
+        }
       ]
     },
     "assumption": {
@@ -601,6 +609,14 @@
           "to_season": 2026,
           "source": "Great Midwest Athletic Conference, 2022 and 2026 Men's Soccer records, https://greatmidwestsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://greatmidwestsports.com/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "G-MAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Midwest Athletic Conference, 2026 Women's Soccer standings and records, https://greatmidwestsports.com/standings.aspx?path=wsoc (archive id 191, https://greatmidwestsports.com/standings.aspx?standings=191) and https://greatmidwestsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Cedarville (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://greatmidwestsports.com/standings.aspx?standings=178) list the same twelve programmes."
+        }
       ]
     },
     "central-missouri": {
@@ -658,6 +674,15 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Mountain East Conference, 2022 and 2026 Men's Soccer records, https://mountaineast.org/stats.aspx?path=msoc&year=2022&conf=true and https://mountaineast.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes, so nobody arrived at or left across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "MEC",
+          "division": "South",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mountain East Conference, 2026 Women's Soccer standings and records, https://mountaineast.org/standings.aspx?path=wsoc (archive id 152, https://mountaineast.org/standings.aspx?standings=152) and https://mountaineast.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Charleston, in the South division as the 2026 standings print it (two divisions, North and South, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://mountaineast.org/standings.aspx?standings=175) list it too."
         }
       ]
     },
@@ -860,6 +885,15 @@
           "to_season": 2026,
           "source": "Mountain East Conference, 2022 and 2026 Men's Soccer records, https://mountaineast.org/stats.aspx?path=msoc&year=2022&conf=true and https://mountaineast.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "MEC",
+          "division": "South",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mountain East Conference, 2026 Women's Soccer standings and records, https://mountaineast.org/standings.aspx?path=wsoc (archive id 152, https://mountaineast.org/standings.aspx?standings=152) and https://mountaineast.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Concord, in the South division as the 2026 standings print it (two divisions, North and South, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://mountaineast.org/standings.aspx?standings=175) list it too."
+        }
       ]
     },
     "concordia-irvine": {
@@ -996,6 +1030,14 @@
           "to_season": 2026,
           "source": "Great Lakes Intercollegiate Athletic Conference, 2022 and 2026 Men's Soccer records, https://gliac.org/stats.aspx?path=msoc&year=2022&conf=true and https://gliac.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "GLIAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Lakes Intercollegiate Athletic Conference, 2026 Women's Soccer standings and records, https://gliac.org/standings.aspx?path=wsoc (archive id 333, https://gliac.org/standings.aspx?standings=333) and https://gliac.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Davenport (ten programmes in one table, no divisions; the table's eleventh row, \"Great Lakes Intercollegiate Athletic Conference\" at 0-0, is the conference's placeholder, not a team). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://gliac.org/standings.aspx?standings=322 and standings=308) list it too."
+        }
       ]
     },
     "davis-elkins": {
@@ -1005,6 +1047,15 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Mountain East Conference, 2022 and 2026 Men's Soccer records, https://mountaineast.org/stats.aspx?path=msoc&year=2022&conf=true and https://mountaineast.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes, so nobody arrived at or left across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "MEC",
+          "division": "North",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mountain East Conference, 2026 Women's Soccer standings and records, https://mountaineast.org/standings.aspx?path=wsoc (archive id 152, https://mountaineast.org/standings.aspx?standings=152) and https://mountaineast.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Davis & Elkins, in the North division as the 2026 standings print it (two divisions, North and South, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://mountaineast.org/standings.aspx?standings=175) list it too, in the South division."
         }
       ]
     },
@@ -1264,6 +1315,17 @@
         }
       ]
     },
+    "fairmont-state": {
+      "women": [
+        {
+          "conference": "MEC",
+          "division": "North",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mountain East Conference, 2026 Women's Soccer standings and records, https://mountaineast.org/standings.aspx?path=wsoc (archive id 152, https://mountaineast.org/standings.aspx?standings=152) and https://mountaineast.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Fairmont State, in the North division as the 2026 standings print it (two divisions, North and South, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://mountaineast.org/standings.aspx?standings=175) list it too."
+        }
+      ]
+    },
     "felician": {
       "men": [
         {
@@ -1279,6 +1341,16 @@
           "from_season": 2026,
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2026 Women's Soccer standings and records, https://caccathletics.org/standings.aspx?path=wsoc and https://caccathletics.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Felician (one table, no divisions, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://caccathletics.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same twelve programmes."
+        }
+      ]
+    },
+    "ferris-state": {
+      "women": [
+        {
+          "conference": "GLIAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Lakes Intercollegiate Athletic Conference, 2026 Women's Soccer standings and records, https://gliac.org/standings.aspx?path=wsoc (archive id 333, https://gliac.org/standings.aspx?standings=333) and https://gliac.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Ferris State (ten programmes in one table, no divisions; the table's eleventh row, \"Great Lakes Intercollegiate Athletic Conference\" at 0-0, is the conference's placeholder, not a team). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://gliac.org/standings.aspx?standings=322 and standings=308) list it too."
         }
       ]
     },
@@ -1309,6 +1381,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Great Midwest Athletic Conference, 2022 and 2026 Men's Soccer records, https://greatmidwestsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://greatmidwestsports.com/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "G-MAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Midwest Athletic Conference, 2026 Women's Soccer standings and records, https://greatmidwestsports.com/standings.aspx?path=wsoc (archive id 191, https://greatmidwestsports.com/standings.aspx?standings=191) and https://greatmidwestsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Findlay (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://greatmidwestsports.com/standings.aspx?standings=178) list the same twelve programmes."
         }
       ]
     },
@@ -1484,6 +1564,15 @@
           "to_season": 2026,
           "source": "Mountain East Conference, 2022 and 2026 Men's Soccer records, https://mountaineast.org/stats.aspx?path=msoc&year=2022&conf=true and https://mountaineast.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "MEC",
+          "division": "North",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mountain East Conference, 2026 Women's Soccer standings and records, https://mountaineast.org/standings.aspx?path=wsoc (archive id 152, https://mountaineast.org/standings.aspx?standings=152) and https://mountaineast.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Frostburg State, in the North division as the 2026 standings print it (two divisions, North and South, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://mountaineast.org/standings.aspx?standings=175) list it too."
+        }
       ]
     },
     "gannon": {
@@ -1551,6 +1640,17 @@
         }
       ]
     },
+    "glenville-state": {
+      "women": [
+        {
+          "conference": "MEC",
+          "division": "South",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mountain East Conference, 2026 Women's Soccer standings and records, https://mountaineast.org/standings.aspx?path=wsoc (archive id 152, https://mountaineast.org/standings.aspx?standings=152) and https://mountaineast.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Glenville State, in the South division as the 2026 standings print it (two divisions, North and South, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://mountaineast.org/standings.aspx?standings=175) list it too."
+        }
+      ]
+    },
     "goldey-beacom": {
       "men": [
         {
@@ -1566,6 +1666,16 @@
           "from_season": 2026,
           "to_season": 2026,
           "source": "Central Atlantic Collegiate Conference, 2026 Women's Soccer standings and records, https://caccathletics.org/standings.aspx?path=wsoc and https://caccathletics.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Goldey-Beacom (one table, no divisions, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 records (https://caccathletics.org/stats.aspx?path=wsoc&year=2025&conf=true and year=2024) list the same twelve programmes."
+        }
+      ]
+    },
+    "grand-valley-state": {
+      "women": [
+        {
+          "conference": "GLIAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Lakes Intercollegiate Athletic Conference, 2026 Women's Soccer standings and records, https://gliac.org/standings.aspx?path=wsoc (archive id 333, https://gliac.org/standings.aspx?standings=333) and https://gliac.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Grand Valley State (ten programmes in one table, no divisions; the table's eleventh row, \"Great Lakes Intercollegiate Athletic Conference\" at 0-0, is the conference's placeholder, not a team). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://gliac.org/standings.aspx?standings=322 and standings=308) list it too."
         }
       ]
     },
@@ -1752,6 +1862,14 @@
           "to_season": 2026,
           "source": "Great Midwest Athletic Conference, 2022 and 2026 Men's Soccer records, https://greatmidwestsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://greatmidwestsports.com/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "G-MAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Midwest Athletic Conference, 2026 Women's Soccer standings and records, https://greatmidwestsports.com/standings.aspx?path=wsoc (archive id 191, https://greatmidwestsports.com/standings.aspx?standings=191) and https://greatmidwestsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Kentucky Wesleyan (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://greatmidwestsports.com/standings.aspx?standings=178) list the same twelve programmes."
+        }
       ]
     },
     "king": {
@@ -1798,6 +1916,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Great Midwest Athletic Conference, 2022 and 2026 Men's Soccer records, https://greatmidwestsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://greatmidwestsports.com/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "G-MAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Midwest Athletic Conference, 2026 Women's Soccer standings and records, https://greatmidwestsports.com/standings.aspx?path=wsoc (archive id 191, https://greatmidwestsports.com/standings.aspx?standings=191) and https://greatmidwestsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Lake Erie (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://greatmidwestsports.com/standings.aspx?standings=178) list the same twelve programmes."
         }
       ]
     },
@@ -2028,6 +2154,14 @@
           "to_season": 2026,
           "source": "Great Midwest Athletic Conference, 2022 and 2026 Men's Soccer records, https://greatmidwestsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://greatmidwestsports.com/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "G-MAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Midwest Athletic Conference, 2026 Women's Soccer standings and records, https://greatmidwestsports.com/standings.aspx?path=wsoc (archive id 191, https://greatmidwestsports.com/standings.aspx?standings=191) and https://greatmidwestsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Malone (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://greatmidwestsports.com/standings.aspx?standings=178) list the same twelve programmes."
+        }
       ]
     },
     "mansfield": {
@@ -2144,6 +2278,16 @@
           "from_season": 2022,
           "to_season": 2023,
           "source": "Pennsylvania State Athletic Conference, 2022 and 2023 Men's Soccer records, https://psacsports.org/stats.aspx?path=msoc&year=2022&conf=true and https://psacsports.org/stats.aspx?path=msoc&year=2023&conf=true (accessed 2026-09-03); listed in both. Absent from the 2024 records (https://psacsports.org/stats.aspx?path=msoc&year=2024&conf=true); Mercyhurst joined the Northeast Conference (Division I) for 2024-25, ending its PSAC affiliation at the close of spring 2024 (https://psacsports.org/news/2024/4/3/general-psac-issues-statement-on-mercyhurst-university.aspx and https://www.mercyhurst.edu/d1). The 2021 records (year=2021) list it too."
+        }
+      ]
+    },
+    "michigan-tech": {
+      "women": [
+        {
+          "conference": "GLIAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Lakes Intercollegiate Athletic Conference, 2026 Women's Soccer standings and records, https://gliac.org/standings.aspx?path=wsoc (archive id 333, https://gliac.org/standings.aspx?standings=333) and https://gliac.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Michigan Tech (ten programmes in one table, no divisions; the table's eleventh row, \"Great Lakes Intercollegiate Athletic Conference\" at 0-0, is the conference's placeholder, not a team). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://gliac.org/standings.aspx?standings=322 and standings=308) list it too."
         }
       ]
     },
@@ -2585,6 +2729,14 @@
           "to_season": 2026,
           "source": "Great Lakes Intercollegiate Athletic Conference, 2022 and 2026 Men's Soccer records, https://gliac.org/stats.aspx?path=msoc&year=2022&conf=true and https://gliac.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "GLIAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Lakes Intercollegiate Athletic Conference, 2026 Women's Soccer standings and records, https://gliac.org/standings.aspx?path=wsoc (archive id 333, https://gliac.org/standings.aspx?standings=333) and https://gliac.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Northern Michigan (ten programmes in one table, no divisions; the table's eleventh row, \"Great Lakes Intercollegiate Athletic Conference\" at 0-0, is the conference's placeholder, not a team). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://gliac.org/standings.aspx?standings=322 and standings=308) list it too."
+        }
       ]
     },
     "northern-state": {
@@ -2643,6 +2795,14 @@
           "to_season": 2026,
           "source": "Great Midwest Athletic Conference, 2022 and 2026 Men's Soccer records, https://greatmidwestsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://greatmidwestsports.com/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). Absent from the 2021 records (https://greatmidwestsports.com/stats.aspx?path=msoc&year=2021&conf=true): Northwood joined the G-MAC on 2022-07-01 (https://www.gonorthwood.com/general/2022-23/releases/20220630nbd6ac); first listed 2022."
         }
+      ],
+      "women": [
+        {
+          "conference": "G-MAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Midwest Athletic Conference, 2026 Women's Soccer standings and records, https://greatmidwestsports.com/standings.aspx?path=wsoc (archive id 191, https://greatmidwestsports.com/standings.aspx?standings=191) and https://greatmidwestsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Northwood (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://greatmidwestsports.com/standings.aspx?standings=178) list the same twelve programmes."
+        }
       ]
     },
     "notre-dame-college": {
@@ -2680,6 +2840,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Great Midwest Athletic Conference, 2022 and 2026 Men's Soccer records, https://greatmidwestsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://greatmidwestsports.com/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "G-MAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Midwest Athletic Conference, 2026 Women's Soccer standings and records, https://greatmidwestsports.com/standings.aspx?path=wsoc (archive id 191, https://greatmidwestsports.com/standings.aspx?standings=191) and https://greatmidwestsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Ohio Dominican (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://greatmidwestsports.com/standings.aspx?standings=178) list the same twelve programmes."
         }
       ]
     },
@@ -2834,6 +3002,15 @@
           "to_season": 2026,
           "source": "Mountain East Conference, 2024 and 2026 Men's Soccer records, https://mountaineast.org/stats.aspx?path=msoc&year=2024&conf=true and https://mountaineast.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both and in 2025. Absent from the 2023 records (https://mountaineast.org/stats.aspx?path=msoc&year=2023&conf=true) and every earlier season 2021-2022: Point Park accepted the MEC's invitation on 2024-01-16 and was welcomed as a provisional Division II member on 2024-07-11 (https://pointparksports.com/news/2024/1/16/1_16_2024_63.aspx and https://mountaineast.org/news/2024/7/11/mountain-east-conference-officially-welcomes-point-park-university.aspx); first listed 2024."
         }
+      ],
+      "women": [
+        {
+          "conference": "MEC",
+          "division": "North",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mountain East Conference, 2026 Women's Soccer standings and records, https://mountaineast.org/standings.aspx?path=wsoc (archive id 152, https://mountaineast.org/standings.aspx?standings=152) and https://mountaineast.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Point Park, in the North division as the 2026 standings print it (two divisions, North and South, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://mountaineast.org/standings.aspx?standings=175) list it too."
+        }
       ]
     },
     "post": {
@@ -2861,6 +3038,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Great Lakes Intercollegiate Athletic Conference, 2022 and 2026 Men's Soccer records, https://gliac.org/stats.aspx?path=msoc&year=2022&conf=true and https://gliac.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "GLIAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Lakes Intercollegiate Athletic Conference, 2026 Women's Soccer standings and records, https://gliac.org/standings.aspx?path=wsoc (archive id 333, https://gliac.org/standings.aspx?standings=333) and https://gliac.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Purdue Northwest (ten programmes in one table, no divisions; the table's eleventh row, \"Great Lakes Intercollegiate Athletic Conference\" at 0-0, is the conference's placeholder, not a team). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://gliac.org/standings.aspx?standings=322 and standings=308) list it too."
         }
       ]
     },
@@ -3010,6 +3195,14 @@
           "to_season": 2026,
           "source": "Great Lakes Intercollegiate Athletic Conference, 2024 and 2026 Men's Soccer records, https://gliac.org/stats.aspx?path=msoc&year=2024&conf=true and https://gliac.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both and in 2025. Absent from the 2023 records (https://gliac.org/stats.aspx?path=msoc&year=2023&conf=true) and from 2022 and 2021: Roosevelt joined the GLIAC as its 11th member on 2024-07-01 with competition from fall 2024 (https://gliac.org/news/2024/6/25/general-roosevelt.aspx and https://www.roosevelt.edu/stories/news/lakers-officially-join-great-lakes-intercollegiate-athletic-conference-gliac); first listed 2024, as a plain row, and the 2024 standings (https://gliac.org/standings.aspx?standings=307) mark it a regular-season champion, so its seasons count from 2024 although NCAA championships stayed closed to it until its active Division II membership on 2026-09-01 (https://gliac.org/news/2026/7/8/general-ncaa-approves-roosevelt-as-full-time-ncaa-division-ii-member.aspx)."
         }
+      ],
+      "women": [
+        {
+          "conference": "GLIAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Lakes Intercollegiate Athletic Conference, 2026 Women's Soccer standings and records, https://gliac.org/standings.aspx?path=wsoc (archive id 333, https://gliac.org/standings.aspx?standings=333) and https://gliac.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Roosevelt (ten programmes in one table, no divisions; the table's eleventh row, \"Great Lakes Intercollegiate Athletic Conference\" at 0-0, is the conference's placeholder, not a team). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://gliac.org/standings.aspx?standings=322 and standings=308) list it too."
+        }
       ]
     },
     "saginaw-valley-state": {
@@ -3019,6 +3212,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Great Lakes Intercollegiate Athletic Conference, 2022 and 2026 Men's Soccer records, https://gliac.org/stats.aspx?path=msoc&year=2022&conf=true and https://gliac.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "GLIAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Lakes Intercollegiate Athletic Conference, 2026 Women's Soccer standings and records, https://gliac.org/standings.aspx?path=wsoc (archive id 333, https://gliac.org/standings.aspx?standings=333) and https://gliac.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Saginaw Valley State (ten programmes in one table, no divisions; the table's eleventh row, \"Great Lakes Intercollegiate Athletic Conference\" at 0-0, is the conference's placeholder, not a team). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://gliac.org/standings.aspx?standings=322 and standings=308) list it too."
         }
       ]
     },
@@ -3212,6 +3413,15 @@
           "from_season": 2026,
           "to_season": 2026,
           "source": "Mountain East Conference, 2026 Men's Soccer standings, https://mountaineast.org/standings.aspx?path=msoc (accessed 2026-09-03; the 2026 records page, https://mountaineast.org/stats.aspx?path=msoc&year=2026&conf=true, still prints no statistics); listed there. Absent from every records page 2021-2025 (https://mountaineast.org/stats.aspx?path=msoc&year=2025&conf=true and earlier): Shawnee State accepted the MEC's invitation on 2025-06-27 and joined from the NAIA in July 2026 (https://www.shawnee.edu/news/mountain-east-conference-extends-invitation-shawnee-state-university and https://mountaineast.org/news/2025/6/27/shawneestate.aspx); first listed 2026."
+        }
+      ],
+      "women": [
+        {
+          "conference": "MEC",
+          "division": "South",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mountain East Conference, 2026 Women's Soccer standings and records, https://mountaineast.org/standings.aspx?path=wsoc (archive id 152, https://mountaineast.org/standings.aspx?standings=152) and https://mountaineast.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Shawnee State, in the South division as the 2026 standings print it (two divisions, North and South, twelve programmes). The window opens at 2026 because the membership does: Shawnee State is absent from the 2025 standings (https://mountaineast.org/standings.aspx?standings=175, eleven programmes) and joined the MEC from the NAIA for 2026-27 (mountaineast.org news 2025/6/27, as cited on the men's window). The authored depth is 2026 only in any case (the owner's ruling)."
         }
       ]
     },
@@ -3626,6 +3836,14 @@
           "to_season": 2026,
           "source": "Great Midwest Athletic Conference, 2023 and 2026 Men's Soccer records, https://greatmidwestsports.com/stats.aspx?path=msoc&year=2023&conf=true and https://greatmidwestsports.com/standings.aspx?path=msoc (accessed 2026-09-03); listed in both and in 2024 and 2025. Absent from the 2022 records (https://greatmidwestsports.com/stats.aspx?path=msoc&year=2022&conf=true) and from 2021: Thomas More joined NCAA Division II provisionally on 2022-07-14 with conference competition from 2023-24 (https://greatmidwestsports.com/news/2022/7/14/general-thomas-more-officially-joins-ncaa-division-ii.aspx); first listed 2023."
         }
+      ],
+      "women": [
+        {
+          "conference": "G-MAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Midwest Athletic Conference, 2026 Women's Soccer standings and records, https://greatmidwestsports.com/standings.aspx?path=wsoc (archive id 191, https://greatmidwestsports.com/standings.aspx?standings=191) and https://greatmidwestsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Thomas More (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://greatmidwestsports.com/standings.aspx?standings=178) list the same twelve programmes."
+        }
       ]
     },
     "tiffin": {
@@ -3635,6 +3853,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Great Midwest Athletic Conference, 2022 and 2026 Men's Soccer records, https://greatmidwestsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://greatmidwestsports.com/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "G-MAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Midwest Athletic Conference, 2026 Women's Soccer standings and records, https://greatmidwestsports.com/standings.aspx?path=wsoc (archive id 191, https://greatmidwestsports.com/standings.aspx?standings=191) and https://greatmidwestsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Tiffin (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://greatmidwestsports.com/standings.aspx?standings=178) list the same twelve programmes."
         }
       ]
     },
@@ -3815,6 +4041,16 @@
         }
       ]
     },
+    "ursuline": {
+      "women": [
+        {
+          "conference": "G-MAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Midwest Athletic Conference, 2026 Women's Soccer standings and records, https://greatmidwestsports.com/standings.aspx?path=wsoc (archive id 191, https://greatmidwestsports.com/standings.aspx?standings=191) and https://greatmidwestsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Ursuline (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://greatmidwestsports.com/standings.aspx?standings=178) list the same twelve programmes."
+        }
+      ]
+    },
     "usc-aiken": {
       "men": [
         {
@@ -3933,6 +4169,14 @@
           "to_season": 2026,
           "source": "Great Midwest Athletic Conference, 2022 and 2026 Men's Soccer records, https://greatmidwestsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://greatmidwestsports.com/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "G-MAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Midwest Athletic Conference, 2026 Women's Soccer standings and records, https://greatmidwestsports.com/standings.aspx?path=wsoc (archive id 191, https://greatmidwestsports.com/standings.aspx?standings=191) and https://greatmidwestsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Walsh (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://greatmidwestsports.com/standings.aspx?standings=178) list the same twelve programmes."
+        }
       ]
     },
     "washburn": {
@@ -3942,6 +4186,16 @@
           "from_season": 2026,
           "to_season": 2026,
           "source": "Mid-America Intercollegiate Athletics Association, 2026 Women's Soccer records and standings, https://themiaa.com/stats.aspx?path=wsoc&year=2026&conf=true and https://themiaa.com/standings.aspx?standings=170 (accessed 2026-11-08); listed in both as \"Washburn\". Also listed in the 2025 Women's Soccer Standings (https://themiaa.com/standings.aspx?standings=158), so no move falls at the edge; the window opens at 2026 because the authored women's depth is 2026 only (owner's ruling), a depth decision, not an arrival."
+        }
+      ]
+    },
+    "wayne-state": {
+      "women": [
+        {
+          "conference": "GLIAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Lakes Intercollegiate Athletic Conference, 2026 Women's Soccer standings and records, https://gliac.org/standings.aspx?path=wsoc (archive id 333, https://gliac.org/standings.aspx?standings=333) and https://gliac.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Wayne State University (ten programmes in one table, no divisions; the table's eleventh row, \"Great Lakes Intercollegiate Athletic Conference\" at 0-0, is the conference's placeholder, not a team). The window opens at 2026 because the programme does: Wayne State is absent from the 2025 standings (https://gliac.org/standings.aspx?standings=322, nine programmes), its 2026 schedule (https://wsuathletics.com/sports/womens-soccer/schedule/2026) marks the opener \"First regular-season game in program history\", and https://wsuathletics.com/news/2026/11/5/womens-soccer-soccer-all-gliac.aspx calls 2026 its inaugural season (both accessed 2026-11-08). The authored depth is 2026 only in any case (the owner's ruling)."
         }
       ]
     },
@@ -4010,6 +4264,15 @@
           "to_season": 2026,
           "source": "Mountain East Conference, 2022 and 2026 Men's Soccer records, https://mountaineast.org/stats.aspx?path=msoc&year=2022&conf=true and https://mountaineast.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "MEC",
+          "division": "North",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mountain East Conference, 2026 Women's Soccer standings and records, https://mountaineast.org/standings.aspx?path=wsoc (archive id 152, https://mountaineast.org/standings.aspx?standings=152) and https://mountaineast.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label West Liberty, in the North division as the 2026 standings print it (two divisions, North and South, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://mountaineast.org/standings.aspx?standings=175) list it too."
+        }
       ]
     },
     "west-texas-a-m": {
@@ -4030,6 +4293,17 @@
         }
       ]
     },
+    "west-virginia-state": {
+      "women": [
+        {
+          "conference": "MEC",
+          "division": "South",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mountain East Conference, 2026 Women's Soccer standings and records, https://mountaineast.org/standings.aspx?path=wsoc (archive id 152, https://mountaineast.org/standings.aspx?standings=152) and https://mountaineast.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label West Virginia State, in the South division as the 2026 standings print it (two divisions, North and South, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://mountaineast.org/standings.aspx?standings=175) list it too."
+        }
+      ]
+    },
     "west-virginia-wesleyan": {
       "men": [
         {
@@ -4037,6 +4311,15 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Mountain East Conference, 2022 and 2026 Men's Soccer records, https://mountaineast.org/stats.aspx?path=msoc&year=2022&conf=true and https://mountaineast.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes, so nobody arrived at or left across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "MEC",
+          "division": "South",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mountain East Conference, 2026 Women's Soccer standings and records, https://mountaineast.org/standings.aspx?path=wsoc (archive id 152, https://mountaineast.org/standings.aspx?standings=152) and https://mountaineast.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label West Virginia Wesleyan, in the South division as the 2026 standings print it (two divisions, North and South, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://mountaineast.org/standings.aspx?standings=175) list it too."
         }
       ]
     },
@@ -4130,6 +4413,15 @@
           "to_season": 2026,
           "source": "Mountain East Conference, 2022 and 2026 Men's Soccer records, https://mountaineast.org/stats.aspx?path=msoc&year=2022&conf=true and https://mountaineast.org/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same nine programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "MEC",
+          "division": "North",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mountain East Conference, 2026 Women's Soccer standings and records, https://mountaineast.org/standings.aspx?path=wsoc (archive id 152, https://mountaineast.org/standings.aspx?standings=152) and https://mountaineast.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Wheeling, in the North division as the 2026 standings print it (two divisions, North and South, twelve programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://mountaineast.org/standings.aspx?standings=175) list it too."
+        }
       ]
     },
     "william-jewell": {
@@ -4203,6 +4495,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Great Lakes Intercollegiate Athletic Conference, 2022 and 2026 Men's Soccer records, https://gliac.org/stats.aspx?path=msoc&year=2022&conf=true and https://gliac.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both under the label Parkside, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "GLIAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Lakes Intercollegiate Athletic Conference, 2026 Women's Soccer standings and records, https://gliac.org/standings.aspx?path=wsoc (archive id 333, https://gliac.org/standings.aspx?standings=333) and https://gliac.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Parkside (ten programmes in one table, no divisions; the table's eleventh row, \"Great Lakes Intercollegiate Athletic Conference\" at 0-0, is the conference's placeholder, not a team). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 and 2024 standings (https://gliac.org/standings.aspx?standings=322 and standings=308) list it too."
         }
       ]
     },

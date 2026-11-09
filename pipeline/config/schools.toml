@@ -5319,6 +5319,281 @@ city_source  = "the college's own site as captured by the Wayback Machine on 202
 identity_accessed = "2026-09-03"
 
 # ============================================================
+# MEC WOMEN'S SOCCER - 12 programmes, authored depth 2026 only
+# ============================================================
+# Source of truth: the Mountain East Conference's own women's soccer pages,
+# read 2026-11-08: the live standings (mountaineast.org/standings.aspx?path=wsoc,
+# "2026 Women's Soccer Standings", archive id 152) and the 2026 conference
+# statistics (stats.aspx?path=wsoc&year=2026&conf=true). Both list the same
+# twelve programmes; the standings print two divisions, North (6) and South
+# (6), so every 2026 women's window carries its division. Depth is 2026 only
+# (the owner's ruling, no historical seasons), so every year-list is [2026].
+#
+# Not the men's set. Nine of the ten 2026 men's programmes also sponsor
+# women's soccer and share their men's stanza's name, so both genders share
+# one slug. Salem is a men's soccer associate only and is on no women's
+# table. Three members sponsor women's soccer only and are new to the rib:
+# Fairmont State, Glenville State and West Virginia State. Shawnee State is a
+# real 2026 arrival, not only a depth edge: absent from the 2025 standings
+# (standings=175, eleven programmes), it joined from the NAIA in July 2026
+# (see the men's stanza). Davis & Elkins moved from the South division (2025)
+# to the North (2026). Alderson Broaddus and Notre Dame College closed before
+# the depth. Glenville State renamed itself from College to University in
+# 2022; the records print "Glenville State" throughout, which is the name.
+#
+# Probe (uv run probe --conference MEC --seasons 2026, 2026-11-08): all 12
+# hosts SideArm, schedule / roster / stats / matches present, 2026 served.
+# West Liberty's fingerprint carried asset and runtime evidence only. Hosts
+# came from the athletics_website fields of the member JSON on the standings
+# page; Glenville State's (gscpioneers.com) answers 301 to gstatepioneers.com,
+# which was re-probed and is the base. No collect has run, so every stanza
+# is data_status = unverified. No ordinals.
+#
+# Short forms: the nine shared schools keep their men's abbreviation and its
+# resolve flag (the probe minted DEWV, FS, PP, SS, WL, WVWES, WJU); FSU stays
+# display-only on Frostburg State because Ferris State (GLIAC women) carries
+# it too and peers print it for Fairmont State. The three new ones carry the
+# short form their own SideArm scoreboard JSON prints (FAIR, GSU, WVSU).
+# Aliases add the published long names and the box-score vocabulary the fold
+# does not reach ("West Va. Wesleyan"); peer spellings are from a scan of all
+# twelve 2026 schedule pages. Several peers print division seeds before a
+# name ("#1S West Virginia State University", "#2N Fairmont State
+# University", "#4S Charleston (WV)"): a seed marker for the collector, not a
+# spelling to alias.
+
+# South division.
+[[schools]]
+name         = "Charleston"
+abbreviation = "UCWV"
+conference   = "MEC"
+mascot       = "Golden Eagles"
+gender       = "women"
+base_url     = "https://ucgoldeneagles.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Charleston"]
+city         = "Charleston, W.Va."
+city_source  = "schedule-page home venue location, https://ucgoldeneagles.com/sports/womens-soccer/schedule/2026 (Charleston, WV Welch Athletic Complex); the member JSON on mountaineast.org/standings.aspx?path=wsoc prints Charleston, W.Va. (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# South division. The probe found no short form; CU is the men's stanza's and
+# the member JSON's.
+[[schools]]
+name         = "Concord"
+abbreviation = "CU"
+abbreviation_resolves = false  # "CU" is also Caldwell and Cedarville's (see the men's stanza)
+conference   = "MEC"
+mascot       = "Mountain Lions"
+gender       = "women"
+base_url     = "https://cumountainlions.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Concord University"]
+city         = "Athens, W.Va."
+city_source  = "schedule-page home venue location, https://cumountainlions.com/sports/womens-soccer/schedule/2026 (Athens, W.Va. Callaghan Stadium); the member JSON prints Athens, W.Va. (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# North division in 2026 (South in 2024 and 2025). The probe read "DEWV" and
+# no home town; D&E is the men's stanza's and the site's own scoreboard short
+# form. The schedule's home rows print "Elkins, W. Va. Nuttall Field".
+[[schools]]
+name         = "Davis & Elkins"
+abbreviation = "D&E"
+conference   = "MEC"
+mascot       = "Senators"
+gender       = "women"
+base_url     = "https://senatornation.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Davis & Elkins College", "Davis and Elkins", "Davis and Elkins College", "D&E"]
+city         = "Elkins, W.Va."
+city_source  = "schedule-page home venue location, https://senatornation.com/sports/womens-soccer/schedule/2026 (Elkins, W. Va. Nuttall Field); the member JSON prints Elkins, WV (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# North division. New institution (women's soccer only). FAIR is the site's
+# own scoreboard short form and the member JSON's abbreviation; peers also
+# print "FSU", which Frostburg State and Ferris State carry. The probe read "FS".
+[[schools]]
+name         = "Fairmont State"
+abbreviation = "FAIR"
+conference   = "MEC"
+mascot       = "Fighting Falcons"
+gender       = "women"
+base_url     = "https://fightingfalcons.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Fairmont State University"]
+city         = "Fairmont, W.Va."
+city_source  = "schedule-page home venue location, https://fightingfalcons.com/sports/womens-soccer/schedule/2026 (Fairmont, W.Va. Duvall-Rosier Field); the member JSON prints Fairmont, W.Va. (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# North division. The probe read "FS"; FSU is the men's stanza's. Its own
+# scoreboard prints FROST, the member JSON's abbreviation; FSU is kept so
+# both genders carry one short form, display-only because Ferris State
+# (GLIAC women) carries FSU too.
+[[schools]]
+name         = "Frostburg State"
+abbreviation = "FSU"
+abbreviation_resolves = false  # "FSU" is also Ferris State's (GLIAC women)
+conference   = "MEC"
+mascot       = "Bobcats"
+gender       = "women"
+base_url     = "https://frostburgsports.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Frostburg State University", "Frostburg"]
+city         = "Frostburg, Md."
+city_source  = "schedule-page home venue location, https://frostburgsports.com/sports/womens-soccer/schedule/2026 (Frostburg, Md. Bobcat Stadium); the member JSON prints Frostburg, MD (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# South division. New institution (women's soccer only). The member JSON
+# links gscpioneers.com, which answers 301 to gstatepioneers.com, the host
+# re-probed. GSU is the site's own scoreboard short form (it also prints
+# "Glen"); the member JSON prints "GSC". The site names itself Glenville
+# State University (Glenville State College until 2022), which folds onto the
+# name either way.
+[[schools]]
+name         = "Glenville State"
+abbreviation = "GSU"
+conference   = "MEC"
+mascot       = "Pioneers"
+gender       = "women"
+base_url     = "https://gstatepioneers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Glenville State University", "Glenville State College"]
+city         = "Glenville, W.Va."
+city_source  = "schedule-page home venue location, https://gstatepioneers.com/sports/womens-soccer/schedule/2026 (Glenville, W.Va. Morris Family Health & Fitness Complex); the member JSON prints Glenville, W.Va. (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# North division. The probe read "PP" and no mascot; PPU and "Pioneers" are
+# the men's stanza's, the site's own scoreboard short form and the member
+# JSON's.
+[[schools]]
+name         = "Point Park"
+abbreviation = "PPU"
+conference   = "MEC"
+mascot       = "Pioneers"
+gender       = "women"
+base_url     = "https://pointparksports.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Point Park University"]
+city         = "Pittsburgh, Pa."
+city_source  = "schedule-page home venue location, https://pointparksports.com/sports/womens-soccer/schedule/2026 (Pittsburgh, Pa. F.N.B. Stadium); the member JSON prints Pittsburgh, Pa. (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# South division. First MEC season 2026 (joined from the NAIA; absent from the
+# 2025 women's standings, standings=175). The probe read "SS" and no mascot;
+# SSU and "Bears" are the men's stanza's, the site's own scoreboard short
+# form and the member JSON's.
+[[schools]]
+name         = "Shawnee State"
+abbreviation = "SSU"
+conference   = "MEC"
+mascot       = "Bears"
+gender       = "women"
+base_url     = "https://ssubears.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Shawnee State University"]
+city         = "Portsmouth, Ohio"
+city_source  = "schedule-page home venue location, https://ssubears.com/sports/womens-soccer/schedule/2026 (Portsmouth, Ohio Shawnee Turf); the member JSON prints Portsmouth, Oh. (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# North division. The probe read "WL"; WLU is the men's stanza's, the site's
+# own scoreboard short form and the member JSON's.
+[[schools]]
+name         = "West Liberty"
+abbreviation = "WLU"
+conference   = "MEC"
+mascot       = "Hilltoppers"
+gender       = "women"
+base_url     = "https://hilltoppersports.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["West Liberty University"]
+city         = "West Liberty, W.Va."
+city_source  = "schedule-page home venue location, https://hilltoppersports.com/sports/womens-soccer/schedule/2026 (West Liberty, W.Va. West Family Athletic Complex); the member JSON prints West Liberty, W.Va. (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# South division. New institution (women's soccer only). WVSU is the site's
+# own scoreboard short form and the member JSON's; box scores print "West
+# Virginia St.", which folds onto the name. Institute is the campus's
+# community (a census-designated place), printed on every home row.
+[[schools]]
+name         = "West Virginia State"
+abbreviation = "WVSU"
+conference   = "MEC"
+mascot       = "Yellow Jackets"
+gender       = "women"
+base_url     = "https://wvsuyellowjackets.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["West Virginia State University"]
+city         = "Institute, W.Va."
+city_source  = "schedule-page home venue location, https://wvsuyellowjackets.com/sports/womens-soccer/schedule/2026 (Institute, W.Va.); the member JSON prints Institute, W.Va. (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# South division. The probe read "WVWES"; WVWC is the men's stanza's and the
+# member JSON's. Box scores print "West Va. Wesleyan"; West Virginia State
+# prints "West Virginia Wesleyan University", which folds onto the name.
+[[schools]]
+name         = "West Virginia Wesleyan"
+abbreviation = "WVWC"
+conference   = "MEC"
+mascot       = "Bobcats"
+gender       = "women"
+base_url     = "https://wesleyanbobcats.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["West Virginia Wesleyan College", "WV Wesleyan", "West Va. Wesleyan"]
+city         = "Buckhannon, W.Va."
+city_source  = "schedule-page home venue location, https://wesleyanbobcats.com/sports/womens-soccer/schedule/2026 (Buckhannon, W.Va. Culpepper Stadium); the member JSON prints Buckhannon, W.Va. (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# North division. The probe read the Wheeling Jesuit code "WJU"; WU is the
+# men's stanza's and the member JSON's abbreviation.
+[[schools]]
+name         = "Wheeling"
+abbreviation = "WU"
+abbreviation_resolves = false  # "WU" is also Walsh and Westminster and Wilmington's (see the men's stanza)
+conference   = "MEC"
+mascot       = "Cardinals"
+gender       = "women"
+base_url     = "https://wucardinals.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Wheeling University"]
+city         = "Wheeling, W.Va."
+city_source  = "schedule-page home venue location, https://wucardinals.com/sports/womens-soccer/schedule/2026 (Wheeling, WV Bishop Schmitt Field); the member JSON prints Wheeling, W.Va. (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# ============================================================
 # G-MAC MEN'S SOCCER - 11 programmes, backfill window 2022-2026
 # ============================================================
 # 12 in the window, Trevecca's stanza sits in the GSC section: its G-MAC
@@ -5559,6 +5834,278 @@ city_source  = "schedule-page home venue location, https://athletics.walsh.edu/s
 identity_accessed = "2026-09-03"
 
 # ============================================================
+# G-MAC WOMEN'S SOCCER - 12 programmes, authored depth 2026 only
+# ============================================================
+# Source of truth: the Great Midwest Athletic Conference's own women's
+# soccer pages, read 2026-11-08: the live standings
+# (greatmidwestsports.com/standings.aspx?path=wsoc, "2026 Women's Soccer
+# Standings", archive id 191) and the 2026 conference statistics
+# (stats.aspx?path=wsoc&year=2026&conf=true). Both list the same twelve
+# programmes in one table, no divisions. The 2025 standings (standings=178)
+# list the same twelve, so nobody arrived or left at the depth's edge. Depth
+# is 2026 only (the owner's ruling, no historical seasons), so every
+# year-list is [2026].
+#
+# Not the men's set. The eleven 2026 men's programmes all sponsor women's
+# soccer and share their men's stanza's name, so both genders share one
+# slug. Ursuline, a women's college, sponsors women's soccer only and is new
+# to the rib. Hillsdale is a full member (member JSON on the standings page)
+# with no women's soccer on any table and gets no stanza. The member JSON
+# also lists UIndy as "Coming Summer 2027" and inactive Davenport and Roberts
+# Wesleyan rows; none is on a 2026 women's table, so none has a G-MAC window
+# (Davenport's women's window is GLIAC 2026). Trevecca left after 2023, outside
+# the depth.
+#
+# Probe (uv run probe --conference G-MAC --seasons 2026, 2026-11-08): eleven
+# hosts SideArm, schedule / roster / stats / matches present, 2026 served
+# (Lake Erie's women's page publishes box scores, which its men's page does
+# not). Northwood is PrestoSports: the first probe of
+# www.gonorthwood.com/sports/wsoc answered an empty HTTP 202 on every layer
+# (an AWS WAF challenge); the re-probe the same evening read PrestoSports
+# with all four layers present and 2026 served. Hosts came from the
+# athletics_website fields of the member JSON on the standings page. No
+# collect has run, so every stanza is data_status = unverified. No ordinals.
+#
+# Short forms: the eleven shared schools keep their men's abbreviation and
+# its resolve flag (the probe minted initials or nothing: A, C, F, LE, NAM,
+# OD, TM, blank). Ursuline carries URS, the short form its own scoreboard
+# prints ("Urs") and peers print in capitals; the member JSON's "UC" is also
+# Charleston's (MEC). Aliases add the published long names and the box-score
+# vocabulary the fold does not reach ("Ky. Wesleyan"); peer spellings are
+# from a scan of all twelve 2026 schedule pages.
+
+# The probe found no short form or mascot; AU and "Eagles" are the men's
+# stanza's and the member JSON's.
+[[schools]]
+name         = "Ashland"
+abbreviation = "AU"
+abbreviation_resolves = false  # "AU" is also Adelphi and Alliance's (see the men's stanza)
+conference   = "G-MAC"
+mascot       = "Eagles"
+gender       = "women"
+base_url     = "https://goashlandeagles.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Ashland University"]
+city         = "Ashland, Ohio"
+city_source  = "schedule-page home venue location, https://goashlandeagles.com/sports/womens-soccer/schedule/2026 (Ashland, OH); the member JSON on greatmidwestsports.com/standings.aspx?path=wsoc prints Ashland, OH (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# The probe found no short form; CU is the men's stanza's, the site's own
+# scoreboard short form and the member JSON's.
+[[schools]]
+name         = "Cedarville"
+abbreviation = "CU"
+abbreviation_resolves = false  # "CU" is also Caldwell and Concord's (see the men's stanza)
+conference   = "G-MAC"
+mascot       = "Yellow Jackets"
+gender       = "women"
+base_url     = "https://yellowjackets.cedarville.edu/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Cedarville University"]
+city         = "Cedarville, Ohio"
+city_source  = "schedule-page home venue location, https://yellowjackets.cedarville.edu/sports/womens-soccer/schedule/2026 (Cedarville, OH); the member JSON prints Cedarville, OH (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# The probe found no short form or mascot; UF and "Oilers" are the men's
+# stanza's and the member JSON's. Ursuline prints "Findlay University",
+# which folds onto the name.
+[[schools]]
+name         = "Findlay"
+abbreviation = "UF"
+conference   = "G-MAC"
+mascot       = "Oilers"
+gender       = "women"
+base_url     = "https://findlayoilers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Findlay"]
+city         = "Findlay, Ohio"
+city_source  = "schedule-page home venue location, https://findlayoilers.com/sports/womens-soccer/schedule/2026; the member JSON prints Findlay, OH (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# Box scores print "Ky. Wesleyan", an abbreviation the fold cannot reach.
+[[schools]]
+name         = "Kentucky Wesleyan"
+abbreviation = "KWC"
+conference   = "G-MAC"
+mascot       = "Panthers"
+gender       = "women"
+base_url     = "https://kwcpanthers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Kentucky Wesleyan College", "KWC", "Ky. Wesleyan"]
+city         = "Owensboro, Ky."
+city_source  = "schedule-page home venue location, https://kwcpanthers.com/sports/womens-soccer/schedule/2026 (Owensboro, KY Panther Field); the member JSON prints Owensboro, KY (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# The probe read "LE" and no mascot; LEC and "Storm" are the men's stanza's,
+# the site's own scoreboard short form and the member JSON's.
+[[schools]]
+name         = "Lake Erie"
+abbreviation = "LEC"
+conference   = "G-MAC"
+mascot       = "Storm"
+gender       = "women"
+base_url     = "https://lakeeriestorm.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lake Erie College"]
+city         = "Painesville, Ohio"
+city_source  = "schedule-page home venue location, https://lakeeriestorm.com/sports/womens-soccer/schedule/2026 (Painesville, OH Campus Field); the member JSON prints Painesville, OH (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# Canton, five miles from Walsh's North Canton: two Gazetteer places, not one.
+# The probe found no short form; MU is the men's stanza's and the member JSON's.
+[[schools]]
+name         = "Malone"
+abbreviation = "MU"
+abbreviation_resolves = false  # "MU" is also Millersville and Molloy's (see the men's stanza)
+conference   = "G-MAC"
+mascot       = "Pioneers"
+gender       = "women"
+base_url     = "https://malonepioneers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Malone University"]
+city         = "Canton, Ohio"
+city_source  = "schedule-page home venue location, https://malonepioneers.com/sports/womens-soccer/schedule/2026 (Canton, OH Pioneer Park); the member JSON prints Canton, OH (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# PrestoSports (www.gonorthwood.com/sports/wsoc; season paths are academic
+# years, the 2026 season at /sports/wsoc/2026-27/). The first probe answered
+# an empty HTTP 202 on every layer (an AWS WAF challenge, not a dead host);
+# the re-probe read every layer and 2026. The probe drafted the page title
+# "Northwood University Athletics (Michigan)" as an alias and NAM as the
+# abbreviation; both dropped for the men's stanza's. The sport page prints no
+# home town; Midland is the campus town.
+[[schools]]
+name         = "Northwood"
+abbreviation = "NU"
+abbreviation_resolves = false  # "NU" is also Newman's (see the men's stanza)
+conference   = "G-MAC"
+mascot       = "Timberwolves"
+gender       = "women"
+base_url     = "https://www.gonorthwood.com/sports/wsoc"
+years        = [2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Northwood University", "Northwood (Mich.)"]
+city         = "Midland, Mich."
+city_source  = "the member JSON on greatmidwestsports.com/standings.aspx?path=wsoc (Midland, MI, read 2026-11-08) and the university's footer address (4000 Whiting Drive, Midland, MI 48640) as on the men's stanza; peers print Midland, Mich. for matches at Northwood (Dean Soccer Field); the PrestoSports schedule prints no home town"
+identity_accessed = "2026-11-08"
+
+# The probe read "OD"; ODU is the men's stanza's, the site's own scoreboard
+# short form and the member JSON's.
+[[schools]]
+name         = "Ohio Dominican"
+abbreviation = "ODU"
+conference   = "G-MAC"
+mascot       = "Panthers"
+gender       = "women"
+base_url     = "https://ohiodominicanpanthers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Ohio Dominican University", "ODU"]
+city         = "Columbus, Ohio"
+city_source  = "schedule-page home venue location, https://ohiodominicanpanthers.com/sports/womens-soccer/schedule/2026 (Columbus, OH Panther Stadium); the member JSON prints Columbus, OH (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# The probe read "TM" and no mascot; TMU and "Saints" are the men's stanza's,
+# the site's own scoreboard short form and the member JSON's abbreviation.
+[[schools]]
+name         = "Thomas More"
+abbreviation = "TMU"
+conference   = "G-MAC"
+mascot       = "Saints"
+gender       = "women"
+base_url     = "https://thomasmoresaints.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Thomas More University"]
+city         = "Crestview Hills, Ky."
+city_source  = "schedule-page home venue location, https://thomasmoresaints.com/sports/womens-soccer/schedule/2026 (Crestview Hills, KY Republic Bank Field); the member JSON prints Crestview Hills, KY (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# The probe found no short form or mascot; TU and "Dragons" are the men's
+# stanza's and the member JSON's.
+[[schools]]
+name         = "Tiffin"
+abbreviation = "TU"
+conference   = "G-MAC"
+mascot       = "Dragons"
+gender       = "women"
+base_url     = "https://gotiffindragons.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Tiffin University"]
+city         = "Tiffin, Ohio"
+city_source  = "schedule-page home venue location, https://gotiffindragons.com/sports/womens-soccer/schedule/2026 (Tiffin, Ohio Paradiso Athletic Complex); the member JSON prints Tiffin, OH (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only): Ursuline College is a women's
+# college. Its site titles the sport "Soccer" ("2026 Soccer Schedule - Ursuline
+# College Athletics") at the womens-soccer path, which the probe read. URS is
+# the short form peers' scoreboards print and its own prints as "Urs"; the
+# member JSON's "UC" is also Charleston's (MEC JSON), so it is not used.
+[[schools]]
+name         = "Ursuline"
+abbreviation = "URS"
+conference   = "G-MAC"
+mascot       = "Arrows"
+gender       = "women"
+base_url     = "https://ursulinearrows.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Ursuline College"]
+city         = "Pepper Pike, Ohio"
+city_source  = "schedule-page home venue location, https://ursulinearrows.com/sports/womens-soccer/schedule/2026 (Pepper Pike, OH); the member JSON prints Pepper Pike, OH (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# The probe found no short form or mascot; WU and "Cavaliers" are the men's
+# stanza's and the member JSON's. North Canton is its own Gazetteer place,
+# not Malone's Canton.
+[[schools]]
+name         = "Walsh"
+abbreviation = "WU"
+abbreviation_resolves = false  # "WU" is also Westminster and Wheeling and Wilmington's (see the men's stanza)
+conference   = "G-MAC"
+mascot       = "Cavaliers"
+gender       = "women"
+base_url     = "https://athletics.walsh.edu/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Walsh University"]
+city         = "North Canton, Ohio"
+city_source  = "schedule-page home venue location, https://athletics.walsh.edu/sports/womens-soccer/schedule/2026 (North Canton, OH Larry Staudt Field); the member JSON prints North Canton, OH (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# ============================================================
 # GLIAC MEN'S SOCCER - 7 programmes, backfill window 2022-2026
 # ============================================================
 # 8 windows in the depth: the eighth is Upper Iowa's 2022 season, a second
@@ -5754,6 +6301,272 @@ aliases      = ["University of Wisconsin-Parkside", "Parkside", "UW-Parkside"]
 city         = "Kenosha, Wis."
 city_source  = "schedule-page home venue location, https://parksiderangers.com/sports/mens-soccer/schedule/2026 (Kenosha, WI); the gliac.org member JSON prints Kenosha, WI and uwp.edu's footer address is 900 Wood Road, Kenosha, WI 53141 (read 2026-09-04)"
 identity_accessed = "2026-09-04"
+
+# ============================================================
+# GLIAC WOMEN'S SOCCER - 10 programmes, authored depth 2026 only
+# ============================================================
+# Source of truth: the GLIAC's own women's soccer pages, read 2026-11-08:
+# the live standings (gliac.org/standings.aspx?path=wsoc, "2026 Women's
+# Soccer Standings", archive id 333) and the 2026 conference statistics
+# (stats.aspx?path=wsoc&year=2026&conf=true). Both list the same ten
+# programmes in one table, no divisions. The standings table also carries an
+# eleventh row, "Great Lakes Intercollegiate Athletic Conference" at 0-0
+# (schedule id 2622), which is the conference's own placeholder, not a team:
+# the records page has no such team and it plays no match. Depth is 2026
+# only (the owner's ruling, no historical seasons), so every year-list is
+# [2026].
+#
+# Not the men's set. Six schools sponsor both (Davenport, Northern Michigan,
+# Purdue Northwest, Roosevelt, Saginaw Valley State, Wisconsin-Parkside) and
+# share their men's stanza's name, so both genders share one slug. Four are
+# women's soccer only and new to the rib: Ferris State, Grand Valley State,
+# Michigan Tech and Wayne State. St. Cloud State is a GLIAC affiliate for men's
+# soccer only (its women play in the NSIC) and is on no GLIAC women's table.
+# Lake Superior State is a member with no women's soccer on any table.
+# Wayne State is a real 2026 arrival, not only a depth edge: absent from the
+# 2025 standings (standings=322, nine programmes), its 2026 schedule marks
+# the opener "First regular-season game in program history" and
+# wsuathletics.com news 2026-11-05 calls 2026 the programme's inaugural
+# season. The other nine are on the 2025, 2024 (standings=308) tables too.
+#
+# Probe (uv run probe --conference GLIAC --seasons 2026, 2026-11-08): nine
+# hosts SideArm, schedule / roster / stats / matches present, 2026 served.
+# Ferris State is PrestoSports: the bare host ferrisstatebulldogs.com and
+# its /sports/womens-soccer path answered an empty HTTP 202 (an AWS WAF
+# challenge, x-amzn-waf-action: challenge) on two probes; peers' schedule
+# pages link its box scores at www.ferrisstatebulldogs.com/sports/wsoc/
+# 2026-27/boxscores/, and the probe of www.ferrisstatebulldogs.com/sports/wsoc
+# read PrestoSports (presto-sport-static assets, mirror host
+# ferrisstate.prestosports.com) with all four layers present and 2026
+# served. Wayne State's fingerprint carried asset evidence only (the host
+# answers a splash page that sets a cookie first), but every layer read
+# present. Hosts came from the athletics_website fields of the gliac.org
+# member JSON embedded in the standings page. No collect has run, so every
+# stanza is data_status = unverified. No ordinals.
+#
+# Short forms: the six shared schools keep their men's abbreviation and its
+# resolve flag. The new ones carry the short form their own SideArm
+# scoreboard JSON prints (home_short_name / away_short_name: GVSU, MTU, WSU),
+# and Ferris State, whose PrestoSports pages print none, the gliac.org member
+# JSON's (FSU, also its stats team code). FSU is also Frostburg State's (MEC
+# women) and WSU is also Wayne State (Neb.)'s, so both stay display-only.
+# Aliases add the published long names and the box-score vocabulary the
+# identity fold does not reach ("Northern Mich.", "Saginaw Valley",
+# "Wis.-Parkside"); peer spellings are from a scan of all ten 2026 schedule
+# pages.
+
+# The probe found no short form on this site; DU is the men's stanza's and
+# the gliac.org member JSON's. Home matches print "Caledonia, Mich.", the
+# venue town; Grand Rapids is the university's address, as on the men's stanza.
+[[schools]]
+name         = "Davenport"
+abbreviation = "DU"
+abbreviation_resolves = false  # "DU" is also Daemen and Drury's (see the men's stanza)
+conference   = "GLIAC"
+mascot       = "Panthers"
+gender       = "women"
+base_url     = "https://dupanthers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Davenport University"]
+city         = "Grand Rapids, Mich."
+city_source  = "the gliac.org member JSON (Grand Rapids, MI, read 2026-11-08) and the university's footer address (6191 Kraft Ave SE, Grand Rapids, MI 49512) as on the men's stanza; the women's schedule page https://dupanthers.com/sports/womens-soccer/schedule/2026 prints Caledonia, Mich., the venue town, for home matches"
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only). PrestoSports: the bare host and the
+# SideArm-shaped path answer an AWS WAF challenge (HTTP 202, empty body), so
+# the base is the www host's /sports/wsoc, which the probe read. A 202 here
+# is the challenge, not a dead host. The site prints no short form; FSU is
+# the gliac.org member JSON's abbreviation and stats team code, and Frostburg
+# State's in the MEC, so it stays display-only. The PrestoSports schedule
+# prints no home town; the site footer prints "Big Rapids, MI 49307".
+[[schools]]
+name         = "Ferris State"
+abbreviation = "FSU"
+abbreviation_resolves = false  # "FSU" is also Frostburg State's (MEC women)
+conference   = "GLIAC"
+mascot       = "Bulldogs"
+gender       = "women"
+base_url     = "https://www.ferrisstatebulldogs.com/sports/wsoc"
+years        = [2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Ferris State University"]
+city         = "Big Rapids, Mich."
+city_source  = "site footer address (Big Rapids, MI 49307), https://www.ferrisstatebulldogs.com/sports/wsoc/2026-27/schedule (read 2026-11-08), and the gliac.org member JSON (Big Rapids, MI); the PrestoSports schedule prints no home town"
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only). GVSU is the site's own scoreboard
+# short form and the gliac.org member JSON's.
+[[schools]]
+name         = "Grand Valley State"
+abbreviation = "GVSU"
+conference   = "GLIAC"
+mascot       = "Lakers"
+gender       = "women"
+base_url     = "https://gvsulakers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Grand Valley State University"]
+city         = "Allendale, Mich."
+city_source  = "schedule-page home venue location, https://gvsulakers.com/sports/womens-soccer/schedule/2026; the gliac.org member JSON prints Allendale, MI (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only). The site names itself "Michigan
+# Tech" and its schedule description carries no mascot; "Huskies" is the
+# hostname's and the gliac.org member JSON's. MTU is the site's own
+# scoreboard short form (it also prints "MTUH") and the member JSON's.
+[[schools]]
+name         = "Michigan Tech"
+abbreviation = "MTU"
+conference   = "GLIAC"
+mascot       = "Huskies"
+gender       = "women"
+base_url     = "https://michigantechhuskies.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Michigan Technological University"]
+city         = "Houghton, Mich."
+city_source  = "schedule-page home venue location, https://michigantechhuskies.com/sports/womens-soccer/schedule/2026; the gliac.org member JSON prints Houghton, MI (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# The probe read "NOMI" and no mascot; NMU and "Wildcats" are the men's
+# stanza's, the site's and the gliac.org member JSON's. Box scores print
+# "Northern Mich.".
+[[schools]]
+name         = "Northern Michigan"
+abbreviation = "NMU"
+conference   = "GLIAC"
+mascot       = "Wildcats"
+gender       = "women"
+base_url     = "https://nmuwildcats.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Northern Michigan University", "NMU", "Northern Mich."]
+city         = "Marquette, Mich."
+city_source  = "schedule-page home venue location, https://nmuwildcats.com/sports/womens-soccer/schedule/2026 (Marquette, MI); the gliac.org member JSON prints Marquette, MI (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# The probe read "PN" and no mascot; PNW and "Pride" are the men's stanza's
+# and the site's own.
+[[schools]]
+name         = "Purdue Northwest"
+abbreviation = "PNW"
+conference   = "GLIAC"
+mascot       = "Pride"
+gender       = "women"
+base_url     = "https://pnwathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Purdue University Northwest", "PNW"]
+city         = "Hammond, Ind."
+city_source  = "schedule-page home venue location, https://pnwathletics.com/sports/womens-soccer/schedule/2026 (Hammond, IN); the gliac.org member JSON prints Hammond, Ind. (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# The probe found no short form or mascot; RU and "Lakers" are the men's
+# stanza's and the gliac.org member JSON's. Home matches print "Arlington
+# Heights, Ill.", the venue town; Chicago is the university's address, as on
+# the men's stanza.
+[[schools]]
+name         = "Roosevelt"
+abbreviation = "RU"
+abbreviation_resolves = false  # "RU" is also Rockhurst's (see the men's stanza)
+conference   = "GLIAC"
+mascot       = "Lakers"
+gender       = "women"
+base_url     = "https://rooseveltlakers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Roosevelt University", "Roosevelt (Ill.)"]
+city         = "Chicago, Ill."
+city_source  = "the university's main site (Chicago Campus, 430 S. Michigan Ave, Chicago, IL 60605) and the NCAA directory, https://web3.ncaa.org/directory/orgDetail?id=2807, as on the men's stanza; the gliac.org member JSON prints 430 S. Michigan Ave (read 2026-11-08); the women's schedule page prints Arlington Heights, Ill., the venue town, for home matches"
+identity_accessed = "2026-11-08"
+
+# The probe read "SVS" and the city "Robert C. Braddock Field | University
+# Center, Mich." (venue first on this skin). University Center is an
+# unincorporated community inside Kochville township with no 2023 Gazetteer
+# row of its own, so the pin and note are the men's stanza's (guide step 3).
+# Peers print "Saginaw Valley" (Northern Michigan 2026) and box scores print
+# "Saginaw Valley".
+[[schools]]
+name         = "Saginaw Valley State"
+abbreviation = "SVSU"
+conference   = "GLIAC"
+mascot       = "Cardinals"
+gender       = "women"
+base_url     = "https://svsucardinals.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Saginaw Valley State University", "Saginaw Valley", "SVSU"]
+city         = "University Center, Mich."
+city_source  = "schedule-page home venue location, https://svsucardinals.com/sports/womens-soccer/schedule/2026 (Robert C. Braddock Field | University Center, Mich.); the gliac.org member JSON prints University Center, MI (read 2026-11-08)"
+gazetteer_geoid = "2614543800"
+gazetteer_note = "University Center is an unincorporated community inside Kochville township, Saginaw County, with no 2023 Gazetteer row of its own: the campus at 7400 Bay Road is in the township (https://www.svsu.edu/newsroom/news/2019/october/kochvilletownshipscardinalsquare/ and https://www.kochville.gov/information/universities.php, read 2026-09-04)"
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only), and a 2026 arrival: the programme's
+# inaugural season (wsuathletics.com news 2026-11-05; the schedule marks the
+# opener "First regular-season game in program history"). The records print
+# "Wayne State University", which folds onto the name; Ohio Dominican prints
+# "Wayne State (Mich.)" and box scores "Wayne St. (MI)", which fold too.
+# Wayne State College (Neb.), NSIC women (onboarding in parallel as
+# "Wayne State Nebraska", slug wayne-state-nebraska, with its bare NSIC
+# spellings as member aliases), also prints as "Wayne State" on its
+# opponents' pages; this stanza keeps the bare name and slug wayne-state,
+# which the GLIAC records and peers mint. WSU is the site's own scoreboard
+# short form and the gliac.org member JSON's, and Winona State's (NSIC), so
+# it stays display-only. The probe read "WS".
+[[schools]]
+name         = "Wayne State"
+abbreviation = "WSU"
+abbreviation_resolves = false  # "WSU" is also Wayne State (Neb.)'s and Winona State's
+conference   = "GLIAC"
+mascot       = "Warriors"
+gender       = "women"
+base_url     = "https://wsuathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Wayne State University"]
+city         = "Detroit, Mich."
+city_source  = "schedule-page home venue location, https://wsuathletics.com/sports/womens-soccer/schedule/2026 (Detroit, Mich. WSU Soccer Complex); the gliac.org member JSON prints Detroit, MI (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# The records and standings print "Parkside"; the stanza carries the men's
+# stanza's name, so both genders share the wisconsin-parkside slug. Box
+# scores print "Wis.-Parkside", which the fold leaves as "wis parkside".
+[[schools]]
+name         = "Wisconsin-Parkside"
+abbreviation = "UWP"
+conference   = "GLIAC"
+mascot       = "Rangers"
+gender       = "women"
+base_url     = "https://parksiderangers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Wisconsin-Parkside", "Parkside", "UW-Parkside", "Wis.-Parkside"]
+city         = "Kenosha, Wis."
+city_source  = "schedule-page home venue location, https://parksiderangers.com/sports/womens-soccer/schedule/2026 (Kenosha, WI); the gliac.org member JSON prints Kenosha, WI (read 2026-11-08)"
+identity_accessed = "2026-11-08"
 
 # ============================================================
 # SAC MEN'S SOCCER - 12 programmes, backfill window 2022-2026
