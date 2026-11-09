@@ -1859,6 +1859,10 @@ _SHOOTOUT_WORDS = re.compile(
 )
 _SCORE_PAIR = re.compile(r"(\d+)\s*-\s*(\d+)")
 _INNER_LETTER = re.compile(r"\(\s*([WL])\b")
+# The owner's verdict as a word, opening what follows the score: "(Lost 4-2
+# in PKs)" on harding's page, "Lost 4-3 in PK's" on lenoir-rhyne's. Anchored,
+# so "(Quincy won …)" is somebody's name and goes to the named-winner rule.
+_OWNER_WORD = re.compile(r"^[\s,(]*(won|win|lost|loss)\b", re.IGNORECASE)
 _NAMED_WINNER = re.compile(
     r"([A-Za-z][\w.&'’ -]*?)\s+(?:advances|advanced|wins|won)\b", re.IGNORECASE
 )
@@ -1936,10 +1940,13 @@ def parse_shootout(
     winner: str | None = None
     lead = main.group(1)
     inner = _INNER_LETTER.search(rest)
+    word = _OWNER_WORD.search(rest)
     if lead in {"W", "L"}:
         winner = owner_slug if lead == "W" else other_slug
     elif inner is not None:
         winner = owner_slug if inner.group(1) == "W" else other_slug
+    elif word is not None:
+        winner = owner_slug if word.group(1).lower().startswith("w") else other_slug
     else:
         named = _NAMED_WINNER.search(rest)
         if named is not None:
