@@ -246,6 +246,40 @@
         }
       }
     },
+    "angelo-state": {
+      "name": "Angelo State",
+      "nickname": "Rambelles",
+      "abbreviation": "ASU",
+      "city": "San Angelo, Texas",
+      "point": {
+        "lat": 31.4411,
+        "lon": -100.4505
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://angelosports.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://angelosports.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://angelosports.com/sports/womens-soccer/schedule/2026",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4864472",
+          "name": "San Angelo city",
+          "state": "TX",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "ashland": {
       "name": "Ashland",
       "nickname": "Eagles",
@@ -310,6 +344,40 @@
           "geoid": "2582000",
           "name": "Worcester city",
           "state": "MA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "augustana": {
+      "name": "Augustana",
+      "nickname": "Vikings",
+      "abbreviation": "AUGIE",
+      "city": "Sioux Falls, S.D.",
+      "point": {
+        "lat": 43.5407,
+        "lon": -96.732
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.goaugie.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.goaugie.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://www.goaugie.com/sports/womens-soccer (Sioux Falls, S.D., read by the probe 2026-11-08); the northernsun.org member JSON prints Sioux Falls, SD",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4659020",
+          "name": "Sioux Falls city",
+          "state": "SD",
           "accessed": "2023-09-26"
         }
       }
@@ -484,6 +552,40 @@
         }
       }
     },
+    "bemidji-state": {
+      "name": "Bemidji State",
+      "nickname": "Beavers",
+      "abbreviation": "BSU",
+      "city": "Bemidji, Minn.",
+      "point": {
+        "lat": 47.487,
+        "lon": -94.8827
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.bsubeavers.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.bsubeavers.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://www.bsubeavers.com/sports/womens-soccer (Bemidji, Minn., read by the probe 2026-11-08); the northernsun.org member JSON prints Bemidji, Minn.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2705068",
+          "name": "Bemidji city",
+          "state": "MN",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "bentley": {
       "name": "Bentley",
       "nickname": "Falcons",
@@ -548,6 +650,40 @@
           "geoid": "0640032",
           "name": "La Mirada city",
           "state": "CA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "black-hills-state": {
+      "name": "Black Hills State",
+      "nickname": "Yellow Jackets",
+      "abbreviation": "BHSU",
+      "city": "Spearfish, S.D.",
+      "point": {
+        "lat": 44.4921,
+        "lon": -103.8197
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.bhsuathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.bhsuathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://www.bhsuathletics.com/sports/womens-soccer (Spearfish, S.D., read by the probe 2026-11-08); the rmacsports.org member JSON prints Spearfish, S.D.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4660020",
+          "name": "Spearfish city",
+          "state": "SD",
           "accessed": "2023-09-26"
         }
       }
@@ -1165,6 +1301,40 @@
         }
       }
     },
+    "central-washington": {
+      "name": "Central Washington",
+      "nickname": "Wildcats",
+      "abbreviation": "CWU",
+      "city": "Ellensburg, Wash.",
+      "point": {
+        "lat": 47.0012,
+        "lon": -120.5496
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://wildcatsports.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://wildcatsports.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://wildcatsports.com/sports/womens-soccer/schedule/2026 (Ellensburg, WA, Steve Hertling Field at Tomlinson Stadium, for all 9 2026 home matches, read 2026-11-08); the gnacsports.com member JSON prints Ellensburg, WA",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "5321240",
+          "name": "Ellensburg city",
+          "state": "WA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "chaminade": {
       "name": "Chaminade",
       "nickname": "Silverswords",
@@ -1574,6 +1744,40 @@
         }
       }
     },
+    "columbus-state": {
+      "name": "Columbus State",
+      "nickname": "Cougars",
+      "abbreviation": "CSU",
+      "city": "Columbus, Ga.",
+      "point": {
+        "lat": 32.5102,
+        "lon": -84.8749
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://csucougars.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://csucougars.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://csucougars.com/sports/womens-soccer/schedule/2026 (Columbus, Walden Soccer Complex, on the home rows, read 2026-11-08); the peachbeltconference.org member JSON prints Columbus, Ga.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1319000",
+          "name": "Columbus city",
+          "state": "GA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "concord": {
       "name": "Concord",
       "nickname": "Mountain Lions",
@@ -1638,6 +1842,40 @@
           "geoid": "0636770",
           "name": "Irvine city",
           "state": "CA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "concordia-saint-paul": {
+      "name": "Concordia-St. Paul",
+      "nickname": "Golden Bears",
+      "abbreviation": "CSP",
+      "city": "St. Paul, Minn.",
+      "point": {
+        "lat": 44.9489,
+        "lon": -93.1041
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://cspbears.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://cspbears.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://cspbears.com/sports/womens-soccer (St. Paul, Minn., read by the probe 2026-11-08); the northernsun.org member JSON prints St. Paul, Minn.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2758000",
+          "name": "St. Paul city",
+          "state": "MN",
           "accessed": "2023-09-26"
         }
       }
@@ -2392,6 +2630,40 @@
         }
       }
     },
+    "fairmont-state": {
+      "name": "Fairmont State",
+      "nickname": "Fighting Falcons",
+      "abbreviation": "FAIR",
+      "city": "Fairmont, W.Va.",
+      "point": {
+        "lat": 39.4769,
+        "lon": -80.1491
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://fightingfalcons.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://fightingfalcons.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://fightingfalcons.com/sports/womens-soccer/schedule/2026 (Fairmont, W.Va. Duvall-Rosier Field); the member JSON prints Fairmont, W.Va. (read 2026-11-08)",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "5426452",
+          "name": "Fairmont city",
+          "state": "WV",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "felician": {
       "name": "Felician",
       "nickname": "Golden Falcons",
@@ -2422,6 +2694,40 @@
           "geoid": "3465280",
           "name": "Rutherford borough",
           "state": "NJ",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "ferris-state": {
+      "name": "Ferris State",
+      "nickname": "Bulldogs",
+      "abbreviation": "FSU",
+      "city": "Big Rapids, Mich.",
+      "point": {
+        "lat": 43.6997,
+        "lon": -85.4813
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.ferrisstatebulldogs.com/sports/wsoc",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.ferrisstatebulldogs.com/sports/wsoc",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "site footer address (Big Rapids, MI 49307), https://www.ferrisstatebulldogs.com/sports/wsoc/2026-27/schedule (read 2026-11-08), and the gliac.org member JSON (Big Rapids, MI); the PrestoSports schedule prints no home town",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2608300",
+          "name": "Big Rapids city",
+          "state": "MI",
           "accessed": "2023-09-26"
         }
       }
@@ -2835,6 +3141,40 @@
         }
       }
     },
+    "georgia-college": {
+      "name": "Georgia College",
+      "nickname": "Bobcats",
+      "abbreviation": "GCSU",
+      "city": "Milledgeville, Ga.",
+      "point": {
+        "lat": 33.0879,
+        "lon": -83.2406
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gcsubobcats.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gcsubobcats.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://gcsubobcats.com/sports/womens-soccer/schedule/2026 (Milledgeville, Ga. at Bobcat Soccer Field on 10 home rows, read 2026-11-08); the peachbeltconference.org member JSON prints Milledgeville, Ga.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1351492",
+          "name": "Milledgeville city",
+          "state": "GA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "georgia-southwestern": {
       "name": "Georgia Southwestern",
       "nickname": "Hurricanes",
@@ -2903,6 +3243,40 @@
         }
       }
     },
+    "glenville-state": {
+      "name": "Glenville State",
+      "nickname": "Pioneers",
+      "abbreviation": "GSU",
+      "city": "Glenville, W.Va.",
+      "point": {
+        "lat": 38.9402,
+        "lon": -80.8333
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gstatepioneers.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gstatepioneers.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://gstatepioneers.com/sports/womens-soccer/schedule/2026 (Glenville, W.Va. Morris Family Health & Fitness Complex); the member JSON prints Glenville, W.Va. (read 2026-11-08)",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "5432044",
+          "name": "Glenville town",
+          "state": "WV",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "goldey-beacom": {
       "name": "Goldey-Beacom",
       "nickname": "Lightning",
@@ -2933,6 +3307,40 @@
           "geoid": "1077580",
           "name": "Wilmington city",
           "state": "DE",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "grand-valley-state": {
+      "name": "Grand Valley State",
+      "nickname": "Lakers",
+      "abbreviation": "GVSU",
+      "city": "Allendale, Mich.",
+      "point": {
+        "lat": 42.982,
+        "lon": -85.9441
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gvsulakers.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gvsulakers.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://gvsulakers.com/sports/womens-soccer/schedule/2026; the gliac.org member JSON prints Allendale, MI (read 2026-11-08)",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2601340",
+          "name": "Allendale CDP",
+          "state": "MI",
           "accessed": "2023-09-26"
         }
       }
@@ -3207,6 +3615,40 @@
           "geoid": "4236816",
           "name": "Indiana borough",
           "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "jamestown": {
+      "name": "Jamestown",
+      "nickname": "Jimmies",
+      "abbreviation": "UJ",
+      "city": "Jamestown, N.D.",
+      "point": {
+        "lat": 46.9059,
+        "lon": -98.6936
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://jimmiepride.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://jimmiepride.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home rows print Jamestown, N.D., https://jimmiepride.com/sports/womens-soccer/schedule/2026 (the probe read none); the northernsun.org member JSON prints Jamestown, N.D.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3840580",
+          "name": "Jamestown city",
+          "state": "ND",
           "accessed": "2023-09-26"
         }
       }
@@ -3721,6 +4163,40 @@
         }
       }
     },
+    "lincoln-pa": {
+      "name": "Lincoln (Pa.)",
+      "nickname": "Lions",
+      "abbreviation": "LUPA",
+      "city": "Lincoln University, Pa.",
+      "point": {
+        "lat": 39.8065,
+        "lon": -75.9279
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://lulions.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://lulions.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://lulions.com/sports/womens-soccer/schedule/2026, with the caccathletics.org member JSON location (Lincoln University, PA) on the 2026 women's standings page",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4243544",
+          "name": "Lincoln University CDP",
+          "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "lock-haven": {
       "name": "Lock Haven",
       "nickname": "Bald Eagles",
@@ -4096,6 +4572,40 @@
         }
       }
     },
+    "michigan-tech": {
+      "name": "Michigan Tech",
+      "nickname": "Huskies",
+      "abbreviation": "MTU",
+      "city": "Houghton, Mich.",
+      "point": {
+        "lat": 47.1118,
+        "lon": -88.5672
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://michigantechhuskies.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://michigantechhuskies.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://michigantechhuskies.com/sports/womens-soccer/schedule/2026; the gliac.org member JSON prints Houghton, MI (read 2026-11-08)",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2639360",
+          "name": "Houghton city",
+          "state": "MI",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "middle-georgia-state": {
       "name": "Middle Georgia State",
       "nickname": "Knights",
@@ -4194,6 +4704,142 @@
           "geoid": "4249728",
           "name": "Millersville borough",
           "state": "PA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "minnesota-crookston": {
+      "name": "Minnesota Crookston",
+      "nickname": "Golden Eagles",
+      "abbreviation": "UMC",
+      "city": "Crookston, Minn.",
+      "point": {
+        "lat": 47.7747,
+        "lon": -96.6064
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.goldeneaglesports.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.goldeneaglesports.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://www.goldeneaglesports.com/sports/womens-soccer (Crookston, Minn., read by the probe 2026-11-08); the northernsun.org member JSON prints Crookston, Minn.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2713870",
+          "name": "Crookston city",
+          "state": "MN",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "minnesota-duluth": {
+      "name": "Minnesota Duluth",
+      "nickname": "Bulldogs",
+      "abbreviation": "UMD",
+      "city": "Duluth, Minn.",
+      "point": {
+        "lat": 46.7745,
+        "lon": -92.1341
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.umdbulldogs.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.umdbulldogs.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://www.umdbulldogs.com/sports/womens-soccer (Duluth, Minn., read by the probe 2026-11-08); the northernsun.org member JSON prints Duluth, Minn.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2717000",
+          "name": "Duluth city",
+          "state": "MN",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "minnesota-state": {
+      "name": "Minnesota State",
+      "nickname": "Mavericks",
+      "abbreviation": "MNSU",
+      "city": "Mankato, Minn.",
+      "point": {
+        "lat": 44.1711,
+        "lon": -93.9764
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.msumavericks.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.msumavericks.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://www.msumavericks.com/sports/womens-soccer (Mankato, Minn., read by the probe 2026-11-08); the northernsun.org member JSON prints Mankato, Minn.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2739878",
+          "name": "Mankato city",
+          "state": "MN",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "minot-state": {
+      "name": "Minot State",
+      "nickname": "Beavers",
+      "abbreviation": "MISU",
+      "city": "Minot, N.D.",
+      "point": {
+        "lat": 48.2361,
+        "lon": -101.2775
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.msubeavers.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.msubeavers.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://www.msubeavers.com/sports/womens-soccer (Minot, N.D., read by the probe 2026-11-08); the northernsun.org member JSON prints Minot, N.D.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3853380",
+          "name": "Minot city",
+          "state": "ND",
           "accessed": "2023-09-26"
         }
       }
@@ -4539,6 +5185,40 @@
         }
       }
     },
+    "msu-moorhead": {
+      "name": "MSU Moorhead",
+      "nickname": "Dragons",
+      "abbreviation": "MSUM",
+      "city": "Moorhead, Minn.",
+      "point": {
+        "lat": 46.8647,
+        "lon": -96.7446
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.msumdragons.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.msumdragons.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://www.msumdragons.com/sports/womens-soccer (Moorhead, Minn., read by the probe 2026-11-08); the northernsun.org member JSON prints Moorhead, Minn.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2743864",
+          "name": "Moorhead city",
+          "state": "MN",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "nebraska-kearney": {
       "name": "Nebraska Kearney",
       "nickname": "Lopers",
@@ -4603,6 +5283,40 @@
           "geoid": "0982800",
           "name": "West Haven city",
           "state": "CT",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "new-mexico-highlands": {
+      "name": "New Mexico Highlands",
+      "nickname": "Cowgirls",
+      "abbreviation": "NMHU",
+      "city": "Las Vegas, N.M.",
+      "point": {
+        "lat": 35.6048,
+        "lon": -105.217
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://nmhuathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://nmhuathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://nmhuathletics.com/sports/womens-soccer (Las Vegas, N.M., read by the probe 2026-11-08); the rmacsports.org member JSON prints Las Vegas, N.M.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3539940",
+          "name": "Las Vegas city",
+          "state": "NM",
           "accessed": "2023-09-26"
         }
       }
@@ -4807,6 +5521,40 @@
           "geoid": "2651900",
           "name": "Marquette city",
           "state": "MI",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "northern-state": {
+      "name": "Northern State",
+      "nickname": "Wolves",
+      "abbreviation": "NSU",
+      "city": "Aberdeen, S.D.",
+      "point": {
+        "lat": 45.4647,
+        "lon": -98.4681
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.nsuwolvesathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.nsuwolvesathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://www.nsuwolvesathletics.com/sports/womens-soccer (ABERDEEN, S.D., read by the probe 2026-11-08); the northernsun.org member JSON prints Aberdeen, S.D.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4600100",
+          "name": "Aberdeen city",
+          "state": "SD",
           "accessed": "2023-09-26"
         }
       }
@@ -6273,6 +7021,40 @@
         }
       }
     },
+    "sioux-falls": {
+      "name": "Sioux Falls",
+      "nickname": "Cougars",
+      "abbreviation": "USF",
+      "city": "Sioux Falls, S.D.",
+      "point": {
+        "lat": 43.5407,
+        "lon": -96.732
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.usfcougars.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.usfcougars.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://www.usfcougars.com/sports/womens-soccer (Sioux Falls, S.D., read by the probe 2026-11-08); the northernsun.org member JSON prints Sioux Falls, S.D.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4659020",
+          "name": "Sioux Falls city",
+          "state": "SD",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "slippery-rock": {
       "name": "Slippery Rock",
       "nickname": "The Rock",
@@ -6541,6 +7323,40 @@
           "geoid": "2906976",
           "name": "Bolivar city",
           "state": "MO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "southwest-minnesota-state": {
+      "name": "Southwest Minnesota State",
+      "nickname": "Mustangs",
+      "abbreviation": "SMSU",
+      "city": "Marshall, Minn.",
+      "point": {
+        "lat": 44.4491,
+        "lon": -95.7892
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://smsumustangs.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://smsumustangs.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://smsumustangs.com/sports/womens-soccer (Marshall, Minn., read by the probe 2026-11-08); the northernsun.org member JSON prints Marshall, Minn.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2740688",
+          "name": "Marshall city",
+          "state": "MN",
           "accessed": "2023-09-26"
         }
       }
@@ -6851,6 +7667,40 @@
         }
       }
     },
+    "texas-womans": {
+      "name": "Texas Woman's",
+      "nickname": "Pioneers",
+      "abbreviation": "TWU",
+      "city": "Denton, Texas",
+      "point": {
+        "lat": 33.2174,
+        "lon": -97.1413
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://twuathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://twuathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://twuathletics.com/sports/womens-soccer/schedule/2026",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4819972",
+          "name": "Denton city",
+          "state": "TX",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "thomas-more": {
       "name": "Thomas More",
       "nickname": "Saints",
@@ -7124,6 +7974,74 @@
         }
       }
     },
+    "umary": {
+      "name": "UMary",
+      "nickname": "Marauders",
+      "abbreviation": "UMARY",
+      "city": "Bismarck, N.D.",
+      "point": {
+        "lat": 46.8146,
+        "lon": -100.7701
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.goumary.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.goumary.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://www.goumary.com/sports/womens-soccer (Bismarck, N.D., read by the probe 2026-11-08); the northernsun.org member JSON prints Bismarck, N.D.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3807200",
+          "name": "Bismarck city",
+          "state": "ND",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "unc-pembroke": {
+      "name": "UNC Pembroke",
+      "nickname": "Braves",
+      "abbreviation": "UNCP",
+      "city": "Pembroke, N.C.",
+      "point": {
+        "lat": 34.6766,
+        "lon": -79.1934
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://uncpbraves.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://uncpbraves.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://uncpbraves.com/sports/womens-soccer/schedule/2026 (Pembroke, N.C. at Lumbee River EMC Stadium on 8 home rows, read 2026-11-08); the conferencecarolinas.com member JSON prints Pembroke, NC",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3751080",
+          "name": "Pembroke town",
+          "state": "NC",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "union": {
       "name": "Union",
       "nickname": "Bulldogs",
@@ -7192,6 +8110,40 @@
         }
       }
     },
+    "ursuline": {
+      "name": "Ursuline",
+      "nickname": "Arrows",
+      "abbreviation": "URS",
+      "city": "Pepper Pike, Ohio",
+      "point": {
+        "lat": 41.4794,
+        "lon": -81.4602
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://ursulinearrows.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://ursulinearrows.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://ursulinearrows.com/sports/womens-soccer/schedule/2026 (Pepper Pike, OH); the member JSON prints Pepper Pike, OH (read 2026-11-08)",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3961686",
+          "name": "Pepper Pike city",
+          "state": "OH",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "usc-aiken": {
       "name": "USC Aiken",
       "nickname": "Pacers",
@@ -7221,6 +8173,40 @@
           "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
           "geoid": "4500550",
           "name": "Aiken city",
+          "state": "SC",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "usc-beaufort": {
+      "name": "USC Beaufort",
+      "nickname": "Sand Sharks",
+      "abbreviation": "USCB",
+      "city": "Bluffton, S.C.",
+      "point": {
+        "lat": 32.2144,
+        "lon": -80.9295
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://uscbathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://uscbathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://uscbathletics.com/sports/womens-soccer/schedule/2026 (Bluffton, South Carolina at Finland Field on 11 home rows, read 2026-11-08); Georgia College's schedule prints the venue as Bluffton, S.C.; the peachbeltconference.org member JSON prints Beaufort, S.C.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4507210",
+          "name": "Bluffton town",
           "state": "SC",
           "accessed": "2023-09-26"
         }
@@ -7328,6 +8314,40 @@
         }
       }
     },
+    "valdosta-state": {
+      "name": "Valdosta State",
+      "nickname": "Blazers",
+      "abbreviation": "VSU",
+      "city": "Valdosta, Ga.",
+      "point": {
+        "lat": 30.8501,
+        "lon": -83.2788
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://vstateblazers.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://vstateblazers.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://vstateblazers.com/sports/womens-soccer/schedule/2026",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1378800",
+          "name": "Valdosta city",
+          "state": "GA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "vanguard": {
       "name": "Vanguard",
       "nickname": "Lions",
@@ -7426,6 +8446,74 @@
           "geoid": "2071000",
           "name": "Topeka city",
           "state": "KS",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "wayne-state": {
+      "name": "Wayne State",
+      "nickname": "Warriors",
+      "abbreviation": "WSU",
+      "city": "Detroit, Mich.",
+      "point": {
+        "lat": 42.383,
+        "lon": -83.1022
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://wsuathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://wsuathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://wsuathletics.com/sports/womens-soccer/schedule/2026 (Detroit, Mich. WSU Soccer Complex); the gliac.org member JSON prints Detroit, MI (read 2026-11-08)",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2622000",
+          "name": "Detroit city",
+          "state": "MI",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "wayne-state-nebraska": {
+      "name": "Wayne State College",
+      "nickname": "Wildcats",
+      "abbreviation": "WSC",
+      "city": "Wayne, Neb.",
+      "point": {
+        "lat": 42.2375,
+        "lon": -97.0089
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.wscwildcats.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.wscwildcats.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://www.wscwildcats.com/sports/womens-soccer (Wayne, Neb., read by the probe 2026-11-08); the northernsun.org member JSON prints Wayne, Neb.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "3151840",
+          "name": "Wayne city",
+          "state": "NE",
           "accessed": "2023-09-26"
         }
       }
@@ -7600,6 +8688,40 @@
         }
       }
     },
+    "west-virginia-state": {
+      "name": "West Virginia State",
+      "nickname": "Yellow Jackets",
+      "abbreviation": "WVSU",
+      "city": "Institute, W.Va.",
+      "point": {
+        "lat": 38.3795,
+        "lon": -81.7656
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://wvsuyellowjackets.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://wvsuyellowjackets.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://wvsuyellowjackets.com/sports/womens-soccer/schedule/2026 (Institute, W.Va.); the member JSON prints Institute, W.Va. (read 2026-11-08)",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "5440156",
+          "name": "Institute CDP",
+          "state": "WV",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "west-virginia-wesleyan": {
       "name": "West Virginia Wesleyan",
       "nickname": "Bobcats",
@@ -7630,6 +8752,40 @@
           "geoid": "5411188",
           "name": "Buckhannon city",
           "state": "WV",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "western-colorado": {
+      "name": "Western Colorado",
+      "nickname": "Mountaineers",
+      "abbreviation": "WCU",
+      "city": "Gunnison, Colo.",
+      "point": {
+        "lat": 38.548,
+        "lon": -106.9246
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://gomountaineers.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://gomountaineers.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://gomountaineers.com/sports/womens-soccer (Gunnison, Colo., read by the probe 2026-11-08); the rmacsports.org member JSON prints Gunnison, Colo.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0833640",
+          "name": "Gunnison city",
+          "state": "CO",
           "accessed": "2023-09-26"
         }
       }
@@ -7902,6 +9058,40 @@
           "geoid": "3774760",
           "name": "Wingate town",
           "state": "NC",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "winona-state": {
+      "name": "Winona State",
+      "nickname": "Warriors",
+      "abbreviation": "WSU",
+      "city": "Winona, Minn.",
+      "point": {
+        "lat": 44.0513,
+        "lon": -91.6681
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://www.winonastatewarriors.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://www.winonastatewarriors.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://www.winonastatewarriors.com/sports/womens-soccer (Winona, Minn., read by the probe 2026-11-08); the northernsun.org member JSON prints Winona, Minn.",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2771032",
+          "name": "Winona city",
+          "state": "MN",
           "accessed": "2023-09-26"
         }
       }
