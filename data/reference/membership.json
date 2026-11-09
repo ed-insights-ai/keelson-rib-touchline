@@ -119,6 +119,16 @@
         }
       ]
     },
+    "angelo-state": {
+      "women": [
+        {
+          "conference": "LSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Lone Star Conference, 2026 Women's Soccer standings and records, https://lonestarconference.org/standings.aspx?path=wsoc and https://lonestarconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Angelo State (fifteen programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://lonestarconference.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same fifteen programmes. Angelo State sponsors women's soccer only."
+        }
+      ]
+    },
     "ashland": {
       "men": [
         {
@@ -155,6 +165,14 @@
           "to_season": 2026,
           "source": "Auburn Montgomery Warhawks, https://en.wikipedia.org/wiki/Auburn_Montgomery_Warhawks (accessed 2026-08-20): AUM was approved for the NCAA Division II membership process on 2015-07-17 and \"began the transition with the 2015-16 season, while joining the Gulf South Conference for all sports effective in the 2017-18 season.\" The window therefore opens at 2017. This corrects an earlier reading of the conference statistics pages (https://gscsports.org/stats.aspx?path=msoc&year=2018&conf=true), which appeared to show AUM first joining in 2019: those pages omit schools still inside the D2 provisional period, which compete on a full conference schedule without counting toward conference statistics. Nine distinct GSC member sites independently published AUM as a conference opponent in each of 2017 and 2018 — a full round-robin slate in both seasons."
         }
+      ],
+      "women": [
+        {
+          "conference": "GSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2026 Women's Soccer standings and records, https://gscsports.org/standings.aspx?path=wsoc and https://gscsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label AUM (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://gscsports.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same twelve programmes plus West Florida, which left for Division I (ASUN) after 2025."
+        }
       ]
     },
     "azusa-pacific": {
@@ -174,6 +192,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "SSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2026 Women's Soccer standings and records, https://sunshinestateconference.com/standings.aspx?path=wsoc and https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Barry (eleven programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2025&conf=true) list the same eleven programmes."
         }
       ]
     },
@@ -569,6 +595,14 @@
           "to_season": 2026,
           "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both."
         }
+      ],
+      "women": [
+        {
+          "conference": "GSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2026 Women's Soccer standings and records, https://gscsports.org/standings.aspx?path=wsoc and https://gscsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Christian Brothers (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://gscsports.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same twelve programmes plus West Florida, which left for Division I (ASUN) after 2025."
+        }
       ]
     },
     "clarion": {
@@ -758,6 +792,14 @@
           "to_season": 2026,
           "source": "Lone Star Conference, 2022 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12); listed in both."
         }
+      ],
+      "women": [
+        {
+          "conference": "LSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Lone Star Conference, 2026 Women's Soccer standings and records, https://lonestarconference.org/standings.aspx?path=wsoc and https://lonestarconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label DBU (fifteen programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://lonestarconference.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same fifteen programmes."
+        }
       ]
     },
     "davenport": {
@@ -787,6 +829,14 @@
           "from_season": 2016,
           "to_season": 2026,
           "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both."
+        }
+      ],
+      "women": [
+        {
+          "conference": "GSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2026 Women's Soccer standings and records, https://gscsports.org/standings.aspx?path=wsoc and https://gscsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Delta State (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://gscsports.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same twelve programmes plus West Florida, which left for Division I (ASUN) after 2025."
         }
       ]
     },
@@ -883,6 +933,14 @@
           "to_season": 2024,
           "source": "Lone Star Conference, listed in the 2022-2024 Men's Soccer records (https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true, https://lonestarconference.org/standings.aspx?standings=168, https://lonestarconference.org/stats.aspx?path=msoc&year=2024&conf=true) and absent from 2025 (https://lonestarconference.org/stats.aspx?path=msoc&year=2025&conf=true) (accessed 2026-08-12); men's soccer discontinued December 2024."
         }
+      ],
+      "women": [
+        {
+          "conference": "LSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Lone Star Conference, 2026 Women's Soccer standings and records, https://lonestarconference.org/standings.aspx?path=wsoc and https://lonestarconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Eastern New Mexico (fifteen programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://lonestarconference.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same fifteen programmes. Eastern New Mexico discontinued men's soccer in December 2024 (its men's LSC window ends 2024); women's soccer continues."
+        }
       ]
     },
     "eckerd": {
@@ -892,6 +950,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "SSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2026 Women's Soccer standings and records, https://sunshinestateconference.com/standings.aspx?path=wsoc and https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Eckerd (eleven programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2025&conf=true) list the same eleven programmes."
         }
       ]
     },
@@ -913,6 +979,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "SSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2026 Women's Soccer standings and records, https://sunshinestateconference.com/standings.aspx?path=wsoc and https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Embry-Riddle (eleven programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2025&conf=true) list the same eleven programmes."
         }
       ]
     },
@@ -1070,6 +1144,14 @@
           "to_season": 2026,
           "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "SSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2026 Women's Soccer standings and records, https://sunshinestateconference.com/standings.aspx?path=wsoc and https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Florida Southern (eleven programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2025&conf=true) list the same eleven programmes."
+        }
       ]
     },
     "florida-tech": {
@@ -1079,6 +1161,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "SSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2026 Women's Soccer standings and records, https://sunshinestateconference.com/standings.aspx?path=wsoc and https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Florida Tech (eleven programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2025&conf=true) list the same eleven programmes."
         }
       ]
     },
@@ -1503,6 +1593,14 @@
           "to_season": 2026,
           "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both."
         }
+      ],
+      "women": [
+        {
+          "conference": "GSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2026 Women's Soccer standings and records, https://gscsports.org/standings.aspx?path=wsoc and https://gscsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Lee (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://gscsports.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same twelve programmes plus West Florida, which left for Division I (ASUN) after 2025."
+        }
       ]
     },
     "lees-mcrae": {
@@ -1650,6 +1748,14 @@
           "to_season": 2026,
           "source": "Lone Star Conference, 2022 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12); listed in both."
         }
+      ],
+      "women": [
+        {
+          "conference": "LSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Lone Star Conference, 2026 Women's Soccer standings and records, https://lonestarconference.org/standings.aspx?path=wsoc and https://lonestarconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Lubbock Christian (fifteen programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://lonestarconference.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same fifteen programmes."
+        }
       ]
     },
     "lynn": {
@@ -1659,6 +1765,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "SSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2026 Women's Soccer standings and records, https://sunshinestateconference.com/standings.aspx?path=wsoc and https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Lynn (eleven programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2025&conf=true) list the same eleven programmes."
         }
       ]
     },
@@ -1807,6 +1921,14 @@
           "to_season": 2026,
           "source": "Lone Star Conference, 2022 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12); listed in both."
         }
+      ],
+      "women": [
+        {
+          "conference": "LSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Lone Star Conference, 2026 Women's Soccer standings and records, https://lonestarconference.org/standings.aspx?path=wsoc and https://lonestarconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Midwestern State (fifteen programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://lonestarconference.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same fifteen programmes."
+        }
       ]
     },
     "millersville": {
@@ -1835,6 +1957,14 @@
           "from_season": 2016,
           "to_season": 2026,
           "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both. Listed as 'MC' in the conference records."
+        }
+      ],
+      "women": [
+        {
+          "conference": "GSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2026 Women's Soccer standings and records, https://gscsports.org/standings.aspx?path=wsoc and https://gscsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Mississippi Christian (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://gscsports.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same twelve programmes plus West Florida, which left for Division I (ASUN) after 2025. The label is the 2026-06-01 rename of the school the slug mississippi-college names; the slug never renames."
         }
       ]
     },
@@ -1929,6 +2059,14 @@
           "from_season": 2017,
           "to_season": 2026,
           "source": "Gulf South Conference, 2017 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2017&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both. Absent from the 2016 records (https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true); first listed 2017."
+        }
+      ],
+      "women": [
+        {
+          "conference": "GSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2026 Women's Soccer standings and records, https://gscsports.org/standings.aspx?path=wsoc and https://gscsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Montevallo (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://gscsports.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same twelve programmes plus West Florida, which left for Division I (ASUN) after 2025."
         }
       ]
     },
@@ -2179,6 +2317,14 @@
           "to_season": 2026,
           "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "SSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2026 Women's Soccer standings and records, https://sunshinestateconference.com/standings.aspx?path=wsoc and https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Nova Southeastern (eleven programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2025&conf=true) list the same eleven programmes."
+        }
       ]
     },
     "ohio-dominican": {
@@ -2222,6 +2368,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Lone Star Conference, 2022 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12); listed in both."
+        }
+      ],
+      "women": [
+        {
+          "conference": "LSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Lone Star Conference, 2026 Women's Soccer standings and records, https://lonestarconference.org/standings.aspx?path=wsoc and https://lonestarconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Oklahoma Christian (fifteen programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://lonestarconference.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same fifteen programmes."
         }
       ]
     },
@@ -2268,6 +2422,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "SSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2026 Women's Soccer standings and records, https://sunshinestateconference.com/standings.aspx?path=wsoc and https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Palm Beach Atlantic (eleven programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2025&conf=true) list the same eleven programmes."
         }
       ]
     },
@@ -2468,6 +2630,14 @@
           "to_season": 2026,
           "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "SSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2026 Women's Soccer standings and records, https://sunshinestateconference.com/standings.aspx?path=wsoc and https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Rollins (eleven programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2025&conf=true) list the same eleven programmes."
+        }
       ]
     },
     "roosevelt": {
@@ -2516,6 +2686,14 @@
           "to_season": 2026,
           "source": "Lone Star Conference, 2023 and 2026 Men's Soccer records, https://lonestarconference.org/standings.aspx?standings=168 and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12); absent from the 2022 conference statistics (https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true) — men's soccer cut April 2020 and reinstated for 2023."
         }
+      ],
+      "women": [
+        {
+          "conference": "LSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Lone Star Conference, 2026 Women's Soccer standings and records, https://lonestarconference.org/standings.aspx?path=wsoc and https://lonestarconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label St. Edward's (fifteen programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://lonestarconference.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same fifteen programmes."
+        }
       ]
     },
     "saint-leo": {
@@ -2525,6 +2703,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
+        }
+      ],
+      "women": [
+        {
+          "conference": "SSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2026 Women's Soccer standings and records, https://sunshinestateconference.com/standings.aspx?path=wsoc and https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Saint Leo (eleven programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2025&conf=true) list the same eleven programmes."
         }
       ]
     },
@@ -2545,6 +2731,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Lone Star Conference, 2022 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12); listed in both."
+        }
+      ],
+      "women": [
+        {
+          "conference": "LSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Lone Star Conference, 2026 Women's Soccer standings and records, https://lonestarconference.org/standings.aspx?path=wsoc and https://lonestarconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label St. Mary's (fifteen programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://lonestarconference.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same fifteen programmes."
         }
       ]
     },
@@ -2864,6 +3058,14 @@
           "to_season": 2026,
           "source": "Gulf South Conference, \"Gulf South Conference Adds Spring Hill College for 2027-28 Season\", https://gscsports.org/news/2026/3/24/gsc-adds-shc-2027-28.aspx (accessed 2026-08-20): \"The Badgers have competed as a GSC affiliate member in men's and women's soccer and women's golf since the 2014-15 academic year.\" Affiliate membership predates this document's 2016 floor, so the window opens at 2016; full membership begins 2027-28, past this document's ceiling. This corrects an earlier reading of the conference statistics pages (https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true), which list only full members and so appeared to show Spring Hill first joining in 2018. Seven member schools' 2016 schedule pages independently flag their Spring Hill fixtures as conference games, while correctly leaving Montevallo, AUM and Trevecca unflagged in the same season. Absent from the 2020 conference statistics: the GSC postponed fall 2020 soccer to spring 2021 (https://goargos.com/news/2020/8/12/general-gsc-statement-on-the-fall-2020-season.aspx). Non-participation, not a membership lapse, so the window stays continuous."
         }
+      ],
+      "women": [
+        {
+          "conference": "GSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2026 Women's Soccer standings and records, https://gscsports.org/standings.aspx?path=wsoc and https://gscsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Spring Hill (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://gscsports.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same twelve programmes plus West Florida, which left for Division I (ASUN) after 2025."
+        }
       ]
     },
     "st-cloud-state": {
@@ -2930,6 +3132,14 @@
           "to_season": 2026,
           "source": "LSC membership began 2024-07-01 (https://lonestarconference.org/news/2024/6/28/baseball-sul-ross-state-officially-begins-lone-star-conference-membership.aspx); listed in the 2024 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2024&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12)."
         }
+      ],
+      "women": [
+        {
+          "conference": "LSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Lone Star Conference, 2026 Women's Soccer standings and records, https://lonestarconference.org/standings.aspx?path=wsoc and https://lonestarconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Sul Ross State (fifteen programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://lonestarconference.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same fifteen programmes."
+        }
       ]
     },
     "tampa": {
@@ -2940,6 +3150,14 @@
           "to_season": 2026,
           "source": "Sunshine State Conference, 2022 and 2026 Men's Soccer records, https://sunshinestateconference.com/stats.aspx?path=msoc&year=2022&conf=true and https://sunshinestateconference.com/standings.aspx?path=msoc (accessed 2026-09-02); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list the same eleven programmes, so nobody arrived at or left across the window's edge."
         }
+      ],
+      "women": [
+        {
+          "conference": "SSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Sunshine State Conference, 2026 Women's Soccer standings and records, https://sunshinestateconference.com/standings.aspx?path=wsoc and https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Tampa (eleven programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://sunshinestateconference.com/stats.aspx?path=wsoc&year=2025&conf=true) list the same eleven programmes. Tampa's own site is PrestoSports (tampaspartans.com/sports/wsoc)."
+        }
       ]
     },
     "texas-a-m-international": {
@@ -2949,6 +3167,24 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Lone Star Conference, 2022 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12); listed in both."
+        }
+      ],
+      "women": [
+        {
+          "conference": "LSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Lone Star Conference, 2026 Women's Soccer standings and records, https://lonestarconference.org/standings.aspx?path=wsoc and https://lonestarconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Texas A&M International (fifteen programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://lonestarconference.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same fifteen programmes."
+        }
+      ]
+    },
+    "texas-womans": {
+      "women": [
+        {
+          "conference": "LSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Lone Star Conference, 2026 Women's Soccer standings and records, https://lonestarconference.org/standings.aspx?path=wsoc and https://lonestarconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Texas Woman's (fifteen programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://lonestarconference.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same fifteen programmes. Texas Woman's sponsors women's soccer only; its slug texas-womans is the identity fold of the label."
         }
       ]
     },
@@ -2985,6 +3221,14 @@
           "from_season": 2024,
           "to_season": 2026,
           "source": "Gulf South Conference, 2024 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2024&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both. Absent from the 2023 records (https://gscsports.org/stats.aspx?path=msoc&year=2023&conf=true); first listed 2024, matching Trevecca's 2024-25 move into the GSC."
+        }
+      ],
+      "women": [
+        {
+          "conference": "GSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2026 Women's Soccer standings and records, https://gscsports.org/standings.aspx?path=wsoc and https://gscsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Trevecca (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://gscsports.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same twelve programmes plus West Florida, which left for Division I (ASUN) after 2025."
         }
       ]
     },
@@ -3032,6 +3276,14 @@
           "to_season": 2026,
           "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both."
         }
+      ],
+      "women": [
+        {
+          "conference": "GSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2026 Women's Soccer standings and records, https://gscsports.org/standings.aspx?path=wsoc and https://gscsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label UAH (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://gscsports.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same twelve programmes plus West Florida, which left for Division I (ASUN) after 2025."
+        }
       ]
     },
     "uc-merced": {
@@ -3072,6 +3324,14 @@
           "from_season": 2016,
           "to_season": 2026,
           "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both. Union has been a GSC member since its 2012-13 move from the NAIA to NCAA Division II, predating this document's 2016 floor."
+        }
+      ],
+      "women": [
+        {
+          "conference": "GSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2026 Women's Soccer standings and records, https://gscsports.org/standings.aspx?path=wsoc and https://gscsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Union (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://gscsports.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same twelve programmes plus West Florida, which left for Division I (ASUN) after 2025."
         }
       ]
     },
@@ -3135,6 +3395,14 @@
           "to_season": 2026,
           "source": "LSC membership began 2025-07-01 (https://lonestarconference.org/news/2025/6/26/general-ut-dallas-officially-begins-lone-star-conference-membership.aspx); listed in the 2025 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2025&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12)."
         }
+      ],
+      "women": [
+        {
+          "conference": "LSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Lone Star Conference, 2026 Women's Soccer standings and records, https://lonestarconference.org/standings.aspx?path=wsoc and https://lonestarconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label UT Dallas (fifteen programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://lonestarconference.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same fifteen programmes."
+        }
       ]
     },
     "ut-permian-basin": {
@@ -3145,6 +3413,14 @@
           "to_season": 2022,
           "source": "Lone Star Conference, listed in the 2022 Men's Soccer conference statistics (https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true) and absent from 2023 onward (https://lonestarconference.org/standings.aspx?standings=168) (accessed 2026-08-12)."
         }
+      ],
+      "women": [
+        {
+          "conference": "LSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Lone Star Conference, 2026 Women's Soccer standings and records, https://lonestarconference.org/standings.aspx?path=wsoc and https://lonestarconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label UT Permian Basin (fifteen programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://lonestarconference.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same fifteen programmes. UT Permian Basin's men's LSC window is 2022 only; the women's programme is listed in 2025 and 2026."
+        }
       ]
     },
     "ut-tyler": {
@@ -3154,6 +3430,24 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Lone Star Conference, 2022 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12); listed in both."
+        }
+      ],
+      "women": [
+        {
+          "conference": "LSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Lone Star Conference, 2026 Women's Soccer standings and records, https://lonestarconference.org/standings.aspx?path=wsoc and https://lonestarconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label UT Tyler (fifteen programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://lonestarconference.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same fifteen programmes."
+        }
+      ]
+    },
+    "valdosta-state": {
+      "women": [
+        {
+          "conference": "GSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2026 Women's Soccer standings and records, https://gscsports.org/standings.aspx?path=wsoc and https://gscsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Valdosta State (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://gscsports.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same twelve programmes plus West Florida, which left for Division I (ASUN) after 2025. Valdosta State sponsors women's soccer only."
         }
       ]
     },
@@ -3194,6 +3488,14 @@
           "from_season": 2016,
           "to_season": 2026,
           "source": "Gulf South Conference, 2016 and 2026 Men's Soccer records, https://gscsports.org/stats.aspx?path=msoc&year=2016&conf=true and https://gscsports.org/standings.aspx?path=msoc (accessed 2026-08-20); listed in both."
+        }
+      ],
+      "women": [
+        {
+          "conference": "GSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Gulf South Conference, 2026 Women's Soccer standings and records, https://gscsports.org/standings.aspx?path=wsoc and https://gscsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label West Alabama (twelve programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://gscsports.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same twelve programmes plus West Florida, which left for Division I (ASUN) after 2025."
         }
       ]
     },
@@ -3243,6 +3545,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Lone Star Conference, 2022 and 2026 Men's Soccer records, https://lonestarconference.org/stats.aspx?path=msoc&year=2022&conf=true and https://lonestarconference.org/standings.aspx?path=msoc (accessed 2026-08-12); listed in both."
+        }
+      ],
+      "women": [
+        {
+          "conference": "LSC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Lone Star Conference, 2026 Women's Soccer standings and records, https://lonestarconference.org/standings.aspx?path=wsoc and https://lonestarconference.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label West Texas A&M (fifteen programmes in one table, no divisions). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 records (https://lonestarconference.org/stats.aspx?path=wsoc&year=2025&conf=true) list the same fifteen programmes."
         }
       ]
     },

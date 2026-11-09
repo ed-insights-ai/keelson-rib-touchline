@@ -535,6 +535,339 @@ city_source  = "schedule-page home venue location, https://utpbfalcons.com/sport
 identity_accessed = "2026-09-02"
 
 # ============================================================
+# LSC WOMEN'S SOCCER - 15 programmes, authored depth 2026 only
+# ============================================================
+# Source of truth: the Lone Star Conference's own women's soccer pages, read
+# 2026-11-08: the live standings
+# (https://lonestarconference.org/standings.aspx?path=wsoc, "2026 Women's Soccer
+# Standings") and the 2026 conference statistics
+# (stats.aspx?path=wsoc&year=2026&conf=true). Both list the same fifteen
+# programmes in one table with no divisions, so no window carries
+# `division`. Depth is 2026 only (the owner's ruling for the women's
+# onboarding): every window opens at 2026 as a depth decision, not an
+# arrival claim, and every years list is [2026]. The 2025 women's records
+# (year=2025) list the same fifteen, so nobody arrived or left across 2026.
+#
+# Not the men's set. The eleven LSC men's 2026 programmes all sponsor
+# women's soccer and reuse their men's `name` here (one slug per school).
+# Four more play women's soccer in the LSC: Eastern New Mexico (men's soccer
+# discontinued December 2024) and UT Permian Basin (men's LSC 2022 only) reuse
+# their historical men's stanzas' `name`, so their slugs already exist; Texas
+# Woman's and Angelo State sponsor women's soccer only and are new to the
+# rib. Texas Woman's mints `texas-womans` (name "Texas Womans", the
+# apostrophe-free form the identity fold gives "Texas Woman's", the
+# Saint Edwards precedent), display_name "Texas Woman's". Three full members
+# on the member JSON sponsor no women's soccer at all and get no window or
+# stanza: Cameron, Texas A&M-Kingsville and Western New Mexico (no wsoc in
+# any of their sites' sport menus, read 2026-11-08). No movers at the edge,
+# no provisional member, no rename, no same-named collision.
+#
+# Probe (uv run probe --conference LSC --seasons 2026 --name ..., 2026-11-08;
+# hosts from the athletics_website fields of the member JSON embedded in the
+# standings page): all 15 SideArm, schedule / roster / stats / matches
+# present, 2026 served on every one. No PrestoSports host, no dead host, no
+# 403 or 202. base_url is the host each site served after its redirect. No
+# collect has run, so every stanza is data_status = unverified. No ordinals.
+#
+# Hand corrections: abbreviations are the men's stanzas' short forms (the
+# probe drafted SE, SM, SRS, TD, TT, MWSU, WTAMU); the new schools carry
+# their own scoreboard short forms (TWU, ASU), and ASU is display-only
+# because Adams State carries it on the RMAC men's stanza and a women's RMAC
+# stanza would claim it too. Mascots are the men's stanzas' (Lubbock
+# Christian, Texas A&M International and West Texas A&M's women's
+# descriptions print the short or spaced forms "Chaps", "Dust Devils",
+# "Buffs"); Angelo State's women are the Rambelles (every 2026 recap on the
+# schedule page; the description's "Rams" is the university's). The probe's
+# aliases "MSU" (Midwestern State; it is the abbreviation) and "University
+# of Texas" (UT Dallas; folds to the bare key "texas") are dropped. Peers'
+# 2026 women's schedules print "DBU" (9 pages; the abbreviation resolves),
+# "Dallas Baptist (University)", "Midwestern State University Texas"
+# (St. Edward's, UTPB), "Texas Permian Basin" / "University of Texas Permian
+# Basin", "University of Texas at Dallas", "University of Texas at Tyler" (5),
+# "Texas Woman's (University)", "St. Mary's (TX)", "St. Edward's (Texas)",
+# and each member's long name; every one resolves to its slug through the
+# women's identity map with these stanzas loaded.
+
+# New institution (women's soccer only; the site's sport is plain "Soccer").
+# The probe drafted the initials "AS" and the description's "Rams"; ASU is
+# the site's own scoreboard short form (angelosports.com root JSON) and the
+# LSC member JSON's abbreviation, and the women's teams are the Rambelles
+# (the 2026 recap titles on the schedule page). San Angelo, Texas resolves to
+# one Gazetteer place (4864472 San Angelo city).
+[[schools]]
+name         = "Angelo State"
+abbreviation = "ASU"
+abbreviation_resolves = false  # "ASU" is also Adams State's (RMAC; see the men's stanza)
+conference   = "LSC"
+mascot       = "Rambelles"
+gender       = "women"
+base_url     = "https://angelosports.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Angelo State University"]
+city         = "San Angelo, Texas"
+city_source  = "schedule-page home venue location, https://angelosports.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The records and standings print "DBU", which the stanza's resolving
+# abbreviation claims (no other women's stanza carries it); peers print
+# "DBU" (9 pages), "Dallas Baptist" and "Dallas Baptist University".
+[[schools]]
+name         = "Dallas Baptist"
+abbreviation = "DBU"
+conference   = "LSC"
+mascot       = "Patriots"
+gender       = "women"
+base_url     = "https://dbupatriots.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Dallas Baptist University"]
+city         = "Dallas, Texas"
+city_source  = "schedule-page home venue location, https://dbupatriots.com/sports/womens-soccer/schedule/2026 (the schedule page prints \"Dallas, TX\" on its home rows, read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# Women's soccer continues after the men's programme was discontinued in
+# December 2024; the slug is the men's stanza's (eastern-new-mexico), whose
+# men's window ends 2024.
+[[schools]]
+name         = "Eastern New Mexico"
+abbreviation = "ENMU"
+conference   = "LSC"
+mascot       = "Greyhounds"
+gender       = "women"
+base_url     = "https://goeasternathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Eastern N.M.", "Eastern New Mexico University"]
+city         = "Portales, N.M."
+city_source  = "schedule-page home venue location, https://goeasternathletics.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Lubbock Christian"
+abbreviation = "LCU"
+conference   = "LSC"
+mascot       = "Chaparrals"
+gender       = "women"
+base_url     = "https://lcuchaps.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lubbock Christian University"]
+city         = "Lubbock, Texas"
+city_source  = "schedule-page home venue location, https://lcuchaps.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# St. Edward's and UTPB print "Midwestern State University Texas", whose key
+# ("midwestern state texas") is not the name's; it is stated as an alias
+# rather than left to the unique-token fallback. "MSU" resolves as on the
+# men's side (MSU Denver carries MSUD); a later women's stanza that also
+# prints bare "MSU" (Minnesota State, say) would make it display-only on both.
+[[schools]]
+name         = "Midwestern State"
+abbreviation = "MSU"
+conference   = "LSC"
+mascot       = "Mustangs"
+gender       = "women"
+base_url     = "https://msumustangs.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Midwestern", "Midwestern State University", "Midwestern State University Texas"]
+city         = "Wichita Falls, Texas"
+city_source  = "schedule-page home venue location, https://msumustangs.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Oklahoma Christian"
+abbreviation = "OC"
+conference   = "LSC"
+mascot       = "Eagles"
+gender       = "women"
+base_url     = "https://oceagles.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Okla. Christian", "Oklahoma Christian University"]
+city         = "Edmond, Okla."
+city_source  = "schedule-page home venue location, https://oceagles.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# `name` stays apostrophe-free because it mints the saint-edwards slug (see
+# the men's stanza); the records label "St. Edward's" folds to the same key.
+[[schools]]
+name         = "Saint Edwards"
+display_name = "St. Edward's"
+abbreviation = "SEU"
+conference   = "LSC"
+mascot       = "Hilltoppers"
+gender       = "women"
+base_url     = "https://gohilltoppers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["St. Edward's University"]
+city         = "Austin, Texas"
+city_source  = "schedule-page home venue location, https://gohilltoppers.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The home rows print the town without a state ("San Antonio"); the state is
+# the LSC member JSON's (San Antonio, TX) and the men's stanza's.
+[[schools]]
+name         = "Saint Marys"
+display_name = "St. Mary's"
+abbreviation = "STMU"
+conference   = "LSC"
+mascot       = "Rattlers"
+gender       = "women"
+base_url     = "https://rattlerathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["St. Mary's University"]
+city         = "San Antonio, Texas"
+city_source  = "schedule-page home venue location, https://rattlerathletics.com/sports/womens-soccer/schedule/2026 (San Antonio, no state, read 2026-11-08); the lonestarconference.org member JSON prints San Antonio, TX"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Sul Ross State"
+abbreviation = "SRSU"
+conference   = "LSC"
+mascot       = "Lobos"
+gender       = "women"
+base_url     = "https://srlobos.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Sul Ross State University"]
+city         = "Alpine, Texas"
+city_source  = "schedule-page home venue location, https://srlobos.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Texas A&M International"
+abbreviation = "TAMIU"
+conference   = "LSC"
+mascot       = "Dustdevils"
+gender       = "women"
+base_url     = "https://godustdevils.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Tex. A&M Int'l", "Texas A&M International University"]
+city         = "Laredo, Texas"
+city_source  = "schedule-page home venue location, https://godustdevils.com/sports/womens-soccer/schedule/2026 (the schedule page prints \"Laredo, TX\" on its home rows, read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only; the site's sport is plain "Soccer").
+# The records, standings and peers print "Texas Woman's", which the identity
+# fold keys to "texas womans": `name` is that apostrophe-free form (slug
+# texas-womans; programme_slug of the raw label would mint texas-woman-s),
+# and `display_name` carries the published spelling, as for St. Edward's.
+# TWU is the site's own scoreboard short form and the LSC member JSON's.
+# Denton, Texas resolves to one Gazetteer place (4819972 Denton city).
+[[schools]]
+name         = "Texas Womans"
+display_name = "Texas Woman's"
+abbreviation = "TWU"
+conference   = "LSC"
+mascot       = "Pioneers"
+gender       = "women"
+base_url     = "https://twuathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Texas Woman's University"]
+city         = "Denton, Texas"
+city_source  = "schedule-page home venue location, https://twuathletics.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "UT Dallas"
+abbreviation = "UTD"
+conference   = "LSC"
+mascot       = "Comets"
+gender       = "women"
+base_url     = "https://utdcomets.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Texas at Dallas"]
+city         = "Richardson, Texas"
+city_source  = "schedule-page home venue location, https://utdcomets.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The slug is the men's stanza's (ut-permian-basin, men's LSC 2022 only).
+# Peers print "Texas Permian Basin" (St. Edward's, Texas Woman's) and
+# "University of Texas Permian Basin" (TAMIU), both keyed by the alias. The
+# women's home rows print "Odessa, Texas" (the men's stanza carries
+# "Odessa, TX"; the row is the men's).
+[[schools]]
+name         = "UT Permian Basin"
+abbreviation = "UTPB"
+conference   = "LSC"
+mascot       = "Falcons"
+gender       = "women"
+base_url     = "https://utpbfalcons.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Texas-Permian Basin", "University of Texas Permian Basin"]
+city         = "Odessa, Texas"
+city_source  = "schedule-page home venue location, https://utpbfalcons.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "UT Tyler"
+abbreviation = "UTT"
+conference   = "LSC"
+mascot       = "Patriots"
+gender       = "women"
+base_url     = "https://uttylerpatriots.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Texas-Tyler", "University of Texas at Tyler"]
+city         = "Tyler, Texas"
+city_source  = "schedule-page home venue location, https://uttylerpatriots.com/sports/womens-soccer/schedule/2026 (the schedule page prints \"Tyler, TX\" on its home rows, read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# The probe read no home town (its majority rule did not settle); the 2026
+# home rows print "Canyon, Texas" nine times.
+[[schools]]
+name         = "West Texas A&M"
+abbreviation = "WT"
+conference   = "LSC"
+mascot       = "Buffaloes"
+gender       = "women"
+base_url     = "https://gobuffsgo.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["West Tex. A&M", "West Texas A&M University"]
+city         = "Canyon, Texas"
+city_source  = "schedule-page home venue location, https://gobuffsgo.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# ============================================================
 # GSC MEN'S SOCCER — 13 programmes, backfill window 2016-2026
 # ============================================================
 # Source of truth: GSC per-season records (gscsports.org conference
@@ -792,6 +1125,280 @@ enabled      = true
 city         = "Rome, GA"
 city_source  = "schedule-page home venue location, https://shorterhawks.com/sports/mens-soccer/schedule/2023"
 identity_accessed = "2026-09-02"
+
+# ============================================================
+# GSC WOMEN'S SOCCER - 12 programmes, authored depth 2026 only
+# ============================================================
+# Source of truth: the Gulf South Conference's own women's soccer pages,
+# read 2026-11-08: the live standings
+# (https://gscsports.org/standings.aspx?path=wsoc, "2026 Women's Soccer Standings")
+# and the 2026 conference statistics
+# (stats.aspx?path=wsoc&year=2026&conf=true). Both list the same twelve
+# programmes in one table with no divisions, so no window carries
+# `division`. Depth is 2026 only (the owner's ruling for the women's
+# onboarding): every window opens at 2026 as a depth decision, not an
+# arrival claim, and every years list is [2026].
+#
+# Not quite the men's set: eleven of the twelve are the GSC men's 2026
+# programmes, and every one of those stanzas' `name` is reused here so both
+# genders share one slug (Mississippi College keeps its slug and its
+# display_name "Mississippi Christian"). Valdosta State sponsors women's
+# soccer only and is new to the rib (slug valdosta-state, no collision).
+# Realignment traps, each read off a records page: West Florida is in the
+# 2025 women's records (stats.aspx?path=wsoc&year=2025&conf=true) and absent
+# from 2026; its 2026 schedule (goargos.com/sports/womens-soccer/schedule/2026)
+# is an ASUN Division I slate, so it gets no women's window. Its men's GSC
+# window already ends 2025. The GSC member JSON still lists it (13 entries).
+# Shorter is on neither the 2025 nor the 2026 women's records. Nobody is
+# provisional; no same-named collision (`union` and `lee` are the GSC men's
+# slugs, and no women's stanza elsewhere claims either key).
+#
+# Probe (uv run probe --conference GSC --seasons 2026 --name ..., 2026-11-08;
+# hosts from the athletics_website fields of the member JSON embedded in the
+# standings page): all 12 SideArm, schedule / roster / stats / matches
+# present, 2026 served on every one. No PrestoSports host, no dead host, no
+# 403 or 202. base_url is the host each site served after its redirect (the
+# member JSON prints www. for several that answer on the bare host). No
+# collect has run, so every stanza is data_status = unverified. No ordinals.
+#
+# Hand corrections: abbreviations are the men's stanzas' short forms (the
+# probe drafted DS and TN, and left Lee and Montevallo blank); Valdosta State
+# carries VSU, its own scoreboard short form and the GSC member JSON
+# abbreviation (the probe drafted VS). Mascots are the men's stanzas' (the
+# women's schedule pages print the same: Christian Brothers' description
+# prints the short "Bucs", Trevecca's prints none); recaps say "Lady Bucs",
+# "Lady Statesmen", "Lady Choctaws", which are not separate nicknames on the
+# sites' own descriptions. Aliases are the men's plus the published long
+# names; peers' 2026 women's schedules print "Auburn University Montgomery"
+# (5 pages) and "Auburn University at Montgomery" (3), "Mississippi Christian"
+# (7) and "Mississippi Christian University" (5), "Mississippi College" (1,
+# Christian Brothers), "Trevecca Nazarene (University)" (10), "University of
+# West Alabama" (7), "University of Alabama in Huntsville" (Spring Hill),
+# "Alabama-Huntsville" and "Auburn-Montgomery" (Embry-Riddle; Tampa), and
+# "Lee University (Tenn.)", "Union University (Tenn.)", "Spring Hill College
+# (Ala.)", whose parentheticals drop. Every one resolves to its slug through
+# the women's identity map with these stanzas loaded.
+
+[[schools]]
+name         = "UAH"
+abbreviation = "UAH"
+conference   = "GSC"
+mascot       = "Chargers"
+gender       = "women"
+base_url     = "https://uahchargers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Alabama in Huntsville", "Alabama-Huntsville"]
+city         = "Huntsville, Ala."
+city_source  = "schedule-page home venue location, https://uahchargers.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "AUM"
+abbreviation = "AUM"
+conference   = "GSC"
+mascot       = "Warhawks"
+gender       = "women"
+base_url     = "https://aumathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Auburn University at Montgomery", "Auburn University Montgomery"]
+city         = "Montgomery, Ala."
+city_source  = "schedule-page home venue location, https://aumathletics.com/sports/womens-soccer/schedule/2026 (the schedule page prints \"Montgomery, AL\" on its home rows, read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# The women's schedule page's description prints the short form "Christian
+# Brothers University Bucs"; the mascot is the men's stanza's full form. Its
+# home rows print only the venue (Signaigo Field), so the town is the GSC
+# member JSON's location. "Christan Brothers" is the men's stanza's peer
+# misspelling, kept so both genders resolve it.
+[[schools]]
+name         = "Christian Brothers"
+abbreviation = "CBU"
+conference   = "GSC"
+mascot       = "Buccaneers"
+gender       = "women"
+base_url     = "https://cbubucs.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Christian Brothers University", "Christan Brothers"]
+city         = "Memphis, Tenn."
+city_source  = "the gscsports.org member JSON prints Memphis, Tenn. (read 2026-11-08); the schedule page's home rows print only Signaigo Field, https://cbubucs.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The probe drafted the initials "DS"; DSU is the men's stanza's and the GSC
+# member JSON's short form.
+[[schools]]
+name         = "Delta State"
+abbreviation = "DSU"
+conference   = "GSC"
+mascot       = "Statesmen"
+gender       = "women"
+base_url     = "https://gostatesmen.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Delta State University"]
+city         = "Cleveland, Miss."
+city_source  = "schedule-page home venue location, https://gostatesmen.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# leeuflames.com is Lee's real SideArm site (leeflames.com is a fan page; see
+# the men's stanza). The probe found no short form; LEE is the men's stanza's
+# and the GSC member JSON's.
+[[schools]]
+name         = "Lee"
+abbreviation = "LEE"
+conference   = "GSC"
+mascot       = "Flames"
+gender       = "women"
+base_url     = "https://leeuflames.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lee University"]
+city         = "Cleveland, Tenn."
+city_source  = "schedule-page home venue location, https://leeuflames.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# Renamed Mississippi Christian University 2026-06-01 (see the men's stanza):
+# `name` keeps minting mississippi-college, `display_name` carries the name
+# the 2026 standings and the site print. Peers print "Mississippi Christian"
+# and "Mississippi Christian University" (both fold to the alias), and
+# Christian Brothers still prints "Mississippi College" (the name's key).
+[[schools]]
+name         = "Mississippi College"
+display_name = "Mississippi Christian"
+abbreviation = "MC"
+conference   = "GSC"
+mascot       = "Choctaws"
+gender       = "women"
+base_url     = "https://www.gochoctaws.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Mississippi Christian", "Mississippi Col."]
+city         = "Clinton, Miss."
+city_source  = "schedule-page home venue location, https://www.gochoctaws.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The probe found no short form; UM is the men's stanza's and the GSC member
+# JSON's.
+[[schools]]
+name         = "Montevallo"
+abbreviation = "UM"
+conference   = "GSC"
+mascot       = "Falcons"
+gender       = "women"
+base_url     = "https://montevallofalcons.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Montevallo"]
+city         = "Montevallo, Ala."
+city_source  = "schedule-page home venue location, https://montevallofalcons.com/sports/womens-soccer/schedule/2026 (the schedule page prints \"Montevallo, AL\" on its home rows, read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Spring Hill"
+abbreviation = "SHC"
+conference   = "GSC"
+mascot       = "Badgers"
+gender       = "women"
+base_url     = "https://shcbadgers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Spring Hill College"]
+city         = "Mobile, Ala."
+city_source  = "schedule-page home venue location, https://shcbadgers.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# The probe drafted "TN" and no mascot (the description names no nickname);
+# TNU and Trojans are the men's stanza's, TNU also the GSC member JSON's.
+# Peers print "Trevecca Nazarene University", which folds to the alias. The
+# Nashville pin is the men's stanza's (Nashville-Davidson metropolitan
+# government balance).
+[[schools]]
+name         = "Trevecca"
+abbreviation = "TNU"
+conference   = "GSC"
+mascot       = "Trojans"
+gender       = "women"
+base_url     = "https://tnutrojans.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Trevecca Nazarene"]
+city         = "Nashville, Tenn."
+city_source  = "schedule-page home venue location, https://tnutrojans.com/sports/womens-soccer/schedule/2026"
+gazetteer_geoid = "4752006"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Union"
+abbreviation = "UU"
+conference   = "GSC"
+mascot       = "Bulldogs"
+gender       = "women"
+base_url     = "https://uuathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Union University"]
+city         = "Jackson, Tenn."
+city_source  = "schedule-page home venue location, https://uuathletics.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# New institution (women's soccer only). The probe drafted the initials
+# "VS"; VSU is the site's own scoreboard short form (vstateblazers.com root
+# JSON, home_short_name / away_short_name) and the GSC member JSON's
+# abbreviation. Peers print "Valdosta State" and "Valdosta State University".
+# Valdosta, Ga. resolves to one Gazetteer place (1378800 Valdosta city).
+[[schools]]
+name         = "Valdosta State"
+abbreviation = "VSU"
+conference   = "GSC"
+mascot       = "Blazers"
+gender       = "women"
+base_url     = "https://vstateblazers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Valdosta State University"]
+city         = "Valdosta, Ga."
+city_source  = "schedule-page home venue location, https://vstateblazers.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "West Alabama"
+abbreviation = "UWA"
+conference   = "GSC"
+mascot       = "Tigers"
+gender       = "women"
+base_url     = "https://uwaathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of West Alabama", "West Ala."]
+city         = "Livingston, Ala."
+city_source  = "schedule-page home venue location, https://uwaathletics.com/sports/womens-soccer/schedule/2026 (the schedule page prints \"Livingston, AL\" on its home rows, read 2026-11-08)"
+identity_accessed = "2026-11-08"
 
 # ============================================================
 # GLVC MEN'S SOCCER — 15 programmes, backfill window 2022-2026
@@ -1795,6 +2402,243 @@ aliases      = ["University of Tampa"]
 city         = "Tampa, Fla."
 city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style town, lifted on tl-891"
 identity_accessed = "2026-09-02"
+
+# ============================================================
+# SSC WOMEN'S SOCCER - 11 programmes, authored depth 2026 only
+# ============================================================
+# Source of truth: the Sunshine State Conference's own women's soccer pages,
+# read 2026-11-08: the live standings
+# (https://sunshinestateconference.com/standings.aspx?path=wsoc, "2026 Women's
+# Soccer Standings") and the 2026 conference statistics
+# (stats.aspx?path=wsoc&year=2026&conf=true). Both list the same eleven
+# programmes in one table with no divisions, so no window carries
+# `division`. Depth is 2026 only (the owner's ruling for the women's
+# onboarding): every window opens at 2026 as a depth decision, not an
+# arrival claim, and every years list is [2026].
+#
+# The set equals the men's SSC 2026 set exactly, and the 2025 women's
+# records (year=2025) list the same eleven, so nobody arrived or left across
+# 2026. Every `name` here is the men's SSC stanza's own, so both genders
+# share one slug; no women-only programme, no rename, no provisional
+# member, no same-named collision. The member JSON on the standings page
+# lists the same eleven.
+#
+# Probe (uv run probe --conference SSC --seasons 2026 --name ..., 2026-11-08;
+# hosts from the athletics_website fields of the member JSON): ten SideArm
+# hosts with schedule / roster / stats / matches present and 2026 served.
+# Tampa (tampaspartans.com/sports/wsoc) answered the probe this time and the
+# probe read PrestoSports off its markup (theme asset hosts, mirror host
+# tampaspartans.prestosports.com), all four layers present and 2026 served
+# (/sports/wsoc/2026-27/schedule). A paced curl pass the same day got one
+# empty HTTP 202 (the CloudFront challenge) before a 200: a 202 from Tampa is
+# the challenge, not a dead host. base_url is the host each site served after
+# its redirect (several www. hosts now answer on the bare host). No collect
+# has run, so every stanza is data_status = unverified. No ordinals.
+#
+# Hand corrections: abbreviations are the men's stanzas' short forms (the
+# probe drafted EA, SFLO, LYNNU, NS and SL, and left Barry, Eckerd, Rollins
+# and Tampa blank); BU and NSU stay display-only as on the men's side (BU is
+# also Bloomsburg's on the PSAC women's stanza, NSU Northeastern State's on
+# the MIAA women's). Mascots are the men's stanzas' (the probe found none for
+# Florida Southern, Florida Tech, Lynn and Rollins). The probe's junk aliases
+# ("#13" off Nova Southeastern's ranked title, "Florida Tech Panthers") are
+# dropped. Peers' 2026 women's schedules print "Embry-Riddle University
+# (Fla.)" / "Embry-Riddle (FL)" / "Embry-Riddle (Fla.)" (parenthetical
+# drops), "University of Tampa" and "/ University of Tampa", and each
+# member's long name; all resolve with the aliases below. Towns: Barry,
+# Eckerd and Palm Beach Atlantic print no town on their home rows (Barry
+# prints its 2026 off-campus venues, Eckerd and PBA print "Home"), so those
+# three come from the member JSON; Tampa's PrestoSports rows print "Tampa,
+# Fla.".
+
+# The 2026 home rows print off-campus venues in Miami Gardens, FL and
+# Kendall, FL (MDC Soccer Stadium), four matches each; the town is the
+# school's, as the member JSON and the men's stanza give it.
+[[schools]]
+name         = "Barry"
+abbreviation = "BU"
+abbreviation_resolves = false  # "BU" is also Bloomsburg's (PSAC women) and Bentley's (see the men's stanza)
+conference   = "SSC"
+mascot       = "Buccaneers"
+gender       = "women"
+base_url     = "https://gobarrybucs.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Barry University"]
+city         = "Miami Shores, Fla."
+city_source  = "the sunshinestateconference.com member JSON prints Miami Shores, Fla. (read 2026-11-08); the 2026 home rows print the venues' towns Miami Gardens, FL and Kendall, FL, https://gobarrybucs.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Eckerd"
+abbreviation = "EC"
+conference   = "SSC"
+mascot       = "Tritons"
+gender       = "women"
+base_url     = "https://eckerdtritons.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Eckerd College"]
+city         = "St. Petersburg, Fla."
+city_source  = "the sunshinestateconference.com member JSON prints St. Petersburg, Fla. (read 2026-11-08); the schedule page's home rows print only Home / Johnson Field, https://eckerdtritons.com/sports/womens-soccer/schedule/2026"
+gazetteer_geoid = "1263000"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Embry-Riddle"
+abbreviation = "ERAU"
+conference   = "SSC"
+mascot       = "Eagles"
+gender       = "women"
+base_url     = "https://erauathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Embry-Riddle Aeronautical University", "Embry-Riddle University"]
+city         = "Daytona Beach, Fla."
+city_source  = "schedule-page home venue location, https://erauathletics.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Florida Southern"
+abbreviation = "FSC"
+conference   = "SSC"
+mascot       = "Moccasins"
+gender       = "women"
+base_url     = "https://fscmocs.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Florida Southern College"]
+city         = "Lakeland, Fla."
+city_source  = "schedule-page home venue location, https://fscmocs.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Florida Tech"
+abbreviation = "FIT"
+conference   = "SSC"
+mascot       = "Panthers"
+gender       = "women"
+base_url     = "https://floridatechsports.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Florida Institute of Technology"]
+city         = "Melbourne, Fla."
+city_source  = "schedule-page home venue location, https://floridatechsports.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Lynn"
+abbreviation = "LYNN"
+conference   = "SSC"
+mascot       = "Fighting Knights"
+gender       = "women"
+base_url     = "https://lynnfightingknights.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Lynn University"]
+city         = "Boca Raton, Fla."
+city_source  = "schedule-page home venue location, https://lynnfightingknights.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Nova Southeastern"
+abbreviation = "NSU"
+abbreviation_resolves = false  # "NSU" is also Northeastern State's (MIAA women)
+conference   = "SSC"
+mascot       = "Sharks"
+gender       = "women"
+base_url     = "https://nsusharks.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Nova Southeastern University"]
+city         = "Fort Lauderdale, Fla."
+city_source  = "schedule-page home venue location, https://nsusharks.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Palm Beach Atlantic"
+abbreviation = "PBA"
+conference   = "SSC"
+mascot       = "Sailfish"
+gender       = "women"
+base_url     = "https://pbasailfish.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Palm Beach Atlantic University", "Palm Beach Atl."]
+city         = "West Palm Beach, Fla."
+city_source  = "the sunshinestateconference.com member JSON prints West Palm Beach, FL (read 2026-11-08); the schedule page's home rows print only HOME / PBA Soccer/Lacrosse Field, https://pbasailfish.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Rollins"
+abbreviation = "ROL"
+conference   = "SSC"
+mascot       = "Tars"
+gender       = "women"
+base_url     = "https://rollinssports.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Rollins College"]
+city         = "Winter Park, Fla."
+city_source  = "schedule-page home venue location, https://rollinssports.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Saint Leo"
+abbreviation = "SLU"
+conference   = "SSC"
+mascot       = "Lions"
+gender       = "women"
+base_url     = "https://saintleolions.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Saint Leo University", "St. Leo"]
+city         = "Saint Leo, Fla."
+city_source  = "schedule-page home venue location, https://saintleolions.com/sports/womens-soccer/schedule/2026"
+gazetteer_geoid = "1262775"
+identity_accessed = "2026-11-08"
+
+# PrestoSports (probed 2026-11-08: platform prestosports, all four layers
+# present, 2026 served at /sports/wsoc/2026-27/schedule). An empty HTTP 202 is
+# the CloudFront challenge, not a dead host; the collector paces it. The probe
+# left the abbreviation blank; UT is the men's stanza's. The home rows print
+# "Tampa, Fla." beside Pepin Stadium.
+[[schools]]
+name         = "Tampa"
+abbreviation = "UT"
+conference   = "SSC"
+mascot       = "Spartans"
+gender       = "women"
+base_url     = "https://www.tampaspartans.com/sports/wsoc"
+years        = [2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Tampa"]
+city         = "Tampa, Fla."
+city_source  = "schedule-page home venue location, https://www.tampaspartans.com/sports/wsoc/2026-27/schedule (Tampa, Fla. on the home rows, read 2026-11-08)"
+identity_accessed = "2026-11-08"
 
 # ============================================================
 # NE10 MEN'S SOCCER - 13 programmes, backfill window 2022-2026
