@@ -92,6 +92,7 @@ from src.sidearm_live import (
     PublishedPage,
     ResolutionScope,
     _clean_team_name,
+    _seeded,
     _DOM_MONTHS,
     _dom_date,
     _dom_result,
@@ -580,6 +581,7 @@ def parse_schedule(
     for event_id, row in rows.items():
         opponent_raw = _text(row, _ROW_OPPONENT)
         opponent_name = _clean_team_name(opponent_raw)
+        seeded = _seeded(opponent_raw)
         date = _row_date(row, year)
         if not opponent_name or not date:
             continue
@@ -609,7 +611,7 @@ def parse_schedule(
         owner_is_home = not _text(row, _ROW_SIDE).lower().startswith("at")
         neutral = "neutral" in classes or row.select_one(_ROW_NEUTRAL_SITE) is not None
         other_slug = opponent_slug(
-            opponent_name, aliases, scope=scope, owner=owner_slug
+            opponent_name, aliases, scope=scope, owner=owner_slug, seeded=seeded
         )
         home, away = (
             (owner_slug, other_slug) if owner_is_home else (other_slug, owner_slug)

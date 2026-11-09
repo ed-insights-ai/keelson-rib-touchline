@@ -774,6 +774,15 @@ def _clean_team_name(name: object) -> str:
     return _RANK_PREFIX.sub("", str(name or "").strip())
 
 
+def _seeded(name: object) -> bool:
+    """True when the published string carried a rank or seed prefix.
+
+    The schedule parsers clean the prefix off before resolving, so they ask
+    this of the raw string and pass the answer to ``opponent_slug``.
+    """
+    return _RANK_PREFIX.match(str(name or "").strip()) is not None
+
+
 # The orientation word some skins print inside the opponent cell ("vs
 # Molloy", "at Molloy", "@ Molloy") rather than in a dedicated span.
 _ORIENTATION_PREFIX = re.compile(r"^\s*(vs\.?|v\.?|at|@)\s+", re.IGNORECASE)
@@ -1395,6 +1404,7 @@ def opponent_slug(
     *,
     scope: ResolutionScope | None = None,
     owner: str | None = None,
+    seeded: bool = False,
 ) -> str:
     """Resolve a published opponent string to a stable identity, or record it.
 
@@ -1431,7 +1441,7 @@ def opponent_slug(
     key = _identity_key(name)
     if not key:
         return programme_slug(_clean_team_name(name))
-    key = _division_seed_key(name, key, aliases, scope)
+    key = _division_seed_key(name, key, aliases, scope, seeded=seeded)
     if scope is not None and key in scope.claims:
         chosen = scope.claims[key]
         otherwise = _unscoped_slug(key, aliases)
@@ -1458,7 +1468,10 @@ def opponent_slug(
 # only when everything else agrees it is not a name: the string carried a
 # rank prefix, the whole key is claimed by no programme and no member, and
 # the rest of the key is claimed by a MEMBER of the collecting conference,
-# the only side a conference tournament's seed is ever printed for.
+# the only side a conference tournament's seed is ever printed for. The
+# schedule parsers clean the rank off before they resolve, so they pass
+# ``seeded`` from the raw string; a name that still carries its rank (the
+# standings check) is read directly.
 _DIVISION_WORDS = frozenset({"east", "west", "north", "south"})
 
 
@@ -1467,9 +1480,11 @@ def _division_seed_key(
     key: str,
     aliases: dict[str, str],
     scope: ResolutionScope | None,
+    *,
+    seeded: bool = False,
 ) -> str:
     """The key without a spelled-out division word after a seed, or the key."""
-    if scope is None or not _RANK_PREFIX.match(str(name or "").strip()):
+    if scope is None or not (seeded or _seeded(name)):
         return key
     head, _, rest = key.partition(" ")
     if (
@@ -2387,6 +2402,7 @@ def _parse_schedule_dom(
         opponent_raw = _first_text(row, ".sidearm-schedule-game-opponent-name") or ""
         orientation, opponent_raw = _split_orientation(opponent_raw)
         opponent_name = _clean_team_name(opponent_raw)
+        seeded = _seeded(opponent_raw)
         date = _dom_row_date(row, year)
         if not game_id or not opponent_name or not date:
             continue
@@ -2439,7 +2455,7 @@ def _parse_schedule_dom(
             opponent_name, owner_slug=owner_slug, aliases=aliases, scope=scope
         )
         other_slug = opponent_slug(
-            opponent_name, aliases, scope=scope, owner=owner_slug
+            opponent_name, aliases, scope=scope, owner=owner_slug, seeded=seeded
         )
         # An alumni game, intrasquad, club side or the school against
         # itself is kept and marked exhibition, never skipped (bead
@@ -2663,6 +2679,7 @@ def parse_schedule_page(
             opponent_dict.get("title") or opponent_dict.get("name") or ""
         )
         opponent_name = _clean_team_name(published_title)
+        seeded = _seeded(published_title)
         if not opponent_name:
             continue
         date_text = str(event.get("date"))
@@ -2698,7 +2715,7 @@ def parse_schedule_page(
             opponent_name, owner_slug=owner_slug, aliases=aliases, scope=scope
         )
         other_slug = opponent_slug(
-            opponent_name, aliases, scope=scope, owner=owner_slug
+            opponent_name, aliases, scope=scope, owner=owner_slug, seeded=seeded
         )
         indicator = str(event.get("location_indicator") or "").upper()
         owner_is_home = indicator == "H" or (
