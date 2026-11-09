@@ -701,6 +701,40 @@ def test_a_division_word_after_a_seed_is_dropped_only_onto_a_member():
     )
     assert opponent_slug(seeded, women) == "east-millersville"
     assert opponent_slug("#3 West Harding", women, scope=scope) == "west-harding"
+    # The parsers clean the rank off before they resolve, so they say so.
+    unranked = "East Millersville University"
+    assert opponent_slug(unranked, women, scope=scope, seeded=True) == "millersville"
+
+
+def test_the_bloomsburg_page_files_the_seeded_final_under_millersville() -> None:
+    """The same row through the parser the collect runs. The resolver test
+    above passed the raw string; the parser hands over the cleaned one, which
+    is how the 2026 collect kept minting east-millersville after the rule
+    landed. Held on the trimmed row, not the resolver."""
+    women = identity_aliases(SCHOOLS, "women")
+    members = conference_members(
+        SCHOOLS, "women", "PSAC", season=2026, document=MEMBERSHIP
+    )
+    scope = resolution_scope(SCHOOLS, "women", members, conference="PSAC", season=2026)
+    html = (FIXTURES / "sidearm_bloomsburg_women_schedule_2026_18292.html").read_text()
+    url = "https://bloomsburgathletics.com/sports/womens-soccer/schedule/2026"
+
+    def parse(scope):
+        return parse_schedule_page(
+            html,
+            page_url=url,
+            year=2026,
+            owner_slug="bloomsburg",
+            aliases=women,
+            members=set(members),
+            scope=scope,
+        )
+
+    [row] = parse(scope)
+    assert row["id"] == "sidearm:bloomsburg:18292"
+    assert (row["home"], row["away"]) == ("millersville", "bloomsburg")
+    # Without the conference's scope the word stands, as it must.
+    assert [r["home"] for r in parse(None)] == ["east-millersville"]
 
 
 def test_a_programme_that_had_not_started_leaves_the_tiebreak():
