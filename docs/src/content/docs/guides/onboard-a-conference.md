@@ -763,6 +763,32 @@ runbook itself absorbed the corrections into steps 2, 3, 5 and 7 above.
 [Season is a dimension](../../concepts/season-and-membership/),
 [Absence is data](../../concepts/absence-is-data/).
 
+### 8.6 Women's history 2022-2025, all twenty-one conferences (2026-11-09)
+
+The women's division went live 2026-only (17 conferences in one PR, #130),
+then gained four seasons of depth in one PR across all twenty-one. The
+research ran as six read-only batches; every window was held against the
+conference's own archived women's standings page for its season,
+`check-membership --standings ... --gender women`, 100 conference-seasons,
+99 reproducing (the live GLIAC 2026 table carries a placeholder row named
+for the conference). GAC needed nothing: its seven women's windows already
+ran 2016-2025, and the 2022-2025 tables list the same seven.
+
+| touchpoint | change |
+|---|---|
+| `data/reference/membership.json` | every women's window of the twenty conferences rewritten from 2022 (or the first listed season) to its last; movers carry one window per conference (Trevecca G-MAC then GSC, Shorter GSC then CC, Young Harris PBC then CC, Lincoln (Pa.) ECC then CACC, Upper Iowa NSIC then GLVC, Fresno Pacific and Menlo PacWest then CCAA); divisions per season (PSAC East/West and MEC North/South every season, CC from 2023, Lock Haven, Davis & Elkins and North Greenville split) |
+| `pipeline/config/schools.toml` | year-lists widened; fifteen stanzas for programmes gone by 2026 at the end of their sections (New Haven, Saint Rose, Alliance, Bloomfield, Mercyhurst, Alderson Broaddus, Notre Dame College, West Florida, West Georgia, Limestone, Albany State, Sonoma State, Azusa Pacific, Academy of Art, Holy Names), six of them dead hosts; each women's section header says its 2026-only paragraphs are superseded |
+| rib fixes merged first | #131, a reasoned `point_reason` override (San Francisco State's Gazetteer point is in the Pacific); #132, a division word after a seed, the standings check minting inside the season's scope, and `first_season` taking an unborn programme out of the tiebreak |
+
+**Where this page was wrong or silent**
+
+| finding | what happened |
+|---|---|
+| a records page counts team links | departed programmes keep their row in the records page's Team Stats Summaries but lose the team link, so counting links read "the same ten" for the NE10 in every season; read the summaries table or the standings archive |
+| `standings_archives` is keyed by conference only | the SAC's and GNAC's entries are the men's ids; the women's sources cite their archive ids in the sentence instead |
+| academic-year schedule paths | Anderson 2022/2023, Michigan Tech 2022/2023, Southwest Baptist 2023 and Jamestown 2025 file a season under `/schedule/2022-23`, and `/schedule/2022` redirects to the live season; a plain-year collect does not reach them |
+| scratchpad research is not durable | a reboot cleared the batch outputs before integration; they were rebuilt from the agents' transcripts and re-captured standings pages. Integrate the same session, or keep batch output outside `/tmp` |
+
 ## Related
 
 - [Onboard a school](../onboard-a-school/): the per-site probe and stanza.

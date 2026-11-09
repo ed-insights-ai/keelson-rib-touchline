@@ -110,6 +110,40 @@
         }
       }
     },
+    "albany-state": {
+      "name": "Albany State",
+      "nickname": "Golden Rams",
+      "abbreviation": "ASU",
+      "city": "Albany, Ga.",
+      "point": {
+        "lat": 31.5781,
+        "lon": -84.1762
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://asugoldenrams.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://asugoldenrams.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://asugoldenrams.com/sports/womens-soccer/schedule/2025 (Albany, Georgia on 7 home rows, ASU Soccer Complex, read 2026-11-08)",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1301052",
+          "name": "Albany city",
+          "state": "GA",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "alderson-broaddus": {
       "name": "Alderson Broaddus",
       "nickname": "Battlers",
@@ -8616,6 +8650,40 @@
           "geoid": "1255925",
           "name": "Pensacola city",
           "state": "FL",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "west-georgia": {
+      "name": "West Georgia",
+      "nickname": "Wolves",
+      "abbreviation": "UWG",
+      "city": "Carrollton, Ga.",
+      "point": {
+        "lat": 33.5817,
+        "lon": -85.084
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://uwgathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://uwgathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-08"
+        },
+        "city": {
+          "source": "schedule-page home venue location, https://uwgathletics.com/sports/womens-soccer/schedule/2025",
+          "accessed": "2026-11-08"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "1313492",
+          "name": "Carrollton city",
+          "state": "GA",
           "accessed": "2023-09-26"
         }
       }

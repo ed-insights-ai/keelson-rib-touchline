@@ -535,8 +535,17 @@ city_source  = "schedule-page home venue location, https://utpbfalcons.com/sport
 identity_accessed = "2026-09-02"
 
 # ============================================================
-# LSC WOMEN'S SOCCER - 15 programmes, authored depth 2026 only
+# LSC WOMEN'S SOCCER - 15 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`), and programmes that
+# left before 2026 have stanzas of their own at the end of the section.
+# The paragraphs below were written for a 2026-only depth: where they say
+# 2026 only, or describe 2022-2025, the windows' sources supersede them.
+#
 # Source of truth: the Lone Star Conference's own women's soccer pages, read
 # 2026-11-08: the live standings
 # (https://lonestarconference.org/standings.aspx?path=wsoc, "2026 Women's Soccer
@@ -602,7 +611,7 @@ conference   = "LSC"
 mascot       = "Rambelles"
 gender       = "women"
 base_url     = "https://angelosports.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -621,7 +630,7 @@ conference   = "LSC"
 mascot       = "Patriots"
 gender       = "women"
 base_url     = "https://dbupatriots.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -640,7 +649,7 @@ conference   = "LSC"
 mascot       = "Greyhounds"
 gender       = "women"
 base_url     = "https://goeasternathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -656,7 +665,7 @@ conference   = "LSC"
 mascot       = "Chaparrals"
 gender       = "women"
 base_url     = "https://lcuchaps.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -677,7 +686,7 @@ conference   = "LSC"
 mascot       = "Mustangs"
 gender       = "women"
 base_url     = "https://msumustangs.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -693,7 +702,7 @@ conference   = "LSC"
 mascot       = "Eagles"
 gender       = "women"
 base_url     = "https://oceagles.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -712,7 +721,7 @@ conference   = "LSC"
 mascot       = "Hilltoppers"
 gender       = "women"
 base_url     = "https://gohilltoppers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -731,7 +740,7 @@ conference   = "LSC"
 mascot       = "Rattlers"
 gender       = "women"
 base_url     = "https://rattlerathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -747,7 +756,7 @@ conference   = "LSC"
 mascot       = "Lobos"
 gender       = "women"
 base_url     = "https://srlobos.com/sports/womens-soccer"
-years        = [2026]
+years        = [2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -763,7 +772,7 @@ conference   = "LSC"
 mascot       = "Dustdevils"
 gender       = "women"
 base_url     = "https://godustdevils.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -787,7 +796,7 @@ conference   = "LSC"
 mascot       = "Pioneers"
 gender       = "women"
 base_url     = "https://twuathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -803,7 +812,7 @@ conference   = "LSC"
 mascot       = "Comets"
 gender       = "women"
 base_url     = "https://utdcomets.com/sports/womens-soccer"
-years        = [2026]
+years        = [2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -824,7 +833,7 @@ conference   = "LSC"
 mascot       = "Falcons"
 gender       = "women"
 base_url     = "https://utpbfalcons.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -840,7 +849,7 @@ conference   = "LSC"
 mascot       = "Patriots"
 gender       = "women"
 base_url     = "https://uttylerpatriots.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -858,7 +867,7 @@ conference   = "LSC"
 mascot       = "Buffaloes"
 gender       = "women"
 base_url     = "https://gobuffsgo.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1127,8 +1136,17 @@ city_source  = "schedule-page home venue location, https://shorterhawks.com/spor
 identity_accessed = "2026-09-02"
 
 # ============================================================
-# GSC WOMEN'S SOCCER - 12 programmes, authored depth 2026 only
+# GSC WOMEN'S SOCCER - 12 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`), and programmes that
+# left before 2026 have stanzas of their own at the end of the section.
+# The paragraphs below were written for a 2026-only depth: where they say
+# 2026 only, or describe 2022-2025, the windows' sources supersede them.
+#
 # Source of truth: the Gulf South Conference's own women's soccer pages,
 # read 2026-11-08: the live standings
 # (https://gscsports.org/standings.aspx?path=wsoc, "2026 Women's Soccer Standings")
@@ -1186,7 +1204,7 @@ conference   = "GSC"
 mascot       = "Chargers"
 gender       = "women"
 base_url     = "https://uahchargers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1202,7 +1220,7 @@ conference   = "GSC"
 mascot       = "Warhawks"
 gender       = "women"
 base_url     = "https://aumathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1223,7 +1241,7 @@ conference   = "GSC"
 mascot       = "Buccaneers"
 gender       = "women"
 base_url     = "https://cbubucs.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1241,7 +1259,7 @@ conference   = "GSC"
 mascot       = "Statesmen"
 gender       = "women"
 base_url     = "https://gostatesmen.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1260,7 +1278,7 @@ conference   = "GSC"
 mascot       = "Flames"
 gender       = "women"
 base_url     = "https://leeuflames.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1282,7 +1300,7 @@ conference   = "GSC"
 mascot       = "Choctaws"
 gender       = "women"
 base_url     = "https://www.gochoctaws.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1300,7 +1318,7 @@ conference   = "GSC"
 mascot       = "Falcons"
 gender       = "women"
 base_url     = "https://montevallofalcons.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1316,7 +1334,7 @@ conference   = "GSC"
 mascot       = "Badgers"
 gender       = "women"
 base_url     = "https://shcbadgers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1337,7 +1355,7 @@ conference   = "GSC"
 mascot       = "Trojans"
 gender       = "women"
 base_url     = "https://tnutrojans.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1354,7 +1372,7 @@ conference   = "GSC"
 mascot       = "Bulldogs"
 gender       = "women"
 base_url     = "https://uuathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1375,7 +1393,7 @@ conference   = "GSC"
 mascot       = "Blazers"
 gender       = "women"
 base_url     = "https://vstateblazers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1391,13 +1409,69 @@ conference   = "GSC"
 mascot       = "Tigers"
 gender       = "women"
 base_url     = "https://uwaathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["University of West Alabama", "West Ala."]
 city         = "Livingston, Ala."
 city_source  = "schedule-page home venue location, https://uwaathletics.com/sports/womens-soccer/schedule/2026 (the schedule page prints \"Livingston, AL\" on its home rows, read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# GSC WOMEN'S SOCCER - departed programmes, 2022-2025 backfill (drafted 2026-11-08)
+# Two GSC women's members of 2022-2025 are no longer in Division II and have
+# no women's stanza in the rib. Both probed on 2026-11-08
+# (uv run --project pipeline probe --conference GSC --seasons 2022-2025 ...):
+# SideArm, schedule / roster / stats / matches present, 2022-2025 all served.
+# Shorter (GSC 2022-2023) is NOT here: it already has a women's stanza in the
+# CC section (CC from 2024); only its years list and a GSC window change.
+#
+# West Florida: GSC 2022-2025 (records year=2022..2025; absent 2026, Division I
+# ASUN from 2026-07-01). Reuses the men's stanza's `name` (shared slug
+# west-florida), abbreviation, mascot, alias and city spelling. The probe
+# drafted mascot "Argos" (the site's short form); the men's stanza carries
+# "Argonauts", kept here so both genders agree. Peers' 2022-2025 women's
+# schedules print "West Florida" and "University of West Florida" (with poll
+# ranks "#6", "No. 22" that the collector strips).
+#
+# West Georgia: GSC 2022-2023 (records year=2022, 2023; absent 2024, Division I
+# ASUN from 2024-07-01). No men's soccer, so the slug west-georgia is new; no
+# women's stanza claims "West Georgia", "University of West Georgia" or "UWG".
+# The probe drafted abbreviation "UWAPO" and a page-title alias; hand-corrected
+# to the site's own short form UWG, mascot Wolves, and the long name peers print
+# ("University of West Georgia" on AUM, Delta State, Lee, Montevallo and Union
+# 2023 schedules; "West Georgia" on seven others).
+
+[[schools]]
+name         = "West Florida"
+abbreviation = "UWF"
+conference   = "GSC"
+mascot       = "Argonauts"
+gender       = "women"
+base_url     = "https://goargos.com/sports/womens-soccer"
+years        = [2022, 2023, 2024, 2025]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of West Florida"]
+city         = "Pensacola, FL"
+city_source  = "schedule-page home venue location, https://goargos.com/sports/womens-soccer/schedule/2025"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "West Georgia"
+abbreviation = "UWG"
+conference   = "GSC"
+mascot       = "Wolves"
+gender       = "women"
+base_url     = "https://uwgathletics.com/sports/womens-soccer"
+years        = [2022, 2023]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of West Georgia"]
+city         = "Carrollton, GA"
+city_source  = "schedule-page home venue location, https://uwgathletics.com/sports/womens-soccer/schedule/2025"
 identity_accessed = "2026-11-08"
 
 # ============================================================
@@ -1686,8 +1760,16 @@ city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style t
 identity_accessed = "2026-09-02"
 
 # ============================================================
-# GLVC WOMEN'S SOCCER — 15 programmes, authored depth 2026 only
+# GLVC WOMEN'S SOCCER — 15 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`). The paragraphs below
+# were written for a 2026-only depth: where they say 2026 only, or describe
+# 2022-2025, the windows' sources supersede them.
+#
 # Source of truth: GLVC women's soccer records, enumerated from the
 # conference's own wsoc pages, never copied from the men's windows:
 # https://glvcsports.com/standings.aspx?path=wsoc and
@@ -1723,7 +1805,7 @@ conference   = "GLVC"
 mascot       = "Greyhounds"
 gender       = "women"
 base_url     = "https://athletics.uindy.edu/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1739,7 +1821,7 @@ conference   = "GLVC"
 mascot       = "Saints"
 gender       = "women"
 base_url     = "https://maryvillesaints.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1755,7 +1837,7 @@ conference   = "GLVC"
 mascot       = "Miners"
 gender       = "women"
 base_url     = "https://minerathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1770,7 +1852,7 @@ conference   = "GLVC"
 mascot       = "Prairie Stars"
 gender       = "women"
 base_url     = "https://uisprairiestars.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1789,7 +1871,7 @@ conference   = "GLVC"
 mascot       = "Flyers"
 gender       = "women"
 base_url     = "https://lewisflyers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1805,7 +1887,7 @@ conference   = "GLVC"
 mascot       = "Hawks"
 gender       = "women"
 base_url     = "https://rockhursthawks.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1823,7 +1905,7 @@ conference   = "GLVC"
 mascot       = "Bulldogs"
 gender       = "women"
 base_url     = "https://trumanbulldogs.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1838,7 +1920,7 @@ conference   = "GLVC"
 mascot       = "Cardinals"
 gender       = "women"
 base_url     = "https://jewellcardinals.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1854,7 +1936,7 @@ conference   = "GLVC"
 mascot       = "Panthers"
 gender       = "women"
 base_url     = "https://drurypanthers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1874,7 +1956,7 @@ conference   = "GLVC"
 mascot       = "Tritons"
 gender       = "women"
 base_url     = "https://umsltritons.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1890,7 +1972,7 @@ conference   = "GLVC"
 mascot       = "Hawks"
 gender       = "women"
 base_url     = "https://quhawks.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1905,7 +1987,7 @@ conference   = "GLVC"
 mascot       = "Bearcats"
 gender       = "women"
 base_url     = "https://mckbearcats.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1920,7 +2002,7 @@ conference   = "GLVC"
 mascot       = "Bearcats"
 gender       = "women"
 base_url     = "https://sbubearcats.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1935,7 +2017,7 @@ conference   = "GLVC"
 mascot       = "Peacocks"
 gender       = "women"
 base_url     = "https://uiupeacocks.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -1955,7 +2037,7 @@ conference   = "GLVC"
 mascot       = "Blue Tigers"
 gender       = "women"
 base_url     = "https://lubluetigers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2189,8 +2271,17 @@ identity_accessed = "2026-09-02"
 
 
 # ============================================================
-# RMAC WOMEN'S SOCCER - 13 programmes, authored depth 2026 only
+# RMAC WOMEN'S SOCCER - 13 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`), and programmes that
+# left before 2026 have stanzas of their own at the end of the section.
+# The paragraphs below were written for a 2026-only depth: where they say
+# 2026 only, or describe 2022-2025, the windows' sources supersede them.
+#
 # Source of truth: the Rocky Mountain Athletic Conference's own women's
 # soccer pages, read 2026-11-08: the live standings
 # (rmacsports.org/standings.aspx?path=wsoc, "2026 Women's Soccer Standings",
@@ -2241,7 +2332,7 @@ conference   = "RMAC"
 mascot       = "Grizzlies"
 gender       = "women"
 base_url     = "https://asugrizzlies.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2260,7 +2351,7 @@ conference   = "RMAC"
 mascot       = "Yellow Jackets"
 gender       = "women"
 base_url     = "https://www.bhsuathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2276,7 +2367,7 @@ conference   = "RMAC"
 mascot       = "Cougars"
 gender       = "women"
 base_url     = "https://ccucougars.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2293,7 +2384,7 @@ conference   = "RMAC"
 mascot       = "Mavericks"
 gender       = "women"
 base_url     = "https://cmumavericks.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2311,7 +2402,7 @@ conference   = "RMAC"
 mascot       = "Orediggers"
 gender       = "women"
 base_url     = "https://minesathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2330,7 +2421,7 @@ conference   = "RMAC"
 mascot       = "ThunderWolves"
 gender       = "women"
 base_url     = "https://gothunderwolves.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2347,7 +2438,7 @@ conference   = "RMAC"
 mascot       = "Skyhawks"
 gender       = "women"
 base_url     = "https://goskyhawks.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2369,7 +2460,7 @@ conference   = "RMAC"
 mascot       = "Roadrunners"
 gender       = "women"
 base_url     = "https://roadrunnersathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2391,7 +2482,7 @@ conference   = "RMAC"
 mascot       = "Cowgirls"
 gender       = "women"
 base_url     = "https://nmhuathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2409,7 +2500,7 @@ conference   = "RMAC"
 mascot       = "Rangers"
 gender       = "women"
 base_url     = "https://regisrangers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2425,7 +2516,7 @@ conference   = "RMAC"
 mascot       = "Mountain Lions"
 gender       = "women"
 base_url     = "https://gomountainlions.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2449,7 +2540,7 @@ conference   = "RMAC"
 mascot       = "Mountaineers"
 gender       = "women"
 base_url     = "https://gomountaineers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2470,7 +2561,7 @@ conference   = "RMAC"
 mascot       = "Griffins"
 gender       = "women"
 base_url     = "https://westminstergriffins.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2696,8 +2787,17 @@ city_source  = "touchline-ui programmes.json, the site's hand-entered AP-style t
 identity_accessed = "2026-09-02"
 
 # ============================================================
-# SSC WOMEN'S SOCCER - 11 programmes, authored depth 2026 only
+# SSC WOMEN'S SOCCER - 11 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`), and programmes that
+# left before 2026 have stanzas of their own at the end of the section.
+# The paragraphs below were written for a 2026-only depth: where they say
+# 2026 only, or describe 2022-2025, the windows' sources supersede them.
+#
 # Source of truth: the Sunshine State Conference's own women's soccer pages,
 # read 2026-11-08: the live standings
 # (https://sunshinestateconference.com/standings.aspx?path=wsoc, "2026 Women's
@@ -2754,7 +2854,7 @@ conference   = "SSC"
 mascot       = "Buccaneers"
 gender       = "women"
 base_url     = "https://gobarrybucs.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2770,7 +2870,7 @@ conference   = "SSC"
 mascot       = "Tritons"
 gender       = "women"
 base_url     = "https://eckerdtritons.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2787,7 +2887,7 @@ conference   = "SSC"
 mascot       = "Eagles"
 gender       = "women"
 base_url     = "https://erauathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2803,7 +2903,7 @@ conference   = "SSC"
 mascot       = "Moccasins"
 gender       = "women"
 base_url     = "https://fscmocs.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2819,7 +2919,7 @@ conference   = "SSC"
 mascot       = "Panthers"
 gender       = "women"
 base_url     = "https://floridatechsports.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2835,7 +2935,7 @@ conference   = "SSC"
 mascot       = "Fighting Knights"
 gender       = "women"
 base_url     = "https://lynnfightingknights.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2852,7 +2952,7 @@ conference   = "SSC"
 mascot       = "Sharks"
 gender       = "women"
 base_url     = "https://nsusharks.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2868,7 +2968,7 @@ conference   = "SSC"
 mascot       = "Sailfish"
 gender       = "women"
 base_url     = "https://pbasailfish.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2884,7 +2984,7 @@ conference   = "SSC"
 mascot       = "Tars"
 gender       = "women"
 base_url     = "https://rollinssports.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2900,7 +3000,7 @@ conference   = "SSC"
 mascot       = "Lions"
 gender       = "women"
 base_url     = "https://saintleolions.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -2922,7 +3022,7 @@ conference   = "SSC"
 mascot       = "Spartans"
 gender       = "women"
 base_url     = "https://www.tampaspartans.com/sports/wsoc"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "prestosports"
 live_scraper = "prestosports"
 data_status  = "unverified"
@@ -3211,8 +3311,20 @@ city_source  = "design/batch1-membership-2026-09-02.md (host dead, town not read
 identity_accessed = "2026-09-02"
 
 # ============================================================
-# NE10 WOMEN'S SOCCER - 10 programmes, authored depth 2026 only
+# NE10 WOMEN'S SOCCER - 10 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`), and programmes that
+# left before 2026 have stanzas of their own at the end of the section.
+# The paragraphs below were written for a 2026-only depth: where they say
+# 2026 only, or describe 2022-2025, the windows' sources supersede them.
+# In particular, 2022-2025 did not list "the same ten": New Haven
+# (2022-2024) and Saint Rose (2022-2023) were members too, named in the
+# records pages' Team Stats Summaries though they carry no team link.
+#
 # Source of truth: the Northeast-10's own women's soccer pages, read
 # 2026-11-08: the live standings (northeast10.org/standings.aspx?path=wsoc,
 # "2026 Women's Soccer Standings") and the 2026 conference statistics
@@ -3253,7 +3365,7 @@ conference   = "NE10"
 mascot       = "Panthers"
 gender       = "women"
 base_url     = "https://aupanthers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3272,7 +3384,7 @@ conference   = "NE10"
 mascot       = "Yellow Jackets"
 gender       = "women"
 base_url     = "https://aicyellowjackets.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3292,7 +3404,7 @@ conference   = "NE10"
 mascot       = "Greyhounds"
 gender       = "women"
 base_url     = "https://assumptiongreyhounds.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3311,7 +3423,7 @@ conference   = "NE10"
 mascot       = "Falcons"
 gender       = "women"
 base_url     = "https://bentleyfalcons.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3329,7 +3441,7 @@ conference   = "NE10"
 mascot       = "Ravens"
 gender       = "women"
 base_url     = "https://fpuravens.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3348,7 +3460,7 @@ conference   = "NE10"
 mascot       = "Setters"
 gender       = "women"
 base_url     = "https://paceuathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3366,7 +3478,7 @@ conference   = "NE10"
 mascot       = "Hawks"
 gender       = "women"
 base_url     = "https://saintanselmhawks.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3386,7 +3498,7 @@ conference   = "NE10"
 mascot       = "Purple Knights"
 gender       = "women"
 base_url     = "https://smcathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3405,7 +3517,7 @@ conference   = "NE10"
 mascot       = "Owls"
 gender       = "women"
 base_url     = "https://scsuowls.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3425,13 +3537,75 @@ conference   = "NE10"
 mascot       = "Penmen"
 gender       = "women"
 base_url     = "https://snhupenmen.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Southern New Hampshire University", "Southern N.H."]
 city         = "Hooksett, N.H."
 city_source  = "schedule-page home venue location, https://snhupenmen.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# NE10 WOMEN'S SOCCER - departed programmes, history backfill 2022-2025
+# (drafted 2026-11-08). Two programmes on the NE10 women's records inside
+# 2022-2025 that are not in the 2026 set. Both reuse the NE10 MEN'S stanza's
+# `name` (shared slug), abbreviation, mascot, aliases and city. Neither
+# name nor any alias collides with an existing women's stanza spelling
+# (checked against identity_aliases(load_schools(), "women"), 2026-11-08).
+
+# Last NE10 women's season 2024 (northeast10.org records year=2022..2024 list
+# it; year=2025 does not). New Haven moved to the Northeast Conference
+# (Division I) for 2025-26 (newhavenchargers.com news 2025/5/6); its 2025
+# women's schedule is an NEC slate (Stonehill, LIU, Wagner, Le Moyne ...).
+# Probe (uv run probe --conference NE10 --seasons 2022-2025, 2026-11-08):
+# SideArm, schedule / roster / stats / matches present, 2022-2025 served;
+# 2025 is outside the window. The probe minted "NH" from initials; UNH is
+# the men's stanza's short form. Every 2022-2025 home row prints "West
+# Haven, Conn. Kathy Zolad Stadium". Peers print "University of New Haven"
+# (28 rows 2022-2024) and "New Haven" (18), both already claimed.
+[[schools]]
+name         = "New Haven"
+abbreviation = "UNH"
+conference   = "NE10"
+mascot       = "Chargers"
+gender       = "women"
+base_url     = "https://newhavenchargers.com/sports/womens-soccer"
+years        = [2022, 2023, 2024]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of New Haven"]
+city         = "West Haven, Conn."
+city_source  = "schedule-page home venue location, https://newhavenchargers.com/sports/womens-soccer/schedule/2024"
+identity_accessed = "2026-11-08"
+
+# Dead host: gogoldenknights.com answers a TLS unrecognized-name error (probe
+# 2026-11-08, as on 2026-09-02 for the men's stanza). The College of Saint
+# Rose closed 2024-06-30 (Middle States Commission on Higher Education FAQ,
+# https://www.msche.org/institutions/the-college-of-saint-rose-frequently-asked-questions-faq/).
+# Last NE10 women's season 2023 (records year=2022 and 2023 list it, year=2024
+# does not). The probe drafted no stanza (connection error), so this is the
+# men's dead-host stanza with gender flipped. The stanza stays enabled so the
+# programmes reference carries its identity row; every fetch fails and the
+# backfill files the absence, which is the truth. Peers' 2022-2023 away rows
+# at Saint Rose print "Albany, NY" (13) and "Albany, N.Y." (7). Peer
+# spellings: "The College of Saint Rose", "Saint Rose", "St. Rose", each
+# behind poll/seed prefixes ("#1", "No. 8", "#1 Seed") the collector strips.
+[[schools]]
+name         = "Saint Rose"
+abbreviation = "CSR"
+conference   = "NE10"
+mascot       = "Golden Knights"
+gender       = "women"
+# Historic host, dead since at least 2026-09-02; the college closed 2024-06-30.
+base_url     = "https://gogoldenknights.com/sports/womens-soccer"
+years        = [2022, 2023]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["The College of Saint Rose", "College of Saint Rose", "St. Rose"]
+city         = "Albany, N.Y."
+city_source  = "peer schedule pages' away-row location at Saint Rose, e.g. https://saintanselmhawks.com/sports/womens-soccer/schedule/2023 (host dead; same town as the men's stanza)"
 identity_accessed = "2026-11-08"
 
 # ============================================================
@@ -3730,8 +3904,19 @@ city_source  = "design/batch1-membership-2026-09-02.md (host dead, town not read
 identity_accessed = "2026-09-02"
 
 # ============================================================
-# CACC WOMEN'S SOCCER - 12 programmes, authored depth 2026 only
+# CACC WOMEN'S SOCCER - 12 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`), and programmes that
+# left before 2026 have stanzas of their own at the end of the section.
+# The paragraphs below were written for a 2026-only depth: where they say
+# 2026 only, or describe 2022-2025, the windows' sources supersede them.
+# In particular, Bloomfield is on the women's tables for 2022 and 2023
+# (women's soccer suspended from fall 2024), and Alliance for 2022.
+#
 # Source of truth: the Central Atlantic Collegiate Conference's own women's
 # soccer pages, read 2026-11-08: the live standings
 # (caccathletics.org/standings.aspx?path=wsoc, "2026 Women's Soccer
@@ -3786,7 +3971,7 @@ conference   = "CACC"
 mascot       = "Eagles"
 gender       = "women"
 base_url     = "https://posteagles.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3803,7 +3988,7 @@ conference   = "CACC"
 mascot       = "Cougars"
 gender       = "women"
 base_url     = "https://caldwellathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3819,7 +4004,7 @@ conference   = "CACC"
 mascot       = "Griffins"
 gender       = "women"
 base_url     = "https://griffinathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3838,7 +4023,7 @@ conference   = "CACC"
 mascot       = "Golden Falcons"
 gender       = "women"
 base_url     = "https://felicianuathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3862,7 +4047,7 @@ conference   = "CACC"
 mascot       = "Wildcats"
 gender       = "women"
 base_url     = "https://wildcats.athletics.wilmu.edu/sports/wsoc"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "prestosports"
 live_scraper = "prestosports"
 data_status  = "unverified"
@@ -3886,7 +4071,7 @@ conference   = "CACC"
 mascot       = "Purple Knights"
 gender       = "women"
 base_url     = "https://ubknights.com/sports/wsoc"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "prestosports"
 live_scraper = "prestosports"
 data_status  = "unverified"
@@ -3905,7 +4090,7 @@ conference   = "CACC"
 mascot       = "Lions"
 gender       = "women"
 base_url     = "https://gculions.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3923,7 +4108,7 @@ conference   = "CACC"
 mascot       = "Lightning"
 gender       = "women"
 base_url     = "https://www.gbcathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3943,7 +4128,7 @@ conference   = "CACC"
 mascot       = "Tigers"
 gender       = "women"
 base_url     = "https://athletics.holyfamily.edu/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3964,7 +4149,7 @@ conference   = "CACC"
 mascot       = "Rams"
 gender       = "women"
 base_url     = "https://jeffersonrams.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3990,7 +4175,7 @@ conference   = "CACC"
 mascot       = "Chargers"
 gender       = "women"
 base_url     = "https://www.chargerathletics.com/sports/wsoc"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "prestosports"
 live_scraper = "prestosports"
 data_status  = "unverified"
@@ -4030,13 +4215,83 @@ conference   = "CACC"
 mascot       = "Lions"
 gender       = "women"
 base_url     = "https://lulions.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 member_aliases = ["Lincoln University (Pa.)"]
 city         = "Lincoln University, Pa."
 city_source  = "schedule-page home venue location, https://lulions.com/sports/womens-soccer/schedule/2026, with the caccathletics.org member JSON location (Lincoln University, PA) on the 2026 women's standings page"
+identity_accessed = "2026-11-08"
+
+# CACC WOMEN'S SOCCER - departed programmes, history backfill 2022-2025
+# (drafted 2026-11-08). Two programmes on the CACC women's records inside
+# 2022-2025 that are not in the 2026 set. Both reuse the CACC MEN'S stanza's
+# `name` (shared slug), abbreviation, mascot, aliases and city. Neither
+# name nor any alias collides with an existing women's stanza spelling
+# (checked against identity_aliases(load_schools(), "women"), 2026-11-08);
+# "AU" is Adelphi's, Ashland's and Anderson's women's abbreviation too, so
+# Alliance's stays display-only.
+
+# Dead host: athletics.allianceu.edu resets the connection (probe 2026-11-08,
+# as on 2026-09-02). Nyack College became Alliance University in 2022 and the
+# university closed 2023-08-31 (Middle States Commission on Higher Education,
+# https://www.msche.org/2023/09/01/alliance-university-accreditation-ceases-august-31-2023/).
+# The women's records label it "Alliance" in 2021 and 2022; absent from 2023.
+# Single in-window season 2022. The probe drafted no stanza (connection
+# error), so this is the men's dead-host stanza with gender flipped. The
+# stanza stays enabled so the programmes reference carries its identity row;
+# every fetch fails and the backfill files the absence. Peers' 2022 women's
+# schedules print "Alliance University" (5), "Nyack College" (3), "Alliance"
+# (2) and "Alliance (Formerly Nyack)" (1, folds to the name). City: kept as
+# the men's stanza's; peers' 2022 women's away rows at Alliance print
+# "Nyack, NY" (Georgian Court, D'Youville, Roberts Wesleyan) and "Secaucus,
+# N.J." (Caldwell, Post), so the women's home ground is unsettled (see
+# report.md).
+[[schools]]
+name         = "Alliance"
+abbreviation = "AU"
+abbreviation_resolves = false  # "AU" is also Adelphi, Ashland and Anderson's
+conference   = "CACC"
+mascot       = "Warriors"
+gender       = "women"
+# Historic host, dead since at least 2026-09-02; the university closed 2023-08-31.
+base_url     = "https://athletics.allianceu.edu/sports/womens-soccer"
+years        = [2022]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Alliance University", "Nyack", "Nyack College"]
+city         = "New York, N.Y."
+city_source  = "design/batch1-membership-2026-09-02.md (host dead, town not readable from the site; the men's stanza's town)"
+identity_accessed = "2026-11-08"
+
+# Last CACC women's season 2023 (records year=2022 and 2023 list it, year=2024
+# does not). Bloomfield College of Montclair State University suspended
+# women's soccer from fall 2024 (montclair.edu news 2024-02-01,
+# https://www.montclair.edu/news-media/news-stories/bloomfield-college-montclair-state-university-suspend-six-athletics-programs);
+# its men's CACC window runs to 2024. The SideArm site is live: /schedule/2024
+# and /schedule/2025 answer the 2023 schedule (page title "2023 Women's Soccer
+# Schedule"). Probe (uv run probe --seasons 2022-2025, 2026-11-08): served
+# 2022 and 2023, every layer "error (season not proven)" because the layers
+# were read on the latest candidate; re-probed --seasons 2022-2023: schedule /
+# roster / stats / matches present. The probe left the abbreviation blank;
+# BC is the men's stanza's. Home rows print "Bloomfield, N.J. Foley Field".
+# Peers print "Bloomfield College" (12) and "Bloomfield" (10).
+[[schools]]
+name         = "Bloomfield"
+abbreviation = "BC"
+conference   = "CACC"
+mascot       = "Bears"
+gender       = "women"
+base_url     = "https://bcbearsathletics.com/sports/womens-soccer"
+years        = [2022, 2023]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Bloomfield College", "Bloomfield College of Montclair State University"]
+city         = "Bloomfield, N.J."
+city_source  = "schedule-page home venue location, https://bcbearsathletics.com/sports/womens-soccer/schedule/2023"
 identity_accessed = "2026-11-08"
 
 # ============================================================
@@ -4238,8 +4493,17 @@ city_source  = "design/batch1-membership-2026-09-02.md (campus town; the schedul
 identity_accessed = "2026-09-02"
 
 # ============================================================
-# ECC WOMEN'S SOCCER - 8 programmes, authored depth 2026 only
+# ECC WOMEN'S SOCCER - 8 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`), and programmes that
+# left before 2026 have stanzas of their own at the end of the section.
+# The paragraphs below were written for a 2026-only depth: where they say
+# 2026 only, or describe 2022-2025, the windows' sources supersede them.
+#
 # Source of truth: the East Coast Conference's own women's soccer pages,
 # read 2026-11-08: the live standings (eccsports.org/standings.aspx?path=wsoc,
 # "2026 Women's Soccer Standings") and the 2026 conference statistics
@@ -4284,7 +4548,7 @@ conference   = "ECC"
 mascot       = "Lions"
 gender       = "women"
 base_url     = "https://molloylions.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4301,7 +4565,7 @@ conference   = "ECC"
 mascot       = "Redhawks"
 gender       = "women"
 base_url     = "https://robertsredhawks.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4322,7 +4586,7 @@ conference   = "ECC"
 mascot       = "Knights"
 gender       = "women"
 base_url     = "https://queensknights.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4338,7 +4602,7 @@ conference   = "ECC"
 mascot       = "Mavericks"
 gender       = "women"
 base_url     = "https://mercyathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4362,7 +4626,7 @@ conference   = "ECC"
 mascot       = "Spartans"
 gender       = "women"
 base_url     = "https://www.stacathletics.com/sports/wsoc"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "prestosports"
 live_scraper = "prestosports"
 data_status  = "unverified"
@@ -4383,7 +4647,7 @@ conference   = "ECC"
 mascot       = "Saints"
 gender       = "women"
 base_url     = "https://dyusaints.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4402,7 +4666,7 @@ conference   = "ECC"
 mascot       = "Dolphins"
 gender       = "women"
 base_url     = "https://csidolphins.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4423,7 +4687,7 @@ conference   = "ECC"
 mascot       = "Wildcats"
 gender       = "women"
 base_url     = "https://daemenwildcats.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4704,8 +4968,17 @@ city_source  = "schedule-page home venue location, https://hurstathletics.com/sp
 identity_accessed = "2026-09-03"
 
 # ============================================================
-# PSAC WOMEN'S SOCCER - 17 programmes, authored depth 2026 only
+# PSAC WOMEN'S SOCCER - 17 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`), and programmes that
+# left before 2026 have stanzas of their own at the end of the section.
+# The paragraphs below were written for a 2026-only depth: where they say
+# 2026 only, or describe 2022-2025, the windows' sources supersede them.
+#
 # Source of truth: the PSAC's own women's soccer pages, read 2026-11-08:
 # the live standings (psacsports.org/standings.aspx?path=wsoc, "2026
 # Women's Soccer Standings") and the 2026 conference statistics
@@ -4745,7 +5018,7 @@ conference   = "PSAC"
 mascot       = "Huskies"
 gender       = "women"
 base_url     = "https://bloomsburgathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4763,7 +5036,7 @@ conference   = "PSAC"
 mascot       = "Vulcans"
 gender       = "women"
 base_url     = "https://calvulcans.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4783,7 +5056,7 @@ conference   = "PSAC"
 mascot       = "Golden Eagles"
 gender       = "women"
 base_url     = "https://clariongoldeneagles.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4803,7 +5076,7 @@ conference   = "PSAC"
 mascot       = "Warriors"
 gender       = "women"
 base_url     = "https://esuwarriors.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4823,7 +5096,7 @@ conference   = "PSAC"
 mascot       = "Fighting Scots"
 gender       = "women"
 base_url     = "https://gofightingscots.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4841,7 +5114,7 @@ conference   = "PSAC"
 mascot       = "Golden Knights"
 gender       = "women"
 base_url     = "https://gannonsports.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4865,7 +5138,7 @@ conference   = "PSAC"
 mascot       = "Crimson Hawks"
 gender       = "women"
 base_url     = "https://iupathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4885,7 +5158,7 @@ conference   = "PSAC"
 mascot       = "Golden Bears"
 gender       = "women"
 base_url     = "https://kubears.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4903,7 +5176,7 @@ conference   = "PSAC"
 mascot       = "Bald Eagles"
 gender       = "women"
 base_url     = "https://www.lockhavenathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4922,7 +5195,7 @@ conference   = "PSAC"
 mascot       = "Mounties"
 gender       = "women"
 base_url     = "https://gomounties.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4941,7 +5214,7 @@ conference   = "PSAC"
 mascot       = "Marauders"
 gender       = "women"
 base_url     = "https://millersvilleathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4959,7 +5232,7 @@ conference   = "PSAC"
 mascot       = "Mountain Cats"
 gender       = "women"
 base_url     = "https://pittjohnstownathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4975,7 +5248,7 @@ conference   = "PSAC"
 mascot       = "Griffins"
 gender       = "women"
 base_url     = "https://athletics.setonhill.edu/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4993,7 +5266,7 @@ conference   = "PSAC"
 mascot       = "Rams"
 gender       = "women"
 base_url     = "https://shepherdrams.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -5011,7 +5284,7 @@ conference   = "PSAC"
 mascot       = "Raiders"
 gender       = "women"
 base_url     = "https://shipraiders.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -5029,7 +5302,7 @@ conference   = "PSAC"
 mascot       = "The Rock"
 gender       = "women"
 base_url     = "https://rockathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -5046,13 +5319,49 @@ conference   = "PSAC"
 mascot       = "Golden Rams"
 gender       = "women"
 base_url     = "https://wcupagoldenrams.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["West Chester University", "West Chester University of Pennsylvania"]
 city         = "West Chester, Pa."
 city_source  = "schedule-page home venue location, https://wcupagoldenrams.com/sports/womens-soccer/schedule/2026"
+identity_accessed = "2026-11-08"
+
+# PSAC WOMEN'S SOCCER - departed programme, history backfill 2022-2025
+# (research 2026-11-08). One new women's stanza; it shares its name, and so
+# its slug, with the PSAC men's stanza "Mercyhurst".
+#
+# Mercyhurst women are on the PSAC 2021, 2022 and 2023 women's standings
+# (psacsports.org/standings.aspx?standings=209, 226, 238, West division) and
+# records (stats.aspx?path=wsoc&year=2021..2023&conf=true), and absent from
+# 2024 on (standings=252, 265, 282): Mercyhurst joined the Northeast
+# Conference (Division I) for 2024-25 (psacsports.org news 2024/4/3,
+# mercyhurst.edu/d1), so the PSAC window is 2022-2023.
+#
+# Probe (uv run probe --conference PSAC --seasons 2022-2025, 2026-11-08):
+# hurstathletics.com SideArm, schedule / roster / stats / matches present,
+# 2022-2025 served (2024 and 2025 are Division I seasons outside the
+# window). The probe read no short form ("hand edits still needed:
+# abbreviation"); HURST is the men's stanza's, chosen there because
+# Millersville keeps MU. Peers on 2022-2023 women's schedules print
+# "Mercyhurst" and "Mercyhurst University" (Gannon, Edinboro, Slippery Rock,
+# Seton Hill, IUP), both claimed below. The schedule page prints the home
+# town as "Erie, PA" on every home row.
+[[schools]]
+name         = "Mercyhurst"
+abbreviation = "HURST"
+conference   = "PSAC"
+mascot       = "Lakers"
+gender       = "women"
+base_url     = "https://hurstathletics.com/sports/womens-soccer"
+years        = [2022, 2023]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Mercyhurst University"]
+city         = "Erie, Pa."
+city_source  = "schedule-page home venue location, https://hurstathletics.com/sports/womens-soccer/schedule/2023"
 identity_accessed = "2026-11-08"
 
 # ============================================================
@@ -5319,8 +5628,17 @@ city_source  = "the college's own site as captured by the Wayback Machine on 202
 identity_accessed = "2026-09-03"
 
 # ============================================================
-# MEC WOMEN'S SOCCER - 12 programmes, authored depth 2026 only
+# MEC WOMEN'S SOCCER - 12 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`), and programmes that
+# left before 2026 have stanzas of their own at the end of the section.
+# The paragraphs below were written for a 2026-only depth: where they say
+# 2026 only, or describe 2022-2025, the windows' sources supersede them.
+#
 # Source of truth: the Mountain East Conference's own women's soccer pages,
 # read 2026-11-08: the live standings (mountaineast.org/standings.aspx?path=wsoc,
 # "2026 Women's Soccer Standings", archive id 152) and the 2026 conference
@@ -5369,7 +5687,7 @@ conference   = "MEC"
 mascot       = "Golden Eagles"
 gender       = "women"
 base_url     = "https://ucgoldeneagles.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -5388,7 +5706,7 @@ conference   = "MEC"
 mascot       = "Mountain Lions"
 gender       = "women"
 base_url     = "https://cumountainlions.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -5407,7 +5725,7 @@ conference   = "MEC"
 mascot       = "Senators"
 gender       = "women"
 base_url     = "https://senatornation.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -5426,7 +5744,7 @@ conference   = "MEC"
 mascot       = "Fighting Falcons"
 gender       = "women"
 base_url     = "https://fightingfalcons.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -5447,7 +5765,7 @@ conference   = "MEC"
 mascot       = "Bobcats"
 gender       = "women"
 base_url     = "https://frostburgsports.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -5469,7 +5787,7 @@ conference   = "MEC"
 mascot       = "Pioneers"
 gender       = "women"
 base_url     = "https://gstatepioneers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -5488,7 +5806,7 @@ conference   = "MEC"
 mascot       = "Pioneers"
 gender       = "women"
 base_url     = "https://pointparksports.com/sports/womens-soccer"
-years        = [2026]
+years        = [2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -5526,7 +5844,7 @@ conference   = "MEC"
 mascot       = "Hilltoppers"
 gender       = "women"
 base_url     = "https://hilltoppersports.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -5546,7 +5864,7 @@ conference   = "MEC"
 mascot       = "Yellow Jackets"
 gender       = "women"
 base_url     = "https://wvsuyellowjackets.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -5565,7 +5883,7 @@ conference   = "MEC"
 mascot       = "Bobcats"
 gender       = "women"
 base_url     = "https://wesleyanbobcats.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -5584,13 +5902,78 @@ conference   = "MEC"
 mascot       = "Cardinals"
 gender       = "women"
 base_url     = "https://wucardinals.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Wheeling University"]
 city         = "Wheeling, W.Va."
 city_source  = "schedule-page home venue location, https://wucardinals.com/sports/womens-soccer/schedule/2026 (Wheeling, WV Bishop Schmitt Field); the member JSON prints Wheeling, W.Va. (read 2026-11-08)"
+identity_accessed = "2026-11-08"
+
+# MEC WOMEN'S SOCCER - departed programmes, history backfill 2022-2025
+# (research 2026-11-08). Two new women's stanzas, both on dead hosts, in
+# the Limestone / Holy Names shape: enabled so the programmes reference
+# carries the identity row; every fetch fails and the backfill files the
+# absence, which is the truth. Each shares its name, and so its slug, with
+# the MEC men's stanza of the same school, and reuses that stanza's
+# abbreviation, mascot, aliases, city and city_source.
+#
+# Probe (uv run probe --conference MEC --seasons 2022-2025, 2026-11-08):
+# neither host resolves any more (NameResolutionError for abbattlers.com and
+# ndcfalcons.com; on 2026-09-03 the egress proxy answered 502 to the
+# CONNECT instead). The probe exits 1 and drafts no stanza for either, so
+# these are hand-written. The Wayback availability API returned no capture
+# of either women's soccer path, and the CDX endpoint answered "Temporarily
+# Offline" (HTTP 503) the same evening, so no archived schedule is known.
+#
+# Peer spellings from 2022-2023 women's schedules (Fairmont State,
+# Frostburg State, Wheeling, West Liberty, West Virginia State, Concord):
+# "Alderson Broaddus", "Alderson Broaddus University"; "Notre Dame College",
+# "Notre Dame College (Ohio)", "Notre Dame (Ohio)", "Notre Dame (OH)", and a
+# bare "Notre Dame" on Concord's 2022 and 2023 pages. The bare form is not
+# aliased: it is the Division I school's name too.
+
+# Alderson Broaddus: MEC North division in the 2021 and 2022 women's
+# standings (mountaineast.org/standings.aspx?standings=113, 125); absent from
+# 2023 (standings=138). The university closed in August 2023 (MEC statement
+# of 2023-08-04). Single in-window season 2022.
+[[schools]]
+name         = "Alderson Broaddus"
+abbreviation = "AB"
+conference   = "MEC"
+mascot       = "Battlers"
+gender       = "women"
+# Historic host, dead since at least 2026-09-03; the university closed in the summer of 2023.
+base_url     = "https://abbattlers.com/sports/womens-soccer"
+years        = [2022]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Alderson Broaddus University", "AB"]
+city         = "Philippi, W.Va."
+city_source  = "the university's own site as captured by the Wayback Machine on 2023-08-15, https://web.archive.org/web/20230815/https://ab.edu/ (\"Alderson Broaddus University in Philippi, West Virginia\"; 101 College Hill Drive, Philippi WV 26416); host dead, town not readable from the athletics site"
+identity_accessed = "2026-11-08"
+
+# Notre Dame College: MEC North division in the 2021, 2022 and 2023 women's
+# standings (standings=113, 125, 138); absent from 2024 (standings=162). The
+# college closed at the end of the spring 2024 semester (MEC statement of
+# 2024-02-29). In-window seasons 2022 and 2023.
+[[schools]]
+name         = "Notre Dame College"
+abbreviation = "NDC"
+conference   = "MEC"
+mascot       = "Falcons"
+gender       = "women"
+# Historic host, dead since at least 2026-09-03; the college closed after the spring 2024 semester.
+base_url     = "https://ndcfalcons.com/sports/womens-soccer"
+years        = [2022, 2023]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Notre Dame (Ohio)", "NDC"]
+city         = "South Euclid, Ohio"
+city_source  = "the college's own site as captured by the Wayback Machine on 2024-05-01, https://web.archive.org/web/20240501/https://notredamecollege.edu/ (footer address 4545 College Road, South Euclid, OH 44121); host dead, town not readable from the athletics site"
 identity_accessed = "2026-11-08"
 
 # ============================================================
@@ -5834,8 +6217,17 @@ city_source  = "schedule-page home venue location, https://athletics.walsh.edu/s
 identity_accessed = "2026-09-03"
 
 # ============================================================
-# G-MAC WOMEN'S SOCCER - 12 programmes, authored depth 2026 only
+# G-MAC WOMEN'S SOCCER - 12 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`), and programmes that
+# left before 2026 have stanzas of their own at the end of the section.
+# The paragraphs below were written for a 2026-only depth: where they say
+# 2026 only, or describe 2022-2025, the windows' sources supersede them.
+#
 # Source of truth: the Great Midwest Athletic Conference's own women's
 # soccer pages, read 2026-11-08: the live standings
 # (greatmidwestsports.com/standings.aspx?path=wsoc, "2026 Women's Soccer
@@ -5884,7 +6276,7 @@ conference   = "G-MAC"
 mascot       = "Eagles"
 gender       = "women"
 base_url     = "https://goashlandeagles.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -5903,7 +6295,7 @@ conference   = "G-MAC"
 mascot       = "Yellow Jackets"
 gender       = "women"
 base_url     = "https://yellowjackets.cedarville.edu/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -5922,7 +6314,7 @@ conference   = "G-MAC"
 mascot       = "Oilers"
 gender       = "women"
 base_url     = "https://findlayoilers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -5939,7 +6331,7 @@ conference   = "G-MAC"
 mascot       = "Panthers"
 gender       = "women"
 base_url     = "https://kwcpanthers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -5957,7 +6349,7 @@ conference   = "G-MAC"
 mascot       = "Storm"
 gender       = "women"
 base_url     = "https://lakeeriestorm.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -5976,7 +6368,7 @@ conference   = "G-MAC"
 mascot       = "Pioneers"
 gender       = "women"
 base_url     = "https://malonepioneers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -6000,7 +6392,7 @@ conference   = "G-MAC"
 mascot       = "Timberwolves"
 gender       = "women"
 base_url     = "https://www.gonorthwood.com/sports/wsoc"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "prestosports"
 live_scraper = "prestosports"
 data_status  = "unverified"
@@ -6019,7 +6411,7 @@ conference   = "G-MAC"
 mascot       = "Panthers"
 gender       = "women"
 base_url     = "https://ohiodominicanpanthers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -6037,7 +6429,7 @@ conference   = "G-MAC"
 mascot       = "Saints"
 gender       = "women"
 base_url     = "https://thomasmoresaints.com/sports/womens-soccer"
-years        = [2026]
+years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -6055,7 +6447,7 @@ conference   = "G-MAC"
 mascot       = "Dragons"
 gender       = "women"
 base_url     = "https://gotiffindragons.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -6076,7 +6468,7 @@ conference   = "G-MAC"
 mascot       = "Arrows"
 gender       = "women"
 base_url     = "https://ursulinearrows.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -6096,7 +6488,7 @@ conference   = "G-MAC"
 mascot       = "Cavaliers"
 gender       = "women"
 base_url     = "https://athletics.walsh.edu/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -6303,8 +6695,17 @@ city_source  = "schedule-page home venue location, https://parksiderangers.com/s
 identity_accessed = "2026-09-04"
 
 # ============================================================
-# GLIAC WOMEN'S SOCCER - 10 programmes, authored depth 2026 only
+# GLIAC WOMEN'S SOCCER - 10 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`), and programmes that
+# left before 2026 have stanzas of their own at the end of the section.
+# The paragraphs below were written for a 2026-only depth: where they say
+# 2026 only, or describe 2022-2025, the windows' sources supersede them.
+#
 # Source of truth: the GLIAC's own women's soccer pages, read 2026-11-08:
 # the live standings (gliac.org/standings.aspx?path=wsoc, "2026 Women's
 # Soccer Standings", archive id 333) and the 2026 conference statistics
@@ -6366,7 +6767,7 @@ conference   = "GLIAC"
 mascot       = "Panthers"
 gender       = "women"
 base_url     = "https://dupanthers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -6390,7 +6791,7 @@ conference   = "GLIAC"
 mascot       = "Bulldogs"
 gender       = "women"
 base_url     = "https://www.ferrisstatebulldogs.com/sports/wsoc"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "prestosports"
 live_scraper = "prestosports"
 data_status  = "unverified"
@@ -6409,7 +6810,7 @@ conference   = "GLIAC"
 mascot       = "Lakers"
 gender       = "women"
 base_url     = "https://gvsulakers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -6429,7 +6830,7 @@ conference   = "GLIAC"
 mascot       = "Huskies"
 gender       = "women"
 base_url     = "https://michigantechhuskies.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -6448,7 +6849,7 @@ conference   = "GLIAC"
 mascot       = "Wildcats"
 gender       = "women"
 base_url     = "https://nmuwildcats.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -6466,7 +6867,7 @@ conference   = "GLIAC"
 mascot       = "Pride"
 gender       = "women"
 base_url     = "https://pnwathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -6487,7 +6888,7 @@ conference   = "GLIAC"
 mascot       = "Lakers"
 gender       = "women"
 base_url     = "https://rooseveltlakers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -6509,7 +6910,7 @@ conference   = "GLIAC"
 mascot       = "Cardinals"
 gender       = "women"
 base_url     = "https://svsucardinals.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -6562,7 +6963,7 @@ conference   = "GLIAC"
 mascot       = "Rangers"
 gender       = "women"
 base_url     = "https://parksiderangers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -6887,8 +7288,17 @@ city_source  = "the university's main site, https://www.limestone.edu/ (title 'L
 identity_accessed = "2026-09-05"
 
 # ============================================================
-# SAC WOMEN'S SOCCER - 11 programmes, authored depth 2026 only
+# SAC WOMEN'S SOCCER - 11 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`), and programmes that
+# left before 2026 have stanzas of their own at the end of the section.
+# The paragraphs below were written for a 2026-only depth: where they say
+# 2026 only, or describe 2022-2025, the windows' sources supersede them.
+#
 # Source of truth: the South Atlantic Conference's own women's soccer
 # pages, read 2026-11-08: the live standings
 # (thesac.com/standings.aspx?path=wsoc, "2026 Women's Soccer Standings",
@@ -6945,7 +7355,7 @@ conference   = "SAC"
 mascot       = "Bulldogs"
 gender       = "women"
 base_url     = "https://wingatebulldogs.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -6962,7 +7372,7 @@ conference   = "SAC"
 mascot       = "Trojans"
 gender       = "women"
 base_url     = "https://autrojans.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -6987,7 +7397,7 @@ conference   = "SAC"
 mascot       = "Lions"
 gender       = "women"
 base_url     = "https://marshilllions.com/sports/wsoc"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "prestosports"
 live_scraper = "prestosports"
 data_status  = "unverified"
@@ -7006,7 +7416,7 @@ conference   = "SAC"
 mascot       = "Indians"
 gender       = "women"
 base_url     = "https://catawbaathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -7030,7 +7440,7 @@ conference   = "SAC"
 mascot       = "Eagles"
 gender       = "women"
 base_url     = "https://cneagles.com/sports/w-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "prestosports"
 live_scraper = "prestosports"
 data_status  = "unverified"
@@ -7055,7 +7465,7 @@ conference   = "SAC"
 mascot       = "Cobras"
 gender       = "women"
 base_url     = "https://cokercobras.com/sports/wsoc"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "prestosports"
 live_scraper = "prestosports"
 data_status  = "unverified"
@@ -7080,7 +7490,7 @@ conference   = "SAC"
 mascot       = "Wasps"
 gender       = "women"
 base_url     = "https://gowasps.com/sports/wsoc"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "prestosports"
 live_scraper = "prestosports"
 data_status  = "unverified"
@@ -7100,7 +7510,7 @@ conference   = "SAC"
 mascot       = "Railsplitters"
 gender       = "women"
 base_url     = "https://lmurailsplitters.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -7116,7 +7526,7 @@ conference   = "SAC"
 mascot       = "Bears"
 gender       = "women"
 base_url     = "https://lrbears.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -7144,7 +7554,7 @@ conference   = "SAC"
 mascot       = "Pioneers"
 gender       = "women"
 base_url     = "https://tusculumpioneers.com/sports/wsoc"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "prestosports"
 live_scraper = "prestosports"
 data_status  = "unverified"
@@ -7161,13 +7571,50 @@ conference   = "SAC"
 mascot       = "Wolves"
 gender       = "women"
 base_url     = "https://newberrywolves.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Newberry College"]
 city         = "Newberry, S.C."
 city_source  = "schedule-page home venue location, https://newberrywolves.com/sports/womens-soccer/schedule/2026 (Newberry, S.C. on 7 home rows, read 2026-11-08); the thesac.com member JSON prints Newberry, SC"
+identity_accessed = "2026-11-08"
+
+# SAC WOMEN'S SOCCER - departed programme, 2022-2024 (history backfill, read 2026-11-08)
+# Limestone is on the SAC women's standings 2021-2024 (standings=141, 142,
+# 143, 144) and absent from 2025 (standings=183) and the live 2026 table
+# (archive id 192). The university closed its campus and athletics at the end
+# of the spring 2025 semester (Post and Courier, 2025-04-16). The SAC's
+# women's records pages leave it out of the team table 2021-2024 and print it
+# only in results, so the standings archive is the source.
+#
+# Dead host: golimestonesaints.com answers HTTP 404 at /sports/womens-soccer
+# (probe --seasons 2022-2025, 2026-11-08: platform unknown, every layer
+# "error (HTTP 404)", no season seen), as at the men's path since 2026-09-04.
+# The stanza mirrors the men's Limestone stanza (shared name, so shared slug
+# limestone): enabled for the identity row only; every fetch fails and the
+# backfill files the absence. No page printed a women's short form, so LIM
+# stays hand initials, display-only, as on the men's stanza. Peer spellings
+# from 2022-2024 women's schedule pages of SAC, CC and PBC members:
+# "Limestone" (11 hosts) and "Limestone University" (Converse, Lander,
+# Lincoln Memorial); both are claimed. No women's stanza claims "Limestone"
+# or "LIM" (checked against every schools.toml name/alias/abbreviation).
+[[schools]]
+name         = "Limestone"
+abbreviation = "LIM"
+abbreviation_resolves = false  # hand initials, read from no page
+conference   = "SAC"
+mascot       = "Saints"
+gender       = "women"
+# Historic host, dead since at least 2026-09-04 (404 again 2026-11-08).
+base_url     = "https://golimestonesaints.com/sports/womens-soccer"
+years        = [2022, 2023, 2024]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Limestone University", "Limestone College"]
+city         = "Gaffney, S.C."
+city_source  = "the university's main site, https://www.limestone.edu/ (title 'Limestone University | Gaffney, SC' and footer address Gaffney, SC 29340-3799, read 2026-09-05 for the men's stanza); the athletics host is dead and prints no town"
 identity_accessed = "2026-11-08"
 
 # ============================================================
@@ -7493,8 +7940,17 @@ city_source  = "schedule-page home venue location, https://goeulions.com/sports/
 identity_accessed = "2026-09-04"
 
 # ============================================================
-# CC WOMEN'S SOCCER - 16 programmes, authored depth 2026 only
+# CC WOMEN'S SOCCER - 16 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`), and programmes that
+# left before 2026 have stanzas of their own at the end of the section.
+# The paragraphs below were written for a 2026-only depth: where they say
+# 2026 only, or describe 2022-2025, the windows' sources supersede them.
+#
 # Source of truth: Conference Carolinas' own women's soccer pages, read
 # 2026-11-08: the live standings
 # (conferencecarolinas.com/standings.aspx?path=wsoc, "2026 Women's Soccer
@@ -7542,7 +7998,7 @@ conference   = "CC"
 mascot       = "Patriots"
 gender       = "women"
 base_url     = "https://fmupatriots.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -7560,7 +8016,7 @@ conference   = "CC"
 mascot       = "Panthers"
 gender       = "women"
 base_url     = "https://ferrumpanthers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -7576,7 +8032,7 @@ conference   = "CC"
 mascot       = "Bulldogs"
 gender       = "women"
 base_url     = "https://bartonbulldogs.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -7594,7 +8050,7 @@ conference   = "CC"
 mascot       = "Trojans"
 gender       = "women"
 base_url     = "https://umotrojans.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -7610,7 +8066,7 @@ conference   = "CC"
 mascot       = "Hawks"
 gender       = "women"
 base_url     = "https://gocuhawks.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -7632,7 +8088,7 @@ conference   = "CC"
 mascot       = "Braves"
 gender       = "women"
 base_url     = "https://uncpbraves.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -7649,7 +8105,7 @@ conference   = "CC"
 mascot       = "Bobcats"
 gender       = "women"
 base_url     = "https://lmcbobcats.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -7669,7 +8125,7 @@ conference   = "CC"
 mascot       = "Crusaders"
 gender       = "women"
 base_url     = "https://abbeyathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -7685,7 +8141,7 @@ conference   = "CC"
 mascot       = "Valkyries"
 gender       = "women"
 base_url     = "https://govalkyries.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -7704,7 +8160,7 @@ conference   = "CC"
 mascot       = "Trailblazers"
 gender       = "women"
 base_url     = "https://nguathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -7722,7 +8178,7 @@ conference   = "CC"
 mascot       = "Tornado"
 gender       = "women"
 base_url     = "https://kingtornado.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -7739,7 +8195,7 @@ conference   = "CC"
 mascot       = "Warriors"
 gender       = "women"
 base_url     = "https://swuathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -7757,7 +8213,7 @@ conference   = "CC"
 mascot       = "Mountain Lions"
 gender       = "women"
 base_url     = "https://yhcathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -7775,7 +8231,7 @@ conference   = "CC"
 mascot       = "Flying Fleet"
 gender       = "women"
 base_url     = "https://erskinesports.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -7794,7 +8250,7 @@ conference   = "CC"
 mascot       = "Lions"
 gender       = "women"
 base_url     = "https://goeulions.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -7816,7 +8272,7 @@ conference   = "CC"
 mascot       = "Hawks"
 gender       = "women"
 base_url     = "https://goshorterhawks.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -7996,8 +8452,17 @@ city_source  = "schedule-page home venue location, https://landerbearcats.com/sp
 identity_accessed = "2026-09-04"
 
 # ============================================================
-# PBC WOMEN'S SOCCER - 10 programmes, authored depth 2026 only
+# PBC WOMEN'S SOCCER - 10 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`), and programmes that
+# left before 2026 have stanzas of their own at the end of the section.
+# The paragraphs below were written for a 2026-only depth: where they say
+# 2026 only, or describe 2022-2025, the windows' sources supersede them.
+#
 # Source of truth: the Peach Belt Conference's own women's soccer pages,
 # read 2026-11-08: the live standings
 # (peachbeltconference.org/standings.aspx?path=wsoc, "2026 Women's Soccer
@@ -8052,7 +8517,7 @@ conference   = "PBC"
 mascot       = "Lakers"
 gender       = "women"
 base_url     = "https://claytonstatesports.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8073,7 +8538,7 @@ conference   = "PBC"
 mascot       = "Cougars"
 gender       = "women"
 base_url     = "https://csucougars.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8093,7 +8558,7 @@ conference   = "PBC"
 mascot       = "Nighthawks"
 gender       = "women"
 base_url     = "https://ungathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8109,7 +8574,7 @@ conference   = "PBC"
 mascot       = "Saints"
 gender       = "women"
 base_url     = "https://flaglerathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8133,7 +8598,7 @@ conference   = "PBC"
 mascot       = "Bobcats"
 gender       = "women"
 base_url     = "https://gcsubobcats.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8151,7 +8616,7 @@ conference   = "PBC"
 mascot       = "Pacers"
 gender       = "women"
 base_url     = "https://pacersports.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8175,7 +8640,7 @@ conference   = "PBC"
 mascot       = "Sand Sharks"
 gender       = "women"
 base_url     = "https://uscbathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8194,7 +8659,7 @@ conference   = "PBC"
 mascot       = "Hurricanes"
 gender       = "women"
 base_url     = "https://gswcanes.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8213,7 +8678,7 @@ conference   = "PBC"
 mascot       = "Knights"
 gender       = "women"
 base_url     = "https://mgaknights.com/sports/womens-soccer"
-years        = [2026]
+years        = [2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8231,13 +8696,52 @@ conference   = "PBC"
 mascot       = "Bearcats"
 gender       = "women"
 base_url     = "https://landerbearcats.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
 aliases      = ["Lander University"]
 city         = "Greenwood, S.C."
 city_source  = "schedule-page home venue location, https://landerbearcats.com/sports/womens-soccer/schedule/2026 (Greenwood, S.C. on 8 home rows, read 2026-11-08); the peachbeltconference.org member JSON prints Greenwood, S.C."
+identity_accessed = "2026-11-08"
+
+# PBC WOMEN'S SOCCER - departed programme, 2022-2025 (history backfill, read 2026-11-08)
+# Albany State is on the Peach Belt women's standings and records every season
+# 2021-2025 (standings=140, 152, 166, 180, 194; records year=2021-2025, a row
+# whose team link is '#'), labelled "Albany St. (Ga.)", and absent from the
+# 2026 standings (archive id 213) and records. It discontinued women's soccer
+# from 2026-27 (asugoldenrams.com news, 2026-05-27); it was the school's only
+# Peach Belt sport, the rest of the department being SIAC (hbcusports.com,
+# 2026-05-28). No men's soccer, so no men's stanza and a new slug,
+# albany-state; no stanza of either gender mints or claims it (checked
+# against every schools.toml name/alias/abbreviation).
+#
+# Probe (uv run probe --conference PBC --seasons 2022-2025, 2026-11-08):
+# SideArm, schedule / roster / stats / matches present, 2022-2025 served.
+# Hand corrections to the draft: enabled = true; abbreviation "ASU" is what
+# the school's own SideArm scoreboard JSON prints (home_short_name, root page
+# read 2026-11-08) and is also Angelo State's (LSC women) and Adams State's
+# (RMAC) short form, so it is display-only; the probe minted initials "AS".
+# The standings/records label "Albany St. (Ga.)" folds to "Albany St." once
+# the parenthetical drops, so "Albany St." is an alias (check-membership
+# --standings needs it). Peer spellings on 2022-2025 PBC and CC women's
+# schedule pages: "Albany State" (8 hosts), "Albany State University" (5),
+# "Albany St. (Ga.)" (GCSU); all claimed or folding onto a claim.
+[[schools]]
+name         = "Albany State"
+abbreviation = "ASU"
+abbreviation_resolves = false  # "ASU" is also Angelo State's (LSC women) and Adams State's (RMAC)
+conference   = "PBC"
+mascot       = "Golden Rams"
+gender       = "women"
+base_url     = "https://asugoldenrams.com/sports/womens-soccer"
+years        = [2022, 2023, 2024, 2025]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Albany State University", "Albany St."]
+city         = "Albany, Ga."
+city_source  = "schedule-page home venue location, https://asugoldenrams.com/sports/womens-soccer/schedule/2025 (Albany, Georgia on 7 home rows, ASU Soccer Complex, read 2026-11-08)"
 identity_accessed = "2026-11-08"
 
 # ============================================================
@@ -8619,8 +9123,17 @@ point_source = "Wikipedia, San Francisco, the article's title coordinates 37°46
 point_reason = "the city's boundary takes in the Farallon Islands, so the internal point lies in the Pacific, 46 km west of the peninsula the city stands on (tui-vu9)"
 
 # ============================================================
-# CCAA WOMEN'S SOCCER - 14 programmes, authored depth 2026 only
+# CCAA WOMEN'S SOCCER - 14 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`), and programmes that
+# left before 2026 have stanzas of their own at the end of the section.
+# The paragraphs below were written for a 2026-only depth: where they say
+# 2026 only, or describe 2022-2025, the windows' sources supersede them.
+#
 # Source of truth: the California Collegiate Athletic Association's own
 # women's soccer pages, read 2026-11-08: the live standings
 # (goccaa.org/standings.aspx?path=wsoc, "2026 Women's Soccer Standings",
@@ -8673,7 +9186,7 @@ conference   = "CCAA"
 mascot       = "Lumberjacks"
 gender       = "women"
 base_url     = "https://humboldtathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8691,7 +9204,7 @@ conference   = "CCAA"
 mascot       = "Broncos"
 gender       = "women"
 base_url     = "https://broncoathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8709,7 +9222,7 @@ conference   = "CCAA"
 mascot       = "Toros"
 gender       = "women"
 base_url     = "https://gotoros.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8731,7 +9244,7 @@ conference   = "CCAA"
 mascot       = "Pioneers"
 gender       = "women"
 base_url     = "https://eastbaypioneers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8749,7 +9262,7 @@ conference   = "CCAA"
 mascot       = "Golden Eagles"
 gender       = "women"
 base_url     = "https://lagoldeneagles.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8769,7 +9282,7 @@ conference   = "CCAA"
 mascot       = "Otters"
 gender       = "women"
 base_url     = "https://otterathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8790,7 +9303,7 @@ conference   = "CCAA"
 mascot       = "Coyotes"
 gender       = "women"
 base_url     = "https://csusbathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8809,7 +9322,7 @@ conference   = "CCAA"
 mascot       = "Cougars"
 gender       = "women"
 base_url     = "https://csusmcougars.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8828,7 +9341,7 @@ conference   = "CCAA"
 mascot       = "Wildcats"
 gender       = "women"
 base_url     = "https://chicowildcats.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8850,7 +9363,7 @@ conference   = "CCAA"
 mascot       = "Sunbirds"
 gender       = "women"
 base_url     = "https://www.fpusunbirds.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8870,7 +9383,7 @@ conference   = "CCAA"
 mascot       = "Oaks"
 gender       = "women"
 base_url     = "https://menloathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8892,7 +9405,7 @@ conference   = "CCAA"
 mascot       = "Gators"
 gender       = "women"
 base_url     = "https://sfstategators.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8913,7 +9426,7 @@ conference   = "CCAA"
 mascot       = "Warriors"
 gender       = "women"
 base_url     = "https://warriorathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8935,7 +9448,7 @@ conference   = "CCAA"
 mascot       = "Bobcats"
 gender       = "women"
 base_url     = "https://ucmercedbobcats.com/sports/womens-soccer"
-years        = [2026]
+years        = [2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -8946,6 +9459,46 @@ enabled      = true
 aliases      = ["University of California, Merced"]
 city         = "Merced, Calif."
 city_source  = "schedule-page home venue location, https://ucmercedbobcats.com/sports/womens-soccer/schedule/2026 (Merced, CA, for all 9 2026 home matches, read 2026-11-08); the goccaa.org member JSON prints Merced, Calif."
+identity_accessed = "2026-11-08"
+
+# CCAA WOMEN'S SOCCER - departed programme, history backfill 2022-2025
+# ============================================================
+# One programme was on the CCAA women's tables inside 2022-2025 and is not in
+# the rib today: Sonoma State (2022-2024; athletics suspended after 2024-25,
+# returning to the CCAA for 2027-28). It shares its name, and so its slug,
+# with the CCAA men's stanza. Probe (uv run probe --conference CCAA
+# --seasons 2022-2024, 2026-11-08): SideArm, schedule / roster / stats /
+# matches present, 2022-2024 served. With --seasons 2022-2025 every layer
+# read "error (season not proven)" because the 2025 season is not served
+# (/schedule/2025 answers with a "2027 Women's Soccer Schedule" placeholder);
+# that is the hiatus, not a dead host. The host is ALIVE and still serves
+# 2022-2024, so liveness will not detect the departure.
+
+# Last CCAA women's season 2024: Sonoma State suspended intercollegiate
+# athletics after 2024-25 (goccaa.org news 2026/7/27, "a two-year hiatus";
+# women's soccer is among the sports it reinstates for 2027-28). The
+# conference rows never link a teamstats page ('#'). The probe minted "SS";
+# SSU is the men's stanza's short form and the university's initialism (the
+# site's older schedule layout prints no short_name). SSU is also Shawnee
+# State's (MEC women), so it stays display-only here.
+[[schools]]
+name         = "Sonoma State"
+abbreviation = "SSU"
+abbreviation_resolves = false  # "SSU" is also Shawnee State's (MEC women)
+conference   = "CCAA"
+mascot       = "Seawolves"
+gender       = "women"
+base_url     = "https://sonomaseawolves.com/sports/womens-soccer"
+years        = [2022, 2023, 2024]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Peers print "Sonoma State University" (Cal Poly Humboldt 2022, CSUDH
+# 2023-2024) and ranked forms ("RV Sonoma State", "#6 Sonoma State") that
+# the rank strip already reaches.
+aliases      = ["Sonoma State University"]
+city         = "Rohnert Park, Calif."
+city_source  = "schedule-page home venue location, https://sonomaseawolves.com/sports/womens-soccer/schedule/2022 (Rohnert Park, Calif., Seawolf Soccer Field, for all 13 2022 home matches, read 2026-11-08); the 2024 schedule prints Rohnert Park, Calif. for all 11 home matches, and the men's stanza's NCAA directory citation prints Rohnert Park, CA 94928"
 identity_accessed = "2026-11-08"
 
 # ============================================================
@@ -9353,8 +9906,17 @@ city_source  = "the university's closure release, https://hnu.edu/news/holy-name
 identity_accessed = "2026-09-05"
 
 # ============================================================
-# PACWEST WOMEN'S SOCCER - 10 programmes, authored depth 2026 only
+# PACWEST WOMEN'S SOCCER - 10 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`), and programmes that
+# left before 2026 have stanzas of their own at the end of the section.
+# The paragraphs below were written for a 2026-only depth: where they say
+# 2026 only, or describe 2022-2025, the windows' sources supersede them.
+#
 # Source of truth: the Pacific West Conference's own women's soccer pages,
 # read 2026-11-08: the live standings
 # (thepacwest.com/standings.aspx?path=wsoc, "2026 Women's Soccer
@@ -9407,7 +9969,7 @@ conference   = "PACWEST"
 mascot       = "Eagles"
 gender       = "women"
 base_url     = "https://athletics.biola.edu/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -9431,7 +9993,7 @@ conference   = "PACWEST"
 mascot       = "Silverswords"
 gender       = "women"
 base_url     = "https://goswords.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -9461,7 +10023,7 @@ conference   = "PACWEST"
 mascot       = "Golden Eagles"
 gender       = "women"
 base_url     = "https://cuigoldeneagles.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -9490,7 +10052,7 @@ conference   = "PACWEST"
 mascot       = "Penguins"
 gender       = "women"
 base_url     = "https://dominicanathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -9522,7 +10084,7 @@ conference   = "PACWEST"
 mascot       = "Vulcans"
 gender       = "women"
 base_url     = "https://hiloathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -9548,7 +10110,7 @@ conference   = "PACWEST"
 mascot       = "Sharks"
 gender       = "women"
 base_url     = "https://hpusharks.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -9571,7 +10133,7 @@ conference   = "PACWEST"
 mascot       = "Warriors"
 gender       = "women"
 base_url     = "https://jessupathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -9594,7 +10156,7 @@ conference   = "PACWEST"
 mascot       = "Sea Lions"
 gender       = "women"
 base_url     = "https://plnusealions.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -9614,7 +10176,7 @@ conference   = "PACWEST"
 mascot       = "Lions"
 gender       = "women"
 base_url     = "https://vanguardlions.com/sports/womens-soccer"
-years        = [2026]
+years        = [2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -9638,7 +10200,7 @@ conference   = "PACWEST"
 mascot       = "Warriors"
 gender       = "women"
 base_url     = "https://athletics.westmont.edu/sports/womens-soccer"
-years        = [2026]
+years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -9648,6 +10210,119 @@ enabled      = true
 aliases      = ["Westmont College", "Westmont Warriors"]
 city         = "Santa Barbara, Calif."
 city_source  = "the college's main site, https://www.westmont.edu/ (955 La Paz Road, Santa Barbara, CA 93108), the men's stanza's source, and the thepacwest.com member JSON (Santa Barbara, CA, read 2026-11-08); the 2026 women's schedule page prints only Westmont as the home venue"
+identity_accessed = "2026-11-08"
+
+# PACWEST WOMEN'S SOCCER - departed programmes, history backfill 2022-2025
+# ============================================================
+# Three programmes were on the PacWest women's tables inside 2022-2025 and
+# are not in the rib today: Azusa Pacific (2022-2025; Division III and the
+# SCIAC from 2026), Academy of Art (2022-2024; athletics discontinued after
+# 2024-25) and Holy Names (2022; the university closed after spring 2023).
+# Each shares its name, and so its slug, with a PacWest men's stanza. The
+# other two 2022-2025 PacWest women's programmes absent from the 2026 table,
+# Fresno Pacific and Menlo, already have women's stanzas (CCAA section);
+# their PacWest windows are in windows.json and their years in the CCAA
+# batch's years.json.
+#
+# Probe (uv run probe --conference PACWEST, 2026-11-08):
+#   athletics.apu.edu    SideArm, all four layers, 2022-2025 served
+#   artuathletics.com    SideArm, all four layers with --seasons 2022-2024,
+#                        2022-2024 served (2025 not served: /schedule/2025
+#                        falls back to the 2024 page); with --seasons
+#                        2022-2025 every layer reads "season not proven"
+#   hnuhawks.com         DEAD: 301 to https://hnu.edu/hnu-athletics/ (a
+#                        WordPress page), platform unknown, no season served
+
+# Last PacWest women's season 2025: Azusa Pacific is reclassifying to NCAA
+# Division III and plays a SCIAC schedule in 2026 (athletics.apu.edu news
+# 2026/7/6, the 2026 schedule release: "as APU moves into a new competitive
+# chapter at the Division III level"). The host is ALIVE and keeps
+# publishing women's soccer (2026 is a SCIAC season), so liveness will not
+# detect the departure. The conference rows never link a teamstats page
+# ('#'). APU is the site's own short form (home_short_name on its 2022-2024
+# women's schedules) and the men's stanza's; no women's stanza claims it.
+[[schools]]
+name         = "Azusa Pacific"
+abbreviation = "APU"
+conference   = "PACWEST"
+mascot       = "Cougars"
+gender       = "women"
+base_url     = "https://athletics.apu.edu/sports/womens-soccer"
+years        = [2022, 2023, 2024, 2025]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Peers print "Azusa Pacific University" (Cal Poly Humboldt 2022, CSUMB
+# 2023, CSUDH 2025), "Azusa Pacific Cougars" (Hawaii Hilo 2022-2024) and
+# ranked forms ("#25", "RV", "No. 1", "(RV)"), all reached by the name's
+# tokens or the rank strip. Hawaii Pacific 2025 prints "WR #5 Azusa
+# Pacific", a collector-defect shape (tl-v1q.8), not an alias.
+aliases      = ["Azusa Pacific University"]
+city         = "Azusa, Calif."
+city_source  = "schedule-page home venue location, https://athletics.apu.edu/sports/womens-soccer/schedule/2025 (Azusa, Calif., Cougar Soccer Complex, for all 10 2025 home matches, read 2026-11-08); the 2022-2024 schedules print Azusa, Calif. for every home match"
+identity_accessed = "2026-11-08"
+
+# Last PacWest women's season 2024: Academy of Art University discontinued
+# intercollegiate athletics at the end of 2024-25 (artuathletics.com news
+# 2025/4/4), absent from the 2025 records. The host is ALIVE and still
+# serves 2022-2024, so liveness will not detect the departure. The
+# conference rows never link a teamstats page ('#'). The probe minted "AA"
+# and the mascot "Knights"; "ART U" is the site's own short form
+# (home_short_name on every 2022-2024 women's schedule; the men's stanza
+# carries hand initials AAU, display-only, because its root scoreboard
+# printed "AAU-SB"), and "Urban Knights" is the site's and the men's
+# stanza's name. The coordinator may prefer the men's AAU for parity.
+[[schools]]
+name         = "Academy of Art"
+abbreviation = "ART U"
+conference   = "PACWEST"
+mascot       = "Urban Knights"
+gender       = "women"
+base_url     = "https://artuathletics.com/sports/womens-soccer"
+years        = [2022, 2023, 2024]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Hawaii Hilo prints "Academy of Art Urban Knights" (2022-2024), reached by
+# the name's tokens. "Academy of Arts" is the men's stanza's peer spelling
+# (Hawaii Pacific men's 2024); no 2022-2025 women's schedule scanned prints
+# it, but it is kept so the two genders claim the same spellings.
+aliases      = ["Academy of Art University", "Academy of Arts"]
+city         = "San Francisco, Calif."
+city_source  = "schedule-page home venue location, https://artuathletics.com/sports/womens-soccer/schedule/2024 (San Francisco, SF Glens at Treasure Island Field for 9 and CCSF Soccer Field for 1 of the 10 2024 home matches, read 2026-11-08; 2022 and 2023 print San Francisco, Paul Goode Field and CCSF Soccer Field); the university's main site, https://www.academyart.edu/, prints 79 New Montgomery St., San Francisco, CA 94105"
+identity_accessed = "2026-11-08"
+
+# Dead host: hnuhawks.com 301s to https://hnu.edu/hnu-athletics/, a
+# WordPress page with no SideArm strings (read 2026-11-08). On the PacWest
+# women's records and standings in 2021 and 2022 (standings=164 and 174)
+# and absent from 2023 (records year=2023, standings=184). Holy Names
+# University announced on 2022-12-19 that it would close after the spring
+# 2023 semester and cancel its NCAA sports programs (hnu.edu news,
+# holy-names-university-in-oakland-to-close-after-spring-semester-in-may-2023).
+# Single in-window season 2022. Kept enabled as the men's stanza is, so the
+# programmes reference carries its identity row; every fetch fails and the
+# backfill files the absence, which is the truth. The coordinator decides.
+# HNU is the initialism the hnu.edu athletics page titles itself with and is
+# kept display-only, as on the men's stanza. "Hawks" is that page's name.
+[[schools]]
+name         = "Holy Names"
+abbreviation = "HNU"
+abbreviation_resolves = false  # hand initials from the hnu.edu page title, read from no scoreboard
+conference   = "PACWEST"
+mascot       = "Hawks"
+gender       = "women"
+# Historic host, dead since at least 2026-09-05; the university closed after the spring 2023 semester.
+base_url     = "https://hnuhawks.com/sports/womens-soccer"
+years        = [2022]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Peers print "Holy Names University (Calif.)" (Cal Poly Humboldt and
+# Dominican 2022; the parenthetical drops, leaving the alias) and "Holy
+# Names Hawks" (Hawaii Hilo 2022, reached by the name's tokens).
+aliases      = ["Holy Names University"]
+city         = "Oakland, Calif."
+city_source  = "the university's closure release, https://hnu.edu/news/holy-names-university-in-oakland-to-close-after-spring-semester-in-may-2023/ (3500 Mountain Boulevard, Oakland, CA, read 2026-11-08); the athletics host is dead and prints no town"
 identity_accessed = "2026-11-08"
 
 # ============================================================
@@ -9855,8 +10530,17 @@ city_source  = "schedule-page home venue location, https://msubsports.com/sports
 identity_accessed = "2026-09-05"
 
 # ============================================================
-# GNAC WOMEN'S SOCCER - 8 programmes, authored depth 2026 only
+# GNAC WOMEN'S SOCCER - 8 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`), and programmes that
+# left before 2026 have stanzas of their own at the end of the section.
+# The paragraphs below were written for a 2026-only depth: where they say
+# 2026 only, or describe 2022-2025, the windows' sources supersede them.
+#
 # Source of truth: the Great Northwest Athletic Conference's own women's
 # soccer pages, read 2026-11-08: the live standings
 # (gnacsports.com/standings.aspx?path=wsoc, "2026 GNAC Women's Soccer
@@ -9904,7 +10588,7 @@ conference   = "GNAC"
 mascot       = "Wildcats"
 gender       = "women"
 base_url     = "https://wildcatsports.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -9926,7 +10610,7 @@ conference   = "GNAC"
 mascot       = "Yellowjackets"
 gender       = "women"
 base_url     = "https://msubsports.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -9945,7 +10629,7 @@ conference   = "GNAC"
 mascot       = "Nighthawks"
 gender       = "women"
 base_url     = "https://nnusports.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -9968,7 +10652,7 @@ conference   = "GNAC"
 mascot       = "Saints"
 gender       = "women"
 base_url     = "https://smusaints.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -9986,7 +10670,7 @@ conference   = "GNAC"
 mascot       = "Falcons"
 gender       = "women"
 base_url     = "https://spufalcons.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10013,7 +10697,7 @@ conference   = "GNAC"
 mascot       = "Red Leafs"
 gender       = "women"
 base_url     = "https://athletics.sfu.ca/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10033,7 +10717,7 @@ conference   = "GNAC"
 mascot       = "Wolves"
 gender       = "women"
 base_url     = "https://wouwolves.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10051,7 +10735,7 @@ conference   = "GNAC"
 mascot       = "Vikings"
 gender       = "women"
 base_url     = "https://wwuvikings.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10063,8 +10747,17 @@ city_source  = "schedule-page home venue location, https://wwuvikings.com/sports
 identity_accessed = "2026-11-08"
 
 # ============================================================
-# MIAA WOMEN'S SOCCER - 13 programmes, depth 2026 only
+# MIAA WOMEN'S SOCCER - 13 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`), and programmes that
+# left before 2026 have stanzas of their own at the end of the section.
+# The paragraphs below were written for a 2026-only depth: where they say
+# 2026 only, or describe 2022-2025, the windows' sources supersede them.
+#
 # Source of truth: the Mid-America Intercollegiate Athletics Association's
 # own women's soccer records, https://themiaa.com/stats.aspx?path=wsoc&year=2026&conf=true
 # and the live table https://themiaa.com/standings.aspx?path=wsoc (archive id
@@ -10117,7 +10810,7 @@ conference   = "MIAA"
 mascot       = "Jennies"
 gender       = "women"
 base_url     = "https://ucmathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10134,7 +10827,7 @@ conference   = "MIAA"
 mascot       = "Bronchos"
 gender       = "women"
 base_url     = "https://bronchosports.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10151,7 +10844,7 @@ conference   = "MIAA"
 mascot       = "Hornets"
 gender       = "women"
 base_url     = "https://esuhornets.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10167,7 +10860,7 @@ conference   = "MIAA"
 mascot       = "Tigers"
 gender       = "women"
 base_url     = "https://fhsuathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10183,7 +10876,7 @@ conference   = "MIAA"
 mascot       = "Lions"
 gender       = "women"
 base_url     = "https://mssulions.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10199,7 +10892,7 @@ conference   = "MIAA"
 mascot       = "Griffons"
 gender       = "women"
 base_url     = "https://gogriffons.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10215,7 +10908,7 @@ conference   = "MIAA"
 mascot       = "Lopers"
 gender       = "women"
 base_url     = "https://lopers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10232,7 +10925,7 @@ conference   = "MIAA"
 mascot       = "Jets"
 gender       = "women"
 base_url     = "https://newmanjets.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10249,7 +10942,7 @@ conference   = "MIAA"
 mascot       = "River Hawks"
 gender       = "women"
 base_url     = "https://goriverhawksgo.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10265,7 +10958,7 @@ conference   = "MIAA"
 mascot       = "Bearcats"
 gender       = "women"
 base_url     = "https://bearcatsports.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10283,7 +10976,7 @@ conference   = "MIAA"
 mascot       = "Gorillas"
 gender       = "women"
 base_url     = "https://pittstategorillas.com/sports/womens-soccer"
-years        = [2026]
+years        = [2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10299,7 +10992,7 @@ conference   = "MIAA"
 mascot       = "Hillcats"
 gender       = "women"
 base_url     = "https://rsuhillcats.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10316,7 +11009,7 @@ conference   = "MIAA"
 mascot       = "Ichabods"
 gender       = "women"
 base_url     = "https://wusports.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10327,8 +11020,17 @@ identity_accessed = "2026-11-08"
 
 
 # ============================================================
-# NSIC WOMEN'S SOCCER - 16 programmes, authored depth 2026 only
+# NSIC WOMEN'S SOCCER - 16 programmes in 2026, authored depth 2022-2026
 # ============================================================
+# Depth extended to 2022-2026 on 2026-11-09 (the women's history
+# backfill): every membership window and year-list in this section now
+# covers the seasons 2022-2025 as the conference's own archived women's
+# standings list them (one captured page per season, reproduced by
+# `check-membership --standings ... --gender women`), and programmes that
+# left before 2026 have stanzas of their own at the end of the section.
+# The paragraphs below were written for a 2026-only depth: where they say
+# 2026 only, or describe 2022-2025, the windows' sources supersede them.
+#
 # Source of truth: the Northern Sun Intercollegiate Conference's own women's
 # soccer pages, read 2026-11-08: the live standings
 # (northernsun.org/standings.aspx?path=wsoc, "2026 Women's Soccer
@@ -10400,7 +11102,7 @@ conference   = "NSIC"
 mascot       = "Vikings"
 gender       = "women"
 base_url     = "https://www.goaugie.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10421,7 +11123,7 @@ conference   = "NSIC"
 mascot       = "Beavers"
 gender       = "women"
 base_url     = "https://www.bsubeavers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10444,7 +11146,7 @@ conference   = "NSIC"
 mascot       = "Golden Bears"
 gender       = "women"
 base_url     = "https://cspbears.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10465,7 +11167,7 @@ conference   = "NSIC"
 mascot       = "Jimmies"
 gender       = "women"
 base_url     = "https://jimmiepride.com/sports/womens-soccer"
-years        = [2026]
+years        = [2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10481,7 +11183,7 @@ conference   = "NSIC"
 mascot       = "Golden Eagles"
 gender       = "women"
 base_url     = "https://www.goldeneaglesports.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10498,7 +11200,7 @@ conference   = "NSIC"
 mascot       = "Bulldogs"
 gender       = "women"
 base_url     = "https://www.umdbulldogs.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10521,7 +11223,7 @@ conference   = "NSIC"
 mascot       = "Mavericks"
 gender       = "women"
 base_url     = "https://www.msumavericks.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10543,7 +11245,7 @@ conference   = "NSIC"
 mascot       = "Dragons"
 gender       = "women"
 base_url     = "https://www.msumdragons.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10561,7 +11263,7 @@ conference   = "NSIC"
 mascot       = "Beavers"
 gender       = "women"
 base_url     = "https://www.msubeavers.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10579,7 +11281,7 @@ conference   = "NSIC"
 mascot       = "Wolves"
 gender       = "women"
 base_url     = "https://www.nsuwolvesathletics.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10595,7 +11297,7 @@ conference   = "NSIC"
 mascot       = "Cougars"
 gender       = "women"
 base_url     = "https://www.usfcougars.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10613,7 +11315,7 @@ conference   = "NSIC"
 mascot       = "Mustangs"
 gender       = "women"
 base_url     = "https://smsumustangs.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10637,7 +11339,7 @@ conference   = "NSIC"
 mascot       = "Huskies"
 gender       = "women"
 base_url     = "https://scsuhuskies.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10661,7 +11363,7 @@ conference   = "NSIC"
 mascot       = "Marauders"
 gender       = "women"
 base_url     = "https://www.goumary.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10685,7 +11387,7 @@ conference   = "NSIC"
 mascot       = "Wildcats"
 gender       = "women"
 base_url     = "https://www.wscwildcats.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -10702,7 +11404,7 @@ conference   = "NSIC"
 mascot       = "Warriors"
 gender       = "women"
 base_url     = "https://www.winonastatewarriors.com/sports/womens-soccer"
-years        = [2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
