@@ -530,11 +530,18 @@ nodes:
       # an order neither side chose) and the side-free shape it claims (each
       # slug with its score, sorted, plus the status). Two rows in one pair
       # with two shapes are a disagreement.
+      #
+      # The pair carries the file's gender. A men's and a women's match on
+      # the same date between the same two schools are two matches, not one
+      # match collected twice; pairing them gender-blind reported every
+      # double-header as a disagreeing twin from the day women's GLVC was
+      # collected (2026-11-08).
       JQ='
-        .fixtures[]
+        (.gender // "men") as $g
+        | .fixtures[]
         | select(.status != "cancelled" and .status != "postponed")
         | . as $f
-        | ([$f.home, $f.away] | sort | join(" v ")) as $pair
+        | ([$f.home, $f.away] | sort | join(" v ") | "\($g) \(.)") as $pair
         | ([ "\($f.home)=\($f.home_score // "-")", "\($f.away)=\($f.away_score // "-")" ] | sort | join("|")) as $shape
         | "ROW\t\($f.date) \($pair)\t\($f.id)\t\($shape)|\($f.status // "-")\t\($f.home)"'
       ROWS=""
