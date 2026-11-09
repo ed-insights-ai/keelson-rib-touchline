@@ -7504,6 +7504,336 @@ city_source  = "schedule-page home venue location, https://sfstategators.com/spo
 identity_accessed = "2026-09-05"
 
 # ============================================================
+# CCAA WOMEN'S SOCCER - 14 programmes, authored depth 2026 only
+# ============================================================
+# Source of truth: the California Collegiate Athletic Association's own
+# women's soccer pages, read 2026-11-08: the live standings
+# (goccaa.org/standings.aspx?path=wsoc, "2026 Women's Soccer Standings",
+# archive id 331) and the 2026 conference statistics
+# (stats.aspx?path=wsoc&year=2026&conf=true). Both list the same fourteen
+# programmes in one table, with no divisions, so no window carries a
+# division. Depth is 2026 only (the owner's ruling, no historical seasons),
+# so every year-list is [2026] and every window's from_season 2026 is a
+# depth decision, not an arrival.
+#
+# Not the men's set: all fourteen share a name, and so a slug, with a CCAA
+# men's stanza above; there is no women-only institution. San Francisco
+# State still sponsors women's soccer (men's ended after 2024), so its men's
+# stanza's years stop at 2024 while this one is [2026]. Sonoma State is in
+# the 2026 member JSON but on neither the 2025 (standings=319) nor the 2026
+# women's table (athletics on hiatus), so it has no women's stanza. Fresno
+# Pacific and Menlo are on the 2025 PacWest women's table
+# (thepacwest.com/standings.aspx?standings=201) and on this 2026 CCAA one:
+# the movers' 2026 is CCAA, and the depth authors no PacWest women's window
+# for either. UC Merced printed "UC Merced *" in 2025 ("Not eligible for
+# CCAA or NCAA postseason play", NCAA-provisional) and prints no mark in
+# 2026; it counts in both.
+#
+# Probe (uv run probe --conference CCAA --seasons 2026, 2026-11-08): all 14
+# hosts SideArm, schedule / roster / stats / matches present, 2026 served
+# on every one. Hosts from the goccaa.org member JSON embedded in the
+# standings page. No collect has run, so every stanza is data_status =
+# unverified. No ordinals.
+#
+# Short forms are the men's stanzas' (the goccaa.org member JSON's, which
+# the 2026 women's records' teamstats links repeat: school=csula, csusb,
+# stan, ucm, ...). The probe minted initials for seven (CPH, CSEB, CSL, CS,
+# FP, SS, and CM for UC Merced) and none for Menlo; all replaced. UCM is also
+# Central Missouri's on the MIAA women's stanza, which resolves it, so UC
+# Merced's stays display-only here (on the men's side no Central Missouri
+# exists). The probe misread Cal State LA's town as "Kansas City, Mo."
+# again (the away venue of the first fixture) and read no town for four
+# (Dominguez Hills, East Bay, San Marcos, San Francisco State); every town
+# below is the 2026 women's schedule's home rows, except East Bay (see its
+# stanza). Aliases are the men's stanzas' plus the spellings the fourteen
+# 2026 women's schedules, and the ten PacWest and eight GNAC ones, print
+# that the identity fold does not already reach.
+
+# The probe minted the initials "CPH"; HUM is the goccaa.org member JSON's
+# short form and the men's stanza's.
+[[schools]]
+name         = "Cal Poly Humboldt"
+abbreviation = "HUM"
+conference   = "CCAA"
+mascot       = "Lumberjacks"
+gender       = "women"
+base_url     = "https://humboldtathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Hawaii Hilo prints "Cal Poly Humboldt Lumberjacks" (2026); it resolves by
+# the name's tokens, so it is not carried.
+aliases      = ["Cal Poly Humboldt University", "Humboldt State", "Humboldt", "HSU"]
+city         = "Arcata, Calif."
+city_source  = "schedule-page home venue location, https://humboldtathletics.com/sports/womens-soccer/schedule/2026 (Arcata, CA, College Creek Field, for all 13 2026 home matches, read 2026-11-08); the goccaa.org member JSON prints Arcata, Calif."
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Cal Poly Pomona"
+abbreviation = "CPP"
+conference   = "CCAA"
+mascot       = "Broncos"
+gender       = "women"
+base_url     = "https://broncoathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Cal Poly-Pomona"]
+city         = "Pomona, Calif."
+city_source  = "schedule-page home venue location, https://broncoathletics.com/sports/womens-soccer/schedule/2026 (Pomona, CA, Kellogg Stadium, for all 13 2026 home matches, read 2026-11-08); the goccaa.org member JSON prints Pomona, Calif."
+identity_accessed = "2026-11-08"
+
+# The probe read no home town; the 2026 schedule prints Carson for every
+# home match (Toro Stadium; Dignity Health Sports Park once).
+[[schools]]
+name         = "Cal State Dominguez Hills"
+abbreviation = "CSUDH"
+conference   = "CCAA"
+mascot       = "Toros"
+gender       = "women"
+base_url     = "https://gotoros.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Northwest Nazarene, Vanguard and Westmont 2026 print "CSU Dominguez
+# Hills" (already an alias).
+aliases      = ["CSU Dominguez Hills", "Dominguez Hills", "Cal St. Dom. Hills"]
+city         = "Carson, Calif."
+city_source  = "schedule-page home venue location, https://gotoros.com/sports/womens-soccer/schedule/2026 (Carson, for all 9 2026 home matches, read 2026-11-08); the goccaa.org member JSON prints Carson, Calif."
+identity_accessed = "2026-11-08"
+
+# The probe read no home town and minted "CSEB". The 2026 schedule prints
+# "Alameda. CA" (the Oakland Roots Training Facility) for every home match,
+# the venue town; the campus is in Hayward (25800 Carlos Bee Blvd), the
+# men's stanza's town, and that is the town used.
+[[schools]]
+name         = "Cal State East Bay"
+abbreviation = "CSUEB"
+conference   = "CCAA"
+mascot       = "Pioneers"
+gender       = "women"
+base_url     = "https://eastbaypioneers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["CSU East Bay", "East Bay"]
+city         = "Hayward, Calif."
+city_source  = "the NCAA directory, https://web3.ncaa.org/directory/orgDetail?id=98 (25800 Carlos Bee Blvd., Hayward, CA 94542), and the goccaa.org member JSON (Hayward, Calif., read 2026-11-08); the 2026 women's schedule page prints Alameda, CA, the venue town, for all 10 home matches"
+identity_accessed = "2026-11-08"
+
+# The probe drafted "Kansas City, Mo." (the away venue of the first 2026
+# fixture, as on the men's side) and minted "CSL".
+[[schools]]
+name         = "Cal State LA"
+abbreviation = "CSULA"
+conference   = "CCAA"
+mascot       = "Golden Eagles"
+gender       = "women"
+base_url     = "https://lagoldeneagles.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# 2026 women's peers print "Cal State Los Angeles" (Humboldt, San Bernardino,
+# Fresno Pacific), "Cal State L.A." (Monterey Bay), "Cal State L.A" (East
+# Bay), "CSU Los Angeles" (Westmont, Vanguard) and "Cal State LA"; all
+# resolve through the name and these.
+aliases      = ["Cal State Los Angeles", "Cal State L.A.", "CSU Los Angeles", "California State University, Los Angeles"]
+city         = "Los Angeles, Calif."
+city_source  = "schedule-page home venue location, https://lagoldeneagles.com/sports/womens-soccer/schedule/2026 (Los Angeles, University Stadium, for all 10 2026 home matches with a venue, read 2026-11-08); the goccaa.org member JSON prints Los Angeles"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Cal State Monterey Bay"
+abbreviation = "CSUMB"
+conference   = "CCAA"
+mascot       = "Otters"
+gender       = "women"
+base_url     = "https://otterathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Dominican 2026 prints "California State University Monterey Bay"; it
+# resolves by the "Monterey Bay" alias's tokens.
+aliases      = ["CSU Monterey Bay", "Monterey Bay"]
+city         = "Seaside, Calif."
+city_source  = "schedule-page home venue location, https://otterathletics.com/sports/womens-soccer/schedule/2026 (Seaside, Calif., Cardinale Stadium, for all 11 2026 home matches, read 2026-11-08); the goccaa.org member JSON prints Seaside, Calif."
+identity_accessed = "2026-11-08"
+
+# The probe found no mascot where it reads and drafted the page title with
+# the mascot as an alias; "Coyotes" is the site's own name and the
+# goccaa.org member JSON's, and the alias is dropped.
+[[schools]]
+name         = "Cal State San Bernardino"
+abbreviation = "CSUSB"
+conference   = "CCAA"
+mascot       = "Coyotes"
+gender       = "women"
+base_url     = "https://csusbathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Vanguard and Westmont 2026 print "CSU San Bernardino" (already an alias).
+aliases      = ["CSU San Bernardino", "California State University, San Bernardino", "Cal St. San B'dino", "Cal St. San Bernardino"]
+city         = "San Bernardino, Calif."
+city_source  = "schedule-page home venue location, https://csusbathletics.com/sports/womens-soccer/schedule/2026 (San Bernardino, Calif., Premier Field, for 7 of 8 2026 home matches; one at UC Riverside Soccer Stadium, Riverside; read 2026-11-08); the goccaa.org member JSON prints San Bernardino, Calif."
+identity_accessed = "2026-11-08"
+
+# The probe read no home town; the 2026 schedule prints San Marcos (The
+# Cage) for every home match.
+[[schools]]
+name         = "Cal State San Marcos"
+abbreviation = "CSUSM"
+conference   = "CCAA"
+mascot       = "Cougars"
+gender       = "women"
+base_url     = "https://csusmcougars.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Vanguard and Westmont 2026 print "CSU San Marcos" (already an alias).
+aliases      = ["CSU San Marcos", "San Marcos"]
+city         = "San Marcos, Calif."
+city_source  = "schedule-page home venue location, https://csusmcougars.com/sports/womens-soccer/schedule/2026 (San Marcos, The Cage, for all 9 2026 home matches, read 2026-11-08); the goccaa.org member JSON prints San Marcos, Calif."
+identity_accessed = "2026-11-08"
+
+# The probe minted "CS"; CHICO is the goccaa.org member JSON's short form
+# and the men's stanza's.
+[[schools]]
+name         = "Chico State"
+abbreviation = "CHICO"
+conference   = "CCAA"
+mascot       = "Wildcats"
+gender       = "women"
+base_url     = "https://chicowildcats.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Cal State Chico", "CSU Chico", "Chico"]
+city         = "Chico, Calif."
+city_source  = "schedule-page home venue location, https://chicowildcats.com/sports/womens-soccer/schedule/2026 (Chico, Calif., University Soccer Stadium, for all 11 2026 home matches, read 2026-11-08); the goccaa.org member JSON prints Chico, Calif."
+identity_accessed = "2026-11-08"
+
+# First CCAA women's season 2026: on the 2025 PacWest women's table
+# (thepacwest.com/standings.aspx?standings=201) and this 2026 CCAA one
+# (goccaa.org news 2025/6/11). The probe minted "FP" and read the mascot as
+# "Sunbird"; FPU and "Sunbirds" are the men's stanza's and the member
+# JSON's. FPU is also Franklin Pierce's, so it stays display-only.
+[[schools]]
+name         = "Fresno Pacific"
+abbreviation = "FPU"
+abbreviation_resolves = false  # "FPU" is also Franklin Pierce's
+conference   = "CCAA"
+mascot       = "Sunbirds"
+gender       = "women"
+base_url     = "https://www.fpusunbirds.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Fresno Pacific University"]
+city         = "Fresno, Calif."
+city_source  = "schedule-page home venue location, https://www.fpusunbirds.com/sports/womens-soccer/schedule/2026 (Fresno, Calif., Ramirez Field, for all 11 2026 home matches, read 2026-11-08); the goccaa.org member JSON prints Fresno, Calif."
+identity_accessed = "2026-11-08"
+
+# First CCAA women's season 2026: on the 2025 PacWest women's table
+# (standings=201) and this 2026 CCAA one (goccaa.org news 2025/11/25). The
+# probe found no short form or mascot where it reads; MEN and "Oaks" are
+# the goccaa.org member JSON's and the men's stanza's.
+[[schools]]
+name         = "Menlo"
+abbreviation = "MEN"
+conference   = "CCAA"
+mascot       = "Oaks"
+gender       = "women"
+base_url     = "https://menloathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Ten 2026 women's peers print "Menlo College" and East Bay "Menlo
+# college"; both fold to the name's key.
+aliases      = ["Menlo College", "Menlo Oaks"]
+city         = "Atherton, Calif."
+city_source  = "schedule-page home venue location, https://menloathletics.com/sports/womens-soccer/schedule/2026 (Atherton, CA, Wunderlich Field, for all 11 2026 home matches, read 2026-11-08); the goccaa.org member JSON prints Atherton, Calif."
+identity_accessed = "2026-11-08"
+
+# Women's soccer continues (men's ended after 2024, so the men's stanza's
+# years stop there). The probe drafted the host name as an alias (dropped)
+# and read no home town; the 2026 schedule prints San Francisco (Cox
+# Stadium) for every home match.
+[[schools]]
+name         = "San Francisco State"
+abbreviation = "SFSU"
+conference   = "CCAA"
+mascot       = "Gators"
+gender       = "women"
+base_url     = "https://sfstategators.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# East Bay 2026 prints "SF State" (already an alias); Dominguez Hills,
+# Dominican, Fresno Pacific, Jessup and Stanislaus State print "San
+# Francisco State University", which folds to the name.
+aliases      = ["San Francisco State University", "SF State", "San Fran. St."]
+city         = "San Francisco, Calif."
+city_source  = "schedule-page home venue location, https://sfstategators.com/sports/womens-soccer/schedule/2026 (San Francisco, Cox Stadium, for all 7 2026 home matches, read 2026-11-08); the goccaa.org member JSON prints San Francisco"
+identity_accessed = "2026-11-08"
+
+# The probe minted "SS"; STAN is the goccaa.org member JSON's short form
+# and the men's stanza's.
+[[schools]]
+name         = "Stanislaus State"
+abbreviation = "STAN"
+conference   = "CCAA"
+mascot       = "Warriors"
+gender       = "women"
+base_url     = "https://warriorathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Cal State Stanislaus", "CSU Stanislaus", "Stanislaus"]
+city         = "Turlock, Calif."
+city_source  = "schedule-page home venue location, https://warriorathletics.com/sports/womens-soccer/schedule/2026 (Turlock, Calif., Warrior Stadium, for all 7 2026 home matches, read 2026-11-08); the goccaa.org member JSON prints Turlock, Calif."
+identity_accessed = "2026-11-08"
+
+# The probe minted "CM" and found no mascot where it reads; UCM and
+# "Bobcats" are the goccaa.org member JSON's and the men's stanza's. UCM is
+# also Central Missouri's, which the MIAA women's stanza resolves, so it
+# stays display-only here: a bare "UCM" on a women's page reads Central
+# Missouri.
+[[schools]]
+name         = "UC Merced"
+abbreviation = "UCM"
+abbreviation_resolves = false  # "UCM" is also Central Missouri's (MIAA women)
+conference   = "CCAA"
+mascot       = "Bobcats"
+gender       = "women"
+base_url     = "https://ucmercedbobcats.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# The men's stanza's bare "Merced" alias is not carried: Fresno Pacific's
+# 2026 women's schedule prints "Merced College" (a junior-college
+# exhibition), which folds to "merced" and would mint this programme. No
+# 2026 women's page prints the bare word for UC Merced.
+aliases      = ["University of California, Merced"]
+city         = "Merced, Calif."
+city_source  = "schedule-page home venue location, https://ucmercedbobcats.com/sports/womens-soccer/schedule/2026 (Merced, CA, for all 9 2026 home matches, read 2026-11-08); the goccaa.org member JSON prints Merced, Calif."
+identity_accessed = "2026-11-08"
+
+# ============================================================
 # PACWEST MEN'S SOCCER - 13 programmes, backfill window 2022-2026
 # ============================================================
 # 15 windows in the depth on 15 slugs: two of them, Fresno Pacific's
@@ -7908,6 +8238,304 @@ city_source  = "the university's closure release, https://hnu.edu/news/holy-name
 identity_accessed = "2026-09-05"
 
 # ============================================================
+# PACWEST WOMEN'S SOCCER - 10 programmes, authored depth 2026 only
+# ============================================================
+# Source of truth: the Pacific West Conference's own women's soccer pages,
+# read 2026-11-08: the live standings
+# (thepacwest.com/standings.aspx?path=wsoc, "2026 Women's Soccer
+# Standings", archive id 214) and the 2026 conference statistics
+# (stats.aspx?path=wsoc&year=2026&conf=true). Both list the same ten
+# programmes in one table, with no divisions, so no window carries a
+# division. Depth is 2026 only (the owner's ruling, no historical seasons),
+# so every year-list is [2026] and every window's from_season 2026 is a
+# depth decision, not an arrival.
+#
+# Not the men's set: all ten share a name, and so a slug, with a PacWest
+# men's stanza above; there is no women-only institution. The 2025 women's
+# table (standings=201) lists thirteen: Azusa Pacific (Division III and the
+# SCIAC from 2026), Fresno Pacific and Menlo (CCAA from 2026; their women's
+# stanzas are in the CCAA section) are absent from 2026 and get no PacWest
+# women's window inside the depth. Academy of Art and Holy Names are on
+# neither table.
+#
+# Probe (uv run probe --conference PACWEST --seasons 2026, 2026-11-08): all
+# 10 hosts SideArm, schedule / roster / stats / matches present, 2026
+# served on every one. Hosts from the thepacwest.com member JSON embedded
+# in the standings page (cuieagles.com 301s to cuigoldeneagles.com). No
+# collect has run, so every stanza is data_status = unverified. No
+# ordinals.
+#
+# Names are the men's stanzas' (the records' labels except where the label
+# would mint a slug the data home does not use or collide: "Dominican of
+# California", "Concordia Irvine", "Hawaii Hilo", "Hawaii Pacific"; see the
+# men's section). Short forms are the men's, the thepacwest.com member
+# JSON's, which the 2026 women's records' teamstats links repeat
+# (school=plnu, cui, bu, uhh, van, duc, wc, cuh, jes, hpu). The probe found
+# no short form for five (Biola, Chaminade, Jessup, Vanguard, Westmont) and
+# minted DC and PLN for two; all replaced. It misread Westmont's town as
+# "Hilo, Hawaii" (an away venue) and read none for four (Chaminade, Hawaii
+# Hilo, Hawaii Pacific, Point Loma); see each stanza. Aliases are the men's
+# plus the spellings the 2026 women's schedules of the PacWest, CCAA and
+# GNAC members print that the identity fold does not already reach.
+# Hawaii Hilo's 2026 schedule lists the PacWest tournament matches it
+# hosted as home rows ("#1 Point Loma vs #4 Biola", "#2 Concordia vs #4
+# Biola"): the hosted-other-match shape (tl-clk.10, tl-5ru), not an alias.
+
+# The probe found no short form where it reads; BU is the member JSON's and
+# the men's stanza's. BU is also Bloomsburg's (PSAC women), Bentley's and
+# Barry's, so it stays display-only.
+[[schools]]
+name         = "Biola"
+abbreviation = "BU"
+abbreviation_resolves = false  # "BU" is also Bloomsburg's, Bentley's and Barry's
+conference   = "PACWEST"
+mascot       = "Eagles"
+gender       = "women"
+base_url     = "https://athletics.biola.edu/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Hawaii Hilo 2026 prints "Biola Eagles"; Fresno Pacific "Biola University
+# (Calif.)" and Hawaii Pacific and Jessup "Biola University" fold to the
+# name.
+aliases      = ["Biola University", "Biola Eagles"]
+city         = "La Mirada, Calif."
+city_source  = "schedule-page home venue location, https://athletics.biola.edu/sports/womens-soccer/schedule/2026 (La Mirada, CA, Al Barbour Field, for all 9 2026 home matches, read 2026-11-08); the thepacwest.com member JSON prints La Mirada, Calif."
+identity_accessed = "2026-11-08"
+
+# The probe found no short form or home town where it reads; CUH is the
+# member JSON's and the men's, and the 2026 schedule prints Honolulu (Saint
+# Louis Field) for every home match. "Honolulu, Hawaii" falls through the
+# places file to the Honolulu CCD, whose centroid is in the open ocean, so
+# the stanza pins the Urban Honolulu CDP exactly as the men's does.
+[[schools]]
+name         = "Chaminade"
+abbreviation = "CUH"
+conference   = "PACWEST"
+mascot       = "Silverswords"
+gender       = "women"
+base_url     = "https://goswords.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Hawaii Hilo 2026 prints "Chaminade Silverswords"; Monterey Bay,
+# Dominican and Jessup print "Chaminade University", which folds to the
+# name.
+aliases      = ["Chaminade University", "Chaminade University of Honolulu", "Chaminade of Honolulu", "Chaminade Silverswords"]
+city         = "Honolulu, Hawaii"
+city_source  = "schedule-page home venue location, https://goswords.com/sports/womens-soccer/schedule/2026 (Honolulu, Saint Louis Field, for all 8 2026 home matches, read 2026-11-08); the thepacwest.com member JSON prints Honolulu"
+gazetteer_geoid = "1571550"
+gazetteer_note = "Honolulu is the consolidated City and County of Honolulu, which the 2023 Gazetteer places file carries only as the Urban Honolulu CDP (the county-subdivisions file's Honolulu CCD spans the whole county out to the Northwestern Hawaiian Islands and its centroid lies in the open ocean): the pin is the CDP the campus and the home ground sit in"
+identity_accessed = "2026-11-08"
+
+# Concordia University Irvine; the records print "Concordia", the polluted
+# opponent slug, so the name is qualified as on the men's side and the bare
+# word is a member alias only (it resolves here inside a PacWest collect:
+# Jessup prints "Concordia University (CA)", Biola and Westmont
+# "Concordia", Point Loma "#13 Concordia"). Outside that scope Simon
+# Fraser's "No. 13 Concordia (Calif.)" folds to the bare key and is
+# collected as the stranger concordia, as on the men's side. The probe read
+# the mascot as "Eagles"; "Golden Eagles" is the site's own name and the
+# member JSON's.
+[[schools]]
+name         = "Concordia Irvine"
+abbreviation = "CUI"
+conference   = "PACWEST"
+mascot       = "Golden Eagles"
+gender       = "women"
+base_url     = "https://cuigoldeneagles.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Hawaii Hilo 2026 prints "Concordia Golden Eagles" (ranked "#2 Concordia
+# Golden Eagles" once); Humboldt, San Bernardino, San Marcos, Stanislaus
+# State, Dominican and Hawaii Pacific print "Concordia University Irvine";
+# Chaminade and Vanguard print "CUI", the resolving abbreviation.
+aliases      = ["Concordia University Irvine", "Concordia Golden Eagles"]
+member_aliases = ["Concordia"]
+city         = "Irvine, Calif."
+city_source  = "schedule-page home venue location, https://cuigoldeneagles.com/sports/womens-soccer/schedule/2026 (Irvine, Calif., Golden Eagles Field, for all 8 2026 home matches, read 2026-11-08); the thepacwest.com member JSON prints Irvine, Calif."
+identity_accessed = "2026-11-08"
+
+# Dominican University of California (San Rafael), not the CACC's Dominican
+# University New York, which keeps the bare "Dominican" name and slug. The
+# men's shape exactly: display_name "Dominican (Calif.)" (reader-facing,
+# never identity, tl-4an.31), the parenthetical forms not carried as aliases
+# since they reduce to the bare word, and the bare "Dominican" a member
+# alias (resolving here inside a PacWest collect, tl-b3v). The probe minted
+# "DC"; DUC is the member JSON's and the men's.
+[[schools]]
+name         = "Dominican of California"
+display_name = "Dominican (Calif.)"
+abbreviation = "DUC"
+conference   = "PACWEST"
+mascot       = "Penguins"
+gender       = "women"
+base_url     = "https://dominicanathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Hawaii Hilo 2026 prints "Dominican Penguins"; Fresno Pacific prints
+# "Dominican University of California", which folds to the name. Six CCAA
+# pages print the bare "Dominican" (Humboldt, East Bay, Chico, Menlo, San
+# Francisco State, UC Merced), Stanislaus State "Dominican (Calif.)" and
+# Northwest Nazarene "RV Dominican (Calif.)": all fold to the bare key
+# outside the PacWest scope, where only the nearest-claimant rule
+# (tl-4sg.9.1) can point them here, and only once a women's CACC Dominican
+# stanza exists to make the key ambiguous.
+aliases      = ["Dominican California", "Dominican Penguins"]
+member_aliases = ["Dominican"]
+city         = "San Rafael, Calif."
+city_source  = "schedule-page home venue location, https://dominicanathletics.com/sports/womens-soccer/schedule/2026 (San Rafael, Calif., Kennelly Field, for all 10 2026 home matches, read 2026-11-08); the thepacwest.com member JSON prints San Rafael, Calif."
+identity_accessed = "2026-11-08"
+
+# University of Hawai'i at Hilo; `name` drops the okina so it mints the
+# fixtures' hawaii-hilo, and display_name carries the conference's
+# spelling, as on the men's side. The probe found no mascot or home town
+# where it reads and drafted a mascot-laden title alias (dropped);
+# "Vulcans" is the site's own name, and the 2026 schedule prints Hilo,
+# Hawai'i for every home match.
+[[schools]]
+name         = "Hawaii Hilo"
+display_name = "Hawai'i Hilo"
+abbreviation = "UHH"
+conference   = "PACWEST"
+mascot       = "Vulcans"
+gender       = "women"
+base_url     = "https://hiloathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# 2026 women's peers print "Hawai'i Hilo", "Hawaii Hilo", "UH Hilo" (Hawaii
+# Pacific), "University of Hawaii at Hilo" and "University of Hawaii-Hilo";
+# all resolve through the name and these.
+aliases      = ["UH Hilo", "University of Hawai'i at Hilo", "University of Hawaii at Hilo", "Hawaii-Hilo", "Hawai`i Hilo"]
+city         = "Hilo, Hawaii"
+city_source  = "schedule-page home venue location, https://hiloathletics.com/sports/womens-soccer/schedule/2026 (Hilo, Hawai'i, Vulcan Soccer Field, for every 2026 home match, read 2026-11-08); the thepacwest.com member JSON prints Hilo, Hawaii"
+identity_accessed = "2026-11-08"
+
+# Hawai'i Pacific University; `name` drops the okina as on the men's side.
+# The probe read no home town: the 2026 schedule prints "Waipahu, Hawai'i"
+# once and "Waipio Soccer Stadium (Oahu, HI)" for the other home matches,
+# and the member JSON prints Kaneohe. The town is the men's stanza's, the
+# university's own address (1 Aloha Tower Drive, Honolulu), with the same
+# Urban Honolulu CDP pin.
+[[schools]]
+name         = "Hawaii Pacific"
+display_name = "Hawai'i Pacific"
+abbreviation = "HPU"
+conference   = "PACWEST"
+mascot       = "Sharks"
+gender       = "women"
+base_url     = "https://hpusharks.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Hawaii Hilo 2026 prints "HPU Sharks"; Biola, Menlo and Vanguard print
+# "Hawaii Pacific", Monterey Bay, Dominican and Jessup "Hawaii Pacific
+# University".
+aliases      = ["Hawaii Pacific University", "Hawai'i Pacific University", "Hawai`i Pacific", "HPU Sharks"]
+city         = "Honolulu, Hawaii"
+city_source  = "the university's main site, https://www.hpu.edu/ (1 Aloha Tower Drive, Honolulu, HI 96813), and the NCAA directory, https://web3.ncaa.org/directory/orgDetail?id=2696 (same address), the men's stanza's sources; the 2026 women's schedule page prints Waipahu, Hawai'i once and Oahu, HI for the other home matches (Waipio Stadium, read 2026-11-08), and the thepacwest.com member JSON prints Kaneohe, Hawaii"
+gazetteer_geoid = "1571550"
+gazetteer_note = "Honolulu is the consolidated City and County of Honolulu, which the 2023 Gazetteer places file carries only as the Urban Honolulu CDP (the county-subdivisions file's Honolulu CCD spans the whole county out to the Northwestern Hawaiian Islands and its centroid lies in the open ocean): the pin is the CDP the campus and the home ground sit in"
+identity_accessed = "2026-11-08"
+
+# The probe found no short form where it reads; JES is the member JSON's
+# and the men's.
+[[schools]]
+name         = "Jessup"
+abbreviation = "JES"
+conference   = "PACWEST"
+mascot       = "Warriors"
+gender       = "women"
+base_url     = "https://jessupathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Hawaii Hilo 2026 prints "Jessup Warriors"; Dominican prints "Jessup
+# University (Calif.)", which folds to the name.
+aliases      = ["Jessup University", "William Jessup", "William Jessup University", "Jessup Warriors"]
+city         = "Rocklin, Calif."
+city_source  = "schedule-page home venue location, https://jessupathletics.com/sports/womens-soccer/schedule/2026 (Rocklin, CA, Warrior Field, for all 11 2026 home matches, read 2026-11-08); the thepacwest.com member JSON prints Rocklin, CA"
+identity_accessed = "2026-11-08"
+
+# Point Loma Nazarene University; the records print "Point Loma". The probe
+# minted "PLN" and read no home town (the schedule prints only the venue,
+# "PLNU Soccer Field"); PLNU is the member JSON's and the men's, and the
+# town is the men's stanza's, from the NCAA directory. The probe's "PLNU"
+# alias is dropped: it is the resolving abbreviation already.
+[[schools]]
+name         = "Point Loma"
+abbreviation = "PLNU"
+conference   = "PACWEST"
+mascot       = "Sea Lions"
+gender       = "women"
+base_url     = "https://plnusealions.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Hawaii Hilo 2026 prints "Point Loma Sea Lions", which resolves by the
+# name's tokens.
+aliases      = ["Point Loma Nazarene", "Point Loma Nazarene University"]
+city         = "San Diego, Calif."
+city_source  = "the NCAA directory, https://web3.ncaa.org/directory/orgDetail?id=30149 (3900 Lomaland Drive, San Diego, CA 92106), the men's stanza's source, and the thepacwest.com member JSON (San Diego, read 2026-11-08); the 2026 women's schedule page prints the venue only (PLNU Soccer Field) for home matches"
+identity_accessed = "2026-11-08"
+
+# The probe found no mascot or short form where it reads; "Lions" is the
+# site's own name and VAN the member JSON's, both the men's.
+[[schools]]
+name         = "Vanguard"
+abbreviation = "VAN"
+conference   = "PACWEST"
+mascot       = "Lions"
+gender       = "women"
+base_url     = "https://vanguardlions.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Hawaii Hilo 2026 prints "Vanguard Lions"; Dominican and Fresno Pacific
+# "Vanguard University (Calif.)" and Simon Fraser "Vanguard (Calif.)",
+# which fold to the name.
+aliases      = ["Vanguard University", "VU", "Vanguard Lions", "Vangaurd"]
+city         = "Costa Mesa, Calif."
+city_source  = "schedule-page home venue location, https://vanguardlions.com/sports/womens-soccer/schedule/2026 (Costa Mesa, CA, VU Soccer Complex, for all 11 2026 home matches, read 2026-11-08); the thepacwest.com member JSON prints Costa Mesa, CA"
+identity_accessed = "2026-11-08"
+
+# The probe found no short form and drafted "Hilo, Hawaii" (an away venue)
+# as the town. The 2026 schedule prints only "Westmont" as the venue for
+# its home matches (and "Denver" for one row it marks home against Metro
+# State Denver); WC is the member JSON's and the men's, and the town is the
+# men's stanza's, from the college's own address.
+[[schools]]
+name         = "Westmont"
+abbreviation = "WC"
+conference   = "PACWEST"
+mascot       = "Warriors"
+gender       = "women"
+base_url     = "https://athletics.westmont.edu/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Hawaii Hilo 2026 prints "Westmont Warriors"; Dominguez Hills, Hawaii
+# Pacific and Jessup print "Westmont College" and Dominican "Westmont
+# College (Calif.)", which fold to the name.
+aliases      = ["Westmont College", "Westmont Warriors"]
+city         = "Santa Barbara, Calif."
+city_source  = "the college's main site, https://www.westmont.edu/ (955 La Paz Road, Santa Barbara, CA 93108), the men's stanza's source, and the thepacwest.com member JSON (Santa Barbara, CA, read 2026-11-08); the 2026 women's schedule page prints only Westmont as the home venue"
+identity_accessed = "2026-11-08"
+
+# ============================================================
 # GNAC MEN'S SOCCER - 7 programmes, backfill window 2022-2026
 # ============================================================
 # 7 windows in the depth on 7 slugs; Montana State Billings (2022-2024)
@@ -8110,6 +8738,214 @@ aliases      = ["MSU Billings", "Montana State University Billings", "Montana St
 city         = "Billings, Mont."
 city_source  = "schedule-page home venue location, https://msubsports.com/sports/mens-soccer (Billings, Mont., read by the probe 2026-09-05); the gnacsports.com member JSON prints Billings, Mont."
 identity_accessed = "2026-09-05"
+
+# ============================================================
+# GNAC WOMEN'S SOCCER - 8 programmes, authored depth 2026 only
+# ============================================================
+# Source of truth: the Great Northwest Athletic Conference's own women's
+# soccer pages, read 2026-11-08: the live standings
+# (gnacsports.com/standings.aspx?path=wsoc, "2026 GNAC Women's Soccer
+# Standings", archive id 134) and the 2026 conference statistics
+# (stats.aspx?path=wsoc&year=2026&conf=true), which carries a table. Both
+# list the same eight programmes in one table, with no divisions, so no
+# window carries a division. Depth is 2026
+# only (the owner's ruling, no historical seasons), so every year-list is
+# [2026] and every window's from_season 2026 is a depth decision, not an
+# arrival; the 2025 women's table (standings=126) lists the same eight.
+#
+# Not the men's set: seven share a name, and so a slug, with a GNAC men's
+# stanza above. Central Washington sponsors women's soccer only and is a
+# new institution to the rib (no men's stanza in any conference). Montana
+# State Billings still sponsors women's soccer (men's ended after 2024), so
+# its men's stanza's years stop at 2024 while this one is [2026]. The
+# member JSON embedded in the standings page also lists Alaska Anchorage,
+# Alaska Fairbanks, Seattle University (Division I) and Cal Poly Humboldt
+# (a CCAA women's member, on that table, not this one); none is on either
+# GNAC women's table and none gets a GNAC window.
+#
+# Probe (uv run probe --conference GNAC --seasons 2026, 2026-11-08): all 8
+# hosts SideArm, schedule / roster / stats / matches present, 2026 served
+# on every one. Hosts from the gnacsports.com member JSON. No collect has
+# run, so every stanza is data_status = unverified. No ordinals.
+#
+# Short forms are the men's stanzas' (the gnacsports.com member JSON's,
+# which the 2026 women's records' teamstats links repeat: school=sfu, spu,
+# wwu, cwu, wou, nnu, msub, smu) and, for Central Washington, CWU, the
+# member JSON's and its own scoreboard's (home_short_name, wildcatsports.com
+# root, 2026-11-08). The probe minted MSB, SM, SFUCA and WW; all replaced.
+# Every town is the 2026 women's schedule's home rows; Simon Fraser's needs
+# the stanza point (the Gazetteer is US-only). Aliases are the men's plus
+# the spellings the 2026 women's schedules of the GNAC, CCAA and PacWest
+# members, and one GNAC box score, print that the fold does not reach.
+
+# New institution (women's soccer only). The probe read CWU, "Wildcats" and
+# Ellensburg off the site; the member JSON prints all three. Boxes print
+# "Central Wash." (spufalcons.com box 5082, 2026-10-03), the Western Wash.
+# shape, and one scoreboard row prints "CentWA" (wildcatsports.com root).
+[[schools]]
+name         = "Central Washington"
+abbreviation = "CWU"
+conference   = "GNAC"
+mascot       = "Wildcats"
+gender       = "women"
+base_url     = "https://wildcatsports.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Five 2026 women's peers print "Central Washington University"
+# (Montana State Billings, Northwest Nazarene, Western Oregon, Stanislaus
+# State, UC Merced), which folds to the name.
+aliases      = ["Central Washington University", "Central Wash."]
+city         = "Ellensburg, Wash."
+city_source  = "schedule-page home venue location, https://wildcatsports.com/sports/womens-soccer/schedule/2026 (Ellensburg, WA, Steve Hertling Field at Tomlinson Stadium, for all 9 2026 home matches, read 2026-11-08); the gnacsports.com member JSON prints Ellensburg, WA"
+identity_accessed = "2026-11-08"
+
+# Women's soccer continues (men's ended after 2024, so the men's stanza's
+# years stop there). The probe minted "MSB"; MSUB is the member JSON's and
+# the men's.
+[[schools]]
+name         = "Montana State Billings"
+abbreviation = "MSUB"
+conference   = "GNAC"
+mascot       = "Yellowjackets"
+gender       = "women"
+base_url     = "https://msubsports.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Seattle Pacific 2026 prints "MSU Billings"; Northwest Nazarene and
+# Western Oregon print "Montana State University Billings"; both are
+# aliases already.
+aliases      = ["MSU Billings", "Montana State University Billings", "Montana State-Billings", "Mont. St. Billings"]
+city         = "Billings, Mont."
+city_source  = "schedule-page home venue location, https://msubsports.com/sports/womens-soccer/schedule/2026 (Billings, MT, Yellowjacket Soccer Field, for all 12 2026 home matches, read 2026-11-08); the gnacsports.com member JSON prints Billings, Mont."
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Northwest Nazarene"
+abbreviation = "NNU"
+conference   = "GNAC"
+mascot       = "Nighthawks"
+gender       = "women"
+base_url     = "https://nnusports.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Peers print "Northwest Nazarene University" and "Northwest Nazarene
+# (Idaho)"; both fold to the name.
+aliases      = ["Northwest Nazarene University"]
+city         = "Nampa, Idaho"
+city_source  = "schedule-page home venue location, https://nnusports.com/sports/womens-soccer/schedule/2026 (Nampa, Idaho, NNU Soccer & LAX Field, for all 10 2026 home matches, read 2026-11-08); the gnacsports.com member JSON prints Nampa, ID"
+identity_accessed = "2026-11-08"
+
+# Saint Martin's University (Lacey, Wash.). The men's shape: the label
+# mints saint-martin-s, the fixtures carry saint-martins, so `name` drops
+# the apostrophe and display_name carries the published spelling. The
+# probe minted "SM"; SMU is the member JSON's and the men's.
+[[schools]]
+name         = "Saint Martins"
+display_name = "Saint Martin's"
+abbreviation = "SMU"
+conference   = "GNAC"
+mascot       = "Saints"
+gender       = "women"
+base_url     = "https://smusaints.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Peers print "Saint Martin's", "Saint Martin's University" and "Saint
+# Martin's (Wash.)"; all fold to the name.
+aliases      = ["St. Martin's", "Saint Martin's University", "St. Martin's University"]
+city         = "Lacey, Wash."
+city_source  = "schedule-page home venue location, https://smusaints.com/sports/womens-soccer/schedule/2026 (Lacey, WA, Saints Field, for all 11 2026 home matches, read 2026-11-08); the gnacsports.com member JSON prints Lacey, WA"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Seattle Pacific"
+abbreviation = "SPU"
+conference   = "GNAC"
+mascot       = "Falcons"
+gender       = "women"
+base_url     = "https://spufalcons.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Peers print "Seattle Pacific University", which folds to the name. The
+# bare "Seattle" Central Washington and Simon Fraser print is Seattle
+# University (Division I), not this programme, and must not be aliased.
+aliases      = ["Seattle Pacific University"]
+city         = "Seattle, Wash."
+city_source  = "schedule-page home venue location, https://spufalcons.com/sports/womens-soccer/schedule/2026 (Seattle, WA, Interbay Soccer Stadium, for all 10 2026 home matches, read 2026-11-08); the gnacsports.com member JSON prints Seattle, WA"
+identity_accessed = "2026-11-08"
+
+# Simon Fraser University, Burnaby, British Columbia: outside the Census
+# Gazetteer, so the stanza carries the men's stanza's own `point` (the
+# CGNDB entry for the City of Burnaby) exactly. The probe minted "SFUCA"
+# from the host name, read no mascot or home town, and drafted two
+# mascot-laden title aliases (dropped); SFU is the member JSON's and the
+# men's, "Red Leafs" the site's own name, and the 2026 women's schedule
+# prints "Burnaby, B.C." (SFU Stadium at Terry Fox Field) for seven of its
+# eight home matches (one at Inlet Park, Port Moody, B.C.).
+[[schools]]
+name         = "Simon Fraser"
+abbreviation = "SFU"
+conference   = "GNAC"
+mascot       = "Red Leafs"
+gender       = "women"
+base_url     = "https://athletics.sfu.ca/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Peers print "Simon Fraser University (B.C.)", which folds to the name, and
+# "No. 24 Simon Fraser Red Leafs", which resolves by the name's tokens.
+aliases      = ["Simon Fraser University"]
+city         = "Burnaby, B.C."
+city_source  = "schedule-page home venue location, https://athletics.sfu.ca/sports/womens-soccer/schedule/2026 (Burnaby, B.C., SFU Stadium at Terry Fox Field, for 7 of 8 2026 home matches, read 2026-11-08); the gnacsports.com member JSON prints Burnaby, British Columbia, and the university's own site prints 8888 University Drive, Burnaby, BC V5A 1S6 (https://www.sfu.ca/campuses/burnaby.html)"
+point        = { lat = 49.242778, lon = -122.972778 }
+point_source = "Natural Resources Canada, Canadian Geographical Names Database, entry JAEBN 'Burnaby' (CITY, British Columbia), https://geogratis.gc.ca/services/geoname/en/geonames?q=Burnaby&concise=CITY (read 2026-09-05); the university's published address, 8888 University Drive, Burnaby, BC V5A 1S6 (https://www.sfu.ca/campuses/burnaby.html), places the campus in that city"
+identity_accessed = "2026-11-08"
+
+[[schools]]
+name         = "Western Oregon"
+abbreviation = "WOU"
+conference   = "GNAC"
+mascot       = "Wolves"
+gender       = "women"
+base_url     = "https://wouwolves.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Peers print "Western Oregon University", which folds to the name.
+aliases      = ["Western Oregon University", "Western Ore."]
+city         = "Monmouth, Ore."
+city_source  = "schedule-page home venue location, https://wouwolves.com/sports/womens-soccer/schedule/2026 (Monmouth, OR, WOU Soccer Field, for all 8 2026 home matches, read 2026-11-08); the gnacsports.com member JSON prints Monmouth, OR"
+identity_accessed = "2026-11-08"
+
+# The probe minted "WW"; WWU is the member JSON's and the men's.
+[[schools]]
+name         = "Western Washington"
+abbreviation = "WWU"
+conference   = "GNAC"
+mascot       = "Vikings"
+gender       = "women"
+base_url     = "https://wwuvikings.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# Peers print "Western Washington University" (folds to the name) and "No.
+# 18 Western Washington Vikings" (resolves by the name's tokens).
+aliases      = ["Western Washington University", "Western Wash."]
+city         = "Bellingham, Wash."
+city_source  = "schedule-page home venue location, https://wwuvikings.com/sports/womens-soccer/schedule/2026 (Bellingham, WA, Harrington Field, for all 10 2026 home matches, read 2026-11-08); the gnacsports.com member JSON prints Bellingham, WA"
+identity_accessed = "2026-11-08"
 
 # ============================================================
 # MIAA WOMEN'S SOCCER - 13 programmes, depth 2026 only

@@ -281,6 +281,14 @@
           "to_season": 2026,
           "source": "Pacific West Conference, 2022 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Biola, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
         }
+      ],
+      "women": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2026 Women's Soccer standings and records, https://thepacwest.com/standings.aspx?path=wsoc (archive id 214, https://thepacwest.com/standings.aspx?standings=214) and https://thepacwest.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Biola (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thepacwest.com/standings.aspx?standings=201) list it too."
+        }
       ]
     },
     "bloomfield": {
@@ -338,6 +346,14 @@
           "to_season": 2026,
           "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Cal Poly Humboldt, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages. The conference prints the label Cal Poly Humboldt on every page including the 2021 records, a retroactive relabelling: Humboldt State University became Cal Poly Humboldt on 2022-01-26 (https://goccaa.org/news/2022/1/26/general-humboldt-state-university-is-now-cal-poly-humboldt.aspx and https://www.humboldt.edu/polytechnic)."
         }
+      ],
+      "women": [
+        {
+          "conference": "CCAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2026 Women's Soccer standings and records, https://goccaa.org/standings.aspx?path=wsoc (archive id 331, https://goccaa.org/standings.aspx?standings=331) and https://goccaa.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Cal Poly Humboldt (one table, no divisions, fourteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://goccaa.org/standings.aspx?standings=319) list it too."
+        }
       ]
     },
     "cal-poly-pomona": {
@@ -347,6 +363,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Cal Poly Pomona, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
+        }
+      ],
+      "women": [
+        {
+          "conference": "CCAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2026 Women's Soccer standings and records, https://goccaa.org/standings.aspx?path=wsoc (archive id 331, https://goccaa.org/standings.aspx?standings=331) and https://goccaa.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Cal Poly Pomona (one table, no divisions, fourteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://goccaa.org/standings.aspx?standings=319) list it too."
         }
       ]
     },
@@ -358,6 +382,14 @@
           "to_season": 2026,
           "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Cal State Dominguez Hills, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
         }
+      ],
+      "women": [
+        {
+          "conference": "CCAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2026 Women's Soccer standings and records, https://goccaa.org/standings.aspx?path=wsoc (archive id 331, https://goccaa.org/standings.aspx?standings=331) and https://goccaa.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Cal State Dominguez Hills (one table, no divisions, fourteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://goccaa.org/standings.aspx?standings=319) list it too."
+        }
       ]
     },
     "cal-state-east-bay": {
@@ -367,6 +399,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Cal State East Bay, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
+        }
+      ],
+      "women": [
+        {
+          "conference": "CCAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2026 Women's Soccer standings and records, https://goccaa.org/standings.aspx?path=wsoc (archive id 331, https://goccaa.org/standings.aspx?standings=331) and https://goccaa.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Cal State East Bay (one table, no divisions, fourteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://goccaa.org/standings.aspx?standings=319) list it too."
         }
       ]
     },
@@ -378,6 +418,14 @@
           "to_season": 2026,
           "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Cal State LA, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
         }
+      ],
+      "women": [
+        {
+          "conference": "CCAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2026 Women's Soccer standings and records, https://goccaa.org/standings.aspx?path=wsoc (archive id 331, https://goccaa.org/standings.aspx?standings=331) and https://goccaa.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Cal State LA (one table, no divisions, fourteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://goccaa.org/standings.aspx?standings=319) list it too."
+        }
       ]
     },
     "cal-state-monterey-bay": {
@@ -387,6 +435,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Cal State Monterey Bay, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
+        }
+      ],
+      "women": [
+        {
+          "conference": "CCAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2026 Women's Soccer standings and records, https://goccaa.org/standings.aspx?path=wsoc (archive id 331, https://goccaa.org/standings.aspx?standings=331) and https://goccaa.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Cal State Monterey Bay (one table, no divisions, fourteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://goccaa.org/standings.aspx?standings=319) list it too."
         }
       ]
     },
@@ -398,6 +454,14 @@
           "to_season": 2026,
           "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Cal State San Bernardino, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
         }
+      ],
+      "women": [
+        {
+          "conference": "CCAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2026 Women's Soccer standings and records, https://goccaa.org/standings.aspx?path=wsoc (archive id 331, https://goccaa.org/standings.aspx?standings=331) and https://goccaa.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Cal State San Bernardino (one table, no divisions, fourteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://goccaa.org/standings.aspx?standings=319) list it too."
+        }
       ]
     },
     "cal-state-san-marcos": {
@@ -407,6 +471,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Cal State San Marcos, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
+        }
+      ],
+      "women": [
+        {
+          "conference": "CCAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2026 Women's Soccer standings and records, https://goccaa.org/standings.aspx?path=wsoc (archive id 331, https://goccaa.org/standings.aspx?standings=331) and https://goccaa.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Cal State San Marcos (one table, no divisions, fourteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://goccaa.org/standings.aspx?standings=319) list it too."
         }
       ]
     },
@@ -513,6 +585,16 @@
         }
       ]
     },
+    "central-washington": {
+      "women": [
+        {
+          "conference": "GNAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Northwest Athletic Conference, 2026 Women's Soccer standings and records, https://gnacsports.com/standings.aspx?path=wsoc (archive id 134, https://gnacsports.com/standings.aspx?standings=134) and https://gnacsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Central Washington (one table, no divisions, eight programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://gnacsports.com/standings.aspx?standings=126) list it too."
+        }
+      ]
+    },
     "chaminade": {
       "men": [
         {
@@ -520,6 +602,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Pacific West Conference, 2022 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Chaminade, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
+        }
+      ],
+      "women": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2026 Women's Soccer standings and records, https://thepacwest.com/standings.aspx?path=wsoc (archive id 214, https://thepacwest.com/standings.aspx?standings=214) and https://thepacwest.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Chaminade (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thepacwest.com/standings.aspx?standings=201) list it too."
         }
       ]
     },
@@ -558,6 +648,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Chico State, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
+        }
+      ],
+      "women": [
+        {
+          "conference": "CCAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2026 Women's Soccer standings and records, https://goccaa.org/standings.aspx?path=wsoc (archive id 331, https://goccaa.org/standings.aspx?standings=331) and https://goccaa.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Chico State (one table, no divisions, fourteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://goccaa.org/standings.aspx?standings=319) list it too."
         }
       ]
     },
@@ -709,6 +807,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Pacific West Conference, 2022 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Concordia, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
+        }
+      ],
+      "women": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2026 Women's Soccer standings and records, https://thepacwest.com/standings.aspx?path=wsoc (archive id 214, https://thepacwest.com/standings.aspx?standings=214) and https://thepacwest.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Concordia (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thepacwest.com/standings.aspx?standings=201) list it too."
         }
       ]
     },
@@ -875,6 +981,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Pacific West Conference, 2022 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Dominican, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
+        }
+      ],
+      "women": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2026 Women's Soccer standings and records, https://thepacwest.com/standings.aspx?path=wsoc (archive id 214, https://thepacwest.com/standings.aspx?standings=214) and https://thepacwest.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Dominican (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thepacwest.com/standings.aspx?standings=201) list it too."
         }
       ]
     },
@@ -1264,6 +1378,14 @@
           "to_season": 2026,
           "source": "California Collegiate Athletic Association, 2026 Men's Soccer standings, https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed there under the label Fresno Pacific. Absent from the 2025 records (https://goccaa.org/stats.aspx?path=msoc&year=2025&conf=true) and every earlier CCAA page; Fresno Pacific joined the CCAA for 2026-27 after fourteen PacWest years (https://goccaa.org/news/2025/6/11/general-fresno-pacific-university-joins-the-california-collegiate-athletic-association.aspx, 2025-06-11, 'It will begin competing in the CCAA in Fall 2026' and 'will leave the PacWest Conference in 2026'; https://news.fresno.edu/article/06/12/2025/fresno-pacific-university-join-california-collegiate-athletic-association, 2025-06-12, 'FPU will continue as full members of the PacWest Conference through the 2025-26 academic year'). The 2026 records page (year=2026) carries no table yet."
         }
+      ],
+      "women": [
+        {
+          "conference": "CCAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2026 Women's Soccer standings and records, https://goccaa.org/standings.aspx?path=wsoc (archive id 331, https://goccaa.org/standings.aspx?standings=331) and https://goccaa.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Fresno Pacific (one table, no divisions, fourteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival, though here it is also the school's first CCAA women's season: the 2025 CCAA standings (https://goccaa.org/standings.aspx?standings=319) do not list it, the 2025 PacWest women's standings (https://thepacwest.com/standings.aspx?standings=201) do, and the conference announced it 'will begin competing in the CCAA in Fall 2026' (https://goccaa.org/news/2025/6/11/general-fresno-pacific-university-joins-the-california-collegiate-athletic-association.aspx). The depth authors no 2025 PacWest women's window."
+        }
       ]
     },
     "frostburg-state": {
@@ -1385,6 +1507,14 @@
           "to_season": 2026,
           "source": "Pacific West Conference, 2022 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Hawai'i Hilo, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
         }
+      ],
+      "women": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2026 Women's Soccer standings and records, https://thepacwest.com/standings.aspx?path=wsoc (archive id 214, https://thepacwest.com/standings.aspx?standings=214) and https://thepacwest.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Hawai'i Hilo (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thepacwest.com/standings.aspx?standings=201) list it too."
+        }
       ]
     },
     "hawaii-pacific": {
@@ -1394,6 +1524,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Pacific West Conference, 2022 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Hawai'i Pacific, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
+        }
+      ],
+      "women": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2026 Women's Soccer standings and records, https://thepacwest.com/standings.aspx?path=wsoc (archive id 214, https://thepacwest.com/standings.aspx?standings=214) and https://thepacwest.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Hawai'i Pacific (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thepacwest.com/standings.aspx?standings=201) list it too."
         }
       ]
     },
@@ -1497,6 +1635,14 @@
           "from_season": 2024,
           "to_season": 2026,
           "source": "Pacific West Conference, 2024 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2024&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Jessup, and in 2025 (year=2025). Absent from the 2023 records (https://thepacwest.com/stats.aspx?path=msoc&year=2023&conf=true); first listed 2024, matching Jessup's move from the NAIA Golden State Athletic Conference for 2024-25 (https://thepacwest.com/news/2023/7/21/general-pacwest-welcomes-trio-of-new-schools-in-2024-25.aspx, 2023-07-21; https://jessupathletics.com/news/2024/7/23/mens-soccer-mens-soccer-announces-schedule-for-first-division-ii-season.aspx, 2024-07-23, 'Entering year one as a member of the PacWest Conference'). The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
+        }
+      ],
+      "women": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2026 Women's Soccer standings and records, https://thepacwest.com/standings.aspx?path=wsoc (archive id 214, https://thepacwest.com/standings.aspx?standings=214) and https://thepacwest.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Jessup (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thepacwest.com/standings.aspx?standings=201) list it too."
         }
       ]
     },
@@ -1865,6 +2011,14 @@
           "to_season": 2026,
           "source": "California Collegiate Athletic Association, 2026 Men's Soccer standings, https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed there under the label Menlo. Absent from the 2025 records (https://goccaa.org/stats.aspx?path=msoc&year=2025&conf=true) and every earlier CCAA page; Menlo joined the CCAA for 2026-27 after two PacWest years (https://goccaa.org/news/2025/11/25/awards-menlo-college-joins-the-california-collegiate-athletic-association.aspx, 2025-11-25, 'It will begin competing in the CCAA in Fall 2026', 'joined the PacWest in July 2024 after previously competing in the Golden State Athletic Conference'; https://menloathletics.com/news/2024/8/1/mens-soccer-menlo-mens-soccer-looking-forward-to-new-beginnings-in-pacwest-conference-in-inaugural-season-in-ncaa-dii-era.aspx, 2024-08-01, the inaugural PacWest season). The 2026 records page (year=2026) carries no table yet."
         }
+      ],
+      "women": [
+        {
+          "conference": "CCAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2026 Women's Soccer standings and records, https://goccaa.org/standings.aspx?path=wsoc (archive id 331, https://goccaa.org/standings.aspx?standings=331) and https://goccaa.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Menlo (one table, no divisions, fourteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival, though here it is also the school's first CCAA women's season: the 2025 CCAA standings (https://goccaa.org/standings.aspx?standings=319) do not list it, the 2025 PacWest women's standings (https://thepacwest.com/standings.aspx?standings=201) do, and the conference announced it 'will begin competing in the CCAA in Fall 2026' (https://goccaa.org/news/2025/11/25/awards-menlo-college-joins-the-california-collegiate-athletic-association.aspx). The depth authors no 2025 PacWest women's window."
+        }
       ]
     },
     "mercy": {
@@ -2049,6 +2203,14 @@
           "from_season": 2022,
           "to_season": 2024,
           "source": "Great Northwest Athletic Conference, 2022 and 2024 Men's Soccer standings, https://gnacsports.com/standings.aspx?standings=45 and https://gnacsports.com/standings.aspx?standings=96 (accessed 2026-09-05); listed in both under the label Montana State Billings, and in 2023 (https://gnacsports.com/standings.aspx?standings=46) and 2021 (https://gnacsports.com/standings.aspx?standings=44); the 2024 records page (https://gnacsports.com/stats.aspx?path=msoc&year=2024&conf=true) lists it too. Absent from the 2025 standings (https://gnacsports.com/standings.aspx?standings=127) and records (https://gnacsports.com/stats.aspx?path=msoc&year=2025&conf=true) and from the live 2026 table (https://gnacsports.com/standings.aspx?path=msoc); MSU Billings discontinued men's soccer after 2024-25 (https://msubsports.com/news/2024/11/19/mens-soccer-msu-billings-department-of-athletics-discontinues-mens-soccer-program.aspx, 2024-11-19, 'The men's soccer program will be discontinued following the 2024-2025 academic year'). The GNAC publishes no records table before 2024 (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for 2021-2023 and carries no table for 2026), so the standings archive is source 1 (standings_archives.GNAC); the 2024 and 2025 records pages (https://gnacsports.com/stats.aspx?path=msoc&year=2024&conf=true and https://gnacsports.com/stats.aspx?path=msoc&year=2025&conf=true) list the same members."
+        }
+      ],
+      "women": [
+        {
+          "conference": "GNAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Northwest Athletic Conference, 2026 Women's Soccer standings and records, https://gnacsports.com/standings.aspx?path=wsoc (archive id 134, https://gnacsports.com/standings.aspx?standings=134) and https://gnacsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Montana State Billings (one table, no divisions, eight programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://gnacsports.com/standings.aspx?standings=126) list it too."
         }
       ]
     },
@@ -2277,6 +2439,14 @@
           "to_season": 2026,
           "source": "Great Northwest Athletic Conference, 2022 and 2026 Men's Soccer standings, https://gnacsports.com/standings.aspx?standings=45 (the archived 2022 table) and https://gnacsports.com/standings.aspx?path=msoc (the live 2026 table) (accessed 2026-09-05); listed in both under the label Northwest Nazarene, and in every season between (https://gnacsports.com/standings.aspx?standings=46, 96 and 127). The 2021 standings (https://gnacsports.com/standings.aspx?standings=44) list it too, so it did not arrive across the window's edge. The GNAC publishes no records table before 2024 (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for 2021-2023 and carries no table for 2026), so the standings archive is source 1 (standings_archives.GNAC); the 2024 and 2025 records pages (https://gnacsports.com/stats.aspx?path=msoc&year=2024&conf=true and https://gnacsports.com/stats.aspx?path=msoc&year=2025&conf=true) list the same members."
         }
+      ],
+      "women": [
+        {
+          "conference": "GNAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Northwest Athletic Conference, 2026 Women's Soccer standings and records, https://gnacsports.com/standings.aspx?path=wsoc (archive id 134, https://gnacsports.com/standings.aspx?standings=134) and https://gnacsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Northwest Nazarene (one table, no divisions, eight programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://gnacsports.com/standings.aspx?standings=126) list it too."
+        }
       ]
     },
     "northwestern-oklahoma-state": {
@@ -2469,6 +2639,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Pacific West Conference, 2022 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Point Loma, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
+        }
+      ],
+      "women": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2026 Women's Soccer standings and records, https://thepacwest.com/standings.aspx?path=wsoc (archive id 214, https://thepacwest.com/standings.aspx?standings=214) and https://thepacwest.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Point Loma (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thepacwest.com/standings.aspx?standings=201) list it too."
         }
       ]
     },
@@ -2722,6 +2900,14 @@
           "to_season": 2026,
           "source": "Great Northwest Athletic Conference, 2022 and 2026 Men's Soccer standings, https://gnacsports.com/standings.aspx?standings=45 (the archived 2022 table) and https://gnacsports.com/standings.aspx?path=msoc (the live 2026 table) (accessed 2026-09-05); listed in both under the label Saint Martin's, and in every season between (https://gnacsports.com/standings.aspx?standings=46, 96 and 127). The 2021 standings (https://gnacsports.com/standings.aspx?standings=44) list it too, so it did not arrive across the window's edge. The GNAC publishes no records table before 2024 (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for 2021-2023 and carries no table for 2026), so the standings archive is source 1 (standings_archives.GNAC); the 2024 and 2025 records pages (https://gnacsports.com/stats.aspx?path=msoc&year=2024&conf=true and https://gnacsports.com/stats.aspx?path=msoc&year=2025&conf=true) list the same members."
         }
+      ],
+      "women": [
+        {
+          "conference": "GNAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Northwest Athletic Conference, 2026 Women's Soccer standings and records, https://gnacsports.com/standings.aspx?path=wsoc (archive id 134, https://gnacsports.com/standings.aspx?standings=134) and https://gnacsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Saint Martin's (one table, no divisions, eight programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://gnacsports.com/standings.aspx?standings=126) list it too."
+        }
       ]
     },
     "saint-marys": {
@@ -2788,6 +2974,14 @@
           "to_season": 2024,
           "source": "California Collegiate Athletic Association, 2022 and 2024 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/stats.aspx?path=msoc&year=2024&conf=true (accessed 2026-09-05); listed in both under the label San Francisco State, and in 2023 (year=2023) and 2021 (year=2021). Absent from the 2025 records (https://goccaa.org/stats.aspx?path=msoc&year=2025&conf=true) and from the live 2026 standings (https://goccaa.org/standings.aspx?path=msoc); San Francisco State eliminated men's soccer as of 2025-07-01 while staying a CCAA member (https://sfstategators.com/news/2025/3/6/general-update-on-ncaa-athletics-programs-at-sf-state.aspx, 2025-03-06; the 2026 goccaa.org member JSON still lists the institution)."
         }
+      ],
+      "women": [
+        {
+          "conference": "CCAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2026 Women's Soccer standings and records, https://goccaa.org/standings.aspx?path=wsoc (archive id 331, https://goccaa.org/standings.aspx?standings=331) and https://goccaa.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label San Francisco State (one table, no divisions, fourteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://goccaa.org/standings.aspx?standings=319) list it too."
+        }
       ]
     },
     "seattle-pacific": {
@@ -2797,6 +2991,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Great Northwest Athletic Conference, 2022 and 2026 Men's Soccer standings, https://gnacsports.com/standings.aspx?standings=45 (the archived 2022 table) and https://gnacsports.com/standings.aspx?path=msoc (the live 2026 table) (accessed 2026-09-05); listed in both under the label Seattle Pacific, and in every season between (https://gnacsports.com/standings.aspx?standings=46, 96 and 127). The 2021 standings (https://gnacsports.com/standings.aspx?standings=44) list it too, so it did not arrive across the window's edge. The GNAC publishes no records table before 2024 (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for 2021-2023 and carries no table for 2026), so the standings archive is source 1 (standings_archives.GNAC); the 2024 and 2025 records pages (https://gnacsports.com/stats.aspx?path=msoc&year=2024&conf=true and https://gnacsports.com/stats.aspx?path=msoc&year=2025&conf=true) list the same members."
+        }
+      ],
+      "women": [
+        {
+          "conference": "GNAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Northwest Athletic Conference, 2026 Women's Soccer standings and records, https://gnacsports.com/standings.aspx?path=wsoc (archive id 134, https://gnacsports.com/standings.aspx?standings=134) and https://gnacsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Seattle Pacific (one table, no divisions, eight programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://gnacsports.com/standings.aspx?standings=126) list it too."
         }
       ]
     },
@@ -2900,6 +3102,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Great Northwest Athletic Conference, 2022 and 2026 Men's Soccer standings, https://gnacsports.com/standings.aspx?standings=45 (the archived 2022 table) and https://gnacsports.com/standings.aspx?path=msoc (the live 2026 table) (accessed 2026-09-05); listed in both under the label Simon Fraser, and in every season between (https://gnacsports.com/standings.aspx?standings=46, 96 and 127). The 2021 standings (https://gnacsports.com/standings.aspx?standings=44) list it too, so it did not arrive across the window's edge. The GNAC publishes no records table before 2024 (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for 2021-2023 and carries no table for 2026), so the standings archive is source 1 (standings_archives.GNAC); the 2024 and 2025 records pages (https://gnacsports.com/stats.aspx?path=msoc&year=2024&conf=true and https://gnacsports.com/stats.aspx?path=msoc&year=2025&conf=true) list the same members."
+        }
+      ],
+      "women": [
+        {
+          "conference": "GNAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Northwest Athletic Conference, 2026 Women's Soccer standings and records, https://gnacsports.com/standings.aspx?path=wsoc (archive id 134, https://gnacsports.com/standings.aspx?standings=134) and https://gnacsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Simon Fraser (one table, no divisions, eight programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://gnacsports.com/standings.aspx?standings=126) list it too."
         }
       ]
     },
@@ -3104,6 +3314,14 @@
           "to_season": 2026,
           "source": "California Collegiate Athletic Association, 2022 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2022&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Stanislaus State, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge. The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
         }
+      ],
+      "women": [
+        {
+          "conference": "CCAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2026 Women's Soccer standings and records, https://goccaa.org/standings.aspx?path=wsoc (archive id 331, https://goccaa.org/standings.aspx?standings=331) and https://goccaa.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Stanislaus State (one table, no divisions, fourteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://goccaa.org/standings.aspx?standings=319) list it too."
+        }
       ]
     },
     "staten-island": {
@@ -3294,6 +3512,14 @@
           "to_season": 2026,
           "source": "California Collegiate Athletic Association, 2025 and 2026 Men's Soccer records, https://goccaa.org/stats.aspx?path=msoc&year=2025&conf=true and https://goccaa.org/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label UC Merced (the 2025 standings archive, https://goccaa.org/standings.aspx?standings=320, prints 'UC Merced *', the championship-ineligibility mark of its NCAA candidacy year). Absent from the 2024 records (https://goccaa.org/stats.aspx?path=msoc&year=2024&conf=true); first listed 2025, matching the conference's announcement of 2023-11-14 that UC Merced would compete on CCAA schedules from fall 2025 (https://goccaa.org/news/2023/11/13/general-california-collegiate-athletic-association-set-to-add-university-of-california-merced.aspx) and the university's release of 2024-07-11 (https://ucmercedbobcats.com/news/2024/7/11/all-sports-uc-merced-accepted-into-ncaa-division-ii.aspx, 'During its second year of the candidacy period (2025-26), UC Merced will compete in the CCAA'). The 2026 records page (year=2026) carries no table yet, so the live standings are the 2026 source; the standings archive (https://goccaa.org/standings.aspx?standings=288, 297, 308 and 320 for 2022-2025) lists the same members as the records pages."
         }
+      ],
+      "women": [
+        {
+          "conference": "CCAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "California Collegiate Athletic Association, 2026 Women's Soccer standings and records, https://goccaa.org/standings.aspx?path=wsoc (archive id 331, https://goccaa.org/standings.aspx?standings=331) and https://goccaa.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label UC Merced (one table, no divisions, fourteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://goccaa.org/standings.aspx?standings=319) list it too, as 'UC Merced *' (not eligible for CCAA or NCAA postseason play while NCAA-provisional), and the 2026 table prints no mark."
+        }
       ]
     },
     "uccs": {
@@ -3459,6 +3685,14 @@
           "to_season": 2026,
           "source": "Pacific West Conference, 2024 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2024&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Vanguard, and in 2025 (year=2025). Absent from the 2023 records (https://thepacwest.com/stats.aspx?path=msoc&year=2023&conf=true); first listed 2024, matching Vanguard's move from the NAIA Golden State Athletic Conference for 2024-25 (https://thepacwest.com/news/2023/7/21/general-pacwest-welcomes-trio-of-new-schools-in-2024-25.aspx, 2023-07-21; https://vanguardlions.com/news/2024/11/7/first-pacwest-season-for-mens-soccer-comes-to-a-close.aspx, 2024-11-07, 'their first PacWest season'). The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
         }
+      ],
+      "women": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2026 Women's Soccer standings and records, https://thepacwest.com/standings.aspx?path=wsoc (archive id 214, https://thepacwest.com/standings.aspx?standings=214) and https://thepacwest.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Vanguard (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thepacwest.com/standings.aspx?standings=201) list it too."
+        }
       ]
     },
     "walsh": {
@@ -3574,6 +3808,14 @@
           "to_season": 2026,
           "source": "Great Northwest Athletic Conference, 2022 and 2026 Men's Soccer standings, https://gnacsports.com/standings.aspx?standings=45 (the archived 2022 table, 1-10-1) and https://gnacsports.com/standings.aspx?path=msoc (the live 2026 table) (accessed 2026-09-05); listed in both under the label Western Oregon, and in every season between (https://gnacsports.com/standings.aspx?standings=46, 96 and 127). Absent from the 2021 standings (https://gnacsports.com/standings.aspx?standings=44): the programme began in fall 2022 (https://wouwolves.com/news/2021/7/13/athletics-wou-to-add-mens-soccer-for-the-fall-of-2022.aspx, 2021-07-13, 'add men's soccer to its NCAA Division II athletic program beginning in the fall of 2022'), so the window's first year is a real edge. The GNAC publishes no records table before 2024 (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for 2021-2023 and carries no table for 2026), so the standings archive is source 1 (standings_archives.GNAC); the 2024 and 2025 records pages (https://gnacsports.com/stats.aspx?path=msoc&year=2024&conf=true and https://gnacsports.com/stats.aspx?path=msoc&year=2025&conf=true) list the same members."
         }
+      ],
+      "women": [
+        {
+          "conference": "GNAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Northwest Athletic Conference, 2026 Women's Soccer standings and records, https://gnacsports.com/standings.aspx?path=wsoc (archive id 134, https://gnacsports.com/standings.aspx?standings=134) and https://gnacsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Western Oregon (one table, no divisions, eight programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://gnacsports.com/standings.aspx?standings=126) list it too."
+        }
       ]
     },
     "western-washington": {
@@ -3583,6 +3825,14 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Great Northwest Athletic Conference, 2022 and 2026 Men's Soccer standings, https://gnacsports.com/standings.aspx?standings=45 (the archived 2022 table) and https://gnacsports.com/standings.aspx?path=msoc (the live 2026 table) (accessed 2026-09-05); listed in both under the label Western Washington, and in every season between (https://gnacsports.com/standings.aspx?standings=46, 96 and 127). The 2021 standings (https://gnacsports.com/standings.aspx?standings=44) list it too, so it did not arrive across the window's edge. The GNAC publishes no records table before 2024 (stats.aspx?path=msoc&year=Y&conf=true answers 'no statistics available' for 2021-2023 and carries no table for 2026), so the standings archive is source 1 (standings_archives.GNAC); the 2024 and 2025 records pages (https://gnacsports.com/stats.aspx?path=msoc&year=2024&conf=true and https://gnacsports.com/stats.aspx?path=msoc&year=2025&conf=true) list the same members."
+        }
+      ],
+      "women": [
+        {
+          "conference": "GNAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Great Northwest Athletic Conference, 2026 Women's Soccer standings and records, https://gnacsports.com/standings.aspx?path=wsoc (archive id 134, https://gnacsports.com/standings.aspx?standings=134) and https://gnacsports.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Western Washington (one table, no divisions, eight programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://gnacsports.com/standings.aspx?standings=126) list it too."
         }
       ]
     },
@@ -3603,6 +3853,14 @@
           "from_season": 2023,
           "to_season": 2026,
           "source": "Pacific West Conference, 2023 and 2026 Men's Soccer records, https://thepacwest.com/stats.aspx?path=msoc&year=2023&conf=true and https://thepacwest.com/standings.aspx?path=msoc (accessed 2026-09-05); listed in both under the label Westmont, and in every season between (year=2024, 2025). Absent from the 2022 records (https://thepacwest.com/stats.aspx?path=msoc&year=2022&conf=true); first listed 2023, matching Westmont's move from the NAIA Golden State Athletic Conference for 2023-24 (https://thepacwest.com/news/2022/7/14/general-westmont-becomes-12th-member-of-pacwest.aspx, 2022-07-14, 'Westmont will begin to compete in the PacWest in the 2023-24 season'; https://www.westmont.edu/westmont-news/warriors-begin-new-era-competition-pacwest-conference, 2023-07-13). The 2026 records page (year=2026) answers 'no statistics available', so the live standings are the 2026 source; the standings archive (https://thepacwest.com/standings.aspx?standings=175, 183, 193 and 202 for 2022-2025) lists the same members as the records pages."
+        }
+      ],
+      "women": [
+        {
+          "conference": "PACWEST",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Pacific West Conference, 2026 Women's Soccer standings and records, https://thepacwest.com/standings.aspx?path=wsoc (archive id 214, https://thepacwest.com/standings.aspx?standings=214) and https://thepacwest.com/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Westmont (one table, no divisions, ten programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://thepacwest.com/standings.aspx?standings=201) list it too."
         }
       ]
     },
