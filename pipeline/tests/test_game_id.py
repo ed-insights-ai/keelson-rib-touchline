@@ -102,10 +102,13 @@ def test_duplicate_assigned_ordinals_still_refuse_the_load(tmp_path):
 def test_ordinals_survive_reorder():
     """Shuffling schools.toml entries doesn't change ordinals."""
     schools = load_schools()
-    ordinal_map = {s.abbreviation: s.ordinal for s in schools}
+    # Keyed by gender too: an abbreviation is one institution's short form,
+    # so a women's stanza of the same school carries the men's one ("FHSU"
+    # for Fort Hays State, women's MIAA 2026) and has no ordinal of its own.
+    ordinal_map = {(s.abbreviation, s.gender): s.ordinal for s in schools}
 
     # Verify specific known ordinals that shouldn't change regardless of order
-    assert ordinal_map["HU"] == 1
-    assert ordinal_map["FHSU"] == 2
-    assert ordinal_map["HUW"] == 8
-    assert ordinal_map["SWOSU"] == 14
+    assert ordinal_map[("HU", "men")] == 1
+    assert ordinal_map[("FHSU", "men")] == 2
+    assert ordinal_map[("HUW", "women")] == 8
+    assert ordinal_map[("SWOSU", "women")] == 14

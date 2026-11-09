@@ -377,6 +377,26 @@
         }
       ]
     },
+    "central-missouri": {
+      "women": [
+        {
+          "conference": "MIAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mid-America Intercollegiate Athletics Association, 2026 Women's Soccer records and standings, https://themiaa.com/stats.aspx?path=wsoc&year=2026&conf=true and https://themiaa.com/standings.aspx?standings=170 (accessed 2026-11-08); listed in both as \"Central Missouri\". Also listed in the 2025 Women's Soccer Standings (https://themiaa.com/standings.aspx?standings=158), so no move falls at the edge; the window opens at 2026 because the authored women's depth is 2026 only (owner's ruling), a depth decision, not an arrival."
+        }
+      ]
+    },
+    "central-oklahoma": {
+      "women": [
+        {
+          "conference": "MIAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mid-America Intercollegiate Athletics Association, 2026 Women's Soccer records and standings, https://themiaa.com/stats.aspx?path=wsoc&year=2026&conf=true and https://themiaa.com/standings.aspx?standings=170 (accessed 2026-11-08); listed in both as \"Central Oklahoma\". Also listed in the 2025 Women's Soccer Standings (https://themiaa.com/standings.aspx?standings=158), so no move falls at the edge; the window opens at 2026 because the authored women's depth is 2026 only (owner's ruling), a depth decision, not an arrival."
+        }
+      ]
+    },
     "chaminade": {
       "men": [
         {
@@ -757,6 +777,16 @@
         }
       ]
     },
+    "emporia-state": {
+      "women": [
+        {
+          "conference": "MIAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mid-America Intercollegiate Athletics Association, 2026 Women's Soccer records and standings, https://themiaa.com/stats.aspx?path=wsoc&year=2026&conf=true and https://themiaa.com/standings.aspx?standings=170 (accessed 2026-11-08); listed in both as \"Emporia State\". Also listed in the 2025 Women's Soccer Standings (https://themiaa.com/standings.aspx?standings=158), so no move falls at the edge; the window opens at 2026 because the authored women's depth is 2026 only (owner's ruling), a depth decision, not an arrival."
+        }
+      ]
+    },
     "erskine": {
       "men": [
         {
@@ -854,8 +884,8 @@
         {
           "conference": "MIAA",
           "from_season": 2016,
-          "source": "Mid-America Intercollegiate Athletics Association, 2016 and 2025 MIAA Women's Soccer Standings, https://themiaa.com/standings.aspx?standings=50 and https://themiaa.com/standings.aspx?standings=158 (accessed 2026-08-09); Fort Hays State is listed in both.",
-          "to_season": 2025
+          "source": "Mid-America Intercollegiate Athletics Association, 2016 and 2025 MIAA Women's Soccer Standings, https://themiaa.com/standings.aspx?standings=50 and https://themiaa.com/standings.aspx?standings=158 (accessed 2026-08-09); Fort Hays State is listed in both. Extended to 2026: listed as \"Fort Hays State\" in the 2026 Women's Soccer records and standings, https://themiaa.com/stats.aspx?path=wsoc&year=2026&conf=true and https://themiaa.com/standings.aspx?standings=170 (accessed 2026-11-08).",
+          "to_season": 2026
         }
       ]
     },
@@ -1466,6 +1496,16 @@
         }
       ]
     },
+    "missouri-southern": {
+      "women": [
+        {
+          "conference": "MIAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mid-America Intercollegiate Athletics Association, 2026 Women's Soccer records and standings, https://themiaa.com/stats.aspx?path=wsoc&year=2026&conf=true and https://themiaa.com/standings.aspx?standings=170 (accessed 2026-11-08); listed in both as \"Missouri Southern\". Also listed in the 2025 Women's Soccer Standings (https://themiaa.com/standings.aspx?standings=158), so no move falls at the edge; the window opens at 2026 because the authored women's depth is 2026 only (owner's ruling), a depth decision, not an arrival."
+        }
+      ]
+    },
     "missouri-st-louis": {
       "men": [
         {
@@ -1481,6 +1521,16 @@
           "from_season": 2026,
           "to_season": 2026,
           "source": "Great Lakes Valley Conference, 2026 Women's Soccer records, https://glvcsports.com/stats.aspx?path=wsoc&year=2026&conf=true and https://glvcsports.com/standings.aspx?path=wsoc (accessed 2026-11-08); listed in both under the label Missouri-St. Louis (team page teamstats.aspx?path=wsoc&year=2026&school=umsl), one of the fifteen programmes on each. The 2025 records (https://glvcsports.com/stats.aspx?path=wsoc&year=2025&conf=true) list the same fifteen, so nobody arrived for 2026. The window opens at 2026 because the authored women's depth is 2026 only (owner's ruling for the women's onboarding), a depth decision, not an arrival claim."
+        }
+      ]
+    },
+    "missouri-western": {
+      "women": [
+        {
+          "conference": "MIAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mid-America Intercollegiate Athletics Association, 2026 Women's Soccer records and standings, https://themiaa.com/stats.aspx?path=wsoc&year=2026&conf=true and https://themiaa.com/standings.aspx?standings=170 (accessed 2026-11-08); listed in both as \"Missouri Western\". Also listed in the 2025 Women's Soccer Standings (https://themiaa.com/standings.aspx?standings=158), so no move falls at the edge; the window opens at 2026 because the authored women's depth is 2026 only (owner's ruling), a depth decision, not an arrival."
         }
       ]
     },
@@ -1541,6 +1591,16 @@
         }
       ]
     },
+    "nebraska-kearney": {
+      "women": [
+        {
+          "conference": "MIAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mid-America Intercollegiate Athletics Association, 2026 Women's Soccer records and standings, https://themiaa.com/stats.aspx?path=wsoc&year=2026&conf=true and https://themiaa.com/standings.aspx?standings=170 (accessed 2026-11-08); listed in both as \"Nebraska Kearney\". Also listed in the 2025 Women's Soccer Standings (https://themiaa.com/standings.aspx?standings=158), so no move falls at the edge; the window opens at 2026 because the authored women's depth is 2026 only (owner's ruling), a depth decision, not an arrival."
+        }
+      ]
+    },
     "new-haven": {
       "men": [
         {
@@ -1586,8 +1646,8 @@
         {
           "conference": "MIAA",
           "from_season": 2019,
-          "source": "Mid-America Intercollegiate Athletics Association, 2019 and 2025 MIAA Women's Soccer Standings, https://themiaa.com/standings.aspx?standings=85 and https://themiaa.com/standings.aspx?standings=158 (accessed 2026-08-09); Newman is listed in both.",
-          "to_season": 2025
+          "source": "Mid-America Intercollegiate Athletics Association, 2019 and 2025 MIAA Women's Soccer Standings, https://themiaa.com/standings.aspx?standings=85 and https://themiaa.com/standings.aspx?standings=158 (accessed 2026-08-09); Newman is listed in both. Extended to 2026: listed as \"Newman\" in the 2026 Women's Soccer records and standings, https://themiaa.com/stats.aspx?path=wsoc&year=2026&conf=true and https://themiaa.com/standings.aspx?standings=170 (accessed 2026-11-08).",
+          "to_season": 2026
         }
       ]
     },
@@ -1644,8 +1704,8 @@
         {
           "conference": "MIAA",
           "from_season": 2016,
-          "source": "Mid-America Intercollegiate Athletics Association, 2016 and 2025 MIAA Women's Soccer Standings, https://themiaa.com/standings.aspx?standings=50 and https://themiaa.com/standings.aspx?standings=158 (accessed 2026-08-09); Northeastern State is listed in both.",
-          "to_season": 2025
+          "source": "Mid-America Intercollegiate Athletics Association, 2016 and 2025 MIAA Women's Soccer Standings, https://themiaa.com/standings.aspx?standings=50 and https://themiaa.com/standings.aspx?standings=158 (accessed 2026-08-09); Northeastern State is listed in both. Extended to 2026: listed as \"Northeastern State\" in the 2026 Women's Soccer records and standings, https://themiaa.com/stats.aspx?path=wsoc&year=2026&conf=true and https://themiaa.com/standings.aspx?standings=170 (accessed 2026-11-08).",
+          "to_season": 2026
         }
       ]
     },
@@ -1656,6 +1716,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Great Lakes Intercollegiate Athletic Conference, 2022 and 2026 Men's Soccer records, https://gliac.org/stats.aspx?path=msoc&year=2022&conf=true and https://gliac.org/standings.aspx?path=msoc (accessed 2026-09-04); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
+    "northwest-missouri-state": {
+      "women": [
+        {
+          "conference": "MIAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mid-America Intercollegiate Athletics Association, 2026 Women's Soccer records and standings, https://themiaa.com/stats.aspx?path=wsoc&year=2026&conf=true and https://themiaa.com/standings.aspx?standings=170 (accessed 2026-11-08); listed in both as \"Northwest Missouri\". Also listed in the 2025 Women's Soccer Standings (https://themiaa.com/standings.aspx?standings=158), so no move falls at the edge; the window opens at 2026 because the authored women's depth is 2026 only (owner's ruling), a depth decision, not an arrival."
         }
       ]
     },
@@ -1810,6 +1880,16 @@
         }
       ]
     },
+    "pittsburg-state": {
+      "women": [
+        {
+          "conference": "MIAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mid-America Intercollegiate Athletics Association, 2026 Women's Soccer records and standings, https://themiaa.com/stats.aspx?path=wsoc&year=2026&conf=true and https://themiaa.com/standings.aspx?standings=170 (accessed 2026-11-08); listed in both as \"Pittsburg State\". Also listed in the 2025 Women's Soccer Standings (https://themiaa.com/standings.aspx?standings=158), so no move falls at the edge; the window opens at 2026 because the authored women's depth is 2026 only (owner's ruling), a depth decision, not an arrival."
+        }
+      ]
+    },
     "point-loma": {
       "men": [
         {
@@ -1941,8 +2021,8 @@
         {
           "conference": "MIAA",
           "from_season": 2019,
-          "source": "Mid-America Intercollegiate Athletics Association, 2019 and 2025 MIAA Women's Soccer Standings, https://themiaa.com/standings.aspx?standings=85 and https://themiaa.com/standings.aspx?standings=158 (accessed 2026-08-09); Rogers State is listed in both.",
-          "to_season": 2025
+          "source": "Mid-America Intercollegiate Athletics Association, 2019 and 2025 MIAA Women's Soccer Standings, https://themiaa.com/standings.aspx?standings=85 and https://themiaa.com/standings.aspx?standings=158 (accessed 2026-08-09); Rogers State is listed in both. Extended to 2026: listed as \"Rogers State\" in the 2026 Women's Soccer records and standings, https://themiaa.com/stats.aspx?path=wsoc&year=2026&conf=true and https://themiaa.com/standings.aspx?standings=170 (accessed 2026-11-08).",
+          "to_season": 2026
         }
       ]
     },
@@ -2557,6 +2637,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Great Midwest Athletic Conference, 2022 and 2026 Men's Soccer records, https://greatmidwestsports.com/stats.aspx?path=msoc&year=2022&conf=true and https://greatmidwestsports.com/standings.aspx?path=msoc (accessed 2026-09-03); listed in both, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so it did not arrive across the window's edge."
+        }
+      ]
+    },
+    "washburn": {
+      "women": [
+        {
+          "conference": "MIAA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mid-America Intercollegiate Athletics Association, 2026 Women's Soccer records and standings, https://themiaa.com/stats.aspx?path=wsoc&year=2026&conf=true and https://themiaa.com/standings.aspx?standings=170 (accessed 2026-11-08); listed in both as \"Washburn\". Also listed in the 2025 Women's Soccer Standings (https://themiaa.com/standings.aspx?standings=158), so no move falls at the edge; the window opens at 2026 because the authored women's depth is 2026 only (owner's ruling), a depth decision, not an arrival."
         }
       ]
     },
