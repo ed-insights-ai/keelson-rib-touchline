@@ -17,9 +17,11 @@ mutates_checkout: true
 webSearchMode: live
 # Loop iterations take the WORKFLOW-level model and effort, so the research
 # loop's tier lives here: terra balances the fetch-heavy research work.
-# NOTE: model *classes* (deep/balanced/fast) all map to `auto` on this
-# provider, which silently resolves to the smallest tier — pin literal ids.
-model: gpt-5.6-terra
+# Copilot maps model *classes* to `auto` (its smallest tier), so it keeps a
+# literal pin; every other provider resolves the class.
+model: balanced
+model_by_provider:
+  copilot: gpt-5.6-terra
 modelReasoningEffort: medium
 tags: [soccer, touchline, report, scouting]
 
@@ -123,7 +125,8 @@ nodes:
         printf 'ALARM: cannot resolve the Touchline pipeline. Last candidate: %s\n' "$PIPELINE_DIR"
         exit 1
       fi
-      printf '%s\n' "$PIPELINE_DIR"
+      # No trailing newline: prompts splice this path inline.
+      printf '%s' "$PIPELINE_DIR"
 
   - id: digest
     depends_on: [resolve-pipeline]
@@ -227,7 +230,7 @@ nodes:
            date), and let their unswept notes save you repeat work. Probed
            players still get a fresh focus-year check for anything newer.
         4. Research the roster with THIS recipe, in order. First read
-           <pipeline-parent>/prompts/research-protocol.md — its identity
+           $resolve-pipeline.output/../prompts/research-protocol.md — its identity
            binding, stopping rules, source precedence, and dating rules
            govern every step below:
            a. CLUB-FIRST: from the hometowns, list plausible summer clubs
@@ -464,7 +467,9 @@ nodes:
   - id: narrative-core
     depends_on: [normalize]
     context: fresh
-    model: gpt-5.6-sol
+    model: deep
+    model_by_provider:
+      copilot: gpt-5.6-sol
     effort: xhigh
     timeout: 900000
     prompt: |
@@ -476,10 +481,10 @@ nodes:
       $resolve-pipeline.output
       Its parent directory holds the report's content contracts. Read BOTH
       before writing:
-        <pipeline-parent>/prompts/scouting-questionnaire.md  (what to answer)
-        <pipeline-parent>/prompts/style-contract.md          (how it must read)
+        $resolve-pipeline.output/../prompts/scouting-questionnaire.md  (what to answer)
+        $resolve-pipeline.output/../prompts/style-contract.md          (how it must read)
       Also read the touchline.report-narrative/4 contract at the top of
-      <pipeline>/src/report.py.
+      $resolve-pipeline.output/src/report.py.
 
       Your inputs, in this data home (the current directory):
         data/scratch/digest-$inputs.season-$inputs.gender-$inputs.focus.json
@@ -632,9 +637,9 @@ nodes:
         The pipeline directory is:
         $resolve-pipeline.output
         Before writing, read:
-          <pipeline-parent>/prompts/scouting-questionnaire.md
-          <pipeline-parent>/prompts/style-contract.md
-          <pipeline>/src/report.py (the touchline.report-narrative/4 contract)
+          $resolve-pipeline.output/../prompts/scouting-questionnaire.md
+          $resolve-pipeline.output/../prompts/style-contract.md
+          $resolve-pipeline.output/src/report.py (the touchline.report-narrative/4 contract)
 
         Inputs:
           data/scratch/digest-$inputs.season-$inputs.gender-$inputs.focus.json
@@ -876,6 +881,9 @@ nodes:
   - id: render
     depends_on: [validate-narrative]
     timeout: 120000
+    # headless Chrome aborts under the macOS sandbox (Mach bootstrap, crash
+    # reporter, singleton socket), so the PDF step runs on the host
+    sandbox: { enabled: false }
     bash: |
       set -uo pipefail
       PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
@@ -885,7 +893,9 @@ nodes:
         --focus "$KEELSON_INPUTS_focus"
 
   - id: summary
-    model: gpt-5.6-luna
+    model: fast
+    model_by_provider:
+      copilot: gpt-5.6-luna
     depends_on: [render]
     timeout: 120000
     prompt: |
