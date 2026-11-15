@@ -81,7 +81,8 @@ nodes:
         printf 'ALARM: cannot resolve the Touchline pipeline. Last candidate: %s\n' "$PIPELINE_DIR"
         exit 1
       fi
-      printf '%s\n' "$PIPELINE_DIR"
+      # No trailing newline: prompts splice this path inline.
+      printf '%s' "$PIPELINE_DIR"
 
   - id: assemble
     depends_on: [resolve-pipeline]
@@ -98,17 +99,22 @@ nodes:
   - id: research
     depends_on: [assemble]
     context: fresh
-    model: gpt-5.6-terra
+    model: balanced
+    model_by_provider:
+      copilot: gpt-5.6-terra
     effort: medium
     timeout: 900000
+    # Web tools plus read/write: shelling out to curl and ad-hoc parsers
+    # floods the context and stalls local models.
+    denied_tools: [Bash]
     prompt: |
       You are the research stage of a Touchline player profile. ONE player:
       '$inputs.player' of programme '$inputs.programme' ($inputs.gender).
 
       The pipeline directory is:
       $resolve-pipeline.output
-      Read <pipeline-parent>/prompts/player-profile.md FIRST, then
-      <pipeline-parent>/prompts/research-protocol.md which it builds on
+      Read $resolve-pipeline.output/../prompts/player-profile.md FIRST, then
+      $resolve-pipeline.output/../prompts/research-protocol.md which it builds on
       (identity binding, gender-correct league lists, stopping rules,
       source confidence), and follow them
       exactly — it is the research method contract: disambiguate before
@@ -122,6 +128,10 @@ nodes:
       $assemble.output
       The focus year is the identity's roster_season.
 
+      That record and the two method files are the only local inputs. Do
+      not explore the data home: reports, digests, scratch files, and other
+      players' research are out of scope. Every finding comes from the web.
+
       Findings that are "ruled out" verdicts belong in the reply, not the
       findings array; "no indexed mention" surfaces go in unswept with the
       reason.
@@ -134,7 +144,8 @@ nodes:
       hyphenated name). Reading the method contract takes you into the
       pipeline package directory — the findings file still goes under the
       data home ABSOLUTE path above, never relative to wherever you are.
-      A file written anywhere else is silently lost. Its contents:
+      A file written anywhere else is silently lost. Its contents, complete
+      as given (there is no other schema to look up):
       {
         "schema": "touchline.player-findings/1",
         "player": "$inputs.player",
@@ -152,8 +163,13 @@ nodes:
   - id: verify
     depends_on: [research]
     context: fresh
-    model: gpt-5.6-luna
+    model: fast
+    model_by_provider:
+      copilot: gpt-5.6-luna
     timeout: 600000
+    # Web tools plus read/write: shelling out to curl and ad-hoc parsers
+    # floods the context and stalls local models.
+    denied_tools: [Bash]
     prompt: |
       You are the verification pass — the adversary of the research stage.
       The research node reported:
@@ -212,7 +228,9 @@ nodes:
 
   - id: summary
     depends_on: [merge]
-    model: gpt-5.6-luna
+    model: fast
+    model_by_provider:
+      copilot: gpt-5.6-luna
     timeout: 120000
     prompt: |
       A player profile build just finished for $inputs.player
