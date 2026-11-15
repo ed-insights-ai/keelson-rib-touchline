@@ -3315,11 +3315,18 @@ def test_a_division_seed_is_a_rank_prefix() -> None:
         ("#5 Seed Maryville University", "Maryville University"),
         ("No. 12 Maryville", "Maryville"),
         ("3-seed Drury", "Drury"),
+        # A hash-marked rank glued to the name by a hyphen (wsuathletics.com
+        # 2026 women, games 12026 and 12036), and the seed form it must not
+        # swallow.
+        ("#21-McKendree", "McKendree"),
+        ("#15-Ashland", "Ashland"),
+        ("#4-seed Harding", "Harding"),
         # Real names that lead with a numeral, a letter-dash, or a dash keep
         # every character: a token must end in whitespace and a dash only
         # follows a rank.
         ("2Excellent College", "2Excellent College"),
         ("T-Bird College", "T-Bird College"),
+        ("21-McKendree", "21-McKendree"),
         ("Lynn - University", "Lynn - University"),
         ("UT Tyler", "UT Tyler"),
         (

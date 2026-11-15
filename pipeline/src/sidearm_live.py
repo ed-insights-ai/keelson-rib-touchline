@@ -763,8 +763,16 @@ _RANK_TOKEN = (
     r")"
 )
 _RANK_JOINER = r"\s*[/|]\s*"
+# One theme glues the rank to the name with a hyphen and no space (measured:
+# wsuathletics.com 2026 women, games 12026 and 12036, "#21-McKendree" and
+# "#15-Ashland", minted as 21-mckendree and 15-ashland beside the schools'
+# own records). Only a hash-marked poll value may end this way, and only
+# before a letter: no school's name begins with "#", so "2Excellent College"
+# and "T-Bird College" stay whole, and a bare "21-" is never read as a rank.
+_RANK_HASH_HYPHEN = r"#\s*\d{1,2}-(?=[a-z])(?!seed\b)"
 _RANK_PREFIX = re.compile(
-    rf"^(?:{_RANK_JOINER})?(?:{_RANK_TOKEN}(?:{_RANK_JOINER}{_RANK_TOKEN})*\s+)+"
+    rf"^(?:{_RANK_JOINER})?(?:{_RANK_TOKEN}(?:{_RANK_JOINER}{_RANK_TOKEN})*\s+)*"
+    rf"(?:{_RANK_TOKEN}(?:{_RANK_JOINER}{_RANK_TOKEN})*\s+|{_RANK_HASH_HYPHEN})"
     r"(?:-\s+)?",
     re.IGNORECASE,
 )
@@ -1194,6 +1202,14 @@ class ResolutionScope:
     # collect. A claimant or a collecting school with no point sends the key
     # to the gender-wide rule instead.
     points: Mapping[str, tuple[float, float]] = dataclass_field(default_factory=dict)
+    # A key exactly one programme of the gender claims, and only through a
+    # member alias: "concordia" is Concordia Irvine's PacWest-only spelling
+    # and no stanza's name. Outside that conference's collect the key stays
+    # a stranger, because the bare word has meant Concordia Selma and
+    # Concordia Texas in the data home. An NCAA Division II tie is the one
+    # place it cannot: both sides of one are programmes of the division, so
+    # a key that names exactly one of them names that one (``ncaa_side``).
+    member_only: Mapping[str, str] = dataclass_field(default_factory=dict)
     # Every programme's configured abbreviation by slug, resolving or not. It
     # never resolves an opponent: it only tells which of a shootout's two
     # known sides a printed initialism names ("T, 1-1 RU wins on PKs, 4-3",
@@ -1276,6 +1292,8 @@ class ResolutionScope:
         }
         if self.abbreviations:
             fingerprint["abbreviations"] = dict(sorted(self.abbreviations.items()))
+        if self.member_only:
+            fingerprint["member_only"] = dict(sorted(self.member_only.items()))
         if self.claimants:
             fingerprint["tiebreak"] = {
                 key: {slug: self.points.get(slug) for slug in sorted(slugs)}
@@ -1333,6 +1351,7 @@ def resolution_scope(
         for school in schools
         if school.gender == gender and school.first_season > season
     }
+    spelled: set[str] = set()
     for school in schools:
         if school.gender != gender:
             continue
@@ -1346,6 +1365,14 @@ def resolution_scope(
             claimed.setdefault(key, set()).add(slug)
             if slug in members:
                 claims[key] = slug
+        spelled.update(
+            key for key in map(_identity_key, _identity_spellings(school)) if key
+        )
+    member_only = {
+        key: next(iter(slugs - unborn))
+        for key, slugs in claimed.items()
+        if key not in spelled and len(slugs - unborn) == 1
+    }
     return ResolutionScope(
         conference=conference,
         season=season,
@@ -1357,8 +1384,40 @@ def resolution_scope(
             if len(slugs) > 1
         },
         points=dict(points or {}),
+        member_only=member_only,
         abbreviations=abbreviations,
     )
+
+
+def ncaa_side(
+    slug: str,
+    aliases: dict[str, str],
+    scope: ResolutionScope | None,
+    *,
+    owner: str,
+) -> str:
+    """The programme a stranger slug on an NCAA tie names, or the slug.
+
+    Measured: lagoldeneagles.com 2026 women, game 6625, the NCAA second
+    round at Irvine, prints "Concordia"; the CCAA collect resolved it to the
+    stranger concordia while Concordia Irvine's own page filed the same tie
+    under concordia-irvine, so the match stood twice. Only a slug the
+    gender-wide rule left unresolved is read again, and only to the one
+    programme whose member alias it is (``ResolutionScope.member_only``); a
+    key two programmes claim, or none, stays as it was.
+    """
+    if scope is None or slug == owner:
+        return slug
+    key = _identity_key(slug.replace("-", " "))
+    chosen = scope.member_only.get(key)
+    if chosen is None or chosen == slug or _unscoped_slug(key, aliases) != slug:
+        return slug
+    scope._record(
+        f"ncaa:{slug}",
+        f"resolution: {slug} on {owner}'s NCAA tie read as {chosen}, the only "
+        "programme the spelling names",
+    )
+    return chosen
 
 
 def member_alias_collisions(
@@ -2930,6 +2989,15 @@ def parse_schedule_page(
                 )
     if skips is not None:
         skips.extend(line for line in dom_skips if line not in skips)
+    # Only now does every row carry its stage (the payload copy takes the
+    # rendered row's), so an NCAA tie's opponent is read again here.
+    for fixture in fixtures:
+        stage = fixture.get("stage")
+        if isinstance(stage, dict) and stage.get("competition") == "ncaa":
+            for side in ("home", "away"):
+                fixture[side] = ncaa_side(
+                    str(fixture[side]), aliases, scope, owner=owner_slug
+                )
     return sorted(fixtures, key=lambda value: (str(value["date"]), str(value["id"])))
 
 

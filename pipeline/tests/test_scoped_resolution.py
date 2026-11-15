@@ -497,7 +497,8 @@ def test_every_shipped_programme_has_a_point() -> None:
 def test_the_only_ambiguous_key_in_the_shipped_config_is_dominican() -> None:
     # "Concordia" has one claimant, Concordia Irvine's member alias: the
     # word is unambiguous by the ruling's definition, so the tiebreak never
-    # sees it, and outside a PacWest collect it stays the unresolved key.
+    # sees it, and outside a PacWest collect it stays the unresolved key
+    # (save on an NCAA tie: see ncaa_side below).
     scope = _scope_with_points("CCAA", 2025)
     assert dict(scope.claimants) == {
         "dominican": frozenset({"dominican", "dominican-of-california"})
@@ -640,12 +641,14 @@ def test_a_ccaa_page_mints_the_match_under_the_nearer_slug() -> None:
 def test_the_tiebreak_enters_the_fingerprint_only_while_a_key_is_ambiguous():
     scope = _scope_with_points("CCAA", 2025)
     # The configured abbreviations name a shootout's winner between two known
-    # sides, so a scope built from stanzas that carry them fingerprints them.
+    # sides, so a scope built from stanzas that carry them fingerprints them;
+    # the shipped config's member-only keys (ncaa_side) enter it too.
     assert set(scope.fingerprint("cal-state-east-bay")) == {
         "conference",
         "season",
         "claims",
         "abbreviations",
+        "member_only",
         "tiebreak",
         "origin",
     }
@@ -773,3 +776,61 @@ def test_a_programme_that_had_not_started_leaves_the_tiebreak():
     assert later.claimants.get("wayne state") == frozenset(
         {"wayne-state", "wayne-state-nebraska"}
     )
+
+
+# ── an NCAA tie reads a member-only spelling as its one programme ──────────
+#
+# lagoldeneagles.com 2026 women, game 6625 (NCAA second round at Irvine),
+# prints "Concordia"; the CCAA collect minted the stranger concordia while
+# Concordia Irvine's own page filed the tie under concordia-irvine. Both
+# sides of an NCAA Division II tie are programmes of the division, so a key
+# exactly one programme claims, and only by a member alias, names that one.
+# Every other row keeps the stranger, as the ruling above says.
+
+from src.sidearm_live import ncaa_side  # noqa: E402
+
+WOMEN = identity_aliases(SCHOOLS, "women")
+
+
+def _women_scope(conference: str, season: int):
+    members = conference_members(
+        SCHOOLS, "women", conference, season=season, document=MEMBERSHIP
+    )
+    return resolution_scope(
+        SCHOOLS, "women", members, conference=conference, season=season
+    )
+
+
+def test_concordia_is_a_member_only_key() -> None:
+    scope = _women_scope("CCAA", 2026)
+    assert scope.member_only["concordia"] == "concordia-irvine"
+    # A key some stanza claims by name or alias is never member-only.
+    assert "dominican" not in scope.member_only
+    assert "concordia irvine" not in scope.member_only
+
+
+def test_concordia_on_a_ccaa_ncaa_tie_is_concordia_irvine() -> None:
+    scope = _women_scope("CCAA", 2026)
+    assert opponent_slug("Concordia", WOMEN, scope=scope) == "concordia"
+    assert ncaa_side("concordia", WOMEN, scope, owner="cal-state-la") == (
+        "concordia-irvine"
+    )
+    assert scope.notes() == [
+        "resolution: concordia on cal-state-la's NCAA tie read as "
+        "concordia-irvine, the only programme the spelling names"
+    ]
+
+
+def test_ncaa_side_leaves_every_other_slug_alone() -> None:
+    scope = _women_scope("CCAA", 2026)
+    for slug in ("cal-state-la", "concordia-irvine", "dominican", "some-stranger"):
+        assert ncaa_side(slug, WOMEN, scope, owner="cal-state-la") == slug
+    # The owner's own side, and a collect with no scope, are never read again.
+    assert ncaa_side("concordia", WOMEN, scope, owner="concordia") == "concordia"
+    assert ncaa_side("concordia", WOMEN, None, owner="cal-state-la") == "concordia"
+    assert scope.notes() == []
+
+
+def test_a_member_only_key_enters_the_parse_fingerprint() -> None:
+    scope = _women_scope("CCAA", 2026)
+    assert scope.fingerprint()["member_only"]["concordia"] == "concordia-irvine"
