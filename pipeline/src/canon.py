@@ -201,8 +201,12 @@ _RANK_TOKEN = (
     rf"|(?:#|no\.?)?\s*{_RANK_VALUE}"
     r")"
 )
+# A hash-marked rank glued to the name by a hyphen ("#21-McKendree") is the
+# live grammar's _RANK_HASH_HYPHEN, mirrored here.
 _RANK_PREFIX = re.compile(
-    rf"^(?:{_RANK_TOKEN}(?:\s*/\s*{_RANK_TOKEN})*\s+)+", re.IGNORECASE
+    rf"^(?:{_RANK_TOKEN}(?:\s*/\s*{_RANK_TOKEN})*\s+)*"
+    rf"(?:{_RANK_TOKEN}(?:\s*/\s*{_RANK_TOKEN})*\s+|#\s*\d{{1,2}}-(?=[a-z])(?!seed\b))",
+    re.IGNORECASE,
 )
 _WHITESPACE = re.compile(r"\s+")
 _TRAILING_SOURCE_CODE = re.compile(r"\s+(?:NU|OK|OKLA\.)$")

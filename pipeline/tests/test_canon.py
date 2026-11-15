@@ -52,6 +52,7 @@ def test_normalize_strips_every_published_rank_form():
         "5th-Seed Harding",
         "RV/#11 Harding",
         "#11/RV Harding",
+        "#21-Harding",
     ):
         assert normalize(published) == normalize("Harding") == "harding"
 
