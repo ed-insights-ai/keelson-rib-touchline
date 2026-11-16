@@ -52,7 +52,13 @@ from src.fetch_pool import (
     host_of,
     is_challenge_reason,
 )
-from src.config import DEFAULT_CONFIG, SchoolConfig, load_schools
+from src.config import (
+    DEFAULT_CONFIG,
+    DeclaredStranger,
+    SchoolConfig,
+    load_declared_strangers,
+    load_schools,
+)
 from src.identity import IdentityReport, SeasonSources, resolve_matches
 from src.membership import (
     MixedLevels,
@@ -63,6 +69,7 @@ from src.membership import (
     division_for,
     has_windows,
     load_membership,
+    outside_stanzas,
     programme_level,
     resolution_stanzas,
     stanzas_at_level,
@@ -385,6 +392,7 @@ def collect_identity(
     document: dict[str, object] | None,
     points: dict[str, tuple[float, float]] | None = None,
     programmes: Iterable[str] = (),
+    declared: list[DeclaredStranger] | None = None,
 ) -> tuple[dict[str, str], set[str], ResolutionScope]:
     """What one conference-season collect resolves opponent text with.
 
@@ -420,6 +428,10 @@ def collect_identity(
     programme (tl-b3v). One scope per collect, applied to every row of
     every page in it; with ``points`` an ambiguous name no member claims
     breaks by distance to the collecting school (tl-4sg.9.1).
+
+    ``declared`` is the config's ``[[not_a_programme]]`` list (schools.toml's
+    by default): spellings a page at the collecting level prints for a
+    school no route can tell from a programme of the level.
     """
     level = collect_level(
         schools,
@@ -442,6 +454,8 @@ def collect_identity(
         season=season,
         points=points,
         level=level,
+        outside=outside_stanzas(schools, gender, in_scope),
+        declared=load_declared_strangers() if declared is None else declared,
     )
     return aliases, members, scope
 
@@ -940,6 +954,7 @@ def collect(
         document=membership_document,
         points=_programme_points(),
         programmes=wanted,
+        declared=load_declared_strangers(config_path),
     )
     results = []
     errors: list[str] = []

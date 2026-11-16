@@ -205,6 +205,61 @@ def _read_point(entry: dict) -> tuple[float, float] | None:
     return (lat, lon)
 
 
+@dataclass(frozen=True)
+class DeclaredStranger:
+    """A printed spelling declared NOT a programme at one NCAA level.
+
+    The residue no general rule can read: text the identity routes resolve
+    to a programme of the level although the row means another school
+    (measured, each with the evidence in ``source``). ``spelling`` is the
+    printed text as the page prints it, matched whole (case, spacing and
+    apostrophes aside); ``owner``, when set, limits the entry to that one
+    programme's pages, for a spelling that elsewhere means the programme it
+    resolves to. ``slug`` is the stranger slug the side mints instead.
+    Validated by check-membership (``sidearm_live.declared_stranger_errors``).
+    """
+
+    level: str
+    spelling: str
+    slug: str
+    source: str
+    owner: str = ""
+
+
+def load_declared_strangers(
+    path: str | Path = DEFAULT_CONFIG,
+) -> list[DeclaredStranger]:
+    """The ``[[not_a_programme]]`` entries of schools.toml.
+
+    Raises ``ValueError`` for an entry missing ``level``, ``spelling``,
+    ``slug`` or ``source``: each one is a measured exception and says so.
+    """
+    with open(Path(path), "rb") as f:
+        data = tomllib.load(f)
+    entries: list[DeclaredStranger] = []
+    for index, entry in enumerate(data.get("not_a_programme", [])):
+        missing = [
+            key
+            for key in ("level", "spelling", "slug", "source")
+            if not str(entry.get(key, "")).strip()
+        ]
+        if missing:
+            raise ValueError(
+                f"not_a_programme entry {index + 1} "
+                f"({entry.get('spelling', '?')!r}) has no {', '.join(missing)}"
+            )
+        entries.append(
+            DeclaredStranger(
+                level=str(entry["level"]),
+                spelling=str(entry["spelling"]),
+                slug=str(entry["slug"]),
+                source=str(entry["source"]),
+                owner=str(entry.get("owner", "")),
+            )
+        )
+    return entries
+
+
 def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
     """Load school configurations from a TOML file.
 

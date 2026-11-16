@@ -12,7 +12,13 @@ from typing import Any
 from bs4 import BeautifulSoup
 
 from src import paths
-from src.config import SchoolConfig, load_schools, programme_slug
+from src.config import (
+    DeclaredStranger,
+    SchoolConfig,
+    load_declared_strangers,
+    load_schools,
+    programme_slug,
+)
 
 #: The top-level key naming, per conference code, where a conference with no
 #: per-season records pages keeps its member lists instead.
@@ -407,6 +413,25 @@ def resolution_stanzas(
         season_year,
         document=document,
     )
+
+
+def outside_stanzas(
+    schools: list[SchoolConfig],
+    gender: str,
+    in_scope: list[SchoolConfig],
+) -> list[SchoolConfig]:
+    """The gender's stanzas a collect's table left out: every other level.
+
+    They resolve nothing (``resolution_stanzas`` is the table), but they are
+    known schools, so a collect can tell text that names one of them from
+    text that names a programme of its own level.
+    """
+    kept = {id(school) for school in in_scope}
+    return [
+        school
+        for school in schools
+        if school.gender == gender and id(school) not in kept
+    ]
 
 
 def shard_stanzas(
@@ -1230,8 +1255,14 @@ def validate(
     document: dict[str, Any],
     *,
     schools: list[SchoolConfig] | None = None,
+    strangers: list[DeclaredStranger] | None = None,
 ) -> list[str]:
-    """Return every membership contract violation in a document."""
+    """Return every membership contract violation in a document.
+
+    ``schools`` defaults to schools.toml's stanzas and ``strangers`` to its
+    ``[[not_a_programme]]`` entries; given stanzas and no ``strangers``, no
+    entry is checked.
+    """
     errors: list[str] = []
     if not isinstance(document, dict):
         return ["membership document root must be a JSON object"]
@@ -1246,7 +1277,10 @@ def validate(
 
     if schools is None:
         schools = load_schools()
+        if strangers is None:
+            strangers = load_declared_strangers()
     from src.sidearm_live import (
+        declared_stranger_errors,
         level_identity_ambiguities,
         level_identity_collisions,
         member_alias_collisions,
@@ -1305,6 +1339,12 @@ def validate(
                 f"{school.conference!r} has none, so it would resolve opponent "
                 "text at every level"
             )
+    # The spellings schools.toml declares not a programme at one level.
+    errors.extend(
+        declared_stranger_errors(
+            strangers if strangers is not None else [], schools, document=document
+        )
+    )
     # A member alias resolves only inside its conference's scope, so the one
     # spelling it may not share is a fellow member's.
     for gender, conference, key, claimants in member_alias_collisions(schools):
@@ -1521,8 +1561,9 @@ def verify_standings(
 
     # The table a collect of this conference-season resolves against: the
     # stanzas at the conference's NCAA level that season.
+    all_schools = schools if schools is not None else load_schools()
     stanzas = resolution_stanzas(
-        schools if schools is not None else load_schools(),
+        all_schools,
         gender,
         conference,
         season_year,
@@ -1537,6 +1578,7 @@ def verify_standings(
         conference=conference,
         season=season_year,
         level=collecting_level(conference, document=membership_document),
+        outside=outside_stanzas(all_schools, gender, stanzas),
     )
     slugs = {name: opponent_slug(name, aliases, scope=scope) for name in page.names}
     return StandingsVerdict(

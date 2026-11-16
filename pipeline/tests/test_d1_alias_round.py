@@ -78,10 +78,13 @@ HISTORY_SPELLINGS = [
 # text's own slug rather than guess (Loyola Chicago on Horizon, OVC and MVC
 # pages; South Florida on ASUN and Sun Belt pages; Queen's and Santa Barbara
 # City by the fold).
+#
+# "Loyola (Md.)" left this list when a printed state became evidence: it is
+# Loyola Maryland on every page (tests/test_state_qualifier.py). "Loyola
+# (Ill.)" stays: Loyola Chicago claims no bare "Loyola".
 STAY_STRANGERS = [
     ("Loyola", "MVC", "loyola"),
     ("Loyola (Ill.)", "OVC", "loyola"),
-    ("Loyola (Md.)", "AE", "loyola"),
     ("USF", "ASUN", "usf"),
     ("Boston", "ACC", "boston"),
     ("CBU", "WCC", "cbu"),

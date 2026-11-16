@@ -71,7 +71,8 @@ import requests
 from bs4 import BeautifulSoup
 from urllib3.util.retry import Retry
 
-from src.config import SchoolConfig, programme_slug
+from src.config import DeclaredStranger, SchoolConfig, programme_slug
+from src.gazetteer import AP_TO_USPS, STATE_NAMES, USPS_TO_AP, parse_town
 from src.membership import (
     STRUCTURAL_CODES,
     conference_in_effect,
@@ -1193,6 +1194,72 @@ def institution_split_keys(
     return frozenset(key for key in worded if len(owners[key]) > 1)
 
 
+# A parenthetical that names a U.S. state is evidence of which school a
+# printed name means: "Columbia College (S.C.)" is not the Columbia in New
+# York, "Holy Cross College (Ind.)" not the one in Worcester, "Loyola (Ill.)"
+# is Loyola Chicago and "Loyola (Md.)" Loyola Maryland. Sites spell the state
+# AP style ("(W.Va.)"), postal ("(TX)"), spelled out ("(Ohio)", "(New
+# York)") and in the archive's own variants ("(W. Va.)", "(W.V.)", "(W,V.)",
+# "(S.C)", "(Oh.)"), so a form is read with its spaces, periods and commas
+# removed, against the Gazetteer's AP and state-name tables plus the one
+# spelling neither carries. A bare two-letter postal code is read only in
+# capitals or with a period ("(TX)", "(Oh.)"), so a lower-case word is never
+# taken for one; every other parenthetical ("(Exhibition)", "(DH)", "(RV)",
+# "(B.C.)", "(Senior Day)", "(Syracuse)") names no state and changes nothing.
+_STATE_QUALIFIER_EXTRA = {"Tex.": "TX"}
+
+
+def _qualifier_form(text: str) -> str:
+    return re.sub(r"[\s.,]+", "", text).lower()
+
+
+_STATE_QUALIFIERS = {
+    **{_qualifier_form(form): usps for form, usps in AP_TO_USPS.items()},
+    **{_qualifier_form(form): usps for form, usps in STATE_NAMES.items()},
+    **{_qualifier_form(form): usps for form, usps in _STATE_QUALIFIER_EXTRA.items()},
+}
+_PARENTHETICAL_INNER = re.compile(r"\(([^()]*)\)")
+
+
+def state_qualifier(text: str) -> str | None:
+    """The USPS code a parenthetical's inner text names, or None.
+
+    "S.C." -> "SC", "W. Va." -> "WV", "TX" -> "TX", "Ohio" -> "OH";
+    "Exhibition", "DH", "B.C." -> None.
+    """
+    form = _qualifier_form(text)
+    if form in _STATE_QUALIFIERS:
+        return _STATE_QUALIFIERS[form]
+    letters = re.sub(r"[^A-Za-z]", "", text)
+    if (
+        len(form) == 2
+        and form.upper() in USPS_TO_AP
+        and (letters.isupper() or "." in text)
+    ):
+        return form.upper()
+    return None
+
+
+def printed_state(name: str) -> str | None:
+    """The one U.S. state a published opponent string's parentheticals name.
+
+    None when no parenthetical names a state, or when two name different
+    states (no evidence either way).
+    """
+    states = {
+        state
+        for inner in _PARENTHETICAL_INNER.findall(name or "")
+        if (state := state_qualifier(inner)) is not None
+    }
+    return next(iter(states)) if len(states) == 1 else None
+
+
+def stanza_state(school: SchoolConfig) -> str | None:
+    """A stanza's home state (USPS) from its ``city``, or None when unparseable."""
+    town = parse_town(school.city)
+    return None if town is None else town.usps
+
+
 def _claim_keys(candidate: str, split: frozenset[str]) -> tuple[str, ...]:
     """The keys one claimed spelling registers under, given the split keys.
 
@@ -1425,6 +1492,72 @@ def level_identity_ambiguities(
     ]
 
 
+def declared_stranger_errors(
+    declared: Sequence[DeclaredStranger],
+    schools: list[SchoolConfig],
+    *,
+    document: dict[str, object],
+) -> list[str]:
+    """Every ``[[not_a_programme]]`` entry check-membership refuses.
+
+    The level must be an NCAA level; the slug must be a slug
+    (``programme_slug`` of itself) that no stanza at that level mints, or
+    the declaration would resolve the text to one of the level's programmes
+    after all (another level's programme slug is allowed: Saint Mary's of
+    Moraga on a Division II page is the Division I programme's school); an
+    owner must be a programme at the level; one spelling is declared once
+    per level and owner. An entry for every page of a level may not be a spelling a
+    stanza at that level claims (name, alias, resolving abbreviation or
+    member alias): the stanza
+    says the text is the programme, and the entry would silently overrule
+    it everywhere. An owner's entry may overrule a claim on that one page:
+    that is what it is for ("St. Joseph's" on Stony Brook's page).
+    """
+    from src.membership import LEVELS
+
+    errors: list[str] = []
+    slugs: dict[str, set[str]] = {}
+    claimed: dict[str, dict[str, str]] = {}
+    for _, level, _, stanzas in level_scopes(schools, document=document):
+        forms = claimed.setdefault(level, {})
+        for school in stanzas:
+            slugs.setdefault(level, set()).add(programme_slug(school.name))
+            # Every spelling a route resolves: name, aliases and a resolving
+            # abbreviation (``_identity_spellings``), and member aliases. A
+            # display-only abbreviation resolves nothing, so it is free.
+            for spelling in (*_identity_spellings(school), *school.member_aliases):
+                forms.setdefault(declared_form(spelling), programme_slug(school.name))
+    seen: set[tuple[str, str, str]] = set()
+    for entry in declared:
+        label = f"not_a_programme {entry.spelling!r} ({entry.level})"
+        if entry.level not in LEVELS:
+            errors.append(f"{label}: level must be one of {', '.join(LEVELS)}")
+        if programme_slug(entry.slug) != entry.slug:
+            errors.append(f"{label}: slug {entry.slug!r} is not a slug")
+        elif entry.slug in slugs.get(entry.level, ()):
+            errors.append(
+                f"{label}: slug {entry.slug!r} is a programme's at {entry.level}; "
+                "a declared stranger mints a slug no stanza of the level does"
+            )
+        if entry.owner and entry.owner not in slugs.get(entry.level, ()):
+            errors.append(
+                f"{label}: owner {entry.owner!r} is no programme at {entry.level}"
+            )
+        form = declared_form(entry.spelling)
+        key = (entry.level, form, entry.owner)
+        if key in seen:
+            errors.append(f"{label}: declared twice for the same owner")
+        seen.add(key)
+        claimant = claimed.get(entry.level, {}).get(form)
+        if not entry.owner and claimant is not None:
+            errors.append(
+                f"{label}: {claimant} claims this spelling at {entry.level}; "
+                "limit the entry to the page that misreads it (owner) or drop "
+                "the claim"
+            )
+    return errors
+
+
 def _season_ranges(seasons: Sequence[int]) -> str:
     """2016, 2017, 2018, 2021 as "2016-2018, 2021"."""
     runs: list[list[int]] = []
@@ -1571,6 +1704,31 @@ class ResolutionScope:
     # known sides a printed initialism names ("T, 1-1 RU wins on PKs, 4-3",
     # rockhurst 2025, where "RU" is display-only because Roosevelt shares it).
     abbreviations: Mapping[str, str] = dataclass_field(default_factory=dict)
+    # Every programme of the table by slug, with its home state (USPS) read
+    # from the stanza's ``city``, or None when the city names none. A printed
+    # state qualifier is held against it (``_state_checked``).
+    states: Mapping[str, str | None] = dataclass_field(default_factory=dict)
+    # Every plain-folded key a programme of the table claims, by name, alias,
+    # resolving abbreviation or member alias, and the programmes claiming it
+    # (programmes not yet started that season left out): the candidates a
+    # printed state picks between (``state_claimant``).
+    spelled: Mapping[str, frozenset[str]] = dataclass_field(default_factory=dict)
+    # The gender's programmes OUTSIDE the table (another NCAA level that
+    # season), by slug, with their home state. A slug minted from text that
+    # equals one of them must not stand for it when the printed state says
+    # otherwise ("Union College (Ky.)" is not Union of Tennessee).
+    outside_states: Mapping[str, str] = dataclass_field(default_factory=dict)
+    # Every identity key a stanza of the gender OUTSIDE the table claims by
+    # name, alias or resolving abbreviation ("southern new hampshire",
+    # "cal poly pomona"). Text whose whole key is one of them names that
+    # school, so the token-subset fallback never reads it as a programme of
+    # the table whose key is a subset of it (``_unscoped_slug``).
+    foreign: frozenset[str] = frozenset()
+    # Spellings schools.toml declares NOT a programme at the collecting
+    # level (``[[not_a_programme]]``), by ``declared_form``: the owner a
+    # declaration is limited to ("" for every page) and the stranger slug it
+    # mints. Consulted before any route (``opponent_slug``).
+    declared: Mapping[str, Mapping[str, str]] = dataclass_field(default_factory=dict)
     _notes: dict[str, str] = dataclass_field(
         default_factory=dict, compare=False, repr=False
     )
@@ -1611,9 +1769,15 @@ class ResolutionScope:
         """
         self._record(f"{owner}\x00{printed}", line)
 
-    def _record(self, printed: str, line: str) -> None:
+    def _record(self, printed: str, line: str, *, final: bool = False) -> None:
+        """Keep the first line per printed text, unless ``final``: a later
+        step that changed the answer (the state check) replaces the earlier
+        route's line, so the run log names the slug the side was given."""
         with self._lock:
-            self._notes.setdefault(printed, line)
+            if final:
+                self._notes[printed] = line
+            else:
+                self._notes.setdefault(printed, line)
 
     def notes(self) -> list[str]:
         """One run-log line per distinct printed text the scope re-pointed."""
@@ -1642,6 +1806,48 @@ class ResolutionScope:
         ranked.sort(key=lambda pair: (pair[1], pair[0]))
         return ranked
 
+    def state_claimant(self, key: str, state: str) -> str | None:
+        """The one programme a key and a printed state name together, or None.
+
+        The candidates are the programmes of the table that claim ``key``
+        itself, by name, alias, resolving abbreviation or member alias, read
+        through the plain fold (so "boston" is claimed by Boston College and
+        Boston University alike). The state decides only when exactly one
+        candidate is in it: "Loyola (Md.)" names Loyola Maryland, whose
+        Patriot League member alias the bare word is, on every page.
+
+        A programme whose spelling merely BEGINS with the key is no
+        candidate. Measured: "Concordia College (Minn.)" on MSU Moorhead's
+        and Minot State's pages and "Concordia (Minn.)" on Jamestown's is
+        Concordia of Moorhead, a school no stanza configures, and a
+        head-word rule handed all three to Concordia-St. Paul, the one
+        Minnesota programme whose name begins "Concordia".
+        """
+        inside = [
+            slug for slug in self.spelled.get(key, ()) if self.states.get(slug) == state
+        ]
+        return inside[0] if len(inside) == 1 else None
+
+    def declared_slug(self, name: str, owner: str | None) -> str | None:
+        """The stranger slug a declaration gives ``name`` on ``owner``'s page."""
+        owners = self.declared.get(declared_form(name))
+        if not owners:
+            return None
+        return owners.get(owner or "") or owners.get("")
+
+    def note_state(self, printed: str, chosen: str, refused: str, state: str) -> None:
+        """Record that ``printed``'s state qualifier moved it off ``refused``."""
+        home = self.states.get(refused) or self.outside_states.get(refused)
+        self._record(
+            printed,
+            f"resolution: {printed!r} read as {chosen}: it prints {state}, "
+            f"and {refused} is in {home}"
+            if home
+            else f"resolution: {printed!r} read as {chosen}, the one {state} "
+            "programme claiming the name",
+            final=True,
+        )
+
     def fingerprint(self, owner: str | None = None) -> dict[str, object]:
         """What of the scope shapes a parse, for ``parse_fingerprint``.
 
@@ -1658,6 +1864,21 @@ class ResolutionScope:
             fingerprint["abbreviations"] = dict(sorted(self.abbreviations.items()))
         if self.member_only:
             fingerprint["member_only"] = dict(sorted(self.member_only.items()))
+        # A table whose stanzas name no state can be refused nothing, so it
+        # fingerprints exactly as before.
+        if any(self.states.values()) or self.outside_states:
+            fingerprint["states"] = dict(sorted(self.states.items()))
+            fingerprint["spelled"] = {
+                key: sorted(slugs) for key, slugs in sorted(self.spelled.items())
+            }
+            fingerprint["outside_states"] = dict(sorted(self.outside_states.items()))
+        if self.foreign:
+            fingerprint["foreign"] = sorted(self.foreign)
+        if self.declared:
+            fingerprint["declared"] = {
+                form: dict(sorted(owners.items()))
+                for form, owners in sorted(self.declared.items())
+            }
         if self.claimants:
             fingerprint["tiebreak"] = {
                 key: {slug: self.points.get(slug) for slug in sorted(slugs)}
@@ -1690,6 +1911,8 @@ def resolution_scope(
     season: int,
     points: Mapping[str, tuple[float, float]] | None = None,
     level: str | None = None,
+    outside: Sequence[SchoolConfig] = (),
+    declared: Sequence[DeclaredStranger] = (),
 ) -> ResolutionScope:
     """The scope one collect resolves inside: ``members`` and their claims.
 
@@ -1709,6 +1932,18 @@ def resolution_scope(
     the loaded programmes.json), read once per collect; with it the scope can
     break an ambiguous key no member claims by distance. Without it the
     tiebreak never applies.
+
+    Every programme of the table carries its home state (its stanza's
+    ``city``), so a printed state qualifier can be held against the
+    programme a name resolves to. ``outside`` is the gender's stanzas at
+    every other level that season (``membership.outside_stanzas``): they
+    never resolve anything here, but a slug minted from text that equals
+    one of theirs is checked against their state the same way, and text
+    whose whole key one of them claims is never read by the token-subset
+    fallback as a programme of the table (``ResolutionScope.foreign``).
+
+    ``declared`` is schools.toml's ``[[not_a_programme]]`` list; the
+    entries at ``level`` are kept (none without a level).
     """
     claims: dict[str, str] = {}
     claimed: dict[str, set[str]] = {}
@@ -1732,10 +1967,17 @@ def resolution_scope(
     # reading of the word, scoped to the collects that read for it.
     split = institution_split_keys(schools, gender)
     spelled: set[str] = set()
+    states: dict[str, str | None] = {}
+    folded: dict[str, set[str]] = {}
     for school in schools:
         if school.gender != gender:
             continue
         slug = programme_slug(school.name)
+        states[slug] = stanza_state(school)
+        if slug not in unborn:
+            for candidate in (*_identity_spellings(school), *school.member_aliases):
+                if key := _identity_key(candidate):
+                    folded.setdefault(key, set()).add(slug)
         if school.abbreviation:
             abbreviations[slug] = school.abbreviation
         identity = [
@@ -1774,7 +2016,53 @@ def resolution_scope(
         points=dict(points or {}),
         member_only=member_only,
         abbreviations=abbreviations,
+        states=states,
+        spelled={key: frozenset(slugs) for key, slugs in folded.items()},
+        outside_states={
+            programme_slug(school.name): state
+            for school in outside
+            if school.gender == gender
+            and programme_slug(school.name) not in states
+            and (state := stanza_state(school)) is not None
+        },
+        foreign=frozenset(
+            key
+            for school in outside
+            if school.gender == gender and programme_slug(school.name) not in states
+            for candidate in _identity_spellings(school)
+            if (key := _identity_key(candidate))
+        ),
+        declared=_declared_table(declared, level),
     )
+
+
+def _declared_table(
+    declared: Sequence[DeclaredStranger], level: str | None
+) -> dict[str, dict[str, str]]:
+    table: dict[str, dict[str, str]] = {}
+    for entry in declared:
+        if level is not None and entry.level == level:
+            table.setdefault(declared_form(entry.spelling), {})[entry.owner] = (
+                entry.slug
+            )
+    return table
+
+
+def declared_form(text: str) -> str:
+    """A printed spelling as a declaration matches it: whole, parentheticals
+    kept, case, spacing (around a parenthesis too), punctuation and
+    apostrophes aside ("Shattuck-St. Mary's U19" and "Shattuck - St. Mary’s
+    U19" are one form, as are "Charleston(Exhibition)" and "Charleston
+    (Exhibition)")."""
+    text = _clean_team_name(text).lower().replace("&", " and ")
+    text = text.replace("'", "").replace("’", "")
+    text = re.sub(r"[^a-z0-9()]+", " ", text)
+    # The spacing around a parenthesis is the site's typing, not the text:
+    # "Charleston(Exhibition)" and "Charleston ( Exhibition )" are
+    # "charleston (exhibition)". What the parenthetical says still counts.
+    text = re.sub(r"\s*\(\s*", " (", text)
+    text = re.sub(r"\s*\)\s*", ") ", text)
+    return " ".join(text.split())
 
 
 def ncaa_side(
@@ -1805,7 +2093,11 @@ def ncaa_side(
         return slug
     key = _identity_key(slug.replace("-", " "))
     chosen = scope.member_only.get(key)
-    if chosen is None or chosen == slug or _unscoped_slug(key, aliases) != slug:
+    if (
+        chosen is None
+        or chosen == slug
+        or _unscoped_slug(key, aliases, scope.foreign) != slug
+    ):
         return slug
     scope._record(
         f"ncaa:{slug}",
@@ -1862,6 +2154,93 @@ def opponent_slug(
 ) -> str:
     """Resolve a published opponent string to a stable identity, or record it.
 
+    The routes are ``_resolved_slug``'s. Inside a scope, a printed state
+    qualifier is then held against the answer (``_state_checked``): a
+    programme in another state is not the school the text names.
+
+    Before any route, a spelling schools.toml declares not a programme at
+    the collecting level (``[[not_a_programme]]``, on every page or on the
+    one owner's) mints its declared stranger slug. That is the residue no
+    rule reads: "Columbia College" on South Carolina's page is Columbia
+    College of Columbia, S.C., and nothing in the text says it is not
+    Columbia; a rule that read "College" against "University" as a
+    contradiction was wrong on 11 of 14 measured rows (renamed schools:
+    "Tusculum College", "Thomas More College", "Mars Hill College").
+    """
+    if scope is not None and scope.declared:
+        declared = scope.declared_slug(name, owner)
+        if declared is not None:
+            scope.note_page(
+                owner or "",
+                _clean_team_name(name),
+                f"resolution: {_clean_team_name(name)!r}"
+                + (f" on {owner}'s page" if owner else "")
+                + f" read as {declared}, declared not a programme",
+            )
+            return declared
+    slug = _resolved_slug(name, aliases, scope=scope, owner=owner, seeded=seeded)
+    if scope is None:
+        return slug
+    return _state_checked(name, slug, scope)
+
+
+def _state_checked(name: str, slug: str, scope: ResolutionScope) -> str:
+    """``slug``, unless the state ``name`` prints says it is someone else.
+
+    A parenthetical naming a U.S. state ("Columbia College (S.C.)",
+    "St. Thomas (TX)", "Loyola (Ill.)") is the site telling its reader which
+    of two same-named schools it means, and the fold drops it before any
+    route reads the name. So the answer is checked against it afterwards:
+
+    * a programme of the table whose stanza is in the printed state, or
+      whose stanza names no state, stands, exactly as before;
+    * otherwise, when exactly one programme of the table that claims the
+      key is in the printed state, that one is the school: "Loyola (Md.)" is
+      Loyola Maryland on every page, not only on the pages of the conference
+      whose member alias the bare word is, and "Lincoln (Pa.)" is Lincoln
+      (Pa.) wherever distance would have picked Lincoln of Missouri
+      (``ResolutionScope.state_claimant``);
+    * otherwise a programme in another state is refused, and so is a slug
+      minted from text that equals a programme of another level in another
+      state ("Union College (Ky.)", not Union of Tennessee). The side mints
+      the key with the state kept, ``{key}-{state}`` ("columbia-sc",
+      "saint-thomas-tx", "lincoln-pa"), so two same-named schools never
+      share a slug and the bare name's slug is never taken from the
+      programme that owns it;
+    * a text with no state qualifier, or a slug no programme owns, is
+      untouched: "Emmanuel (Ga.)" still mints ``emmanuel``.
+    """
+    state = printed_state(name)
+    if state is None:
+        return slug
+    if slug in scope.states and scope.states[slug] in (None, state):
+        return slug
+    key = _identity_key(name)
+    if not key:
+        return slug
+    printed = _clean_team_name(name)
+    chosen = scope.state_claimant(key, state)
+    if chosen is not None:
+        if chosen != slug:
+            scope.note_state(printed, chosen, slug, state)
+        return chosen
+    if slug in scope.states or scope.outside_states.get(slug, state) != state:
+        minted = programme_slug(f"{key} {state}")
+        scope.note_state(printed, minted, slug, state)
+        return minted
+    return slug
+
+
+def _resolved_slug(
+    name: str,
+    aliases: dict[str, str],
+    *,
+    scope: ResolutionScope | None = None,
+    owner: str | None = None,
+    seeded: bool = False,
+) -> str:
+    """Resolve a published opponent string by name alone, or record it.
+
     With a ``scope`` (the conference-season a collect is reading for), a key
     one of its members claims resolves to that member before any other
     programme, and the scope notes the re-pointing when the gender-wide map
@@ -1903,6 +2282,7 @@ def opponent_slug(
     key = _identity_key(name)
     if not key:
         return programme_slug(_clean_team_name(name))
+    foreign = frozenset() if scope is None else scope.foreign
     # An institution key ("boston college") is held only for a folded key an
     # institution word splits (``institution_split_keys``), so it is tried
     # first and can only ever name one of those programmes; every other
@@ -1911,7 +2291,9 @@ def opponent_slug(
     if institution and institution != key:
         if scope is not None and institution in scope.claims:
             chosen = scope.claims[institution]
-            otherwise = aliases.get(institution) or _unscoped_slug(key, aliases)
+            otherwise = aliases.get(institution) or _unscoped_slug(
+                key, aliases, foreign
+            )
             if chosen != otherwise:
                 scope.note(_clean_team_name(name), chosen, otherwise)
             return chosen
@@ -1920,7 +2302,7 @@ def opponent_slug(
     key = _division_seed_key(name, key, aliases, scope, seeded=seeded)
     if scope is not None and key in scope.claims:
         chosen = scope.claims[key]
-        otherwise = _unscoped_slug(key, aliases)
+        otherwise = _unscoped_slug(key, aliases, foreign)
         if chosen != otherwise:
             scope.note(_clean_team_name(name), chosen, otherwise)
         return chosen
@@ -1928,10 +2310,10 @@ def opponent_slug(
         ranked = scope.nearest_claimant(key, owner)
         if ranked is not None:
             chosen = ranked[0][0]
-            if chosen != _unscoped_slug(key, aliases):
+            if chosen != _unscoped_slug(key, aliases, foreign):
                 scope.note_distance(_clean_team_name(name), owner, ranked)
             return chosen
-    return _unscoped_slug(key, aliases)
+    return _unscoped_slug(key, aliases, foreign)
 
 
 # A conference that seeds its tournament by division can spell the division
@@ -1974,7 +2356,9 @@ def _division_seed_key(
     return key
 
 
-def _unscoped_slug(key: str, aliases: dict[str, str]) -> str:
+def _unscoped_slug(
+    key: str, aliases: dict[str, str], foreign: frozenset[str] = frozenset()
+) -> str:
     """The table-wide rule: exact claim, unique multi-token match, or the key.
 
     "Table-wide" is the ``aliases`` given: on the collection path that is
@@ -1983,9 +2367,23 @@ def _unscoped_slug(key: str, aliases: dict[str, str]) -> str:
     only ever pick a programme of that level. Over every level at once,
     "Penn State Abington" is a token superset of Division I "Penn State" and
     re-points to it, and "North Carolina Wesleyan" to "North Carolina".
+
+    The level scope keeps the other level's programmes out of the table,
+    but not out of the text: a Division I page still prints "Southern New
+    Hampshire", and inside the Division I table that key holds every token
+    of "New Hampshire". Measured over the 848 archived Division I pages at
+    10a1308, the subset read "Southern New Hampshire" (Dartmouth, Merrimack)
+    as New Hampshire and "Cal Poly Pomona" (CSUN, San Diego) as Cal Poly.
+    So a key that is ``foreign``, claimed whole by a stanza of the gender at
+    another level, names that school: the subset is not tried and the key
+    mints its own slug. An exact claim still wins first ("Charleston" on a
+    Division I page is the College of Charleston, though a Division II
+    Charleston claims the word too).
     """
     if key in aliases:
         return aliases[key]
+    if key in foreign:
+        return programme_slug(key)
 
     published = set(key.split())
     candidates = {

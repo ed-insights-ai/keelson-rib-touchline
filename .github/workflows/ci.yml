@@ -21,6 +21,10 @@ jobs:
       - uses: astral-sh/setup-uv@v5
       - name: Install dependencies
         run: bun install --frozen-lockfile
+      - name: Build the pipeline environment
+        # Built here so the parity test's first `uv run` does not spend its
+        # 30s test timeout creating the venv on a cold runner.
+        run: uv sync --project pipeline --frozen
       - name: Lint
         run: bun run check
       - name: Lint shell scripts

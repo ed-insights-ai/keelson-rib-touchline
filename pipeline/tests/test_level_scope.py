@@ -222,9 +222,19 @@ def test_adding_another_levels_stanzas_changes_nothing_a_d2_collect_reads():
             )
             assert after[0] == before[0]
             assert after[1] == before[1]
-            assert after[2].fingerprint("west-chester") == before[2].fingerprint(
-                "west-chester"
-            )
+            # The other level's stanzas resolve nothing here; the one thing
+            # they add is their own keys, so text naming one of them whole is
+            # never a token subset's capture (tests/test_foreign_key.py).
+            shaped = after[2].fingerprint("west-chester")
+            assert set(shaped.pop("foreign")) == {
+                "penn state",
+                "psu",
+                "cal",
+                "california",
+                "charleston",
+                "saint francis",
+            }
+            assert shaped == before[2].fingerprint("west-chester")
             assert after[2].level == before[2].level == "d2"
     # The header reader a D2 collect uses, whose signature enters the
     # schedule fingerprint, reads the d2 conferences' names as its own; the
