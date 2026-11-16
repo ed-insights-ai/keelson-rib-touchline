@@ -8,7 +8,10 @@ data repo.
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
+
+import pytest
 
 from src import paths
 
@@ -100,3 +103,50 @@ def test_home_levels_are_the_membership_levels():
     from src import membership
 
     assert paths.HOME_LEVELS == membership.LEVELS
+
+
+# One set of vectors for every marker reader: this module's ``marker_level``
+# and ``home_level``, and src/datahome.ts ``markerLevel``/``readMarker`` with
+# bin/resolve-membership.ts home-level (test/datahome.test.ts reads the
+# same file).
+MARKER_VECTORS = json.loads(
+    (Path(__file__).parent / "fixtures" / "marker_levels.json").read_text(
+        encoding="utf-8"
+    )
+)["vectors"]
+
+
+@pytest.mark.parametrize(
+    "vector", MARKER_VECTORS, ids=[vector["name"] for vector in MARKER_VECTORS]
+)
+def test_the_marker_level_vectors(monkeypatch, tmp_path, vector):
+    monkeypatch.setenv("TOUCHLINE_DATA_DIR", str(tmp_path))
+    (tmp_path / paths.MARKER_FILE).write_bytes(vector["text"].encode("utf-8"))
+    expect = vector["expect"]
+    if expect == "invalid":
+        with pytest.raises(ValueError):
+            paths.marker_level(vector["text"])
+        with pytest.raises(paths.MarkerError):
+            paths.home_level()
+    elif expect == "absent":
+        assert paths.marker_level(vector["text"]) is None
+        assert paths.home_level() == paths.HomeLevel("d2", declared=False)
+    else:
+        assert paths.marker_level(vector["text"]) == expect
+        assert paths.home_level() == paths.HomeLevel(expect, declared=True)
+
+
+def test_a_commented_d1_marker_refuses_a_d2_collect(monkeypatch, tmp_path, capsys):
+    """The reviewer's case: ``level: d1 # Division I`` read as absent made the
+    home an assumed d2 one, so collect-board admitted a Division II
+    conference into a Division I home."""
+    from scripts.collect_board import level_refusal
+    from src.membership import conferences_at_level
+
+    monkeypatch.setenv("TOUCHLINE_DATA_DIR", str(tmp_path))
+    _mark(tmp_path, "kind: touchline-data\nversion: 1\nlevel: d1 # Division I\n")
+    refusal = level_refusal(conferences_at_level("d2")[0])
+    assert refusal is not None and "collects d1 (declared in its marker)" in refusal
+    _mark(tmp_path, "kind: touchline-data\nversion: 1\nlevel: d4 extra\n")
+    refusal = level_refusal(conferences_at_level("d2")[0])
+    assert refusal is not None and "level: d4 extra" in refusal

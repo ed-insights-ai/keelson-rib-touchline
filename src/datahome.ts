@@ -85,9 +85,45 @@ export type MarkerState =
   | { state: "unmarked" }
   | { state: "foreign"; detail: string };
 
-/** The `level:` value a marker text states, if any (unvalidated). */
-function markerLevelText(text: string): string | undefined {
-  return /^\s*level:\s*(\S+)\s*$/m.exec(text)?.[1];
+/** What a marker's text says about its level: no `level` line at all (the
+ *  legacy default applies), a valid declaration, or a line the reader
+ *  cannot use (refused, never defaulted past). */
+export type MarkerLevelText =
+  | { state: "absent" }
+  | { state: "declared"; level: ConferenceLevel }
+  | { state: "invalid"; detail: string };
+
+/** Read the `level` key of a marker's text. The rule pipeline/src/paths.py
+ *  `marker_level` holds, checked against the same vectors
+ *  (pipeline/tests/fixtures/marker_levels.json): the key is found apart from
+ *  its value; an inline comment is stripped (`level: d1 # Division I` is
+ *  d1); one pair of matching quotes is unwrapped; the case is folded. What
+ *  remains must be exactly d1, d2 or d3: an empty value, two words
+ *  (`level: d4 extra`) or the key stated twice is invalid. Only a marker
+ *  with no `level` line is absent. */
+export function markerLevel(text: string): MarkerLevelText {
+  const found = [...text.replace(/\r\n/g, "\n").matchAll(/^[ \t]*level[ \t]*:(.*)$/gm)];
+  if (found.length === 0) return { state: "absent" };
+  if (found.length > 1) {
+    return {
+      state: "invalid",
+      detail: `level is stated ${found.length} times; a marker declares one level`,
+    };
+  }
+  const raw = found[0]?.[1] ?? "";
+  let value = raw.replace(/(?:^|[ \t])#.*$/, "").trim();
+  const quote = value[0];
+  if (value.length >= 2 && (quote === "'" || quote === '"') && value.endsWith(quote)) {
+    value = value.slice(1, -1).trim();
+  }
+  const level = value.toLowerCase();
+  if (!isConferenceLevel(level)) {
+    return {
+      state: "invalid",
+      detail: `level: ${raw.trim() || "(empty)"} is not one of ${CONFERENCE_LEVELS.join(", ")}`,
+    };
+  }
+  return { state: "declared", level };
 }
 
 /** Read the marker without throwing. `unmarked` means "empty or not ours yet";
@@ -105,16 +141,10 @@ export async function readMarker(root: string): Promise<MarkerState> {
     return { state: "foreign", detail: `kind: ${kind ?? "(absent)"}` };
   }
   const version = Number(/^\s*version:\s*(\d+)\s*$/m.exec(text)?.[1] ?? "1");
-  const levelText = markerLevelText(text);
-  if (levelText === undefined) return { state: "marked", version };
-  const level = levelText.toLowerCase();
-  if (!isConferenceLevel(level)) {
-    return {
-      state: "foreign",
-      detail: `level: ${levelText} is not one of ${CONFERENCE_LEVELS.join(", ")}`,
-    };
-  }
-  return { state: "marked", version, level };
+  const level = markerLevel(text);
+  if (level.state === "absent") return { state: "marked", version };
+  if (level.state === "invalid") return { state: "foreign", detail: level.detail };
+  return { state: "marked", version, level: level.level };
 }
 
 /** The NCAA level a data home collects at. `declared` is false when the

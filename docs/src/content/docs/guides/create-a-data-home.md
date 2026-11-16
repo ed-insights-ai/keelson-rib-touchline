@@ -29,9 +29,14 @@ and `touchline-backfill` workflows, by the daily cadence for a pinned
 conference, and once more by `collect-board` itself. That is what keeps
 Division I data out of a Division II home after a slip of the project picker.
 A level that is not one of the three makes the marker unusable: the home is
-refused like a foreign one, never guessed past.
+refused like a foreign one, never guessed past. The line is read as YAML
+reads it: an inline comment is ignored (`level: d1 # Division I` is d1) and
+quotes are allowed, but an empty value, a second word (`level: d4 extra`)
+or the key stated twice is refused, not read as a missing level. Every
+reader (the rib, the cadence and workflow guards, and `collect-board`)
+holds one rule, checked against one set of vectors.
 
-A marker with no `level` is read as `d2`, and every reader says it assumed
+A marker with no `level` line is read as `d2`, and every reader says it assumed
 so. Every home made before levels existed is Division II (until the
 Division I men's conferences were onboarded the membership record held
 nothing else), so for those homes d2 is what the data already is. To declare
