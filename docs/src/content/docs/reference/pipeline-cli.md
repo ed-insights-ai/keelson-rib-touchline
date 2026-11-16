@@ -25,7 +25,7 @@ independently. Named gaps are data, not failures.
 - **Inputs**: `--season`, `--gender`, `--conference`, `--programmes` (comma-separated slugs), `--layers` (default all four), `--config`, `--membership-extrapolated`, `--workers`/`--serial`, `--programme-timeout`, `--refetch`.
 - **Pacing** (environment, all optional): `TOUCHLINE_HOST_SPACING` (seconds between requests to one host, default 0.2), `TOUCHLINE_PACED_SPACING` (the interval for a host presumed to challenge, default 5), `TOUCHLINE_CHALLENGED_SPACING` (the interval for a host after its first challenge this run, an empty HTTP 202 or an HTTP 459 rate answer, default 12: on the batch 4 SAC backfill of 2026-09-05, run 7d7fe964, 5 seconds still drew 202s on all five PrestoSports hosts and lost 60 box scores to 459, while 12 seconds read every page at 200), `TOUCHLINE_CHALLENGE_BACKOFF` (waits before each retry of a challenge, default `30,90`), `TOUCHLINE_HOST_COOLDOWN` (seconds a host that kept challenging is left alone, default 600), `TOUCHLINE_PACED_HOSTS` (hosts to pace from the first request; PrestoSports hosts always are). Waits print as `pacing:` lines.
 - **Outputs**: `data/fixtures/{season}-{gender}-{conference}.json` and its `rosters`, `stats`, and `matches` siblings; the merged `data/coverage.json`; `data/errors/collect-board-{season}-{gender}-{conference}.json` when gaps were named.
-- **Exit**: 0 the coverage manifest was written, gaps and all; 1 the manifest write failed; 2 usage.
+- **Exit**: 0 the coverage manifest was written, gaps and all; 1 the manifest write failed; 2 usage, or a programme whose authored membership windows cover no season the collect reads (named on stderr with the season; nothing is fetched or written).
 
 ### probe
 

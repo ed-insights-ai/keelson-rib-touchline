@@ -167,6 +167,168 @@ def conference_for(
     return _window_conference(genders.get(gender), season_year)
 
 
+def has_windows(
+    slug: str,
+    gender: str,
+    *,
+    document: dict[str, Any] | None = None,
+) -> bool:
+    """Whether the document authors any membership window for the programme.
+
+    The line between the two ways a programme's conference is known. One
+    with authored windows is governed by them alone: a season none of them
+    covers is a season it is in no conference, never a season to guess from
+    its stanza. One with none is a programme the reference has not reached,
+    and its stanza's ``conference`` is all there is.
+    """
+    membership_document = document if document is not None else load_membership()
+    memberships = membership_document.get("memberships")
+    if not isinstance(memberships, dict):
+        return False
+    genders = memberships.get(slug)
+    if not isinstance(genders, dict):
+        return False
+    windows = genders.get(gender)
+    return isinstance(windows, list) and any(
+        isinstance(window, dict)
+        and _is_year(window.get("from_season"))
+        and _is_year(window.get("to_season"))
+        and isinstance(window.get("conference"), str)
+        for window in windows
+    )
+
+
+def authored_through(
+    conference: str,
+    gender: str,
+    *,
+    document: dict[str, Any] | None = None,
+) -> int:
+    """The last season any window authors for one conference and gender.
+
+    The conference's own horizon, 0 when no window names it. Scoped to the
+    conference, never the file, for the reason ``resolveConference`` in
+    src/membership.ts gives: one conference authored through 2025 beside
+    another through 2026 must not read its horizon off its neighbour. The
+    code is compared without case, as that resolver compares it.
+    """
+    membership_document = document if document is not None else load_membership()
+    memberships = membership_document.get("memberships")
+    if not isinstance(memberships, dict):
+        return 0
+    wanted = conference.strip().casefold()
+    through = 0
+    for genders in memberships.values():
+        if not isinstance(genders, dict):
+            continue
+        windows = genders.get(gender)
+        if not isinstance(windows, list):
+            continue
+        for window in windows:
+            if not isinstance(window, dict):
+                continue
+            named = window.get("conference")
+            to_season = window.get("to_season")
+            if (
+                isinstance(named, str)
+                and named.casefold() == wanted
+                and _is_year(to_season)
+                and to_season > through
+            ):
+                through = to_season
+    return through
+
+
+def effective_season(
+    conference: str,
+    gender: str,
+    season_year: int,
+    *,
+    document: dict[str, Any] | None = None,
+) -> int:
+    """The season whose windows answer for ``season_year`` in a conference.
+
+    The season itself, unless it lies past the conference's last authored
+    season: then that last season, carried forward. This is the one place a
+    season no window covers is still answered, and it is the answer
+    ``resolveConference`` gives (the collect it resolves is stamped
+    ``membership_extrapolated``): the GAC authored through 2025 keeps its
+    2025 members for a 2026 collect. It is a statement about the
+    conference's horizon, not about any programme, so a programme that left
+    inside the horizon (Mercyhurst, PSAC through 2023 while the PSAC is
+    authored through 2026) is not carried anywhere.
+    """
+    through = authored_through(conference, gender, document=document)
+    return through if 0 < through < season_year else season_year
+
+
+def conference_in_effect(
+    slug: str,
+    gender: str,
+    season_year: int,
+    conference: str,
+    *,
+    document: dict[str, Any] | None = None,
+) -> str | None:
+    """A programme's conference for one season, as a collect of ``conference`` reads it.
+
+    The programme's own window covering the season always answers. With none,
+    the only answer left is the carry-forward: the season lies past
+    ``conference``'s authored horizon and the programme's window for that
+    conference's last authored season names that same conference, so the
+    programme is still read as its member (``effective_season``). Anything
+    else is None, a season the programme is in no conference: it is never
+    filled in from a stanza, and never from another conference's horizon.
+
+    So a programme whose own windows already say where it went is not
+    carried anywhere (Trevecca, GSC from 2024, is no G-MAC member in 2024
+    whatever the G-MAC's horizon is), and one carried forward is carried
+    only into the conference being read.
+    """
+    membership_document = document if document is not None else load_membership()
+    declared = conference_for(slug, gender, season_year, document=membership_document)
+    if declared is not None:
+        return declared
+    effective = effective_season(
+        conference, gender, season_year, document=membership_document
+    )
+    if effective == season_year:
+        return None
+    carried = conference_for(slug, gender, effective, document=membership_document)
+    if carried is not None and carried.casefold() == conference.strip().casefold():
+        return carried
+    return None
+
+
+def members_in_effect(
+    conference: str,
+    gender: str,
+    season_year: int,
+    *,
+    document: dict[str, Any] | None = None,
+) -> set[str]:
+    """Every slug ``conference_in_effect`` places in the conference that season.
+
+    ``members_of`` with the conference's horizon honoured: identical to it
+    for every season the conference authors, and its last authored season's
+    members, less any whose own window has since moved them, for a season
+    past that.
+    """
+    membership_document = document if document is not None else load_membership()
+    memberships = membership_document.get("memberships")
+    if not isinstance(memberships, dict):
+        return set()
+    return {
+        slug
+        for slug in memberships
+        if isinstance(slug, str)
+        and conference_in_effect(
+            slug, gender, season_year, conference, document=membership_document
+        )
+        == conference
+    }
+
+
 def division_for(
     slug: str,
     gender: str,

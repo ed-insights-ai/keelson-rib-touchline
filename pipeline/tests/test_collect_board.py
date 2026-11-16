@@ -463,11 +463,177 @@ def test_programme_conference_falls_back_to_the_stanza_without_a_document() -> N
         collect_board.programme_conference("trevecca", school, "men", 2022, document)
         == "G-MAC"
     )
-    # No window covering the season: the stanza is the default.
+    # A programme the reference authors no window for: the stanza is all
+    # there is, with a document or without.
     assert (
-        collect_board.programme_conference("trevecca", school, "men", 2025, document)
+        collect_board.programme_conference("harding", school, "men", 2025, document)
         == "GSC"
     )
+
+
+def test_programme_conference_never_names_the_stanza_for_an_uncovered_season() -> None:
+    """Windows 2022-2023 and a stanza that still says GSC: 2025 is not GSC."""
+    school = SchoolConfig(
+        name="Trevecca",
+        abbreviation="TNU",
+        conference="GSC",
+        prefix="",
+        base_url="https://trevecca.example",
+    )
+    document = {
+        "memberships": {
+            "trevecca": {"men": [_window("G-MAC", 2022, 2023)]},
+            "tiffin": {"men": [_window("G-MAC", 2022, 2026)]},
+        }
+    }
+    with pytest.raises(collect_board.UncoveredSeason, match="trevecca .* 2025"):
+        collect_board.programme_conference("trevecca", school, "men", 2025, document)
+    # Collected as a GSC member it is refused the same way: the G-MAC authors
+    # 2025, so nothing is carried forward, and GSC is only what the stanza says.
+    for conference in ("GSC", "G-MAC"):
+        with pytest.raises(collect_board.UncoveredSeason):
+            collect_board.programme_conference(
+                "trevecca", school, "men", 2025, document, conference=conference
+            )
+    # Past the conference's own horizon its last member is carried forward.
+    del document["memberships"]["tiffin"]
+    assert (
+        collect_board.programme_conference(
+            "trevecca", school, "men", 2025, document, conference="G-MAC"
+        )
+        == "G-MAC"
+    )
+
+
+def _mover_case() -> tuple[list[SchoolConfig], dict]:
+    """Mercyhurst's shape: PSAC windows through 2023, the stanza still PSAC."""
+    schools = [
+        SchoolConfig(
+            name=name,
+            abbreviation=abbreviation,
+            conference="PSAC",
+            prefix="",
+            base_url=f"https://{abbreviation.lower()}.example/sports/mens-soccer",
+            enabled=True,
+        )
+        for name, abbreviation in (("Mercyhurst", "MU"), ("Gannon", "GU"))
+    ]
+    document = {
+        "version": 1,
+        "seasons": {"from": 2022, "to": 2026},
+        "conferences": ["PSAC", "GAC", "independent", "non_member"],
+        "memberships": {
+            "mercyhurst": {"men": [_window("PSAC", 2022, 2023)]},
+            "gannon": {"men": [_window("PSAC", 2022, 2026)]},
+            # A conference authored through 2025 only.
+            "harding": {"men": [_window("GAC", 2022, 2025)]},
+        },
+    }
+    return schools, document
+
+
+def test_uncovered_programmes_names_only_what_no_window_covers() -> None:
+    _, document = _mover_case()
+    uncovered = collect_board.uncovered_programmes
+    wanted = ["gannon", "mercyhurst", "no-windows-at-all"]
+    assert uncovered(wanted, "men", 2023, "PSAC", document) == []
+    assert uncovered(wanted, "men", 2024, "PSAC", document) == ["mercyhurst"]
+    assert uncovered(wanted, "men", 2026, "PSAC", document) == ["mercyhurst"]
+    # A member carried forward past its conference's horizon is covered: this
+    # is the extrapolated collect, GAC authored through 2025 asked for 2026.
+    assert uncovered(["harding"], "men", 2026, "GAC", document) == []
+    # Carried into its own conference only.
+    assert uncovered(["harding"], "men", 2026, "PSAC", document) == ["harding"]
+    # No membership document at all: the run keeps the stanza defaults.
+    assert uncovered(wanted, "men", 2024, "PSAC", None) == []
+
+
+def test_a_collect_refuses_a_programme_no_window_covers_before_any_fetch(
+    monkeypatch,
+    tmp_path: Path,
+) -> None:
+    schools, document = _mover_case()
+
+    def no_fetch(*args, **kwargs):
+        raise AssertionError("a refused collect must not fetch")
+
+    monkeypatch.setattr(collect_board, "load_schools", lambda path: schools)
+    monkeypatch.setattr(collect_board, "_membership_document", lambda: document)
+    monkeypatch.setattr(collect_board, "collect_programme", no_fetch)
+    monkeypatch.setattr(collect_board.paths, "data_root", lambda: tmp_path)
+
+    with pytest.raises(collect_board.UncoveredSeason) as refusal:
+        collect_board.collect(
+            season=2024,
+            gender="men",
+            conference="PSAC",
+            wanted=["gannon", "mercyhurst"],
+            layers=(LAYER_SCHEDULE,),
+            config_path=tmp_path / "schools.toml",
+            membership_extrapolated=False,
+        )
+    assert refusal.value.programmes == ["mercyhurst"]
+    message = str(refusal.value)
+    assert message.startswith(
+        "refused: no men membership window covers 2024 for mercyhurst "
+        "(windows: PSAC 2022-2023)."
+    )
+    assert "cannot be collected as a PSAC member for 2024" in message
+    assert not (tmp_path / "data").exists()
+
+
+def test_main_exits_2_naming_the_programme_and_the_season(
+    monkeypatch,
+    tmp_path: Path,
+    capsys,
+) -> None:
+    schools, document = _mover_case()
+    monkeypatch.setattr(collect_board, "load_schools", lambda path: schools)
+    monkeypatch.setattr(collect_board, "_membership_document", lambda: document)
+    monkeypatch.setattr(collect_board, "sync_membership_reference", lambda: None)
+    monkeypatch.setattr(collect_board, "sync_programmes_reference", lambda: None)
+    monkeypatch.setattr(collect_board.paths, "data_root", lambda: tmp_path)
+
+    def run(season: str, programmes: str) -> int:
+        monkeypatch.setattr(
+            sys,
+            "argv",
+            [
+                "collect-board",
+                "--season",
+                season,
+                "--gender",
+                "men",
+                "--conference",
+                "PSAC",
+                "--programmes",
+                programmes,
+                "--layers",
+                LAYER_SCHEDULE,
+            ],
+        )
+        return collect_board.main()
+
+    assert run("2024", "mercyhurst") == 2
+    captured = capsys.readouterr()
+    assert "mercyhurst (windows: PSAC 2022-2023)" in captured.err
+    assert "no men membership window covers 2024" in captured.err
+    # Nothing fetched, nothing written: no season file, no coverage manifest.
+    assert not (tmp_path / "data").exists()
+
+    # A season file that already lists the programme (collected under the old
+    # stanza default) widens the ask to it; the refusal says where it came from.
+    fixtures = tmp_path / "data" / "fixtures" / "2025-men-psac.json"
+    fixtures.parent.mkdir(parents=True)
+    stale = json.dumps({"programmes": [{"slug": "gannon"}, {"slug": "mercyhurst"}]})
+    fixtures.write_text(stale, encoding="utf-8")
+    assert run("2025", "gannon") == 2
+    captured = capsys.readouterr()
+    assert "no men membership window covers 2025 for mercyhurst" in captured.err
+    assert (
+        "mercyhurst came from this data home's existing 2025-men-psac" in captured.err
+    )
+    assert fixtures.read_text(encoding="utf-8") == stale
 
 
 def test_display_name_reaches_the_fixtures_payload_but_never_the_slug(

@@ -730,6 +730,112 @@ def test_members_of_resolves_a_mid_window_mover_per_season():
     assert membership.members_of("GAC", "women", 2022, document=document) == set()
 
 
+# ── a season no window covers ────────────────────────────────────────────────
+
+
+def _horizon_document() -> dict:
+    """Two conferences with different horizons, and every way to be uncovered.
+
+    UPPER is authored through 2026, LOWER through 2025 only. ``leaver`` left
+    UPPER after 2023 (the Mercyhurst shape), ``arriver`` joined it in 2025,
+    ``stayer`` is a LOWER member through LOWER's last authored season, and
+    ``mover`` left LOWER for UPPER in 2025 (the Trevecca shape).
+    """
+    return {
+        "version": 1,
+        "seasons": {"from": 2022, "to": 2026},
+        "conferences": ["UPPER", "LOWER", "independent", "non_member"],
+        "conference_profiles": _profiles("UPPER", "LOWER"),
+        "memberships": {
+            "anchor": {"men": [_window("UPPER", 2022, 2026)]},
+            "leaver": {"men": [_window("UPPER", 2022, 2023)]},
+            "arriver": {"men": [_window("UPPER", 2025, 2026)]},
+            "stayer": {"men": [_window("LOWER", 2022, 2025)]},
+            "mover": {
+                "men": [_window("LOWER", 2022, 2024), _window("UPPER", 2025, 2026)]
+            },
+        },
+    }
+
+
+def test_a_conference_has_its_own_authored_horizon():
+    document = _horizon_document()
+    assert membership.authored_through("UPPER", "men", document=document) == 2026
+    assert membership.authored_through("LOWER", "men", document=document) == 2025
+    # Without case, as the rib's resolveConference compares the code.
+    assert membership.authored_through(" lower ", "men", document=document) == 2025
+    assert membership.authored_through("UPPER", "women", document=document) == 0
+    assert membership.authored_through("independent", "men", document=document) == 0
+    # A season is carried forward only past the conference's own horizon.
+    assert membership.effective_season("LOWER", "men", 2026, document=document) == 2025
+    assert membership.effective_season("LOWER", "men", 2024, document=document) == 2024
+    assert membership.effective_season("UPPER", "men", 2026, document=document) == 2026
+    assert (
+        membership.effective_season("UPPER", "women", 2026, document=document) == 2026
+    )
+
+
+def test_a_programme_with_windows_is_governed_by_them_alone():
+    document = _horizon_document()
+
+    def reads(slug: str, season: int, conference: str) -> str | None:
+        return membership.conference_in_effect(
+            slug, "men", season, conference, document=document
+        )
+
+    assert membership.has_windows("leaver", "men", document=document)
+    assert not membership.has_windows("leaver", "women", document=document)
+    assert not membership.has_windows("stranger", "men", document=document)
+
+    # Inside its windows a programme is where they say.
+    assert reads("leaver", 2023, "UPPER") == "UPPER"
+    # After its last window it is in no conference: UPPER is authored
+    # through 2026, so nothing is carried forward for 2024.
+    for season in (2024, 2025, 2026):
+        assert reads("leaver", season, "UPPER") is None
+    # Before its first window, the same.
+    assert reads("arriver", 2024, "UPPER") is None
+    assert reads("arriver", 2025, "UPPER") == "UPPER"
+
+
+def test_a_conference_past_its_horizon_carries_its_last_members_forward():
+    document = _horizon_document()
+
+    def reads(slug: str, season: int, conference: str) -> str | None:
+        return membership.conference_in_effect(
+            slug, "men", season, conference, document=document
+        )
+
+    # LOWER is authored through 2025: its 2025 member is still read as its
+    # member for a 2026 collect, the season the rib resolves as extrapolated.
+    assert reads("stayer", 2026, "LOWER") == "LOWER"
+    assert reads("stayer", 2026, "lower") == "LOWER"
+    # Carried into the conference being read, never into another one.
+    assert reads("stayer", 2026, "UPPER") is None
+    # A programme whose own window covers the season is not carried anywhere:
+    # the mover is UPPER's from 2025, whatever LOWER's horizon is.
+    assert reads("mover", 2026, "LOWER") == "UPPER"
+    assert reads("mover", 2024, "LOWER") == "LOWER"
+
+    assert membership.members_in_effect("LOWER", "men", 2026, document=document) == {
+        "stayer"
+    }
+    assert membership.members_in_effect("LOWER", "men", 2024, document=document) == {
+        "stayer",
+        "mover",
+    }
+    assert membership.members_in_effect("UPPER", "men", 2026, document=document) == {
+        "anchor",
+        "arriver",
+        "mover",
+    }
+    # Where the conference authors the season the set is members_of exactly.
+    for season in range(2022, 2027):
+        assert membership.members_in_effect(
+            "UPPER", "men", season, document=document
+        ) == membership.members_of("UPPER", "men", season, document=document)
+
+
 def _divisional_window(
     conference: str, division: str, from_season: int, to_season: int
 ) -> dict:

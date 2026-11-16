@@ -73,10 +73,11 @@ from urllib3.util.retry import Retry
 from src.config import SchoolConfig, programme_slug
 from src.membership import (
     STRUCTURAL_CODES,
-    conference_for,
+    conference_in_effect,
     conference_profiles,
+    has_windows,
     load_membership,
-    members_of,
+    members_in_effect,
 )
 from src.page_state import BoxArchive, PageState, PageStateStore, content_signature
 from src.tls import TruststoreHTTPAdapter
@@ -1145,8 +1146,21 @@ def conference_members(
     year stops being a conference game.  With a ``season`` each school's
     conference is therefore the membership window covering that season, and the
     stanza field is only the default for a programme with no window declared
-    for it.  A slug the windows place in the conference but no stanza configures
-    (a dead host recorded membership-only) is a member too: a fixture against it
+    for it at all.
+
+    A programme that HAS authored windows is governed by them alone: a season
+    none of them covers is a season it is in no conference.  The stanza used
+    to answer for such a season too, and it answered with the conference the
+    programme had already left: Mercyhurst, whose PSAC windows end in 2023,
+    stayed a PSAC member for 2024, 2025 and 2026 because its stanza still
+    says PSAC.  The one uncovered season still answered is one past the
+    CONFERENCE's own authored horizon, where its last authored season's
+    members are carried forward (``membership.conference_in_effect``): the
+    rule the rib's ``resolveConference`` resolves an extrapolated collect by,
+    so the GAC authored through 2025 keeps its members for a 2026 collect.
+
+    A slug the windows place in the conference but no stanza configures (a
+    dead host recorded membership-only) is a member too: a fixture against it
     is still a conference game.  Without a ``season`` the set is the stanza
     field alone, as before.
     """
@@ -1164,12 +1178,15 @@ def conference_members(
             continue
         slug = programme_slug(school.name)
         resolved = (
-            conference_for(slug, gender, season, document=membership_document)
-            or school.conference
+            conference_in_effect(
+                slug, gender, season, conference, document=membership_document
+            )
+            if has_windows(slug, gender, document=membership_document)
+            else school.conference
         )
         if resolved == conference:
             members.add(slug)
-    return members | members_of(
+    return members | members_in_effect(
         conference, gender, season, document=membership_document
     )
 

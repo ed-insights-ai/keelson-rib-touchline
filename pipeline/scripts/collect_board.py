@@ -54,7 +54,13 @@ from src.fetch_pool import (
 )
 from src.config import DEFAULT_CONFIG, SchoolConfig, load_schools
 from src.identity import IdentityReport, SeasonSources, resolve_matches
-from src.membership import conference_for, division_for, load_membership
+from src.membership import (
+    conference_for,
+    conference_in_effect,
+    division_for,
+    has_windows,
+    load_membership,
+)
 from src.page_state import BoxArchive, PageStateStore
 from src.programmes import load_programmes, programme_points
 from src.recipes import PRESTO, SIDEARM, NoCollector, Recipe, live_recipe
@@ -290,12 +296,86 @@ def _programme_points() -> dict[str, tuple[float, float]]:
         return {}
 
 
+class UncoveredSeason(ValueError):
+    """A programme with authored windows was asked for a season none covers."""
+
+    def __init__(self, message: str, programmes: list[str]) -> None:
+        super().__init__(message)
+        self.programmes = programmes
+
+
+def _authored_windows(slug: str, gender: str, document: dict[str, object]) -> str:
+    """A programme's windows as the refusal prints them: "PSAC 2022-2023"."""
+    genders = (document.get("memberships") or {}).get(slug) or {}  # type: ignore[union-attr]
+    return ", ".join(
+        f"{window['conference']} {window['from_season']}-{window['to_season']}"
+        for window in genders.get(gender) or []
+        if isinstance(window, dict)
+    )
+
+
+def uncovered_programmes(
+    wanted: list[str],
+    gender: str,
+    season: int,
+    conference: str,
+    document: dict[str, object] | None,
+) -> list[str]:
+    """The asked-for programmes whose windows cover no season this collect reads.
+
+    A programme with authored windows is governed by them alone, so one of
+    these cannot be collected as a member of anything for the season: its
+    stanza would file it under the conference it has left (Mercyhurst as a
+    PSAC member in 2024).  A programme with no window at all is not among
+    them (its stanza is all there is), and neither is a member carried
+    forward past the conference's own authored horizon
+    (``conference_in_effect``), which is what an extrapolated collect is.
+    """
+    if document is None:
+        return []
+    return [
+        slug
+        for slug in wanted
+        if has_windows(slug, gender, document=document)
+        and conference_in_effect(slug, gender, season, conference, document=document)
+        is None
+    ]
+
+
+def refuse_uncovered(
+    wanted: list[str],
+    gender: str,
+    season: int,
+    conference: str,
+    document: dict[str, object] | None,
+) -> None:
+    """Refuse a collect that would file a programme under a guessed conference."""
+    uncovered = uncovered_programmes(wanted, gender, season, conference, document)
+    if not uncovered or document is None:
+        return
+    named = "; ".join(
+        f"{slug} (windows: {_authored_windows(slug, gender, document)})"
+        for slug in uncovered
+    )
+    raise UncoveredSeason(
+        f"refused: no {gender} membership window covers {season} for {named}. "
+        "A programme with authored windows is in no conference for a season "
+        f"none of them covers, so it cannot be collected as a {conference} "
+        f"member for {season}. Author the window that was true in "
+        "data/reference/membership.json (an independent or non_member window "
+        "if that is what was true), or leave the programme out of the collect.",
+        uncovered,
+    )
+
+
 def programme_conference(
     slug: str,
     school: SchoolConfig,
     gender: str,
     season: int,
     document: dict[str, object] | None,
+    *,
+    conference: str | None = None,
 ) -> str:
     """The conference a configured programme played in for one season.
 
@@ -303,14 +383,30 @@ def programme_conference(
     current one; a programme that changed conference inside the window has a
     second window on the same slug, and the fixtures file for an earlier
     season must name the conference it played in then, not the one it plays
-    in now.  The stanza is only the default for a programme with no window
-    covering the season (or no membership document at all).
+    in now.  The stanza is only the default for a programme the reference
+    authors no window for (or with no membership document at all).
+
+    A programme with authored windows is answered by them alone.  With the
+    collect's ``conference``, a member carried forward past that conference's
+    authored horizon is still its member (``conference_in_effect``), the same
+    carry forward that resolved the collect's members; any other season no
+    window covers raises ``UncoveredSeason`` rather than name the stanza's
+    conference, which ``collect`` has already refused before any fetch.
     """
-    if document is not None:
-        declared = conference_for(slug, gender, season, document=document)
-        if declared:
-            return declared
-    return school.conference
+    if document is None or not has_windows(slug, gender, document=document):
+        return school.conference
+    declared = (
+        conference_for(slug, gender, season, document=document)
+        if conference is None
+        else conference_in_effect(slug, gender, season, conference, document=document)
+    )
+    if declared is None:
+        raise UncoveredSeason(
+            f"{slug} has no {gender} membership window covering {season} "
+            f"(windows: {_authored_windows(slug, gender, document)})",
+            [slug],
+        )
+    return declared
 
 
 def programme_division(
@@ -764,6 +860,10 @@ def collect(
     # Membership is per season: the window covering this season decides, the
     # stanza's conference is only the default for a programme with no window.
     membership_document = _membership_document()
+    # Before any fetch: a programme whose authored windows cover no season
+    # this collect reads would be filed under its stanza's conference, the
+    # one it has left.  The run stops naming it instead.
+    refuse_uncovered(wanted, gender, season, conference, membership_document)
     members = conference_members(
         schools, gender, conference, season=season, document=membership_document
     )
@@ -1127,7 +1227,12 @@ def _assemble(
                 # Membership is per season: the window wins, the stanza is
                 # the default; a stranger is filed under the collected one.
                 "conference": programme_conference(
-                    slug, candidates[slug], gender, season, membership_document
+                    slug,
+                    candidates[slug],
+                    gender,
+                    season,
+                    membership_document,
+                    conference=conference,
                 )
                 if slug in candidates
                 else conference,
@@ -1748,27 +1853,42 @@ def main() -> int:
                 if isinstance(detail, dict)
             }
 
-    fixtures, rosters, stats, matches, cells, errors, duplicates = collect(
-        season=args.season,
-        gender=args.gender,
-        conference=args.conference,
-        wanted=wanted,
-        layers=layers,
-        config_path=Path(args.config),
-        membership_extrapolated=args.membership_extrapolated,
-        stored_matches=stored_matches,
-        refetch=args.refetch,
-        workers=1 if args.serial else args.workers,
-        task_budget=args.programme_timeout,
-        # Box scores checkpoint to their season file as they confirm: a run
-        # killed at the node budget keeps them, and the next run's
-        # incremental harvest starts from them instead of from zero.
-        matches_checkpoint=(
-            (lambda payload: _atomic_json(matches_path, payload))
-            if LAYER_MATCHES in layers
-            else None
-        ),
-    )
+    try:
+        fixtures, rosters, stats, matches, cells, errors, duplicates = collect(
+            season=args.season,
+            gender=args.gender,
+            conference=args.conference,
+            wanted=wanted,
+            layers=layers,
+            config_path=Path(args.config),
+            membership_extrapolated=args.membership_extrapolated,
+            stored_matches=stored_matches,
+            refetch=args.refetch,
+            workers=1 if args.serial else args.workers,
+            task_budget=args.programme_timeout,
+            # Box scores checkpoint to their season file as they confirm: a run
+            # killed at the node budget keeps them, and the next run's
+            # incremental harvest starts from them instead of from zero.
+            matches_checkpoint=(
+                (lambda payload: _atomic_json(matches_path, payload))
+                if LAYER_MATCHES in layers
+                else None
+            ),
+        )
+    except UncoveredSeason as refusal:
+        # Nothing was fetched and nothing was written: the season files stand
+        # as they were.  Named on stderr, exit 2 like any ask the collector
+        # cannot honour.
+        print(str(refusal), file=sys.stderr)
+        absorbed = [slug for slug in refusal.programmes if slug in widened]
+        if absorbed:
+            print(
+                f"{', '.join(absorbed)} came from this data home's existing "
+                f"{season_key} files, which a run always refreshes whole; they "
+                "were collected under the old stanza default.",
+                file=sys.stderr,
+            )
+        return 2
     written: list[Path] = []
     if LAYER_SCHEDULE in layers:
         _atomic_json(fixture_path, fixtures)

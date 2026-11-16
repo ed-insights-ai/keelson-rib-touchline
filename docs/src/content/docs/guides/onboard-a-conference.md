@@ -124,11 +124,24 @@ records page; never assume it from memory:
 A programme that changes conference inside the window (Trevecca, G-MAC
 2022-2023 then GSC from 2024) gets a second window on the same slug and
 keeps ONE stanza in `schools.toml`. The stanza's `conference` is its
-current conference and only the default: the collect resolves each
-programme's conference per season from the windows, both for the member
-set behind the conference-game test and for the `programmes[].conference`
-the fixtures file carries, and falls back to the stanza only for a season
-no window covers.
+current conference and only the default for a programme the reference
+authors no window for at all: the collect resolves each programme's
+conference per season from the windows, both for the member set behind
+the conference-game test and for the `programmes[].conference` the
+fixtures file carries. A programme that has windows is governed by them
+alone, so a season none of them covers is a season it is in no conference:
+Mercyhurst, PSAC 2022-2023, is not a PSAC member in 2024 whatever its
+stanza says, and a collect asked to collect it as one stops before any
+fetch, exit 2, naming the programme and the season. The stanza used to
+answer for such a season, with the conference the programme had left
+(measured 2026-11-15: 169 programme-seasons across 101 of the 212
+collected conference-seasons, every one a leaver past its last window or
+an arrival before its first). The one uncovered season still answered is
+one past the conference's own authored horizon: the GAC, authored through
+2025, keeps its 2025 members for the 2026 collect the rib resolves as
+extrapolated, unless a member's own window has since moved it. So a
+leaver's window must END at its last season and nothing more is needed;
+do not leave the stanza to say it.
 
 A conference that prints its standings in **divisions** (Conference
 Carolinas: East, Northwest and Southwest from 2023) puts the division on
