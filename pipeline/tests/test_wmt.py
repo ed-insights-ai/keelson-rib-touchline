@@ -39,6 +39,12 @@ from src.sidearm_live import (
 FIXTURES = Path(__file__).parent / "fixtures"
 
 
+@pytest.fixture(autouse=True)
+def _fresh_generations(monkeypatch) -> None:
+    """Each test meets its sites for the first time."""
+    monkeypatch.setattr(wmt, "_GENERATIONS", {})
+
+
 def _fixture(name: str) -> str:
     return (FIXTURES / name).read_text(encoding="utf-8")
 
@@ -870,3 +876,274 @@ def test_the_board_collector_collects_all_four_wmt_layers(
     assert list(matches["matches"]) == ["wmt:seattle-u:2077"]
     assert len(matches["missing"]) == 18
     assert cells["2025/men/seattle-u/matches"]["count"] == 1
+
+
+# --- The WordPress generation ---------------------------------------------------
+
+SC = "https://gamecocksonline.com/sports/msoc"
+SC_SCHEDULE_URL = f"{SC}/schedule/season/2025/"
+SC_CUMESTATS_URL = f"{SC}/cumestats/season/2025/"
+SC_TEAM_URL = wmt.team_season_url(STATS_ORIGIN, 603646)
+SC_GAME_URL = wmt.game_url(STATS_ORIGIN, 6393084)
+UK = "https://ukathletics.com/sports/msoc"
+
+
+class _WordPressSite(_Site):
+    """A WordPress site: the season pages answer at their trailing-slash
+    address (the site redirects there), and any other season path answers
+    the page it was handed for it, as the real sites serve their current
+    season under any season path."""
+
+    def get(self, url: str, timeout: int | None = None, headers: object = None):
+        if (
+            not url.endswith("/")
+            and "/proxy-api/" not in url
+            and f"{url}/" in self.pages
+        ):
+            self.requests.append((url, headers))
+            answer = super().get(f"{url}/", timeout, headers)
+            self.requests.pop()
+            return answer
+        return super().get(url, timeout, headers)
+
+
+def _south_carolina_site(**extra: str) -> _WordPressSite:
+    return _WordPressSite(
+        {
+            SC_SCHEDULE_URL: _fixture("wmt_southcarolina_schedule_2025.html"),
+            f"{SC}/roster/season/2025/": _fixture("wmt_southcarolina_roster_2025.html"),
+            SC_CUMESTATS_URL: _fixture("wmt_southcarolina_cumestats_2025.html"),
+            SC_TEAM_URL: _fixture("wmt_games_team_603646.json"),
+            SC_GAME_URL: _fixture("wmt_games_game_6393084.json"),
+            **extra,
+        },
+        etags={SC_TEAM_URL: 'W/"team-603646"'},
+    )
+
+
+def _kentucky_site() -> _WordPressSite:
+    return _WordPressSite(
+        {
+            f"{UK}/schedule/season/2025/": _fixture("wmt_kentucky_schedule_2025.html"),
+            f"{UK}/roster/season/2025/": _fixture("wmt_kentucky_roster_2025.html"),
+            f"{UK}/cumestats/season/2025/": _fixture(
+                "wmt_kentucky_cumestats_2025.html"
+            ),
+            wmt.team_season_url(STATS_ORIGIN, 603965): _fixture(
+                "wmt_games_team_603965.json"
+            ),
+        }
+    )
+
+
+def _wp_schedule(
+    site: _Site, base: str, owner: str
+) -> tuple[str, list[dict[str, object]]]:
+    html = wmt.fetch_layer(site, base, 2025, LAYER_SCHEDULE).page.html
+    url = f"{base}/schedule/season/2025/"
+    return html, wmt.parse_schedule(
+        html, page_url=url, year=2025, owner_slug=owner, aliases={}
+    )
+
+
+def test_a_wordpress_schedule_bundles_the_page_cumestats_and_team_season() -> None:
+    site = _south_carolina_site()
+    html, fixtures = _wp_schedule(site, SC, "south-carolina")
+    bundle = wmt.read_bundle(html)
+    assert bundle.generation == wmt.GENERATION_WORDPRESS
+    assert [part.role for part in bundle.parts] == ["page", "cumestats", "season"]
+    assert bundle.final_url == SC_SCHEDULE_URL
+    assert site.urls() == [f"{SC}/schedule/season/2025", SC_CUMESTATS_URL, SC_TEAM_URL]
+    assert SC_TEAM_URL in site.paced
+    assert len(fixtures) == 20
+    charleston = next(
+        f for f in fixtures if f["id"] == "wmt:south-carolina:20250821-charleston"
+    )
+    # "W 3-2" at Charleston, kicked off 7:30 pm local (JSON-LD startDate).
+    assert charleston == {
+        "id": "wmt:south-carolina:20250821-charleston",
+        "date": "2025-08-21",
+        "home": "charleston",
+        "away": "south-carolina",
+        "status": "final",
+        "source_url": SC_SCHEDULE_URL,
+        "time": "19:30",
+        "venue": "Charleston, S.C.",
+        "home_score": 2,
+        "away_score": 3,
+    }
+    # The two exhibitions are marked "(EXH)" by the site; no result typed,
+    # so neither is final and neither carries a score.
+    exhibitions = [f for f in fixtures if f.get("match_type") == "exhibition"]
+    assert [f["id"] for f in exhibitions] == [
+        "wmt:south-carolina:20250809-nc-state",
+        "wmt:south-carolina:20250816-wofford",
+    ]
+    assert all(
+        f["status"] == "scheduled" and "home_score" not in f for f in exhibitions
+    )
+    # No machine-readable conference flag is published: absent, not derived.
+    assert not any("conference_game" in f for f in fixtures)
+
+
+def test_a_wordpress_site_serving_its_current_season_for_any_path_is_refused() -> None:
+    """The WordPress trap: ``/schedule/season/2031/`` answers HTTP 200 with
+    the 2026 season.  route_vars and the title are the witnesses."""
+    page = _fixture("wmt_southcarolina_schedule_2031.html")
+    site = _WordPressSite({f"{SC}/schedule/season/2031/": page})
+    with pytest.raises(LiveCollectionError, match="served the 2026 season"):
+        wmt.fetch_layer(site, SC, 2031, LAYER_SCHEDULE)
+    # The same page under its own season still proves, by both witnesses.
+    wmt.prove_wordpress_page(
+        page, year=2026, kind=LAYER_SCHEDULE, sport="msoc", url="u"
+    )
+    with pytest.raises(LiveCollectionError, match="titled"):
+        wmt.prove_wordpress_page(
+            page, year=2026, kind=LAYER_ROSTER, sport="msoc", url="u"
+        )
+    with pytest.raises(LiveCollectionError, match="not men's soccer at /sports/wsoc"):
+        wmt.prove_wordpress_page(
+            page, year=2026, kind=LAYER_SCHEDULE, sport="wsoc", url="u"
+        )
+
+
+def test_wordpress_box_scores_are_joined_through_game_by_game_by_date(
+    tmp_path: Path,
+) -> None:
+    html, fixtures = _wp_schedule(_south_carolina_site(), SC, "south-carolina")
+    links = wmt.boxscore_links(html, SC_SCHEDULE_URL)
+    assert len(links) == 18  # every typed result; not the two exhibitions
+    assert links["20250821-charleston"] == SC_GAME_URL
+    # The site's own box-score page for that row embeds the same game.
+    box_page = _fixture("wmt_southcarolina_boxscore_charleston.html")
+    assert 'path="/gamecocksonline/stats/match/full/6393084"' in box_page
+    charleston = next(
+        f for f in fixtures if f["id"] == "wmt:south-carolina:20250821-charleston"
+    )
+    site = _south_carolina_site()
+    detail = wmt.collect_match(site, SC_GAME_URL, 2025, charleston)
+    teams = detail["teams"]
+    assert [team["name"] for team in teams] == ["South Carolina", "Col. of Charleston"]
+    assert [team["score"] for team in teams] == [3, 2]
+    assert detail["home_index"] == 1
+    assert len(detail["scoring"]) == 5
+
+
+def test_kentuckys_skin_reads_the_same_with_a_published_shootout_and_a_thin_box(
+    caplog,
+) -> None:
+    html, fixtures = _wp_schedule(_kentucky_site(), UK, "kentucky")
+    assert len(fixtures) == 21
+    by_date = {f["date"]: f for f in fixtures}
+    shootout = by_date["2025-11-09"]
+    assert (shootout["home"], shootout["away"]) == ("kentucky", "coastal-carolina")
+    assert (shootout["home_score"], shootout["away_score"]) == (0, 0)
+    assert shootout["result_published"] == "T 0-0 (UK 6-5 PKs)"
+    # "L 2-1 2OT" is typed winner first; the letter orients it.
+    saint_louis = by_date["2025-11-20"]
+    assert saint_louis["neutral"] is True
+    assert (saint_louis["home_score"], saint_louis["away_score"]) == (1, 2)
+    # Kentucky's rows link only PDFs; the date join supplies all 19 games.
+    links = wmt.boxscore_links(html, "")
+    assert len(links) == 19
+    assert links[shootout["id"].rpartition(":")[2]] == wmt.game_url(
+        STATS_ORIGIN, 6487961
+    )
+    url = wmt.game_url(STATS_ORIGIN, 6487961)
+    with caplog.at_level(logging.WARNING, logger="src.wmt"):
+        detail = wmt.parse_match_page(
+            PublishedPage(url, url, THIN_GAME), 2025, shootout
+        )
+    assert [team["score"] for team in detail["teams"]] == [0, 0]
+    assert "publishes no play-by-play" in caplog.text
+
+
+def test_wordpress_rosters_are_read_from_the_players_table() -> None:
+    sc = wmt.parse_roster(
+        wmt.fetch_layer(_south_carolina_site(), SC, 2025, LAYER_ROSTER).page.html,
+        page_url="",
+    )
+    assert len(sc) == 28
+    assert sc[0] == {
+        "name": "Filip Versterre",
+        "number": "1",
+        "position": "Goalkeeper",
+        "height": "6'3\"",
+        "hometown": "Copenhagen, Denmark",
+        "class_year": "Sophomore",
+        "source_url": f"{SC}/roster/season/2025/player/filip-versterre/",
+    }
+    uk = wmt.parse_roster(
+        wmt.fetch_layer(_kentucky_site(), UK, 2025, LAYER_ROSTER).page.html, page_url=""
+    )
+    assert uk[0]["weight"] == "185 lbs" and uk[0]["height"] == "6'4\""
+    assert not any(
+        player["name"] in {"Johan Cedergren", "Ryan Zinkhan"} for player in uk
+    )
+
+
+def test_wordpress_statistics_come_from_the_cumestats_iframes_team() -> None:
+    site = _south_carolina_site()
+    fetched = wmt.fetch_layer(site, SC, 2025, LAYER_STATS)
+    assert site.urls() == [f"{SC}/stats/season/2025", SC_CUMESTATS_URL, SC_TEAM_URL]
+    assert fetched.page.final_url == SC_CUMESTATS_URL
+    players, keepers = wmt.parse_stats(fetched.page.html, page_url="")
+    assert (len(players), len(keepers)) == (23, 2)
+    assert players[0]["name"] == "Ethan Ballek" and players[0]["goals"] == 8
+    WMT.assert_served_season(fetched.page, 2025, LAYER_STATS)
+    with pytest.raises(LiveCollectionError):
+        WMT.assert_served_season(fetched.page, 2024, LAYER_STATS)
+
+
+def test_the_board_collector_collects_a_wordpress_programme(
+    monkeypatch, tmp_path: Path
+) -> None:
+    school = SchoolConfig(
+        name="South Carolina",
+        abbreviation="SC",
+        conference="SBC",
+        prefix="",
+        base_url=SC,
+        gender="men",
+        scraper="wmt",
+        live_scraper="wmt",
+        enabled=True,
+    )
+    site = _south_carolina_site()
+    monkeypatch.setattr(collect_board, "load_schools", lambda _path: [school])
+    monkeypatch.setattr(collect_board, "build_session", lambda session=None: site)
+    monkeypatch.setattr(collect_board.paths, "data_root", lambda: tmp_path)
+
+    fixtures, rosters, stats, matches, cells, _errors, _ = collect_board.collect(
+        season=2025,
+        gender="men",
+        conference="SBC",
+        wanted=["south-carolina"],
+        layers=(LAYER_SCHEDULE, LAYER_ROSTER, LAYER_STATS, LAYER_MATCHES),
+        config_path=tmp_path / "schools.toml",
+        membership_extrapolated=False,
+        workers=1,
+    )
+
+    assert {cell["state"] for cell in cells.values()} == {"complete"}
+    assert len(fixtures["fixtures"]) == 20
+    assert len(rosters["rosters"]["south-carolina"]["players"]) == 28
+    assert len(stats["teams"]["south-carolina"]["players"]) == 23
+    assert list(matches["matches"]) == ["wmt:south-carolina:20250821-charleston"]
+    assert len(matches["missing"]) == 17
+
+
+def test_a_site_seen_to_be_wordpress_is_asked_its_own_addresses(monkeypatch) -> None:
+    monkeypatch.setattr(wmt, "_GENERATIONS", {})
+    site = _south_carolina_site()
+    wmt.fetch_layer(site, SC, 2025, LAYER_ROSTER)
+    site.requests.clear()
+    wmt.fetch_layer(site, SC, 2025, LAYER_STATS)
+    wmt.fetch_layer(site, SC, 2025, LAYER_SCHEDULE)
+    assert site.urls() == [
+        SC_CUMESTATS_URL,
+        SC_TEAM_URL,
+        SC_SCHEDULE_URL,
+        SC_CUMESTATS_URL,
+        SC_TEAM_URL,
+    ]

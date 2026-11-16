@@ -60,14 +60,17 @@ import gzip
 import json
 import logging
 import re
+from collections import Counter
 from collections.abc import Iterator
 from dataclasses import dataclass
 from datetime import datetime
+from html import unescape
 from typing import Any
-from urllib.parse import urlencode, urlparse
+from urllib.parse import urlencode, urljoin, urlparse
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import requests
+from bs4 import BeautifulSoup
 
 from src.page_state import BoxArchive, PageState, content_signature
 from src.presto import _roster_class_year, _roster_position
@@ -579,15 +582,41 @@ def prove_nuxt_page(
     return NuxtPage(state, season_object, view, slug)
 
 
+#: The generation each site origin has served in this process, so a later
+#: layer asks the generation's own address first.  Measured 2026-11-15: a
+#: WordPress site answers the Nuxt statistics path (``/stats/season/2025``)
+#: with two redirects to an unrelated 2011 news article, and its season
+#: pages without the trailing slash with one redirect.  A guess, never a
+#: witness: every page is still proven by its own content.
+_GENERATIONS: dict[str, str] = {}
+
+
+def _season_candidates(base: str, year: int, kind: str) -> list[tuple[str, str]]:
+    """``(url, slug)`` for each address the season page may live at, in the
+    order asked: the plain year, then (statistics only) the WordPress
+    generation's ``cumestats`` page, then the academic year.  A site already
+    seen to be WordPress is asked its own addresses only."""
+    plain, academic = season_slugs(year)
+    if _GENERATIONS.get(urlparse(base).netloc) == GENERATION_WORDPRESS:
+        path = "cumestats" if kind == LAYER_STATS else kind
+        return [(f"{base}/{path}/season/{plain}/", plain)]
+    candidates = [(f"{base}/{kind}/season/{plain}", plain)]
+    if kind == LAYER_STATS:
+        candidates.append((f"{base}/cumestats/season/{plain}/", plain))
+    candidates.append((f"{base}/{kind}/season/{academic}", academic))
+    return candidates
+
+
 def _season_page(
     fetcher: _Fetcher, base: str, year: int, kind: str
 ) -> tuple[Part, str]:
     """The first season page the site serves for the season: the plain
     year's, else the academic year's (``season_slugs``).  An honest 404 on
-    both is the site saying it files no such season."""
+    every candidate is the site saying it files no such season.  (A
+    WordPress site never answers 404 here: it serves its current season
+    under any season path, which ``prove_wordpress_page`` refuses.)"""
     tried: list[str] = []
-    for slug in season_slugs(year):
-        url = f"{base}/{kind}/season/{slug}"
+    for url, slug in _season_candidates(base, year, kind):
         part = fetcher.get("page", url, allow_404=True)
         if part is not None:
             return part, slug
@@ -893,10 +922,9 @@ def local_kickoff(value: object, timezone: str) -> datetime | None:
 
 
 def _fetch_nuxt(
-    fetcher: _Fetcher, base_url: str, year: int, kind: str
+    fetcher: _Fetcher, page: Part, slug: str, base_url: str, year: int, kind: str
 ) -> tuple[list[Part], list[str]]:
-    origin, sport, base = sport_base(base_url)
-    page, slug = _season_page(fetcher, base, year, kind)
+    origin, sport, _ = sport_base(base_url)
     proven = prove_nuxt_page(
         page.body, year=year, kind=kind, sport=sport, slug=slug, url=page.final_url
     )
@@ -1031,8 +1059,18 @@ def fetch_layer(
         except (LiveCollectionError, OSError):
             previous = {}
     fetcher = _Fetcher(session, year, kind, previous)
-    parts, notes = _fetch_nuxt(fetcher, base_url, year, kind)
-    bundle = Bundle(kind, year, GENERATION_NUXT, tuple(parts), tuple(notes))
+    _, _, base = sport_base(base_url)
+    first, slug = _season_page(fetcher, base, year, kind)
+    _GENERATIONS[urlparse(base).netloc] = (
+        GENERATION_WORDPRESS if is_wordpress(first.body) else GENERATION_NUXT
+    )
+    if is_wordpress(first.body):
+        generation = GENERATION_WORDPRESS
+        parts, notes = _fetch_wordpress(fetcher, first, base_url, year, kind)
+    else:
+        generation = GENERATION_NUXT
+        parts, notes = _fetch_nuxt(fetcher, first, slug, base_url, year, kind)
+    bundle = Bundle(kind, year, generation, tuple(parts), tuple(notes))
     text = bundle.text()
     page = PublishedPage(layer_url(base_url, year, kind), bundle.final_url, text)
     signature = bundle.signature()
@@ -1064,6 +1102,11 @@ def assert_served_season(page: PublishedPage, year: int, kind: str) -> None:
     bundle = _bundle_of(page.html, kind, year)
     first = bundle.parts[0]
     _, sport, _ = sport_base(_base_of(first.final_url))
+    if bundle.generation == GENERATION_WORDPRESS:
+        prove_wordpress_page(
+            first.body, year=year, kind=kind, sport=sport, url=first.final_url
+        )
+        return
     slug = _slug_of(first.final_url)
     prove_nuxt_page(
         first.body, year=year, kind=kind, sport=sport, slug=slug, url=first.final_url
@@ -1100,6 +1143,9 @@ def assert_schedule_proven(
     refused."""
     del fixtures, owner_slug
     bundle = _bundle_of(html, LAYER_SCHEDULE, year)
+    if bundle.generation == GENERATION_WORDPRESS:
+        wordpress_rows(bundle.parts[0].body, year=year, url=page_url)
+        return
     if bundle.first("events") is None:
         raise LiveCollectionError(f"[{year}] {page_url} bundle carries no event list")
 
@@ -1213,6 +1259,16 @@ def parse_schedule(
     """
     del members, gender
     bundle = _bundle_of(html, LAYER_SCHEDULE, year)
+    if bundle.generation == GENERATION_WORDPRESS:
+        return _parse_wordpress_schedule(
+            bundle,
+            page_url=page_url,
+            year=year,
+            owner_slug=owner_slug,
+            aliases=aliases,
+            skips=skips,
+            scope=scope,
+        )
     first = bundle.parts[0]
     timezone = site_timezone(_nuxt_state(first.body))
     if not timezone:
@@ -1323,6 +1379,8 @@ def boxscore_links(html: str, page_url: str) -> dict[str, str]:
     """
     del page_url
     bundle = _bundle_of(html, LAYER_SCHEDULE)
+    if bundle.generation == GENERATION_WORDPRESS:
+        return _wordpress_links(bundle)
     first = bundle.parts[0]
     origin = stats_origin(first.body)
     if origin is None:
@@ -1376,11 +1434,12 @@ def parse_roster(html: str, *, page_url: str) -> list[dict[str, str]]:
     uses ("D" is Defender, "Fr." Freshman); a value outside it is kept as
     published.  An absent field is omitted, never filled.
     """
-    del page_url
     bundle = read_bundle(html)
     first = bundle.parts[0] if bundle.parts else None
     if first is None:
         return []
+    if bundle.generation == GENERATION_WORDPRESS:
+        return parse_wordpress_roster(first.body, page_url=first.final_url or page_url)
     data = _nuxt_data(_nuxt_state(first.body))
     players: list[dict[str, str]] = []
     seen: set[str] = set()
@@ -1513,6 +1572,451 @@ def parse_stats(
                     entry["yellow"], entry["red"] = cards
             (keepers if keeping else players).append(entry)
     return players, keepers
+
+
+# --- The WordPress generation ------------------------------------------------
+#
+# South Carolina and Kentucky (FINDINGS.md section 4): the schedule and
+# roster are server-rendered, the season is the plain year, and any season
+# path answers HTTP 200 with the *current* season, so the path is never a
+# witness.  The page's ``route_vars`` and ``<title>`` are.  Statistics are
+# the ``wmt.games`` team season the ``cumestats`` page's iframe names, and
+# box scores are joined to the schedule through that season's Game by Game
+# table, by date: Kentucky's rows link only PDFs.
+
+_ROUTE_VARS = re.compile(r"\bvar\s+route_vars\s*=\s*")
+_TITLE = re.compile(r"<title[^>]*>(.*?)</title>", re.S | re.I)
+_WP_LAYER_TITLE = {
+    LAYER_SCHEDULE: "Schedule",
+    LAYER_ROSTER: "Roster",
+    LAYER_STATS: "Cumulative Statistics",
+}
+_WP_ROWS = ("div.event.schedule-table_row", "div.schedule__item.schedule-item")
+_WP_RESULT_NODE = ".schedule-list__result, .schedule-item__result"
+_WP_RESULT = re.compile(r"^\s*([WLT])\s*,?\s*(\d+)\s*-\s*(\d+)\s*(.*)$", re.I)
+_WP_PREPOSITION = re.compile(r"^\s*(?:at|vs\.?|versus)\s+", re.I)
+_EXHIBITION = re.compile(r"\((?:exh|exhibition)\.?\)", re.I)
+_CLOCK = re.compile(r"\b\d{1,2}:\d{2}\s*[ap]\.?\s*m\b", re.I)
+_LOCAL_START = re.compile(r"^(\d{4}-\d{2}-\d{2})(?:T(\d{2}:\d{2}))?")
+_STATS_IFRAME = re.compile(
+    r"<wmt-stats-iframe[^>]*\bpath=\"/[^/\"]+/stats/season/(\d+)\"", re.I
+)
+
+
+def wp_route_vars(html: str) -> dict[str, Any] | None:
+    """The inline ``var route_vars = {...}`` a WordPress page declares."""
+    match = _ROUTE_VARS.search(html)
+    if match is None:
+        return None
+    try:
+        value, _ = json.JSONDecoder().raw_decode(html, match.end())
+    except ValueError:
+        return None
+    return value if isinstance(value, dict) else None
+
+
+def is_wordpress(html: str) -> bool:
+    return wp_route_vars(html) is not None and "__NUXT_DATA__" not in html
+
+
+def _page_title(html: str) -> str:
+    match = _TITLE.search(html)
+    if match is None:
+        return ""
+    return " ".join(unescape(match.group(1)).replace("’", "'").split())
+
+
+def prove_wordpress_page(
+    html: str, *, year: int, kind: str, sport: str, url: str
+) -> None:
+    """Refuse a WordPress season page that is not men's soccer's ``year``.
+
+    Two witnesses, both required, because the path proves nothing
+    (``/schedule/season/2031/`` answers 200 with the 2026 season, measured
+    on both sites): ``route_vars`` must name the stanza's sport category
+    (slug and a men's soccer name) and the requested season as its
+    ``current_season``, and the ``<title>`` must lead with "Men's Soccer
+    {Schedule|Roster|Cumulative Statistics} {year}".
+    """
+    route = wp_route_vars(html)
+    if route is None:
+        raise LiveCollectionError(
+            f"[{year}] {url} declares no route_vars: not a WMT WordPress season page"
+        )
+    category = (
+        route.get("sport_category")
+        if isinstance(route.get("sport_category"), dict)
+        else {}
+    )
+    if category.get("slug") != sport or not _is_mens_soccer(category.get("name")):
+        raise LiveCollectionError(
+            f"[{year}] {url} renders sport category {category.get('slug')!r} "
+            f"({category.get('name')!r}), not men's soccer at /sports/{sport}"
+        )
+    season = (
+        route.get("current_season")
+        if isinstance(route.get("current_season"), dict)
+        else {}
+    )
+    served = str(season.get("slug") or "")
+    if served != str(year):
+        raise LiveCollectionError(
+            f"[{year}] requested the {year} {kind} season but {url} served the "
+            f"{served or 'unnamed'} season (route_vars current_season)"
+        )
+    title = _page_title(html)
+    expected = f"Men's Soccer {_WP_LAYER_TITLE[kind]} {year}"
+    if not re.match(rf"{re.escape(expected)}(?!\d)", title, re.I):
+        raise LiveCollectionError(
+            f"[{year}] {url} is titled {title!r}, not {expected!r}"
+        )
+
+
+@dataclass(frozen=True)
+class WordPressRow:
+    """One server-rendered schedule row with its JSON-LD event."""
+
+    event_id: str
+    date: str
+    time: str | None
+    side: str
+    opponent: str
+    exhibition: bool
+    venue: str
+    result: str
+
+
+def _fold(text: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+
+
+def wordpress_rows(html: str, *, year: int, url: str) -> list[WordPressRow]:
+    """Every schedule row, paired in order with its JSON-LD ``Event``.
+
+    Both skins (South Carolina's ``schedule-table_row``, Kentucky's
+    ``schedule-item``) add one ``Event`` per row whose ``startDate`` is the
+    local wall-clock kickoff with its year ("2025-08-21T19:30") and whose
+    ``name`` is the row as printed ("at Charleston", "vs. Lipscomb (EXH)").
+    A row count that differs from the event count, or a date outside the
+    season's two calendar years, refuses the page: the pairing could not be
+    trusted.  Rows carry no ids, so each is named by its date and the
+    opponent as printed (``20250821-charleston``).
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    rows: list[Any] = []
+    for selector in _WP_ROWS:
+        rows = soup.select(selector)
+        if rows:
+            break
+    events: list[dict[str, Any]] = []
+    for script in soup.find_all("script", type="application/ld+json"):
+        try:
+            value = json.loads(script.string or "")
+        except ValueError:
+            continue
+        for item in value if isinstance(value, list) else [value]:
+            if isinstance(item, dict) and item.get("@type") == "Event":
+                events.append(item)
+    if len(rows) != len(events):
+        raise LiveCollectionError(
+            f"[{year}] {url} renders {len(rows)} schedule rows beside {len(events)} "
+            f"JSON-LD events; the rows cannot be dated"
+        )
+    out: list[WordPressRow] = []
+    seen: Counter[str] = Counter()
+    for row, event in zip(rows, events, strict=True):
+        start = _LOCAL_START.match(str(event.get("startDate") or ""))
+        if start is None:
+            raise LiveCollectionError(
+                f"[{year}] {url}: a schedule event carries no start date "
+                f"({event.get('name')!r})"
+            )
+        date = start.group(1)
+        if int(date[:4]) not in (year, year + 1):
+            raise LiveCollectionError(
+                f"[{year}] {url}: a schedule row is dated {date}, outside the {year} season"
+            )
+        name = " ".join(str(event.get("name") or "").split())
+        opponent = re.sub(r"\s*\([^)]*\)", "", _WP_PREPOSITION.sub("", name)).strip()
+        classes = set(row.get("class") or [])
+        side = next(
+            (value for value in ("home", "away", "neutral") if value in classes), ""
+        )
+        node = row.select_one(_WP_RESULT_NODE)
+        result = " ".join(node.get_text(" ").split()) if node else ""
+        printed = " ".join(row.get_text(" ").split())
+        location = (
+            event.get("location") if isinstance(event.get("location"), dict) else {}
+        )
+        base_id = f"{date.replace('-', '')}-{_fold(opponent)}"
+        seen[base_id] += 1
+        out.append(
+            WordPressRow(
+                event_id=base_id
+                if seen[base_id] == 1
+                else f"{base_id}-{seen[base_id]}",
+                date=date,
+                time=start.group(2)
+                if start.group(2) and _CLOCK.search(printed)
+                else None,
+                side=side,
+                opponent=opponent,
+                exhibition=bool(_EXHIBITION.search(name)),
+                venue=str(location.get("name") or "").strip(),
+                result=result,
+            )
+        )
+    return out
+
+
+def _wordpress_result(row: WordPressRow, fixture_id: str) -> tuple[int, int] | None:
+    """The owner's score and the opponent's, from a hand-typed result.
+
+    The digits are typed in no fixed order ("L 0-1" owner first, "L 2-1
+    2OT" winner first, FINDINGS.md section 4), so the letter orients them:
+    a win gives the owner the larger number, a loss the smaller.  A tie
+    with unequal numbers is refused, never guessed.
+    """
+    match = _WP_RESULT.match(row.result)
+    if match is None:
+        return None
+    letter, first, second = (
+        match.group(1).upper(),
+        int(match.group(2)),
+        int(match.group(3)),
+    )
+    high, low = max(first, second), min(first, second)
+    if letter == "W" and high != low:
+        return high, low
+    if letter == "L" and high != low:
+        return low, high
+    if letter == "T" and first == second:
+        return first, second
+    _LOG.warning(
+        "%s: result %r cannot be oriented; scores refused", fixture_id, row.result
+    )
+    return None
+
+
+def _wordpress_status(row: WordPressRow) -> str:
+    if _WP_RESULT.match(row.result):
+        return "final"
+    text = row.result.lower()
+    if "cancel" in text:
+        return "cancelled"
+    if "postpon" in text:
+        return "postponed"
+    return "scheduled"
+
+
+def _parse_wordpress_schedule(
+    bundle: Bundle,
+    *,
+    page_url: str,
+    year: int,
+    owner_slug: str,
+    aliases: dict[str, str],
+    skips: list[str] | None,
+    scope: ResolutionScope | None,
+) -> list[dict[str, object]]:
+    """Fixture rows from a WordPress schedule, same shape as the Nuxt ones.
+
+    ``neutral`` is the row's ``neutral`` class; ``match_type`` exhibition
+    is the row's own "(EXH)" marking.  The rows publish no conference flag
+    a parser can read (South Carolina prints "(Sun Belt)" beside some
+    opponents, Kentucky nothing), so ``conference_game`` is absent rather
+    than derived.  A row with no typed result is not final (the sites print
+    "N/A" or the kickoff time), and carries no score.
+    """
+    fixtures: list[dict[str, object]] = []
+    for row in wordpress_rows(bundle.parts[0].body, year=year, url=page_url):
+        opponent_name = _clean_team_name(row.opponent)
+        if not opponent_name:
+            continue
+        if round_placeholder(opponent_name):
+            if skips is not None:
+                skips.append(placeholder_skip(row.date, opponent_name))
+            continue
+        other = opponent_slug(
+            opponent_name,
+            aliases,
+            scope=scope,
+            owner=owner_slug,
+            seeded=_seeded(row.opponent),
+        )
+        owner_is_home = row.side != "away"
+        home, away = (owner_slug, other) if owner_is_home else (other, owner_slug)
+        fixture_id = f"wmt:{owner_slug}:{row.event_id}"
+        fixture: dict[str, object] = {
+            "id": fixture_id,
+            "date": row.date,
+            "home": home,
+            "away": away,
+            "status": _wordpress_status(row),
+            "source_url": page_url,
+        }
+        if row.side == "neutral":
+            fixture["neutral"] = True
+        if row.exhibition:
+            fixture["match_type"] = "exhibition"
+        if row.time:
+            fixture["time"] = row.time
+        if row.venue:
+            fixture["venue"] = row.venue
+        scores = (
+            _wordpress_result(row, fixture_id) if fixture["status"] == "final" else None
+        )
+        if scores is not None:
+            owner_score, other_score = scores
+            if owner_is_home:
+                fixture["home_score"], fixture["away_score"] = owner_score, other_score
+            else:
+                fixture["home_score"], fixture["away_score"] = other_score, owner_score
+            if owner_score == other_score and _SHOOTOUT_MARKER.search(row.result):
+                fixture["result_published"] = row.result
+        fixtures.append(fixture)
+    return sorted(fixtures, key=lambda value: (str(value["date"]), str(value["id"])))
+
+
+def _wordpress_links(bundle: Bundle) -> dict[str, str]:
+    """Row id → its ``wmt.games`` game, by the Game by Game table's date:
+    exactly one unclaimed game that day for a row with a typed result."""
+    season_part = bundle.first("season")
+    cume = bundle.first("cumestats")
+    origin = stats_origin(cume.body) if cume is not None else None
+    if season_part is None or origin is None:
+        return {}
+    by_date: dict[str, list[int]] = {}
+    for date, game_id, _title in game_by_game(season_part.json()):
+        by_date.setdefault(date, []).append(game_id)
+    links: dict[str, str] = {}
+    rows = wordpress_rows(
+        bundle.parts[0].body, year=bundle.season, url=bundle.final_url
+    )
+    for row in rows:
+        if not _WP_RESULT.match(row.result):
+            continue
+        candidates = by_date.get(row.date, [])
+        if len(candidates) == 1:
+            links[row.event_id] = game_url(origin, candidates[0])
+            by_date[row.date] = []
+    return links
+
+
+def _wordpress_team_season(
+    fetcher: _Fetcher, cume: Part, year: int
+) -> tuple[Part, int]:
+    """The team season the ``cumestats`` page's iframe names, proven."""
+    match = _STATS_IFRAME.search(cume.body)
+    origin = stats_origin(cume.body)
+    if match is None or origin is None:
+        raise LiveCollectionError(
+            f"[{year}] {cume.final_url} names no statistics team "
+            f"(no wmt-stats-iframe season path, or no statistics host)"
+        )
+    team_id = int(match.group(1))
+    url = team_season_url(origin, team_id)
+    season_part = fetcher.require("season", url, expect="json", conditional=True)
+    prove_team_season(season_part.json(), team_id=team_id, year=year, url=url)
+    return season_part, team_id
+
+
+def _fetch_wordpress(
+    fetcher: _Fetcher, page: Part, base_url: str, year: int, kind: str
+) -> tuple[list[Part], list[str]]:
+    _, sport, base = sport_base(base_url)
+    notes: list[str] = []
+    cume_url = f"{base}/cumestats/season/{year}/"
+    if kind == LAYER_STATS and "/cumestats/" not in urlparse(page.final_url).path:
+        page = fetcher.require("page", cume_url)
+    prove_wordpress_page(
+        page.body, year=year, kind=kind, sport=sport, url=page.final_url
+    )
+    parts = [page]
+    if kind == LAYER_SCHEDULE:
+        rows = wordpress_rows(page.body, year=year, url=page.final_url)
+        if any(_WP_RESULT.match(row.result) for row in rows):
+            try:
+                cume = fetcher.require("cumestats", cume_url)
+                prove_wordpress_page(
+                    cume.body,
+                    year=year,
+                    kind=LAYER_STATS,
+                    sport=sport,
+                    url=cume.final_url,
+                )
+                season_part, team_id = _wordpress_team_season(fetcher, cume, year)
+                parts.extend([cume, season_part])
+                notes.append(f"box scores joined by date to statistics team {team_id}")
+            except LiveCollectionError as exc:
+                _LOG.warning(
+                    "%s: the Game by Game join is unavailable: %s", page.final_url, exc
+                )
+                notes.append(f"Game by Game join unavailable: {exc}")
+    elif kind == LAYER_ROSTER:
+        if _wordpress_roster_table(page.body) is None:
+            raise LiveCollectionError(
+                f"[{year}] {page.final_url} proved its season but renders no roster table"
+            )
+    else:
+        season_part, _ = _wordpress_team_season(fetcher, page, year)
+        parts.append(season_part)
+    return parts, notes
+
+
+def _wordpress_roster_table(html: str) -> tuple[list[str], list[Any]] | None:
+    soup = BeautifulSoup(html, "html.parser")
+    for table in soup.find_all("table"):
+        headers = [
+            " ".join(th.get_text(" ").split()).lower()
+            for th in table.select("thead th")
+        ]
+        if "name" in headers and "number" in headers:
+            return headers, table.select("tbody tr")
+    return None
+
+
+_WP_HEIGHT = re.compile(r"^(\d)\s*-\s*(\d{1,2})$")
+_WP_WEIGHT = re.compile(r"^(\d{2,3})\s*(?:lbs?\.?)?$", re.I)
+
+
+def parse_wordpress_roster(html: str, *, page_url: str) -> list[dict[str, str]]:
+    """Player rows from the server-rendered roster table (the first table
+    with Number and Name columns; the second holds staff), read by header:
+    "6-3" is 6'3", "185 lbs." 185 lbs; absent cells are omitted."""
+    found = _wordpress_roster_table(html)
+    if found is None:
+        return []
+    headers, rows = found
+    players: list[dict[str, str]] = []
+    for row in rows:
+        cells = row.find_all(["td", "th"])
+        by = {header: cell for header, cell in zip(headers, cells, strict=False)}
+        name_cell = by.get("name")
+        name = " ".join(name_cell.get_text(" ").split()) if name_cell else ""
+        if not name:
+            continue
+        text = {key: " ".join(cell.get_text(" ").split()) for key, cell in by.items()}
+        player: dict[str, str] = {"name": name}
+        if text.get("number"):
+            player["number"] = text["number"]
+        if text.get("position"):
+            player["position"] = _roster_position(text["position"])
+        height = _WP_HEIGHT.match(text.get("height", ""))
+        if height:
+            player["height"] = f"{height.group(1)}'{height.group(2)}\""
+        weight = _WP_WEIGHT.match(text.get("weight", ""))
+        if weight:
+            player["weight"] = f"{weight.group(1)} lbs"
+        if text.get("hometown"):
+            player["hometown"] = text["hometown"]
+        if text.get("class"):
+            player["class_year"] = _roster_class_year(text["class"])
+        link = name_cell.find("a", href=True) if name_cell else None
+        if link is not None:
+            player["source_url"] = urljoin(page_url, str(link["href"]))
+        players.append(player)
+    return players
 
 
 # --- Box scores -------------------------------------------------------------------

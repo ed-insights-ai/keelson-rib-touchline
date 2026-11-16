@@ -117,7 +117,12 @@ season page's `__NUXT_DATA__` payload proves the sport and season and names
 the schedule, the site's `/website-api/schedule-events` lists the matches,
 and season statistics and box scores come from the `wmt.games` JSON API
 the site's own pages point at. Each layer's bodies are archived together,
-as served, as one bundle in the layer's raw page. Coverage cells name the
+as served, as one bundle in the layer's raw page. The WordPress generation
+(South Carolina, Kentucky) server-renders its schedule and roster and serves
+its current season under any season path, so `route_vars` and the page
+title prove the season, and box scores are joined to its rows by date
+through the `wmt.games` team season's Game by Game table. Its rows publish
+no conference flag, so its fixtures carry no `conference_game`. Coverage cells name the
 collector per platform: `sidearm-live`, `presto-live` or `wmt-live`.
 
 `derive_identity` (`pipeline/src/probe.py`) fills the identity fields from
