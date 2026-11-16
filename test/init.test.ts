@@ -423,6 +423,11 @@ describe("first-contact commands", () => {
     expect(getSelection().scopeId).toBe(d2Project.id);
     // an explicit switch is still the picker's to make
     rib.registerTools?.(ctx);
+    // registerTools persists the package route with a fire-and-forget
+    // ensureActivationConfig(), which rewrites the dataDir it read; let it
+    // land before the selection writes its own, or the two race and the
+    // older dataDir can win.
+    await Bun.sleep(100);
     const d1Project = projects.find((p) => p.name === "d1-soccer");
     if (!d1Project) throw new Error("init registered no d1 project");
     expect(
