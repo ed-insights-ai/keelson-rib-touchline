@@ -64,6 +64,7 @@ from dataclasses import dataclass
 from dataclasses import field as dataclass_field
 from datetime import datetime
 from pathlib import Path
+from typing import TYPE_CHECKING
 from urllib.parse import urljoin, urlparse
 
 import requests
@@ -74,6 +75,9 @@ from src.config import SchoolConfig, programme_slug
 from src.membership import conference_for, load_membership, members_of
 from src.page_state import BoxArchive, PageState, PageStateStore, content_signature
 from src.tls import TruststoreHTTPAdapter
+
+if TYPE_CHECKING:
+    from src.recipes import Recipe
 
 _LOG = logging.getLogger(__name__)
 
@@ -257,7 +261,12 @@ _HTML_TAG = re.compile(r"<[A-Za-z!][^>]*>")
 
 
 def assert_served_body(
-    response: requests.Response, *, year: int, kind: str, url: str
+    response: requests.Response,
+    *,
+    year: int,
+    kind: str,
+    url: str,
+    body: str = "html",
 ) -> None:
     """Refuse a 2xx answer that is not the page.
 
@@ -269,22 +278,40 @@ def assert_served_body(
     parser problem.  A 2xx other than 200, or a body with no HTML in it, is
     refused here with the status attached, so the layer's outcome and the
     probe say what HTTP said.  No challenge is answered or bypassed.
+
+    ``body="json"`` is for an API answer (the WMT recipe's schedule-events
+    and ``wmt.games`` bodies): the body must then parse as a JSON object or
+    array, so an HTML challenge page served in place of the JSON is refused
+    the same way.  The default, ``"html"``, is exactly the check every
+    SideArm and PrestoSports page has always had.
     """
+    if body not in ("html", "json"):
+        raise ValueError(f"{body!r} is not a served body kind (html, json)")
     status = response.status_code
     text = response.text or ""
     if not text.strip():
-        body = "an empty body"
-    elif _HTML_TAG.search(text) is None:
-        body = "a body carrying no HTML"
+        served = "an empty body"
+    elif body == "json" and not _is_json_document(text):
+        served = "a body that is not a JSON document"
+    elif body == "html" and _HTML_TAG.search(text) is None:
+        served = "a body carrying no HTML"
     elif status != 200 and status in range(200, 300):
-        body = "an HTML body"
+        served = "a JSON body" if body == "json" else "an HTML body"
     else:
         return
     raise LiveCollectionError(
-        f"[{year}] {kind} page {url} answered HTTP {status} with {body} "
+        f"[{year}] {kind} page {url} answered HTTP {status} with {served} "
         f"(served a challenge, not the page)",
         status=status,
     )
+
+
+def _is_json_document(text: str) -> bool:
+    try:
+        value = json.loads(text)
+    except ValueError:
+        return False
+    return isinstance(value, (dict, list))
 
 
 def fetch_published_page_conditional(
@@ -4405,6 +4432,44 @@ def parse_fingerprint(*inputs: object) -> str:
     return digest.hexdigest()
 
 
+def _fetch_layer(
+    recipe: Recipe,
+    client: requests.Session,
+    base_url: str,
+    url: str,
+    year: int,
+    kind: str,
+    *,
+    state: PageState | None,
+    want_validators: bool,
+) -> ConditionalFetch:
+    """One season layer through the recipe's own fetch when it has one.
+
+    A recipe whose layer is more than one served body (WMT: a season page
+    plus the API answers it names) carries ``fetch_layer``, which fetches,
+    proves and bundles them and answers the same ``ConditionalFetch`` this
+    seam does; every other recipe is one conditional fetch of ``url``.
+    """
+    if recipe.fetch_layer is not None:
+        return recipe.fetch_layer(
+            client,
+            base_url,
+            year,
+            kind,
+            state=state,
+            want_validators=want_validators,
+        )
+    return fetch_published_page_conditional(
+        client,
+        url,
+        year,
+        kind,
+        state=state,
+        want_validators=want_validators,
+        served_season=recipe.assert_served_season,
+    )
+
+
 def collect_programme(
     school: SchoolConfig,
     year: int,
@@ -4502,14 +4567,15 @@ def collect_programme(
         )
         try:
             schedule_url = recipe.layer_url(base_url, year, LAYER_SCHEDULE)
-            fetched = fetch_published_page_conditional(
+            fetched = _fetch_layer(
+                recipe,
                 client,
+                base_url,
                 schedule_url,
                 year,
                 LAYER_SCHEDULE,
                 state=state,
                 want_validators=page_cache is not None,
-                served_season=recipe.assert_served_season,
             )
             if fetched.unchanged and state is not None and page_cache is not None:
                 schedule_url = state.final_url
@@ -4639,14 +4705,15 @@ def collect_programme(
         state = page_cache.load(slug, LAYER_ROSTER, fingerprint) if page_cache else None
         try:
             roster_url = recipe.layer_url(base_url, year, LAYER_ROSTER)
-            fetched = fetch_published_page_conditional(
+            fetched = _fetch_layer(
+                recipe,
                 client,
+                base_url,
                 roster_url,
                 year,
                 LAYER_ROSTER,
                 state=state,
                 want_validators=page_cache is not None,
-                served_season=recipe.assert_served_season,
             )
             if fetched.unchanged and state is not None and page_cache is not None:
                 roster_url = state.final_url
@@ -4738,19 +4805,21 @@ def collect_programme(
         try:
             # A platform whose statistics page the base URL alone cannot
             # name locates it first, through this collection's session.
+            # A recipe that fetches its own layers locates them itself.
             stats_url = (
                 recipe.locate_stats(client, base_url, year)
-                if recipe.locate_stats is not None
+                if recipe.locate_stats is not None and recipe.fetch_layer is None
                 else recipe.layer_url(base_url, year, LAYER_STATS)
             )
-            fetched = fetch_published_page_conditional(
+            fetched = _fetch_layer(
+                recipe,
                 client,
+                base_url,
                 stats_url,
                 year,
                 LAYER_STATS,
                 state=state,
                 want_validators=page_cache is not None,
-                served_season=recipe.assert_served_season,
             )
             if fetched.unchanged and state is not None and page_cache is not None:
                 stats_url = state.final_url

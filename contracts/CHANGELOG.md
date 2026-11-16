@@ -4,6 +4,15 @@ One line per change to a published contract, newest first. A fixture change
 without a line here is incomplete; a writer change without a fixture change
 fails `pipeline/tests/test_contracts.py`.
 
+## 2026-11-15
+
+- `touchline.coverage/1`: `collector` gains the value `wmt-live`, written on
+  every cell of a programme whose stanza names `live_scraper = "wmt"` (WMT
+  Digital athletics sites). Same schema version: the site's `coverage.ts`
+  reads `collector` as a free string. The fixture exhibits it on Seattle U's
+  2025 stats cell. The WMT recipe writes the existing fixture, roster, stats
+  and match shapes unchanged.
+
 ## 2026-11-08
 
 - Membership reference: `NSIC` joins `conferences`, with one window

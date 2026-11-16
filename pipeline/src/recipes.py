@@ -17,8 +17,12 @@ one.  A platform whose season statistics live at an address the base URL
 alone cannot build carries ``locate_stats``.  A platform with no collector
 for a layer raises ``NoCollector`` from the member that would start it,
 which the collectors record as the ``no-collector`` state for that layer
-alone, with a reason naming the platform and the layer.  ``LIVE_COLLECTORS``
-maps a stanza's ``live_scraper`` value onto its recipe.
+alone, with a reason naming the platform and the layer.  ``WMT`` is WMT
+Digital (pipeline/src/wmt.py): a layer there is several served bodies (a
+season page and the API answers it names), so it carries ``fetch_layer``,
+which fetches, proves and bundles them in place of the single conditional
+fetch.  ``LIVE_COLLECTORS`` maps a stanza's ``live_scraper`` value onto its
+recipe.
 """
 
 from __future__ import annotations
@@ -32,9 +36,9 @@ from typing import Any
 
 import requests
 
-from src import presto, sidearm_live
+from src import presto, sidearm_live, wmt
 from src.config import DEFAULT_LIVE_COLLECTOR, SchoolConfig
-from src.sidearm_live import PublishedPage
+from src.sidearm_live import ConditionalFetch, PublishedPage
 
 
 class NoCollector(NotImplementedError):
@@ -111,6 +115,13 @@ class Recipe:
     #: the collection's own session.  ``None`` means ``layer_url`` is the
     #: whole address.
     locate_stats: Callable[[requests.Session, str, int], str] | None = None
+    #: Fetch, prove and bundle one season layer when it is more than one
+    #: served body: ``(session, base_url, year, kind, *, state,
+    #: want_validators)``, answering the ``ConditionalFetch`` the single
+    #: conditional fetch would, its page the bundle every parser reads and
+    #: the raw archive keeps.  ``None`` means one conditional fetch of
+    #: ``layer_url`` (or ``locate_stats``) is the whole layer.
+    fetch_layer: Callable[..., ConditionalFetch] | None = None
 
 
 def _late(module: ModuleType, name: str) -> Callable[..., Any]:
@@ -167,9 +178,25 @@ PRESTO = Recipe(
     locate_stats=_late(presto, "locate_stats"),
 )
 
+WMT = Recipe(
+    platform=wmt.PLATFORM,
+    layer_url=_late(wmt, "layer_url"),
+    assert_served_season=_late(wmt, "assert_served_season"),
+    parse_schedule=_late(wmt, "parse_schedule"),
+    assert_schedule_proven=_late(wmt, "assert_schedule_proven"),
+    parse_roster=_late(wmt, "parse_roster"),
+    parse_stats=_late(wmt, "parse_stats"),
+    boxscore_links=_late(wmt, "boxscore_links"),
+    collect_match=_late(wmt, "collect_match"),
+    parse_match=_late(wmt, "parse_match_page"),
+    parse_identity=(_source_digest(wmt.__file__),),
+    fetch_layer=_late(wmt, "fetch_layer"),
+)
+
 LIVE_COLLECTORS: Mapping[str, Recipe] = {
     SIDEARM.platform: SIDEARM,
     PRESTO.platform: PRESTO,
+    WMT.platform: WMT,
 }
 
 

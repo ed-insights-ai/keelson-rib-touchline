@@ -57,7 +57,7 @@ from src.identity import IdentityReport, SeasonSources, resolve_matches
 from src.membership import conference_for, division_for, load_membership
 from src.page_state import BoxArchive, PageStateStore
 from src.programmes import load_programmes, programme_points
-from src.recipes import PRESTO, SIDEARM, NoCollector, Recipe, live_recipe
+from src.recipes import PRESTO, SIDEARM, WMT, NoCollector, Recipe, live_recipe
 from src.sidearm_live import (
     DEFAULT_LAYERS,
     LAYER_MATCHES,
@@ -95,6 +95,7 @@ MATCHES_SCHEMA = "touchline.matches/2"
 COLLECTORS: Mapping[str, str] = {
     SIDEARM.platform: "sidearm-live",
     PRESTO.platform: "presto-live",
+    WMT.platform: "wmt-live",
 }
 COLLECTOR = COLLECTORS[SIDEARM.platform]
 
@@ -798,7 +799,9 @@ def collect(
     # with polite spacing and per-host pacing, holds across both phases and
     # every worker — so two programmes on one host share one pace.  A
     # PrestoSports host starts paced (the platform is known to challenge a
-    # burst); any host is paced from its first observed HTTP 202.
+    # burst); the WMT statistics host is paced by the recipe before its
+    # first request there (one host shared by every WMT programme); any
+    # host is paced from its first observed HTTP 202.
     # Sessions are per thread — requests makes no thread-safety promise.
     if gate is None:
         gate = HostGate(policy=PacingPolicy.from_env())
