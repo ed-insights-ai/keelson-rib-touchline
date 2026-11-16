@@ -11657,6 +11657,14 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# Peers print "N.C. State" (Charlotte 2024, sidearm:charlotte:19251, linked
+# to gopack.com; High Point 2023 and 2024, Winthrop and Stetson 2024, all at
+# Raleigh); NC State's pages hold all five. "North Carolina State" and
+# "North Carolina State University" (Howard 2023 sidearm:howard:10239 and
+# Hofstra 2024 sidearm:hofstra:13208, both at Raleigh; Stetson 2023
+# sidearm:stetson:14776) otherwise fall to North Carolina by token subset;
+# NC State's pages hold all three (nc-state:22908, 23465, 22906).
+aliases      = ["N.C. State", "North Carolina State"]
 city         = "Raleigh, N.C."
 city_source  = "https://gopack.com/sports/mens-soccer/schedule (schedule page home rows print \"Raleigh, NC\", Dail Soccer Field/Track Complex; 9 of 9 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -12841,7 +12849,9 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["University of South Carolina - Upstate"]
+# Clemson 2024 prints "Upstate" (wmt:clemson:853); USC Upstate's page holds
+# the match.
+aliases      = ["University of South Carolina - Upstate", "Upstate"]
 city         = "Spartanburg, S.C."
 city_source  = "https://upstatespartans.com/sports/mens-soccer/schedule (schedule page home rows print \"Spartanburg, S.C.\", County University Soccer Stadium; 5 of 5 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -13098,7 +13108,11 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["UNC Wilmington"]
+# "University of North Carolina Wilmington" (Queens 2023
+# sidearm:queens-charlotte:11044; George Mason 2024
+# sidearm:george-mason:13043, at Wilmington, NC) otherwise falls to North
+# Carolina by token subset; UNCW's pages hold both (uncw:10100, 10608).
+aliases      = ["UNC Wilmington", "University of North Carolina Wilmington"]
 city         = "Wilmington, N.C."
 city_source  = "https://uncwsports.com/sports/mens-soccer/schedule (schedule page home rows print \"Wilmington, N.C.\", UNCW Soccer Stadium; 10 of 10 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -13203,6 +13217,9 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# Bradley 2025 prints "Fort Wayne" (sidearm:bradley:22571, linked to
+# gomastodons.com); Purdue Fort Wayne's page holds the match.
+aliases      = ["Fort Wayne"]
 city         = "Fort Wayne, Ind."
 city_source  = "https://gomastodons.com/sports/mens-soccer/schedule (schedule page home rows print \"Fort Wayne, Ind.\", Hefner Soccer Complex; 11 of 11 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -13314,6 +13331,10 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# Peers print "Detroit" (Maryland 2024, sidearm:maryland:18206, linked to
+# detroittitans.com; Cleveland State 2023 and Northern Kentucky 2024 at
+# Detroit); Detroit Mercy's pages hold all three.
+aliases      = ["Detroit"]
 city         = "Detroit, Mich."
 city_source  = "https://detroittitans.com/sports/mens-soccer/schedule (schedule page home rows print \"Detroit, Mich.\", Titan Field; 9 of 9 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -13329,6 +13350,19 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# The programme was IUPUI through 2023 and is IU Indianapolis (IU Indy) from
+# 2024: one athletics site, iuindyjags.com, serves 2023-2026 under one sport
+# path, its 2023 schedule holds all 18 matches peers filed against "IUPUI"
+# (Wright State sidearm:wright-state:9531 and Purdue Fort Wayne
+# sidearm:purdue-fort-wayne:14414 link it to iuindyjags.com), the home ground
+# is Michael A. Carroll Stadium under both names, and the archived pages
+# still carry IUPUI facility names. Peers also print "IU Indianapolis"
+# (2024: Akron sidearm:akron:10450 and Purdue Fort Wayne
+# sidearm:purdue-fort-wayne:15835, linked to iuindyjags.com), "Indiana
+# University Indianapolis" (Bellarmine 2024, sidearm:bellarmine:8064) and
+# "Indiana University-Purdue University Indianapolis" (Southern Indiana
+# 2023, sidearm:southern-indiana:10931).
+aliases      = ["IUPUI", "IU Indianapolis", "Indiana University Indianapolis", "Indiana University-Purdue University Indianapolis"]
 city         = "Indianapolis, Ind."
 city_source  = "https://iuindyjags.com/sports/mens-soccer/schedule (schedule page home rows print \"Indianapolis, Ind.\", Michael A. Carroll Stadium; 9 of 9 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14084,6 +14118,12 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# Peers print "SIU Edwardsville" and "SIU-Edwardsville" (Bradley 2023,
+# sidearm:bradley:21811, and Air Force 2025, sidearm:air-force:21421, linked
+# to siuecougars.com; Southern Indiana 2024 twice and 2025) and "Southern
+# Illinois University Edwardsville" (Southern Indiana 2023,
+# sidearm:southern-indiana:10938 and 10945); SIUE's pages hold all seven.
+aliases      = ["SIU Edwardsville", "Southern Illinois University Edwardsville"]
 city         = "Edwardsville, Ill."
 city_source  = "https://siuecougars.com/sports/mens-soccer/schedule (schedule page home rows print \"Edwardsville, Ill.\", Ralph Korte Stadium; 9 of 9 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14581,7 +14621,9 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Virginia Military Institute"]
+# ETSU 2023 prints "Virginia Military" (sidearm:etsu:11228, at Lexington,
+# Va.); VMI's page holds the match.
+aliases      = ["Virginia Military Institute", "Virginia Military"]
 city         = "Lexington, Va."
 city_source  = "https://vmikeydets.com/sports/mens-soccer/schedule (schedule page home rows print \"Lexington, VA\", Patchin Field; 11 of 11 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14870,6 +14912,10 @@ scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
 enabled      = true
+# Sun Belt peer Marshall prints "ODU" (2023 sidearm:marshall:9351, 2024
+# sidearm:marshall:10643, linked to odusports.com); Old Dominion's pages
+# hold both. A member alias: "ODU" is also Ohio Dominican's (Division II).
+member_aliases = ["ODU"]
 city         = "Norfolk, Va."
 city_source  = "https://odusports.com/sports/mens-soccer/schedule (schedule page home rows print \"Norfolk, Va.\"; 22 of 22 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14954,6 +15000,13 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# WCC peer Saint Mary's prints "USF" (2023,
+# sidearm:saint-marys-california:11139, linked to usfdons.com, at San
+# Francisco); San Francisco's page holds it. A member alias: "USF" is also
+# South Florida's AAC member alias, so a page outside both conferences reads
+# it as the nearer claimant (tl-4sg.9.1), South Florida on every archived
+# such row (Clemson 2023, Georgia Southern 2024, Stetson 2024 and 2025).
+member_aliases = ["USF"]
 city         = "San Francisco, Calif."
 city_source  = "https://usfdons.com/sports/mens-soccer/schedule (schedule page home rows print \"San Francisco, Calif.\", Negoesco Stadium; 8 of 8 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14975,7 +15028,9 @@ scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Seattle University"]
+# San Jose State 2023 prints "SeattleU" (wmt:san-jose-state:6004, at
+# Seattle, Wash.); Seattle U's page holds the match.
+aliases      = ["Seattle University", "SeattleU"]
 city         = "Seattle, Wash."
 city_source  = "https://goseattleu.com/sports/mens-soccer/schedule (schedule page home rows print \"Seattle, WA\"; 20 of 20 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
