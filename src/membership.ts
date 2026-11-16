@@ -248,6 +248,26 @@ export async function resolveConference(
   };
 }
 
+/** Why a conference request resolved to no programme, in one clause, or
+ *  undefined when it resolved to some. A conference request with no member
+ *  is refused, never sent on as an empty or guessed list, and the refusal
+ *  says which of the four reasons it is: the WAC's men in 2026 are past its
+ *  horizon with every 2025 member authored elsewhere, which is not the same
+ *  as a code the record does not know. */
+export function emptyResolutionReason(res: Resolution): string | undefined {
+  if (res.slugs.length) return undefined;
+  if (!res.known.some((code) => code.toUpperCase() === res.conference)) {
+    return `${res.conference} is not a conference the membership record declares`;
+  }
+  if (res.authoredThrough === 0) {
+    return `the membership record authors no ${res.gender} window in ${res.conference}`;
+  }
+  if (res.extrapolated) {
+    return `the membership record authors ${res.conference} ${res.gender} through ${res.authoredThrough}, and every programme of its ${res.authoredThrough} roster is authored elsewhere for ${res.season}, so none is carried forward`;
+  }
+  return `no ${res.gender} window places a programme in ${res.conference} for ${res.season}`;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Turning what a person typed into a target set.
 //

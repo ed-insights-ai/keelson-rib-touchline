@@ -25,8 +25,10 @@ import { CONFERENCE_LEVELS, type ConferenceLevel } from "./levels.ts";
 import {
   collectFleetSize,
   conferenceProfile,
+  emptyResolutionReason,
   knownConferences,
   programmeLevel,
+  resolveConference,
   resolveTargets,
   titleFromSlug,
 } from "./membership.ts";
@@ -375,7 +377,18 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
         );
       }
       if (!target.slugs.length) {
-        return emit(tctx, `No programmes resolved for ${subject} ${args.gender} ${season}.`, true);
+        // A conference with no member this season is refused with its reason
+        // (past its horizon, every member authored elsewhere; or no window at
+        // all), never sent to the collector as an empty or stale list.
+        const reason =
+          target.kind === "conference"
+            ? emptyResolutionReason(await resolveConference(target.conference, args.gender, season))
+            : undefined;
+        return emit(
+          tctx,
+          `REFUSED: no programmes resolved for ${subject} ${args.gender} ${season}${reason ? `: ${reason}` : ""}. Nothing was fetched or written.`,
+          true,
+        );
       }
       out.push(
         `Resolved ${target.conference} · ${args.gender} · ${season} → ${target.slugs.length} programme${target.slugs.length === 1 ? "" : "s"}: ${target.slugs

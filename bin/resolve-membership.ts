@@ -59,6 +59,7 @@ import {
   CONFERENCE_LEVELS,
   type ConferenceLevel,
   conferenceProfile,
+  emptyResolutionReason,
   knownConferences,
   resolveConference,
 } from "../src/membership.ts";
@@ -83,7 +84,7 @@ if (mode === "conference") {
   const r = await resolveConference(conference, gender, season);
   if (!r.slugs.length) {
     fail(
-      `no members resolve for ${r.conference} ${gender} ${season} (known conferences: ${(await knownConferences()).join(", ")})`,
+      `no members resolve for ${r.conference} ${gender} ${season}: ${emptyResolutionReason(r)}. Nothing to collect (known conferences: ${(await knownConferences()).join(", ")})`,
     );
   }
   process.stdout.write(`${r.extrapolated ? "true" : "false"} ${r.slugs.join(",")}\n`);
@@ -97,7 +98,7 @@ if (mode === "conference") {
   const r = await resolveConference(conference, gender, season);
   if (!r.slugs.length) {
     fail(
-      `no members resolve for ${r.conference} ${gender} ${season} (known conferences: ${(await knownConferences()).join(", ")})`,
+      `no members resolve for ${r.conference} ${gender} ${season}: ${emptyResolutionReason(r)}. Nothing to collect (known conferences: ${(await knownConferences()).join(", ")})`,
     );
   }
   const pairs = Object.entries(r.divisions)
