@@ -54,7 +54,7 @@ this season. A conference authored at the level but with no member this
 season is named in the log and left out, neither collected nor failed: the
 WAC's men end in 2025, every 2025 member is authored elsewhere for 2026, so a
 Division I run logs
-`skipped (no men 2026 members): WAC — at the home's level but with no member this season; not collected.`
+`skipped (no men 2026 members): WAC (at the home's level but with no member this season; not collected).`
 and collects the other 23.
 
 A pinned set (`TOUCHLINE_CONFERENCES`, or the config's `conferences.{gender}`)

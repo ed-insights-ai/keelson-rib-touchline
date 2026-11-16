@@ -16,6 +16,9 @@ jobs:
         with:
           # Pinned; docs.yml pins to the same release per the family's lockstep rule.
           bun-version: 1.3.13
+      # test/membership-parity.test.ts runs the pipeline's resolver through
+      # `uv run` to hold resolveConference to members_in_effect.
+      - uses: astral-sh/setup-uv@v5
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Lint
