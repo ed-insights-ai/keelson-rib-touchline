@@ -26,7 +26,12 @@ level: d1
 refused before anything is fetched, naming both levels, by the
 `touchline_collect` tool, by the `level-guard` node of the `touchline-collect`
 and `touchline-backfill` workflows, by the daily cadence for a pinned
-conference, and once more by `collect-board` itself. That is what keeps
+conference, and once more by `collect-board` itself. `collect-board` also
+holds every programme it would fetch to the home's level for the season,
+the ones asked for and the ones a stored season file adds back to the ask:
+Pitt asked for in a GAC collect, or Mercyhurst (Division I from 2024) listed
+in a stored 2026 PSAC file, is refused by name before the reference mirrors
+are written, and the stored file stands as it was. That is what keeps
 Division I data out of a Division II home after a slip of the project picker.
 A level that is not one of the three makes the marker unusable: the home is
 refused like a foreign one, never guessed past. The line is read as YAML

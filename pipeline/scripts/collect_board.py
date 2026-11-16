@@ -63,6 +63,7 @@ from src.membership import (
     division_for,
     has_windows,
     load_membership,
+    programme_level,
     resolution_stanzas,
     stanzas_at_level,
 )
@@ -1823,6 +1824,96 @@ def level_refusal(conference: str) -> str | None:
     )
 
 
+def programme_level_refusal(
+    wanted: list[str],
+    widened: list[str],
+    *,
+    schools: list[SchoolConfig],
+    gender: str,
+    season: int,
+    conference: str,
+    season_key: str,
+    document: dict[str, object] | None,
+) -> str | None:
+    """Why the final programme list of a collect must not run in this home.
+
+    ``level_refusal`` holds the conference to the home's level; this holds
+    every programme the run would fetch, the ones asked for and the ones
+    ``widen_to_existing_scope`` restored from the stored season files. A
+    covering window passes ``refuse_uncovered`` whatever conference it
+    names, so without this a Division I programme (Pitt, ACC) asked for in a
+    GAC collect, or Mercyhurst (NEC from 2024) restored into a 2026 PSAC
+    shard, would be fetched into a Division II home and parsed with the
+    Division II identity table. Each programme's level is its level that
+    season (``programme_level``, its stanza conference the fallback); one
+    with no level anywhere passes, as every collect did before levels.
+
+    The level held is the home's; a root with no marker holds the collect's
+    own (``collect_level``), and a structural collect whose programmes span
+    two levels is refused there. Nothing is synced, fetched or written
+    before this runs, and a refusal drops no stored row.
+    """
+    if document is None:
+        return None
+    try:
+        home = paths.home_level()
+    except paths.MarkerError as exc:
+        return f"REFUSED: {exc}. Nothing was fetched or written."
+    if home is not None:
+        held = home.level
+        where = f"the data home {paths.data_root()} collects {held}"
+    else:
+        try:
+            held = collect_level(
+                schools,
+                gender,
+                conference,
+                season,
+                programmes=wanted,
+                document=document,
+            )
+        except MixedLevels as exc:
+            return f"{exc} Nothing was fetched or written."
+        if held is None:
+            return None
+        where = f"this {conference.upper()} collect resolves at {held}"
+    stanza = {
+        programme_slug(school.name): school.conference
+        for school in schools
+        if school.gender == gender
+    }
+    found: list[str] = []
+    restored: list[str] = []
+    for slug in wanted:
+        level = programme_level(
+            slug,
+            gender,
+            season,
+            stanza_conference=stanza.get(slug, ""),
+            document=document,
+        )
+        if level is None or level == held:
+            continue
+        found.append(f"{slug} ({level} in {season})")
+        if slug in widened:
+            restored.append(slug)
+    if not found:
+        return None
+    lines = [
+        f"REFUSED: {where}, and these {gender} programmes are at another NCAA "
+        f"level for {season}: {', '.join(found)}. A collect fetches and "
+        "resolves one level; collect them into a home of their level. "
+        "Nothing was fetched or written."
+    ]
+    if restored:
+        lines.append(
+            f"{', '.join(restored)} came from this data home's existing "
+            f"{season_key} files, which a run always refreshes whole; those "
+            "files stand as they are."
+        )
+    return "\n".join(lines)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Collect published schedule and roster pages into board JSON."
@@ -1905,9 +1996,6 @@ def main() -> int:
     if refusal:
         print(refusal, file=sys.stderr)
         return 2
-    for sync_note in (sync_membership_reference(), sync_programmes_reference()):
-        if sync_note:
-            print(sync_note)
     season_key = f"{args.season}-{args.gender}-{conference_slug}"
     fixture_path = data_root / "data" / "fixtures" / f"{season_key}.json"
     roster_path = data_root / "data" / "rosters" / f"{season_key}.json"
@@ -1922,6 +2010,24 @@ def main() -> int:
             f"collection already covers {', '.join(widened)}; a run refreshes the whole "
             "unit rather than narrowing the file."
         )
+    # Every programme of the final, widened list at the home's level, before
+    # the reference mirrors are written or anything is fetched.
+    refusal = programme_level_refusal(
+        wanted,
+        widened,
+        schools=load_schools(Path(args.config)),
+        gender=args.gender,
+        season=args.season,
+        conference=args.conference,
+        season_key=season_key,
+        document=_membership_document(),
+    )
+    if refusal:
+        print(refusal, file=sys.stderr)
+        return 2
+    for sync_note in (sync_membership_reference(), sync_programmes_reference()):
+        if sync_note:
+            print(sync_note)
 
     layers = tuple(value.strip() for value in args.layers.split(",") if value.strip())
     unknown = [layer for layer in layers if layer not in DEFAULT_LAYERS]
