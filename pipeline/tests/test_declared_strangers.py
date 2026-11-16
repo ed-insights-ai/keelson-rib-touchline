@@ -377,6 +377,12 @@ def _entry(**fields: str) -> DeclaredStranger:
         (_entry(owner="tusculum"), "is no programme at d1"),
         # A spelling a Division I stanza claims, declared for every page.
         (_entry(spelling="Saint Mary's"), "claims this spelling at d1"),
+        # A resolving abbreviation is a claim too: an ownerless "SNHU" would
+        # overrule Southern New Hampshire's on every Division II page.
+        (
+            _entry(level="d2", spelling="SNHU", slug="snhu-stranger"),
+            "southern-new-hampshire claims this spelling at d2",
+        ),
     ],
 )
 def test_check_membership_refuses_a_bad_declaration(
@@ -386,6 +392,16 @@ def test_check_membership_refuses_a_bad_declaration(
         [entry], load_schools(), document=load_membership()
     )
     assert any(message in error for error in errors), errors
+
+
+def test_a_display_only_abbreviation_is_no_claim() -> None:
+    """Saint Mary's of California prints "SMC" but does not resolve it
+    (Saint Michael's shares it), so declaring it claims nothing away."""
+    schools = load_schools()
+    smc = next(s for s in schools if s.name == "Saint Marys California")
+    assert smc.abbreviation == "SMC" and not smc.abbreviation_resolves
+    entry = _entry(spelling="SMC", slug="smc-stranger")
+    assert declared_stranger_errors([entry], schools, document=load_membership()) == []
 
 
 def test_check_membership_reports_through_validate() -> None:

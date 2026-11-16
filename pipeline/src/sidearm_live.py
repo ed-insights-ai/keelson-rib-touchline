@@ -1507,7 +1507,8 @@ def declared_stranger_errors(
     Moraga on a Division II page is the Division I programme's school); an
     owner must be a programme at the level; one spelling is declared once
     per level and owner. An entry for every page of a level may not be a spelling a
-    stanza at that level claims (name, alias or member alias): the stanza
+    stanza at that level claims (name, alias, resolving abbreviation or
+    member alias): the stanza
     says the text is the programme, and the entry would silently overrule
     it everywhere. An owner's entry may overrule a claim on that one page:
     that is what it is for ("St. Joseph's" on Stony Brook's page).
@@ -1521,7 +1522,10 @@ def declared_stranger_errors(
         forms = claimed.setdefault(level, {})
         for school in stanzas:
             slugs.setdefault(level, set()).add(programme_slug(school.name))
-            for spelling in (school.name, *school.aliases, *school.member_aliases):
+            # Every spelling a route resolves: name, aliases and a resolving
+            # abbreviation (``_identity_spellings``), and member aliases. A
+            # display-only abbreviation resolves nothing, so it is free.
+            for spelling in (*_identity_spellings(school), *school.member_aliases):
                 forms.setdefault(declared_form(spelling), programme_slug(school.name))
     seen: set[tuple[str, str, str]] = set()
     for entry in declared:
