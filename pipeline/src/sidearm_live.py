@@ -2307,11 +2307,16 @@ class ConferenceHeaders:
     With a ``level`` only that level's conferences (and any declared code
     with no profile) are read: a collect reads its pages for its own
     level's postseasons, as it resolves their opponent text against its own
-    level's stanzas, so adding another level's conferences to the reference
-    neither changes how this level's headers classify nor re-reads this
-    level's archive (the signature is the level's). A Division II page that
-    printed a Division I conference's name beside a championship word would
-    otherwise be stamped a conference postseason the day that name landed.
+    level's stanzas. A Division II page that printed a Division I
+    conference's name beside a championship word would otherwise be stamped
+    a conference postseason the day that name landed.
+
+    The other levels' conferences are still known, for one question only
+    (``names_another_level``): a header the generic word "conference"
+    would classify ("Big Ten Conference Tournament" on a Division II page)
+    is another level's postseason when the names it carries are all another
+    level's. So the other levels' names do steer this level's reading, and
+    the signature carries them beside the level's own.
     """
 
     def __init__(
@@ -2357,15 +2362,52 @@ class ConferenceHeaders:
             "|".join(pattern.pattern for pattern in self._patterns.values()) or _NEVER,
             re.IGNORECASE,
         )
+        #: Every conference of every level, for ``names_another_level``;
+        #: None when this reader is already every level's.
+        self._every_level: ConferenceHeaders | None = (
+            None if level is None else ConferenceHeaders(document, None)
+        )
         #: What of the reference shapes a header's reading, for
         #: ``parse_fingerprint``: the names used to live in this module's
         #: source, which the fingerprint hashes, and a name edited in the
-        #: data must re-read the archive the same way.
-        self.signature: list[tuple[str, bool, tuple[str, ...]]] = signature
+        #: data must re-read the archive the same way. A levelled reader's
+        #: signature carries the other levels' entries after its own.
+        self.signature: list[object] = list(signature)
+        if self._every_level is not None:
+            self.signature.append(
+                [
+                    entry
+                    for entry in self._every_level.signature
+                    if isinstance(entry, tuple) and entry[0] not in self._patterns
+                ]
+            )
 
     def names_a_conference(self, header: str) -> bool:
-        """Whether the header carries any conference's code or printed name."""
-        return self._any.search(header) is not None
+        """Whether the header carries any of this reader's conferences' codes
+        or printed names.
+
+        A levelled reader decides with every level's names in view, so a
+        name of its own level printed inside another level's longer name is
+        the longer one's (``named``): a Division I reader does not take
+        "Great American Conference Tournament" for the American's because
+        "American Conference" sits inside it.
+        """
+        if self._every_level is None:
+            return self._any.search(header) is not None
+        return any(code in self._patterns for code in self._every_level.named(header))
+
+    def names_another_level(self, header: str) -> bool:
+        """Whether every conference the header names is another level's.
+
+        Read with every level's names (``named``, so a name inside a longer
+        one is the longer one's): true when the header names at least one
+        conference and none of them is this reader's. Always false for a
+        reader of every level.
+        """
+        if self._every_level is None:
+            return False
+        named = self._every_level.named(header)
+        return bool(named) and not any(code in self._patterns for code in named)
 
     def named(self, header: str) -> list[str]:
         """The conferences the header names, in the order it names them.
@@ -2446,11 +2488,21 @@ def tournament_stage(
         return {"phase": "postseason", "competition": "ncaa", "source": text}
     if _OTHER_BODY.search(text):
         return {"phase": "unknown", "source": text}
-    if _CHAMPIONSHIP_WORD.search(text) and (
-        _CONFERENCE_WORD.search(text)
-        or (headers or conference_headers(level)).names_a_conference(text)
-    ):
-        return {"phase": "postseason", "competition": "conference", "source": text}
+    if _CHAMPIONSHIP_WORD.search(text):
+        reader = headers or conference_headers(level)
+        # A conference of the reading level named outright, or the generic
+        # word ("Conference Tournament", the unnamed header) unless the
+        # header names only another level's conferences: "Big Ten Conference
+        # Tournament" on a Division II page is no Division II postseason,
+        # exactly as "Big Ten Tournament" is not.
+        if reader.names_a_conference(text) or (
+            _CONFERENCE_WORD.search(text) and not reader.names_another_level(text)
+        ):
+            return {
+                "phase": "postseason",
+                "competition": "conference",
+                "source": text,
+            }
     return None
 
 

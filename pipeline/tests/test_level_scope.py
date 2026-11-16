@@ -227,12 +227,15 @@ def test_adding_another_levels_stanzas_changes_nothing_a_d2_collect_reads():
             )
             assert after[2].level == before[2].level == "d2"
     # The header reader a D2 collect uses, whose signature enters the
-    # schedule fingerprint, is the d2 conferences' alone.
-    assert (
-        ConferenceHeaders(BOTH, "d2").signature
-        == ConferenceHeaders(D2_ONLY, "d2").signature
-        == ConferenceHeaders(D2_ONLY).signature
-    )
+    # schedule fingerprint, reads the d2 conferences' names as its own; the
+    # other levels' names enter only to refuse a header that names nothing
+    # but another level's conference, and the signature carries them after
+    # the level's own entries.
+    both, d2_only = ConferenceHeaders(BOTH, "d2"), ConferenceHeaders(D2_ONLY, "d2")
+    assert both.signature[:-1] == d2_only.signature[:-1]
+    assert d2_only.signature[:-1] == ConferenceHeaders(D2_ONLY).signature
+    assert d2_only.signature[-1] == []
+    assert [entry[0] for entry in both.signature[-1]] == ["BIG10", "CAA", "NEC"]
 
 
 def test_d2_text_naming_a_d1_school_mints_its_slug_from_the_text():
