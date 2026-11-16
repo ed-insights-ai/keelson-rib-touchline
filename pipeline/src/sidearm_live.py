@@ -1012,18 +1012,31 @@ def _identity_fold(name: str) -> tuple[str, tuple[str, ...]]:
     in the order applied, for every rewrite that changed the string.
     """
     rules: list[str] = []
-    text = _clean_team_name(name).lower().replace("&", " and ")
-    text = re.sub(r"\([^)]*\)", " ", text)
-    text = text.replace("'", "").replace("’", "")
-    text = re.sub(r"\bst\.?\s*$", " state", text)
-    text = re.sub(r"\b(?:st\.\s*|st\s+)(?=[a-z])", "saint ", text)
-    text = re.sub(r"[^a-z0-9]+", " ", text).strip()
+    text = _identity_text(name)
 
     stripped = re.sub(r"\s+", " ", _INSTITUTION_WORDS.sub(" ", text)).strip()
     if stripped != text:
         rules.append(FOLD_INSTITUTION)
     text = stripped
 
+    text, rest = _fold_prepositions(text)
+    rules.extend(rest)
+    return text, tuple(rules)
+
+
+def _identity_text(name: str) -> str:
+    """A published string lower-cased, Saint/State read, punctuation gone."""
+    text = _clean_team_name(name).lower().replace("&", " and ")
+    text = re.sub(r"\([^)]*\)", " ", text)
+    text = text.replace("'", "").replace("’", "")
+    text = re.sub(r"\bst\.?\s*$", " state", text)
+    text = re.sub(r"\b(?:st\.\s*|st\s+)(?=[a-z])", "saint ", text)
+    return re.sub(r"[^a-z0-9]+", " ", text).strip()
+
+
+def _fold_prepositions(text: str) -> tuple[str, list[str]]:
+    """The of-prefix and locative-joiner folds, with the rules that fired."""
+    rules: list[str] = []
     stripped = _OF_PREFIX.sub("", text)
     if stripped != text:
         rules.append(FOLD_OF_PREFIX)
@@ -1033,13 +1046,120 @@ def _identity_fold(name: str) -> tuple[str, tuple[str, ...]]:
     if stripped != text:
         rules.append(FOLD_LOCATIVE)
     text = stripped
-
-    return re.sub(r"\s+", " ", text).strip(), tuple(rules)
+    return re.sub(r"\s+", " ", text).strip(), rules
 
 
 def identity_fold_rules(name: str) -> tuple[str, ...]:
     """Which fold rules rewrite ``name`` on the way to its identity key."""
     return _identity_fold(name)[1]
+
+
+# The institution word is the one thing that tells some pairs of schools
+# apart: Boston College (ACC) and Boston University (Patriot League) both
+# fold to "boston". So beside the folded key every spelling has an
+# INSTITUTION KEY: the same fold with the institution words kept, each
+# spelled one way ("Univ." and a trailing "U" are University, "Coll." is
+# College) and moved to the end in a fixed order, so "College of Boston",
+# "Boston College" and "Boston Coll." share one, and "Boston U." and
+# "Boston University" share another. "The" is dropped as the fold drops it:
+# it never tells two schools apart. A folded key never carries "college" or
+# "university" (the fold removes them), so an institution key can sit in the
+# same map as the folded keys without ever meaning one of them.
+_INSTITUTION_FORMS = {
+    "university": "university",
+    "univ": "university",
+    "u": "university",
+    "college": "college",
+    "coll": "college",
+}
+_INSTITUTION_ORDER = ("college", "university")
+
+
+def _institution_key(name: str) -> str:
+    """The identity key with the institution words kept, or "" without one.
+
+    "" when the string carries no institution word (its folded key is the
+    whole of its identity) or nothing but institution words.
+    """
+    tokens = _identity_text(name).split()
+    words = {_INSTITUTION_FORMS[t] for t in tokens if t in _INSTITUTION_FORMS}
+    if not words:
+        return ""
+    rest = " ".join(t for t in tokens if t not in _INSTITUTION_FORMS and t != "the")
+    base, _ = _fold_prepositions(rest)
+    if not base:
+        return ""
+    return " ".join([base, *(w for w in _INSTITUTION_ORDER if w in words)])
+
+
+def _lookup_keys(name: str) -> tuple[str, ...]:
+    """The keys a published string is looked up under, most specific first.
+
+    Its institution key, when it has one, then its folded key. The
+    institution key can only ever hit a programme whose folded key the
+    table withdrew (``institution_split_keys``), so for every other string
+    the lookup is the folded key alone, exactly as before.
+    """
+    folded = _identity_key(name)
+    institution = _institution_key(name)
+    if institution and institution != folded:
+        return (institution, folded)
+    return (folded,)
+
+
+def institution_split_keys(
+    schools: list[SchoolConfig], gender: str | None = None
+) -> frozenset[str]:
+    """The folded keys an institution word splits between programmes.
+
+    A folded key two or more programmes of one table claim, where at least
+    one claim carries an institution word: "boston", from "Boston College"
+    and "Boston University". Dropping the word is what made the spellings
+    meet, so the word is what tells them apart, and the table keeps it for
+    that key: the folded key resolves to nobody (bare "Boston" names neither
+    school and mints its slug from the text) and each spelling is claimed
+    under its institution key instead. A folded key every claimant spells
+    bare is an ordinary collision, which check-membership refuses
+    (``identity_collisions``).
+
+    The table is the stanza list given, the same one ``identity_aliases``
+    builds from (on the collection path, one gender at one NCAA level in
+    one season: ``membership.resolution_stanzas``), and the claims read are
+    exactly the ones that map reads: name, aliases and a resolving
+    abbreviation. ``display_name`` and ``member_aliases`` never split a key.
+    The answer is a set over every claim of the table, so it cannot depend
+    on stanza order.
+    """
+    owners: dict[str, set[str]] = {}
+    worded: set[str] = set()
+    for school in schools:
+        if gender is not None and school.gender != gender:
+            continue
+        slug = programme_slug(school.name)
+        for candidate in _identity_spellings(school):
+            key = _identity_key(candidate)
+            if not key:
+                continue
+            owners.setdefault(key, set()).add(slug)
+            if _institution_key(candidate) not in ("", key):
+                worded.add(key)
+    return frozenset(key for key in worded if len(owners[key]) > 1)
+
+
+def _claim_keys(candidate: str, split: frozenset[str]) -> tuple[str, ...]:
+    """The keys one claimed spelling registers under, given the split keys.
+
+    Its folded key, unless an institution word splits that key: then its
+    institution key, or nothing for a bare spelling, which names every
+    programme the split key joins.
+    """
+    key = _identity_key(candidate)
+    if not key:
+        return ()
+    if key not in split:
+        return (key,)
+    institution = _institution_key(candidate)
+    return (institution,) if institution and institution != key else ()
 
 
 def identity_aliases(
@@ -1062,16 +1182,29 @@ def identity_aliases(
     token of "Penn State"), so one table across levels hands one level's
     text to the other's programmes. Text naming a school at another level
     mints its slug from the text, as text naming an unknown school does.
+
+    A folded key an institution word splits between two programmes of the
+    table (``institution_split_keys``: "boston", Boston College's and Boston
+    University's) is withdrawn, and each spelling that folds to it is held
+    under its institution key ("boston college", "boston university")
+    instead. An institution key two programmes claim is withdrawn too, so
+    nothing this rule adds depends on stanza order. A table no institution
+    word splits is built exactly as before.
     """
+    split = institution_split_keys(schools, gender)
     aliases: dict[str, str] = {}
+    contested: set[str] = set()
     for school in schools:
         if gender is not None and school.gender != gender:
             continue
         slug = programme_slug(school.name)
         for candidate in _identity_spellings(school):
-            key = _identity_key(candidate)
-            if key:
+            for key in _claim_keys(candidate, split):
+                if key != _identity_key(candidate) and aliases.get(key, slug) != slug:
+                    contested.add(key)
                 aliases[key] = slug
+    for key in contested:
+        del aliases[key]
     return aliases
 
 
@@ -1095,6 +1228,20 @@ def _identity_spellings(school: SchoolConfig) -> list[str]:
     return spellings
 
 
+def _claimed_fields(school: SchoolConfig) -> list[tuple[str, str]]:
+    """The (field, spelling) pairs ``_identity_spellings`` claims, labelled."""
+    fields = [("name", school.name)]
+    if school.abbreviation_resolves:
+        fields.append(("abbreviation", school.abbreviation))
+    fields.extend(("alias", alias) for alias in school.aliases)
+    return fields
+
+
+def _gender_splits(schools: list[SchoolConfig]) -> dict[str, frozenset[str]]:
+    genders = {school.gender for school in schools}
+    return {gender: institution_split_keys(schools, gender) for gender in genders}
+
+
 def identity_collisions(
     schools: list[SchoolConfig],
 ) -> list[tuple[str, str, list[tuple[str, str]]]]:
@@ -1107,18 +1254,27 @@ def identity_collisions(
     dropped, or ``abbreviation_resolves = false`` on the stanzas that share
     an initialism). The fields checked are exactly the ones
     ``_identity_spellings`` claims; ``display_name`` is not among them.
+
+    A folded key an institution word splits (``institution_split_keys``) is
+    not itself a collision: the map holds those spellings under their
+    institution keys, so Boston College and Boston University may both fold
+    to "boston". Their institution keys are checked instead, so two stanzas
+    that both claim "Boston College" still collide, on "boston college". A
+    bare spelling of a split key is ``identity_ambiguities``'s to report.
     """
+    splits = _gender_splits(schools)
     claims: dict[tuple[str, str], dict[str, list[tuple[str, str]]]] = {}
     for school in schools:
         slug = programme_slug(school.name)
-        fields = [("name", school.name)]
-        if school.abbreviation_resolves:
-            fields.append(("abbreviation", school.abbreviation))
-        fields.extend(("alias", alias) for alias in school.aliases)
-        for label, candidate in fields:
+        for label, candidate in _claimed_fields(school):
             key = _identity_key(candidate)
             if not key:
                 continue
+            if key in splits[school.gender]:
+                institution = _institution_key(candidate)
+                if not institution or institution == key:
+                    continue
+                key = institution
             owners = claims.setdefault((school.gender, key), {})
             owners.setdefault(slug, []).append((slug, label))
     collisions = []
@@ -1128,6 +1284,36 @@ def identity_collisions(
                 (gender, key, [pair for pairs in owners.values() for pair in pairs])
             )
     return collisions
+
+
+def identity_ambiguities(
+    schools: list[SchoolConfig],
+) -> list[tuple[str, str, list[tuple[str, str]], list[tuple[str, str]]]]:
+    """Every bare spelling of a folded key an institution word splits.
+
+    One entry per (gender, key) as ``(gender, key, bare, worded)``: the
+    (slug, field) pairs claiming the key with no institution word, and
+    those claiming it with one, in file order. Bare "Boston" beside "Boston
+    College" and "Boston University" names both schools, so the map
+    resolves it to neither and the stanza's claim would silently resolve
+    nothing; check-membership refuses it instead.
+    """
+    splits = _gender_splits(schools)
+    bare: dict[tuple[str, str], list[tuple[str, str]]] = {}
+    worded: dict[tuple[str, str], list[tuple[str, str]]] = {}
+    for school in schools:
+        slug = programme_slug(school.name)
+        for label, candidate in _claimed_fields(school):
+            key = _identity_key(candidate)
+            if not key or key not in splits[school.gender]:
+                continue
+            institution = _institution_key(candidate)
+            side = bare if not institution or institution == key else worded
+            side.setdefault((school.gender, key), []).append((slug, label))
+    return [
+        (gender, key, claimants, worded.get((gender, key), []))
+        for (gender, key), claimants in bare.items()
+    ]
 
 
 def level_identity_collisions(
@@ -1156,6 +1342,39 @@ def level_identity_collisions(
     return [
         (gender, f"{level}, seasons {_season_ranges(seasons)}", key, list(claimants))
         for (gender, level, key, claimants), seasons in found.items()
+    ]
+
+
+def level_identity_ambiguities(
+    schools: list[SchoolConfig],
+    *,
+    document: dict[str, object],
+) -> list[tuple[str, str, str, list[tuple[str, str]], list[tuple[str, str]]]]:
+    """``identity_ambiguities`` within each resolution table, scoped.
+
+    ``(gender, scope, key, bare, worded)``, with ``scope`` as
+    ``level_identity_collisions`` names it: a key splits only inside a
+    table, so the pair must be at one level in one season for a bare
+    spelling of it to be ambiguous.
+    """
+    found: dict[
+        tuple[str, str, str, tuple[tuple[str, str], ...], tuple[tuple[str, str], ...]],
+        list[int],
+    ] = {}
+    for gender, level, season, stanzas in level_scopes(schools, document=document):
+        for _, key, bare, worded in identity_ambiguities(stanzas):
+            found.setdefault(
+                (gender, level, key, tuple(bare), tuple(worded)), []
+            ).append(season)
+    return [
+        (
+            gender,
+            f"{level}, seasons {_season_ranges(seasons)}",
+            key,
+            list(bare),
+            list(worded),
+        )
+        for (gender, level, key, bare, worded), seasons in found.items()
     ]
 
 
@@ -1448,6 +1667,13 @@ def resolution_scope(
         for school in schools
         if school.gender == gender and school.first_season > season
     }
+    # Keys are registered the way the identity map registers them
+    # (``_claim_keys``): a folded key an institution word splits between two
+    # programmes of the table is claimed by neither, and each spelling that
+    # folds to it claims its institution key instead. A member alias is the
+    # one claim that may hold a split key bare: it is a conference's own
+    # reading of the word, scoped to the collects that read for it.
+    split = institution_split_keys(schools, gender)
     spelled: set[str] = set()
     for school in schools:
         if school.gender != gender:
@@ -1455,16 +1681,23 @@ def resolution_scope(
         slug = programme_slug(school.name)
         if school.abbreviation:
             abbreviations[slug] = school.abbreviation
-        for candidate in (*_identity_spellings(school), *school.member_aliases):
-            key = _identity_key(candidate)
+        identity = [
+            key
+            for candidate in _identity_spellings(school)
+            for key in _claim_keys(candidate, split)
+        ]
+        member = [
+            key
+            for candidate in school.member_aliases
+            for key in (_claim_keys(candidate, split) or (_identity_key(candidate),))
+        ]
+        for key in (*identity, *member):
             if not key:
                 continue
             claimed.setdefault(key, set()).add(slug)
             if slug in members:
                 claims[key] = slug
-        spelled.update(
-            key for key in map(_identity_key, _identity_spellings(school)) if key
-        )
+        spelled.update(identity)
     member_only = {
         key: next(iter(slugs - unborn))
         for key, slugs in claimed.items()
@@ -1596,6 +1829,14 @@ def opponent_slug(
     such match. A one-token alias is never enough on its own, because a bare
     surname-like token matches far too much.
 
+    A string with an institution word is first looked up under its
+    institution key, the fold with that word kept: "Boston College" and
+    "Boston University" both fold to "boston", and a table whose stanzas
+    hold both withdraws "boston" and holds each under its institution key
+    (``institution_split_keys``). Only such a table holds institution keys,
+    so everywhere else the lookup is the folded key's, unchanged; bare
+    "Boston" there names neither school and mints its slug from the text.
+
     When nothing resolves, the normalized key becomes the slug rather than the
     raw string. That alone folds "Delta St." onto "Delta State" and "Oklahoma
     Christian University" onto "Oklahoma Christian". Genuinely opaque
@@ -1605,6 +1846,20 @@ def opponent_slug(
     key = _identity_key(name)
     if not key:
         return programme_slug(_clean_team_name(name))
+    # An institution key ("boston college") is held only for a folded key an
+    # institution word splits (``institution_split_keys``), so it is tried
+    # first and can only ever name one of those programmes; every other
+    # string falls straight through to its folded key, as before.
+    institution = _institution_key(name)
+    if institution and institution != key:
+        if scope is not None and institution in scope.claims:
+            chosen = scope.claims[institution]
+            otherwise = aliases.get(institution) or _unscoped_slug(key, aliases)
+            if chosen != otherwise:
+                scope.note(_clean_team_name(name), chosen, otherwise)
+            return chosen
+        if institution in aliases:
+            return aliases[institution]
     key = _division_seed_key(name, key, aliases, scope, seeded=seeded)
     if scope is not None and key in scope.claims:
         chosen = scope.claims[key]
@@ -2264,13 +2519,13 @@ def _names_side(
     if not printed:
         return None
     hits: set[str] = set()
-    key = _identity_key(printed)
-    for resolved in (
-        aliases.get(key),
-        scope.claims.get(key) if scope is not None else None,
-    ):
-        if resolved in sides:
-            hits.add(resolved)
+    for key in _lookup_keys(printed):
+        for resolved in (
+            aliases.get(key),
+            scope.claims.get(key) if scope is not None else None,
+        ):
+            if resolved in sides:
+                hits.add(resolved)
     if scope is not None:
         for side in sides:
             abbreviation = scope.abbreviations.get(side, "")

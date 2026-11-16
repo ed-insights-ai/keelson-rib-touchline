@@ -1096,6 +1096,9 @@ identity_accessed = "2026-09-02"
 # Left GSC men's soccer after 2025 (absent from the 2026 standings). Also
 # absent from the 2020 statistics: the conference postponed fall 2020
 # soccer to spring 2021 and West Florida opted out of that spring season.
+# Its 2026 season is now authored as Division I (an ASUN window on this
+# slug, see the DIVISION I section; the ASUN 2026 standings list it), so
+# `years` runs through 2026; `conference` stays GSC (the Shorter shape).
 [[schools]]
 name         = "West Florida"
 abbreviation = "UWF"
@@ -1104,7 +1107,7 @@ mascot       = "Argonauts"
 aliases      = ["University of West Florida"]
 gender       = "men"
 base_url     = "https://goargos.com/sports/mens-soccer"
-years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+years        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3247,8 +3250,15 @@ city_source  = "schedule-page home venue location, https://snhupenmen.com/sports
 identity_accessed = "2026-09-02"
 
 # Last NE10 season 2024; New Haven accepted a Northeast Conference (Division
-# I) invitation (newhavenchargers.com news 2025/5/6). The site still serves
-# 2025 and 2026, which the window excludes.
+# I) invitation (newhavenchargers.com news 2025/5/6). Its 2025 and 2026
+# seasons are now authored as Division I (NEC windows on this slug, see the
+# DIVISION I section; NEC records 2025 and the 2026 standings list it), so
+# `years` runs through 2026. `conference` stays NE10, the Shorter shape:
+# membership.json, not this field, says which conference a season is in.
+# "UNH" stays resolving here: New Hampshire (America East) also publishes
+# "UNH", so its stanza carries it display-only, and this stanza's
+# resolving "UNH" is a Division I-era ambiguity for the level-scoped identity
+# work to settle (left as is so Division II resolution does not move).
 [[schools]]
 name         = "New Haven"
 abbreviation = "UNH"
@@ -3256,7 +3266,7 @@ conference   = "NE10"
 mascot       = "Chargers"
 gender       = "men"
 base_url     = "https://newhavenchargers.com/sports/mens-soccer"
-years        = [2022, 2023, 2024]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -3266,7 +3276,9 @@ city_source  = "schedule-page home venue location, https://newhavenchargers.com/
 identity_accessed = "2026-09-02"
 
 # Last NE10 season 2022; Le Moyne moved to the Northeast Conference (Division
-# I) for 2023-24. The site still serves 2023-2026, which the window excludes.
+# I) for 2023-24. Its 2023-2026 seasons are now authored as Division I (an
+# NEC window on this slug, see the DIVISION I section), so `years` runs
+# through 2026; `conference` stays NE10 (the Shorter shape).
 # The schedule page prints no home town; the campus is in the town of DeWitt
 # (Syracuse mailing address), which the Census places file spells "De Witt
 # CDP" (design/batch1-membership-2026-09-02.md for the town).
@@ -3277,7 +3289,7 @@ conference   = "NE10"
 mascot       = "Dolphins"
 gender       = "men"
 base_url     = "https://lemoynedolphins.com/sports/mens-soccer"
-years        = [2022]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -4950,7 +4962,9 @@ identity_accessed = "2026-09-03"
 
 # Last PSAC season 2023; Mercyhurst joined the Northeast Conference
 # (Division I) for 2024-25 (psacsports.org news 2024/4/3, mercyhurst.edu/d1).
-# The site still serves 2024-2026, which the window excludes.
+# Its 2024-2026 seasons are now authored as Division I (an NEC window on
+# this slug, see the DIVISION I section), so `years` runs through 2026;
+# `conference` stays PSAC (the Shorter shape).
 [[schools]]
 name         = "Mercyhurst"
 abbreviation = "HURST"
@@ -4958,7 +4972,7 @@ conference   = "PSAC"
 mascot       = "Lakers"
 gender       = "men"
 base_url     = "https://hurstathletics.com/sports/mens-soccer"
-years        = [2022, 2023]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11412,3 +11426,3546 @@ aliases      = ["Winona State University"]
 city         = "Winona, Minn."
 city_source  = "schedule-page home venue location, https://www.winonastatewarriors.com/sports/womens-soccer (Winona, Minn., read by the probe 2026-11-08); the northernsun.org member JSON prints Winona, Minn."
 identity_accessed = "2026-11-08"
+
+# ============================================================
+# DIVISION I MEN'S SOCCER - 210 new stanzas, authored depth 2023-2026
+# ============================================================
+# NCAA Division I, the rib's first conferences at a level other than
+# Division II (conference_profiles level "d1"). 214 programmes play Division
+# I men's soccer in 2023-2026 (211/212/213/213 per season); 210 stanzas
+# are new here, grouped by 2026 conference. Four programmes already had a
+# Division II stanza and keep it, gaining their Division I seasons in
+# `years` and windows on the same slug: Mercyhurst (PSAC section, NEC from
+# 2024), New Haven (NE10 section, NEC from 2025), Le Moyne (NE10 section,
+# NEC from 2023) and West Florida (GSC section, ASUN from 2026).
+# Saint Francis (NEC 2023-2025, Division III from 2026) sits at the end of
+# the NEC block. The WAC (2023-2025) has no 2026 block: all ten of its
+# programmes are filed under their 2026 conference. UTRGV's 2025 season is
+# `independent`. WAC tournament header read 2026-11-15 on
+# gculopes.com/sports/mens-soccer/schedule/2025: "WAC Tournament".
+#
+# Membership: data/reference/membership.json, one window per conference
+# (and per division) stint, each citing the conference's own records page
+# (stats.aspx?path=msoc&year=Y&conf=true) per season, the live 2026
+# standings, or the researched page the matrix names (WAC and 2023 Pac-12
+# Wayback captures, the Big East's 2023 standings for Akron). Inputs:
+# d1-soccer/data/scratch/authoring/{facts,season-matrix,conference-seasons,
+# conference-divisions}.json; generator
+# d1-soccer/data/scratch/d1-stanzas-generator/generate.py.
+#
+# Names are the conference labels (apostrophes dropped, display_name keeping
+# them), except where a label mints a slug already in the file or folds to
+# a key another Division I stanza claims (Queens, Charleston, Saint Mary's;
+# each stanza says why). Boston College and Boston University both fold to
+# "boston"; the institution word tells them apart, so the identity map holds
+# each under its institution key and bare "Boston" names neither
+# (sidearm_live.institution_split_keys). Abbreviations
+# are the published short forms; a SideArm schoolAbbrev that is a scoreboard
+# stat code (TLSA, MOST, RUTG, ...) is not used, and a bare initialism another
+# stanza carries is display-only. Peer spellings are left for the alias round
+# after the first collect. No ordinals. Every stanza is data_status =
+# unverified: no collect has run.
+#
+# live_scraper = "wmt" (15 WMT Digital sites) names a recipe this branch
+# does not implement: collect_programme files every layer no-collector,
+# "no live collector for platform 'wmt'", without a fetch, and the loader
+# accepts the value. The WMT recipe is being written on another branch.
+
+# ------------------------------------------------------------
+# ACC (Atlantic Coast Conference) - 15 stanzas here; members 2023/2024/2025/2026 = 12/15/15/15
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   10 sidearm, all four layers present, seasons 2023-2026
+#   5 unknown: schedule error (HTTP 404), roster error (HTTP 404), stats error (HTTP 404), matches error (HTTP 404); seasons none proved -> authored as wmt (census reading, see the stanza or facts notes): Clemson, Virginia Tech, Notre Dame, Virginia, Stanford
+# Tournament header read 2026-11-15 on godeacs.com/sports/mens-soccer/schedule/2025: ACC Championship.
+
+[[schools]]
+name         = "SMU"
+abbreviation = "SMU"
+conference   = "ACC"
+mascot       = "Mustangs"
+gender       = "men"
+base_url     = "https://smumustangs.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Dallas, Texas"
+city_source  = "https://smumustangs.com/sports/mens-soccer/schedule (schedule page home rows print \"Dallas, Texas\", Washburne Soccer and Track Stadium; 13 of 13 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Clemson"
+abbreviation = "Clemson"
+conference   = "ACC"
+mascot       = "Tigers"
+gender       = "men"
+base_url     = "https://clemsontigers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "wmt"
+live_scraper = "wmt"
+data_status  = "unverified"
+enabled      = true
+city         = "Clemson, S.C."
+city_source  = "https://clemsontigers.com/sports/mens-soccer/schedule (schedule page home rows print \"Clemson, S.C. / Historic Riggs Field\"; 24 of 24 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "WAKE" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Wake Forest"
+abbreviation = "Wake Forest"
+conference   = "ACC"
+mascot       = "Demon Deacons"
+gender       = "men"
+base_url     = "https://godeacs.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Winston-Salem, N.C."
+city_source  = "https://godeacs.com/sports/mens-soccer/schedule (schedule page home rows print \"Winston-Salem, N.C.\", Spry Stadium; 13 of 13 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "LOU" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Louisville"
+abbreviation = "Louisville"
+conference   = "ACC"
+mascot       = "Cardinals"
+gender       = "men"
+base_url     = "https://gocards.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Louisville, Ky."
+city_source  = "https://gocards.com/sports/mens-soccer/schedule (schedule page home rows print \"LOUISVILLE, KY\", Dr. Mark & Cindy Lynn Stadium; 14 of 14 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Pitt"
+abbreviation = "PITT"
+conference   = "ACC"
+mascot       = "Panthers"
+gender       = "men"
+base_url     = "https://pittsburghpanthers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Pittsburgh, Pa."
+city_source  = "https://pittsburghpanthers.com/sports/mens-soccer/schedule (schedule page home rows print \"Pittsburgh, PA\", Ambrose Urbanic Field; 12 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Virginia Tech"
+abbreviation = "VTECH"
+conference   = "ACC"
+mascot       = "Hokies"
+gender       = "men"
+base_url     = "https://hokiesports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "wmt"
+live_scraper = "wmt"
+data_status  = "unverified"
+enabled      = true
+city         = "Blacksburg, Va."
+city_source  = "https://hokiesports.com/sports/mens-soccer/schedule (schedule page home rows print \"Blacksburg, Va.\"; 24 of 24 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "North Carolina"
+abbreviation = "UNC"
+conference   = "ACC"
+mascot       = "Tar Heels"
+gender       = "men"
+base_url     = "https://goheels.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Chapel Hill, N.C."
+city_source  = "https://goheels.com/sports/mens-soccer/schedule (schedule page home rows print \"Chapel Hill\" and once with the state; 9 of 10) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Notre Dame"
+abbreviation = "ND"
+conference   = "ACC"
+mascot       = "Fighting Irish"
+gender       = "men"
+base_url     = "https://fightingirish.com/sports/msoc"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "wmt"
+live_scraper = "wmt"
+data_status  = "unverified"
+enabled      = true
+city         = "South Bend, Ind."
+city_source  = "https://fightingirish.com/sports/msoc/schedule (schedule page, the site's men's soccer sport setting default_home_game_location in the page payload: \"South Bend, IN\") (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Virginia"
+abbreviation = "UVA"
+conference   = "ACC"
+mascot       = "Cavaliers"
+gender       = "men"
+base_url     = "https://virginiasports.com/sports/msoc"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "wmt"
+live_scraper = "wmt"
+data_status  = "unverified"
+enabled      = true
+city         = "Charlottesville, Va."
+city_source  = "https://virginiasports.com/sports/msoc/schedule (schedule page, 12 rows marked \"home\": \"Charlottesville, Va.\") (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "CAL" is a scoreboard stat code; "Cal" (printed on the site scoreboard or the conference object) is used.
+[[schools]]
+name         = "California"
+abbreviation = "Cal"
+conference   = "ACC"
+mascot       = "Golden Bears"
+gender       = "men"
+base_url     = "https://calbears.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Berkeley, Calif."
+city_source  = "standings/theacc.com.html embedded conference school object location \"Berkeley, CA\" (the school's schedule page prints no home town) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "NC State"
+abbreviation = "NCSU"
+conference   = "ACC"
+mascot       = "Wolfpack"
+gender       = "men"
+base_url     = "https://gopack.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Raleigh, N.C."
+city_source  = "https://gopack.com/sports/mens-soccer/schedule (schedule page home rows print \"Raleigh, NC\", Dail Soccer Field/Track Complex; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Stanford"
+abbreviation = "Stanford"
+conference   = "ACC"
+mascot       = "Cardinal"
+gender       = "men"
+base_url     = "https://gostanford.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "wmt"
+live_scraper = "wmt"
+data_status  = "unverified"
+enabled      = true
+city         = "Stanford, Calif."
+city_source  = "https://gostanford.com/sports/mens-soccer/schedule (schedule page home rows print \"Stanford, Calif. / Maloney Field at Laird Q. Cagan Stadium\"; 14 of 14 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "SYR" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Syracuse"
+abbreviation = "Syracuse"
+conference   = "ACC"
+mascot       = "Orange"
+gender       = "men"
+base_url     = "https://cuse.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Syracuse, N.Y."
+city_source  = "https://cuse.com/sports/mens-soccer/schedule (schedule page home rows print \"Syracuse, NY\", SU Soccer Stadium; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Boston College"
+abbreviation = "BC"
+abbreviation_resolves = false  # "BC" is also Bloomfield's (Division II)
+conference   = "ACC"
+mascot       = "Eagles"
+gender       = "men"
+base_url     = "https://bceagles.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Newton, Mass."
+city_source  = "https://bceagles.com/sports/mens-soccer/schedule (schedule page home rows print \"Newton, Mass.\", Newton Campus Lacrosse & Soccer Field; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Duke"
+abbreviation = "DUKE"
+conference   = "ACC"
+mascot       = "Blue Devils"
+gender       = "men"
+base_url     = "https://goduke.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Durham, N.C."
+city_source  = "https://goduke.com/sports/mens-soccer/schedule (schedule page home rows print \"Durham, N.C.\", Freeman Field at Koskinen Stadium; 15 of 15 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# A10 (Atlantic 10 Conference) - 13 stanzas here; members 2023/2024/2025/2026 = 14/14/13/13
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   12 sidearm, all four layers present, seasons 2023-2026
+#   1 sidearm: schedule present, roster absent, stats present, matches present; seasons 2023-2026: George Mason
+# Tournament header read 2026-11-15 on slubillikens.com/sports/mens-soccer/schedule/2025: A-10 Championship.
+
+[[schools]]
+name         = "Duquesne"
+abbreviation = "DUQ"
+conference   = "A10"
+mascot       = "Dukes"
+gender       = "men"
+base_url     = "https://goduquesne.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Pittsburgh, Pa."
+city_source  = "https://goduquesne.com/sports/mens-soccer/schedule (schedule page home rows print \"Pittsburgh, Pa.\", Rooney Field; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Saint Louis"
+abbreviation = "SLU"
+abbreviation_resolves = false  # "SLU" is also Saint Leo's (Division II)
+conference   = "A10"
+mascot       = "Billikens"
+gender       = "men"
+base_url     = "https://slubillikens.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "St. Louis, Mo."
+city_source  = "https://slubillikens.com/sports/mens-soccer/schedule (schedule page home rows print \"St. Louis, Mo. (Hermann Stadium)\"; 14 of 14 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "George Mason"
+abbreviation = "GMU"
+conference   = "A10"
+mascot       = "Patriots"
+gender       = "men"
+base_url     = "https://gomason.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Fairfax, Va."
+city_source  = "https://gomason.com/sports/mens-soccer/schedule (schedule page home rows print \"Fairfax, Va.\", George Mason Stadium; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Rhode Island"
+abbreviation = "URI"
+conference   = "A10"
+mascot       = "Rams"
+gender       = "men"
+base_url     = "https://gorhody.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Kingston, R.I."
+city_source  = "https://gorhody.com/sports/mens-soccer/schedule (schedule page home rows print \"Kingston, RI\", URI Soccer Complex; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Fordham"
+abbreviation = "FOR"
+conference   = "A10"
+mascot       = "Rams"
+gender       = "men"
+base_url     = "https://fordhamsports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Bronx, N.Y."
+city_source  = "https://fordhamsports.com/sports/mens-soccer/schedule (schedule page home rows print \"Bronx, N.Y.\", Moglia Stadium at Jack Coffey Field; 5 of 5 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Davidson"
+abbreviation = "DAV"
+conference   = "A10"
+mascot       = "Wildcats"
+gender       = "men"
+base_url     = "https://davidsonwildcats.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Davidson, N.C."
+city_source  = "standings/atlantic10.com.html embedded conference school object location \"Davidson, NC\" (the school's schedule page prints no home town) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Dayton"
+abbreviation = "UD"
+abbreviation_resolves = false  # "UD" is also an alternate code Delaware is printed under
+conference   = "A10"
+mascot       = "Flyers"
+gender       = "men"
+base_url     = "https://daytonflyers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Dayton, Ohio"
+city_source  = "https://daytonflyers.com/sports/mens-soccer/schedule (schedule page home rows print \"Dayton, Ohio\", Baujan Field; 13 of 13 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "La Salle"
+abbreviation = "LAS"
+conference   = "A10"
+mascot       = "Explorers"
+gender       = "men"
+base_url     = "https://goexplorers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Philadelphia, Pa."
+city_source  = "https://goexplorers.com/sports/mens-soccer/schedule (schedule page home rows print \"Philadelphia, PA\", McCarthy Stadium; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Loyola Chicago"
+abbreviation = "LUC"
+conference   = "A10"
+mascot       = "Ramblers"
+gender       = "men"
+base_url     = "https://loyolaramblers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Chicago, Ill."
+city_source  = "https://loyolaramblers.com/sports/mens-soccer/schedule (schedule page home rows print \"Chicago, Ill.\", Loyola Soccer Park; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "St. Bonaventure"
+abbreviation = "SBU"
+abbreviation_resolves = false  # "SBU" is also Stony Brook's; also Southwest Baptist's (Division II)
+conference   = "A10"
+mascot       = "Bonnies"
+gender       = "men"
+base_url     = "https://gobonnies.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "St. Bonaventure, N.Y."
+city_source  = "https://gobonnies.com/sports/mens-soccer/schedule (schedule page home rows print \"St. Bonaventure, N.Y.\", Tom 80' and Michelle Marra Athletics Field Complex; 7 of 7 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "VCU"
+abbreviation = "VCU"
+conference   = "A10"
+mascot       = "Rams"
+gender       = "men"
+base_url     = "https://vcuathletics.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Virginia Commonwealth University"]
+city         = "Richmond, Va."
+city_source  = "https://vcuathletics.com/sports/mens-soccer/schedule (schedule page home rows print \"Richmond, Va. / VCU Athletic Village\"; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Saint Josephs"
+display_name = "Saint Joseph's"
+abbreviation = "SJU"
+abbreviation_resolves = false  # "SJU" is also St. John's's
+conference   = "A10"
+mascot       = "Hawks"
+gender       = "men"
+base_url     = "https://sjuhawks.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Philadelphia, Pa."
+city_source  = "https://sjuhawks.com/sports/mens-soccer/schedule (schedule page home rows print \"Philadelphia, Pa.\", Sean Sweeney Field; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "George Washington"
+abbreviation = "GW"
+conference   = "A10"
+mascot       = "Revolutionaries"
+gender       = "men"
+base_url     = "https://gwsports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Washington, D.C."
+city_source  = "https://gwsports.com/sports/mens-soccer/schedule (schedule page home rows print \"Washington, DC\", GW Soccer Field; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# AAC (American Conference) - 9 stanzas here; members 2023/2024/2025/2026 = 9/8/9/9
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   9 sidearm, all four layers present, seasons 2023-2026
+# Tournament header read 2026-11-15 on charlotte49ers.com/sports/mens-soccer/schedule/2025: American Conference Championships.
+
+# abbreviation: the site config's schoolAbbrev "TLSA" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Tulsa"
+abbreviation = "Tulsa"
+conference   = "AAC"
+mascot       = "Hurricane"
+gender       = "men"
+base_url     = "https://tulsahurricane.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Tulsa, Okla."
+city_source  = "https://tulsahurricane.com/sports/mens-soccer/schedule (schedule page home rows print \"Tulsa, Okla.\", Hurricane Soccer Stadium; 13 of 13 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "MOST" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Missouri State"
+abbreviation = "Missouri State"
+conference   = "AAC"
+mascot       = "Bears"
+gender       = "men"
+base_url     = "https://missouristatebears.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Springfield, Mo."
+city_source  = "https://missouristatebears.com/sports/mens-soccer/schedule (schedule page home rows print \"Springfield\" with no state; 12 of 12); state from standings/theamerican.org.html school object location \"Springfield, MO\" (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "CLT" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Charlotte"
+abbreviation = "Charlotte"
+conference   = "AAC"
+mascot       = "49ers"
+gender       = "men"
+base_url     = "https://charlotte49ers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Charlotte, N.C."
+city_source  = "https://charlotte49ers.com/sports/mens-soccer/schedule (schedule page home rows print \"Charlotte, N.C.\", Jen Gaber Field; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Florida Atlantic"
+abbreviation = "FAU"
+conference   = "AAC"
+mascot       = "Owls"
+gender       = "men"
+base_url     = "https://fausports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Boca Raton, Fla."
+city_source  = "https://fausports.com/sports/mens-soccer/schedule (schedule page home rows print \"Boca Raton, Fla.\", FAU Soccer Stadium; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "MEM" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Memphis"
+abbreviation = "Memphis"
+conference   = "AAC"
+mascot       = "Tigers"
+gender       = "men"
+base_url     = "https://gotigersgo.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Memphis, Tenn."
+city_source  = "https://gotigersgo.com/sports/mens-soccer/schedule (schedule page home rows print \"Memphis, Tenn.\", Track and Soccer Complex; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "FIU"
+abbreviation = "FIU"
+conference   = "AAC"
+mascot       = "Panthers"
+gender       = "men"
+base_url     = "https://fiusports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Florida International University"]
+city         = "Miami, Fla."
+city_source  = "https://fiusports.com/sports/mens-soccer/schedule (schedule page home rows print \"Miami, Fla.\", Leyva Family Field at FIU Soccer Stadium; 11 of 11 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "UAB"
+abbreviation = "UAB"
+conference   = "AAC"
+mascot       = "Blazers"
+gender       = "men"
+base_url     = "https://uabsports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Birmingham, Ala."
+city_source  = "https://uabsports.com/sports/mens-soccer/schedule (schedule page home rows print \"Birmingham, Ala.\", PNC Field; 12 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "TEM" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Temple"
+abbreviation = "Temple"
+conference   = "AAC"
+mascot       = "Owls"
+gender       = "men"
+base_url     = "https://owlsports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Philadelphia, Pa."
+city_source  = "https://owlsports.com/sports/mens-soccer/schedule (schedule page home rows print \"Philadelphia, Pa.\", Temple Sports Complex; 7 of 7 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "South Florida"
+abbreviation = "USF"
+abbreviation_resolves = false  # "USF" is also San Francisco's
+conference   = "AAC"
+mascot       = "Bulls"
+gender       = "men"
+base_url     = "https://gousfbulls.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Tampa, Fla."
+city_source  = "https://gousfbulls.com/sports/mens-soccer/schedule (schedule page home rows print \"Tampa, FL\", Corbett Stadium; 11 of 11 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# AE (America East Conference) - 8 stanzas here; members 2023/2024/2025/2026 = 8/8/8/8
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   8 sidearm, all four layers present, seasons 2023-2026
+# Tournament header read 2026-11-15 on uvmathletics.com/sports/mens-soccer/schedule/2025: America East Tournament.
+
+[[schools]]
+name         = "UAlbany"
+abbreviation = "UAlbany"
+conference   = "AE"
+mascot       = "Great Danes"
+gender       = "men"
+base_url     = "https://ualbanysports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University at Albany"]
+city         = "Albany, N.Y."
+city_source  = "https://ualbanysports.com/sports/mens-soccer/schedule (schedule page home rows print \"Albany, N.Y.\", Bob Ford Field at Tom & Mary Casey Stadium; 8 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Vermont"
+abbreviation = "UVM"
+conference   = "AE"
+mascot       = "Catamounts"
+gender       = "men"
+base_url     = "https://uvmathletics.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Burlington, Vt."
+city_source  = "https://uvmathletics.com/sports/mens-soccer/schedule (schedule page home rows print \"Burlington, VT\", Virtue Field; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Bryant"
+abbreviation = "Bryant"
+conference   = "AE"
+mascot       = "Bulldogs"
+gender       = "men"
+base_url     = "https://bryantbulldogs.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Smithfield, R.I."
+city_source  = "https://bryantbulldogs.com/sports/mens-soccer/schedule (schedule page home rows print \"Smithfield, R.I.\", Beirne Stadium; 12 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "NJIT"
+abbreviation = "NJIT"
+conference   = "AE"
+mascot       = "Highlanders"
+gender       = "men"
+base_url     = "https://njithighlanders.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["New Jersey Institute of Technology"]
+city         = "Newark, N.J."
+city_source  = "https://njithighlanders.com/sports/mens-soccer/schedule (schedule page home rows print \"Newark, NJ\", Lubetkin Field at Mal Simon Stadium; 12 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "New Hampshire"
+abbreviation = "UNH"
+abbreviation_resolves = false  # "UNH" is also New Haven's (Division II)
+conference   = "AE"
+mascot       = "Wildcats"
+gender       = "men"
+base_url     = "https://unhwildcats.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Durham, N.H."
+city_source  = "https://unhwildcats.com/sports/mens-soccer/schedule (schedule page home rows print \"Durham, N.H.\", Wildcat Stadium; 7 of 7 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Binghamton"
+abbreviation = "BING"
+conference   = "AE"
+mascot       = "Bearcats"
+gender       = "men"
+base_url     = "https://binghamtonbearcats.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Vestal, N.Y."
+city_source  = "https://binghamtonbearcats.com/sports/mens-soccer/schedule (schedule page home rows print \"Vestal, NY\", Bearcats Sports Complex; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "UMass Lowell"
+abbreviation = "UMass Lowell"
+conference   = "AE"
+mascot       = "River Hawks"
+gender       = "men"
+base_url     = "https://goriverhawks.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Lowell, Mass."
+city_source  = "https://goriverhawks.com/sports/mens-soccer/schedule (schedule page home rows print \"Lowell, Mass.\", Cushing Field; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "UMBC"
+abbreviation = "UMBC"
+conference   = "AE"
+mascot       = "Retrievers"
+gender       = "men"
+base_url     = "https://umbcretrievers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Maryland, Baltimore County"]
+city         = "Baltimore, Md."
+city_source  = "https://umbcretrievers.com/sports/mens-soccer/schedule (schedule page home rows print \"Baltimore, Md.\", Retriever Soccer Park; 12 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# ASUN (Atlantic Sun Conference) - 8 stanzas here; members 2023/2024/2025/2026 = 8/8/8/9
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   8 sidearm, all four layers present, seasons 2023-2026
+# Tournament header read 2026-11-15 on lipscombsports.com/sports/mens-soccer/schedule/2025: ASUN Championship.
+
+[[schools]]
+name         = "North Florida"
+abbreviation = "UNF"
+conference   = "ASUN"
+mascot       = "Ospreys"
+gender       = "men"
+base_url     = "https://unfospreys.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Jacksonville, Fla."
+city_source  = "https://unfospreys.com/sports/mens-soccer/schedule (schedule page home rows print \"Jacksonville, Fla.\", Hodges Stadium; 11 of 11 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Central Arkansas"
+abbreviation = "UCA"
+conference   = "ASUN"
+mascot       = "Bears"
+gender       = "men"
+base_url     = "https://ucasports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Conway, Ark."
+city_source  = "https://ucasports.com/sports/mens-soccer/schedule (schedule page home rows print \"Conway, Ark.\", Bill Stephens Track/Soccer Complex; 11 of 11 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Stetson"
+abbreviation = "Stetson"
+conference   = "ASUN"
+mascot       = "Hatters"
+gender       = "men"
+base_url     = "https://gohatters.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "DeLand, Fla."
+city_source  = "https://gohatters.com/sports/mens-soccer/schedule (schedule page home rows print \"DeLand, FL\", Athletic Training Center; 12 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Bellarmine"
+abbreviation = "Bellarmine"
+conference   = "ASUN"
+mascot       = "Knights"
+gender       = "men"
+base_url     = "https://athletics.bellarmine.edu/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Louisville, Ky."
+city_source  = "https://athletics.bellarmine.edu/sports/mens-soccer/schedule (schedule page home rows print \"Louisville, KY\", Owsley B. Frazier Stadium; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# Queens University of Charlotte, not the ECC's Queens College (N.Y.),
+# whose stanza already mints `queens`; slugs never rename, so `name`
+# is qualified (the Wayne State Nebraska shape) and display_name
+# carries the published name. The ASUN prints the bare "Queens", which
+# folds to the incumbent's key: claimed here as the abbreviation, so
+# check-membership reports it as a cross-level collision for the
+# level-scoped identity check to clear. The Division II archive
+# minted queens-of-charlotte once from "Queens University of Charlotte".
+[[schools]]
+name         = "Queens Charlotte"
+display_name = "Queens University of Charlotte"
+abbreviation = "Queens"
+conference   = "ASUN"
+mascot       = "Royals"
+gender       = "men"
+base_url     = "https://queensathletics.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Queens University of Charlotte"]
+city         = "Charlotte, N.C."
+city_source  = "https://queensathletics.com/sports/mens-soccer/schedule (schedule page home rows print \"Charlotte, N.C.\", Queens Sports Complex; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Jacksonville"
+abbreviation = "JAX"
+conference   = "ASUN"
+mascot       = "Dolphins"
+gender       = "men"
+base_url     = "https://judolphins.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Jacksonville, Fla."
+city_source  = "https://judolphins.com/sports/mens-soccer/schedule (schedule page home rows print \"Jacksonville, Fla.\", Southern Oak Stadium; 7 of 7 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Lipscomb"
+abbreviation = "LIP"
+conference   = "ASUN"
+mascot       = "Bisons"
+gender       = "men"
+base_url     = "https://lipscombsports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Nashville, Tenn."
+city_source  = "standings/asunsports.org.html embedded conference school object location \"Nashville, TN\" (the school's schedule page prints no home town) (read 2026-11-15)"
+gazetteer_geoid = "4752006"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "FGCU"
+abbreviation = "FGCU"
+conference   = "ASUN"
+mascot       = "Eagles"
+gender       = "men"
+base_url     = "https://fgcuathletics.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Florida Gulf Coast University"]
+city         = "Fort Myers, Fla."
+city_source  = "https://fgcuathletics.com/sports/mens-soccer/schedule (schedule page home rows print \"Fort Myers, Fla.\", Pickering Field at the FGCU Soccer Complex; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# B1G (Big Ten Conference) - 11 stanzas here; members 2023/2024/2025/2026 = 9/11/11/11
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   8 sidearm, all four layers present, seasons 2023-2026
+#   2 unknown: schedule error (HTTP 404), roster error (HTTP 404), stats error (HTTP 404), matches error (HTTP 404); seasons none proved -> authored as wmt (census reading, see the stanza or facts notes): Northwestern, Penn State
+#   1 unknown: schedule absent, roster error (HTTP 404), stats absent, matches present; seasons none proved -> authored as wmt (census reading, see the stanza or facts notes): UCLA
+# Tournament header read 2026-11-15 on umterps.com/sports/mens-soccer/schedule/2025: Big Ten Tournament.
+
+[[schools]]
+name         = "Indiana"
+abbreviation = "IU"
+conference   = "B1G"
+mascot       = "Hoosiers"
+gender       = "men"
+base_url     = "https://iuhoosiers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Bloomington, Ind."
+city_source  = "https://iuhoosiers.com/sports/mens-soccer/schedule (schedule page home rows print \"Bloomington, Ind.\", Jerry Yeagley Field at Bill Armstrong Stadium; 16 of 16 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "WASH" is a scoreboard stat code; "UW" (printed on the site scoreboard or the conference object) is used.
+[[schools]]
+name         = "Washington"
+abbreviation = "UW"
+conference   = "B1G"
+mascot       = "Huskies"
+gender       = "men"
+base_url     = "https://gohuskies.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Seattle, Wash."
+city_source  = "https://gohuskies.com/sports/mens-soccer/schedule (schedule page home rows print \"Seattle, Wash.\", Husky Soccer Stadium; 10 of 11 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "RUTG" is a scoreboard stat code; "RU" (printed on the site scoreboard or the conference object) is used.
+[[schools]]
+name         = "Rutgers"
+abbreviation = "RU"
+abbreviation_resolves = false  # "RU" is also Rockhurst, Roosevelt's (Division II)
+conference   = "B1G"
+mascot       = "Scarlet Knights"
+gender       = "men"
+base_url     = "https://scarletknights.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Piscataway, N.J."
+city_source  = "https://scarletknights.com/sports/mens-soccer/schedule (schedule page home rows print \"Piscataway, N.J.\", Yurcak Field; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Michigan State"
+abbreviation = "MSU"
+abbreviation_resolves = false  # "MSU" is also Midwestern State's (Division II)
+conference   = "B1G"
+mascot       = "Spartans"
+gender       = "men"
+base_url     = "https://msuspartans.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "East Lansing, Mich."
+city_source  = "https://msuspartans.com/sports/mens-soccer/schedule (schedule page home rows print \"East Lansing, Mich.\", DeMartin Stadium; 12 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "MD" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Maryland"
+abbreviation = "Maryland"
+conference   = "B1G"
+mascot       = "Terrapins"
+gender       = "men"
+base_url     = "https://umterps.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "College Park, Md."
+city_source  = "https://umterps.com/sports/mens-soccer/schedule (schedule page home rows print \"College Park, MD\", Ludwig Field; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "UCLA"
+abbreviation = "UCLA"
+conference   = "B1G"
+mascot       = "Bruins"
+gender       = "men"
+base_url     = "https://uclabruins.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "wmt"
+live_scraper = "wmt"
+data_status  = "unverified"
+enabled      = true
+city         = "Los Angeles, Calif."
+city_source  = "https://uclabruins.com/sports/mens-soccer/schedule (schedule page home rows print \"Los Angeles, CA / Wallis Annenberg Stadium\"; 26 of 26 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "WIS" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Wisconsin"
+abbreviation = "Wisconsin"
+conference   = "B1G"
+mascot       = "Badgers"
+gender       = "men"
+base_url     = "https://uwbadgers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Madison, Wis."
+city_source  = "https://uwbadgers.com/sports/mens-soccer/schedule (schedule page home rows print \"Madison, WI\", McClimon Track/Soccer Complex; 13 of 13 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Northwestern"
+abbreviation = "NU"
+abbreviation_resolves = false  # "NU" is also Newman, Northwood's (Division II)
+conference   = "B1G"
+mascot       = "Wildcats"
+gender       = "men"
+base_url     = "https://nusports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "wmt"
+live_scraper = "wmt"
+data_status  = "unverified"
+enabled      = true
+city         = "Evanston, Ill."
+city_source  = "https://nusports.com/sports/mens-soccer/schedule (schedule page home rows print \"Evanston, Ill. / Northwestern Medicine Field at Martin Stadium\"; 14 of 14 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Ohio State"
+abbreviation = "OSU"
+abbreviation_resolves = false  # "OSU" is also an alternate code Oregon State is printed under
+conference   = "B1G"
+mascot       = "Buckeyes"
+gender       = "men"
+base_url     = "https://ohiostatebuckeyes.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Columbus, Ohio"
+city_source  = "https://ohiostatebuckeyes.com/sports/mens-soccer/schedule (schedule page home rows print \"Columbus, Ohio\", Jesse Owens Memorial Stadium; 12 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "MICH" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Michigan"
+abbreviation = "Michigan"
+conference   = "B1G"
+mascot       = "Wolverines"
+gender       = "men"
+base_url     = "https://mgoblue.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Ann Arbor, Mich."
+city_source  = "https://mgoblue.com/sports/mens-soccer/schedule (schedule page home rows print \"Ann Arbor, Mich.\"; 12 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Penn State"
+abbreviation = "PSU"
+conference   = "B1G"
+mascot       = "Nittany Lions"
+gender       = "men"
+base_url     = "https://gopsusports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "wmt"
+live_scraper = "wmt"
+data_status  = "unverified"
+enabled      = true
+city         = "University Park, Pa."
+city_source  = "https://gopsusports.com/sports/mens-soccer/schedule (schedule page home rows print \"University Park, Pa. / Jeffrey Field\"; 11 of 11 home rows) (read 2026-11-15)"
+gazetteer_geoid = "4273808"
+gazetteer_note = "University Park is the name of Penn State's primary campus, not a Gazetteer place: https://en.wikipedia.org/wiki/University_Park,_Pennsylvania (read 2026-11-15) says the campus 'is located in State College and College Township in Centre County'; the pin is the State College borough row of the places file"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# BIGEAST (Big East Conference) - 12 stanzas here; members 2023/2024/2025/2026 = 12/12/12/12
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   12 sidearm, all four layers present, seasons 2023-2026
+# Tournament header read 2026-11-15 on gozips.com/sports/mens-soccer/schedule/2025: Big East Conference Tournament Semifinals.
+
+[[schools]]
+name         = "Georgetown"
+abbreviation = "G-TOWN"
+conference   = "BIGEAST"
+mascot       = "Hoyas"
+gender       = "men"
+base_url     = "https://guhoyas.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Washington, D.C."
+city_source  = "standings/bigeast.com.html embedded conference school object location \"Washington, DC\" (the school's schedule page prints no home town) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Seton Hall"
+abbreviation = "SHU"
+abbreviation_resolves = false  # "SHU" is also Sacred Heart's; also Seton Hill's (Division II)
+conference   = "BIGEAST"
+mascot       = "Pirates"
+gender       = "men"
+base_url     = "https://shupirates.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "South Orange, N.J."
+city_source  = "https://shupirates.com/sports/mens-soccer/schedule (schedule page home rows print \"South Orange, N.J.\", Owen T. Carroll Field (Soccer); 8 of 8 home rows) (read 2026-11-15)"
+gazetteer_geoid = "3401369274"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "UConn"
+abbreviation = "UConn"
+conference   = "BIGEAST"
+mascot       = "Huskies"
+gender       = "men"
+base_url     = "https://uconnhuskies.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Connecticut"]
+city         = "Storrs, Conn."
+city_source  = "https://uconnhuskies.com/sports/mens-soccer/schedule (schedule page home rows print \"Storrs, CT\", Joseph J. Morrone Stadium at Rizza Performance Center; 12 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "St. Johns"
+display_name = "St. John's"
+abbreviation = "SJU"
+abbreviation_resolves = false  # "SJU" is also Saint Joseph's's
+conference   = "BIGEAST"
+mascot       = "Red Storm"
+gender       = "men"
+base_url     = "https://redstormsports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Queens, N.Y."
+city_source  = "https://redstormsports.com/sports/mens-soccer/schedule (schedule page home rows print \"Queens, N.Y. (Cox Family Field at Belson Stadium)\"; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Providence"
+abbreviation = "Providence"
+conference   = "BIGEAST"
+mascot       = "Friars"
+gender       = "men"
+base_url     = "https://friars.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Providence, R.I."
+city_source  = "https://friars.com/sports/mens-soccer/schedule (schedule page home rows print \"Providence, R.I.\", Chapey Field at Anderson Stadium; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Villanova"
+abbreviation = "NOVA"
+conference   = "BIGEAST"
+mascot       = "Wildcats"
+gender       = "men"
+base_url     = "https://villanova.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Villanova, Pa."
+city_source  = "https://villanova.com/sports/mens-soccer/schedule (schedule page home rows print \"Villanova, Pa.\", Higgins Soccer Complex; 11 of 11 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "CREI" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Creighton"
+abbreviation = "Creighton"
+conference   = "BIGEAST"
+mascot       = "Bluejays"
+gender       = "men"
+base_url     = "https://gocreighton.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Omaha, Neb."
+city_source  = "https://gocreighton.com/sports/mens-soccer/schedule (schedule page home rows print \"Omaha, Neb.\", Morrison Stadium; 12 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "AKR" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Akron"
+abbreviation = "Akron"
+conference   = "BIGEAST"
+mascot       = "Zips"
+gender       = "men"
+base_url     = "https://gozips.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Akron, Ohio"
+city_source  = "https://gozips.com/sports/mens-soccer/schedule (schedule page home rows print \"Akron, Ohio\", FirstEnergy Stadium; 11 of 11 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Xavier"
+abbreviation = "Xavier"
+conference   = "BIGEAST"
+mascot       = "Musketeers"
+gender       = "men"
+base_url     = "https://goxavier.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Cincinnati, Ohio"
+city_source  = "https://goxavier.com/sports/mens-soccer/schedule (schedule page home rows print \"Cincinnati, Ohio\", Corcoran Field; 11 of 11 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Butler"
+abbreviation = "Butler"
+conference   = "BIGEAST"
+mascot       = "Bulldogs"
+gender       = "men"
+base_url     = "https://butlersports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Indianapolis, Ind."
+city_source  = "https://butlersports.com/sports/mens-soccer/schedule (schedule page home rows print \"Indianapolis, Ind.\", Bud and Jackie Sellick Bowl; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Marquette"
+abbreviation = "MU"
+abbreviation_resolves = false  # "MU" is also Mercyhurst's; also Molloy, Millersville, Malone's (Division II)
+conference   = "BIGEAST"
+mascot       = "Golden Eagles"
+gender       = "men"
+base_url     = "https://gomarquette.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Milwaukee, Wis."
+city_source  = "https://gomarquette.com/sports/mens-soccer/schedule (schedule page home rows print \"Milwaukee, WI\", Valley Fields; 11 of 11 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "DePaul"
+abbreviation = "DePaul"
+conference   = "BIGEAST"
+mascot       = "Blue Demons"
+gender       = "men"
+base_url     = "https://depaulbluedemons.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Chicago, Ill."
+city_source  = "https://depaulbluedemons.com/sports/mens-soccer/schedule (schedule page home rows print \"Chicago, Ill.\", Wish Field; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# BIGSOUTH (Big South Conference) - 8 stanzas here; members 2023/2024/2025/2026 = 8/8/8/8
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   8 sidearm, all four layers present, seasons 2023-2026
+# Tournament header read 2026-11-15 on highpointpanthers.com/sports/mens-soccer/schedule/2025: Big South Conference Championship.
+
+[[schools]]
+name         = "High Point"
+abbreviation = "HPU"
+abbreviation_resolves = false  # "HPU" is also Hawaii Pacific's (Division II)
+conference   = "BIGSOUTH"
+mascot       = "Panthers"
+gender       = "men"
+base_url     = "https://highpointpanthers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "High Point, N.C."
+city_source  = "https://highpointpanthers.com/sports/mens-soccer/schedule (schedule page home rows print \"High Point, N.C.\", Vert Stadium; 11 of 11 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Gardner-Webb"
+abbreviation = "GWU"
+conference   = "BIGSOUTH"
+mascot       = "Runnin' Bulldogs"
+gender       = "men"
+base_url     = "https://gwusports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Boiling Springs, N.C."
+city_source  = "https://gwusports.com/sports/mens-soccer/schedule (schedule page home rows print \"BOILING SPRINGS, N.C.\"; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "UNC Asheville"
+abbreviation = "UNC Asheville"
+conference   = "BIGSOUTH"
+mascot       = "Bulldogs"
+gender       = "men"
+base_url     = "https://uncabulldogs.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Asheville, N.C."
+city_source  = "https://uncabulldogs.com/sports/mens-soccer/schedule (schedule page home rows print \"Asheville, NC\", Greenwood Soccer Field; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Winthrop"
+abbreviation = "WIN"
+abbreviation_resolves = false  # "WIN" is also an alias of Wingate (Division II)
+conference   = "BIGSOUTH"
+mascot       = "Eagles"
+gender       = "men"
+base_url     = "https://winthropeagles.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Rock Hill, S.C."
+city_source  = "https://winthropeagles.com/sports/mens-soccer/schedule (schedule page home rows print \"Rock Hill, S.C.\", Eagle Field; 13 of 13 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Longwood"
+abbreviation = "Longwood"
+conference   = "BIGSOUTH"
+mascot       = "Lancers"
+gender       = "men"
+base_url     = "https://longwoodlancers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Farmville, Va."
+city_source  = "https://longwoodlancers.com/sports/mens-soccer/schedule (schedule page home rows print \"Farmville, Va.\", Longwood Athletics Complex; 7 of 7 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "USC Upstate"
+abbreviation = "USC Upstate"
+conference   = "BIGSOUTH"
+mascot       = "Spartans"
+gender       = "men"
+base_url     = "https://upstatespartans.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of South Carolina - Upstate"]
+city         = "Spartanburg, S.C."
+city_source  = "https://upstatespartans.com/sports/mens-soccer/schedule (schedule page home rows print \"Spartanburg, S.C.\", County University Soccer Stadium; 5 of 5 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Radford"
+abbreviation = "RAD"
+conference   = "BIGSOUTH"
+mascot       = "Highlanders"
+gender       = "men"
+base_url     = "https://radfordathletics.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Radford, Va."
+city_source  = "https://radfordathletics.com/sports/mens-soccer/schedule (schedule page home rows print \"Radford, Va.\", Tom Lillard Field at Cupp Stadium; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Presbyterian"
+abbreviation = "PC"
+conference   = "BIGSOUTH"
+mascot       = "Blue Hose"
+gender       = "men"
+base_url     = "https://gobluehose.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Clinton, S.C."
+city_source  = "https://gobluehose.com/sports/mens-soccer/schedule (schedule page home rows print \"Clinton, SC\", Edens Field at Martin Stadium; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# BIGWEST (Big West Conference) - 7 stanzas here; members 2023/2024/2025/2026 = 10/10/10/7
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   7 sidearm, all four layers present, seasons 2023-2026
+# Tournament header read 2026-11-15 on ucsbgauchos.com/sports/mens-soccer/schedule/2025: The Big West Championship.
+
+[[schools]]
+name         = "Utah Valley"
+abbreviation = "UVU"
+conference   = "BIGWEST"
+mascot       = "Wolverines"
+gender       = "men"
+base_url     = "https://gouvu.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Orem, Utah"
+city_source  = "https://gouvu.com/sports/mens-soccer/schedule (schedule page home rows print \"Orem, UT\", UCCU Stadium; 8 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "UC Irvine"
+abbreviation = "UCI"
+conference   = "BIGWEST"
+mascot       = "Anteaters"
+gender       = "men"
+base_url     = "https://ucirvinesports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Irvine, Calif."
+city_source  = "https://ucirvinesports.com/sports/mens-soccer/schedule (schedule page home rows print \"Irvine, Calif.\", Anteater Stadium; 12 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "UC Santa Barbara"
+abbreviation = "UCSB"
+conference   = "BIGWEST"
+mascot       = "Gauchos"
+gender       = "men"
+base_url     = "https://ucsbgauchos.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of California, Santa Barbara"]
+city         = "Santa Barbara, Calif."
+city_source  = "https://ucsbgauchos.com/sports/mens-soccer/schedule (schedule page home rows print \"Santa Barbara, Calif.\", Harder Stadium; 13 of 13 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Cal State Bakersfield"
+abbreviation = "CSUB"
+conference   = "BIGWEST"
+mascot       = "Roadrunners"
+gender       = "men"
+base_url     = "https://gorunners.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["California State University at Bakersfield"]
+city         = "Bakersfield, Calif."
+city_source  = "https://gorunners.com/sports/mens-soccer/schedule (schedule page home rows print \"Bakersfield, CA\", Main Soccer Field; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Sacramento State"
+abbreviation = "SacSt"
+conference   = "BIGWEST"
+mascot       = "Hornets"
+gender       = "men"
+base_url     = "https://hornetsports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Sacramento, Calif."
+city_source  = "https://hornetsports.com/sports/mens-soccer/schedule (schedule page home rows print \"Sacramento, Calif.\", Hornet Field; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "CSUN"
+abbreviation = "CSUN"
+conference   = "BIGWEST"
+mascot       = "Matadors"
+gender       = "men"
+base_url     = "https://gomatadors.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["California State University at Northridge"]
+city         = "Northridge, Calif."
+city_source  = "https://gomatadors.com/sports/mens-soccer/schedule (schedule page home rows print \"Northridge, Calif\", Matador Soccer Field; 12 of 12 home rows) (read 2026-11-15)"
+gazetteer_geoid = "0644000"
+gazetteer_note = "Northridge is a neighborhood of the City of Los Angeles with no Gazetteer row of its own: https://en.wikipedia.org/wiki/Northridge,_Los_Angeles (read 2026-11-15) 'Northridge is a neighborhood in the San Fernando Valley region of the City of Los Angeles. The community is home to California State University, Northridge'"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Cal State Fullerton"
+abbreviation = "CSUF"
+conference   = "BIGWEST"
+mascot       = "Titans"
+gender       = "men"
+base_url     = "https://fullertontitans.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Fullerton, Calif."
+city_source  = "https://fullertontitans.com/sports/mens-soccer/schedule (schedule page home rows print \"Fullerton, CA\", Titan Stadium; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# CAA (Coastal Athletic Association) - 10 stanzas here; members 2023/2024/2025/2026 = 11/11/10/10
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   10 sidearm, all four layers present, seasons 2023-2026
+# Tournament header read 2026-11-15 on cofcsports.com/sports/mens-soccer/schedule/2025: CAA Tournament (page text, no block header).
+
+[[schools]]
+name         = "Stony Brook"
+abbreviation = "SBU"
+abbreviation_resolves = false  # "SBU" is also St. Bonaventure's; also Southwest Baptist's (Division II)
+conference   = "CAA"
+mascot       = "Seawolves"
+gender       = "men"
+base_url     = "https://stonybrookathletics.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Stony Brook, N.Y."
+city_source  = "https://stonybrookathletics.com/sports/mens-soccer/schedule (schedule page home rows print \"Stony Brook, N.Y.\", LaValle Stadium; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Hofstra"
+abbreviation = "HOF"
+conference   = "CAA"
+mascot       = "Pride"
+gender       = "men"
+base_url     = "https://gohofstra.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Hempstead, N.Y."
+city_source  = "https://gohofstra.com/sports/mens-soccer/schedule (schedule page home rows print \"Hempstead, NY\", Captains Field; 11 of 11 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Drexel"
+abbreviation = "Drexel"
+conference   = "CAA"
+mascot       = "Dragons"
+gender       = "men"
+base_url     = "https://drexeldragons.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Philadelphia, Pa."
+city_source  = "https://drexeldragons.com/sports/mens-soccer/schedule (schedule page home rows print \"Philadelphia, Pa.\", Vidas Field; 6 of 6 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Northeastern"
+abbreviation = "Northeastern"
+conference   = "CAA"
+mascot       = "Huskies"
+gender       = "men"
+base_url     = "https://nuhuskies.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Brookline, Mass."
+city_source  = "https://nuhuskies.com/sports/mens-soccer/schedule (schedule page home rows print \"Brookline, Mass.\", Parsons Field; 7 of 7 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Monmouth"
+abbreviation = "MON"
+conference   = "CAA"
+mascot       = "Hawks"
+gender       = "men"
+base_url     = "https://monmouthhawks.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "West Long Branch, N.J."
+city_source  = "https://monmouthhawks.com/sports/mens-soccer/schedule (schedule page home rows print \"West Long Branch, NJ\", Hesse Field on The Great Lawn; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "UNCW"
+abbreviation = "UNCW"
+conference   = "CAA"
+mascot       = "Seahawks"
+gender       = "men"
+base_url     = "https://uncwsports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["UNC Wilmington"]
+city         = "Wilmington, N.C."
+city_source  = "https://uncwsports.com/sports/mens-soccer/schedule (schedule page home rows print \"Wilmington, N.C.\", UNCW Soccer Stadium; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Elon"
+abbreviation = "Elon"
+conference   = "CAA"
+mascot       = "Phoenix"
+gender       = "men"
+base_url     = "https://elonphoenix.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Elon, N.C."
+city_source  = "https://elonphoenix.com/sports/mens-soccer/schedule (schedule page home rows print \"Elon, N.C.\", Rudd Field; 12 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# College of Charleston (Charleston, S.C.), not the MEC's University of
+# Charleston (W.Va.), whose stanza already mints `charleston`. Both
+# "Charleston" (the CAA's label) and "College of Charleston" fold to
+# that key, so `name` is qualified and both spellings are aliases the
+# level-scoped identity check must clear (cross-level collision).
+[[schools]]
+name         = "Charleston South Carolina"
+display_name = "College of Charleston"
+abbreviation = "COFC"
+conference   = "CAA"
+mascot       = "Cougars"
+gender       = "men"
+base_url     = "https://cofcsports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Charleston"]
+city         = "Mount Pleasant, S.C."
+city_source  = "https://cofcsports.com/sports/mens-soccer/schedule (schedule page home rows print \"Mount Pleasant, S.C.\", Ralph Lundy Field at Patriots Point; 8 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "William & Mary"
+abbreviation = "WM"
+conference   = "CAA"
+mascot       = "Tribe"
+gender       = "men"
+base_url     = "https://tribeathletics.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Williamsburg, Va."
+city_source  = "https://tribeathletics.com/sports/mens-soccer/schedule (schedule page home rows print \"Williamsburg, Va.\", Martin Family Stadium at Albert-Daly Field; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Campbell"
+abbreviation = "Camp"
+conference   = "CAA"
+mascot       = "Camels"
+gender       = "men"
+base_url     = "https://gocamels.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Buies Creek, N.C."
+city_source  = "https://gocamels.com/sports/mens-soccer/schedule (schedule page home rows print \"BUIES CREEK\" with no state; 9 of 9); state from standings/caasports.com.html school object location \"Buies Creek, N.C.\" (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# HORIZON (Horizon League) - 11 stanzas here; members 2023/2024/2025/2026 = 10/10/10/11
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   11 sidearm, all four layers present, seasons 2023-2026
+# Tournament header read 2026-11-15 on goldengrizzlies.com/sports/mens-soccer/schedule/2025: Horizon League Men's Soccer Tournament.
+
+[[schools]]
+name         = "Milwaukee"
+abbreviation = "Milwaukee"
+conference   = "HORIZON"
+mascot       = "Panthers"
+gender       = "men"
+base_url     = "https://mkepanthers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Milwaukee, Wis."
+city_source  = "https://mkepanthers.com/sports/mens-soccer/schedule (schedule page home rows print \"Milwaukee, Wis.\", Engelmann Stadium; 13 of 13 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Purdue Fort Wayne"
+abbreviation = "PFW"
+conference   = "HORIZON"
+mascot       = "Mastodons"
+gender       = "men"
+base_url     = "https://gomastodons.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Fort Wayne, Ind."
+city_source  = "https://gomastodons.com/sports/mens-soccer/schedule (schedule page home rows print \"Fort Wayne, Ind.\", Hefner Soccer Complex; 11 of 11 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Robert Morris"
+abbreviation = "RMU"
+conference   = "HORIZON"
+mascot       = "Colonials"
+gender       = "men"
+base_url     = "https://rmucolonials.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Moon Township, Pa."
+city_source  = "https://rmucolonials.com/sports/mens-soccer/schedule (schedule page home rows print \"Moon Township, Pa.\", North Athletic Complex; 9 of 12 home rows) (read 2026-11-15)"
+gazetteer_geoid = "4200350784"
+gazetteer_note = "The school prints Moon Township, the full name of the county subdivision the 2023 Gazetteer files as 'Moon township' (Allegheny County); the build strips the descriptor before matching, so the printed name does not match it by name"
+identity_accessed = "2026-11-15"
+
+# The Horizon's 2026 table prints "Northern Illinois University";
+# `name` drops the institution word (the key is the same).
+[[schools]]
+name         = "Northern Illinois"
+abbreviation = "NIU"
+conference   = "HORIZON"
+mascot       = "Huskies"
+gender       = "men"
+base_url     = "https://niuhuskies.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "DeKalb, Ill."
+city_source  = "https://niuhuskies.com/sports/mens-soccer/schedule (schedule page home rows print \"DeKalb, Ill.\", NIU Soccer and Track & Field Complex; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Wright State"
+abbreviation = "WSU"
+conference   = "HORIZON"
+mascot       = "Raiders"
+gender       = "men"
+base_url     = "https://wsuraiders.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Dayton, Ohio"
+city_source  = "https://wsuraiders.com/sports/mens-soccer/schedule (schedule page home rows print \"Dayton, OH\", Alumni Field at Rinzler Student Sports Complex; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Cleveland State"
+abbreviation = "CSU"
+abbreviation_resolves = false  # "CSU" is also Chicago State's; also Clayton State's (Division II)
+conference   = "HORIZON"
+mascot       = "Vikings"
+gender       = "men"
+base_url     = "https://csuvikings.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Cleveland, Ohio"
+city_source  = "https://csuvikings.com/sports/mens-soccer/schedule (schedule page home rows print \"Cleveland, Ohio\", Krenzler Field; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Oakland"
+abbreviation = "Oakland"
+conference   = "HORIZON"
+mascot       = "Golden Grizzlies"
+gender       = "men"
+base_url     = "https://goldengrizzlies.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Rochester, Mich."
+city_source  = "https://goldengrizzlies.com/sports/mens-soccer/schedule (schedule page home rows print \"Rochester, Mich.\", Oakland Soccer Field; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Green Bay"
+abbreviation = "Green Bay"
+conference   = "HORIZON"
+mascot       = "Phoenix"
+gender       = "men"
+base_url     = "https://greenbayphoenix.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Wisconsin Green Bay"]
+city         = "Green Bay, Wis."
+city_source  = "https://greenbayphoenix.com/sports/mens-soccer/schedule (schedule page home rows print \"Green Bay, Wis.\", Festival Foods Field at Aldo Santaga Stadium; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Detroit Mercy"
+abbreviation = "UDM"
+conference   = "HORIZON"
+mascot       = "Titans"
+gender       = "men"
+base_url     = "https://detroittitans.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Detroit, Mich."
+city_source  = "https://detroittitans.com/sports/mens-soccer/schedule (schedule page home rows print \"Detroit, Mich.\", Titan Field; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "IU Indy"
+abbreviation = "IU Indy"
+conference   = "HORIZON"
+mascot       = "Jaguars"
+gender       = "men"
+base_url     = "https://iuindyjags.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Indianapolis, Ind."
+city_source  = "https://iuindyjags.com/sports/mens-soccer/schedule (schedule page home rows print \"Indianapolis, Ind.\", Michael A. Carroll Stadium; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Northern Kentucky"
+abbreviation = "NKU"
+abbreviation_resolves = false  # "NKU" is also an alternate code Northern Illinois University is printed under
+conference   = "HORIZON"
+mascot       = "Norse"
+gender       = "men"
+base_url     = "https://nkunorse.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Highland Heights, Ky."
+city_source  = "https://nkunorse.com/sports/mens-soccer/schedule (schedule page home rows print \"Highland Heights, Ky.\", NKU Soccer Stadium; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# IVY (Ivy League) - 8 stanzas here; members 2023/2024/2025/2026 = 8/8/8/8
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   7 sidearm, all four layers present, seasons 2023-2026
+#   1 unknown: schedule absent, roster absent, stats absent, matches absent; seasons none proved -> authored as sidearm (census reading, see the stanza or facts notes): Harvard
+# Tournament header read 2026-11-15 on goprincetontigers.com/sports/mens-soccer/schedule/2025: Ivy League Tournament.
+
+[[schools]]
+name         = "Cornell"
+abbreviation = "Cornell"
+conference   = "IVY"
+mascot       = "Big Red"
+gender       = "men"
+base_url     = "https://cornellbigred.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Ithaca, N.Y."
+city_source  = "https://cornellbigred.com/sports/mens-soccer/schedule (schedule page home rows print \"Ithaca, N.Y.\", Berman Field; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Penn"
+abbreviation = "Penn"
+conference   = "IVY"
+mascot       = "Quakers"
+gender       = "men"
+base_url     = "https://pennathletics.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Pennsylvania"]
+city         = "Philadelphia, Pa."
+city_source  = "standings/ivyleague.com.html embedded conference school object location \"Philadelphia, PA\" (the school's schedule page prints no home town) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Yale"
+abbreviation = "Yale"
+conference   = "IVY"
+mascot       = "Bulldogs"
+gender       = "men"
+base_url     = "https://yalebulldogs.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "New Haven, Conn."
+city_source  = "https://yalebulldogs.com/sports/mens-soccer/schedule (schedule page home rows print \"New Haven, CT\"; 7 of 7 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Brown"
+abbreviation = "Brown"
+conference   = "IVY"
+mascot       = "Bears"
+gender       = "men"
+base_url     = "https://brownbears.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Providence, R.I."
+city_source  = "https://brownbears.com/sports/mens-soccer/schedule (schedule page home rows print \"Providence, R.I.\", Stevenson-Pincince Field; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "DART" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Dartmouth"
+abbreviation = "Dartmouth"
+conference   = "IVY"
+mascot       = "Big Green"
+gender       = "men"
+base_url     = "https://dartmouthsports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Hanover, N.H."
+city_source  = "https://dartmouthsports.com/sports/mens-soccer/schedule (schedule page home rows print \"Hanover, N.H.\", Burnham Field; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# BLOCKED: gocrimson.com answered an Incapsula challenge (HTTP 200,
+# 212-byte body) to the census on 2026-11-15; the probe read nothing.
+# SideArm by the census; authored enabled so the collect names the gap.
+# mascot: Princeton's 2025 schedule payload (goprincetontigers.com/sports/
+# mens-soccer/schedule/2025, read 2026-11-15) prints the Harvard opponent
+# object with mascot "Crimson" and location "Cambridge, MA".
+[[schools]]
+name         = "Harvard"
+abbreviation = "Harvard"
+conference   = "IVY"
+mascot       = "Crimson"
+gender       = "men"
+base_url     = "https://gocrimson.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Cambridge, Mass."
+city_source  = "standings/ivyleague.com.html embedded conference school object location \"Cambridge, MA\" (the school's schedule page prints no home town) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "PRIN" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Princeton"
+abbreviation = "Princeton"
+conference   = "IVY"
+mascot       = "Tigers"
+gender       = "men"
+base_url     = "https://goprincetontigers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Princeton, N.J."
+city_source  = "standings/ivyleague.com.html embedded conference school object location \"Princeton, NJ\" (the school's schedule page prints no home town) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Columbia"
+abbreviation = "COL"
+conference   = "IVY"
+mascot       = "Lions"
+gender       = "men"
+base_url     = "https://gocolumbialions.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "New York, N.Y."
+city_source  = "https://gocolumbialions.com/sports/mens-soccer/schedule (schedule page home rows print \"New York, N.Y.\", ROCCO B. COMMISSO SOCCER STADIUM; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# MAAC (Metro Atlantic Athletic Conference (the Metro Conference)) - 13 stanzas here; members 2023/2024/2025/2026 = 11/13/13/13
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   13 sidearm, all four layers present, seasons 2023-2026
+# Tournament header read 2026-11-15 on gobobcats.com/sports/mens-soccer/schedule/2025: Metro Tournament.
+
+[[schools]]
+name         = "Fairfield"
+abbreviation = "FFD"
+conference   = "MAAC"
+mascot       = "Stags"
+gender       = "men"
+base_url     = "https://fairfieldstags.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Fairfield, Conn."
+city_source  = "https://fairfieldstags.com/sports/mens-soccer/schedule (schedule page home rows print \"Fairfield, Conn.\", Lessing Field; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Marist"
+abbreviation = "Marist"
+conference   = "MAAC"
+mascot       = "Red Foxes"
+gender       = "men"
+base_url     = "https://goredfoxes.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Poughkeepsie, N.Y."
+city_source  = "https://goredfoxes.com/sports/mens-soccer/schedule (schedule page home rows print \"Poughkeepsie, NY\", Tenney Stadium at Leonidoff Field; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Quinnipiac"
+abbreviation = "QUI"
+conference   = "MAAC"
+mascot       = "Bobcats"
+gender       = "men"
+base_url     = "https://gobobcats.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Hamden, Conn."
+city_source  = "https://gobobcats.com/sports/mens-soccer/schedule (schedule page home rows print \"Hamden, CT\", Quinnipiac Soccer & Lacrosse Stadium; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Sacred Heart"
+abbreviation = "SHU"
+abbreviation_resolves = false  # "SHU" is also Seton Hall's; also Seton Hill's (Division II); also an alternate code Seton Hall is printed under
+conference   = "MAAC"
+mascot       = "Pioneers"
+gender       = "men"
+base_url     = "https://sacredheartpioneers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Fairfield, Conn."
+city_source  = "https://sacredheartpioneers.com/sports/mens-soccer/schedule (schedule page home rows print \"Fairfield, CT\", Park Ave Field; 9 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Niagara"
+abbreviation = "Niagara"
+conference   = "MAAC"
+mascot       = "Purple Eagles"
+gender       = "men"
+base_url     = "https://purpleeagles.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Niagara University, N.Y."
+city_source  = "https://purpleeagles.com/sports/mens-soccer/schedule (schedule page home rows print \"Niagara University, NY\", Niagara Field; 6 of 6 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Merrimack"
+abbreviation = "MC"
+abbreviation_resolves = false  # "MC" is also Mississippi College's (Division II)
+conference   = "MAAC"
+mascot       = "Warriors"
+gender       = "men"
+base_url     = "https://merrimackathletics.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "North Andover, Mass."
+city_source  = "https://merrimackathletics.com/sports/mens-soccer/schedule (schedule page home rows print \"North Andover, Mass.\", Martone-Mejail Field; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Iona"
+abbreviation = "Iona"
+conference   = "MAAC"
+mascot       = "Gaels"
+gender       = "men"
+base_url     = "https://ionagaels.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "New Rochelle, N.Y."
+city_source  = "https://ionagaels.com/sports/mens-soccer/schedule (schedule page home rows print \"New Rochelle, NY\", Mazzella Field; 7 of 7 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Siena"
+abbreviation = "SIE"
+conference   = "MAAC"
+mascot       = "Saints"
+gender       = "men"
+base_url     = "https://sienasaints.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Loudonville, N.Y."
+city_source  = "https://sienasaints.com/sports/mens-soccer/schedule (schedule page home rows print \"Loudonville, NY\", Hickey Field; 7 of 7 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Rider"
+abbreviation = "Rider"
+conference   = "MAAC"
+mascot       = "Broncs"
+gender       = "men"
+base_url     = "https://gobroncs.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Lawrenceville, N.J."
+city_source  = "https://gobroncs.com/sports/mens-soccer/schedule (schedule page home rows print \"Lawrenceville, NJ\", Ben Cohen Field; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Saint Peters"
+display_name = "Saint Peter's"
+abbreviation = "SPU"
+abbreviation_resolves = false  # "SPU" is also Seattle Pacific's (Division II)
+conference   = "MAAC"
+mascot       = "Peacocks"
+gender       = "men"
+base_url     = "https://saintpeterspeacocks.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Jersey City, N.J."
+city_source  = "https://saintpeterspeacocks.com/sports/mens-soccer/schedule (schedule page home rows print \"Jersey City, NJ\", Jaroschak Field; 7 of 7 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Mount St. Marys"
+display_name = "Mount St. Mary's"
+abbreviation = "MSM"
+conference   = "MAAC"
+mascot       = "Mountaineers"
+gender       = "men"
+base_url     = "https://mountathletics.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Emmitsburg, Md."
+city_source  = "https://mountathletics.com/sports/mens-soccer/schedule (schedule page home rows print \"Emmitsburg, MD\", Waldron Family Stadium; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Manhattan"
+abbreviation = "MAN"
+conference   = "MAAC"
+mascot       = "Jaspers"
+gender       = "men"
+base_url     = "https://gojaspers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Riverdale, N.Y."
+city_source  = "https://gojaspers.com/sports/mens-soccer/schedule (schedule page home rows print \"Riverdale, NY\", Gaelic Park; 11 of 11 home rows) (read 2026-11-15)"
+gazetteer_geoid = "3651000"
+gazetteer_note = "Riverdale is a neighborhood of the Bronx, New York City, with no Gazetteer row of its own: https://en.wikipedia.org/wiki/Riverdale,_Bronx (read 2026-11-15) 'Riverdale is a residential neighborhood in the northwestern portion of the New York City borough of the Bronx'"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Canisius"
+abbreviation = "CAN"
+conference   = "MAAC"
+mascot       = "Griffins"
+gender       = "men"
+base_url     = "https://gogriffs.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Buffalo, N.Y."
+city_source  = "https://gogriffs.com/sports/mens-soccer/schedule (schedule page home rows print \"Buffalo, NY\", Demske Sports Complex; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# MVC (Missouri Valley Conference) - 7 stanzas here; members 2023/2024/2025/2026 = 9/9/8/7
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   6 sidearm, all four layers present, seasons 2023-2026: Bowling Green, Evansville, Western Michigan, Belmont, UIC, Drake
+#   1 sidearm: schedule present, roster absent, stats present, matches present; seasons 2023-2026: Bradley
+# Tournament header read 2026-11-15 on wmubroncos.com/sports/mens-soccer/schedule/2025: MVC Tournament.
+
+[[schools]]
+name         = "Bowling Green"
+abbreviation = "BGSU"
+conference   = "MVC"
+mascot       = "Falcons"
+gender       = "men"
+base_url     = "https://bgsufalcons.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Bowling Green State University"]
+city         = "Bowling Green, Ohio"
+city_source  = "https://bgsufalcons.com/sports/mens-soccer/schedule (schedule page home rows print \"Bowling Green, Ohio\", Cochrane Stadium; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Evansville"
+abbreviation = "EVANS"
+conference   = "MVC"
+mascot       = "Purple Aces"
+gender       = "men"
+base_url     = "https://gopurpleaces.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Evansville, Ind."
+city_source  = "https://gopurpleaces.com/sports/mens-soccer/schedule (schedule page home rows print \"Evansville, Ind.\", Arad McCutchan Stadium; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Western Michigan"
+abbreviation = "WMU"
+conference   = "MVC"
+mascot       = "Broncos"
+gender       = "men"
+base_url     = "https://wmubroncos.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Kalamazoo, Mich."
+city_source  = "https://wmubroncos.com/sports/mens-soccer/schedule (schedule page home rows print \"Kalamazoo, Mich.\", WMU Soccer Complex; 11 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Belmont"
+abbreviation = "BEL"
+conference   = "MVC"
+mascot       = "Bruins"
+gender       = "men"
+base_url     = "https://belmontbruins.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Nashville, Tenn."
+city_source  = "https://belmontbruins.com/sports/mens-soccer/schedule (schedule page home rows print \"Nashville, Tenn.\", E.S. Rose Park; 11 of 11 home rows) (read 2026-11-15)"
+gazetteer_geoid = "4752006"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "UIC"
+abbreviation = "UIC"
+conference   = "MVC"
+mascot       = "Flames"
+gender       = "men"
+base_url     = "https://uicflames.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Chicago, Ill."
+city_source  = "https://uicflames.com/sports/mens-soccer/schedule (schedule page home rows print \"Chicago, Ill.\", Flames Field; 12 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Drake"
+abbreviation = "Drake"
+conference   = "MVC"
+mascot       = "Bulldogs"
+gender       = "men"
+base_url     = "https://godrakebulldogs.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Des Moines, Iowa"
+city_source  = "https://godrakebulldogs.com/sports/mens-soccer/schedule (schedule page home rows print \"Des Moines, Iowa\", Mediacom Stadium; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Bradley"
+abbreviation = "BRAD"
+conference   = "MVC"
+mascot       = "Braves"
+gender       = "men"
+base_url     = "https://bradleybraves.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Peoria, Ill."
+city_source  = "https://bradleybraves.com/sports/mens-soccer/schedule (schedule page home rows print \"Peoria, IL\", Shea Stadium; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# MW (Mountain West Conference) - 6 stanzas here; members 2023/2024/2025/2026 = 0/0/0/6
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   5 sidearm, all four layers present, seasons 2023-2026: Grand Canyon, UNLV, Air Force, UC Davis, Utah Tech
+#   1 unknown: schedule error (HTTP 404), roster error (HTTP 404), stats error (HTTP 404), matches error (HTTP 404); seasons none proved -> authored as wmt (census reading, see the stanza or facts notes): San José State
+# Tournament header read 2026-11-15 on unlvrebels.com/sports/mens-soccer/schedule/2026: Mountain West Tournament.
+
+[[schools]]
+name         = "Grand Canyon"
+abbreviation = "GCU"
+abbreviation_resolves = false  # "GCU" is also Georgian Court's (Division II)
+conference   = "MW"
+mascot       = "Lopes"
+gender       = "men"
+base_url     = "https://gculopes.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Phoenix, Ariz."
+city_source  = "https://gculopes.com/sports/mens-soccer/schedule (schedule page home rows print \"Phoenix, Ariz.\", GCU Stadium; 12 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "UNLV"
+abbreviation = "UNLV"
+conference   = "MW"
+mascot       = "Rebels"
+gender       = "men"
+base_url     = "https://unlvrebels.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Nevada Las Vegas"]
+city         = "Las Vegas, Nev."
+city_source  = "https://unlvrebels.com/sports/mens-soccer/schedule (schedule page home rows print \"Las Vegas, NV\", Peter Johann Memorial Field; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# `name` is ASCII-plain; display_name carries the published accent.
+[[schools]]
+name         = "San Jose State"
+display_name = "San José State"
+abbreviation = "SJSU"
+conference   = "MW"
+mascot       = "Spartans"
+gender       = "men"
+base_url     = "https://sjsuspartans.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "wmt"
+live_scraper = "wmt"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["San José State"]
+city         = "San Jose, Calif."
+city_source  = "https://sjsuspartans.com/sports/mens-soccer/schedule (schedule page, 9 home rows: \"San Jose, Calif. / Spartan Soccer Complex\") (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Air Force"
+abbreviation = "AF"
+conference   = "MW"
+mascot       = "Falcons"
+gender       = "men"
+base_url     = "https://goairforcefalcons.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Air Force Academy"]
+city         = "USAF Academy, Colo."
+city_source  = "standings/themw.com.html school object location \"USAF Academy, CO\"; https://goairforcefalcons.com/sports/mens-soccer/schedule home rows print the abbreviation \"USAFA, CO\" (10 of 10) (read 2026-11-15)"
+gazetteer_geoid = "0800870"
+gazetteer_note = "USAF Academy is the spelled-out postal form of the schedule's 'USAFA, CO' (facts notes, 2026-11-15); the 2023 Gazetteer files the academy as the Air Force Academy CDP"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "UC Davis"
+abbreviation = "UCD"
+conference   = "MW"
+mascot       = "Aggies"
+gender       = "men"
+base_url     = "https://ucdavisaggies.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Davis, Calif."
+city_source  = "https://ucdavisaggies.com/sports/mens-soccer/schedule (schedule page home rows print \"Davis, Calif.\", Aggie Soccer Field; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Utah Tech"
+abbreviation = "UT"
+abbreviation_resolves = false  # "UT" is also Tampa's (Division II)
+conference   = "MW"
+mascot       = "Trailblazers"
+gender       = "men"
+base_url     = "https://utahtechtrailblazers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "St. George, Utah"
+city_source  = "https://utahtechtrailblazers.com/sports/mens-soccer/schedule (schedule page home rows print \"St. George\" with no state; 12 of 12); state from standings/themw.com.html school object location \"St. George, UT\" (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# NEC (Northeast Conference) - 7 stanzas here; members 2023/2024/2025/2026 = 9/9/10/9
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   5 sidearm, all four layers present, seasons 2023-2026: LIU, FDU, Stonehill, Howard, Chicago State
+#   1 prestosports, all four layers present, seasons 2023-2026: Central Connecticut
+#   1 not probed (platform sidearm by reading): Saint Francis
+# Tournament header read 2026-11-15 on fduknights.com/sports/mens-soccer/schedule/2025: NEC Championship.
+
+[[schools]]
+name         = "LIU"
+abbreviation = "LIU"
+conference   = "NEC"
+mascot       = "Sharks"
+gender       = "men"
+base_url     = "https://liuathletics.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Long Island University"]
+city         = "Brookville, N.Y."
+city_source  = "https://www.liuathletics.com/sports/mens-soccer/schedule (schedule page home rows print \"Brookville, N.Y.\", LIU Soccer Park; 6 of 6 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "FDU"
+abbreviation = "FDU"
+conference   = "NEC"
+mascot       = "Knights"
+gender       = "men"
+base_url     = "https://fduknights.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Fairleigh Dickinson University"]
+city         = "Teaneck, N.J."
+city_source  = "https://fduknights.com/sports/mens-soccer/schedule (schedule page home rows print \"Teaneck, N.J.\", Macron Stadium; 12 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# PrestoSports (probe/fix-ccsu.json, 2026-11-15: all four layers, 2023-2026
+# served at /sports/msoc/{yyyy-yy}/...). The schedule rows print no town;
+# New Britain is the site footer address.
+[[schools]]
+name         = "Central Connecticut"
+abbreviation = "CCSU"
+conference   = "NEC"
+mascot       = "Blue Devils"
+gender       = "men"
+base_url     = "https://ccsubluedevils.com/sports/msoc"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "prestosports"
+live_scraper = "prestosports"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Central Connecticut State University"]
+city         = "New Britain, Conn."
+city_source  = "https://ccsubluedevils.com/sports/msoc/index (site footer and JSON-LD organisation address \"1615 Stanley Street New Britain, CT 06050\"; PrestoSports schedule rows print no town) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Stonehill"
+abbreviation = "STO"
+conference   = "NEC"
+mascot       = "Skyhawks"
+gender       = "men"
+base_url     = "https://stonehillskyhawks.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Easton, Mass."
+city_source  = "https://stonehillskyhawks.com/sports/mens-soccer/schedule (schedule page home rows print \"Easton, Mass.\", Skyhawk Field; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Howard"
+abbreviation = "HOW"
+conference   = "NEC"
+mascot       = "Bison"
+gender       = "men"
+base_url     = "https://hubison.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Washington, D.C."
+city_source  = "https://hubison.com/sports/mens-soccer/schedule (schedule page home rows print \"Washington, D.C.\", Greene Stadium; 6 of 6 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Chicago State"
+abbreviation = "CSU"
+abbreviation_resolves = false  # "CSU" is also Cleveland State's; also Clayton State's (Division II)
+conference   = "NEC"
+mascot       = "Cougars"
+gender       = "men"
+base_url     = "https://gocsucougars.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Chicago, Ill."
+city_source  = "https://www.gocsucougars.com/sports/mens-soccer/schedule (schedule page home rows print \"Chicago, Ill.\", Gwendolyn Brooks College Prep; 6 of 6 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# Last Division I season 2025 (NEC 2023-2025); Division III and the
+# Presidents' Athletic Conference from 2026, so `years` and the windows
+# end at 2025 (the Montana State Billings shape) and no window covers
+# 2026. Not in the 2026 census; host read off LIU's 2025 schedule link.
+# The site serves the SideArm legacy markup for 2023-2025 and was not
+# run through the collector's probe.
+[[schools]]
+name         = "Saint Francis"
+abbreviation = "SFU"
+abbreviation_resolves = false  # "SFU" is also Simon Fraser's (Division II)
+conference   = "NEC"
+mascot       = "Red Flash"
+gender       = "men"
+base_url     = "https://sfuathletics.com/sports/mens-soccer"
+years        = [2023, 2024, 2025]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Loretto, Pa."
+city_source  = "https://sfuathletics.com/sports/mens-soccer/schedule/2025 (schedule page home rows print \"Loretto, PA\", Stokes Soccerplex; 8 of 9 home rows, the ninth \"Loretto, Pa.\") (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# OVC (Ohio Valley Conference) - 8 stanzas here; members 2023/2024/2025/2026 = 8/8/8/8
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   8 sidearm, all four layers present, seasons 2023-2026
+# Tournament header read 2026-11-15 on siuecougars.com/sports/mens-soccer/schedule/2025: OVC Tournament.
+
+[[schools]]
+name         = "Lindenwood"
+abbreviation = "LU"
+abbreviation_resolves = false  # "LU" is also Lincoln's (Division II)
+conference   = "OVC"
+mascot       = "Lions"
+gender       = "men"
+base_url     = "https://lindenwoodlions.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "St. Charles, Mo."
+city_source  = "https://lindenwoodlions.com/sports/mens-soccer/schedule (schedule page home rows print \"St. Charles, Mo.\", Hunter Stadium; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "SIUE"
+abbreviation = "SIUE"
+conference   = "OVC"
+mascot       = "Cougars"
+gender       = "men"
+base_url     = "https://siuecougars.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Edwardsville, Ill."
+city_source  = "https://siuecougars.com/sports/mens-soccer/schedule (schedule page home rows print \"Edwardsville, Ill.\", Ralph Korte Stadium; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "UIW"
+abbreviation = "UIW"
+conference   = "OVC"
+mascot       = "Cardinals"
+gender       = "men"
+base_url     = "https://uiwcardinals.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of the Incarnate Word"]
+city         = "San Antonio, Texas"
+city_source  = "https://uiwcardinals.com/sports/mens-soccer/schedule (schedule page home rows print \"San Antonio, TX\", Gayle & Tom Benson Stadium; 10 of 11 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "HCU"
+abbreviation = "HCU"
+conference   = "OVC"
+mascot       = "Huskies"
+gender       = "men"
+base_url     = "https://hcuhuskies.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Houston Christian University"]
+city         = "Houston, Texas"
+city_source  = "https://hcuhuskies.com/sports/mens-soccer/schedule (schedule page home rows print \"Houston, Texas\", Sorrels Field; 11 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Western Illinois"
+abbreviation = "WIU"
+conference   = "OVC"
+mascot       = "Leathernecks"
+gender       = "men"
+base_url     = "https://goleathernecks.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Macomb, Ill."
+city_source  = "https://goleathernecks.com/sports/mens-soccer/schedule (schedule page home rows print \"Macomb, IL\"; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Eastern Illinois"
+abbreviation = "EIU"
+conference   = "OVC"
+mascot       = "Panthers"
+gender       = "men"
+base_url     = "https://eiupanthers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Charleston, Ill."
+city_source  = "standings/ovcsports.com.html embedded conference school object location \"Charleston, Ill.\" (the school's schedule page prints no home town) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "UTRGV"
+abbreviation = "UTRGV"
+conference   = "OVC"
+mascot       = "Vaqueros"
+gender       = "men"
+base_url     = "https://goutrgv.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Texas Rio Grande Valley"]
+city         = "Edinburg, Texas"
+city_source  = "https://goutrgv.com/sports/mens-soccer/schedule (schedule page home rows print \"Edinburg, Texas\", UTRGV Soccer and Track & Field Complex; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Southern Indiana"
+abbreviation = "USI"
+conference   = "OVC"
+mascot       = "Screaming Eagles"
+gender       = "men"
+base_url     = "https://usiscreamingeagles.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Evansville, Ind."
+city_source  = "https://usiscreamingeagles.com/sports/mens-soccer/schedule (schedule page home rows print \"Evansville, IN\", Strassweg Field; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# PAC12 (Pac-12 Conference) - 7 stanzas here; members 2023/2024/2025/2026 = 6/0/0/7
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   5 sidearm, all four layers present, seasons 2023-2026: Oregon State, California Baptist, UC Riverside, UC San Diego, Cal Poly
+#   1 unknown: schedule error (HTTP 404), roster error (HTTP 404), stats error (HTTP 404), matches error (HTTP 404); seasons none proved -> authored as wmt (census reading, see the stanza or facts notes): San Diego State
+#   1 sidearm: schedule present, roster present, stats present, matches present; seasons 2024-2026: Gonzaga
+# Tournament header read 2026-11-15 on osubeavers.com/sports/mens-soccer/schedule/2026: Pac-12 Tournament (page text, no block header).
+
+# abbreviation: the site config's schoolAbbrev "ORST" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Oregon State"
+abbreviation = "Oregon State"
+conference   = "PAC12"
+mascot       = "Beavers"
+gender       = "men"
+base_url     = "https://osubeavers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Corvallis, Ore."
+city_source  = "https://osubeavers.com/sports/mens-soccer/schedule (schedule page home rows print \"Corvallis, OR\"; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "California Baptist"
+abbreviation = "CBU"
+abbreviation_resolves = false  # "CBU" is also Christian Brothers's (Division II)
+conference   = "PAC12"
+mascot       = "Lancers"
+gender       = "men"
+base_url     = "https://cbulancers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Riverside, Calif."
+city_source  = "https://cbulancers.com/sports/mens-soccer/schedule (schedule page home rows print \"Riverside, Calif.\", CBU Soccer Stadium; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "San Diego State"
+abbreviation = "SDSU"
+conference   = "PAC12"
+mascot       = "Aztecs"
+gender       = "men"
+base_url     = "https://goaztecs.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "wmt"
+live_scraper = "wmt"
+data_status  = "unverified"
+enabled      = true
+city         = "San Diego, Calif."
+city_source  = "standings/bigwest.org.html embedded conference school object location \"San Diego, Calif.\" (the school's schedule page prints no home town) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "UC Riverside"
+abbreviation = "UC Riverside"
+conference   = "PAC12"
+mascot       = "Highlanders"
+gender       = "men"
+base_url     = "https://gohighlanders.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Riverside, Calif."
+city_source  = "https://gohighlanders.com/sports/mens-soccer/schedule (schedule page home rows print \"Riverside, Calif.\", UCR Soccer Stadium; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "UC San Diego"
+abbreviation = "UCSD"
+conference   = "PAC12"
+mascot       = "Tritons"
+gender       = "men"
+base_url     = "https://ucsdtritons.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "La Jolla, Calif."
+city_source  = "https://ucsdtritons.com/sports/mens-soccer/schedule (schedule page home rows print \"La Jolla, Calif.\", Triton Soccer Stadium; 11 of 11 home rows) (read 2026-11-15)"
+gazetteer_geoid = "0666000"
+gazetteer_note = "La Jolla is a neighborhood of the City of San Diego with no Gazetteer row of its own: https://en.wikipedia.org/wiki/La_Jolla (read 2026-11-15) 'La Jolla ... is a neighborhood in San Diego, California'"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Cal Poly"
+abbreviation = "CP"
+conference   = "PAC12"
+mascot       = "Mustangs"
+gender       = "men"
+base_url     = "https://gopoly.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "San Luis Obispo, Calif."
+city_source  = "https://gopoly.com/sports/mens-soccer/schedule (schedule page home rows print \"San Luis Obispo, CA\", Mustang Memorial Field at Spanos Stadium; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# The probe proved 2024-2026 only; 2023 was served without proof of
+# the season, so expect the collect to name that gap.
+[[schools]]
+name         = "Gonzaga"
+abbreviation = "GON"
+conference   = "PAC12"
+mascot       = "Bulldogs"
+gender       = "men"
+base_url     = "https://gozags.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Spokane, Wash."
+city_source  = "https://gozags.com/sports/mens-soccer/schedule (schedule page home rows print \"Spokane, Wash.\", Luger Field; 11 of 11 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# PATRIOT (Patriot League) - 10 stanzas here; members 2023/2024/2025/2026 = 10/10/10/10
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   10 sidearm, all four layers present, seasons 2023-2026
+# Tournament header read 2026-11-15 on loyolagreyhounds.com/sports/mens-soccer/schedule/2025: Patriot League Championships (page text, no block header).
+
+[[schools]]
+name         = "Boston University"
+abbreviation = "BU"
+abbreviation_resolves = false  # "BU" is also Barry, Bentley, Bloomsburg, Biola's (Division II)
+conference   = "PATRIOT"
+mascot       = "Terriers"
+gender       = "men"
+base_url     = "https://goterriers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Boston, Mass."
+city_source  = "https://goterriers.com/sports/mens-soccer/schedule (schedule page home rows print \"Boston, MA\", Nickerson Field; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "American"
+abbreviation = "AU"
+abbreviation_resolves = false  # "AU" is also Adelphi, Alliance, Ashland, Anderson's (Division II)
+conference   = "PATRIOT"
+mascot       = "Eagles"
+gender       = "men"
+base_url     = "https://aueagles.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Washington, D.C."
+city_source  = "https://aueagles.com/sports/mens-soccer/schedule (schedule page home rows print \"Washington, D.C.\", Reeves Field; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Lehigh"
+abbreviation = "Lehigh"
+conference   = "PATRIOT"
+mascot       = "Mountain Hawks"
+gender       = "men"
+base_url     = "https://lehighsports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Bethlehem, Pa."
+city_source  = "https://lehighsports.com/sports/mens-soccer/schedule (schedule page home rows print \"Bethlehem, Pa.\", Ulrich Sports Complex; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Bucknell"
+abbreviation = "Bucknell"
+conference   = "PATRIOT"
+mascot       = "Bison"
+gender       = "men"
+base_url     = "https://bucknellbison.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Lewisburg, Pa."
+city_source  = "https://bucknellbison.com/sports/mens-soccer/schedule (schedule page home rows print \"Lewisburg, Pa.\", Emmitt Field at Holmes Stadium; 13 of 13 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Lafayette"
+abbreviation = "Lafayette"
+conference   = "PATRIOT"
+mascot       = "Leopards"
+gender       = "men"
+base_url     = "https://goleopards.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Easton, Pa."
+city_source  = "https://goleopards.com/sports/mens-soccer/schedule (schedule page home rows print \"Easton, Pa.\", Gummeson Grounds; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Loyola Maryland"
+abbreviation = "Loyola Maryland"
+conference   = "PATRIOT"
+mascot       = "Greyhounds"
+gender       = "men"
+base_url     = "https://loyolagreyhounds.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Baltimore, Md."
+city_source  = "https://loyolagreyhounds.com/sports/mens-soccer/schedule (schedule page home rows print \"Baltimore, Md.\", Ridley Athletic Complex; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Holy Cross"
+abbreviation = "HC"
+conference   = "PATRIOT"
+mascot       = "Crusaders"
+gender       = "men"
+base_url     = "https://goholycross.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Worcester, Mass."
+city_source  = "https://goholycross.com/sports/mens-soccer/schedule (schedule page home rows print \"Worcester, Mass.\", Linda Johnson Smith Soccer Stadium; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Navy"
+abbreviation = "Navy"
+conference   = "PATRIOT"
+mascot       = "Midshipmen"
+gender       = "men"
+base_url     = "https://navysports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Naval Academy"]
+city         = "Annapolis, Md."
+city_source  = "https://navysports.com/sports/mens-soccer/schedule (schedule page home rows print \"Annapolis, Md.\", Glenn Warner Soccer Facility; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Army West Point"
+abbreviation = "ARMY"
+conference   = "PATRIOT"
+mascot       = "Black Knights"
+gender       = "men"
+base_url     = "https://goarmywestpoint.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "West Point, N.Y."
+city_source  = "https://goarmywestpoint.com/sports/mens-soccer/schedule (schedule page home rows print \"West Point, N.Y.\", Malek Stadium at Clinton Field; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Colgate"
+abbreviation = "Colgate"
+conference   = "PATRIOT"
+mascot       = "Raiders"
+gender       = "men"
+base_url     = "https://colgateathletics.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Hamilton, N.Y."
+city_source  = "https://colgateathletics.com/sports/mens-soccer/schedule (schedule page home rows print \"Hamilton, N.Y.\", Beyer-Small '76 Field; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# SOCON (Southern Conference) - 7 stanzas here; members 2023/2024/2025/2026 = 6/6/6/7
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   7 sidearm, all four layers present, seasons 2023-2026
+# Tournament header read 2026-11-15 on mercerbears.com/sports/mens-soccer/schedule/2025: Southern Conference Tournament.
+
+[[schools]]
+name         = "Furman"
+abbreviation = "FUR"
+conference   = "SOCON"
+mascot       = "Paladins"
+gender       = "men"
+base_url     = "https://furmanpaladins.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Greenville, S.C."
+city_source  = "https://furmanpaladins.com/sports/mens-soccer/schedule (schedule page home rows print \"GREENVILLE\" with no state; 10 of 10); state from standings/soconsports.com.html school object location \"Greenville, S.C.\" (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Wofford"
+abbreviation = "WOF"
+conference   = "SOCON"
+mascot       = "Terriers"
+gender       = "men"
+base_url     = "https://woffordterriers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Spartanburg, S.C."
+city_source  = "https://woffordterriers.com/sports/mens-soccer/schedule (schedule page home rows print \"Spartanburg, SC\", Snyder Field; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "UNC Greensboro"
+abbreviation = "UNCG"
+conference   = "SOCON"
+mascot       = "Spartans"
+gender       = "men"
+base_url     = "https://uncgspartans.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Greensboro, N.C."
+city_source  = "https://uncgspartans.com/sports/mens-soccer/schedule (schedule page home rows print \"Greensboro, N.C.\", UNCG Soccer Stadium; 15 of 15 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "ETSU"
+abbreviation = "ETSU"
+conference   = "SOCON"
+mascot       = "Buccaneers"
+gender       = "men"
+base_url     = "https://etsubucs.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["East Tennessee State University"]
+city         = "Johnson City, Tenn."
+city_source  = "https://etsubucs.com/sports/mens-soccer/schedule (schedule page home rows print \"Johnson City, Tenn.\", Summers-Taylor Stadium; 12 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "LIB" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Liberty"
+abbreviation = "Liberty"
+conference   = "SOCON"
+mascot       = "Flames"
+gender       = "men"
+base_url     = "https://libertyflames.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Lynchburg, Va."
+city_source  = "https://libertyflames.com/sports/mens-soccer/schedule (schedule page home rows print \"Lynchburg, Va.\", Osborne Stadium; 5 of 5 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "VMI"
+abbreviation = "VMI"
+conference   = "SOCON"
+mascot       = "Keydets"
+gender       = "men"
+base_url     = "https://vmikeydets.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Virginia Military Institute"]
+city         = "Lexington, Va."
+city_source  = "https://vmikeydets.com/sports/mens-soccer/schedule (schedule page home rows print \"Lexington, VA\", Patchin Field; 11 of 11 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Mercer"
+abbreviation = "MER"
+abbreviation_resolves = false  # "MER" is also an alternate code Mercyhurst, Merrimack is printed under
+conference   = "SOCON"
+mascot       = "Bears"
+gender       = "men"
+base_url     = "https://mercerbears.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Macon, Ga."
+city_source  = "https://mercerbears.com/sports/mens-soccer/schedule (schedule page home rows print \"Macon, Ga.\", Betts Stadium; 8 of 8 home rows) (read 2026-11-15)"
+gazetteer_geoid = "1349008"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# SUMMIT (The Summit League) - 6 stanzas here; members 2023/2024/2025/2026 = 6/5/7/6
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   5 sidearm, all four layers present, seasons 2023-2026: Kansas City, Omaha, UMass, Oral Roberts, Delaware
+#   1 sidearm: schedule absent, roster absent, stats absent, matches absent; seasons none proved: St. Thomas
+# Tournament header read 2026-11-15 on denverpioneers.com/sports/mens-soccer/schedule/2025: Summit League Tournament.
+
+[[schools]]
+name         = "Kansas City"
+abbreviation = "KC"
+conference   = "SUMMIT"
+mascot       = "Roos"
+gender       = "men"
+base_url     = "https://kcroos.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Kansas City, Mo."
+city_source  = "https://kcroos.com/sports/mens-soccer/schedule (schedule page home rows print \"Kansas City, Mo.\", Durwood Soccer Stadium; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Omaha"
+abbreviation = "UNO"
+conference   = "SUMMIT"
+mascot       = "Mavericks"
+gender       = "men"
+base_url     = "https://omahamavs.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Omaha, Neb."
+city_source  = "https://omahamavs.com/sports/mens-soccer/schedule (schedule page home rows print \"Omaha, Neb.\", Caniglia Field; 12 of 12 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "UMass"
+abbreviation = "UMass"
+conference   = "SUMMIT"
+mascot       = "Minutemen"
+gender       = "men"
+base_url     = "https://umassathletics.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["University of Massachusetts"]
+city         = "Amherst, Mass."
+city_source  = "https://umassathletics.com/sports/mens-soccer/schedule (schedule page home rows print \"Amherst, Mass.\", Rudd Field; 9 of 9 home rows) (read 2026-11-15)"
+gazetteer_geoid = "2501370"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Oral Roberts"
+abbreviation = "ORU"
+conference   = "SUMMIT"
+mascot       = "Golden Eagles"
+gender       = "men"
+base_url     = "https://oruathletics.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Tulsa, Okla."
+city_source  = "https://oruathletics.com/sports/mens-soccer/schedule (schedule page home rows print \"Tulsa, Okla.\", Case Soccer Complex; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# Men's soccer lives at /sports/msoc on this SideArm host: /sports/mens-soccer
+# answers an unpopulated template (the census probe read every layer
+# absent there). /sports/msoc was not re-probed; unverified.
+[[schools]]
+name         = "St. Thomas"
+abbreviation = "St. Thomas"
+conference   = "SUMMIT"
+mascot       = "Tommies"
+gender       = "men"
+base_url     = "https://tommiesports.com/sports/msoc"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "St. Paul, Minn."
+city_source  = "https://tommiesports.com/sports/msoc/schedule (schedule page home rows print \"St. Paul, Minn.\", South Field; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "DEL" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Delaware"
+abbreviation = "Delaware"
+conference   = "SUMMIT"
+mascot       = "Blue Hens"
+gender       = "men"
+base_url     = "https://bluehens.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Newark, Del."
+city_source  = "https://bluehens.com/sports/mens-soccer/schedule (schedule page home rows print \"Newark, Del.\", Stuart & Suzanne Grant Stadium; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# SUNBELT (Sun Belt Conference) - 10 stanzas here; members 2023/2024/2025/2026 = 10/10/10/10
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   6 sidearm, all four layers present, seasons 2023-2026: West Virginia, Marshall, James Madison, Coastal Carolina, Georgia Southern, Georgia State
+#   2 unknown: schedule error (HTTP 404), roster error (HTTP 404), stats error (HTTP 404), matches error (HTTP 404); seasons none proved -> authored as wmt (census reading, see the stanza or facts notes): UCF, Old Dominion
+#   2 unknown: schedule error (season not proven), roster error (HTTP 404), stats error (HTTP 404), matches error (season not proven); seasons none proved -> authored as wmt (census reading, see the stanza or facts notes): South Carolina, Kentucky
+# Tournament header read 2026-11-15 on herdzone.com/sports/mens-soccer/schedule/2025: 2025 Sun Belt Conference Men's Soccer Championship.
+
+[[schools]]
+name         = "West Virginia"
+abbreviation = "WVU"
+conference   = "SUNBELT"
+mascot       = "Mountaineers"
+gender       = "men"
+base_url     = "https://wvusports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Morgantown, W.Va."
+city_source  = "https://wvusports.com/sports/mens-soccer/schedule (schedule page home rows print \"Morgantown, W.Va.\", Dick Dlesk Soccer Stadium; 13 of 13 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "MRSH" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Marshall"
+abbreviation = "Marshall"
+conference   = "SUNBELT"
+mascot       = "Thundering Herd"
+gender       = "men"
+base_url     = "https://herdzone.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Huntington, W.Va."
+city_source  = "https://herdzone.com/sports/mens-soccer/schedule (schedule page home rows print \"Huntington, W.Va.\", Hoops Family Field; 11 of 11 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "UCF"
+abbreviation = "UCF"
+conference   = "SUNBELT"
+mascot       = "Knights"
+gender       = "men"
+base_url     = "https://ucfknights.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "wmt"
+live_scraper = "wmt"
+data_status  = "unverified"
+enabled      = true
+city         = "Orlando, Fla."
+city_source  = "https://ucfknights.com/sports/mens-soccer/schedule (schedule page, 10 home rows: \"Orlando, Fla. / UCF Soccer Complex\") (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "James Madison"
+abbreviation = "JMU"
+conference   = "SUNBELT"
+mascot       = "Dukes"
+gender       = "men"
+base_url     = "https://jmusports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Harrisonburg, Va."
+city_source  = "https://jmusports.com/sports/mens-soccer/schedule (schedule page home rows print \"Harrisonburg, Va.\", Sentara Park; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Coastal Carolina"
+abbreviation = "CCU"
+abbreviation_resolves = false  # "CCU" is also Colorado Christian's (Division II)
+conference   = "SUNBELT"
+mascot       = "Chanticleers"
+gender       = "men"
+base_url     = "https://goccusports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Conway, S.C."
+city_source  = "https://goccusports.com/sports/mens-soccer/schedule (schedule page home rows print \"Conway, S.C.\"; 11 of 11 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "South Carolina"
+abbreviation = "South Carolina"
+conference   = "SUNBELT"
+mascot       = "Gamecocks"
+gender       = "men"
+base_url     = "https://gamecocksonline.com/sports/msoc/"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "wmt"
+live_scraper = "wmt"
+data_status  = "unverified"
+enabled      = true
+city         = "Columbia, S.C."
+city_source  = "https://gamecocksonline.com/sports/msoc/schedule/ (schedule page, 12 rows marked home: \"Columbia, S.C.\") (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Kentucky"
+abbreviation = "UK"
+conference   = "SUNBELT"
+mascot       = "Wildcats"
+gender       = "men"
+base_url     = "https://ukathletics.com/sports/msoc/"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "wmt"
+live_scraper = "wmt"
+data_status  = "unverified"
+enabled      = true
+city         = "Lexington, Ky."
+city_source  = "https://ukathletics.com/sports/msoc/schedule/ (schedule page, every home item: \"Lexington, Ky. | Bell Soccer Complex\") (read 2026-11-15)"
+gazetteer_geoid = "2146027"
+identity_accessed = "2026-11-15"
+
+# abbreviation: the site config's schoolAbbrev "GASO" is a scoreboard stat code; the plain name is used.
+[[schools]]
+name         = "Georgia Southern"
+abbreviation = "Georgia Southern"
+conference   = "SUNBELT"
+mascot       = "Eagles"
+gender       = "men"
+base_url     = "https://gseagles.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Statesboro, Ga."
+city_source  = "https://gseagles.com/sports/mens-soccer/schedule (schedule page home rows print \"Statesboro\" with no state; 9 of 9); state from standings/sunbeltsports.org.html school object location \"Statesboro, Georgia\" (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Old Dominion"
+abbreviation = "ODU"
+abbreviation_resolves = false  # "ODU" is also Ohio Dominican's (Division II)
+conference   = "SUNBELT"
+mascot       = "Monarchs"
+gender       = "men"
+base_url     = "https://odusports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "wmt"
+live_scraper = "wmt"
+data_status  = "unverified"
+enabled      = true
+city         = "Norfolk, Va."
+city_source  = "https://odusports.com/sports/mens-soccer/schedule (schedule page home rows print \"Norfolk, Va.\"; 22 of 22 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Georgia State"
+abbreviation = "GSU"
+conference   = "SUNBELT"
+mascot       = "Panthers"
+gender       = "men"
+base_url     = "https://georgiastatesports.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Atlanta, Ga."
+city_source  = "https://georgiastatesports.com/sports/mens-soccer/schedule (schedule page home rows print \"Atlanta, Ga.\", GSU Soccer Complex; 9 of 9 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# ------------------------------------------------------------
+# WCC (West Coast Conference) - 9 stanzas here; members 2023/2024/2025/2026 = 8/9/10/9
+# ------------------------------------------------------------
+# Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
+#   8 sidearm, all four layers present, seasons 2023-2026
+#   1 unknown: schedule error (HTTP 404), roster error (HTTP 404), stats error (HTTP 404), matches error (HTTP 404); seasons none proved -> authored as wmt (census reading, see the stanza or facts notes): Seattle U
+# Tournament header read 2026-11-15 on portlandpilots.com/sports/mens-soccer/schedule/2025: WCC Tournament (page text, no block header).
+
+[[schools]]
+name         = "Portland"
+abbreviation = "POR"
+conference   = "WCC"
+mascot       = "Pilots"
+gender       = "men"
+base_url     = "https://portlandpilots.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Portland, Ore."
+city_source  = "https://portlandpilots.com/sports/mens-soccer/schedule (schedule page home rows print \"Portland, Ore.\", Merlo Field at the Clive Charles Soccer Complex; 11 of 11 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "San Diego"
+abbreviation = "USD"
+conference   = "WCC"
+mascot       = "Toreros"
+gender       = "men"
+base_url     = "https://usdtoreros.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "San Diego, Calif."
+city_source  = "https://usdtoreros.com/sports/mens-soccer/schedule (schedule page home rows print \"San Diego, CA\", Torero Stadium; 7 of 7 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Denver"
+abbreviation = "DEN"
+conference   = "WCC"
+mascot       = "Pioneers"
+gender       = "men"
+base_url     = "https://denverpioneers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Denver, Colo."
+city_source  = "https://denverpioneers.com/sports/mens-soccer/schedule (schedule page home rows print \"Denver, Colo.\", University of Denver Soccer Stadium; 7 of 7 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "San Francisco"
+abbreviation = "USF"
+abbreviation_resolves = false  # "USF" is also South Florida's
+conference   = "WCC"
+mascot       = "Dons"
+gender       = "men"
+base_url     = "https://usfdons.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "San Francisco, Calif."
+city_source  = "https://usfdons.com/sports/mens-soccer/schedule (schedule page home rows print \"San Francisco, Calif.\", Negoesco Stadium; 8 of 8 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Seattle U"
+abbreviation = "Seattle U"
+conference   = "WCC"
+mascot       = "Redhawks"
+gender       = "men"
+base_url     = "https://goseattleu.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "wmt"
+live_scraper = "wmt"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Seattle University"]
+city         = "Seattle, Wash."
+city_source  = "https://goseattleu.com/sports/mens-soccer/schedule (schedule page home rows print \"Seattle, WA\"; 20 of 20 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Pacific"
+abbreviation = "Pacific"
+conference   = "WCC"
+mascot       = "Tigers"
+gender       = "men"
+base_url     = "https://pacifictigers.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Stockton, Calif."
+city_source  = "https://pacifictigers.com/sports/mens-soccer/schedule (schedule page home rows print \"Stockton, Calif.\", Knoles Field; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "Santa Clara"
+abbreviation = "SCU"
+conference   = "WCC"
+mascot       = "Broncos"
+gender       = "men"
+base_url     = "https://santaclarabroncos.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Santa Clara, Calif."
+city_source  = "https://santaclarabroncos.com/sports/mens-soccer/schedule (schedule page home rows print \"Santa Clara, Calif.\", Stevens Stadium - Buck Shaw Field; 11 of 11 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+[[schools]]
+name         = "LMU"
+abbreviation = "LMU"
+conference   = "WCC"
+mascot       = "Lions"
+gender       = "men"
+base_url     = "https://lmulions.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Loyola Marymount University"]
+city         = "Los Angeles, Calif."
+city_source  = "standings/wccsports.com.html embedded conference school object location \"Los Angeles, California \" (the school's schedule page prints no home town) (read 2026-11-15)"
+identity_accessed = "2026-11-15"
+
+# Saint Mary's College of California (Moraga), not the LSC's St. Mary's
+# (San Antonio), whose stanza already mints `saint-marys`. The WCC's
+# label "Saint Mary's" folds to that key: an alias here, reported as
+# a cross-level collision for the level-scoped identity check.
+[[schools]]
+name         = "Saint Marys California"
+display_name = "Saint Mary's College of California"
+abbreviation = "SMC"
+abbreviation_resolves = false  # "SMC" is also Saint Michael's's (Division II)
+conference   = "WCC"
+mascot       = "Gaels"
+gender       = "men"
+base_url     = "https://smcgaels.com/sports/mens-soccer"
+years        = [2023, 2024, 2025, 2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+aliases      = ["Saint Mary's", "Saint Mary's College of California"]
+city         = "Moraga, Calif."
+city_source  = "https://smcgaels.com/sports/mens-soccer/schedule (schedule page home rows print \"Moraga, CA\", Saint Mary's Stadium; 10 of 10 home rows) (read 2026-11-15)"
+identity_accessed = "2026-11-15"

@@ -1115,6 +1115,7 @@ def validate(
     if schools is None:
         schools = load_schools()
     from src.sidearm_live import (
+        level_identity_ambiguities,
         level_identity_collisions,
         member_alias_collisions,
     )
@@ -1132,6 +1133,20 @@ def validate(
             f"identity collision ({gender}, {scope}): {key!r} is claimed by "
             f"{named}; drop the alias or set abbreviation_resolves = false on "
             "the stanzas that share the initialism"
+        )
+    # A folded key an institution word splits ("boston": Boston College and
+    # Boston University) resolves to neither programme, so a stanza claiming
+    # it bare would claim nothing; the bare spelling names both schools.
+    for gender, scope, key, bare, worded in level_identity_ambiguities(
+        schools, document=document
+    ):
+        claimed = " and ".join(f"{slug} ({label})" for slug, label in bare)
+        split = " and ".join(f"{slug} ({label})" for slug, label in worded)
+        errors.append(
+            f"ambiguous identity ({gender}, {scope}): {key!r} is claimed bare "
+            f"by {claimed}, but only an institution word tells apart the "
+            f"programmes it folds to ({split}), so it resolves to none of "
+            "them; drop the spelling or keep its institution word"
         )
     # A stanza with no level would sit in every level's table, the
     # cross-level capture the scope exists to prevent. A stanza conference

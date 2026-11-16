@@ -15,6 +15,8 @@ from src.config import SchoolConfig, load_schools
 from src.sidearm_live import (
     identity_aliases,
     identity_collisions,
+    level_identity_ambiguities,
+    level_identity_collisions,
     opponent_slug,
     programme_slug,
 )
@@ -487,7 +489,13 @@ def test_a_spelling_two_stanzas_claim_is_refused():
 
 
 def test_the_shipped_config_claims_no_spelling_twice():
-    assert identity_collisions(load_schools()) == []
+    # Per resolution table (one gender, one NCAA level, one season): since
+    # Division I joined the file, the gender-wide list shares keys across
+    # levels by design ("california" is California (Pa.)'s and Cal's), and
+    # those two never share a table.
+    schools, document = load_schools(), membership.load_membership()
+    assert level_identity_collisions(schools, document=document) == []
+    assert level_identity_ambiguities(schools, document=document) == []
 
 
 def test_a_display_name_is_never_an_identity_claim():
@@ -948,7 +956,11 @@ def test_the_shipped_conferences_carry_divisions_only_where_printed(
     # undivided list as the men's is. The MEC's men's
     # standings print North and South too, but the men's windows were
     # authored without them, so they stay unlabelled until a ruling adds
-    # them. The all-or-none rule holds on the shipped
+    # them. Two Division I men's conferences print divisions on their
+    # standings: the Big East ("East Division", "Midwest Division") in every
+    # authored season, 2023-2026, and the CAA ("North", "South") from 2025,
+    # its 2023 and 2024 tables being one undivided list. The all-or-none rule
+    # holds on the shipped
     # file, nothing is labelled anywhere else, and every member of a
     # labelled conference-season carries one of its printed divisions.
     divisional = {
@@ -956,6 +968,8 @@ def test_the_shipped_conferences_carry_divisions_only_where_printed(
         ("PSAC", "women"): (2022, {"East", "West"}),
         ("CC", "women"): (2023, {"East", "Northwest", "Southwest"}),
         ("MEC", "women"): (2022, {"North", "South"}),
+        ("BIGEAST", "men"): (2023, {"East Division", "Midwest Division"}),
+        ("CAA", "men"): (2025, {"North", "South"}),
     }
     span = membership_document["seasons"]
     for conference in membership_document["conferences"]:

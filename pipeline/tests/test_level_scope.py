@@ -282,7 +282,15 @@ def test_the_unscoped_table_shows_the_defect_the_scope_removes():
     everyone = identity_aliases(ALL_SCHOOLS, "men")
     assert opponent_slug("Penn State Abington", everyone) == "penn-state"
     assert opponent_slug("California", everyone) == "cal"
-    assert opponent_slug("Charleston", everyone) == "college-of-charleston"
+    # "University of Charleston" and "College of Charleston" meet on
+    # "charleston" in one table, and only the institution word tells them
+    # apart, so the bare word names neither: Charleston (W.Va.)'s own name
+    # stops resolving to it and mints a text slug (which happens to be the
+    # same string). Scoped, each level's table holds one Charleston and the
+    # bare word resolves (above).
+    assert opponent_slug("College of Charleston", everyone) == "college-of-charleston"
+    assert opponent_slug("University of Charleston", everyone) == "charleston"
+    assert "charleston" not in everyone
 
 
 def test_ncaa_side_reads_member_only_aliases_of_the_collecting_level_only():
@@ -342,20 +350,23 @@ def test_one_key_at_two_levels_is_no_collision():
 
 
 def test_one_key_inside_one_level_is_refused_naming_the_scope():
+    # Boston College and Boston University fold to one key but the
+    # institution word tells them apart (test_institution_word.py); two
+    # stanzas claiming "Boston College" itself do collide.
     boston = [
         _school("Boston College", "BIG10"),
-        _school("Boston University", "BIG10"),
+        _school("Boston Eagles", "BIG10", aliases=["Boston College"]),
     ]
     document = copy.deepcopy(BOTH)
     document["memberships"] |= {  # type: ignore[operator]
         "boston-college": {"men": [_window("BIG10", 2022, 2026)]},
-        "boston-university": {"men": [_window("BIG10", 2022, 2026)]},
+        "boston-eagles": {"men": [_window("BIG10", 2022, 2026)]},
     }
     assert membership.validate(document, schools=[*ALL_SCHOOLS, *boston]) == [
-        "identity collision (men, d1, seasons 2022-2026): 'boston' is claimed by "
-        "boston-college (name) and boston-university (name); drop the alias or "
-        "set abbreviation_resolves = false on the stanzas that share the "
-        "initialism"
+        "identity collision (men, d1, seasons 2022-2026): 'boston college' is "
+        "claimed by boston-college (name) and boston-eagles (alias); drop the "
+        "alias or set abbreviation_resolves = false on the stanzas that share "
+        "the initialism"
     ]
 
 
