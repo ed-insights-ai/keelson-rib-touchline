@@ -316,6 +316,9 @@ class _Fetcher:
         self.year = year
         self.kind = kind
         self.previous = previous or {}
+        #: Every URL asked conditionally: the parts whose archived ETag the
+        #: next run sends in ``If-None-Match``.
+        self.conditional: set[str] = set()
 
     def get(
         self,
@@ -329,6 +332,7 @@ class _Fetcher:
         if conditional:
             # Every conditional part is a statistics-host body.
             presume_paced(self.session, url)
+            self.conditional.add(url)
         prior = self.previous.get(url) if conditional else None
         headers = {"If-None-Match": prior.etag} if prior and prior.etag else None
         try:
@@ -1075,15 +1079,39 @@ def fetch_layer(
     text = bundle.text()
     page = PublishedPage(layer_url(base_url, year, kind), bundle.final_url, text)
     signature = bundle.signature()
+    # The same content under a NEW validator is not unchanged: the statistics
+    # host re-compresses a JSON body and answers a new ETag over the same
+    # decoded season (the signature is blind to both, on purpose), and an
+    # unchanged result is never written back, so the archive would keep the
+    # old ETag and every later run would ask with it and download the whole
+    # body again. A part whose ETag moved makes the bundle fresh: it is
+    # parsed (to the same output) and archived with the new validator.
     unchanged = (
         state is not None
         and state.signature == signature
         and state.final_url == page.final_url
+        and _validators_unchanged(bundle.parts, previous, fetcher.conditional)
     )
     return ConditionalFetch(
         page=page,
         unchanged=unchanged,
         signature=signature if want_validators or state is not None else None,
+    )
+
+
+def _validators_unchanged(
+    parts: tuple[Part, ...], previous: dict[str, Part], conditional: set[str]
+) -> bool:
+    """Whether every conditionally asked part carries its archived ETag.
+
+    Only those ETags are ever sent back (``_Fetcher.get``), so only they can
+    go stale; a part with no archived counterpart is new content, which the
+    signature already tells.
+    """
+    return all(
+        previous[part.url].etag == part.etag
+        for part in parts
+        if part.url in conditional and part.url in previous
     )
 
 

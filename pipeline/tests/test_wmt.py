@@ -868,6 +868,77 @@ def test_a_second_fetch_asks_the_statistics_host_with_its_etag_and_reuses_the_ar
     assert second.page.html == first.page.html
 
 
+def _rewrapped(body: str, url: str) -> str:
+    """``body`` re-compressed, as the statistics host does from time to time:
+    new wrapper bytes over the same decoded JSON."""
+    import base64
+    import gzip
+
+    decoded = wmt.decode_json_body(body, url)
+    return json.dumps(
+        {
+            "__gz": base64.b64encode(
+                gzip.compress(json.dumps(decoded).encode(), mtime=7)
+            ).decode()
+        }
+    )
+
+
+def test_a_new_etag_over_the_same_json_is_archived_so_the_next_run_asks_with_it(
+    tmp_path: Path,
+) -> None:
+    """Measured 2026-11-15: South Carolina's team season answered a new ETag
+    over a re-compressed body of the same season. The bundle's content is
+    the same, but the run must keep the new validator, or every later run
+    asks with the old one and downloads the full body again."""
+    store = PageStateStore(tmp_path, 2025, "men")
+
+    def collect(site: _Site):
+        result = collect_programme(
+            _seattle(), 2025, {}, session=site, layers=(LAYER_STATS,), page_cache=store
+        )
+        write_raw_pages(tmp_path, result, 2025, "men")
+        return result
+
+    def archived_etag() -> str | None:
+        bundle = wmt.read_bundle(
+            (
+                tmp_path / "data" / "raw_html" / "seattle-u" / "2025-men-stats.html"
+            ).read_text("utf-8")
+        )
+        season = bundle.first("season")
+        return None if season is None else season.etag
+
+    collect(_seattle_site())
+    assert archived_etag() == 'W/"team-604058"'
+
+    rewrapped = _rewrapped(TEAM, TEAM_URL)
+    assert rewrapped != TEAM
+    moved = _seattle_site(**{TEAM_URL: rewrapped})
+    moved.etags[TEAM_URL] = 'W/"team-604058-recompressed"'
+    second = collect(moved)
+    assert (TEAM_URL, {"If-None-Match": 'W/"team-604058"'}) in moved.requests
+    assert second.state(LAYER_STATS) == STATE_COMPLETE
+    assert second.outcomes[LAYER_STATS].count == 28
+    assert archived_etag() == 'W/"team-604058-recompressed"'
+
+    # the next run asks with the new validator, is answered 304, and the
+    # bundle is unchanged again
+    moved.requests.clear()
+    third = wmt.fetch_layer(
+        moved,
+        BASE,
+        2025,
+        LAYER_STATS,
+        state=store.load("seattle-u", LAYER_STATS, None),
+        want_validators=True,
+    )
+    assert (TEAM_URL, {"If-None-Match": 'W/"team-604058-recompressed"'}) in (
+        moved.requests
+    )
+    assert third.unchanged is True
+
+
 def test_the_config_load_stamp_alone_does_not_change_a_bundle() -> None:
     """Two fetches of a Nuxt season page differ by one token,
     ``configLoadedAt`` (measured on goseattleu.com, 2026-11-15)."""
