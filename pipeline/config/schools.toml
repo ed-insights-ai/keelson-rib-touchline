@@ -14957,6 +14957,11 @@ enabled      = true
 city         = "San Francisco, Calif."
 city_source  = "https://usfdons.com/sports/mens-soccer/schedule (schedule page home rows print \"San Francisco, Calif.\", Negoesco Stadium; 8 of 8 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
+# The Gazetteer's internal point for San Francisco lies in the Pacific; the
+# same override the San Francisco State stanza carries (tui-vu9).
+point        = { lat = 37.7775, lon = -122.41639 }
+point_source = "Wikipedia, San Francisco, the article's title coordinates 37°46′39″N 122°24′59″W, https://en.wikipedia.org/wiki/San_Francisco (read 2026-11-09)"
+point_reason = "the city's boundary takes in the Farallon Islands, so the internal point lies in the Pacific, 46 km west of the peninsula the city stands on (tui-vu9)"
 
 [[schools]]
 name         = "Seattle U"
