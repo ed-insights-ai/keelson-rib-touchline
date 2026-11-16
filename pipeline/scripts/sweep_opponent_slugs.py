@@ -86,9 +86,13 @@ def _how_joined(variants: list[str], aliases: dict[str, str]) -> tuple[str, str]
 def sweep(home: Path) -> dict[str, object]:
     """Pair every same-date same-side twin under a data home. Pure; reads only."""
     schools = load_schools()
+    # Only an absent record falls back to the gender-wide table. A record
+    # that is present but unreadable or malformed raises: resolving against
+    # every level would compare fixtures collected at one level against
+    # programmes from another.
     try:
         document: dict[str, object] | None = load_membership()
-    except (OSError, ValueError):
+    except FileNotFoundError:
         document = None
     findings: list[str] = []
     counts = {"files": 0, "pairs": 0, "fold": 0, "alias": 0, "apart": 0}
@@ -158,7 +162,20 @@ def main() -> int:
             )
         )
         return 0
-    out = sweep(home)
+    try:
+        out = sweep(home)
+    except (OSError, ValueError, KeyError, TypeError) as error:
+        print(
+            json.dumps(
+                {
+                    "check": CHECK,
+                    "verdict": "alarm",
+                    "headline": f"CHECK DID NOT RUN — {type(error).__name__}: {error}",
+                    "cause": "the membership record or a fixture file could not be read; inspect it by hand",
+                }
+            )
+        )
+        return 0
     for line in out["findings"]:
         print(line)
     counts = out["counts"]

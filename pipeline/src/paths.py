@@ -132,8 +132,12 @@ def home_level() -> HomeLevel | None:
     """
     try:
         text = marker_path().read_text(encoding="utf-8")
-    except OSError:
+    except FileNotFoundError:
         return None
+    except OSError as exc:
+        # Present but unreadable is not "no marker": that would lift the
+        # level guard off a home whose marker may well say d1.
+        raise MarkerError(f"{marker_path()} could not be read ({exc})") from exc
     kind = re.search(r"^\s*kind:\s*(\S+)\s*$", text, re.MULTILINE)
     if kind is None or kind.group(1) != "touchline-data":
         raise MarkerError(

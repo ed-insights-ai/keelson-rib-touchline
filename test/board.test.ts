@@ -7,7 +7,7 @@
 //     http://www.apache.org/licenses/LICENSE-2.0
 
 import { describe, expect, test } from "bun:test";
-import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { touchlineSystemPrompt } from "../src/agent.ts";
@@ -344,6 +344,12 @@ describe("the data home", () => {
 
     const second = await bootstrapDataHome(root);
     expect(second.alreadyMarked).toBe(true);
+  });
+
+  test("a marker that exists but cannot be read is refused, never read as unmarked", async () => {
+    const root = await tempHome();
+    await mkdir(join(root, "touchline-data.yaml")); // present, but readFile fails with EISDIR
+    expect(await readMarker(root)).toMatchObject({ state: "foreign" });
   });
 
   test("bootstrap REFUSES a directory holding someone else's work", async () => {

@@ -133,8 +133,12 @@ export async function readMarker(root: string): Promise<MarkerState> {
   let text: string;
   try {
     text = await readFile(join(root, MARKER_FILE), "utf8");
-  } catch {
-    return { state: "unmarked" };
+  } catch (err) {
+    // Only an absent marker is unmarked. One that exists but cannot be read
+    // is refused, never read as unmarked: that would lift the level guard
+    // off a home whose marker may say d1.
+    if ((err as NodeJS.ErrnoException).code === "ENOENT") return { state: "unmarked" };
+    return { state: "foreign", detail: `unreadable: ${(err as Error).message}` };
   }
   const kind = /^\s*kind:\s*(\S+)\s*$/m.exec(text)?.[1];
   if (kind !== MARKER_KIND) {

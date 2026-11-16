@@ -61,9 +61,13 @@ def _side_of(
 def compare(home: Path) -> dict[str, object]:
     """Sweep every (fixtures, matches) pair under a data home. Pure; no I/O beyond reading."""
     schools = load_schools()
+    # Only an absent record falls back to the gender-wide table. A record
+    # that is present but unreadable or malformed raises: resolving against
+    # every level would compare fixtures collected at one level against
+    # programmes from another.
     try:
         document: dict[str, object] | None = load_membership()
-    except (OSError, ValueError):
+    except FileNotFoundError:
         document = None
     findings: list[str] = []
     counts = {

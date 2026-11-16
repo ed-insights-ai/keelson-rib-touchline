@@ -99,6 +99,17 @@ def test_home_level_reads_the_marker(monkeypatch, tmp_path):
         paths.home_level()
 
 
+def test_an_unreadable_marker_refuses_rather_than_reads_as_absent(
+    monkeypatch, tmp_path
+):
+    import pytest
+
+    monkeypatch.setenv("TOUCHLINE_DATA_DIR", str(tmp_path))
+    (tmp_path / paths.MARKER_FILE).mkdir()  # present, but read_text raises
+    with pytest.raises(paths.MarkerError, match="could not be read"):
+        paths.home_level()
+
+
 def test_home_levels_are_the_membership_levels():
     from src import membership
 
