@@ -52,16 +52,18 @@ function initialBoard(lc: string): string {
   return board(lc, "2026-01-01T00:00:00Z", "");
 }
 
-// Local calendar date, the way the script's `date +%Y-%m-%d` names the
-// archive directory, and ISO weekday the way `date +%u` reports it.
-function today(): string {
-  const d = new Date();
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const dd = String(d.getDate()).padStart(2, "0");
-  return `${d.getFullYear()}-${mm}-${dd}`;
+// The calendar date the script's `date +%Y-%m-%d` names the archive
+// directory by, and the ISO weekday its `date +%u` gates the archive on —
+// asked of `date` itself, under the environment the script runs with. Never
+// computed in JS: `bun test` pins the test process's own clock to UTC
+// (process.env.TZ stays unset, so the /bin/sh it spawns keeps the machine's
+// zone), and a JS date disagreed with the script's from local evening to
+// local midnight, west of UTC, and on the weekday around it.
+function today(env: Record<string, string> = process.env as Record<string, string>): string {
+  return Bun.spawnSync(["date", "+%Y-%m-%d"], { env }).stdout.toString().trim();
 }
-function weekday(): number {
-  return new Date().getDay() || 7;
+function weekday(env: Record<string, string> = process.env as Record<string, string>): number {
+  return Number(Bun.spawnSync(["date", "+%u"], { env }).stdout.toString().trim());
 }
 
 interface RunResult {
@@ -676,7 +678,7 @@ describe("bin/touchline-collect-cadence.sh", () => {
           `^\\[\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\] run summary: mode=loop season=${SEASON} ` +
             `collect=\\[GAC=changed\\] changed=\\[gac\\] failed=\\[none\\] journal_model_calls=2 ` +
             `journal_commit=${siteHead} publish=succeeded exit=0 data_head=${dataHead} build=${BUILD} ` +
-            `locked=\\[none\\] busy=none archive=skipped \\(disabled; archive day 0, today is ${weekday()}\\)$`,
+            `locked=\\[none\\] busy=none archive=skipped \\(disabled; archive day 0, today is ${weekday(h.env)}\\)$`,
           "m",
         ),
       );
@@ -722,7 +724,7 @@ describe("bin/touchline-collect-cadence.sh", () => {
       expect(rec.data_push).toBe("ok");
       expect(rec.build_stamp).toBe(BUILD);
       expect(rec.publish).toBe("succeeded");
-      expect(rec.archive).toBe(`skipped (disabled; archive day 0, today is ${weekday()})`);
+      expect(rec.archive).toBe(`skipped (disabled; archive day 0, today is ${weekday(h.env)})`);
       expect(rec.exit).toBe(0);
     },
     LOOP_TIMEOUT,
@@ -1414,7 +1416,7 @@ describe("bin/touchline-collect-cadence.sh archive step", () => {
       });
       expect(r.code).toBe(0);
 
-      const dir = join(h.archive, today());
+      const dir = join(h.archive, today(h.env));
       expect((await readdir(dir)).sort()).toEqual([
         ".done",
         `2025-${GENDER}-gac.tar.zst`,
@@ -1471,7 +1473,7 @@ describe("bin/touchline-collect-cadence.sh archive step", () => {
         "2026-08-16",
         "2026-08-23",
         "2026-08-30",
-        today(),
+        today(h.env),
       ]);
       const log = await h.log();
       expect(log).toContain(
@@ -1481,7 +1483,7 @@ describe("bin/touchline-collect-cadence.sh archive step", () => {
         `archive retention: removed ${h.archive}/2026-08-09 (beyond the newest 4)`,
       );
       expect(log).toContain("archive retention: kept 4 of 6");
-      expect(existsSync(join(h.archive, today(), ".done"))).toBe(true);
+      expect(existsSync(join(h.archive, today(h.env), ".done"))).toBe(true);
     },
   );
 
@@ -1493,7 +1495,7 @@ describe("bin/touchline-collect-cadence.sh archive step", () => {
       TOUCHLINE_ARCHIVE_DAY: "0",
     });
     expect(r0.code).toBe(0);
-    const notToday = String((weekday() % 7) + 1);
+    const notToday = String((weekday(h.env) % 7) + 1);
     const r1 = await h.cadence("loop", {
       TOUCHLINE_CONFERENCES: "GAC",
       CADENCE_FAKE_PLAN: "GAC=churn",
@@ -1503,14 +1505,14 @@ describe("bin/touchline-collect-cadence.sh archive step", () => {
 
     expect(existsSync(h.archive)).toBe(false);
     const log = await h.log();
-    expect(log).toContain(`archive: skipped (disabled; archive day 0, today is ${weekday()})`);
+    expect(log).toContain(`archive: skipped (disabled; archive day 0, today is ${weekday(h.env)})`);
     expect(log).toContain(
-      `archive: skipped (not archive day; today is ${weekday()}, archive day ${notToday})`,
+      `archive: skipped (not archive day; today is ${weekday(h.env)}, archive day ${notToday})`,
     );
     const [rec0, rec1] = await h.records();
-    expect(rec0.archive).toBe(`skipped (disabled; archive day 0, today is ${weekday()})`);
+    expect(rec0.archive).toBe(`skipped (disabled; archive day 0, today is ${weekday(h.env)})`);
     expect(rec1.archive).toBe(
-      `skipped (not archive day; today is ${weekday()}, archive day ${notToday})`,
+      `skipped (not archive day; today is ${weekday(h.env)}, archive day ${notToday})`,
     );
   });
 
@@ -1537,7 +1539,7 @@ describe("bin/touchline-collect-cadence.sh archive step", () => {
       const r = await h.cadence("archive");
       expect(r.code).toBe(0);
 
-      const dir = join(h.archive, today());
+      const dir = join(h.archive, today(h.env));
       expect((await readdir(dir)).sort()).toEqual([
         ".done",
         `${SEASON}-${GENDER}-gac.tar.zst`,
