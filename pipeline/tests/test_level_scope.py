@@ -417,3 +417,103 @@ def test_a_season_files_stem_names_its_table():
     # Unreadable, or no document: the whole gender, as before levels.
     assert len(shard_stanzas(ALL_SCHOOLS, "2025-men-nope", document=BOTH)) == 8
     assert len(shard_stanzas(ALL_SCHOOLS, "2025-men-psac", document=None)) == 8
+
+
+# ── a structural code carries its programmes' level ─────────────────────────
+
+
+def test_a_structural_collect_resolves_at_its_programmes_level():
+    """UTRGV men 2025 is an ``independent``: the code has no profile, so the
+    collect took no level, resolved against every level's stanzas, read
+    "Charleston" as Division II Charleston (W.Va.) and read headers against
+    every level's conferences. Its level is its programme's, Division I,
+    for identity, the header reader and the shard readers alike."""
+    import pytest
+
+    from src.config import load_schools
+    from src.membership import MixedLevels, collect_level, load_membership
+
+    schools, document = load_schools(), load_membership()
+    aliases, _, scope = collect_identity(
+        schools, "men", "independent", 2025, document=document, programmes=["utrgv"]
+    )
+    assert scope.level == "d1"
+    assert opponent_slug("Charleston", aliases, scope=scope, owner="utrgv") == (
+        "charleston-south-carolina"
+    )
+    d1 = stanzas_at_level(schools, "men", "d1", 2025, document=document)
+    # the identity map is the Division I table's, not every level's
+    assert set(aliases.values()) <= {programme_slug(s.name) for s in d1}
+    assert (
+        shard_stanzas(
+            schools, "2025-men-independent", programmes=["utrgv"], document=document
+        )
+        == d1
+    )
+    # a structural collect of programmes at two levels is refused by name
+    with pytest.raises(MixedLevels) as mixed:
+        collect_level(
+            schools,
+            "men",
+            "independent",
+            2025,
+            programmes=["utrgv", "harding"],
+            document=document,
+        )
+    assert mixed.value.levels == {"utrgv": "d1", "harding": "d2"}
+    assert "utrgv (d1)" in str(mixed.value) and "harding (d2)" in str(mixed.value)
+    # a profiled conference keeps its own level whatever is asked of it
+    assert (
+        collect_level(
+            schools, "men", "GAC", 2025, programmes=["utrgv"], document=document
+        )
+        == "d2"
+    )
+
+
+def test_the_shard_readers_read_a_structural_files_level_off_its_programmes(
+    tmp_path, monkeypatch
+):
+    """sweep_opponent_slugs and check_box_scores re-read a stored file in the
+    table its collect used; for a structural shard that is its programmes'
+    level, read off the file (``shard_programmes``)."""
+    import json
+
+    from scripts import check_box_scores, sweep_opponent_slugs
+    from src.config import load_schools
+    from src.membership import load_membership, shard_programmes
+
+    schools, document = load_schools(), load_membership()
+    payload = {
+        "programmes": [{"slug": "utrgv"}],
+        "fixtures": [{"id": "a", "date": "2025-09-02", "home": "utrgv", "away": "x"}],
+    }
+    assert shard_programmes(payload) == ["utrgv"]
+    levelled = shard_stanzas(
+        schools, "2025-men-independent", programmes=["utrgv"], document=document
+    )
+    assert levelled == stanzas_at_level(schools, "men", "d1", 2025, document=document)
+    assert levelled != shard_stanzas(schools, "2025-men-independent", document=document)
+
+    for layer in ("fixtures", "matches"):
+        (tmp_path / "data" / layer).mkdir(parents=True)
+    (tmp_path / "data" / "fixtures" / "2025-men-independent.json").write_text(
+        json.dumps(payload)
+    )
+    (tmp_path / "data" / "matches" / "2025-men-independent.json").write_text(
+        json.dumps({"matches": {}})
+    )
+    for module, run in (
+        (sweep_opponent_slugs, sweep_opponent_slugs.sweep),
+        (check_box_scores, check_box_scores.compare),
+    ):
+        asked: list[list[str]] = []
+        real = module.shard_stanzas
+
+        def spy(*args, programmes=(), _asked=asked, _real=real, **kwargs):
+            _asked.append(list(programmes))
+            return _real(*args, programmes=programmes, **kwargs)
+
+        monkeypatch.setattr(module, "shard_stanzas", spy)
+        run(tmp_path)
+        assert asked == [["utrgv"]], module.__name__

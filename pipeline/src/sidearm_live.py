@@ -1537,8 +1537,10 @@ class ResolutionScope:
     season: int
     members: frozenset[str]
     claims: Mapping[str, str]
-    # The NCAA level the collect resolves at (``membership.collecting_level``),
-    # None for a conference with no profile. Every mapping below was built
+    # The NCAA level the collect resolves at (``membership.collect_level``):
+    # the conference profile's, or for a structural code (independent,
+    # non_member) the level of the programmes collected; None only when
+    # neither says. Every mapping below was built
     # from that level's stanzas alone (``membership.resolution_stanzas``); a
     # tournament header is read against that level's conferences only
     # (``conference_headers``). Not in ``fingerprint``: the header signature

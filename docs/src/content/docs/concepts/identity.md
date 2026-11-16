@@ -96,7 +96,11 @@ corruption afterwards.
 
 A collect also resolves only against the stanzas of one NCAA level: the
 level (`conference_profiles[code].level` in `membership.json`) of the
-conference it collects, for the season it collects. Division I and
+conference it collects, for the season it collects. A structural code
+(`independent`, `non_member`) has no profile, so its collect resolves at the
+level of the programmes it collects (`membership.collect_level`): UTRGV's
+2025 independent season reads at Division I, and a structural collect whose
+programmes span two levels is refused before any fetch. Division I and
 Division II share names and name tokens, and one table across both hands
 one level's text to the other's programmes. Measured 2026-11-15 by loading
 214 Division I men's programmes beside the Division II stanzas and replaying

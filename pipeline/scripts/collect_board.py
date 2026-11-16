@@ -37,7 +37,7 @@ import os
 import sys
 import threading
 import time
-from collections.abc import Callable, Mapping
+from collections.abc import Callable, Iterable, Mapping
 from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
 from dataclasses import replace
 from datetime import datetime, timezone
@@ -55,6 +55,8 @@ from src.fetch_pool import (
 from src.config import DEFAULT_CONFIG, SchoolConfig, load_schools
 from src.identity import IdentityReport, SeasonSources, resolve_matches
 from src.membership import (
+    MixedLevels,
+    collect_level,
     collecting_level,
     conference_for,
     conference_in_effect,
@@ -62,6 +64,7 @@ from src.membership import (
     has_windows,
     load_membership,
     resolution_stanzas,
+    stanzas_at_level,
 )
 from src.page_state import BoxArchive, PageStateStore
 from src.programmes import load_programmes, programme_points
@@ -380,6 +383,7 @@ def collect_identity(
     *,
     document: dict[str, object] | None,
     points: dict[str, tuple[float, float]] | None = None,
+    programmes: Iterable[str] = (),
 ) -> tuple[dict[str, str], set[str], ResolutionScope]:
     """What one conference-season collect resolves opponent text with.
 
@@ -394,7 +398,10 @@ def collect_identity(
     (``membership.resolution_stanzas``), so a Division II page's "Penn State
     Abington" stays itself instead of folding onto Division I "Penn State",
     and a Division I page's "California" is Cal, not California (Pa.). Text
-    naming a school at another level mints its slug from the text.
+    naming a school at another level mints its slug from the text. A
+    structural code (independent, non_member) has no profile, so its level
+    is the level of the ``programmes`` collected (``membership.collect_level``),
+    and programmes at two levels in one collect raise ``MixedLevels``.
 
     Identity and membership are different questions and use different sets.
     The map spans every stanza at the level, so an out-of-conference
@@ -413,9 +420,15 @@ def collect_identity(
     every page in it; with ``points`` an ambiguous name no member claims
     breaks by distance to the collecting school (tl-4sg.9.1).
     """
-    in_scope = resolution_stanzas(
-        schools, gender, conference, season, document=document
+    level = collect_level(
+        schools,
+        gender,
+        conference,
+        season,
+        programmes=programmes,
+        document=document,
     )
+    in_scope = stanzas_at_level(schools, gender, level, season, document=document)
     aliases = identity_aliases(in_scope, gender)
     members = conference_members(
         schools, gender, conference, season=season, document=document
@@ -427,9 +440,7 @@ def collect_identity(
         conference=conference,
         season=season,
         points=points,
-        level=None
-        if document is None
-        else collecting_level(conference, document=document),
+        level=level,
     )
     return aliases, members, scope
 
@@ -927,6 +938,7 @@ def collect(
         season,
         document=membership_document,
         points=_programme_points(),
+        programmes=wanted,
     )
     results = []
     errors: list[str] = []
@@ -1968,6 +1980,11 @@ def main() -> int:
                 else None
             ),
         )
+    except MixedLevels as refusal:
+        # Refused before any fetch (collect_identity runs before the first
+        # request); the season files stand as they were.
+        print(str(refusal), file=sys.stderr)
+        return 2
     except UncoveredSeason as refusal:
         # Nothing was fetched and nothing was written: the season files stand
         # as they were.  Named on stderr, exit 2 like any ask the collector
@@ -2068,6 +2085,7 @@ def main() -> int:
                 args.gender,
                 args.conference,
                 args.season,
+                programmes=wanted,
                 document=_membership_document(),
             )
         }

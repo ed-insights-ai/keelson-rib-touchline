@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -157,9 +158,11 @@ def collecting_level(
 
     The conference's profile level, its code compared without case the way
     ``conference_in_effect`` compares it. None for a code with no profile (a
-    structural code, or a reference older than profiles): such a collect has
-    no level to scope to and resolves against every stanza of the gender, as
-    every collect did before levels existed.
+    structural code, or a reference older than profiles): the conference
+    carries no level, so ``collect_level`` reads a collect of it at the level
+    of the programmes it collects, and only a collect whose programmes carry
+    none either resolves against every stanza of the gender, as every collect
+    did before levels existed.
     """
     profiles = conference_profiles(document)
     wanted = conference.strip().casefold()
@@ -299,32 +302,108 @@ def stanzas_at_level(
     return kept
 
 
+class MixedLevels(ValueError):
+    """A collect of a structural code whose programmes are at different levels.
+
+    ``levels`` is each requested programme's level that season, by slug.
+    """
+
+    def __init__(self, message: str, levels: dict[str, str | None]) -> None:
+        super().__init__(message)
+        self.levels = levels
+
+
+def collect_level(
+    schools: list[SchoolConfig],
+    gender: str,
+    conference: str,
+    season_year: int,
+    *,
+    programmes: Iterable[str] = (),
+    document: dict[str, Any] | None,
+) -> str | None:
+    """The NCAA level one collect resolves opponent text and headers at.
+
+    A conference's profile level (``collecting_level``). A structural code
+    (``independent``, ``non_member``) has no profile, so a collect of one,
+    UTRGV men 2025 as an independent, reads its level off the programmes it
+    collects: each one's level that season (``programme_level``, its stanza
+    conference the fallback), which must be one level. Programmes at
+    different levels raise ``MixedLevels`` naming each; the collector
+    refuses such a collect before any fetch. None only when nothing carries
+    a level (no document, or programmes no window or stanza places).
+    """
+    if document is None:
+        return None
+    level = collecting_level(conference, document=document)
+    if level is not None:
+        return level
+    stanza = {
+        programme_slug(school.name): school.conference
+        for school in schools
+        if school.gender == gender
+    }
+    levels = {
+        slug: programme_level(
+            slug,
+            gender,
+            season_year,
+            stanza_conference=stanza.get(slug, ""),
+            document=document,
+        )
+        for slug in dict.fromkeys(programmes)
+    }
+    distinct = sorted({value for value in levels.values() if value is not None})
+    if len(distinct) > 1:
+        named = ", ".join(
+            f"{slug} ({value or 'no level'})" for slug, value in sorted(levels.items())
+        )
+        raise MixedLevels(
+            f"refused: {conference} has no conference level, so a {season_year} "
+            f"{gender} collect of it resolves at its programmes' level, and these "
+            f"are at {' and '.join(distinct)}: {named}. A collect resolves "
+            "opponent text at one NCAA level; collect each level's programmes "
+            "separately, into a home of that level.",
+            levels,
+        )
+    return distinct[0] if distinct else None
+
+
 def resolution_stanzas(
     schools: list[SchoolConfig],
     gender: str,
     conference: str,
     season_year: int,
     *,
+    programmes: Iterable[str] = (),
     document: dict[str, Any] | None,
 ) -> list[SchoolConfig]:
     """The stanzas a collect of one conference-season resolves opponent text to.
 
-    ``stanzas_at_level`` at the conference's level (``collecting_level``).
-    The one place a collect's identity scope is decided: the identity map,
-    the resolution scope's member claims, member-only aliases and distance
-    tiebreak, and so ``ncaa_side``, are all built from this list, and the
-    schedule parse fingerprint hashes what they are built into. Text naming
-    a school at another level resolves to nothing here and mints its slug
-    from the text, as text naming an unknown school does. With no document
-    (an install without the membership reference) every stanza of the
-    gender is kept, as before.
+    ``stanzas_at_level`` at the collect's level (``collect_level``: the
+    conference's, or for a structural code the level of the ``programmes``
+    it collects). The one place a collect's identity scope is decided: the
+    identity map, the resolution scope's member claims, member-only aliases
+    and distance tiebreak, and so ``ncaa_side``, are all built from this
+    list, and the schedule parse fingerprint hashes what they are built
+    into. Text naming a school at another level resolves to nothing here
+    and mints its slug from the text, as text naming an unknown school
+    does. With no document (an install without the membership reference)
+    every stanza of the gender is kept, as before.
     """
     if document is None:
         return [school for school in schools if school.gender == gender]
     return stanzas_at_level(
         schools,
         gender,
-        collecting_level(conference, document=document),
+        collect_level(
+            schools,
+            gender,
+            conference,
+            season_year,
+            programmes=programmes,
+            document=document,
+        ),
         season_year,
         document=document,
     )
@@ -334,17 +413,22 @@ def shard_stanzas(
     schools: list[SchoolConfig],
     stem: str,
     *,
+    programmes: Iterable[str] = (),
     document: dict[str, Any] | None,
 ) -> list[SchoolConfig]:
     """The stanzas a season file's collect resolved against, from its file name.
 
     ``stem`` is a season file's name without ``.json``,
     ``{season}-{gender}-{conference slug}`` ("2024-men-g-mac"); the slug is
-    matched back to a declared code. A read-only check that re-resolves
-    stored text the way the collect did (check_box_scores.py,
+    matched back to a declared code. ``programmes`` is the file's own
+    programme list, which is where a structural shard's level comes from
+    ("2025-men-independent" is UTRGV's, so Division I's), as it did for the
+    collect that wrote it (``collect_level``). A read-only check that
+    re-resolves stored text the way the collect did (check_box_scores.py,
     sweep_opponent_slugs.py) reads it in this table. A stem it cannot read,
-    or a document it does not have, gives every stanza of the stem's gender:
-    the table before levels.
+    a document it does not have, or a structural shard whose programmes are
+    at different levels (which no collect can write) gives every stanza of
+    the stem's gender: the table before levels.
     """
     season, _, rest = stem.partition("-")
     gender, _, shard = rest.partition("-")
@@ -354,10 +438,34 @@ def shard_stanzas(
     codes = document.get("conferences")
     for code in codes if isinstance(codes, list) else []:
         if isinstance(code, str) and programme_slug(code) == shard:
-            return resolution_stanzas(
-                schools, gender, code, int(season), document=document
-            )
+            try:
+                return resolution_stanzas(
+                    schools,
+                    gender,
+                    code,
+                    int(season),
+                    programmes=programmes,
+                    document=document,
+                )
+            except MixedLevels:
+                return of_gender
     return of_gender
+
+
+def shard_programmes(payload: object) -> list[str]:
+    """The programme slugs a stored season file holds, in file order."""
+    if not isinstance(payload, dict):
+        return []
+    slugs = [
+        str(entry["slug"])
+        for entry in payload.get("programmes") or []
+        if isinstance(entry, dict) and entry.get("slug")
+    ]
+    for field in ("rosters", "teams"):
+        keyed = payload.get(field)
+        if isinstance(keyed, dict):
+            slugs.extend(str(slug) for slug in keyed)
+    return list(dict.fromkeys(slugs))
 
 
 def level_scopes(

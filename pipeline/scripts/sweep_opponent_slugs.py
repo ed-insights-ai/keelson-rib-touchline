@@ -31,7 +31,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from src.config import load_schools
-from src.membership import load_membership, shard_stanzas
+from src.membership import load_membership, shard_programmes, shard_stanzas
 from src.paths import data_root
 from src.sidearm_live import (
     FOLD_INSTITUTION,
@@ -99,12 +99,20 @@ def sweep(home: Path) -> dict[str, object]:
         if cell is None:
             continue
         name, gender = cell
-        rows = json.loads(fpath.read_text()).get("fixtures", [])
+        payload = json.loads(fpath.read_text())
+        rows = payload.get("fixtures", [])
         counts["files"] += 1
         # The table the file's collect resolved against: its conference's
-        # NCAA level that season, so a slug is re-read the way it was minted.
+        # NCAA level that season (a structural shard's, its programmes'), so
+        # a slug is re-read the way it was minted.
         aliases = identity_aliases(
-            shard_stanzas(schools, name, document=document), gender=gender
+            shard_stanzas(
+                schools,
+                name,
+                programmes=shard_programmes(payload),
+                document=document,
+            ),
+            gender=gender,
         )
         groups: dict[tuple[str, str, str], set[str]] = defaultdict(set)
         for row in rows:
