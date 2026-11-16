@@ -113,6 +113,26 @@ nodes:
       fi
       printf '%s\n' "$PIPELINE_DIR"
 
+  # A data home collects ONE NCAA level (touchline-data.yaml `level`; a
+  # marker with none is a Division II home, and this node says so). A
+  # conference at any other level is refused here, naming both levels,
+  # before anything is resolved or fetched: the guard that keeps Division I
+  # data out of a Division II home after a slip of the project picker. The
+  # rule lives in the rib (bin/resolve-membership.ts guard, src/datahome.ts);
+  # collect-board enforces the same one again before its first fetch.
+  - id: level-guard
+    depends_on: [resolve-pipeline]
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
+      RESOLVER="$(dirname "$PIPELINE_DIR")/bin/resolve-membership.ts"
+      if [ ! -f "$RESOLVER" ]; then
+        printf 'ALARM: membership resolver not found at %s (the rib package beside the pipeline should carry bin/resolve-membership.ts)\n' "$RESOLVER"
+        exit 1
+      fi
+      bun "$RESOLVER" guard "$PWD" "$KEELSON_INPUTS_conference"
+
   # Membership is DATA, not code. With no programmes input the member list
   # comes from the packaged data/reference/membership.json through the rib's
   # bin/resolve-membership.ts, the same resolveConference the touchline_collect
@@ -121,7 +141,7 @@ nodes:
   # passes a caller-supplied list through untouched so the collect node has one
   # shape to read. Nothing here names a conference or a member.
   - id: resolve-programmes
-    depends_on: [resolve-pipeline]
+    depends_on: [level-guard]
     timeout: 60000
     bash: |
       set -uo pipefail
@@ -198,6 +218,9 @@ nodes:
 
       Preflight reported:
       $preflight.output
+
+      The level guard reported:
+      $level-guard.output
 
       The programme list resolved to:
       $resolve-programmes.output

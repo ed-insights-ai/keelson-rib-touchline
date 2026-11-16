@@ -143,7 +143,13 @@ describe("membership resolution", () => {
     const res = await resolveConference("non_member", "women", 2020);
     expect(res.authoredThrough).toBe(2018);
     expect(res.extrapolated).toBe(true);
-    expect(res.slugs.length).toBeGreaterThan(0);
+    // The carry-forward is the code's horizon, never a programme's: the
+    // programmes non_member held in 2018 are authored into the MIAA from
+    // 2019, so none of them is carried back into non_member (they once were,
+    // and sat in two places at once).
+    expect(res.slugs).toEqual([]);
+    const miaa = await resolveConference("MIAA", "women", 2020);
+    expect(miaa.slugs).toEqual(expect.arrayContaining(["newman", "rogers-state"]));
   });
 
   test("a conference with no windows for a gender borrows no horizon", async () => {

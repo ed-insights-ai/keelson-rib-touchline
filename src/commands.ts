@@ -15,16 +15,18 @@ import type {
   RibCommandDescriptor,
   RibContext,
 } from "@keelson/shared";
-import { ensureActivationConfig } from "./activation.ts";
+import { ensureActivationConfig, resolveActivationDataDir } from "./activation.ts";
 import { TOUCHLINE_AGENT_SLUG } from "./agent.ts";
 import {
   bootstrapDataHome,
   dataHomeState,
   explainRefusal,
+  type HomeLevel,
   listSeasons,
   loadFixtures,
   loadRosters,
 } from "./datahome.ts";
+import type { ConferenceLevel } from "./levels.ts";
 import { findProject, setScope } from "./state.ts";
 
 export const TOUCHLINE_COMMAND: RibCommandDescriptor = {
@@ -97,6 +99,17 @@ export type InitHomeResult =
       /** False when a previous run had already initialized this folder. */
       created: boolean;
       registered: boolean;
+      /** The NCAA level the home collects, and whether its marker states it. */
+      level: HomeLevel;
+      /** True when this call added a `level:` line to an existing marker. */
+      levelWritten: boolean;
+      /** The rib's active data home after the call (TOUCHLINE_DATA_DIR, else
+       *  the config's dataDir), and whether this call made the new home it.
+       *  Only a first home becomes active by being created; any other home
+       *  leaves the active one where it was. */
+      activeDataDir?: string;
+      activeSource: "env" | "config" | "none";
+      activated: boolean;
     }
   | { ok: false; error: string };
 
@@ -110,7 +123,11 @@ export type InitHomeResult =
  * tends to narrate a plausible failure instead of naming the gap. The
  * `touchline_init` tool calls this same function so the two cannot drift.
  */
-export async function initTouchlineHome(rawName: string, ctx: RibContext): Promise<InitHomeResult> {
+export async function initTouchlineHome(
+  rawName: string,
+  ctx: RibContext,
+  opts: { level?: ConferenceLevel } = {},
+): Promise<InitHomeResult> {
   const parsed = validateFolderName(rawName);
   if (!parsed.ok) return parsed;
   const name = parsed.name;
@@ -145,11 +162,26 @@ export async function initTouchlineHome(rawName: string, ctx: RibContext): Promi
     };
   }
 
+  // Creating a home never moves the active one. The activation config's
+  // dataDir is the rib's default data home (the one status and the CLI read
+  // when no project is named); a second home made beside it — a Division I
+  // home next to the Division II one — used to take that over silently. Only
+  // a first home, when nothing is active, becomes active by being created.
+  // Switching is its own act: selecting the project in the Touchline
+  // surface's picker, or TOUCHLINE_DATA_DIR for one process.
   let alreadyMarked = false;
+  let level: HomeLevel;
+  let levelWritten = false;
+  let activated = false;
   try {
-    const boot = await bootstrapDataHome(rootPath);
+    const boot = await bootstrapDataHome(rootPath, opts.level ? { level: opts.level } : {});
     alreadyMarked = boot.alreadyMarked;
-    await ensureActivationConfig(rootPath);
+    level = boot.level;
+    levelWritten = boot.levelWritten;
+    const active = await resolveActivationDataDir();
+    if (!active.ok) throw new Error(active.error);
+    activated = !active.dataDir;
+    await ensureActivationConfig(activated ? rootPath : undefined);
   } catch (err) {
     return {
       ok: false,
@@ -181,12 +213,18 @@ export async function initTouchlineHome(rawName: string, ctx: RibContext): Promi
     projects.find((p) => p.name.toLowerCase() === name.toLowerCase() && p.rootPath === rootPath) ??
     existing;
   if (project) setScope(project.id);
+  const active = await resolveActivationDataDir();
   return {
     ok: true,
     name,
     rootPath,
     created: !alreadyMarked,
     registered: !existing,
+    level,
+    levelWritten,
+    ...(active.ok && active.dataDir ? { activeDataDir: active.dataDir } : {}),
+    activeSource: active.ok ? active.source : "none",
+    activated,
   };
 }
 

@@ -75,14 +75,30 @@ nodes:
       # the data home meanwhile. A live lock means every season here would be
       # refused by the server's mutation lock anyway; refuse up front with the
       # holder named. A lock whose pid is gone is stale and ignored.
-      CADENCE_LOCK="${TOUCHLINE_CADENCE_LOCK_DIR:-${HOME:-/nonexistent}/.keelson/locks/touchline-collect-cadence.lock}"
+      # The lock is THIS home's (one cadence per data home): the default home,
+      # $HOME/keelson/d2-soccer, keeps the original lock name, any other home
+      # carries its directory name, the same rule as the cadence's own
+      # (`sh bin/touchline-collect-cadence.sh paths` prints it). Another
+      # home's cadence running is no reason to refuse here.
+      CADENCE_LOCK="${TOUCHLINE_CADENCE_LOCK_DIR:-}"
+      if [ -z "$CADENCE_LOCK" ]; then
+        LOCKS="${HOME:-/nonexistent}/.keelson/locks"
+        DEFAULT_HOME="${HOME:-/nonexistent}/keelson/d2-soccer"
+        DEFAULT_P=$(cd "$DEFAULT_HOME" 2>/dev/null && pwd -P || printf '%s' "$DEFAULT_HOME")
+        if [ "$PWD" = "$DEFAULT_HOME" ] || [ "$(pwd -P)" = "$DEFAULT_P" ]; then
+          CADENCE_LOCK="$LOCKS/touchline-collect-cadence.lock"
+        else
+          CADENCE_LOCK="$LOCKS/touchline-collect-cadence.$(basename "$PWD").lock"
+        fi
+      fi
       if [ -f "$CADENCE_LOCK/pid" ]; then
         CADENCE_PID=$(cat "$CADENCE_LOCK/pid" 2>/dev/null || printf '')
         if [ -n "$CADENCE_PID" ] && kill -0 "$CADENCE_PID" 2>/dev/null; then
-          printf 'REFUSED: the touchline cadence is running (pid %s); retry after it finishes.\n' "$CADENCE_PID"
+          printf 'REFUSED: the touchline cadence for this data home is running (pid %s, lock %s); retry after it finishes.\n' "$CADENCE_PID" "$CADENCE_LOCK"
           exit 1
         fi
       fi
+      printf 'cadence lock: %s (not held)\n' "$CADENCE_LOCK"
       for v in KEELSON_INPUTS_conference KEELSON_INPUTS_gender KEELSON_INPUTS_from_season KEELSON_INPUTS_to_season; do
         eval "val=\${$v:-}"
         if [ -z "$val" ]; then
@@ -142,8 +158,28 @@ nodes:
       fi
       printf '%s\n' "$PIPELINE_DIR"
 
-  - id: collect-1
+  # A data home collects ONE NCAA level (touchline-data.yaml `level`; a
+  # marker with none is a Division II home, and this node says so). A
+  # conference at any other level is refused here, naming both levels,
+  # before anything is resolved or fetched: the guard that keeps Division I
+  # data out of a Division II home after a slip of the project picker. The
+  # rule lives in the rib (bin/resolve-membership.ts guard, src/datahome.ts);
+  # collect-board enforces the same one again before its first fetch.
+  - id: level-guard
     depends_on: [resolve-pipeline]
+    timeout: 60000
+    bash: |
+      set -uo pipefail
+      PIPELINE_DIR=$(printf '%s' "${KEELSON_NODE_resolve_pipeline_OUTPUT:-}" | tr -d '\r' | tail -1)
+      RESOLVER="$(dirname "$PIPELINE_DIR")/bin/resolve-membership.ts"
+      if [ ! -f "$RESOLVER" ]; then
+        printf 'ALARM: membership resolver not found at %s (the rib package beside the pipeline should carry bin/resolve-membership.ts)\n' "$RESOLVER"
+        exit 1
+      fi
+      bun "$RESOLVER" guard "$PWD" "$KEELSON_INPUTS_conference"
+
+  - id: collect-1
+    depends_on: [level-guard]
     timeout: 900000
     bash: |
       set -uo pipefail
@@ -223,6 +259,9 @@ nodes:
 
       Preflight reported:
       $preflight.output
+
+      The level guard reported:
+      $level-guard.output
 
       Each season's collect printed (a slot past the range says SKIPPED; a
       slot whose text is empty did not run and must be reported as such):

@@ -7,13 +7,16 @@ sidebar:
 
 The daily cadence is one POSIX shell script, `bin/touchline-collect-cadence.sh`,
 shipped in the rib package and run by launchd every morning through a thin
-shim. It collects every conference the membership record authors for the
-season, decides per conference whether the board really changed, journals
-only when one did, publishes whenever any conference was collected (so the
-site is dated by the run's look), and pushes the data home's record. Nothing in it
-names a conference: the set resolves at run time from
-`bin/resolve-membership.ts conferences {gender}`, so onboarding a conference
-never edits it ([Onboard a conference](../onboard-a-conference/), step 7).
+shim. It collects every conference at its data home's NCAA level that has a
+member this season, decides per conference whether the board really changed,
+journals only when one did, publishes whenever any conference was collected
+(so the site is dated by the run's look), and pushes the data home's record.
+Nothing in it names a conference: the set resolves at run time from
+`bin/resolve-membership.ts conferences {gender} --level {level} --season {season}`,
+so onboarding a conference never edits it
+([Onboard a conference](../onboard-a-conference/), step 7). One cadence runs
+per data home, and a data home holds one NCAA level
+([A second data home](#a-second-data-home)).
 
 Every run writes two things a reader can rely on: the cadence log, one line
 per step, and a run record, one JSON line per completed run. Both live under
@@ -37,6 +40,29 @@ legs still run, except where the table says otherwise.
 Membership resolution failing for a conference (`resolve-failed`) skips its
 collect and counts as a failure the same way.
 
+### The level and the conference set
+
+The data home's `touchline-data.yaml` names the one NCAA level it collects
+(`level: d1`, `d2` or `d3`). A marker with no `level` is read as `d2`, and
+the log says so on every run (`NOTE: ... declares no level, so it is read as
+d2`): every home made before levels existed is Division II, because until the
+Division I men's conferences were onboarded the membership record held
+nothing else. A `level` that is not one of the three stops the run.
+
+Unpinned, the set is every conference at that level with at least one member
+this season. A conference authored at the level but with no member this
+season is named in the log and left out, neither collected nor failed: the
+WAC's men end in 2025, every 2025 member is authored elsewhere for 2026, so a
+Division I run logs
+`skipped (no men 2026 members): WAC — at the home's level but with no member this season; not collected.`
+and collects the other 23.
+
+A pinned set (`TOUCHLINE_CONFERENCES`, or the config's `conferences.{gender}`)
+wins, but every pinned conference must be at the home's level. One that is
+not is refused by name, with both levels, before anything is collected, and
+the run exits 1:
+`REFUSED: ACC is a d1 conference and the data home ... collects d2 ...`.
+
 ### The season
 
 The college-soccer season is the calendar year of its fall semester. From June
@@ -54,16 +80,114 @@ The first argument selects the mode; no argument is the full loop.
 | `collect` | collect and detect only: no journal, no commit, no publish, no data push, no archive | the site's justfile delegates its collect step here (`TOUCHLINE_COLLECT_CMD="sh {shim} collect"`) so `just` does not run the journal twice |
 | `archive` | the archive leg alone, under the same PID lock, whatever the day: no collect, no journal, no publish, no data push | take a tarball set by hand, or catch up a missed Sunday |
 | `version` | prints the packaged script path, the package dir, the package version and its `git describe`, then exits 0 | proves the shim resolves the installed package without taking the lock or collecting |
+| `plan` | resolves what a collect would collect today, the home's level, the conference set (one run per gender, as below) and every conference's programmes, prints it and exits. No lock, no log file, no run record, no keelson call, no git | check a config or membership change before the morning run |
+| `paths` | prints every path this home's cadence derives (`data_home`, `home_key`, `default_home`, `project`, `lock_dir`, `log_file`, `runs_file`, `archive_root`, `rib_config`) and exits. Touches nothing | see where a second home's lock, log and archive live |
 
 Environment overrides: `TOUCHLINE_CONFERENCES` (space-separated keys, pins the
 set), `TOUCHLINE_SEASON`, `TOUCHLINE_GENDER` (default `men`),
-`TOUCHLINE_DATA_HOME` (default `~/keelson/d2-soccer`), `TOUCHLINE_UI_DIR`
+`TOUCHLINE_DATA_HOME` (default `~/keelson/d2-soccer`; picks the home, and with
+it every derived path below), `TOUCHLINE_UI_DIR`
 (default `~/edinsights-ai/project/touchline-ui`),
-`TOUCHLINE_CADENCE_RUNS_FILE` (the run record path),
+`TOUCHLINE_CADENCE_LOG_FILE`, `TOUCHLINE_CADENCE_RUNS_FILE` (the run record path),
 `TOUCHLINE_CADENCE_LOCK_DIR` (the PID lock directory, read by the backfill
-preflight too), `TOUCHLINE_ARCHIVE_DAY` and `TOUCHLINE_ARCHIVE_DIR` (the
-archive leg's day and root, below) and `TOUCHLINE_CADENCE_PATH` (replaces the
-script's absolute `PATH`; the test harness uses it to put its fakes first).
+preflight too), `TOUCHLINE_PROJECT` (the keelson project the collects run
+in), `TOUCHLINE_CONFIG_PATH` (the rib config), `TOUCHLINE_ARCHIVE_DAY` and
+`TOUCHLINE_ARCHIVE_DIR` (the archive leg's day and root, below) and
+`TOUCHLINE_CADENCE_PATH` (replaces the script's absolute `PATH`; the test
+harness uses it to put its fakes first).
+
+## A second data home
+
+A data home collects one NCAA level, so Division I is a second home
+(`~/keelson/d1-soccer`, marker `level: d1`) beside the Division II one, with
+its own cadence. Every path the cadence writes outside the data home derives
+from the home. The default home, `~/keelson/d2-soccer`, matched by path, keeps
+every name it had before there was a second; any other home keys its names by
+its directory name:
+
+| | default home (`~/keelson/d2-soccer`) | any other home, e.g. `~/keelson/d1-soccer` |
+|---|---|---|
+| PID lock | `~/.keelson/locks/touchline-collect-cadence.lock` | `~/.keelson/locks/touchline-collect-cadence.d1-soccer.lock` |
+| log | `~/.keelson/logs/touchline-collect-cadence.log` | `~/.keelson/logs/touchline-collect-cadence.d1-soccer.log` |
+| run record | `~/.keelson/logs/touchline-cadence-runs.jsonl` | `~/.keelson/logs/touchline-cadence-runs.d1-soccer.jsonl` |
+| archive root | `~/keelson/archive/raw-html` | `~/keelson/archive/d1-soccer/raw-html` |
+| keelson project | `d2-soccer` | `d1-soccer` |
+| modes | all | `collect`, `archive`, `plan`, `paths` |
+
+So two homes' cadences run side by side, neither waiting on the other's lock,
+and two homes archiving on the same Sunday never write one directory.
+`sh {script} paths` with `TOUCHLINE_DATA_HOME` set prints the column for any
+home. The backfill workflow's preflight derives the same lock from its own
+working directory, so a backfill refuses only while its own home's cadence
+runs.
+
+### Per-home config
+
+The config's top-level `genders` and `conferences` belong to the default home
+(and touchline-ui's justfile reads the same `genders`). Any other home reads
+only its own section under `homes`, keyed by its directory name, and never
+falls back to the top level, so a Division I home never inherits the
+Division II site's women's pin:
+
+```json
+{
+  "genders": ["men", "women"],
+  "conferences": { "women": ["GAC", "…"] },
+  "homes": {
+    "d1-soccer": { "genders": ["men"] }
+  }
+}
+```
+
+The default home may also carry a `homes.d2-soccer` section; when it does,
+that section wins over the top level. A home with no section follows one
+gender (`men`, or `TOUCHLINE_GENDER`) and resolves its set from membership.
+A single-gender run reads its home's pin for that gender unless
+`TOUCHLINE_CONFERENCES` is set at all.
+
+### Collect only: what a Division I publish still needs
+
+The journal and publish legs belong to the site, and the site
+(`touchline-ui`) publishes the default home. A cadence for any other home is
+refused the full loop, before it takes its lock, with one `FATAL` naming the
+home; it runs `collect` (collect, detect, commit in the data home) and, on its
+own schedule, `archive`. It never pushes the data home; push it by hand, or
+add a remote push to its job.
+
+A Division I site is not designed yet. Publishing the D1 home needs, at
+least: a site build that reads `~/keelson/d1-soccer` instead of (or beside)
+d2-soccer; journal files that do not collide with the Division II ones
+(today both are `journal/journal-{season}-{gender}-{conf}.json` in one
+checkout, and the national journal is one per gender); a publish target of
+its own (`just publish` pushes one gh-pages); and a `genders` list for that
+build. Until those exist, the D1 cadence's job is `collect`.
+
+### Running a second home's cadence
+
+A second launchd job, beside the first, with the home in its environment:
+
+```xml
+<key>Label</key><string>ai.edinsights.touchline-collect-d1</string>
+<key>ProgramArguments</key>
+<array>
+  <string>/usr/bin/caffeinate</string><string>-i</string><string>-s</string>
+  <string>/bin/sh</string>
+  <string>/Users/{you}/.keelson/scripts/touchline-collect-cadence.sh</string>
+  <string>collect</string>
+</array>
+<key>EnvironmentVariables</key>
+<dict><key>TOUCHLINE_DATA_HOME</key><string>/Users/{you}/keelson/d1-soccer</string></dict>
+<key>StandardOutPath</key><string>/Users/{you}/.keelson/logs/touchline-collect-cadence.d1-soccer.log</string>
+<key>StandardErrorPath</key><string>/Users/{you}/.keelson/logs/touchline-collect-cadence.d1-soccer.log</string>
+<key>StartCalendarInterval</key><dict><key>Hour</key><integer>7</integer><key>Minute</key><integer>15</integer></dict>
+```
+
+The shim is the same file: it resolves the package once and passes
+`TOUCHLINE_DATA_HOME` through, and its own `FATAL` goes to the same per-home
+log. The home must be a git repository (change detection needs one) and a
+registered keelson project named for its directory (`TOUCHLINE_PROJECT`
+overrides). Check it first with `TOUCHLINE_DATA_HOME=~/keelson/d1-soccer sh
+~/.keelson/scripts/touchline-collect-cadence.sh plan`.
 
 ## Divisions: men's and women's in one morning
 
@@ -191,12 +315,15 @@ retry inside the run; the next fire is the retry. (Keelson's
 `workspace_lease` is a worktree lease, not a mutex, and plays no part.)
 
 The second is the cadence's own PID lock at
-`~/.keelson/locks/touchline-collect-cadence.lock`. It makes a second cadence
+`~/.keelson/locks/touchline-collect-cadence.lock` (the default home's; another
+home's carries its key, [A second data home](#a-second-data-home)). It makes a second cadence
 start a logged no-op (`cadence already running (pid {n}) - exiting without
 work.`, exit 0); a lock whose PID is gone is taken over, and `version` mode
-never takes it. The backfill workflow's preflight reads the same lock and
-refuses with `REFUSED: the touchline cadence is running (pid {n}); retry
-after it finishes.` while that PID is live.
+never takes it. The backfill workflow's preflight reads the same lock, the
+one for the home it runs in, and refuses with `REFUSED: the touchline cadence
+for this data home is running (pid {n}, lock {path}); retry after it
+finishes.` while that PID is live; another home's cadence running is no
+reason to refuse.
 
 A rollback, after stamp-only churn or a failed collect, touches only the
 collected conference's paths:
@@ -272,7 +399,8 @@ it. Restore a page set with
 
 ## Where the log lives
 
-`~/.keelson/logs/touchline-collect-cadence.log`, appended by every run. Lines
+`~/.keelson/logs/touchline-collect-cadence.log` (another home's log carries
+its key, [A second data home](#a-second-data-home)), appended by every run. Lines
 are timestamped; the output of each collect, journal and publish call is
 indented beneath its leg. Under launchd the same file receives stdout and
 stderr, and the script writes each line exactly once (it echoes to stdout only

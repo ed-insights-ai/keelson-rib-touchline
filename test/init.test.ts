@@ -373,6 +373,82 @@ describe("first-contact commands", () => {
     expect(await composeTouchlineBoard()).toContain("LSC");
   });
 
+  test("creating a second home leaves the active data home where it was, and says which it is", async () => {
+    const workspace = await tempRoot("second-home");
+    process.env.KEELSON_WORKSPACE = workspace;
+    process.env.TOUCHLINE_CONFIG_PATH = join(workspace, "config.json");
+    const projects: Project[] = [];
+    const ctx = fakeContext(projects);
+
+    // the first home, with nothing active yet, becomes the active one
+    const first = await initTouchlineHome("d2-soccer", ctx);
+    expect(first).toMatchObject({ ok: true, activated: true });
+    const d2 = join(workspace, "d2-soccer");
+    expect((await readActivationConfig()).ok && (await readActivationConfig())).toMatchObject({
+      value: { dataDir: d2 },
+    });
+
+    // the second does not move it — through the tool, as an agent calls it
+    const init = makeTouchlineTools({ ctx, refreshBoard: () => undefined }).find(
+      (t) => t.name === "touchline_init",
+    );
+    let reply = "";
+    await init?.execute({ name: "d1-soccer", level: "d1" }, {
+      emit: (chunk: { content?: string }) => {
+        reply += chunk.content ?? "";
+      },
+    } as never);
+    const config = JSON.parse(await readFile(process.env.TOUCHLINE_CONFIG_PATH, "utf8"));
+    expect(config.dataDir).toBe(d2);
+    expect(reply).toContain(
+      `The active Touchline data home is still ${d2}; creating a home does not switch it.`,
+    );
+    expect(reply).toContain(
+      "It collects NCAA d1; a collect of a conference at another level is refused.",
+    );
+    expect(await readFile(join(workspace, "d1-soccer", "touchline-data.yaml"), "utf8")).toContain(
+      "\nlevel: d1\n",
+    );
+    // an explicit switch is still the picker's to make
+    rib.registerTools?.(ctx);
+    const d1Project = projects.find((p) => p.name === "d1-soccer");
+    if (!d1Project) throw new Error("init registered no d1 project");
+    expect(
+      await rib.onAction?.({ type: "select-project", payload: { scopeId: d1Project.id } }, ctx),
+    ).toEqual({ ok: true });
+    expect(JSON.parse(await readFile(process.env.TOUCHLINE_CONFIG_PATH, "utf8")).dataDir).toBe(
+      join(workspace, "d1-soccer"),
+    );
+    setScope(undefined);
+  });
+
+  test("init writes a level into a new marker, declares one on an unlevelled home, and refuses to change one", async () => {
+    const workspace = await tempRoot("init-level");
+    process.env.KEELSON_WORKSPACE = workspace;
+    process.env.TOUCHLINE_CONFIG_PATH = join(workspace, "config.json");
+    const ctx = fakeContext([]);
+
+    const plain = await initTouchlineHome("plain", ctx);
+    expect(plain).toMatchObject({ ok: true, level: { level: "d2", declared: true } });
+    expect(await readFile(join(workspace, "plain", "touchline-data.yaml"), "utf8")).toContain(
+      "\nlevel: d2\n",
+    );
+
+    // a pre-level home: no level line until one is declared
+    const old = join(workspace, "old-home");
+    await mkdir(old);
+    await writeFile(join(old, "touchline-data.yaml"), "kind: touchline-data\nversion: 1\n");
+    const declared = await initTouchlineHome("old-home", ctx, { level: "d2" });
+    expect(declared).toMatchObject({ ok: true, created: false, levelWritten: true });
+    expect(await readFile(join(old, "touchline-data.yaml"), "utf8")).toBe(
+      "kind: touchline-data\nversion: 1\nlevel: d2\n",
+    );
+
+    const changed = await initTouchlineHome("old-home", ctx, { level: "d1" });
+    expect(changed.ok).toBe(false);
+    if (!changed.ok) expect(changed.error).toContain("is already a d2 data home");
+  });
+
   test("the init and remove tools are registered so MCP and chat can reach them", () => {
     const names = makeTouchlineTools({
       ctx: fakeContext([]),
@@ -444,6 +520,83 @@ describe("collecting a season", () => {
       expect(command).toContain("collect-board");
       expect(command).not.toContain("--refetch");
     }
+  });
+});
+
+describe("the collect tool's level guard", () => {
+  async function attempt(level: string | undefined, target: string) {
+    const workspace = await tempRoot(`guard-${level ?? "none"}-${target}`);
+    process.env.KEELSON_WORKSPACE = workspace;
+    process.env.TOUCHLINE_CONFIG_PATH = join(workspace, "config.json");
+    const root = join(workspace, "home");
+    await mkdir(root);
+    await writeFile(
+      join(root, "touchline-data.yaml"),
+      `kind: touchline-data\nversion: 1\n${level ? `level: ${level}\n` : ""}`,
+    );
+    const projects: Project[] = [
+      { id: "p-home", name: "home", rootPath: root, createdAt: "2026-11-15T00:00:00Z" },
+    ];
+    const base = fakeContext(projects);
+    let fetched = false;
+    const ctx: RibContext = {
+      ...base,
+      getExec: () => ({
+        ...base.getExec(),
+        runText: async (cmd, args, opts) => {
+          if (cmd === "uv") {
+            fetched = true;
+            return { ok: true as const, data: "collected", exitCode: 0 };
+          }
+          return base.getExec().runText(cmd, args, opts);
+        },
+      }),
+    };
+    const collect = makeTouchlineTools({ ctx, refreshBoard: () => undefined }).find(
+      (t) => t.name === "touchline_collect",
+    );
+    let report = "";
+    let isError = false;
+    await collect?.execute({ target, gender: "men", season: 2026, project: "home" }, {
+      emit: (chunk: { content?: string; isError?: boolean }) => {
+        report += chunk.content ?? "";
+        isError ||= chunk.isError === true;
+      },
+    } as never);
+    return { report, isError, fetched, root };
+  }
+
+  test("a D1 conference into a d2 home, and a D2 conference into a d1 home, are refused before any fetch", async () => {
+    const intoD2 = await attempt("d2", "ACC");
+    expect(intoD2.isError).toBe(true);
+    expect(intoD2.fetched).toBe(false);
+    expect(intoD2.report).toContain(
+      `REFUSED: ACC is a d1 conference and the data home ${intoD2.root} collects d2 (declared in its marker).`,
+    );
+    const intoD1 = await attempt("d1", "GAC");
+    expect(intoD1.isError).toBe(true);
+    expect(intoD1.fetched).toBe(false);
+    expect(intoD1.report).toContain(
+      `REFUSED: GAC is a d2 conference and the data home ${intoD1.root} collects d1 (declared in its marker).`,
+    );
+    // a programme is held to its own level: Harding is a d2 programme
+    const programme = await attempt("d1", "Harding");
+    expect(programme.fetched).toBe(false);
+    expect(programme.report).toContain("is a d2 conference");
+  });
+
+  test("a home with no level is read as d2, and the reply says it assumed so", async () => {
+    const d1 = await attempt(undefined, "ACC");
+    expect(d1.fetched).toBe(false);
+    expect(d1.report).toContain("collects d2 (assumed: its marker declares no level)");
+    const d2 = await attempt(undefined, "GAC");
+    expect(d2.isError).toBe(false);
+    expect(d2.fetched).toBe(true);
+    expect(d2.report).toContain("declares no level, so it is read as d2");
+    // and the collect left the marker as it was
+    expect(await readFile(join(d2.root, "touchline-data.yaml"), "utf8")).toBe(
+      "kind: touchline-data\nversion: 1\n",
+    );
   });
 });
 

@@ -14,12 +14,22 @@ import {
   conferenceSlug,
   dataHomeState,
   explainRefusal,
+  homeLevel,
+  levelMismatch,
   listSeasons,
   loadFixtures,
   loadRosters,
   packageDir,
 } from "./datahome.ts";
-import { collectFleetSize, resolveTargets, titleFromSlug } from "./membership.ts";
+import { CONFERENCE_LEVELS, type ConferenceLevel } from "./levels.ts";
+import {
+  collectFleetSize,
+  conferenceProfile,
+  knownConferences,
+  programmeLevel,
+  resolveTargets,
+  titleFromSlug,
+} from "./membership.ts";
 import { isPlayed } from "./model.ts";
 import {
   collectTimeoutMs,
@@ -117,17 +127,30 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
         );
       }
 
+      const level = await homeLevel(root);
+      const levelLine = level
+        ? `Level: ${level.level} (${level.declared ? "declared in its marker" : `assumed — ${level.note}`}).`
+        : "Level: unreadable marker.";
       const seasons = await listSeasons(root);
       if (!seasons.length) {
         return emit(
           tctx,
-          `${picked.project.name} (${root}) is a Touchline data home (marker v${home.version}) but holds no collected seasons yet. Run touchline_collect.`,
+          `${picked.project.name} (${root}) is a Touchline data home (marker v${home.version}) but holds no collected seasons yet. ${levelLine} Run touchline_collect.`,
         );
       }
       const lines: string[] = [
         `${picked.project.name} — ${seasons.length} season file(s) at ${root}`,
+        `  ${levelLine}`,
       ];
       for (const s of seasons) {
+        // A shard of another level is what the level guard exists to prevent;
+        // one that predates it is named, never hidden.
+        const shardLevel = (await conferenceProfile(s.conference))?.level;
+        if (level && shardLevel && shardLevel !== level.level) {
+          lines.push(
+            `  WARNING: ${s.season} ${s.gender} ${s.conference.toUpperCase()} is a ${shardLevel} conference in this ${level.level} home.`,
+          );
+        }
         const fx = await loadFixtures(root, s.season, s.gender, s.conference);
         const rs = await loadRosters(root, s.season, s.gender, s.conference);
         if (!fx.ok) {
@@ -165,13 +188,35 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
         .describe(
           "Folder name, lowercase, e.g. 'gac-soccer'. Created under the Keelson workspace.",
         ),
+      level: z
+        .enum(CONFERENCE_LEVELS)
+        .optional()
+        .describe(
+          "The one NCAA level this home collects: d1, d2 or d3, written into its marker. A collect of a conference at another level is refused. Defaults to d2 for a new home; on an existing home with no level it declares one.",
+        ),
     }),
     state_changing: true,
     execute: guarded(async (input, tctx) => {
-      const { name } = input as { name: string };
-      const result = await initTouchlineHome(name, ctx);
+      const { name, level } = input as { name: string; level?: ConferenceLevel };
+      const result = await initTouchlineHome(name, ctx, level ? { level } : {});
       if (!result.ok) return emit(tctx, result.error, true);
 
+      const levelLine = result.level.declared
+        ? `It collects NCAA ${result.level.level}${
+            result.levelWritten
+              ? " (declared now: its marker had no level)"
+              : !result.created || level
+                ? ""
+                : ` (the default; pass level to make a d1 or d3 home)`
+          }; a collect of a conference at another level is refused.`
+        : `Its marker declares no level, so it is read as ${result.level.level}. ${result.level.note ?? ""}`;
+      const activeLine = result.activated
+        ? `It is now the active Touchline data home (there was none).`
+        : result.activeDataDir === result.rootPath
+          ? `It is the active Touchline data home.`
+          : `The active Touchline data home is still ${result.activeDataDir ?? "(none)"}${
+              result.activeSource === "env" ? " (TOUCHLINE_DATA_DIR)" : ""
+            }; creating a home does not switch it. To work in '${result.name}', name it as the project, or select it in the Touchline surface's project picker.`;
       const lines = [
         result.created
           ? `Initialized ${result.rootPath} as a Touchline data home.`
@@ -179,6 +224,8 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
         result.registered
           ? `Registered it as the Keelson project '${result.name}'.`
           : `It was already registered as the Keelson project '${result.name}'.`,
+        levelLine,
+        activeLine,
         "",
         `Nothing has been collected yet. Name a conference or programme and a season to fill it — for example "Harding men ${TOUCHLINE_V1_SEASON}".`,
       ];
@@ -313,10 +360,17 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
         return emit(tctx, "Name a target to collect, such as 'Harding' or 'GAC'.", true);
       }
       const target = await resolveTargets(subject, args.gender, season);
+      const existingLevel = await homeLevel(root);
       if (target.kind === "unknown") {
+        // A home holds one level: offer the conferences it can collect.
+        const offered = existingLevel
+          ? await knownConferences(existingLevel.level)
+          : target.knownConferences;
         return emit(
           tctx,
-          `Touchline has no ${args.gender} collection recipe for '${subject}'. Known conferences: ${target.knownConferences.join(", ")}. Known programmes: ${target.suggestions.map(titleFromSlug).join(", ")}.`,
+          `Touchline has no ${args.gender} collection recipe for '${subject}'. Known conferences${
+            existingLevel ? ` at this home's level (${existingLevel.level})` : ""
+          }: ${offered.join(", ")}. Known programmes: ${target.suggestions.map(titleFromSlug).join(", ")}.`,
           true,
         );
       }
@@ -341,11 +395,35 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
       if (home.state !== "empty" && home.state !== "ready") {
         return emit(tctx, explainRefusal(root, home) as string, true);
       }
-      const boot = await bootstrapDataHome(root);
+      // 2a. A home collects one NCAA level. The target's level — its
+      //     conference's, or for a programme the level its windows put it at
+      //     this season — must be the home's, or nothing is fetched: this is
+      //     what stops Division I data landing in a Division II home by a slip
+      //     of the project picker. An empty folder becomes a home at the
+      //     target's level.
+      const targetLevel =
+        target.kind === "programme"
+          ? await programmeLevel(target.slugs[0] as string, args.gender, season)
+          : (await conferenceProfile(target.conference))?.level;
+      if (!targetLevel) {
+        return emit(
+          tctx,
+          `REFUSED: ${subject} (${target.conference}) has no NCAA level in the membership record, so it cannot be checked against this data home's level. Nothing was fetched or written.`,
+          true,
+        );
+      }
+      if (existingLevel) {
+        const why = levelMismatch(root, existingLevel, target.conference, targetLevel);
+        if (why) return emit(tctx, why, true);
+        if (existingLevel.note) out.push(`NOTE: ${existingLevel.note}`);
+      }
+      // A collect never edits an existing marker: only a new home is given
+      // its level here (declaring an old one is touchline_init's job).
+      const boot = await bootstrapDataHome(root, existingLevel ? {} : { level: targetLevel });
       out.push(
         boot.alreadyMarked
-          ? `Data home already initialized at ${root}.`
-          : `Initialized ${root} as a Touchline data home (${boot.created.length} paths created).`,
+          ? `Data home already initialized at ${root} (${boot.level.level}).`
+          : `Initialized ${root} as a ${boot.level.level} Touchline data home, the level of ${target.conference} (${boot.created.length} paths created).`,
       );
 
       // 3. Fetch the official season schedule and roster pages. The collector

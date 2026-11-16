@@ -66,7 +66,8 @@
 #               no longer tracked by the data home, so once a week it is
 #               tarred as tar.zst per (season, gender, conference) plus one
 #               unassigned tarball for anything on disk no cell claims, under
-#               TOUCHLINE_ARCHIVE_DIR (default ~/keelson/archive/raw-html),
+#               TOUCHLINE_ARCHIVE_DIR (default ~/keelson/archive/raw-html for
+#               the default home, ~/keelson/archive/<home key>/raw-html else),
 #               one dated directory per run, newest four complete kept. A
 #               failure is a WARNING and exit 1, never a stop.
 #
@@ -84,17 +85,35 @@
 #                         (package.json version, git describe when the
 #                         package is a checkout) and exit 0. No lock, no
 #                         log, no collect: the way to prove the shim resolves.
+#         plan            resolve what a collect run would collect today —
+#                         the home's level, the conference set, each
+#                         conference's programmes — print it to stdout and
+#                         exit. No lock, no log file, no keelson, no git.
+#         paths           print every path this home's cadence derives
+#                         (lock, log, runs record, archive root, project,
+#                         rib config) and exit. Touches nothing.
+#
+# Homes: one cadence per data home, one data home per NCAA level. The default
+# home (~/keelson/d2-soccer) runs every mode; any other home
+# (TOUCHLINE_DATA_HOME) runs `collect`, `archive`, `plan` and `paths` with
+# its own lock, log, run record and archive root, and is refused the full
+# loop, whose journal and publish legs belong to the site (see "one cadence
+# per data home" below, and docs guides/daily-cadence.md).
 #
 # Run record: every completed run appends one JSON line to
-# ~/.keelson/logs/touchline-cadence-runs.jsonl (TOUCHLINE_CADENCE_RUNS_FILE
-# overrides the path) carrying what the run summary line carries plus the
-# data home HEAD, the push result and the deployed build stamp.
+# ~/.keelson/logs/touchline-cadence-runs.jsonl (the default home's; another
+# home's carries its key, TOUCHLINE_CADENCE_RUNS_FILE overrides the path)
+# carrying what the run summary line carries plus the data home HEAD, the
+# push result and the deployed build stamp.
 #
 # Conference membership is DATA, not code: programme lists resolve at run time
 # from the rib's data/reference/membership.json (the same file the pipeline
 # reads), carrying the last authored window forward when the season is beyond
-# it — nothing here hardcodes a member list. The conference set and season are
-# overridable: TOUCHLINE_CONFERENCES, TOUCHLINE_SEASON, TOUCHLINE_GENDER.
+# it — nothing here hardcodes a member list. The conference set is every
+# conference at the home's NCAA level with a member this season. The
+# conference set and season are overridable: TOUCHLINE_CONFERENCES,
+# TOUCHLINE_SEASON, TOUCHLINE_GENDER; a pinned conference at another level
+# than the home's is refused before anything is collected.
 #
 # The college-soccer season is the calendar year of its fall semester: from
 # June onward collect the current year, January–May still means last fall's
@@ -125,21 +144,59 @@ export PATH
 umask 022
 
 HOME_DIR="${HOME:-/Users/danielscholl}"
-DATA_HOME="${TOUCHLINE_DATA_HOME:-$HOME_DIR/keelson/d2-soccer}"
 UI_DIR="${TOUCHLINE_UI_DIR:-$HOME_DIR/edinsights-ai/project/touchline-ui}"
 CONFERENCES="${TOUCHLINE_CONFERENCES:-}"
 GENDER="${TOUCHLINE_GENDER:-men}"
-LOG_FILE="$HOME_DIR/.keelson/logs/touchline-collect-cadence.log"
-RUNS_FILE="${TOUCHLINE_CADENCE_RUNS_FILE:-$HOME_DIR/.keelson/logs/touchline-cadence-runs.jsonl}"
-# TOUCHLINE_CADENCE_LOCK_DIR is the test harness's override; the backfill
-# workflow's preflight reads the same path (and the same override) to refuse
-# while the cadence is running.
-LOCK_DIR="${TOUCHLINE_CADENCE_LOCK_DIR:-$HOME_DIR/.keelson/locks/touchline-collect-cadence.lock}"
-RIB_CFG="$HOME_DIR/.keelson/rib-touchline/config.json"
 MODE="${1:-loop}"
 STARTED_AT=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 
-mkdir -p "$(dirname "$LOG_FILE")" "$(dirname "$LOCK_DIR")"
+# ── one cadence per data home: every path below derives from the home ───────
+# A data home collects one NCAA level (its touchline-data.yaml `level`), so a
+# second level is a second home with its own cadence. TOUCHLINE_DATA_HOME
+# picks the home; everything this script writes outside it derives from it:
+#   the DEFAULT home, $HOME/keelson/d2-soccer (the one home before homes were
+#   plural, matched by path, raw or physical), keeps every name it always had,
+#   so the installed D2 job is untouched by an upgrade;
+#   any OTHER home keys its names by its directory name (HOME_KEY):
+#     lock      ~/.keelson/locks/touchline-collect-cadence.<key>.lock
+#     log       ~/.keelson/logs/touchline-collect-cadence.<key>.log
+#     runs      ~/.keelson/logs/touchline-cadence-runs.<key>.jsonl
+#     archive   ~/keelson/archive/<key>/raw-html
+#     project   <key> (the keelson project the collects run in)
+# so two homes' runs never share a lock, a log, a run record or a tarball
+# directory. Each name keeps an env override the shim (or a launchd plist)
+# can set: TOUCHLINE_CADENCE_LOCK_DIR, TOUCHLINE_CADENCE_LOG_FILE,
+# TOUCHLINE_CADENCE_RUNS_FILE, TOUCHLINE_ARCHIVE_DIR, TOUCHLINE_PROJECT, and
+# TOUCHLINE_CONFIG_PATH for the rib config (the same override src/activation.ts
+# honours). `sh <this script> paths` prints them all and touches nothing.
+# The backfill workflow's preflight derives the same lock from its cwd, so it
+# refuses only while ITS home's cadence runs.
+DEFAULT_DATA_HOME="$HOME_DIR/keelson/d2-soccer"
+DATA_HOME="${TOUCHLINE_DATA_HOME:-$DEFAULT_DATA_HOME}"
+HOME_KEY=$(basename "$DATA_HOME")
+IS_DEFAULT_HOME=0
+if [ "$DATA_HOME" = "$DEFAULT_DATA_HOME" ]; then
+  IS_DEFAULT_HOME=1
+elif _hp=$(cd "$DATA_HOME" 2>/dev/null && pwd -P) && _dp=$(cd "$DEFAULT_DATA_HOME" 2>/dev/null && pwd -P) \
+    && [ "$_hp" = "$_dp" ]; then
+  IS_DEFAULT_HOME=1
+fi
+if [ "$IS_DEFAULT_HOME" = 1 ]; then
+  HOME_SUFFIX=""
+  ARCHIVE_DEFAULT="$HOME_DIR/keelson/archive/raw-html"
+else
+  HOME_SUFFIX=".$HOME_KEY"
+  ARCHIVE_DEFAULT="$HOME_DIR/keelson/archive/$HOME_KEY/raw-html"
+fi
+PROJECT="${TOUCHLINE_PROJECT:-$HOME_KEY}"
+LOG_FILE="${TOUCHLINE_CADENCE_LOG_FILE:-$HOME_DIR/.keelson/logs/touchline-collect-cadence$HOME_SUFFIX.log}"
+RUNS_FILE="${TOUCHLINE_CADENCE_RUNS_FILE:-$HOME_DIR/.keelson/logs/touchline-cadence-runs$HOME_SUFFIX.jsonl}"
+# TOUCHLINE_CADENCE_LOCK_DIR is the test harness's override; the backfill
+# workflow's preflight reads the same path (and the same override) to refuse
+# while the cadence is running.
+LOCK_DIR="${TOUCHLINE_CADENCE_LOCK_DIR:-$HOME_DIR/.keelson/locks/touchline-collect-cadence$HOME_SUFFIX.lock}"
+RIB_CFG="${TOUCHLINE_CONFIG_PATH:-$HOME_DIR/.keelson/rib-touchline/config.json}"
+ARCHIVE_ROOT="${TOUCHLINE_ARCHIVE_DIR:-$ARCHIVE_DEFAULT}"
 
 # ── logging ──────────────────────────────────────────────────────────────────
 # Every run lands in the one log exactly once: lines are appended straight to
@@ -148,8 +205,10 @@ mkdir -p "$(dirname "$LOG_FILE")" "$(dirname "$LOCK_DIR")"
 # be true on macOS: fdescfs gives /dev/fd/1 its own device and inode, so under
 # launchd (stdout redirected to the log) the check failed and every line was
 # written twice, once by the redirect and once by the append.
+# plan mode writes nothing anywhere: its lines go to stdout only.
 log() {
   _line="[$(date '+%Y-%m-%d %H:%M:%S')] $*"
+  if [ "$MODE" = "plan" ]; then printf '%s\n' "$_line"; return 0; fi
   printf '%s\n' "$_line" >>"$LOG_FILE"
   if [ -t 1 ]; then printf '%s\n' "$_line"; fi
 }
@@ -158,7 +217,24 @@ logblock() { # indent stdin into the log, line by line
 }
 die() { log "FATAL: $*"; exit 1; }
 
-case "$MODE" in loop|collect|archive|version) ;; *) die "unknown mode '$MODE' — use no argument (full loop), 'collect', 'archive' or 'version'." ;; esac
+case "$MODE" in loop|collect|archive|plan|paths|version) ;; *)
+  mkdir -p "$(dirname "$LOG_FILE")"
+  die "unknown mode '$MODE' — use no argument (full loop), 'collect', 'archive', 'plan', 'paths' or 'version'." ;;
+esac
+
+# ── paths: what this home's cadence would use, printed, nothing touched ─────
+if [ "$MODE" = "paths" ]; then
+  printf 'data_home=%s\n' "$DATA_HOME"
+  printf 'home_key=%s\n' "$HOME_KEY"
+  printf 'default_home=%s\n' "$([ "$IS_DEFAULT_HOME" = 1 ] && printf yes || printf no)"
+  printf 'project=%s\n' "$PROJECT"
+  printf 'lock_dir=%s\n' "$LOCK_DIR"
+  printf 'log_file=%s\n' "$LOG_FILE"
+  printf 'runs_file=%s\n' "$RUNS_FILE"
+  printf 'archive_root=%s\n' "$ARCHIVE_ROOT"
+  printf 'rib_config=%s\n' "$RIB_CFG"
+  exit 0
+fi
 
 # ── version: prove the shim resolves without taking the lock or collecting ──
 if [ "$MODE" = "version" ]; then
@@ -169,6 +245,18 @@ if [ "$MODE" = "version" ]; then
   printf 'touchline-collect-cadence: script=%s package=%s version=%s git=%s\n' \
     "$SELF" "$PKG" "${PKG_VERSION:-unknown}" "${PKG_DESCRIBE:-not a checkout}"
   exit 0
+fi
+
+if [ "$MODE" != "plan" ]; then
+  mkdir -p "$(dirname "$LOG_FILE")" "$(dirname "$LOCK_DIR")"
+fi
+
+# ── the journal and publish legs belong to the site, and the site publishes
+#    the default home. Any other home runs `collect` (collect, detect,
+#    commit) and `archive`; its full loop would journal and publish another
+#    level's board over the site's, so it stops here, before the lock. ──────
+if [ "$MODE" = "loop" ] && [ "$IS_DEFAULT_HOME" != 1 ]; then
+  die "the full loop (journal, publish, push) runs only for the site's home, $DEFAULT_DATA_HOME; $DATA_HOME runs 'collect' (and 'archive'). Nothing was collected. See docs: guides/daily-cadence.md, 'A second data home'."
 fi
 
 # ── divisions: one complete run per gender, in order ────────────────────────
@@ -191,10 +279,25 @@ fi
 #     in one pass, so a second pass on the archive day would redo it.
 # One gender (or none) named: this block does nothing and the run is the
 # single-gender run it always was.
-if [ -z "${TOUCHLINE_GENDER:-}" ] && { [ "$MODE" = "loop" ] || [ "$MODE" = "collect" ]; }; then
+#
+# Per home: "genders" and "conferences" are read from the config's section
+# for THIS home, "homes": {"<home key>": {"genders": [...], "conferences":
+# {...}}}, keyed by the home's directory name. The default home falls back to
+# the top-level keys (where they have always lived, and where touchline-ui's
+# justfile reads "genders"); any other home reads its own section only, so a
+# Division I home never inherits the Division II site's women's pin.
+home_cfg() { # $1 = jq filter applied to this home's config section; prints its output
+  [ -f "$RIB_CFG" ] || return 0
+  jq -r --arg k "$HOME_KEY" --argjson dflt "$([ "$IS_DEFAULT_HOME" = 1 ] && printf true || printf false)" \
+    "((.homes // {})[\$k] // (if \$dflt then . else {} end)) | $1" "$RIB_CFG" 2>/dev/null || printf ''
+}
+home_cfg_conferences() { # $1 = gender; this home's pinned conference list, space-separated
+  home_cfg "(.conferences // {})[\"$1\"] // empty | if type == \"array\" then join(\" \") else . end"
+}
+if [ -z "${TOUCHLINE_GENDER:-}" ] && { [ "$MODE" = "loop" ] || [ "$MODE" = "collect" ] || [ "$MODE" = "plan" ]; }; then
   GENDERS="${TOUCHLINE_GENDERS:-}"
-  if [ -z "$GENDERS" ] && [ -f "$RIB_CFG" ]; then
-    GENDERS=$(jq -r '(.genders // []) | if type == "array" then join(",") else . end' "$RIB_CFG" 2>/dev/null || printf '')
+  if [ -z "$GENDERS" ]; then
+    GENDERS=$(home_cfg '(.genders // []) | if type == "array" then join(",") else . end')
   fi
   GENDERS=$(printf '%s' "$GENDERS" | tr -d ' ')
   case "$GENDERS" in
@@ -209,10 +312,8 @@ if [ -z "${TOUCHLINE_GENDER:-}" ] && { [ "$MODE" = "loop" ] || [ "$MODE" = "coll
           *) log "WARNING: divisions name unknown gender '$DIV_G' — skipped."; DIV_RC=1; continue ;;
         esac
         DIV_CONFS="${TOUCHLINE_CONFERENCES:-}"
-        if [ -z "$DIV_CONFS" ] && [ -f "$RIB_CFG" ]; then
-          DIV_CONFS=$(jq -r --arg g "$DIV_G" \
-            '(.conferences // {})[$g] // empty | if type == "array" then join(" ") else . end' \
-            "$RIB_CFG" 2>/dev/null || printf '')
+        if [ -z "$DIV_CONFS" ]; then
+          DIV_CONFS=$(home_cfg_conferences "$DIV_G")
         fi
         DIV_ARCHIVE_DAY="${TOUCHLINE_ARCHIVE_DAY:-7}"
         [ "$DIV_FIRST" = 1 ] || DIV_ARCHIVE_DAY=0
@@ -229,6 +330,14 @@ if [ -z "${TOUCHLINE_GENDER:-}" ] && { [ "$MODE" = "loop" ] || [ "$MODE" = "coll
   esac
 fi
 
+# A single-gender run (TOUCHLINE_GENDER, or a home following one gender)
+# follows this home's pin for its gender too, unless TOUCHLINE_CONFERENCES is
+# set at all: the divisions block above hands each child its list that way,
+# an empty one meaning "resolve from membership".
+if [ -z "${TOUCHLINE_CONFERENCES+set}" ] && { [ "$MODE" = "loop" ] || [ "$MODE" = "collect" ] || [ "$MODE" = "plan" ]; }; then
+  CONFERENCES=$(home_cfg_conferences "$GENDER")
+fi
+
 # ── season ───────────────────────────────────────────────────────────────────
 YEAR=$(date +%Y)
 MONTH=$(date +%m)
@@ -241,29 +350,41 @@ fi
 SEASON="${TOUCHLINE_SEASON:-$SEASON}"
 
 # ── lock: a double fire is a no-op, a dead run's lock is not a jail ─────────
-if ! mkdir "$LOCK_DIR" 2>/dev/null; then
-  OTHER=$(cat "$LOCK_DIR/pid" 2>/dev/null || printf '')
-  if [ -n "$OTHER" ] && kill -0 "$OTHER" 2>/dev/null; then
-    log "cadence already running (pid $OTHER) — exiting without work."
-    exit 0
+# plan mode takes no lock (it writes nothing), and so must never remove one.
+if [ "$MODE" != "plan" ]; then
+  if ! mkdir "$LOCK_DIR" 2>/dev/null; then
+    OTHER=$(cat "$LOCK_DIR/pid" 2>/dev/null || printf '')
+    if [ -n "$OTHER" ] && kill -0 "$OTHER" 2>/dev/null; then
+      log "cadence already running (pid $OTHER) — exiting without work."
+      exit 0
+    fi
+    log "stale lock (pid ${OTHER:-unknown} gone) — taking over."
+    rm -rf "$LOCK_DIR"
+    mkdir "$LOCK_DIR" 2>/dev/null || die "cannot take the cadence lock at $LOCK_DIR"
   fi
-  log "stale lock (pid ${OTHER:-unknown} gone) — taking over."
-  rm -rf "$LOCK_DIR"
-  mkdir "$LOCK_DIR" 2>/dev/null || die "cannot take the cadence lock at $LOCK_DIR"
+  printf '%s\n' "$$" >"$LOCK_DIR/pid"
 fi
-printf '%s\n' "$$" >"$LOCK_DIR/pid"
 # PROG_CACHE holds one membership resolution per conference for the whole run
 # (the sweep attribution and the collect loop share it).
 PROG_CACHE=$(mktemp -d)
-trap 'rm -rf "$LOCK_DIR" "$PROG_CACHE"' EXIT
-trap 'rm -rf "$LOCK_DIR" "$PROG_CACHE"; exit 130' INT TERM
+if [ "$MODE" = "plan" ]; then
+  trap 'rm -rf "$PROG_CACHE"' EXIT
+  trap 'rm -rf "$PROG_CACHE"; exit 130' INT TERM
+else
+  trap 'rm -rf "$LOCK_DIR" "$PROG_CACHE"' EXIT
+  trap 'rm -rf "$LOCK_DIR" "$PROG_CACHE"; exit 130' INT TERM
+fi
 
 # ── preflight ────────────────────────────────────────────────────────────────
-for tool in git jq bun keelson; do
+# plan mode resolves and prints; it needs the resolver, not git or keelson.
+if [ "$MODE" = "plan" ]; then PREFLIGHT_TOOLS="jq bun"; else PREFLIGHT_TOOLS="git jq bun keelson"; fi
+for tool in $PREFLIGHT_TOOLS; do
   command -v "$tool" >/dev/null 2>&1 || die "required tool '$tool' is not on PATH ($PATH)"
 done
 [ -f "$DATA_HOME/touchline-data.yaml" ] || die "$DATA_HOME is not a Touchline data home (no touchline-data.yaml)"
-git -C "$DATA_HOME" rev-parse --git-dir >/dev/null 2>&1 || die "$DATA_HOME is not a git repository — change detection needs one"
+if [ "$MODE" != "plan" ]; then
+  git -C "$DATA_HOME" rev-parse --git-dir >/dev/null 2>&1 || die "$DATA_HOME is not a git repository — change detection needs one"
+fi
 if [ "$MODE" = "loop" ]; then
   command -v just >/dev/null 2>&1 || die "required tool 'just' is not on PATH"
   [ -f "$UI_DIR/justfile" ] || die "touchline-ui not found at $UI_DIR (no justfile)"
@@ -288,14 +409,48 @@ rib_package_dir() {
   printf '%s\n' "$_pkg"
 }
 
-# conference set: every conference the membership record authors a window for
-# this gender, unless TOUCHLINE_CONFERENCES pins it (rib bin/resolve-membership.ts).
-# archive mode collects nothing and reads its membership from the data home
-# (see archive_rows), so it never resolves the set.
-if [ -z "$CONFERENCES" ] && [ "$MODE" != "archive" ]; then
-  CONFERENCES=$(bun "$(rib_package_dir)/bin/resolve-membership.ts" conferences "$GENDER" 2>&1) \
-    || die "cannot resolve the conference set from membership: $CONFERENCES"
-  log "touchline cadence: conferences resolved from membership: [$CONFERENCES]"
+# ── level: the one NCAA level this home collects (its marker's `level`; a
+#    marker with none is a Division II home, said in the log every run —
+#    src/datahome.ts holds the reasoning). Archive mode collects nothing and
+#    never needs it. ──────────────────────────────────────────────────────────
+HOME_LEVEL=""
+if [ "$MODE" != "archive" ]; then
+  _lv=$(bun "$(rib_package_dir)/bin/resolve-membership.ts" home-level "$DATA_HOME" 2>"$PROG_CACHE/level.err") \
+    || die "cannot read the data home's NCAA level: $(head -1 "$PROG_CACHE/level.err" 2>/dev/null)"
+  HOME_LEVEL=${_lv%% *}
+  case "$_lv" in
+    *" assumed") log "NOTE: $(head -1 "$PROG_CACHE/level.err" 2>/dev/null)" ;;
+  esac
+  log "touchline cadence: data home level $_lv."
+fi
+
+# conference set: every conference at this home's level with a member this
+# season, unless the run is pinned (TOUCHLINE_CONFERENCES, or this home's
+# config pin). A conference the record authors at this level but with no
+# member this season (an ended conference: every member authored elsewhere)
+# is named in the log and left out, never collected and never failed. A
+# pinned set is honoured, but every pinned conference must be at the home's
+# level: one that is not is refused by name and nothing is collected, which
+# is what keeps a Division I conference out of a Division II home however it
+# was pinned. archive mode collects nothing and reads its membership from the
+# data home (see archive_rows), so it never resolves the set.
+if [ "$MODE" != "archive" ]; then
+  if [ -z "$CONFERENCES" ]; then
+    CONFERENCES=$(bun "$(rib_package_dir)/bin/resolve-membership.ts" conferences "$GENDER" \
+        --level "$HOME_LEVEL" --season "$SEASON" 2>"$PROG_CACHE/conferences.err") \
+      || die "cannot resolve the $HOME_LEVEL conference set from membership: $(head -1 "$PROG_CACHE/conferences.err" 2>/dev/null)"
+    if [ -s "$PROG_CACHE/conferences.err" ]; then
+      log "touchline cadence: $(head -1 "$PROG_CACHE/conferences.err") — at the home's level but with no member this season; not collected."
+    fi
+    log "touchline cadence: $HOME_LEVEL conferences resolved from membership: [$CONFERENCES]"
+  else
+    # shellcheck disable=SC2086 # CONFERENCES is a space-separated list of codes.
+    if ! GUARD=$(bun "$(rib_package_dir)/bin/resolve-membership.ts" guard "$DATA_HOME" $CONFERENCES 2>&1); then
+      printf '%s\n' "$GUARD" | grep -v '^NOTE: ' | logblock
+      die "pinned conference(s) [$CONFERENCES] include one not at this home's level ($HOME_LEVEL) — refused before anything was collected. Fix the pin (TOUCHLINE_CONFERENCES or the config's conferences for $GENDER) or collect it into a home of its level."
+    fi
+    log "touchline cadence: pinned conferences checked against the home's level: $(printf '%s\n' "$GUARD" | grep -v '^NOTE: ' | tail -1)"
+  fi
 fi
 
 resolve_programmes() { # $1 = conference; prints "true|false slug1,slug2,…"
@@ -329,6 +484,24 @@ resolve_programmes_cached() { # $1 = conference; same output and rc as resolve_p
 }
 
 lower() { printf '%s' "$1" | tr '[:upper:]' '[:lower:]'; }
+
+# ── plan: what a collect run of this home would do today, and nothing else.
+#    The conference set and each conference's programmes, resolved exactly as
+#    the collect loop resolves them, printed to stdout. No lock, no log file,
+#    no busy check, no sweep, no keelson call, no git. ───────────────────────
+if [ "$MODE" = "plan" ]; then
+  PLAN_RC=0
+  for CONF in $CONFERENCES; do
+    if RES=$(resolve_programmes_cached "$CONF") && [ -n "$RES" ]; then
+      log "plan $CONF $GENDER $SEASON: ${RES#* }$([ "${RES%% *}" = "true" ] && printf ' (extrapolated)')"
+    else
+      log "plan $CONF $GENDER $SEASON: membership resolution FAILED — ${RES:-no output}"
+      PLAN_RC=1
+    fi
+  done
+  log "plan: home=$DATA_HOME level=$HOME_LEVEL project=$PROJECT gender=$GENDER season=$SEASON conferences=[$CONFERENCES]"
+  exit "$PLAN_RC"
+fi
 
 # ── change detection ─────────────────────────────────────────────────────────
 # Real change = a new board file, or a board-file diff with any line beyond
@@ -527,7 +700,7 @@ build_stamp() { # prints the meta content, or nothing
 # the first by conference key; a cell no board names, a slug no cell names, a
 # page older than coverage, a disabled or dead-host stanza's pages: all land
 # in unassigned.tar.zst, so nothing on disk is left out.
-ARCHIVE_ROOT="${TOUCHLINE_ARCHIVE_DIR:-$HOME_DIR/keelson/archive/raw-html}"
+# ARCHIVE_ROOT is derived from the data home at the top of the script.
 ARCHIVE_DAY="${TOUCHLINE_ARCHIVE_DAY:-7}"
 ARCHIVE_KEEP=4
 
@@ -746,7 +919,7 @@ fi
 #    workflowName, status (running|paused|succeeded|failed|cancelled),
 #    startedAt, completedAt, origin (manual|scheduled), projectId (the
 #    project's UUID, not its name) and workingDir (the project's root path).
-#    The cadence passes --project d2-soccer by name, so the match is on
+#    The cadence passes --project <PROJECT> by name, so the match is on
 #    workingDir against the data home, raw and physical (macOS tmp dirs are
 #    symlinks). A server that answers NO_SERVER is started first, and a run
 #    whose server stays down stops before the sweep (below). Any other status
@@ -856,7 +1029,7 @@ for CONF in $CONFERENCES; do
 
   # shellcheck disable=SC2086 # EXTRA is one controlled flag pair or empty.
   OUT=$(keelson workflow run touchline-collect \
-    --project d2-soccer \
+    --project "$PROJECT" \
     --no-watch --json \
     --inputs "conference=$CONF" \
     --inputs "gender=$GENDER" \

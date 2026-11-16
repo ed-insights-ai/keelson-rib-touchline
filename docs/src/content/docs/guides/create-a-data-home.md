@@ -12,6 +12,38 @@ code; the data home holds your data; the marker is the boundary between "the
 user pointed us at their data" and "the user pointed us at their home
 directory". Git is neither required nor initialized.
 
+## One NCAA level per home
+
+A data home collects one NCAA level, which its marker states:
+
+```yaml
+kind: touchline-data
+version: 1
+level: d1
+```
+
+`level` is `d1`, `d2` or `d3`. A collect of a conference at any other level is
+refused before anything is fetched, naming both levels, by the
+`touchline_collect` tool, by the `level-guard` node of the `touchline-collect`
+and `touchline-backfill` workflows, by the daily cadence for a pinned
+conference, and once more by `collect-board` itself. That is what keeps
+Division I data out of a Division II home after a slip of the project picker.
+A level that is not one of the three makes the marker unusable: the home is
+refused like a foreign one, never guessed past.
+
+A marker with no `level` is read as `d2`, and every reader says it assumed
+so. Every home made before levels existed is Division II (until the
+Division I men's conferences were onboarded the membership record held
+nothing else), so for those homes d2 is what the data already is. To declare
+it, add the line `level: d2` to the marker, or run `touchline_init` on the
+home with `level: d2`.
+
+`touchline_init` writes a level into every marker it creates: the `level` it
+was given, else `d2`, and the reply says which. On an existing home whose
+marker has no level it adds the given one; on a home whose marker states a
+different level it refuses. `touchline_collect` into an empty folder makes it
+a home at the level of what it collects.
+
 ## The five states
 
 `dataHomeState` in `src/datahome.ts` classifies any directory:
@@ -21,7 +53,7 @@ directory". Git is neither required nor initialized.
 | `ready` | The marker is present. Touchline reads and collects here. |
 | `empty` | Nothing but VCS and OS bookkeeping (`.git`, `.DS_Store`, `.gitignore`, `.gitkeep`, `README.md`). Initialization may proceed. |
 | `occupied` | The directory holds other work. The refusal lists up to eight entries so you can see whose. |
-| `foreign` | A `touchline-data.yaml` exists but its `kind` is not `touchline-data`. Touchline refuses to scaffold over it. |
+| `foreign` | A `touchline-data.yaml` exists but its `kind` is not `touchline-data`, or it states a `level` that is not `d1`, `d2` or `d3`. Touchline refuses to scaffold over it. |
 | `missing` | The directory does not exist or cannot be read. |
 
 Every write path enforces the **empty-or-ours rule**: `bootstrapDataHome`
@@ -38,18 +70,29 @@ Two entry points share one code path, `initTouchlineHome` in
 
 - In the composer: `/touchline {folder-name}`. With no argument the command
   just opens the Touchline agent.
-- In chat or over MCP: `touchline_init { name: "{folder-name}" }`.
+- In chat or over MCP: `touchline_init { name: "{folder-name}", level: "d1" }`
+  (`level` optional, `d2` when omitted; the slash command always makes `d2`).
 
 The folder name is lowercase: letters, numbers, dashes, and underscores, up
 to 64 characters. The folder is created under the Keelson workspace
-(`KEELSON_WORKSPACE`, else `~/keelson`), initialized, registered as a Keelson
-project of the same name, and remembered as the rib's data directory in
-`~/.keelson/rib-touchline/config.json`. Success begins:
+(`KEELSON_WORKSPACE`, else `~/keelson`), initialized with its level in the
+marker, and registered as a Keelson project of the same name. Success begins:
 
 ```
 Initialized {data-home} as a Touchline data home.
 Registered it as the Keelson project '{name}'.
+It collects NCAA {level}; a collect of a conference at another level is refused.
 ```
+
+Creating a home never moves the **active** one, the rib's remembered data
+directory (`dataDir` in `~/.keelson/rib-touchline/config.json`, which status
+and CLI calls read when no project is named). Only a first home, created when
+none is active, becomes active; any other reply ends
+`The active Touchline data home is still {path}; creating a home does not
+switch it.` Switching is its own act: select the project in the Touchline
+surface's project picker (which records it), or set `TOUCHLINE_DATA_DIR` for
+one process. Tools that take `project` act on the project named, whatever is
+active.
 
 Re-running is safe: bootstrap is idempotent (`writeIfAbsent` in
 `src/datahome.ts` never overwrites), and an already-initialized home is

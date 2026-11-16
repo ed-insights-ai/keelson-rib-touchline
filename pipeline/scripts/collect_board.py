@@ -1771,6 +1771,46 @@ def widen_to_existing_scope(
     return wanted + added, added
 
 
+def level_refusal(conference: str) -> str | None:
+    """Why a collect of ``conference`` into this data root must not run.
+
+    A data home collects one NCAA level (its marker's ``level``, d2 when it
+    states none). The rib and the workflows refuse a conference of another
+    level before they get here; this is the same rule held once more at the
+    last step before any fetch or write, so no path round them lands Division
+    I data in a Division II home. A root with no marker, and a conference
+    with no profile (a structural code), carry no level to compare and pass,
+    as every collect did before levels. A broken marker refuses.
+    """
+    try:
+        home = paths.home_level()
+    except paths.MarkerError as exc:
+        return f"REFUSED: {exc}. Nothing was fetched or written."
+    if home is None:
+        return None
+    if not home.declared:
+        print(
+            f"NOTE: {paths.marker_path()} declares no level, so it is read as "
+            f"{home.level}: every data home made before levels existed is "
+            f'Division II. Add the line "level: {home.level}" to the marker '
+            "to declare it."
+        )
+    wanted = collecting_level(conference)
+    if wanted is None or wanted == home.level:
+        return None
+    how = (
+        "declared in its marker"
+        if home.declared
+        else "assumed: its marker declares no level"
+    )
+    return (
+        f"REFUSED: {conference.upper()} is a {wanted} conference and the data "
+        f"home {paths.data_root()} collects {home.level} ({how}). A home holds "
+        f"one NCAA level; collect {conference.upper()} into a {wanted} home "
+        "instead. Nothing was fetched or written."
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Collect published schedule and roster pages into board JSON."
@@ -1849,6 +1889,10 @@ def main() -> int:
         return 2
 
     data_root = paths.data_root()
+    refusal = level_refusal(args.conference)
+    if refusal:
+        print(refusal, file=sys.stderr)
+        return 2
     for sync_note in (sync_membership_reference(), sync_programmes_reference()):
         if sync_note:
             print(sync_note)
