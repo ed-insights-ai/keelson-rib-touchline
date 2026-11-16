@@ -17,7 +17,12 @@ record that every consumer reads.
 
 A directory is a data home when it carries `touchline-data.yaml` at its root
 (`MARKER_FILE` in `src/datahome.ts`). The file's `kind` must be
-`touchline-data` (`MARKER_KIND`); its `version` defaults to 1.
+`touchline-data` (`MARKER_KIND`); its `version` defaults to 1. Its optional
+`level` (`d1`, `d2` or `d3`) is the one NCAA level the home collects; absent,
+it is read as `d2` and every reader says so (`homeLevel` in
+`src/datahome.ts`, `home_level` in `pipeline/src/paths.py`, `bun
+bin/resolve-membership.ts home-level {dir}` for shell callers). See
+[Create a data home](../../guides/create-a-data-home/#one-ncaa-level-per-home).
 `dataHomeState` in `src/datahome.ts` classifies any directory:
 
 | State | Meaning |
@@ -25,7 +30,7 @@ A directory is a data home when it carries `touchline-data.yaml` at its root
 | `ready` | The marker is present and valid; workflows may run here. |
 | `empty` | Nothing but VCS and OS bookkeeping; bootstrap may scaffold. |
 | `occupied` | Holds other work; bootstrap refuses unless `force` is set. |
-| `foreign` | A `touchline-data.yaml` exists but is not Touchline's; refuse to touch. |
+| `foreign` | A `touchline-data.yaml` exists but is not Touchline's, or states a `level` that is not `d1`, `d2` or `d3`; refuse to touch. |
 | `missing` | The directory does not exist or cannot be read. |
 
 `bootstrapDataHome` is idempotent: `mkdir -p` for every subdirectory plus a

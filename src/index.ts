@@ -31,6 +31,7 @@ import {
   dataHomeState,
   explainRefusal,
   type HomeState,
+  homeLevel,
   listSeasons,
   loadFixtures,
   loadMatches,
@@ -229,8 +230,13 @@ async function composeTouchlineBoardInner(): Promise<{ html: string; collectedAt
  *  where it is rather than asking. */
 async function buildSeed(openingPrompt?: string): Promise<OpenChatSeed> {
   const { project, home, seasons } = await currentScope();
-  const programmes = await knownProgrammes("men").catch(() => [] as string[]);
-  const conferences = await knownConferences().catch(() => [] as string[]);
+  // A home collects one NCAA level, so the agent is offered that level's
+  // conferences and programmes; with no home chosen (one may be created at
+  // any level) the whole record.
+  const level =
+    project && home?.state === "ready" ? (await homeLevel(project.rootPath))?.level : undefined;
+  const programmes = await knownProgrammes("men", level).catch(() => [] as string[]);
+  const conferences = await knownConferences(level).catch(() => [] as string[]);
   return {
     name: "Touchline",
     systemPrompt: touchlineSystemPrompt({

@@ -17,8 +17,21 @@ PATH="${TOUCHLINE_CADENCE_PATH:-/Users/danielscholl/.local/bin:/Users/danielscho
 export PATH
 
 HOME_DIR="${HOME:-/Users/danielscholl}"
-LOG_FILE="$HOME_DIR/.keelson/logs/touchline-collect-cadence.log"
-RIB_CFG="$HOME_DIR/.keelson/rib-touchline/config.json"
+# The FATAL below lands in the log the packaged script would have used for
+# this data home: the default home's (~/keelson/d2-soccer) log, or for any
+# other TOUCHLINE_DATA_HOME the log keyed by its directory name — the same
+# rule as the script's "one cadence per data home" block.
+DEFAULT_DATA_HOME="$HOME_DIR/keelson/d2-soccer"
+DATA_HOME="${TOUCHLINE_DATA_HOME:-$DEFAULT_DATA_HOME}"
+LOG_SUFFIX=".$(basename "$DATA_HOME")"
+if [ "$DATA_HOME" = "$DEFAULT_DATA_HOME" ]; then
+  LOG_SUFFIX=""
+elif _hp=$(cd "$DATA_HOME" 2>/dev/null && pwd -P) && _dp=$(cd "$DEFAULT_DATA_HOME" 2>/dev/null && pwd -P) \
+    && [ "$_hp" = "$_dp" ]; then
+  LOG_SUFFIX=""
+fi
+LOG_FILE="${TOUCHLINE_CADENCE_LOG_FILE:-$HOME_DIR/.keelson/logs/touchline-collect-cadence$LOG_SUFFIX.log}"
+RIB_CFG="${TOUCHLINE_CONFIG_PATH:-$HOME_DIR/.keelson/rib-touchline/config.json}"
 
 rib_package_dir() {
   _pkg=""

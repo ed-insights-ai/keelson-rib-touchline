@@ -230,8 +230,37 @@ fi
 case "$1" in
   *resolve-membership.ts)
     case "$2" in
-      conferences) printf '%s\\n' "\${CADENCE_FAKE_CONFERENCES:-GAC LSC}"; exit 0 ;;
+      conferences)
+        # CADENCE_FAKE_SKIPPED: the conferences --season leaves out, on stderr
+        if [ -n "\${CADENCE_FAKE_SKIPPED:-}" ]; then
+          printf 'skipped (no %s %s members): %s\\n' "$3" "\${TOUCHLINE_SEASON:-?}" "$CADENCE_FAKE_SKIPPED" >&2
+        fi
+        printf '%s\\n' "\${CADENCE_FAKE_CONFERENCES:-GAC LSC}"; exit 0 ;;
       conference) printf 'false %s-alpha,%s-beta\\n' "$3" "$3"; exit 0 ;;
+      home-level)
+        # the marker's level line, else the d2 every pre-level home is
+        lv=$(sed -n 's/^level:[[:space:]]*\\([a-z0-9]*\\).*/\\1/p' "$3/touchline-data.yaml" | head -1)
+        if [ -n "$lv" ]; then printf '%s declared\\n' "$lv"; exit 0; fi
+        printf '%s/touchline-data.yaml declares no level, so it is read as d2.\\n' "$3" >&2
+        printf 'd2 assumed\\n'; exit 0 ;;
+      guard)
+        # CADENCE_FAKE_LEVELS="ACC=d1,..." names a conference's level; d2 otherwise
+        home=$3; shift 3
+        hl=$(sed -n 's/^level:[[:space:]]*\\([a-z0-9]*\\).*/\\1/p' "$home/touchline-data.yaml" | head -1)
+        hl=\${hl:-d2}
+        bad=0
+        for c in "$@"; do
+          cl=d2
+          for p in $(printf '%s' "\${CADENCE_FAKE_LEVELS:-}" | tr ',' ' '); do
+            case "$p" in "$c="*) cl=\${p#*=} ;; esac
+          done
+          if [ "$cl" != "$hl" ]; then
+            printf 'REFUSED: %s is a %s conference and the data home %s collects %s.\\n' "$c" "$cl" "$home" "$hl"
+            bad=1
+          fi
+        done
+        [ "$bad" = 0 ] && printf 'level OK: %s are %s, the data home'"'"'s level.\\n' "$*" "$hl"
+        exit "$bad" ;;
     esac
     ;;
   -e)
@@ -324,7 +353,10 @@ async function makeHarness(): Promise<Harness> {
   const root = await mkdtemp(join(tmpdir(), "touchline-cadence-"));
   const home = join(root, "home");
   const pkg = join(root, "pkg");
-  const data = join(root, "data");
+  // the data home sits at the cadence's DEFAULT home path under the temp
+  // HOME ($HOME/keelson/d2-soccer), so every derived path is the default
+  // one, exactly as on the installed machine
+  const data = join(root, "home", "keelson", "d2-soccer");
   const dataRemote = join(root, "data-remote.git");
   const site = join(root, "site");
   const siteRemote = join(root, "site-remote.git");
@@ -593,14 +625,16 @@ describe("bin/touchline-collect-cadence.sh", () => {
 
     const calls = await h.calls();
     // the conference set came from membership (the fake answers "GAC LSC")
-    expect(calls).toContain("resolve-membership.ts conferences men");
+    // ... at the home's level (an unmarked level reads as d2), this season
+    expect(calls).toContain("resolve-membership.ts conferences men --level d2 --season 2026");
     expect(calls).toContain("conference=GAC");
     expect(calls).toContain("conference=LSC");
     expect(calls).not.toContain("run journal");
     expect(calls).not.toContain("just publish");
 
     const log = await h.log();
-    expect(log).toContain("touchline cadence: conferences resolved from membership: [GAC LSC]");
+    expect(log).toContain("touchline cadence: data home level d2 assumed.");
+    expect(log).toContain("touchline cadence: d2 conferences resolved from membership: [GAC LSC]");
     expect(log).toContain("mode=collect — stopping after collect+detect (no journal, no publish).");
     expect(log).not.toContain("data home push");
     // collect mode never pushes: the two commits stay ahead of upstream
@@ -1325,6 +1359,290 @@ describe("bin/touchline-collect-cadence.sh", () => {
     expect(await h.records()).toHaveLength(0);
     expect(await h.calls()).toBe("");
   });
+});
+
+// ── one cadence per data home, one NCAA level per home ───────────────────────
+
+// A second data home beside the harness's default one, the way a Division I
+// home sits beside d2-soccer: $HOME/keelson/<name>, marked (with `level` when
+// given), one GAC/LSC board set committed, an upstream set.
+async function addHome(h: Harness, name: string, level?: string): Promise<string> {
+  const dir = join(h.home, "keelson", name);
+  const remote = join(h.root, `${name}-remote.git`);
+  await mkdir(dir, { recursive: true });
+  await writeFile(
+    join(dir, "touchline-data.yaml"),
+    `kind: touchline-data\nversion: 1\n${level ? `level: ${level}\n` : ""}`,
+  );
+  for (const layer of LAYERS) {
+    await mkdir(join(dir, "data", layer), { recursive: true });
+    for (const lc of ["gac", "lsc"]) {
+      await writeFile(join(dir, "data", layer, `${SEASON}-${GENDER}-${lc}.json`), initialBoard(lc));
+    }
+  }
+  await h.git(dir, "init", "-q", "-b", "main");
+  await h.git(dir, "add", "-A");
+  await h.git(dir, "commit", "-q", "-m", "chore(data): initial board");
+  await h.git(h.root, "init", "-q", "--bare", "-b", "main", remote);
+  await h.git(dir, "remote", "add", "origin", remote);
+  await h.git(dir, "push", "-q", "-u", "origin", "main");
+  return dir;
+}
+
+function pathsOf(stdout: string): Record<string, string> {
+  return Object.fromEntries(
+    stdout
+      .trim()
+      .split("\n")
+      .map((l) => [l.slice(0, l.indexOf("=")), l.slice(l.indexOf("=") + 1)]),
+  );
+}
+
+describe("bin/touchline-collect-cadence.sh data homes and levels", () => {
+  test("paths: the default home keeps every pre-homes path, string for string; another home keys its own", async () => {
+    const h = await makeHarness();
+    const bare = { ...h.env };
+    // nothing set: what launchd runs
+    for (const k of ["TOUCHLINE_DATA_HOME", "TOUCHLINE_ARCHIVE_DIR"]) delete bare[k];
+    const unset = await run(["/bin/sh", h.script, "paths"], bare, h.root);
+    expect(unset.code).toBe(0);
+    expect(pathsOf(unset.stdout)).toEqual({
+      data_home: `${h.home}/keelson/d2-soccer`,
+      home_key: "d2-soccer",
+      default_home: "yes",
+      project: "d2-soccer",
+      lock_dir: `${h.home}/.keelson/locks/touchline-collect-cadence.lock`,
+      log_file: `${h.home}/.keelson/logs/touchline-collect-cadence.log`,
+      runs_file: `${h.home}/.keelson/logs/touchline-cadence-runs.jsonl`,
+      archive_root: `${h.home}/keelson/archive/raw-html`,
+      rib_config: `${h.home}/.keelson/rib-touchline/config.json`,
+    });
+    // naming the default home explicitly is still the default home
+    const named = await run(
+      ["/bin/sh", h.script, "paths"],
+      { ...bare, TOUCHLINE_DATA_HOME: h.data },
+      h.root,
+    );
+    expect(named.stdout).toBe(unset.stdout);
+
+    const d1 = await run(
+      ["/bin/sh", h.script, "paths"],
+      { ...bare, TOUCHLINE_DATA_HOME: `${h.home}/keelson/d1-soccer` },
+      h.root,
+    );
+    expect(pathsOf(d1.stdout)).toEqual({
+      data_home: `${h.home}/keelson/d1-soccer`,
+      home_key: "d1-soccer",
+      default_home: "no",
+      project: "d1-soccer",
+      lock_dir: `${h.home}/.keelson/locks/touchline-collect-cadence.d1-soccer.lock`,
+      log_file: `${h.home}/.keelson/logs/touchline-collect-cadence.d1-soccer.log`,
+      runs_file: `${h.home}/.keelson/logs/touchline-cadence-runs.d1-soccer.jsonl`,
+      archive_root: `${h.home}/keelson/archive/d1-soccer/raw-html`,
+      rib_config: `${h.home}/.keelson/rib-touchline/config.json`,
+    });
+    // paths touches nothing
+    expect(existsSync(join(h.home, ".keelson", "logs"))).toBe(false);
+    expect(existsSync(join(h.home, ".keelson", "locks"))).toBe(false);
+  });
+
+  test("two homes: a D1 collect runs while the D2 cadence holds its lock, under its own lock, log, record and project", async () => {
+    const h = await makeHarness();
+    const d1 = await addHome(h, "d1-soccer", "d1");
+    // the D2 cadence is running: its lock is held by a live pid
+    const d2Lock = join(h.home, ".keelson", "locks", "touchline-collect-cadence.lock");
+    await mkdir(d2Lock, { recursive: true });
+    await writeFile(join(d2Lock, "pid"), `${process.pid}\n`);
+
+    const r = await h.cadence("collect", {
+      TOUCHLINE_DATA_HOME: d1,
+      TOUCHLINE_ARCHIVE_DIR: "",
+      CADENCE_FAKE_CONFERENCES: "ACC",
+      CADENCE_FAKE_SKIPPED: "WAC",
+      CADENCE_FAKE_PLAN: "ACC=changed",
+    });
+    expect(r.code).toBe(0);
+    const calls = await h.calls();
+    expect(calls).toContain("resolve-membership.ts conferences men --level d1 --season 2026");
+    expect(calls).toContain("--project d1-soccer");
+    expect(calls).not.toContain("--project d2-soccer");
+    expect(await h.git(d1, "log", "-1", "--format=%s")).toBe(
+      `chore(data): cadence collect ACC ${GENDER} ${SEASON}`,
+    );
+
+    const d1Log = await readFile(
+      join(h.home, ".keelson", "logs", "touchline-collect-cadence.d1-soccer.log"),
+      "utf8",
+    );
+    expect(d1Log).toContain("touchline cadence: data home level d1 declared.");
+    expect(d1Log).toContain(
+      "touchline cadence: skipped (no men 2026 members): WAC — at the home's level but with no member this season; not collected.",
+    );
+    expect(d1Log).toContain("touchline cadence: d1 conferences resolved from membership: [ACC]");
+    // nothing landed in the D2 home's log or record, and its lock is untouched
+    expect(existsSync(h.logFile)).toBe(false);
+    expect(await h.records()).toHaveLength(0);
+    expect(await readFile(join(d2Lock, "pid"), "utf8")).toBe(`${process.pid}\n`);
+    const d1Runs = (
+      await readFile(
+        join(h.home, ".keelson", "logs", "touchline-cadence-runs.d1-soccer.jsonl"),
+        "utf8",
+      )
+    )
+      .trim()
+      .split("\n")
+      .map((l) => JSON.parse(l));
+    expect(d1Runs.map((x) => x.collect)).toEqual([{ ACC: "changed" }]);
+    expect(
+      existsSync(join(h.home, ".keelson", "locks", "touchline-collect-cadence.d1-soccer.lock")),
+    ).toBe(false);
+
+    // and the D2 home's own cadence still refuses to start beside its live lock
+    const d2 = await h.cadence("collect", { TOUCHLINE_CONFERENCES: "GAC" });
+    expect(d2.code).toBe(0);
+    expect(await h.log()).toContain(`cadence already running (pid ${process.pid})`);
+    expect(await h.calls()).not.toContain("--project d2-soccer");
+  });
+
+  test("a home other than the default runs collect only: its full loop is refused before the lock", async () => {
+    const h = await makeHarness();
+    const d1 = await addHome(h, "d1-soccer", "d1");
+    const r = await h.cadence("loop", { TOUCHLINE_DATA_HOME: d1, TOUCHLINE_CONFERENCES: "ACC" });
+    expect(r.code).toBe(1);
+    expect(await h.calls()).toBe("");
+    const d1Log = await readFile(
+      join(h.home, ".keelson", "logs", "touchline-collect-cadence.d1-soccer.log"),
+      "utf8",
+    );
+    expect(d1Log).toContain(
+      `FATAL: the full loop (journal, publish, push) runs only for the site's home, ${h.data}`,
+    );
+  });
+
+  test("a pinned conference at another level is refused by name before anything is collected", async () => {
+    const h = await makeHarness();
+    // the D2 home pinned to a D1 conference among its own
+    const r = await h.cadence("collect", {
+      TOUCHLINE_CONFERENCES: "GAC ACC",
+      CADENCE_FAKE_LEVELS: "ACC=d1",
+    });
+    expect(r.code).toBe(1);
+    expect(await h.calls()).not.toContain("keelson workflow run");
+    const log = await h.log();
+    expect(log).toContain(
+      `REFUSED: ACC is a d1 conference and the data home ${h.data} collects d2.`,
+    );
+    expect(log).toContain(
+      "FATAL: pinned conference(s) [GAC ACC] include one not at this home's level (d2) — refused before anything was collected.",
+    );
+    expect(await h.git(h.data, "status", "--porcelain")).toBe("");
+
+    // and a D1 home pinned to a D2 conference, through its config section
+    const d1 = await addHome(h, "d1-soccer", "d1");
+    await writeFile(
+      join(h.home, ".keelson", "rib-touchline", "config.json"),
+      JSON.stringify({
+        packageDir: h.pkg,
+        homes: { "d1-soccer": { conferences: { men: ["GAC"] } } },
+      }),
+    );
+    const r1 = await h.cadence("collect", { TOUCHLINE_DATA_HOME: d1 });
+    expect(r1.code).toBe(1);
+    expect(await h.calls()).not.toContain("keelson workflow run");
+    expect(
+      await readFile(
+        join(h.home, ".keelson", "logs", "touchline-collect-cadence.d1-soccer.log"),
+        "utf8",
+      ),
+    ).toContain(`REFUSED: GAC is a d2 conference and the data home ${d1} collects d1.`);
+  });
+
+  test("per-home config: a second home reads only its own section; the default home keeps the top level", async () => {
+    const h = await makeHarness();
+    const d1 = await addHome(h, "d1-soccer", "d1");
+    await writeFile(
+      join(h.home, ".keelson", "rib-touchline", "config.json"),
+      JSON.stringify({
+        packageDir: h.pkg,
+        genders: ["men", "women"],
+        conferences: { women: ["GAC"] },
+        homes: { "d1-soccer": { genders: ["men"], conferences: { men: ["ACC"] } } },
+      }),
+    );
+    // the D1 home: one men's run, pinned to its own ACC — never the top-level women's pin
+    const r = await h.cadence("collect", {
+      TOUCHLINE_DATA_HOME: d1,
+      TOUCHLINE_GENDER: "",
+      CADENCE_FAKE_LEVELS: "ACC=d1",
+    });
+    expect(r.code).toBe(0);
+    let calls = await h.calls();
+    expect(calls).toContain("conference=ACC");
+    expect(calls).not.toContain("gender=women");
+    expect(calls).not.toContain("resolve-membership.ts conferences");
+
+    // the default home: divisions from the top level, as before
+    await writeFile(h.fakeLog, "");
+    const d2 = await h.cadence("collect", { TOUCHLINE_GENDER: "" });
+    expect(d2.code).toBe(0);
+    expect((await h.records()).map((x) => [x.gender, x.conferences])).toEqual([
+      ["men", ["GAC", "LSC"]],
+      ["women", ["GAC"]],
+    ]);
+    calls = await h.calls();
+    expect(calls).not.toContain("conference=ACC");
+  });
+
+  test("plan resolves the level, the set and every programme list, and writes nothing", async () => {
+    const h = await makeHarness();
+    const r = await h.cadence("plan", { CADENCE_FAKE_SKIPPED: "OLD" });
+    expect(r.code).toBe(0);
+    expect(r.stdout).toContain("touchline cadence: data home level d2 assumed.");
+    expect(r.stdout).toContain("plan GAC men 2026: gac-alpha,gac-beta");
+    expect(r.stdout).toContain("plan LSC men 2026: lsc-alpha,lsc-beta");
+    expect(r.stdout).toMatch(
+      /plan: home=\S+ level=d2 project=d2-soccer gender=men season=2026 conferences=\[GAC LSC\]/,
+    );
+    expect(await h.calls()).not.toMatch(/^keelson /m);
+    expect(existsSync(h.logFile)).toBe(false);
+    expect(existsSync(join(h.home, ".keelson", "locks"))).toBe(false);
+    expect(await h.records()).toHaveLength(0);
+  });
+
+  test.skipIf(!ZSTD)(
+    `the season and the archive day follow the machine's local clock, not UTC: late evening on 31 May, Chicago${NEEDS_ZSTD}`,
+    async () => {
+      // 23:30 CDT on Sunday 31 May 2026 is 04:30 UTC on Monday 1 June: the
+      // local clock says season 2025 (January-May is last fall's) and ISO
+      // weekday 7, UTC would say 2026 and 1. A fake `date` pins the clock.
+      const h = await makeHarness();
+      const epoch = Date.UTC(2026, 5, 1, 4, 30, 0) / 1000;
+      await writeExec(
+        join(h.fakes, "date"),
+        `#!/bin/sh\nif /bin/date -r 0 >/dev/null 2>&1; then exec /bin/date -r "$CADENCE_FAKE_EPOCH" "$@"; fi\nexec /bin/date -d "@$CADENCE_FAKE_EPOCH" "$@"\n`,
+      );
+      const clock = { TZ: "America/Chicago", CADENCE_FAKE_EPOCH: String(epoch) };
+
+      const plan = await h.cadence("plan", { ...clock, TOUCHLINE_SEASON: "" });
+      expect(plan.code).toBe(0);
+      expect(plan.stdout).toContain(
+        "[2026-05-31 23:30:00] touchline cadence: mode=plan season=2025",
+      );
+
+      const loop = await h.cadence("", {
+        ...clock,
+        TOUCHLINE_CONFERENCES: "GAC",
+        CADENCE_FAKE_PLAN: "GAC=churn",
+        TOUCHLINE_ARCHIVE_DAY: "7",
+      });
+      expect(loop.code).toBe(0);
+      const [rec] = await h.records();
+      expect(rec.started_at).toBe("2026-06-01T04:30:00Z");
+      expect(rec.archive).toBe(`ok ${h.archive}/2026-05-31 ${rec.archive.split(" ").at(-1)}`);
+      expect(existsSync(join(h.archive, "2026-05-31", ".done"))).toBe(true);
+    },
+    LOOP_TIMEOUT,
+  );
 });
 
 // ── the weekly raw HTML archive (tl-ttj) ─────────────────────────────────────

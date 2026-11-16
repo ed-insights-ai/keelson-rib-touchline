@@ -10,6 +10,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { z } from "zod";
 import { packageDir } from "./datahome.ts";
+import { CONFERENCE_LEVELS, type ConferenceLevel } from "./levels.ts";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Conference membership is DATA, not code. "GAC men's 2026" resolves to a list
@@ -61,11 +62,10 @@ export const standingsArchiveSchema = z
   .strict();
 export type StandingsArchive = z.infer<typeof standingsArchiveSchema>;
 
-/** The NCAA levels a conference can play at. The word is "level" on purpose:
- *  "division" already means a conference's own East/West split on a window
- *  (and a gender in the cadence script). */
-export const CONFERENCE_LEVELS = ["d1", "d2", "d3"] as const;
-export type ConferenceLevel = (typeof CONFERENCE_LEVELS)[number];
+// The NCAA levels a conference can play at live in src/levels.ts, shared
+// with the data-home marker; re-exported here for the callers that always
+// read them beside the membership record.
+export { CONFERENCE_LEVELS, type ConferenceLevel } from "./levels.ts";
 
 /** The two codes `conferences` carries that are not conferences. */
 const STRUCTURAL_CODES: readonly string[] = ["independent", "non_member"];
@@ -214,11 +214,21 @@ export async function resolveConference(
   const extrapolated = season > authoredThrough && authoredThrough > 0;
   const effective = extrapolated ? authoredThrough : season;
 
+  // The carry-forward is a statement about the conference's horizon, never a
+  // programme's: a programme whose OWN windows already cover the season is
+  // wherever they put it and is not carried into this conference. Without
+  // that, a conference that ended (the WAC's men, authored 2023-2025, every
+  // member authored elsewhere for 2026) resolved its 2025 members for 2026
+  // and a sweep collected them twice, once under a conference that no longer
+  // plays. The same rule as pipeline/src/membership.py conference_in_effect.
   const slugs: string[] = [];
   const divisions: Record<string, string> = {};
   for (const [slug, byGender] of Object.entries(file.memberships)) {
     const windows = byGender[gender];
     if (!windows?.length) continue;
+    if (extrapolated && windows.some((w) => season >= w.from_season && season <= w.to_season)) {
+      continue;
+    }
     const hit = windows.find((w) => effective >= w.from_season && effective <= w.to_season);
     if (!hit || hit.conference.toUpperCase() !== wanted) continue;
     slugs.push(slug);
@@ -272,19 +282,35 @@ function normalize(s: string): string {
     .trim();
 }
 
-/** Every programme slug the membership record knows for a gender. */
-export async function knownProgrammes(gender: string): Promise<string[]> {
+/** Every programme slug the membership record knows for a gender. With a
+ *  `level`, only the programmes with at least one window in a conference at
+ *  that level: what a home of that level can be asked to collect. */
+export async function knownProgrammes(gender: string, level?: ConferenceLevel): Promise<string[]> {
   const file = await loadMembership();
   return Object.entries(file.memberships)
     .filter(([, byGender]) => (byGender[gender]?.length ?? 0) > 0)
+    .filter(
+      ([, byGender]) =>
+        level === undefined ||
+        (byGender[gender] ?? []).some(
+          (w) => file.conference_profiles?.[w.conference.toUpperCase()]?.level === level,
+        ),
+    )
     .map(([slug]) => slug)
     .sort();
 }
 
-/** Every conference the membership record advertises as collectable. */
-export async function knownConferences(): Promise<string[]> {
+/** Every conference the membership record advertises as collectable. With a
+ *  `level`, only the conferences whose profile names it: the list a home of
+ *  that level offers (the record holds every level; a home holds one). */
+export async function knownConferences(level?: ConferenceLevel): Promise<string[]> {
   const file = await loadMembership();
-  return file.conferences.filter((c) => c !== "independent" && c !== "non_member");
+  return file.conferences.filter(
+    (c) =>
+      c !== "independent" &&
+      c !== "non_member" &&
+      (level === undefined || file.conference_profiles?.[c]?.level === level),
+  );
 }
 
 /** A conference's profile: its NCAA level and printed names. Undefined for
@@ -307,6 +333,30 @@ export async function conferenceLevel(conference: string): Promise<ConferenceLev
     );
   }
   return profile.level;
+}
+
+/** The NCAA level a programme plays at in one season, read off its windows
+ *  the way pipeline/src/membership.py `programme_level` reads it: the level
+ *  of the conference its window for the season names; for a season no
+ *  level-bearing window covers (an independent or non-member year, or past
+ *  its last window), the level of the latest level-bearing window that ended
+ *  before it, else of the earliest one after it. Undefined only for a
+ *  programme no window ever puts in a profiled conference. */
+export async function programmeLevel(
+  slug: string,
+  gender: string,
+  season: number,
+): Promise<ConferenceLevel | undefined> {
+  const file = await loadMembership();
+  const levelled = (file.memberships[slug]?.[gender] ?? []).flatMap((w) => {
+    const level = file.conference_profiles?.[w.conference.toUpperCase()]?.level;
+    return level ? [{ from: w.from_season, to: w.to_season, level }] : [];
+  });
+  const covering = levelled.find((w) => season >= w.from && season <= w.to);
+  if (covering) return covering.level;
+  const before = levelled.filter((w) => w.to < season).sort((a, b) => b.to - a.to)[0];
+  if (before) return before.level;
+  return levelled.filter((w) => w.from > season).sort((a, b) => a.from - b.from)[0]?.level;
 }
 
 /** The conferences a scheduled collect should sweep for one gender: every
@@ -338,6 +388,29 @@ export async function activeConferences(
     if ((await conferenceLevel(conference)) === level) atLevel.push(conference);
   }
   return atLevel;
+}
+
+/** `activeConferences` for one season: only the conferences at least one
+ *  programme resolves to that season (resolveConference, carry-forward
+ *  included). A conference the record authors but that has no member that
+ *  season (the WAC's men in 2026: every 2025 member is authored elsewhere)
+ *  has nothing to collect; `skipped` names each one so a sweep can say why
+ *  it left it out rather than fail it. */
+export async function activeConferencesInSeason(
+  gender: string,
+  season: number,
+  level?: ConferenceLevel,
+): Promise<{ conferences: string[]; skipped: string[] }> {
+  const conferences: string[] = [];
+  const skipped: string[] = [];
+  for (const conference of await activeConferences(gender, level)) {
+    if ((await resolveConference(conference, gender, season)).slugs.length) {
+      conferences.push(conference);
+    } else {
+      skipped.push(conference);
+    }
+  }
+  return { conferences, skipped };
 }
 
 /** Resolve free text ("the whole GAC", "Harding") to a target set. */
