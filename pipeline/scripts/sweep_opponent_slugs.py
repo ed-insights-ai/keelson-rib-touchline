@@ -72,7 +72,11 @@ def _how_joined(variants: list[str], aliases: dict[str, str]) -> tuple[str, str]
             if rule != FOLD_INSTITUTION
         }
     )
-    if len(keys) == 1:
+    # One folded key is a fold only while it still resolves to one
+    # programme: "boston-college" and "boston-university" fold to one key,
+    # and the institution word the table keeps is what tells them apart
+    # (``institution_split_keys``), so they are apart, not one side twice.
+    if len(keys) == 1 and len(resolved) == 1:
         return "fold", "+".join(rules) or FOLD_INSTITUTION
     if len(resolved) == 1:
         return "alias", next(iter(resolved))

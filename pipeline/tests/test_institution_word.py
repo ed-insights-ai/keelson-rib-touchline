@@ -304,3 +304,44 @@ def test_a_bare_boston_alias_on_either_stanza_is_refused():
             "ambiguous identity (men, d1, seasons 2016-2026): 'boston' is "
             f"claimed bare by {slug} (alias)"
         )
+
+
+def test_a_shootout_naming_the_qualified_side_keeps_its_winner():
+    """Union College's member alias "Union" claims the folded key in its own
+    conference's collect, and "Union University" is held under its
+    institution key. A shootout cell naming "Union University" names that
+    side only: read under both keys it named both sides and the published
+    shootout was dropped."""
+    from src.sidearm_live import parse_shootout
+
+    schools = [
+        _school("Union College", "EAST", member_aliases=["Union"]),
+        _school("Union University", "WEST"),
+    ]
+    aliases, _members, scope = collect_identity(
+        schools, "men", "EAST", 2025, document=PAIR_DOC
+    )
+    assert opponent_slug("Union University", aliases, scope=scope) == (
+        "union-university"
+    )
+    for owner_is_home in (True, False):
+        shootout = parse_shootout(
+            "T, 1-1 Union University wins on PKs, 4-3",
+            owner_slug="union-college",
+            other_slug="union-university",
+            owner_is_home=owner_is_home,
+            aliases=aliases,
+            scope=scope,
+        )
+        assert shootout is not None
+        assert shootout["winner"] == "union-university"
+    # the bare word in Union College's own collect still names Union College
+    shootout = parse_shootout(
+        "T, 1-1 Union wins on PKs, 4-3",
+        owner_slug="union-college",
+        other_slug="union-university",
+        owner_is_home=True,
+        aliases=aliases,
+        scope=scope,
+    )
+    assert shootout is not None and shootout["winner"] == "union-college"

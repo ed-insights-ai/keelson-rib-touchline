@@ -2573,14 +2573,23 @@ def _names_side(
     printed = " ".join(name.split()).strip(" .,(")
     if not printed:
         return None
+    # The keys in ``opponent_slug``'s order, institution key first, and the
+    # first one that names a side decides: "Union University" is read under
+    # its institution key and never also under its folded "union", which
+    # Union College's member alias claims, or every institution-qualified
+    # name of a split pair would name both sides again.
     hits: set[str] = set()
     for key in _lookup_keys(printed):
-        for resolved in (
-            aliases.get(key),
-            scope.claims.get(key) if scope is not None else None,
-        ):
-            if resolved in sides:
-                hits.add(resolved)
+        hits = {
+            resolved
+            for resolved in (
+                aliases.get(key),
+                scope.claims.get(key) if scope is not None else None,
+            )
+            if resolved in sides
+        }
+        if hits:
+            break
     if scope is not None:
         for side in sides:
             abbreviation = scope.abbreviations.get(side, "")
