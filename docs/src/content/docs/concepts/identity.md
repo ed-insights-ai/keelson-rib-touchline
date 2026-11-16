@@ -92,6 +92,48 @@ platform audit found the same class of error in the historical derivation
 when it ran gender-blind. Scoping the map is cheaper than detecting the
 corruption afterwards.
 
+## Aliases are scoped by NCAA level
+
+A collect also resolves only against the stanzas of one NCAA level: the
+level (`conference_profiles[code].level` in `membership.json`) of the
+conference it collects, for the season it collects. Division I and
+Division II share names and name tokens, and one table across both hands
+one level's text to the other's programmes. Measured 2026-11-15 by loading
+214 Division I men's programmes beside the Division II stanzas and replaying
+all 2,313 archived Division II schedule pages: one unscoped table re-pointed
+155 fixture-sides on 136 pages ("Penn State Abington" folded onto Penn State
+by the token-subset fallback, "North Carolina Wesleyan" onto North
+Carolina, "Queens" onto Queens of Charlotte), and the reverse holds on a
+Division I page ("California" read as California (Pa.), "Notre Dame" as
+Notre Dame College). Scoped, the same replay differs on 0 pages.
+
+`membership.resolution_stanzas` is the one place the scope is decided, and
+`collect_identity` in `scripts/collect_board.py` builds the identity map
+and the `ResolutionScope` (member claims, member-only aliases, the distance
+tiebreak, and so `ncaa_side`) from it. A programme's level in a season is
+the level of the conference its window for the season names
+(`membership.programme_level`): a reclassifier with a Division II window
+through 2023 and a Division I window from 2024 sits in the Division II
+table for 2023 and the Division I table for 2024. A season no level-bearing
+window covers (before the first window, after the last, or a structural
+`independent`/`non_member` window) takes the level of the latest such
+window before it, else the earliest after it, which is what keeps every
+Division II table exactly what it was before levels existed. Text naming a
+school at another level is not resolved across levels: it mints its slug
+from the text, as text naming an unknown school does. The schedule parse
+fingerprint hashes the scoped map, and tournament headers are read against
+the collecting level's conferences only, so adding another level's
+stanzas or conferences re-reads none of this level's archive.
+
+`check-membership` refuses an identity key two stanzas of one gender claim
+only when they share a table: one level in one season. "Charleston" may be
+the West Virginia school's name in Division II and the College of
+Charleston's alias in Division I; "Boston" claimed by both Boston College
+and Boston University (the fold drops "college" and "university") is
+refused, naming the scope ("identity collision (men, d1, seasons
+2016-2026)"). Programme slugs stay unique across every level: two enabled
+stanzas of one gender may never mint the same slug.
+
 ## The collecting conference's members come first
 
 A collect also resolves inside the conference-season it is reading for:

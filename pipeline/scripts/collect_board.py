@@ -55,11 +55,13 @@ from src.fetch_pool import (
 from src.config import DEFAULT_CONFIG, SchoolConfig, load_schools
 from src.identity import IdentityReport, SeasonSources, resolve_matches
 from src.membership import (
+    collecting_level,
     conference_for,
     conference_in_effect,
     division_for,
     has_windows,
     load_membership,
+    resolution_stanzas,
 )
 from src.page_state import BoxArchive, PageStateStore
 from src.programmes import load_programmes, programme_points
@@ -77,6 +79,7 @@ from src.sidearm_live import (
     LiveCollectionError,
     ProgrammeCollection,
     PublishedPage,
+    ResolutionScope,
     boxscore_links,
     build_session,
     collect_match,
@@ -366,6 +369,68 @@ def refuse_uncovered(
         "if that is what was true), or leave the programme out of the collect.",
         uncovered,
     )
+
+
+def collect_identity(
+    schools: list[SchoolConfig],
+    gender: str,
+    conference: str,
+    season: int,
+    *,
+    document: dict[str, object] | None,
+    points: dict[str, tuple[float, float]] | None = None,
+) -> tuple[dict[str, str], set[str], ResolutionScope]:
+    """What one conference-season collect resolves opponent text with.
+
+    The identity map, the conference's member set and the resolution scope,
+    in that order, the three inputs every schedule parse of the collect
+    reads and its fingerprint hashes.
+
+    Identity is scoped twice. By gender: an opponent string carries no
+    gender, so an unscoped map resolves a men's fixture to a women's-only
+    programme. And by NCAA level: the map and the scope are built from the
+    stanzas at the collected conference's level for the season
+    (``membership.resolution_stanzas``), so a Division II page's "Penn State
+    Abington" stays itself instead of folding onto Division I "Penn State",
+    and a Division I page's "California" is Cal, not California (Pa.). Text
+    naming a school at another level mints its slug from the text.
+
+    Identity and membership are different questions and use different sets.
+    The map spans every stanza at the level, so an out-of-conference
+    opponent still gets a canonical slug; membership is one conference, so
+    a cross-conference fixture is not derived into a conference game.
+    Membership is per season: the window covering this season decides, the
+    stanza's conference is only the default for a programme with no window.
+    It is computed over every stanza, not the level's: a conference's
+    members are at its level by the same windows, so the scoped list would
+    give the same set, and this keeps the member test independent of the
+    identity scope.
+
+    Opponent text is written for the collecting conference's readers, so a
+    printed name a member claims resolves to the member before any other
+    programme (tl-b3v). One scope per collect, applied to every row of
+    every page in it; with ``points`` an ambiguous name no member claims
+    breaks by distance to the collecting school (tl-4sg.9.1).
+    """
+    in_scope = resolution_stanzas(
+        schools, gender, conference, season, document=document
+    )
+    aliases = identity_aliases(in_scope, gender)
+    members = conference_members(
+        schools, gender, conference, season=season, document=document
+    )
+    scope = resolution_scope(
+        in_scope,
+        gender,
+        members,
+        conference=conference,
+        season=season,
+        points=points,
+        level=None
+        if document is None
+        else collecting_level(conference, document=document),
+    )
+    return aliases, members, scope
 
 
 def programme_conference(
@@ -849,36 +914,17 @@ def collect(
         for school in schools
         if school.gender == gender and not school.enabled
     }
-    # Scoped to the gender being collected: an opponent string carries no
-    # gender, so an unscoped map resolves a men's fixture to a women's-only
-    # programme.
-    aliases = identity_aliases(schools, gender)
-    # Identity and membership are different questions and must use different
-    # sets. Aliases span every configured school so an out-of-conference
-    # opponent still gets a canonical slug; membership is one conference, so a
-    # cross-conference fixture is not derived into a conference game.
-    # Membership is per season: the window covering this season decides, the
-    # stanza's conference is only the default for a programme with no window.
     membership_document = _membership_document()
     # Before any fetch: a programme whose authored windows cover no season
     # this collect reads would be filed under its stanza's conference, the
     # one it has left.  The run stops naming it instead.
     refuse_uncovered(wanted, gender, season, conference, membership_document)
-    members = conference_members(
-        schools, gender, conference, season=season, document=membership_document
-    )
-    # Opponent text is written for the collecting conference's readers, so
-    # a printed name a member claims resolves to the member before any other
-    # programme (tl-b3v). One scope per collect, built from the member set
-    # above, applied to every row of every page in it. The programmes
-    # reference is read once here too: an ambiguous name no member claims
-    # breaks by distance to the collecting school (tl-4sg.9.1).
-    scope = resolution_scope(
+    aliases, members, scope = collect_identity(
         schools,
         gender,
-        members,
-        conference=conference,
-        season=season,
+        conference,
+        season,
+        document=membership_document,
         points=_programme_points(),
     )
     results = []
@@ -1965,10 +2011,18 @@ def main() -> int:
         )
 
     if LAYER_SCHEDULE in layers:
+        # A stanza at another NCAA level is no stanza here: its text minted
+        # a slug, it did not resolve, so a bracket side spelled that way is
+        # a stranger to this collect's table like any other.
         stanza_slugs = {
             programme_slug(school.name)
-            for school in load_schools(args.config)
-            if school.gender == args.gender
+            for school in resolution_stanzas(
+                load_schools(args.config),
+                args.gender,
+                args.conference,
+                args.season,
+                document=_membership_document(),
+            )
         }
         strangers = postseason_strangers(fixtures["fixtures"], stanza_slugs)
         if strangers:

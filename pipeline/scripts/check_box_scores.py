@@ -24,6 +24,7 @@ import sys
 from pathlib import Path
 
 from src.config import load_schools
+from src.membership import load_membership, shard_stanzas
 from src.paths import data_root
 from src.sidearm_live import identity_aliases, opponent_slug
 
@@ -60,6 +61,10 @@ def _side_of(
 def compare(home: Path) -> dict[str, object]:
     """Sweep every (fixtures, matches) pair under a data home. Pure; no I/O beyond reading."""
     schools = load_schools()
+    try:
+        document: dict[str, object] | None = load_membership()
+    except (OSError, ValueError):
+        document = None
     findings: list[str] = []
     counts = {
         "cells": 0,
@@ -85,7 +90,11 @@ def compare(home: Path) -> dict[str, object]:
         }
         raw = json.loads(mpath.read_text())
         matches = raw.get("matches", raw) if isinstance(raw, dict) else {}
-        aliases = identity_aliases(schools, gender=gender)
+        # The table the file's collect resolved against: its conference's
+        # NCAA level that season, so a slug is re-read the way it was minted.
+        aliases = identity_aliases(
+            shard_stanzas(schools, name, document=document), gender=gender
+        )
         counts["cells"] += 1
         for fid, box in matches.items():
             fixture = fixtures.get(str(fid))
