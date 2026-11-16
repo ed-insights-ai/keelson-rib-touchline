@@ -282,7 +282,11 @@ def test_boston_college_and_boston_university_in_every_d1_2026_scope():
             assert opponent_slug(printed, aliases, scope=scope) == "boston-college"
         for printed in ("Boston University", "Boston U.", "Boston U", "Boston Univ."):
             assert opponent_slug(printed, aliases, scope=scope) == "boston-university"
-        assert opponent_slug("Boston", aliases, scope=scope) == "boston"
+        # Bare "Boston" names neither school, except inside the Patriot
+        # League, where Boston University's member alias reads it (Lafayette
+        # 2026, sidearm:lafayette:13995, a league game at Boston, Mass.).
+        bare = "boston-university" if conference == "PATRIOT" else "boston"
+        assert opponent_slug("Boston", aliases, scope=scope) == bare
         # "BC" is display-only: Bloomfield (Division II) prints it too.
         assert opponent_slug("BC", aliases, scope=scope) == "bc"
 
