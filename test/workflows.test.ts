@@ -470,8 +470,13 @@ describe("workflows/touchline-backfill.yml", () => {
       KEELSON_INPUTS_to_season: String(season),
       KEELSON_NODE_resolve_pipeline_OUTPUT: join(pkg, "pipeline"),
     };
+    // a home at the conference's own level, so the slot's level guard passes
+    const home = await markedHome(
+      join(await mkdtemp(join(tmpdir(), "touchline-slot-")), "home"),
+      await conferenceLevel(conference),
+    );
 
-    const on = await run(["sh", slotScript], { ...base, KEELSON_INPUTS_refetch: "true" });
+    const on = await run(["sh", slotScript], { ...base, KEELSON_INPUTS_refetch: "true" }, home);
     expect(on.code).toBe(0);
     const onCommand = on.stdout.split("\n").find((l) => l.startsWith("UV "));
     expect(onCommand).toContain(" collect-board ");
@@ -479,7 +484,7 @@ describe("workflows/touchline-backfill.yml", () => {
     expect(on.stdout).toContain("NOTE: refetch requested");
 
     for (const env of [base, { ...base, KEELSON_INPUTS_refetch: "false" }]) {
-      const off = await run(["sh", slotScript], env);
+      const off = await run(["sh", slotScript], env, home);
       expect(off.code).toBe(0);
       const offCommand = off.stdout.split("\n").find((l) => l.startsWith("UV "));
       expect(offCommand).toContain(" collect-board ");
@@ -582,16 +587,68 @@ describe("workflows/touchline-backfill.yml", () => {
   });
 
   test("a slot in range refuses an unknown conference before collecting", async () => {
-    const r = await run(["sh", slotScript], {
-      SLOT: "1",
-      KEELSON_INPUTS_conference: "NOPE",
+    const home = await markedHome(
+      join(await mkdtemp(join(tmpdir(), "touchline-slot-")), "home"),
+      "d2",
+    );
+    const r = await run(
+      ["sh", slotScript],
+      {
+        SLOT: "1",
+        KEELSON_INPUTS_conference: "NOPE",
+        KEELSON_INPUTS_gender: "men",
+        KEELSON_INPUTS_from_season: "2024",
+        KEELSON_INPUTS_to_season: "2024",
+        KEELSON_NODE_resolve_pipeline_OUTPUT: join(pkg, "pipeline"),
+      },
+      home,
+    );
+    expect(r.code).toBe(1);
+    expect(r.stdout).toContain("REFUSED: NOPE has no conference profile");
+    expect(r.stdout).toContain("REFUSED: season 2024 of NOPE men was not collected");
+  });
+
+  test("every slot holds the level guard itself: a later slot refuses what the guard node refused", async () => {
+    // Slots 2-8 run with trigger_rule all_done, so they run after the
+    // level-guard node refused (slot 1 is then skipped). Each must refuse on
+    // its own, before resolving members or reaching collect-board: a
+    // structural code (independent, no profile) in any home, and a
+    // conference of another level.
+    const binDir = await mkdtemp(join(tmpdir(), "touchline-fake-uv-"));
+    await writeFile(join(binDir, "uv"), '#!/bin/sh\nprintf "UV %s\\n" "$*"\n', { mode: 0o755 });
+    const root = await mkdtemp(join(tmpdir(), "touchline-slot-guard-"));
+    const d1Home = await markedHome(join(root, "d1-soccer"), "d1");
+    const d2Home = await markedHome(join(root, "d2-soccer"));
+    const base = {
+      PATH: `${binDir}:${process.env.PATH ?? ""}`,
       KEELSON_INPUTS_gender: "men",
       KEELSON_INPUTS_from_season: "2024",
-      KEELSON_INPUTS_to_season: "2024",
+      KEELSON_INPUTS_to_season: "2026",
       KEELSON_NODE_resolve_pipeline_OUTPUT: join(pkg, "pipeline"),
-    });
-    expect(r.code).toBe(1);
-    expect(r.stdout).toContain("REFUSED: membership resolution failed for NOPE men 2024");
+    };
+    for (const slot of ["2", "3"]) {
+      const structural = await run(
+        ["sh", slotScript],
+        { ...base, SLOT: slot, KEELSON_INPUTS_conference: "independent" },
+        d1Home,
+      );
+      expect(structural.code).toBe(1);
+      expect(structural.stdout).toContain("REFUSED: INDEPENDENT has no conference profile");
+      expect(structural.stdout).not.toContain("UV ");
+      expect(structural.stdout).not.toContain("membership resolution");
+
+      const d1 = await conferenceAt("d1");
+      const crossLevel = await run(
+        ["sh", slotScript],
+        { ...base, SLOT: slot, KEELSON_INPUTS_conference: d1 },
+        d2Home,
+      );
+      expect(crossLevel.code).toBe(1);
+      expect(crossLevel.stdout).toContain(
+        `REFUSED: ${d1} is a d1 conference and the data home ${d2Home} collects d2 (assumed: its marker declares no level).`,
+      );
+      expect(crossLevel.stdout).not.toContain("UV ");
+    }
   });
 });
 

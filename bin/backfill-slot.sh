@@ -43,6 +43,21 @@ if [ ! -f "$RESOLVER" ]; then
   exit 1
 fi
 
+# The level guard, held by every slot rather than by the workflow's
+# level-guard node alone: slots 2-8 chain with trigger_rule all_done so one
+# failed season does not stop the next, which also means they run after the
+# guard node refused or was skipped. So each slot asks the same guard
+# (bin/resolve-membership.ts guard: the home's NCAA level against the
+# conference's; a code with no profile, such as independent, is refused)
+# before it resolves a member or fetches a page. A refusal fails this slot
+# only, and every later slot refuses the same way.
+if ! GUARD=$(bun "$RESOLVER" guard "$PWD" "$CONF" 2>&1); then
+  printf '%s\n' "$GUARD"
+  printf 'REFUSED: season %s of %s %s was not collected: the level guard refused it for the data home %s. Nothing was fetched or written.\n' \
+    "$SEASON" "$CONF" "$GENDER" "$PWD"
+  exit 1
+fi
+
 # Programme lists resolve from the packaged membership record at run time;
 # the season decides the window, so every slot resolves its own.
 RES=$(bun "$RESOLVER" conference "$CONF" "$GENDER" "$SEASON" 2>&1)
