@@ -2755,8 +2755,20 @@ def _oriented_scores(
 # "Blue-Grey Scrimmage"); bounded on both sides so a name that merely
 # contains the letters stays a name (no archived opponent name carries the
 # word, checked 2026-09-03).
+#
+# Sites also abbreviate the mark inside a parenthetical of its own: "(Exh.)"
+# (242 opponent cells over both data homes, 2026-11-15), "(EXH)" 48, "(Ex.)"
+# 28, "(EX)" 24, "(exh.)" 18, "(EXH.)" 9, "(Exh)" 6, "(ex)" 5, "(EXB.)" 4,
+# "(ex.)" 3, "(EXB)" 2 ("Blue & Gold Game (Exh.)", "Michigan (EXB)"). Only
+# the whole parenthetical is the mark, so "(Texas)", "(Tex.)" and a name
+# that merely begins "Ex" stay names: of 324 distinct opponent-cell
+# parentheticals, every other one starting "ex" is a spelled-out form the
+# marker already reads ("(Exhibition)", "(Exhib.)", "(Exhibtion)"), and the
+# only "ex" word outside one was a calendar event ("Wall of Excellence
+# Unveiling").
 _EXHIBITION_MARKER = re.compile(
-    r"\bexhib|\bfriendl(?:y|ies)\b|\bscrimmage\b", re.IGNORECASE
+    r"\bexhib|\bfriendl(?:y|ies)\b|\bscrimmage\b|\((?:ex|exh|exb)\.?\)",
+    re.IGNORECASE,
 )
 
 
