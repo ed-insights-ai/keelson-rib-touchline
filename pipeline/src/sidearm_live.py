@@ -1581,6 +1581,14 @@ class ResolutionScope:
             f"({nearest:,.0f} km) {over}",
         )
 
+    def note_page(self, owner: str, printed: str, line: str) -> None:
+        """Record a run-log ``line`` about ``printed`` on ``owner``'s page.
+
+        For a recipe that reads an opponent from a field other than the
+        printed one, or declines to: once per page owner and printed text.
+        """
+        self._record(f"{owner}\x00{printed}", line)
+
     def _record(self, printed: str, line: str) -> None:
         with self._lock:
             self._notes.setdefault(printed, line)

@@ -19,7 +19,8 @@ import pytest
 
 from scripts import collect_board
 from src import wmt
-from src.config import SchoolConfig
+from src.config import SchoolConfig, load_schools
+from src.membership import load_membership
 from src.page_state import BoxArchive, PageStateStore
 from src.recipes import LIVE_COLLECTORS, WMT, live_recipe
 from src.sidearm_live import (
@@ -31,6 +32,7 @@ from src.sidearm_live import (
     STATE_UNAVAILABLE,
     LiveCollectionError,
     PublishedPage,
+    ResolutionScope,
     assert_served_body,
     collect_programme,
     write_raw_pages,
@@ -498,6 +500,105 @@ def test_the_date_join_refuses_a_day_with_two_candidate_games() -> None:
         )
         html = wmt.Bundle(LAYER_SCHEDULE, 2025, wmt.GENERATION_NUXT, parts).text()
         assert ("2076" in wmt.boxscore_links(html, "")) is linked
+
+
+def _archived_schedule(
+    name: str, *, owner: str, conference: str, year: int
+) -> tuple[dict[str, dict[str, object]], ResolutionScope]:
+    """An archived schedule bundle, trimmed to the page's title and timezone
+    and a few events (verbatim), parsed with the real Division I identity
+    the collect resolves with."""
+    aliases, members, scope = collect_board.collect_identity(
+        load_schools(), "men", conference, year, document=load_membership()
+    )
+    html = _fixture(name)
+    fixtures = wmt.parse_schedule(
+        html,
+        page_url=wmt.read_bundle(html).final_url,
+        year=year,
+        owner_slug=owner,
+        aliases=aliases,
+        members=members,
+        scope=scope,
+    )
+    return {str(fixture["id"]): fixture for fixture in fixtures}, scope
+
+
+def _opponent(fixture: dict[str, object], owner: str) -> object:
+    return fixture["away"] if fixture["home"] == owner else fixture["home"]
+
+
+def test_a_nickname_printed_where_the_school_belongs_reads_the_records_school() -> None:
+    """fightingirish.com 2023: the opponent record of most events is swapped,
+    ``name`` (and so ``opponent_name``) "Tar Heels" and ``long_name`` (and
+    ``opponent_school_name``) "North Carolina"; the exhibitions and Indiana
+    keep the other order ("Indiana" / "Hoosiers").  Each swapped event filed
+    a stranger (tar-heels) beside the real programme's own row of the match."""
+    by_id, scope = _archived_schedule(
+        "wmt_notredame_schedule_bundle_2023.json",
+        owner="notre-dame",
+        conference="ACC",
+        year=2023,
+    )
+    opponents = {key: _opponent(row, "notre-dame") for key, row in by_id.items()}
+    assert opponents == {
+        # Swapped: the printed nickname names no programme; the record's
+        # other name names exactly one.
+        "wmt:notre-dame:2351": "iu-indy",  # "Jaguars" / "IUPUI"
+        "wmt:notre-dame:2340": "north-carolina",  # "Tar Heels"
+        # The round annotation rides on the school name and is folded off.
+        "wmt:notre-dame:2071": "louisville",  # "Cardinals" / "Louisville (ACC ...)"
+        # The other order: a printed name that resolves is never rewritten.
+        "wmt:notre-dame:2352": "indiana",  # "Indiana" / "Hoosiers"
+        "wmt:notre-dame:2347": "saint-louis",  # "Saint Louis (Exhibition)"
+        # Both names alike: nothing to choose.
+        "wmt:notre-dame:2063": "kentucky",  # "Kentucky (NCAA 2nd Round)"
+        # Neither name is a Division I programme (Oberlin): nothing says
+        # which is the school, so the printed text stands, named in the log.
+        "wmt:notre-dame:2338": "yeomen",
+    }
+    assert by_id["wmt:notre-dame:2347"]["match_type"] == "exhibition"
+    notes = scope.notes()
+    assert any(
+        "'Tar Heels' on notre-dame's page names no programme; read as "
+        "'North Carolina' (north-carolina)" in line
+        for line in notes
+    )
+    assert any(
+        "'Yeomen' on notre-dame's page (2023-10-10) kept as printed; its "
+        "opponent record also names 'Oberlin', and neither names a programme" in line
+        for line in notes
+    )
+    assert not any("'Indiana'" in line or "'Hoosiers'" in line for line in notes)
+
+
+def test_a_record_whose_other_name_is_formal_or_overridden_changes_nothing() -> None:
+    """odusports.com 2024, a site not affected: ``long_name`` is the formal
+    name ("University of Maryland-College Park", "College of William and
+    Mary") and ``opponent_school_name`` a short one ("W&M"); the printed
+    names resolve, so neither is read.  "UMBC" is the event's own override
+    of a record named "Maryland-Baltimore-County": the printed text is not
+    the record's name, so the record is not consulted."""
+    by_id, scope = _archived_schedule(
+        "wmt_olddominion_schedule_bundle_2024.json",
+        owner="old-dominion",
+        conference="SUNBELT",
+        year=2024,
+    )
+    opponents = {key: _opponent(row, "old-dominion") for key, row in by_id.items()}
+    assert opponents == {
+        "wmt:old-dominion:13573": "uncw",  # "UNCW" / "UNC Wilmington"
+        "wmt:old-dominion:13574": "maryland",
+        "wmt:old-dominion:13580": "umbc",
+        "wmt:old-dominion:13581": "william-mary",
+    }
+    assert not [line for line in scope.notes() if "old-dominion's page" in line]
+    # Without an identity nothing resolves, and nothing is rewritten either.
+    html = _fixture("wmt_notredame_schedule_bundle_2023.json")
+    bare = wmt.parse_schedule(
+        html, page_url="", year=2023, owner_slug="notre-dame", aliases={}
+    )
+    assert "tar-heels" in {_opponent(row, "notre-dame") for row in bare}
 
 
 # --- Roster ---------------------------------------------------------------------

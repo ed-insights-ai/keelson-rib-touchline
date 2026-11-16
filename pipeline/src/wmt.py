@@ -83,6 +83,7 @@ from src.sidearm_live import (
     PublishedPage,
     ResolutionScope,
     _clean_team_name,
+    _identity_key,
     _name_slug_affinity,
     _nuxt_state,
     _seeded,
@@ -1212,6 +1213,106 @@ def _schedule_events(bundle: Bundle) -> list[dict[str, Any]]:
     return events
 
 
+def _programmes(
+    aliases: dict[str, str], scope: ResolutionScope | None
+) -> frozenset[str]:
+    """Every programme slug the collect's identity can resolve text to."""
+    known = set(aliases.values())
+    if scope is not None:
+        known.update(scope.claims.values())
+        known.update(scope.member_only.values())
+    return frozenset(known)
+
+
+def _record_school_name(
+    event: dict[str, Any],
+    printed: str,
+    *,
+    date: str,
+    owner_slug: str,
+    aliases: dict[str, str],
+    scope: ResolutionScope | None,
+    programmes: frozenset[str],
+) -> str:
+    """The opponent's school, when the printed name is its opponent record's
+    nickname; otherwise the printed name.
+
+    Each event carries the site's opponent record: ``name`` (what
+    ``opponent_name`` prints by default) and ``long_name``, which the event
+    repeats as ``opponent_school_name`` on the sites that fill it.  Most
+    sites use ``long_name`` for the formal name ("University of Portland"),
+    one site keeps the nickname there ("Indiana" / "Hoosiers"), and on that
+    site and one other the two are swapped on most rows: ``name`` "Tar
+    Heels", ``long_name`` "North Carolina" (measured: fightingirish.com
+    2023-2025, 55 events; clemsontigers.com 2023, 2).  The record publishes
+    no field saying which of its two names is the school, so the
+    collection's own identity decides: the printed name is replaced only
+    when
+
+    - it is the record's own ``name`` (an event that overrides the name,
+      "GCU" over a record "Grand Canyon", printed what it meant to),
+    - it names no programme at the collecting level, and
+    - exactly one programme is named by the record's other names (a round
+      placeholder never is).
+
+    A printed name that resolves is never rewritten, so a school whose
+    published name looks like a nickname keeps it.  When neither name
+    resolves ("Yeomen" / "Oberlin", a school outside the level), nothing
+    says which is the school: the printed name stands and the run log names
+    the row.
+    """
+    record = event.get("opponent")
+    if not isinstance(record, dict):
+        return printed
+    key = _identity_key(printed)
+    if not key or _identity_key(str(record.get("name") or "")) != key:
+        return printed
+    others: list[str] = []
+    for value in (record.get("long_name"), event.get("opponent_school_name")):
+        name = _clean_team_name(str(value or "").strip())
+        if name and _identity_key(name) not in ("", key) and name not in others:
+            others.append(name)
+    if not others:
+        return printed
+
+    def resolves(name: str) -> str | None:
+        slug = opponent_slug(name, aliases, scope=scope, owner=owner_slug)
+        return slug if slug in programmes else None
+
+    if resolves(printed):
+        return printed
+    named = {
+        name: slug
+        for name in others
+        if not round_placeholder(name) and (slug := resolves(name))
+    }
+    if len(set(named.values())) == 1:
+        chosen = next(iter(named))
+        if scope is not None:
+            scope.note_page(
+                owner_slug,
+                printed,
+                f"resolution: {printed!r} on {owner_slug}'s page names no "
+                f"programme; read as {chosen!r} ({named[chosen]}), the other "
+                "name its opponent record publishes",
+            )
+        return chosen
+    if scope is not None:
+        also = ", ".join(repr(name) for name in others)
+        scope.note_page(
+            owner_slug,
+            printed,
+            f"resolution: {printed!r} on {owner_slug}'s page ({date}) kept as "
+            f"printed; its opponent record also names {also}, and "
+            + (
+                "those name different programmes"
+                if named
+                else "neither names a programme at this level"
+            ),
+        )
+    return printed
+
+
 def parse_schedule(
     html: str,
     *,
@@ -1240,7 +1341,9 @@ def parse_schedule(
       event's own preposition puts them ("at" puts the owner away).
     - opponent: ``opponent_name`` ("Missouri State"; an annotation such as
       "(Exhibition)" is dropped by the identity fold), resolved through
-      ``opponent_slug``.  A round placeholder is a named skip; a row naming
+      ``opponent_slug``; when it is its opponent record's nickname, the
+      record's school name (``_record_school_name``).  A round placeholder
+      is a named skip; a row naming
       a second opponent with neither side the owner is a hosted other-match
       and a named skip.
     - ``status``: ``completed`` is final, ``as_scheduled`` scheduled,
@@ -1273,6 +1376,7 @@ def parse_schedule(
     timezone = site_timezone(_nuxt_state(first.body))
     if not timezone:
         raise LiveCollectionError(f"[{year}] {page_url} names no website timezone")
+    programmes = _programmes(aliases, scope)
     fixtures: list[dict[str, object]] = []
     for event in _schedule_events(bundle):
         event_id = str(event.get("id") or "")
@@ -1305,6 +1409,16 @@ def parse_schedule(
                 continue
             opponent_name = pair[1] if slugs[0] == owner_slug else pair[0]
             opponent_raw = opponent_name
+        else:
+            opponent_name = _record_school_name(
+                event,
+                opponent_name,
+                date=date,
+                owner_slug=owner_slug,
+                aliases=aliases,
+                scope=scope,
+                programmes=programmes,
+            )
         other = opponent_slug(
             opponent_name,
             aliases,
