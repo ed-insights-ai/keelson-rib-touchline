@@ -5,6 +5,16 @@
     "to": 2026
   },
   "conferences": [
+    "A10",
+    "AAC",
+    "ACC",
+    "AE",
+    "ASUN",
+    "B1G",
+    "BIGEAST",
+    "BIGSOUTH",
+    "BIGWEST",
+    "CAA",
     "CACC",
     "CC",
     "CCAA",
@@ -15,21 +25,75 @@
     "GLVC",
     "GNAC",
     "GSC",
+    "HORIZON",
+    "IVY",
     "LSC",
+    "MAAC",
     "MEC",
     "MIAA",
+    "MVC",
+    "MW",
     "NE10",
+    "NEC",
     "NSIC",
+    "OVC",
+    "PAC12",
     "PACWEST",
+    "PATRIOT",
     "PBC",
     "PSAC",
     "RMAC",
     "SAC",
+    "SOCON",
     "SSC",
+    "SUMMIT",
+    "SUNBELT",
+    "WAC",
+    "WCC",
     "independent",
     "non_member"
   ],
   "conference_profiles": {
+    "A10": {
+      "level": "d1",
+      "names": ["Atlantic 10 Conference", "Atlantic 10", "A-10"]
+    },
+    "AAC": {
+      "level": "d1",
+      "names": ["American Athletic Conference", "American Conference"]
+    },
+    "ACC": {
+      "level": "d1",
+      "names": ["Atlantic Coast Conference"]
+    },
+    "AE": {
+      "level": "d1",
+      "names": ["America East Conference", "America East"]
+    },
+    "ASUN": {
+      "level": "d1",
+      "names": ["Atlantic Sun Conference", "Atlantic Sun"]
+    },
+    "B1G": {
+      "level": "d1",
+      "names": ["Big Ten Conference", "Big Ten"]
+    },
+    "BIGEAST": {
+      "level": "d1",
+      "names": ["Big East Conference", "Big East"]
+    },
+    "BIGSOUTH": {
+      "level": "d1",
+      "names": ["Big South Conference", "Big South"]
+    },
+    "BIGWEST": {
+      "level": "d1",
+      "names": ["The Big West", "Big West"]
+    },
+    "CAA": {
+      "level": "d1",
+      "names": ["Coastal Athletic Association"]
+    },
     "CACC": {
       "level": "d2",
       "names": ["Central Atlantic Collegiate Conference", "Central Atlantic"],
@@ -71,9 +135,23 @@
       "level": "d2",
       "names": ["Gulf South Conference", "Gulf South"]
     },
+    "HORIZON": {
+      "level": "d1",
+      "names": ["Horizon League"],
+      "code_is_word": true
+    },
+    "IVY": {
+      "level": "d1",
+      "names": ["Ivy League"],
+      "code_is_word": true
+    },
     "LSC": {
       "level": "d2",
       "names": ["Lone Star Conference", "Lone Star"]
+    },
+    "MAAC": {
+      "level": "d1",
+      "names": ["Metro Atlantic Athletic Conference", "Metro Conference", "Metro Atlantic", "Metro"]
     },
     "MEC": {
       "level": "d2",
@@ -83,17 +161,42 @@
       "level": "d2",
       "names": ["Mid-America Intercollegiate Athletics Association"]
     },
+    "MVC": {
+      "level": "d1",
+      "names": ["Missouri Valley Conference", "Missouri Valley"]
+    },
+    "MW": {
+      "level": "d1",
+      "names": ["Mountain West Conference", "Mountain West"]
+    },
     "NE10": {
       "level": "d2",
       "names": ["Northeast-10 Conference", "Northeast-10", "Northeast10"]
+    },
+    "NEC": {
+      "level": "d1",
+      "names": ["Northeast Conference"]
     },
     "NSIC": {
       "level": "d2",
       "names": ["Northern Sun Intercollegiate Conference"]
     },
+    "OVC": {
+      "level": "d1",
+      "names": ["Ohio Valley Conference", "Ohio Valley"]
+    },
+    "PAC12": {
+      "level": "d1",
+      "names": ["Pac-12 Conference", "Pac-12"]
+    },
     "PACWEST": {
       "level": "d2",
       "names": ["Pacific West Conference", "Pacific West"]
+    },
+    "PATRIOT": {
+      "level": "d1",
+      "names": ["Patriot League"],
+      "code_is_word": true
     },
     "PBC": {
       "level": "d2",
@@ -111,9 +214,30 @@
       "level": "d2",
       "names": ["South Atlantic Conference", "South Atlantic"]
     },
+    "SOCON": {
+      "level": "d1",
+      "names": ["Southern Conference"]
+    },
     "SSC": {
       "level": "d2",
       "names": ["Sunshine State Conference", "Sunshine State"]
+    },
+    "SUMMIT": {
+      "level": "d1",
+      "names": ["The Summit League", "Summit League"],
+      "code_is_word": true
+    },
+    "SUNBELT": {
+      "level": "d1",
+      "names": ["Sun Belt Conference", "Sun Belt"]
+    },
+    "WAC": {
+      "level": "d1",
+      "names": ["Western Athletic Conference"]
+    },
+    "WCC": {
+      "level": "d1",
+      "names": ["West Coast Conference"]
     }
   },
   "description": "Contract fixture: season-aware conference-membership windows per programme (institution_slug x gender). Each window cites its source. Identity and membership are separate axes.",
@@ -341,6 +465,248 @@
           "from_season": 2026,
           "to_season": 2026,
           "source": "Northern Sun Intercollegiate Conference, 2026 Women's Soccer standings and records, https://northernsun.org/standings.aspx?path=wsoc (archive id 164, https://northernsun.org/standings.aspx?standings=164) and https://northernsun.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Minnesota State (one table, no divisions, sixteen programmes). The authored depth is 2026 only (the owner's ruling: no historical seasons), so from_season 2026 is a depth decision, not an arrival: the 2025 standings (https://northernsun.org/standings.aspx?standings=155) list the same sixteen programmes."
+        }
+      ]
+    },
+    "davidson": {
+      "men": [
+        {
+          "conference": "A10",
+          "from_season": 2023,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, men's soccer 2023-2026 (accessed 2026-11-15), listed under the label Davidson. 2023: Listed among 14 teams on the Atlantic 10 Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 14 teams on the Atlantic 10 Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 13 teams on the Atlantic 10 Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 13 teams in the Atlantic 10 Conference 2026 men's soccer standings (census capture 2026-11-15) (https://atlantic10.com/standings.aspx?path=msoc). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "charlotte": {
+      "men": [
+        {
+          "conference": "AAC",
+          "from_season": 2023,
+          "to_season": 2026,
+          "source": "American Conference, men's soccer 2023-2026 (accessed 2026-11-15), listed under the label Charlotte. 2023: Listed among 9 teams on the American Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://theamerican.org/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 8 teams on the American Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://theamerican.org/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 9 teams on the American Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://theamerican.org/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 9 teams in the American Conference 2026 men's soccer standings (census capture 2026-11-15) (https://theamerican.org/standings.aspx?path=msoc). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "boston-college-eagles": {
+      "men": [
+        {
+          "conference": "ACC",
+          "from_season": 2023,
+          "to_season": 2026,
+          "source": "Atlantic Coast Conference, men's soccer 2023-2026 (accessed 2026-11-15), listed under the label Boston College. 2023: Listed among 12 teams on the Atlantic Coast Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://theacc.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 15 teams on the Atlantic Coast Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://theacc.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 15 teams on the Atlantic Coast Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://theacc.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 15 teams in the Atlantic Coast Conference 2026 men's soccer standings (census capture 2026-11-15) (https://theacc.com/standings.aspx?path=msoc). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "binghamton": {
+      "men": [
+        {
+          "conference": "AE",
+          "from_season": 2023,
+          "to_season": 2026,
+          "source": "America East Conference, men's soccer 2023-2026 (accessed 2026-11-15), listed under the label Binghamton. 2023: Listed among 8 teams on the America East Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://americaeast.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 8 teams on the America East Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://americaeast.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 8 teams on the America East Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://americaeast.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 8 teams in the America East Conference 2026 men's soccer standings (census capture 2026-11-15) (https://americaeast.com/standings.aspx?path=msoc). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "bellarmine": {
+      "men": [
+        {
+          "conference": "ASUN",
+          "from_season": 2023,
+          "to_season": 2026,
+          "source": "Atlantic Sun Conference, men's soccer 2023-2026 (accessed 2026-11-15), listed under the label Bellarmine. 2023: Listed among 8 teams on the Atlantic Sun Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://asunsports.org/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 8 teams on the Atlantic Sun Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://asunsports.org/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 8 teams on the Atlantic Sun Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://asunsports.org/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 9 teams in the Atlantic Sun Conference 2026 men's soccer standings (census capture 2026-11-15) (https://asunsports.org/standings.aspx?path=msoc). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "indiana": {
+      "men": [
+        {
+          "conference": "B1G",
+          "from_season": 2023,
+          "to_season": 2026,
+          "source": "Big Ten Conference, men's soccer 2023-2026 (accessed 2026-11-15), listed under the label Indiana. 2023: Listed among 9 teams on the Big Ten Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://bigten.org/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 11 teams on the Big Ten Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://bigten.org/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 11 teams on the Big Ten Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://bigten.org/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 11 teams in the Big Ten Conference 2026 men's soccer standings (census capture 2026-11-15) (https://bigten.org/standings.aspx?path=msoc). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "akron": {
+      "men": [
+        {
+          "conference": "BIGEAST",
+          "division": "Midwest Division",
+          "from_season": 2023,
+          "to_season": 2026,
+          "source": "Big East Conference, men's soccer 2023-2026 (accessed 2026-11-15), listed under the label Akron. 2023: The Big East's archived 2023 standings list Akron (2-1-5) in the Midwest Division among 12 teams, and Akron's own 2023 schedule flags 8 Big East opponents and a Big East Tournament quarterfinal; the 2023 records page simply omits it (https://www.bigeast.com/standings.aspx?standings=30); 2024: Listed among 12 teams on the Big East Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://www.bigeast.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 12 teams on the Big East Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://www.bigeast.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 12 teams in the Big East Conference 2026 men's soccer standings (census capture 2026-11-15) (https://bigeast.com/standings.aspx?path=msoc). Division \"Midwest Division\" as printed on the Big East Conference standings of every season of the window: https://www.bigeast.com/standings.aspx?standings=30 (2023), https://www.bigeast.com/standings.aspx?standings=1110 (2024), https://www.bigeast.com/standings.aspx?standings=1120 (2025), https://bigeast.com/standings.aspx?path=msoc (the live 2026 table, archive id 1131). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "gardner-webb": {
+      "men": [
+        {
+          "conference": "BIGSOUTH",
+          "from_season": 2023,
+          "to_season": 2026,
+          "source": "Big South Conference, men's soccer 2023-2026 (accessed 2026-11-15), listed under the label Gardner-Webb. 2023: Listed among 8 teams on the Big South Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://bigsouthsports.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 8 teams on the Big South Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://bigsouthsports.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 8 teams on the Big South Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://bigsouthsports.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 8 teams in the Big South Conference 2026 men's soccer standings (census capture 2026-11-15) (https://bigsouthsports.com/standings.aspx?path=msoc). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "cal-poly": {
+      "men": [
+        {
+          "conference": "BIGWEST",
+          "from_season": 2023,
+          "to_season": 2025,
+          "source": "Big West Conference, men's soccer 2023-2025 (accessed 2026-11-15), listed under the label Cal Poly. 2023: Listed among 10 teams on the Big West Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://bigwest.org/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 10 teams on the Big West Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://bigwest.org/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 10 teams on the Big West Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://bigwest.org/stats.aspx?path=msoc&year=2025&conf=true). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival. Left after 2025: in 2026 it is listed by the Pac-12 Conference, Listed among 7 teams in the Pac-12 Conference 2026 men's soccer standings (census capture 2026-11-15) (https://pac-12.com/standings.aspx?path=msoc)."
+        }
+      ]
+    },
+    "campbell": {
+      "men": [
+        {
+          "conference": "CAA",
+          "division": "South",
+          "from_season": 2025,
+          "to_season": 2026,
+          "source": "Coastal Athletic Association, men's soccer 2025-2026 (accessed 2026-11-15), listed under the label Campbell. 2025: Listed among 10 teams on the Coastal Athletic Association 2025 men's soccer conference records page (census capture 2026-11-15) (https://caasports.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 10 teams in the Coastal Athletic Association 2026 men's soccer standings (census capture 2026-11-15) (https://caasports.com/standings.aspx?path=msoc). Division \"South\" as printed on the Coastal Athletic Association standings of every season of the window: https://caasports.com/standings.aspx?standings=226 (2025), https://caasports.com/standings.aspx?path=msoc (the live 2026 table, archive id 244). In 2024 it was in the same conference in no division (one table), so the window splits at 2025 with the conference unchanged."
+        }
+      ]
+    },
+    "cleveland-state": {
+      "men": [
+        {
+          "conference": "HORIZON",
+          "from_season": 2023,
+          "to_season": 2026,
+          "source": "Horizon League, men's soccer 2023-2026 (accessed 2026-11-15), listed under the label Cleveland State. 2023: Listed among 10 teams on the Horizon League 2023 men's soccer conference records page (census capture 2026-11-15) (https://horizonleague.org/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 10 teams on the Horizon League 2024 men's soccer conference records page (census capture 2026-11-15) (https://horizonleague.org/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 10 teams on the Horizon League 2025 men's soccer conference records page (census capture 2026-11-15) (https://horizonleague.org/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 11 teams in the Horizon League 2026 men's soccer standings (census capture 2026-11-15) (https://horizonleague.org/standings.aspx?path=msoc). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "brown": {
+      "men": [
+        {
+          "conference": "IVY",
+          "from_season": 2023,
+          "to_season": 2026,
+          "source": "Ivy League, men's soccer 2023-2026 (accessed 2026-11-15), listed under the label Brown. 2023: Listed among 8 teams on the Ivy League 2023 men's soccer conference records page (census capture 2026-11-15) (https://ivyleague.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 8 teams on the Ivy League 2024 men's soccer conference records page (census capture 2026-11-15) (https://ivyleague.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 8 teams on the Ivy League 2025 men's soccer conference records page (census capture 2026-11-15) (https://ivyleague.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 8 teams in the Ivy League 2026 men's soccer standings (census capture 2026-11-15) (https://ivyleague.com/standings.aspx?path=msoc). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "canisius": {
+      "men": [
+        {
+          "conference": "MAAC",
+          "from_season": 2023,
+          "to_season": 2026,
+          "source": "Metro Atlantic Athletic Conference (the Metro Conference), men's soccer 2023-2026 (accessed 2026-11-15), listed under the label Canisius. 2023: Listed among 11 teams on the Metro Atlantic Athletic Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://themetro.org/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 13 teams on the Metro Atlantic Athletic Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://themetro.org/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 13 teams on the Metro Atlantic Athletic Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://themetro.org/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 13 teams in the Metro Atlantic Athletic Conference 2026 men's soccer standings (census capture 2026-11-15) (https://maacsports.com/standings.aspx?path=msoc). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "belmont": {
+      "men": [
+        {
+          "conference": "MVC",
+          "from_season": 2023,
+          "to_season": 2026,
+          "source": "Missouri Valley Conference, men's soccer 2023-2026 (accessed 2026-11-15), listed under the label Belmont. 2023: Listed among 9 teams on the Missouri Valley Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://mvc-sports.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 9 teams on the Missouri Valley Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://mvc-sports.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 8 teams on the Missouri Valley Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://mvc-sports.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 7 teams in the Missouri Valley Conference 2026 men's soccer standings (census capture 2026-11-15) (https://mvc-sports.com/standings.aspx?path=msoc). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "air-force": {
+      "men": [
+        {
+          "conference": "MW",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mountain West Conference, men's soccer 2026 (accessed 2026-11-15), listed under the label Air Force. 2026: Listed among 6 teams in the Mountain West Conference 2026 men's soccer standings (census capture 2026-11-15) (https://themw.com/standings.aspx?path=msoc). Arrived for 2026: in 2025 it played in the Western Athletic Conference, Wayback capture (2025-12-06) of the WAC's own 2025 Men's Soccer Standings lists Air Force among 8 teams (https://web.archive.org/web/20251206172039/https://wacsports.com/standings.aspx?path=msoc)."
+        }
+      ]
+    },
+    "central-connecticut": {
+      "men": [
+        {
+          "conference": "NEC",
+          "from_season": 2023,
+          "to_season": 2026,
+          "source": "Northeast Conference, men's soccer 2023-2026 (accessed 2026-11-15), listed under the label Central Connecticut. 2023: Listed among 9 teams on the Northeast Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://necsports.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 9 teams on the Northeast Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://necsports.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 10 teams on the Northeast Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://necsports.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 9 teams in the Northeast Conference 2026 men's soccer standings (census capture 2026-11-15) (https://northeastconference.org/standings.aspx?path=msoc). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "chicago-state": {
+      "men": [
+        {
+          "conference": "OVC",
+          "from_season": 2023,
+          "to_season": 2023,
+          "source": "Ohio Valley Conference, men's soccer 2023 (accessed 2026-11-15), listed under the label Chicago State. 2023: Listed among 8 teams on the Ohio Valley Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://ovcsports.com/stats.aspx?path=msoc&year=2023&conf=true). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival. Left after 2023: in 2024 it is listed by the Northeast Conference, Listed among 9 teams on the Northeast Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://necsports.com/stats.aspx?path=msoc&year=2024&conf=true)."
+        }
+      ]
+    },
+    "california": {
+      "men": [
+        {
+          "conference": "PAC12",
+          "from_season": 2023,
+          "to_season": 2023,
+          "source": "Pac-12 Conference, men's soccer 2023 (accessed 2026-11-15), listed under the label California. 2023: Wayback capture (2023-11-27) of the original pac-12.com men's soccer standings lists California among 6 teams. California's own 2023 schedule flags 10 conference games against the other five (https://web.archive.org/web/20231127155437/https://pac-12.com/mens-soccer/standings). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival. Left after 2023: in 2024 it is listed by the Atlantic Coast Conference, Listed among 15 teams on the Atlantic Coast Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://theacc.com/stats.aspx?path=msoc&year=2024&conf=true)."
+        }
+      ]
+    },
+    "american": {
+      "men": [
+        {
+          "conference": "PATRIOT",
+          "from_season": 2023,
+          "to_season": 2026,
+          "source": "Patriot League, men's soccer 2023-2026 (accessed 2026-11-15), listed under the label American. 2023: Listed among 10 teams on the Patriot League 2023 men's soccer conference records page (census capture 2026-11-15) (https://patriotleague.org/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 10 teams on the Patriot League 2024 men's soccer conference records page (census capture 2026-11-15) (https://patriotleague.org/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 10 teams on the Patriot League 2025 men's soccer conference records page (census capture 2026-11-15) (https://patriotleague.org/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 10 teams in the Patriot League 2026 men's soccer standings (census capture 2026-11-15) (https://patriotleague.org/standings.aspx?path=msoc). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "etsu": {
+      "men": [
+        {
+          "conference": "SOCON",
+          "from_season": 2023,
+          "to_season": 2026,
+          "source": "Southern Conference, men's soccer 2023-2026 (accessed 2026-11-15), listed under the label ETSU. 2023: Listed among 6 teams on the Southern Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://soconsports.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 6 teams on the Southern Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://soconsports.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 6 teams on the Southern Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://soconsports.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 7 teams in the Southern Conference 2026 men's soccer standings (census capture 2026-11-15) (https://soconsports.com/standings.aspx?path=msoc). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "delaware": {
+      "men": [
+        {
+          "conference": "SUMMIT",
+          "from_season": 2025,
+          "to_season": 2026,
+          "source": "The Summit League, men's soccer 2025-2026 (accessed 2026-11-15), listed under the label Delaware. 2025: Listed among 7 teams on the The Summit League 2025 men's soccer conference records page (census capture 2026-11-15) (https://thesummitleague.org/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 6 teams in the The Summit League 2026 men's soccer standings (census capture 2026-11-15) (https://thesummitleague.org/standings.aspx?path=msoc). Arrived for 2025: in 2024 it played in the Coastal Athletic Association, Listed among 11 teams on the Coastal Athletic Association 2024 men's soccer conference records page (census capture 2026-11-15) (https://caasports.com/stats.aspx?path=msoc&year=2024&conf=true)."
+        }
+      ]
+    },
+    "coastal-carolina": {
+      "men": [
+        {
+          "conference": "SUNBELT",
+          "from_season": 2023,
+          "to_season": 2026,
+          "source": "Sun Belt Conference, men's soccer 2023-2026 (accessed 2026-11-15), listed under the label Coastal Carolina. 2023: Listed among 10 teams on the Sun Belt Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://sunbeltsports.org/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 10 teams on the Sun Belt Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://sunbeltsports.org/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 10 teams on the Sun Belt Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://sunbeltsports.org/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 10 teams in the Sun Belt Conference 2026 men's soccer standings (census capture 2026-11-15) (https://sunbeltsports.org/standings.aspx?path=msoc). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "california-baptist": {
+      "men": [
+        {
+          "conference": "WAC",
+          "from_season": 2023,
+          "to_season": 2025,
+          "source": "Western Athletic Conference, men's soccer 2023-2025 (accessed 2026-11-15), listed under the label California Baptist. 2023: California Baptist's own 2023 schedule flags 8 conference games against the other eight WAC members and lists the Western Athletic Conference Tournament (https://cbulancers.com/sports/mens-soccer/schedule/2023); 2024: Wayback capture (2025-02-07) of the WAC's own 2024 Men's Soccer Standings lists California Baptist among 10 teams (https://web.archive.org/web/20250207155451/https://wacsports.com/standings.aspx?path=msoc); 2025: Wayback capture (2025-12-06) of the WAC's own 2025 Men's Soccer Standings lists California Baptist among 8 teams (https://web.archive.org/web/20251206172039/https://wacsports.com/standings.aspx?path=msoc). 2023 is the first season of the Division I depth authored here (2023-2026), so the window's first year is the depth's edge, not an arrival. Left after 2025: in 2026 it is listed by the Pac-12 Conference, Listed among 7 teams in the Pac-12 Conference 2026 men's soccer standings (census capture 2026-11-15) (https://pac-12.com/standings.aspx?path=msoc)."
+        }
+      ]
+    },
+    "denver": {
+      "men": [
+        {
+          "conference": "WCC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "West Coast Conference, men's soccer 2026 (accessed 2026-11-15), listed under the label Denver. 2026: Listed among 9 teams in the West Coast Conference 2026 men's soccer standings (census capture 2026-11-15) (https://wccsports.com/standings.aspx?path=msoc). Arrived for 2026: in 2025 it played in The Summit League, Listed among 7 teams on the The Summit League 2025 men's soccer conference records page (census capture 2026-11-15) (https://thesummitleague.org/stats.aspx?path=msoc&year=2025&conf=true)."
         }
       ]
     }

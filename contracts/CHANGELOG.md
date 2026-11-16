@@ -6,6 +6,18 @@ fails `pipeline/tests/test_contracts.py`.
 
 ## 2026-11-15
 
+- Membership reference: the 24 NCAA Division I men's soccer conferences
+  join `conferences`, each with a `conference_profiles` entry at `level`
+  `d1` (`A10`, `AAC`, `ACC`, `AE`, `ASUN`, `B1G`, `BIGEAST`, `BIGSOUTH`,
+  `BIGWEST`, `CAA`, `HORIZON`, `IVY`, `MAAC`, `MVC`, `MW`, `NEC`, `OVC`,
+  `PAC12`, `PATRIOT`, `SOCON`, `SUMMIT`, `SUNBELT`, `WAC`, `WCC`;
+  `code_is_word` true on `HORIZON`, `IVY`, `PATRIOT` and `SUMMIT`). The
+  fixture carries each with one men's window copied from the packaged file,
+  so its conference list still equals the packaged one; `BIGEAST` (Akron,
+  "Midwest Division") and `CAA` (Campbell, "South") exhibit divisions
+  spelled as the standings print them. No shape change: the packaged file
+  gains Division I windows for 2023-2026 only, and no Division II window,
+  profile or resolver answer changes.
 - Membership reference: a required top-level `conference_profiles` map,
   keyed by conference code, each entry `{level, names, code_is_word?}`: the
   conference as a record instead of a bare code. `level` is the NCAA level
