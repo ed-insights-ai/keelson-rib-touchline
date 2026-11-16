@@ -409,6 +409,25 @@ def resolution_stanzas(
     )
 
 
+def outside_stanzas(
+    schools: list[SchoolConfig],
+    gender: str,
+    in_scope: list[SchoolConfig],
+) -> list[SchoolConfig]:
+    """The gender's stanzas a collect's table left out: every other level.
+
+    They resolve nothing (``resolution_stanzas`` is the table), but they are
+    known schools, so a collect can tell text that names one of them from
+    text that names a programme of its own level.
+    """
+    kept = {id(school) for school in in_scope}
+    return [
+        school
+        for school in schools
+        if school.gender == gender and id(school) not in kept
+    ]
+
+
 def shard_stanzas(
     schools: list[SchoolConfig],
     stem: str,
@@ -1521,8 +1540,9 @@ def verify_standings(
 
     # The table a collect of this conference-season resolves against: the
     # stanzas at the conference's NCAA level that season.
+    all_schools = schools if schools is not None else load_schools()
     stanzas = resolution_stanzas(
-        schools if schools is not None else load_schools(),
+        all_schools,
         gender,
         conference,
         season_year,
@@ -1537,6 +1557,7 @@ def verify_standings(
         conference=conference,
         season=season_year,
         level=collecting_level(conference, document=membership_document),
+        outside=outside_stanzas(all_schools, gender, stanzas),
     )
     slugs = {name: opponent_slug(name, aliases, scope=scope) for name in page.names}
     return StandingsVerdict(

@@ -646,13 +646,18 @@ def test_the_tiebreak_enters_the_fingerprint_only_while_a_key_is_ambiguous():
     scope = _scope_with_points("CCAA", 2025)
     # The configured abbreviations name a shootout's winner between two known
     # sides, so a scope built from stanzas that carry them fingerprints them;
-    # the shipped config's member-only keys (ncaa_side) enter it too.
+    # the shipped config's member-only keys (ncaa_side) enter it too, and so
+    # do the stanzas' home states and claimed keys a printed state qualifier
+    # is held against (``_state_checked``).
     assert set(scope.fingerprint("cal-state-east-bay")) == {
         "conference",
         "season",
         "claims",
         "abbreviations",
         "member_only",
+        "states",
+        "spelled",
+        "outside_states",
         "tiebreak",
         "origin",
     }

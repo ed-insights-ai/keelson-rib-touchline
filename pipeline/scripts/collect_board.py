@@ -63,6 +63,7 @@ from src.membership import (
     division_for,
     has_windows,
     load_membership,
+    outside_stanzas,
     programme_level,
     resolution_stanzas,
     stanzas_at_level,
@@ -442,6 +443,7 @@ def collect_identity(
         season=season,
         points=points,
         level=level,
+        outside=outside_stanzas(schools, gender, in_scope),
     )
     return aliases, members, scope
 
