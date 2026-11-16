@@ -1392,3 +1392,65 @@ def test_the_probe_drafts_a_wmt_stanza_with_the_sites_sport_path(
     assert school["base_url"] == base
     assert school["years"] == [2025]
     assert school["enabled"] is False
+
+
+class _TimingOut(_WordPressSite):
+    """A WordPress site whose ``timeouts`` URLs never answer."""
+
+    def __init__(self, pages: dict[str, str], timeouts: set[str], **kwargs) -> None:
+        super().__init__(pages, **kwargs)
+        self.timeouts = timeouts
+
+    def get(self, url: str, timeout: int | None = None, headers: object = None):
+        if url in self.timeouts:
+            self.requests.append((url, headers))
+            import requests
+
+            raise requests.Timeout(f"read timed out: {url}")
+        return super().get(url, timeout, headers)
+
+
+def test_the_probe_reports_an_unread_box_score_join_as_an_error_not_absent() -> None:
+    """A WordPress site's box scores are reached only through the Game by
+    Game join (cumestats page, then the statistics team season). When that
+    join cannot be read the schedule still stands, but the probe could not
+    look for box scores: it says why, and keeps ``absent`` for a join read
+    and found to link nothing."""
+    from src.probe import PLATFORM_WMT, probe_layers
+
+    healthy = probe_layers(_south_carolina_site(), SC, 2025, PLATFORM_WMT)
+    assert healthy[LAYER_SCHEDULE] == "present"
+    assert healthy[LAYER_MATCHES] == "present"
+
+    # the statistics host answers 404 for the team season
+    pages = dict(_south_carolina_site().pages)
+    del pages[SC_TEAM_URL]
+    missing = _WordPressSite(pages)
+    layers = probe_layers(missing, SC, 2025, PLATFORM_WMT)
+    assert layers[LAYER_SCHEDULE] == "present"
+    assert layers[LAYER_MATCHES] == "error (box-score join not read: HTTP 404)"
+    bundle_html = wmt.fetch_layer(missing, SC, 2025, LAYER_SCHEDULE).page.html
+    assert wmt.join_failure(bundle_html) == "HTTP 404"
+
+    # the cumestats page times out
+    slow = _TimingOut(dict(_south_carolina_site().pages), {SC_CUMESTATS_URL})
+    layers = probe_layers(slow, SC, 2025, PLATFORM_WMT)
+    assert layers[LAYER_SCHEDULE] == "present"
+    assert layers[LAYER_MATCHES] == "error (box-score join not read: timeout)"
+
+    # a bundle archived before reasons were recorded still reads as a failure
+    legacy = wmt.read_bundle(bundle_html)
+    old_note = wmt.Bundle(
+        legacy.layer,
+        legacy.season,
+        legacy.generation,
+        legacy.parts,
+        ("Game by Game join unavailable: [2025] failed to fetch",),
+    )
+    assert wmt.join_failure(old_note.text()) == "unavailable"
+    assert (
+        wmt.join_failure(
+            wmt.fetch_layer(_south_carolina_site(), SC, 2025, LAYER_SCHEDULE).page.html
+        )
+        is None
+    )

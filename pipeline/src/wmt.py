@@ -93,6 +93,7 @@ from src.sidearm_live import (
     _stat_minutes,
     _stat_pair,
     assert_served_body,
+    failure_detail,
     hosted_skip,
     http_status,
     opponent_slug,
@@ -978,7 +979,7 @@ def _fetch_nuxt(
                 _LOG.warning(
                     "%s: the Game by Game join is unavailable: %s", page.final_url, exc
                 )
-                notes.append(f"Game by Game join unavailable: {exc}")
+                notes.append(join_unavailable_note(exc))
     elif kind == LAYER_ROSTER:
         key = f"roster-{proven.season_object.get('id')}-players-list"
         if not isinstance(data.get(key), list):
@@ -1097,6 +1098,40 @@ def fetch_layer(
         unchanged=unchanged,
         signature=signature if want_validators or state is not None else None,
     )
+
+
+#: How a bundle's notes record that the Game by Game join could not be read.
+JOIN_UNAVAILABLE = "Game by Game join unavailable"
+_JOIN_NOTE = re.compile(rf"^{re.escape(JOIN_UNAVAILABLE)}(?: \(([^)]*)\))?:")
+
+
+def join_unavailable_note(exc: LiveCollectionError) -> str:
+    """The note a schedule bundle carries when its Game by Game join failed.
+
+    It keeps why: what HTTP said, a timeout or a refused connection
+    (``failure_detail``), or ``not proven`` for a body that was served but
+    could not be read as the team season, so a reader of the archived
+    bundle (the probe) can report the failure rather than an empty join.
+    """
+    served = exc.status is not None or isinstance(
+        exc.__cause__, requests.RequestException
+    )
+    reason = failure_detail(exc) if served else "not proven"
+    return f"{JOIN_UNAVAILABLE} ({reason}): {exc}"
+
+
+def join_failure(html: str) -> str | None:
+    """Why a schedule bundle's Game by Game join failed, or None if it did not.
+
+    The reason ``join_unavailable_note`` recorded (``HTTP 503``,
+    ``timeout``); a bundle archived before reasons were recorded says only
+    ``unavailable``.
+    """
+    for note in _bundle_of(html, LAYER_SCHEDULE).notes:
+        match = _JOIN_NOTE.match(note)
+        if match is not None:
+            return match.group(1) or "unavailable"
+    return None
 
 
 def _validators_unchanged(
@@ -2138,7 +2173,7 @@ def _fetch_wordpress(
                 _LOG.warning(
                     "%s: the Game by Game join is unavailable: %s", page.final_url, exc
                 )
-                notes.append(f"Game by Game join unavailable: {exc}")
+                notes.append(join_unavailable_note(exc))
     elif kind == LAYER_ROSTER:
         if _wordpress_roster_table(page.body) is None:
             raise LiveCollectionError(

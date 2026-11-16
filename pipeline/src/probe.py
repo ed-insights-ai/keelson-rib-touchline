@@ -27,6 +27,7 @@ from src.sidearm_live import (
     _has_schedule_markup,
     _identity_key,
     boxscore_links,
+    failure_detail,
     fetch_published_page,
     parse_roster_page,
     parse_schedule_page,
@@ -96,26 +97,6 @@ def classify_platform(html: str) -> tuple[str, list[str]]:
         return PLATFORM_STATCREW, statcrew_evidence
 
     return PLATFORM_UNKNOWN, []
-
-
-def failure_detail(exc: LiveCollectionError) -> str:
-    """What HTTP said, in the words the report prints after ``error``.
-
-    A 403 is not nothing (bead tl-v1q.6): the status rides the exception when
-    the server answered one; a timeout or a refused connection is named as
-    such; the remaining case is a page that was served but could not prove
-    its season.
-    """
-    if exc.status is not None:
-        return f"HTTP {exc.status}"
-    cause = exc.__cause__
-    if isinstance(cause, requests.Timeout):
-        return "timeout"
-    if isinstance(cause, requests.ConnectionError):
-        return "connection failed"
-    if isinstance(cause, requests.RequestException):
-        return "request failed"
-    return "season not proven"
 
 
 def _fetch_failed(exc: LiveCollectionError) -> bool:
@@ -284,11 +265,18 @@ def _wmt_layers(session: requests.Session, base_url: str, year: int) -> dict[str
             aliases={},
         )
         layers[LAYER_SCHEDULE] = LAYER_PRESENT if fixtures else LAYER_ABSENT
-        layers[LAYER_MATCHES] = (
-            LAYER_PRESENT
-            if wmt.boxscore_links(schedule.page.html, schedule.page.final_url)
-            else LAYER_ABSENT
-        )
+        # A schedule whose box scores are reached only through the Game by
+        # Game join (every WordPress site) has no links when the join could
+        # not be read: that is a failure to look, never "absent", which is
+        # kept for a join (or an event list) read and found to link nothing.
+        links = wmt.boxscore_links(schedule.page.html, schedule.page.final_url)
+        joined = wmt.join_failure(schedule.page.html)
+        if links:
+            layers[LAYER_MATCHES] = LAYER_PRESENT
+        elif joined is not None:
+            layers[LAYER_MATCHES] = f"{LAYER_ERROR} (box-score join not read: {joined})"
+        else:
+            layers[LAYER_MATCHES] = LAYER_ABSENT
     except LiveCollectionError as exc:
         layers[LAYER_SCHEDULE] = _layer_error(exc)
         layers[LAYER_MATCHES] = _layer_error(exc)
