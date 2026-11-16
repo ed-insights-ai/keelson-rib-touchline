@@ -2050,11 +2050,19 @@ def _declared_table(
 
 def declared_form(text: str) -> str:
     """A printed spelling as a declaration matches it: whole, parentheticals
-    kept, case, spacing, punctuation and apostrophes aside ("Shattuck-St.
-    Mary's U19" and "Shattuck - St. Mary’s U19" are one form)."""
+    kept, case, spacing (around a parenthesis too), punctuation and
+    apostrophes aside ("Shattuck-St. Mary's U19" and "Shattuck - St. Mary’s
+    U19" are one form, as are "Charleston(Exhibition)" and "Charleston
+    (Exhibition)")."""
     text = _clean_team_name(text).lower().replace("&", " and ")
     text = text.replace("'", "").replace("’", "")
-    return " ".join(re.sub(r"[^a-z0-9()]+", " ", text).split())
+    text = re.sub(r"[^a-z0-9()]+", " ", text)
+    # The spacing around a parenthesis is the site's typing, not the text:
+    # "Charleston(Exhibition)" and "Charleston ( Exhibition )" are
+    # "charleston (exhibition)". What the parenthetical says still counts.
+    text = re.sub(r"\s*\(\s*", " (", text)
+    text = re.sub(r"\s*\)\s*", ") ", text)
+    return " ".join(text.split())
 
 
 def ncaa_side(

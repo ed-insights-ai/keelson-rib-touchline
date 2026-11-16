@@ -336,6 +336,28 @@ def test_the_whole_spelling_is_matched_case_spacing_and_apostrophes_aside() -> N
     assert declared_form("Charleston (Exhibition)") != declared_form("Charleston")
 
 
+@pytest.mark.parametrize(
+    "variant",
+    [
+        "Charleston(Exhibition)",
+        "Charleston ( Exhibition )",
+        "Charleston  (Exhibition)",
+        "charleston (EXHIBITION) ",
+    ],
+)
+def test_spacing_around_a_parenthesis_is_not_part_of_the_spelling(
+    identity, variant: str
+) -> None:
+    assert declared_form(variant) == "charleston (exhibition)"
+    assert identity(variant, "marshall", "SUNBELT", 2026, "men") == "charleston-wv"
+
+
+def test_what_the_parenthetical_says_still_counts() -> None:
+    assert declared_form("Charleston(Exhibition)") != declared_form("Charleston")
+    assert declared_form("Charleston(Exh.)") != declared_form("Charleston (Exhibition)")
+    assert declared_form("St. Mary's(Exhibition)(DH)") == "st marys (exhibition) (dh)"
+
+
 def test_schools_toml_declarations_are_valid() -> None:
     declared = load_declared_strangers()
     assert len(declared) == 15
