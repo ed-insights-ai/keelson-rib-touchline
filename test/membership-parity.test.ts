@@ -161,6 +161,38 @@ describe("resolveConference and members_in_effect agree", () => {
   }, 30_000);
 });
 
+/** The former-member shape: LOWER is authored through 2025; `former` is
+ *  LOWER's 2022-2025 and UPPER's for 2026 only, so in 2027 neither of its
+ *  windows covers the season. It moved on after LOWER's horizon, so no
+ *  carry-forward may restore it to LOWER. */
+const MOVED_ON_AFTER_THE_HORIZON: MembershipFile = {
+  ...MOVES_AT_THE_HORIZON,
+  memberships: {
+    former: { men: [window("LOWER", 2022, 2025), window("UPPER", 2026, 2026)] },
+    stayer: { men: [window("LOWER", 2022, 2025)] },
+    anchor: { men: [window("UPPER", 2022, 2027)] },
+  },
+};
+
+describe("carry-forward never restores a former member", () => {
+  test("a programme that moved on after the horizon is in neither conference once that window ends", async () => {
+    const { differ } = await compare(MOVED_ON_AFTER_THE_HORIZON);
+    expect(differ).toEqual([]);
+    _setMembershipCache(MOVED_ON_AFTER_THE_HORIZON);
+    try {
+      expect((await resolveConference("LOWER", "men", 2025)).slugs).toEqual(["former", "stayer"]);
+      expect((await resolveConference("LOWER", "men", 2026)).slugs).toEqual(["stayer"]);
+      expect(await resolveConference("LOWER", "men", 2027)).toMatchObject({
+        slugs: ["stayer"],
+        extrapolated: true,
+      });
+      expect((await resolveConference("UPPER", "men", 2027)).slugs).toEqual(["anchor"]);
+    } finally {
+      _resetMembershipCache();
+    }
+  }, 30_000);
+});
+
 describe("an empty conference request is refused with its reason", () => {
   test("past the horizon with every member authored elsewhere, and a code the record does not know", async () => {
     const ended: MembershipFile = {

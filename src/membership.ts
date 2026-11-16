@@ -229,6 +229,11 @@ export async function resolveConference(
     if (extrapolated && windows.some((w) => season >= w.from_season && season <= w.to_season)) {
       continue;
     }
+    // Nor is a programme whose windows moved it on after the horizon, even
+    // once that later window has ended: LOWER authored through 2025, a
+    // programme LOWER's 2022-2025 and UPPER's for 2026 has left LOWER, and a
+    // 2027 LOWER ask must not restore it. The same rule as conference_in_effect.
+    if (extrapolated && windows.some((w) => w.from_season > effective)) continue;
     const hit = windows.find((w) => effective >= w.from_season && effective <= w.to_season);
     if (!hit || hit.conference.toUpperCase() !== wanted) continue;
     slugs.push(slug);

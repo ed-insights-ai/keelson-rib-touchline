@@ -581,6 +581,13 @@ def conference_in_effect(
     carried anywhere (Trevecca, GSC from 2024, is no G-MAC member in 2024
     whatever the G-MAC's horizon is), and one carried forward is carried
     only into the conference being read.
+
+    Nor is a programme whose windows moved it on after the horizon, even
+    once that later window has ended: LOWER authored through 2025, a
+    programme LOWER's 2022-2025 and UPPER's for 2026 has left LOWER, so a
+    2027 LOWER collect does not restore it. A later window is what was
+    authored after the horizon season; only a programme with none is still
+    where the horizon left it.
     """
     membership_document = document if document is not None else load_membership()
     declared = conference_for(slug, gender, season_year, document=membership_document)
@@ -592,9 +599,26 @@ def conference_in_effect(
     if effective == season_year:
         return None
     carried = conference_for(slug, gender, effective, document=membership_document)
-    if carried is not None and carried.casefold() == conference.strip().casefold():
-        return carried
-    return None
+    if carried is None or carried.casefold() != conference.strip().casefold():
+        return None
+    if _authored_after(slug, gender, effective, document=membership_document):
+        return None
+    return carried
+
+
+def _authored_after(
+    slug: str, gender: str, season_year: int, *, document: dict[str, Any]
+) -> bool:
+    """Whether any of the programme's windows starts after ``season_year``."""
+    memberships = document.get("memberships")
+    genders = memberships.get(slug) if isinstance(memberships, dict) else None
+    windows = genders.get(gender) if isinstance(genders, dict) else None
+    return isinstance(windows, list) and any(
+        isinstance(window, dict)
+        and _is_year(window.get("from_season"))
+        and window["from_season"] > season_year
+        for window in windows
+    )
 
 
 def members_in_effect(
