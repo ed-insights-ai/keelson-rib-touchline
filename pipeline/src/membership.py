@@ -12,7 +12,13 @@ from typing import Any
 from bs4 import BeautifulSoup
 
 from src import paths
-from src.config import SchoolConfig, load_schools, programme_slug
+from src.config import (
+    DeclaredStranger,
+    SchoolConfig,
+    load_declared_strangers,
+    load_schools,
+    programme_slug,
+)
 
 #: The top-level key naming, per conference code, where a conference with no
 #: per-season records pages keeps its member lists instead.
@@ -1249,8 +1255,14 @@ def validate(
     document: dict[str, Any],
     *,
     schools: list[SchoolConfig] | None = None,
+    strangers: list[DeclaredStranger] | None = None,
 ) -> list[str]:
-    """Return every membership contract violation in a document."""
+    """Return every membership contract violation in a document.
+
+    ``schools`` defaults to schools.toml's stanzas and ``strangers`` to its
+    ``[[not_a_programme]]`` entries; given stanzas and no ``strangers``, no
+    entry is checked.
+    """
     errors: list[str] = []
     if not isinstance(document, dict):
         return ["membership document root must be a JSON object"]
@@ -1265,7 +1277,10 @@ def validate(
 
     if schools is None:
         schools = load_schools()
+        if strangers is None:
+            strangers = load_declared_strangers()
     from src.sidearm_live import (
+        declared_stranger_errors,
         level_identity_ambiguities,
         level_identity_collisions,
         member_alias_collisions,
@@ -1324,6 +1339,12 @@ def validate(
                 f"{school.conference!r} has none, so it would resolve opponent "
                 "text at every level"
             )
+    # The spellings schools.toml declares not a programme at one level.
+    errors.extend(
+        declared_stranger_errors(
+            strangers if strangers is not None else [], schools, document=document
+        )
+    )
     # A member alias resolves only inside its conference's scope, so the one
     # spelling it may not share is a fellow member's.
     for gender, conference, key, claimants in member_alias_collisions(schools):

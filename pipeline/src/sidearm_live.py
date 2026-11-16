@@ -71,7 +71,7 @@ import requests
 from bs4 import BeautifulSoup
 from urllib3.util.retry import Retry
 
-from src.config import SchoolConfig, programme_slug
+from src.config import DeclaredStranger, SchoolConfig, programme_slug
 from src.gazetteer import AP_TO_USPS, STATE_NAMES, USPS_TO_AP, parse_town
 from src.membership import (
     STRUCTURAL_CODES,
@@ -1492,6 +1492,68 @@ def level_identity_ambiguities(
     ]
 
 
+def declared_stranger_errors(
+    declared: Sequence[DeclaredStranger],
+    schools: list[SchoolConfig],
+    *,
+    document: dict[str, object],
+) -> list[str]:
+    """Every ``[[not_a_programme]]`` entry check-membership refuses.
+
+    The level must be an NCAA level; the slug must be a slug
+    (``programme_slug`` of itself) that no stanza at that level mints, or
+    the declaration would resolve the text to one of the level's programmes
+    after all (another level's programme slug is allowed: Saint Mary's of
+    Moraga on a Division II page is the Division I programme's school); an
+    owner must be a programme at the level; one spelling is declared once
+    per level and owner. An entry for every page of a level may not be a spelling a
+    stanza at that level claims (name, alias or member alias): the stanza
+    says the text is the programme, and the entry would silently overrule
+    it everywhere. An owner's entry may overrule a claim on that one page:
+    that is what it is for ("St. Joseph's" on Stony Brook's page).
+    """
+    from src.membership import LEVELS
+
+    errors: list[str] = []
+    slugs: dict[str, set[str]] = {}
+    claimed: dict[str, dict[str, str]] = {}
+    for _, level, _, stanzas in level_scopes(schools, document=document):
+        forms = claimed.setdefault(level, {})
+        for school in stanzas:
+            slugs.setdefault(level, set()).add(programme_slug(school.name))
+            for spelling in (school.name, *school.aliases, *school.member_aliases):
+                forms.setdefault(declared_form(spelling), programme_slug(school.name))
+    seen: set[tuple[str, str, str]] = set()
+    for entry in declared:
+        label = f"not_a_programme {entry.spelling!r} ({entry.level})"
+        if entry.level not in LEVELS:
+            errors.append(f"{label}: level must be one of {', '.join(LEVELS)}")
+        if programme_slug(entry.slug) != entry.slug:
+            errors.append(f"{label}: slug {entry.slug!r} is not a slug")
+        elif entry.slug in slugs.get(entry.level, ()):
+            errors.append(
+                f"{label}: slug {entry.slug!r} is a programme's at {entry.level}; "
+                "a declared stranger mints a slug no stanza of the level does"
+            )
+        if entry.owner and entry.owner not in slugs.get(entry.level, ()):
+            errors.append(
+                f"{label}: owner {entry.owner!r} is no programme at {entry.level}"
+            )
+        form = declared_form(entry.spelling)
+        key = (entry.level, form, entry.owner)
+        if key in seen:
+            errors.append(f"{label}: declared twice for the same owner")
+        seen.add(key)
+        claimant = claimed.get(entry.level, {}).get(form)
+        if not entry.owner and claimant is not None:
+            errors.append(
+                f"{label}: {claimant} claims this spelling at {entry.level}; "
+                "limit the entry to the page that misreads it (owner) or drop "
+                "the claim"
+            )
+    return errors
+
+
 def _season_ranges(seasons: Sequence[int]) -> str:
     """2016, 2017, 2018, 2021 as "2016-2018, 2021"."""
     runs: list[list[int]] = []
@@ -1658,6 +1720,11 @@ class ResolutionScope:
     # school, so the token-subset fallback never reads it as a programme of
     # the table whose key is a subset of it (``_unscoped_slug``).
     foreign: frozenset[str] = frozenset()
+    # Spellings schools.toml declares NOT a programme at the collecting
+    # level (``[[not_a_programme]]``), by ``declared_form``: the owner a
+    # declaration is limited to ("" for every page) and the stranger slug it
+    # mints. Consulted before any route (``opponent_slug``).
+    declared: Mapping[str, Mapping[str, str]] = dataclass_field(default_factory=dict)
     _notes: dict[str, str] = dataclass_field(
         default_factory=dict, compare=False, repr=False
     )
@@ -1751,6 +1818,13 @@ class ResolutionScope:
         ]
         return inside[0] if len(inside) == 1 else None
 
+    def declared_slug(self, name: str, owner: str | None) -> str | None:
+        """The stranger slug a declaration gives ``name`` on ``owner``'s page."""
+        owners = self.declared.get(declared_form(name))
+        if not owners:
+            return None
+        return owners.get(owner or "") or owners.get("")
+
     def note_state(self, printed: str, chosen: str, refused: str, state: str) -> None:
         """Record that ``printed``'s state qualifier moved it off ``refused``."""
         home = self.states.get(refused) or self.outside_states.get(refused)
@@ -1789,6 +1863,11 @@ class ResolutionScope:
             fingerprint["outside_states"] = dict(sorted(self.outside_states.items()))
         if self.foreign:
             fingerprint["foreign"] = sorted(self.foreign)
+        if self.declared:
+            fingerprint["declared"] = {
+                form: dict(sorted(owners.items()))
+                for form, owners in sorted(self.declared.items())
+            }
         if self.claimants:
             fingerprint["tiebreak"] = {
                 key: {slug: self.points.get(slug) for slug in sorted(slugs)}
@@ -1822,6 +1901,7 @@ def resolution_scope(
     points: Mapping[str, tuple[float, float]] | None = None,
     level: str | None = None,
     outside: Sequence[SchoolConfig] = (),
+    declared: Sequence[DeclaredStranger] = (),
 ) -> ResolutionScope:
     """The scope one collect resolves inside: ``members`` and their claims.
 
@@ -1850,6 +1930,9 @@ def resolution_scope(
     one of theirs is checked against their state the same way, and text
     whose whole key one of them claims is never read by the token-subset
     fallback as a programme of the table (``ResolutionScope.foreign``).
+
+    ``declared`` is schools.toml's ``[[not_a_programme]]`` list; the
+    entries at ``level`` are kept (none without a level).
     """
     claims: dict[str, str] = {}
     claimed: dict[str, set[str]] = {}
@@ -1938,7 +2021,29 @@ def resolution_scope(
             for candidate in _identity_spellings(school)
             if (key := _identity_key(candidate))
         ),
+        declared=_declared_table(declared, level),
     )
+
+
+def _declared_table(
+    declared: Sequence[DeclaredStranger], level: str | None
+) -> dict[str, dict[str, str]]:
+    table: dict[str, dict[str, str]] = {}
+    for entry in declared:
+        if level is not None and entry.level == level:
+            table.setdefault(declared_form(entry.spelling), {})[entry.owner] = (
+                entry.slug
+            )
+    return table
+
+
+def declared_form(text: str) -> str:
+    """A printed spelling as a declaration matches it: whole, parentheticals
+    kept, case, spacing, punctuation and apostrophes aside ("Shattuck-St.
+    Mary's U19" and "Shattuck - St. Mary’s U19" are one form)."""
+    text = _clean_team_name(text).lower().replace("&", " and ")
+    text = text.replace("'", "").replace("’", "")
+    return " ".join(re.sub(r"[^a-z0-9()]+", " ", text).split())
 
 
 def ncaa_side(
@@ -2033,7 +2138,27 @@ def opponent_slug(
     The routes are ``_resolved_slug``'s. Inside a scope, a printed state
     qualifier is then held against the answer (``_state_checked``): a
     programme in another state is not the school the text names.
+
+    Before any route, a spelling schools.toml declares not a programme at
+    the collecting level (``[[not_a_programme]]``, on every page or on the
+    one owner's) mints its declared stranger slug. That is the residue no
+    rule reads: "Columbia College" on South Carolina's page is Columbia
+    College of Columbia, S.C., and nothing in the text says it is not
+    Columbia; a rule that read "College" against "University" as a
+    contradiction was wrong on 11 of 14 measured rows (renamed schools:
+    "Tusculum College", "Thomas More College", "Mars Hill College").
     """
+    if scope is not None and scope.declared:
+        declared = scope.declared_slug(name, owner)
+        if declared is not None:
+            scope.note_page(
+                owner or "",
+                _clean_team_name(name),
+                f"resolution: {_clean_team_name(name)!r}"
+                + (f" on {owner}'s page" if owner else "")
+                + f" read as {declared}, declared not a programme",
+            )
+            return declared
     slug = _resolved_slug(name, aliases, scope=scope, owner=owner, seeded=seeded)
     if scope is None:
         return slug

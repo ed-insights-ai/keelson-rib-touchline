@@ -15102,3 +15102,123 @@ aliases      = ["Saint Mary's", "Saint Mary's College of California"]
 city         = "Moraga, Calif."
 city_source  = "https://smcgaels.com/sports/mens-soccer/schedule (schedule page home rows print \"Moraga, CA\", Saint Mary's Stadium; 10 of 10 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
+
+# ---------------------------------------------------------------------------
+# Spellings declared NOT a programme at one level
+# ---------------------------------------------------------------------------
+# The residue no general rule reads (measured 2026-11-16 by replaying the
+# 848 Division I and 2,313 Division II archived schedule pages): printed
+# text the identity routes resolve to a programme of the level although the
+# row's own evidence (opponent link host, venue, no twin on the programme's
+# page) names another school. A rule that read "College" in the text against
+# "University" in the programme's name was measured and refused: of 14 rows
+# it would change, 11 are the programme ("Tusculum College", "Thomas More
+# College", "Mississippi Christian University" are renamed schools;
+# "Kentucky Wesleyan University" a misprint). Each entry holds one measured
+# row set. `spelling` matches the whole printed text (case, spacing,
+# punctuation and apostrophes aside); `owner` limits it to that programme's
+# pages, for a spelling that elsewhere means the programme it resolves to;
+# `slug` is the stranger slug the side mints, the one the level already
+# gives the same school where it has one. check-membership validates every
+# entry (src/sidearm_live.py declared_stranger_errors).
+
+[[not_a_programme]]
+level    = "d1"
+spelling = "Columbia College"
+owner    = "south-carolina"
+slug     = "columbia-sc"  # as Winthrop's "Columbia College (S.C.)" resolves
+source   = "south-carolina/2026-men-schedule.html: 2026-10-12 exhibition at \"Columbia, S.C.\", read as Columbia (New York); Columbia College of Columbia, S.C., no twin on Columbia's page"
+
+[[not_a_programme]]
+level    = "d1"
+spelling = "Charleston (Exhibition)"
+owner    = "marshall"
+slug     = "charleston-wv"  # as West Virginia's "Charleston (W.Va.) (Exh.)" resolves
+source   = "marshall/2026-men-schedule.html: 2026-08-15 exhibition at Hoops Family Field, opponent link www.ucgoldeneagles.com (University of Charleston, W.Va.), read as College of Charleston; no twin on its page"
+
+[[not_a_programme]]
+level    = "d1"
+spelling = "University of Health Sciences & Pharmacy in St. Louis"
+slug     = "health-sciences-and-pharmacy-saint-louis"  # as Division II's Southwest Baptist page resolves it
+source   = "lindenwood/2023-men-schedule.html: 2023-09-19 at Hunter Stadium, opponent link www.eutecticsports.com (the Eutectics, NAIA), read by token subset as Saint Louis; no twin on Saint Louis's page"
+
+[[not_a_programme]]
+level    = "d1"
+spelling = "Jefferson College"
+owner    = "southern-indiana"
+slug     = "jefferson-mo"
+source   = "southern-indiana/2025-men-schedule.html: 2025-08-13 at Strassweg Field, opponent link www.jeffco.edu (Jefferson College, Hillsboro, Mo., a junior college), read as Jefferson (Philadelphia)"
+
+[[not_a_programme]]
+level    = "d1"
+spelling = "St. Joseph's"
+owner    = "stony-brook"
+slug     = "saint-josephs-ny"
+source   = "stony-brook/2023-men-schedule.html: 2023-09-26 at LaValle Stadium, opponent link sjliathletics.com (St. Joseph's University, Long Island, D-III), read as Saint Joseph's (Philadelphia); no twin on its page"
+
+[[not_a_programme]]
+level    = "d1"
+spelling = "St. Mary's (Exhibition)"
+owner    = "utrgv"
+slug     = "saint-marys"  # Division II St. Mary's (Texas), San Antonio
+source   = "utrgv/2023-men-schedule.html 2023-08-19 exhibition at \"Brownsville, TX\" and 2025-men 2025-08-19 at Edinburg, opponent link rattlerathletics.com (St. Mary's, San Antonio), read as Saint Mary's of California; twin on St. Mary's (Texas)'s 2025 page, none on Saint Mary's of California's"
+
+[[not_a_programme]]
+level    = "d2"
+spelling = "Maryville College"
+owner    = "king"
+slug     = "maryville-tn"
+source   = "king/2026-women-schedule.html: 2026-09-02 at \"Maryville, TN\", opponent link mcscots.com (Maryville College, Tenn., D-III), read as Maryville (St. Louis); no twin on its page"
+
+[[not_a_programme]]
+level    = "d2"
+spelling = "Jefferson College (Scrimmage)"
+owner    = "lincoln"
+slug     = "jefferson-mo"
+source   = "lincoln/2026-women-schedule.html: 2026-08-15 scrimmage at \"Hillsboro, Mo.\", opponent link www.jeffco.edu (Jefferson College, a junior college), read as Jefferson (Philadelphia)"
+
+[[not_a_programme]]
+level    = "d2"
+spelling = "Lincoln College"
+owner    = "dominican-of-california"
+slug     = "lincoln-il"
+source   = "dominican-of-california/2022-women-schedule.html: 2022-08-11 at Kennelly Field, opponent link athletics.lincolncollege.edu (Lincoln College, Lincoln, Ill., NAIA), read as Lincoln (Jefferson City, Mo.); no twin on its page"
+
+[[not_a_programme]]
+level    = "d2"
+spelling = "Notre Dame de Namur"
+slug     = "notre-dame-de-namur"
+source   = "southern-nazarene/2017-men-schedule.html: 2017-09-11 at \"Belmont, Calif.\", opponent link www.ndnuargos.com (Notre Dame de Namur, Belmont), read by token subset as Notre Dame College (Ohio); no twin on its page"
+
+[[not_a_programme]]
+level    = "d2"
+spelling = "Shattuck-St. Mary's U19"
+slug     = "shattuck-saint-marys"
+source   = "msu-moorhead/2024-women-schedule.html 2024-08-31 and 2025-women 2025-08-29 (opponent link www.s-sm.org, Shattuck-St. Mary's School, Faribault, Minn.), minnesota-crookston/2025-women 2025-08-30, southwest-minnesota-state/2025-women 2025-09-05: a school's U19 side, read by token subset as St. Mary's (Texas)"
+
+[[not_a_programme]]
+level    = "d2"
+spelling = "Shattuck-St. Mary's (Exhibition)"
+slug     = "shattuck-saint-marys"
+source   = "minnesota-crookston/2026-women-schedule.html: 2026-09-05 exhibition at \"Crookston, Minn.\", Shattuck-St. Mary's School's side, read by token subset as St. Mary's (Texas)"
+
+[[not_a_programme]]
+level    = "d2"
+spelling = "University of California"
+owner    = "dominican-of-california"
+slug     = "california"  # the Division I programme (Berkeley)
+source   = "dominican-of-california/2024-men-schedule.html: 2024-09-16 at Edwards Stadium (Berkeley), opponent link www.calbears.com, read as California (Pa.); no twin on its page"
+
+[[not_a_programme]]
+level    = "d2"
+spelling = "Saint Mary's"
+owner    = "stanislaus-state"
+slug     = "saint-marys-california"  # the Division I programme (Moraga)
+source   = "stanislaus-state/2022-men-schedule.html: 2022-08-19 at \"Moraga\", opponent link www.smcgaels.com, read as St. Mary's (Texas); no twin on its page"
+
+[[not_a_programme]]
+level    = "d2"
+spelling = "Columbia College"
+owner    = "missouri-st-louis"
+slug     = "columbia-mo"  # as Truman's "Columbia College (Mo.)" resolves
+source   = "missouri-st-louis/2023-men-schedule.html and 2023-women: 2023-08-20 at Don Dallas Soccer Field, opponent link www.columbiacougars.com (Columbia College, Columbia, Mo., NAIA), read as Columbia (New York) and Columbia (CACC)"
