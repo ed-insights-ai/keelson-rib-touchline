@@ -1652,6 +1652,12 @@ class ResolutionScope:
     # equals one of them must not stand for it when the printed state says
     # otherwise ("Union College (Ky.)" is not Union of Tennessee).
     outside_states: Mapping[str, str] = dataclass_field(default_factory=dict)
+    # Every identity key a stanza of the gender OUTSIDE the table claims by
+    # name, alias or resolving abbreviation ("southern new hampshire",
+    # "cal poly pomona"). Text whose whole key is one of them names that
+    # school, so the token-subset fallback never reads it as a programme of
+    # the table whose key is a subset of it (``_unscoped_slug``).
+    foreign: frozenset[str] = frozenset()
     _notes: dict[str, str] = dataclass_field(
         default_factory=dict, compare=False, repr=False
     )
@@ -1781,6 +1787,8 @@ class ResolutionScope:
                 key: sorted(slugs) for key, slugs in sorted(self.spelled.items())
             }
             fingerprint["outside_states"] = dict(sorted(self.outside_states.items()))
+        if self.foreign:
+            fingerprint["foreign"] = sorted(self.foreign)
         if self.claimants:
             fingerprint["tiebreak"] = {
                 key: {slug: self.points.get(slug) for slug in sorted(slugs)}
@@ -1839,7 +1847,9 @@ def resolution_scope(
     programme a name resolves to. ``outside`` is the gender's stanzas at
     every other level that season (``membership.outside_stanzas``): they
     never resolve anything here, but a slug minted from text that equals
-    one of theirs is checked against their state the same way.
+    one of theirs is checked against their state the same way, and text
+    whose whole key one of them claims is never read by the token-subset
+    fallback as a programme of the table (``ResolutionScope.foreign``).
     """
     claims: dict[str, str] = {}
     claimed: dict[str, set[str]] = {}
@@ -1921,6 +1931,13 @@ def resolution_scope(
             and programme_slug(school.name) not in states
             and (state := stanza_state(school)) is not None
         },
+        foreign=frozenset(
+            key
+            for school in outside
+            if school.gender == gender and programme_slug(school.name) not in states
+            for candidate in _identity_spellings(school)
+            if (key := _identity_key(candidate))
+        ),
     )
 
 
@@ -1952,7 +1969,11 @@ def ncaa_side(
         return slug
     key = _identity_key(slug.replace("-", " "))
     chosen = scope.member_only.get(key)
-    if chosen is None or chosen == slug or _unscoped_slug(key, aliases) != slug:
+    if (
+        chosen is None
+        or chosen == slug
+        or _unscoped_slug(key, aliases, scope.foreign) != slug
+    ):
         return slug
     scope._record(
         f"ncaa:{slug}",
@@ -2117,6 +2138,7 @@ def _resolved_slug(
     key = _identity_key(name)
     if not key:
         return programme_slug(_clean_team_name(name))
+    foreign = frozenset() if scope is None else scope.foreign
     # An institution key ("boston college") is held only for a folded key an
     # institution word splits (``institution_split_keys``), so it is tried
     # first and can only ever name one of those programmes; every other
@@ -2125,7 +2147,9 @@ def _resolved_slug(
     if institution and institution != key:
         if scope is not None and institution in scope.claims:
             chosen = scope.claims[institution]
-            otherwise = aliases.get(institution) or _unscoped_slug(key, aliases)
+            otherwise = aliases.get(institution) or _unscoped_slug(
+                key, aliases, foreign
+            )
             if chosen != otherwise:
                 scope.note(_clean_team_name(name), chosen, otherwise)
             return chosen
@@ -2134,7 +2158,7 @@ def _resolved_slug(
     key = _division_seed_key(name, key, aliases, scope, seeded=seeded)
     if scope is not None and key in scope.claims:
         chosen = scope.claims[key]
-        otherwise = _unscoped_slug(key, aliases)
+        otherwise = _unscoped_slug(key, aliases, foreign)
         if chosen != otherwise:
             scope.note(_clean_team_name(name), chosen, otherwise)
         return chosen
@@ -2142,10 +2166,10 @@ def _resolved_slug(
         ranked = scope.nearest_claimant(key, owner)
         if ranked is not None:
             chosen = ranked[0][0]
-            if chosen != _unscoped_slug(key, aliases):
+            if chosen != _unscoped_slug(key, aliases, foreign):
                 scope.note_distance(_clean_team_name(name), owner, ranked)
             return chosen
-    return _unscoped_slug(key, aliases)
+    return _unscoped_slug(key, aliases, foreign)
 
 
 # A conference that seeds its tournament by division can spell the division
@@ -2188,7 +2212,9 @@ def _division_seed_key(
     return key
 
 
-def _unscoped_slug(key: str, aliases: dict[str, str]) -> str:
+def _unscoped_slug(
+    key: str, aliases: dict[str, str], foreign: frozenset[str] = frozenset()
+) -> str:
     """The table-wide rule: exact claim, unique multi-token match, or the key.
 
     "Table-wide" is the ``aliases`` given: on the collection path that is
@@ -2197,9 +2223,23 @@ def _unscoped_slug(key: str, aliases: dict[str, str]) -> str:
     only ever pick a programme of that level. Over every level at once,
     "Penn State Abington" is a token superset of Division I "Penn State" and
     re-points to it, and "North Carolina Wesleyan" to "North Carolina".
+
+    The level scope keeps the other level's programmes out of the table,
+    but not out of the text: a Division I page still prints "Southern New
+    Hampshire", and inside the Division I table that key holds every token
+    of "New Hampshire". Measured over the 848 archived Division I pages at
+    10a1308, the subset read "Southern New Hampshire" (Dartmouth, Merrimack)
+    as New Hampshire and "Cal Poly Pomona" (CSUN, San Diego) as Cal Poly.
+    So a key that is ``foreign``, claimed whole by a stanza of the gender at
+    another level, names that school: the subset is not tried and the key
+    mints its own slug. An exact claim still wins first ("Charleston" on a
+    Division I page is the College of Charleston, though a Division II
+    Charleston claims the word too).
     """
     if key in aliases:
         return aliases[key]
+    if key in foreign:
+        return programme_slug(key)
 
     published = set(key.split())
     candidates = {
