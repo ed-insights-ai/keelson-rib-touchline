@@ -308,6 +308,58 @@ def test_a_bare_ncaa_is_a_slot_not_a_programme() -> None:
     assert _parse(html) == {}
 
 
+def test_the_division_one_championship_rounds_are_ncaa_postseason() -> None:
+    """The Division I championship's semifinals and final are the College Cup.
+
+    "NCAA College Cup" carried no round word the NCAA rule knew, so a block
+    under it was no postseason and an opponent cell printing it would mint
+    a programme named for it. The phrase is the NCAA's own, so it names the
+    competition with or without "NCAA" beside it, and it is a round.
+    """
+    for header in (
+        "NCAA College Cup",
+        "NCAA Tournament First Round",
+        "NCAA Second Round",
+        "NCAA Third Round",
+        "NCAA Quarterfinal",
+        "NCAA College Cup Semifinal",
+        "College Cup Final",
+        "2025 NCAA Men's College Cup",
+    ):
+        assert tournament_stage(header) == {
+            "phase": "postseason",
+            "competition": "ncaa",
+            "source": header,
+        }, header
+        assert round_placeholder(header), header
+    # Another body's cup is still another body's postseason.
+    assert tournament_stage("NCCAA College Cup") == {
+        "phase": "unknown",
+        "source": "NCCAA College Cup",
+    }
+
+    html = _page(
+        _row("1", "Nov 30 (Sun)", "Tiffin", "W, 1-0")
+        + _block(
+            "NCAA College Cup",
+            _row("2", "Dec 12 (Fri)", "Quincy", "W, 2-1", "College Cup Semifinal")
+            + _row("3", "Dec 15 (Mon)", "Maryville", "L, 0-1", "NCAA College Cup")
+            + _row("4", "Dec 15 (Mon)", "NCAA College Cup"),
+        )
+    )
+    rows = _parse(html)
+    assert rows["1"]["stage"] == {"phase": "regular"}
+    assert rows["2"]["stage"] == {
+        "phase": "postseason",
+        "competition": "ncaa",
+        "source": "NCAA College Cup",
+        "round_published": "College Cup Semifinal",
+    }
+    assert rows["3"]["stage"]["round_published"] == "NCAA College Cup"  # type: ignore[index]
+    # The unfilled slot is skipped, never minted as a programme.
+    assert "4" not in rows
+
+
 def test_dedupe_keeps_a_fact_one_row_published_and_flips_it_to_the_kept_orientation() -> (
     None
 ):

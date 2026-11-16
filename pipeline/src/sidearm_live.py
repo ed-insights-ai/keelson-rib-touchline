@@ -934,11 +934,13 @@ def calendar_event_skip(date: str, name: str) -> str:
 # stays with the round words and no name merely containing it is caught.
 # The level the slot may carry is any of the three, spelled any way a site
 # does ("NCAA D2", "NCAA DI", "NCAA Division III", "NCAA Division 1"): the
-# rib is not one NCAA division's, and no programme is named for one.
+# rib is not one NCAA division's, and no programme is named for one. The
+# Division I championship's final rounds print as "NCAA College Cup", which
+# no programme is named for either.
 _ROUND_PLACEHOLDER = re.compile(
     r"\b(?:tournament|championships?|quarte(?:r)?-?finals?|semi-?finals?|finals?"
     r"|(?:\d{1,2}(?:st|nd|rd|th)|first|second|third|fourth|opening)\s+rounds?"
-    r"|selection\s+show|playoffs?|regionals?|\bconference\b"
+    r"|selection\s+show|playoffs?|regionals?|\bconference\b|college\s+cup"
     r"|or|winner|loser)\b",
     re.IGNORECASE,
 )
@@ -1941,12 +1943,19 @@ _NCAA_POSTSEASON_WORD = re.compile(
     re.IGNORECASE,
 )
 _OTHER_BODY = re.compile(r"\b(?:NCCAA|USCAA|NAIA|NJCAA)\b", re.IGNORECASE)
+# The Division I championship's final rounds, its semifinals and final, are
+# the College Cup: "NCAA College Cup", "College Cup Semifinal", "College Cup
+# Final". The phrase is the NCAA's alone, so it names the competition with
+# or without the body beside it, and it is a round. Measured 2026-11-15: no
+# archived Division II schedule page (2,313, both genders, 2016-2026) prints
+# it, so no Division II row is read differently.
+_COLLEGE_CUP = re.compile(r"\bcollege\s+cup\b", re.IGNORECASE)
 _CHAMPIONSHIP = r"(?:tournament|championships?|final\s+four)\b"
 _CHAMPIONSHIP_WORD = re.compile(rf"\b{_CHAMPIONSHIP}", re.IGNORECASE)
 _CONFERENCE_WORD = re.compile(r"\bconference\b", re.IGNORECASE)
 _ROUND_WORD = re.compile(
     r"\b(?:rounds?|(?:quarter|semi)-?finals?|finals?|championship|final\s+four"
-    r"|elite\s+eight)\b",
+    r"|elite\s+eight|college\s+cup)\b",
     re.IGNORECASE,
 )
 
@@ -2121,7 +2130,9 @@ def tournament_stage(
     text = " ".join(header.split())
     if not text:
         return None
-    if _NCAA_BODY.search(text) and _NCAA_POSTSEASON_WORD.search(text):
+    if (_NCAA_BODY.search(text) and _NCAA_POSTSEASON_WORD.search(text)) or (
+        _COLLEGE_CUP.search(text) and not _OTHER_BODY.search(text)
+    ):
         return {"phase": "postseason", "competition": "ncaa", "source": text}
     if _OTHER_BODY.search(text):
         return {"phase": "unknown", "source": text}
