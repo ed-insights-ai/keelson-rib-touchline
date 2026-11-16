@@ -7,6 +7,7 @@
 //     http://www.apache.org/licenses/LICENSE-2.0
 
 import { describe, expect, test } from "bun:test";
+import { realpathSync } from "node:fs";
 import { mkdir, mkdtemp, utimes, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -15,10 +16,12 @@ import {
   _resetMembershipCache,
   _setMembershipCache,
   activeConferences,
+  activeConferencesInSeason,
   CONFERENCE_LEVELS,
   conferenceLevel,
   loadMembership,
   type MembershipFile,
+  programmeLevel,
   resolveConference,
 } from "../src/membership.ts";
 
@@ -255,6 +258,72 @@ describe("conference levels", () => {
     }
   });
 
+  test("a conference that ended is carried nowhere: its members' own windows win over its horizon", async () => {
+    // ENDED authors through 2025; both its members are authored elsewhere for
+    // 2026, so a 2026 ENDED collect has nobody. KEPT authors through 2025 too,
+    // but its member has no 2026 window, so it is carried forward (flagged).
+    _setMembershipCache({
+      conferences: ["ENDED", "MOVED", "KEPT"],
+      conference_profiles: {
+        ENDED: { level: "d1", names: ["Ended League"] },
+        MOVED: { level: "d1", names: ["Moved League"] },
+        KEPT: { level: "d1", names: ["Kept League"] },
+      },
+      memberships: {
+        a: {
+          men: [
+            { conference: "ENDED", from_season: 2023, to_season: 2025, source: "t" },
+            { conference: "MOVED", from_season: 2026, to_season: 2026, source: "t" },
+          ],
+        },
+        b: {
+          men: [
+            { conference: "ENDED", from_season: 2023, to_season: 2025, source: "t" },
+            { conference: "independent", from_season: 2026, to_season: 2026, source: "t" },
+          ],
+        },
+        c: { men: [{ conference: "KEPT", from_season: 2023, to_season: 2025, source: "t" }] },
+      },
+    });
+    try {
+      expect(await resolveConference("ENDED", "men", 2025)).toMatchObject({ slugs: ["a", "b"] });
+      expect(await resolveConference("ENDED", "men", 2026)).toMatchObject({
+        slugs: [],
+        extrapolated: true,
+      });
+      expect(await resolveConference("KEPT", "men", 2026)).toMatchObject({
+        slugs: ["c"],
+        extrapolated: true,
+      });
+      expect(await activeConferencesInSeason("men", 2026, "d1")).toEqual({
+        conferences: ["KEPT", "MOVED"],
+        skipped: ["ENDED"],
+      });
+      expect(await programmeLevel("b", "men", 2026)).toBe("d1");
+    } finally {
+      _resetMembershipCache();
+    }
+  });
+
+  test("the shipped record: the 2026 Division I men's sweep is 23 conferences, the WAC left out by name", async () => {
+    const r = await run([
+      "bun",
+      resolver,
+      "conferences",
+      "men",
+      "--level",
+      "d1",
+      "--season",
+      "2026",
+    ]);
+    expect(r.code).toBe(0);
+    expect(r.stdout.trim().split(" ")).toHaveLength(23);
+    expect(r.stdout).not.toContain("WAC");
+    expect(r.stderr).toBe("skipped (no men 2026 members): WAC\n");
+    const wac = await run(["bun", resolver, "conference", "WAC", "men", "2026"]);
+    expect(wac.code).toBe(1);
+  });
+
   test("a conference with no profile stops a level-filtered sweep, never thins it", async () => {
     _setMembershipCache({
       ...file,
@@ -285,12 +354,14 @@ describe("workflows/touchline-collect.yml", () => {
     expect(ids).toEqual([
       "preflight",
       "resolve-pipeline",
+      "level-guard",
       "resolve-programmes",
       "collect",
       "report",
     ]);
+    expect(wf.nodes.find((n) => n.id === "level-guard")?.depends_on).toEqual(["resolve-pipeline"]);
     const resolve = wf.nodes.find((n) => n.id === "resolve-programmes");
-    expect(resolve?.depends_on).toEqual(["resolve-pipeline"]);
+    expect(resolve?.depends_on).toEqual(["level-guard"]);
     expect(resolve?.bash).toContain("bin/resolve-membership.ts");
     const collect = wf.nodes.find((n) => n.id === "collect");
     expect(collect?.depends_on).toEqual(["resolve-programmes"]);
@@ -363,8 +434,9 @@ describe("workflows/touchline-backfill.yml", () => {
     expect(slots.map((n) => n.id)).toEqual(
       Array.from({ length: max }, (_, i) => `collect-${i + 1}`),
     );
+    expect(wf.nodes.find((n) => n.id === "level-guard")?.depends_on).toEqual(["resolve-pipeline"]);
     slots.forEach((n, i) => {
-      expect(n.depends_on).toEqual([i === 0 ? "resolve-pipeline" : `collect-${i}`]);
+      expect(n.depends_on).toEqual([i === 0 ? "level-guard" : `collect-${i}`]);
       if (i > 0) expect(n.trigger_rule).toBe("all_done");
       expect(n.bash).toContain(`SLOT=${i + 1} sh`);
       expect(n.bash).toContain("bin/backfill-slot.sh");
@@ -471,7 +543,7 @@ describe("workflows/touchline-backfill.yml", () => {
     const live = await run(["bash", "-c", body], env, home);
     expect(live.code).toBe(1);
     expect(live.stdout).toContain(
-      `REFUSED: the touchline cadence is running (pid ${process.pid}); retry after it finishes.`,
+      `REFUSED: the touchline cadence for this data home is running (pid ${process.pid}, lock ${lock}); retry after it finishes.`,
     );
 
     // a lock whose pid is gone is stale: the range check runs as before
@@ -520,6 +592,155 @@ describe("workflows/touchline-backfill.yml", () => {
     });
     expect(r.code).toBe(1);
     expect(r.stdout).toContain("REFUSED: membership resolution failed for NOPE men 2024");
+  });
+});
+
+// ── one NCAA level per data home ─────────────────────────────────────────────
+
+// A marked data home at `dir` (created), with `level` in its marker when given.
+async function markedHome(dir: string, level?: string): Promise<string> {
+  await mkdir(dir, { recursive: true });
+  await writeFile(
+    join(dir, "touchline-data.yaml"),
+    `kind: touchline-data\nversion: 1\n${level ? `level: ${level}\n` : ""}`,
+  );
+  // physical, the way a bash node's $PWD reports it (macOS tmp is a symlink)
+  return realpathSync(dir);
+}
+
+// One conference at each level, chosen from the shipped record's profiles.
+async function conferenceAt(level: string): Promise<string> {
+  const file = await loadMembership();
+  const found = Object.entries(file.conference_profiles).find(([, p]) => p.level === level);
+  if (!found) throw new Error(`the shipped record profiles no ${level} conference`);
+  return found[0];
+}
+
+describe("the level guard (workflows' level-guard node, bin/resolve-membership.ts guard)", () => {
+  for (const name of ["touchline-collect", "touchline-backfill"]) {
+    test(`${name}: a conference of the other level is refused before anything is fetched, naming both levels`, async () => {
+      const wf = await loadWorkflow(name);
+      const body = wf.nodes.find((n) => n.id === "level-guard")?.bash ?? "";
+      expect(body).toContain("guard");
+      const root = await mkdtemp(join(tmpdir(), "touchline-level-"));
+      const d1Home = await markedHome(join(root, "d1-soccer"), "d1");
+      const d2Home = await markedHome(join(root, "d2-soccer"), "d2");
+      const d1 = await conferenceAt("d1");
+      const d2 = await conferenceAt("d2");
+      const env = { KEELSON_NODE_resolve_pipeline_OUTPUT: join(pkg, "pipeline") };
+
+      const intoD2 = await run(
+        ["bash", "-c", body],
+        { ...env, KEELSON_INPUTS_conference: d1 },
+        d2Home,
+      );
+      expect(intoD2.code).toBe(1);
+      expect(intoD2.stdout).toContain(
+        `REFUSED: ${d1} is a d1 conference and the data home ${d2Home} collects d2 (declared in its marker).`,
+      );
+      const intoD1 = await run(
+        ["bash", "-c", body],
+        { ...env, KEELSON_INPUTS_conference: d2 },
+        d1Home,
+      );
+      expect(intoD1.code).toBe(1);
+      expect(intoD1.stdout).toContain(
+        `REFUSED: ${d2} is a d2 conference and the data home ${d1Home} collects d1 (declared in its marker).`,
+      );
+      const ok = await run(["bash", "-c", body], { ...env, KEELSON_INPUTS_conference: d1 }, d1Home);
+      expect(ok.code).toBe(0);
+      expect(ok.stdout).toContain(`level OK: ${d1} is d1, the data home's level (declared).`);
+    });
+  }
+
+  test("a marker with no level is read as d2 and says so: d2 passes, d1 is refused", async () => {
+    const wf = await loadWorkflow("touchline-collect");
+    const body = wf.nodes.find((n) => n.id === "level-guard")?.bash ?? "";
+    const home = await markedHome(await mkdtemp(join(tmpdir(), "touchline-nolevel-")));
+    const env = { KEELSON_NODE_resolve_pipeline_OUTPUT: join(pkg, "pipeline") };
+    const d2 = await run(
+      ["bash", "-c", body],
+      { ...env, KEELSON_INPUTS_conference: await conferenceAt("d2") },
+      home,
+    );
+    expect(d2.code).toBe(0);
+    expect(d2.stdout).toContain(
+      `NOTE: ${home}/touchline-data.yaml declares no level, so it is read as d2: every data home made before levels existed is Division II.`,
+    );
+    expect(d2.stdout).toContain("the data home's level (assumed).");
+    const d1 = await run(
+      ["bash", "-c", body],
+      { ...env, KEELSON_INPUTS_conference: await conferenceAt("d1") },
+      home,
+    );
+    expect(d1.code).toBe(1);
+    expect(d1.stdout).toContain("collects d2 (assumed: its marker declares no level)");
+  });
+
+  test("a marker stating a level that is not d1, d2 or d3 is refused, never guessed past", async () => {
+    const home = await mkdtemp(join(tmpdir(), "touchline-badlevel-"));
+    await writeFile(
+      join(home, "touchline-data.yaml"),
+      "kind: touchline-data\nversion: 1\nlevel: D4\n",
+    );
+    const r = await run(["bun", resolver, "guard", home, await conferenceAt("d2")]);
+    expect(r.code).toBe(1);
+    expect(r.stdout).toContain("level: D4 is not one of d1, d2, d3");
+    const lv = await run(["bun", resolver, "home-level", home]);
+    expect(lv.code).toBe(1);
+  });
+});
+
+describe("the backfill preflight consults its own home's cadence lock", () => {
+  test("with the D2 cadence lock live, a D1 home's backfill proceeds and a D2 home's refuses; the lock matches the cadence's own", async () => {
+    const wf = await loadWorkflow("touchline-backfill");
+    const body = wf.nodes.find((n) => n.id === "preflight")?.bash ?? "";
+    const fakeHome = await mkdtemp(join(tmpdir(), "touchline-two-homes-"));
+    const d2Home = await markedHome(join(fakeHome, "keelson", "d2-soccer"));
+    const d1Home = await markedHome(join(fakeHome, "keelson", "d1-soccer"), "d1");
+    const locks = join(fakeHome, ".keelson", "locks");
+    const d2Lock = join(locks, "touchline-collect-cadence.lock");
+    await mkdir(d2Lock, { recursive: true });
+    await writeFile(join(d2Lock, "pid"), `${process.pid}\n`);
+    const env = {
+      HOME: fakeHome,
+      TOUCHLINE_CADENCE_LOCK_DIR: "",
+      KEELSON_INPUTS_conference: "X",
+      KEELSON_INPUTS_gender: "men",
+      KEELSON_INPUTS_from_season: "2025",
+      KEELSON_INPUTS_to_season: "2026",
+    };
+
+    const d1 = await run(["bash", "-c", body], env, d1Home);
+    expect(d1.code).toBe(0);
+    const d1Lock = join(locks, "touchline-collect-cadence.d1-soccer.lock");
+    expect(d1.stdout).toContain(`cadence lock: ${d1Lock} (not held)`);
+    const d2 = await run(["bash", "-c", body], env, d2Home);
+    expect(d2.code).toBe(1);
+    expect(d2.stdout).toContain(
+      `REFUSED: the touchline cadence for this data home is running (pid ${process.pid}, lock ${d2Lock})`,
+    );
+
+    // the D1 home's own cadence running refuses its backfill
+    await mkdir(d1Lock, { recursive: true });
+    await writeFile(join(d1Lock, "pid"), `${process.pid}\n`);
+    expect((await run(["bash", "-c", body], env, d1Home)).code).toBe(1);
+
+    // the cadence derives the very same lock paths for both homes
+    for (const [home, lock] of [
+      [d2Home, d2Lock],
+      [d1Home, d1Lock],
+    ] as const) {
+      const paths = await run(
+        ["/bin/sh", join(pkg, "bin", "touchline-collect-cadence.sh"), "paths"],
+        {
+          HOME: fakeHome,
+          TOUCHLINE_DATA_HOME: home,
+          TOUCHLINE_CADENCE_LOCK_DIR: "",
+        },
+      );
+      expect(paths.stdout).toContain(`lock_dir=${lock}\n`);
+    }
   });
 });
 

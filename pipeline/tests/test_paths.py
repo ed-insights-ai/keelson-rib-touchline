@@ -70,3 +70,33 @@ def test_no_hardcoded_data_paths_remain():
                 if needle in text:
                     offenders.append(f"{file.relative_to(package_root)}: {needle}")
     assert not offenders, f"hardcoded data paths: {offenders}"
+
+
+# ── the marker's NCAA level ──────────────────────────────────────────────────
+
+
+def _mark(root: Path, body: str) -> None:
+    (root / paths.MARKER_FILE).write_text(body, encoding="utf-8")
+
+
+def test_home_level_reads_the_marker(monkeypatch, tmp_path):
+    import pytest
+
+    monkeypatch.setenv("TOUCHLINE_DATA_DIR", str(tmp_path))
+    assert paths.home_level() is None  # no marker: nothing to check
+    _mark(tmp_path, "kind: touchline-data\nversion: 1\nlevel: d1\n")
+    assert paths.home_level() == paths.HomeLevel("d1", declared=True)
+    _mark(tmp_path, "kind: touchline-data\nversion: 1\n")
+    assert paths.home_level() == paths.HomeLevel("d2", declared=False)
+    _mark(tmp_path, "kind: touchline-data\nversion: 1\nlevel: D4\n")
+    with pytest.raises(paths.MarkerError, match="level: D4"):
+        paths.home_level()
+    _mark(tmp_path, "kind: something-else\n")
+    with pytest.raises(paths.MarkerError, match="kind: something-else"):
+        paths.home_level()
+
+
+def test_home_levels_are_the_membership_levels():
+    from src import membership
+
+    assert paths.HOME_LEVELS == membership.LEVELS

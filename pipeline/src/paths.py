@@ -17,6 +17,8 @@ src/config.py DEFAULT_CONFIG.
 from __future__ import annotations
 
 import os
+import re
+from dataclasses import dataclass
 from pathlib import Path
 
 
@@ -84,3 +86,67 @@ def packaged_programmes_path() -> Path:
     ``packaged_membership_path()`` is.
     """
     return package_root() / "data" / "reference" / "programmes.json"
+
+
+#: The file that makes a directory a Touchline data home (src/datahome.ts).
+MARKER_FILE = "touchline-data.yaml"
+
+#: The NCAA levels a home can collect, the same three as
+#: ``membership.LEVELS`` (kept here so this seam imports nothing).
+HOME_LEVELS = ("d1", "d2", "d3")
+
+#: What a marker with no ``level`` line means. Every data home made before
+#: levels existed is Division II: until the Division I men's conferences were
+#: onboarded the membership record held Division II conferences only, so
+#: nothing could have been collected into such a home at another level. That
+#: is the one place d2 is provably the answer, and every reader says it
+#: assumed it (``HomeLevel.declared``) rather than swallowing it. The rib's
+#: src/datahome.ts reads the marker by the same rule.
+UNDECLARED_HOME_LEVEL = "d2"
+
+
+class MarkerError(ValueError):
+    """A marker that is not a usable Touchline marker: a foreign ``kind``, or
+    a ``level`` that is not d1, d2 or d3. Refused, never guessed past."""
+
+
+@dataclass(frozen=True)
+class HomeLevel:
+    """The NCAA level a data home collects, and whether its marker states it."""
+
+    level: str
+    declared: bool
+
+
+def marker_path() -> Path:
+    return data_root() / MARKER_FILE
+
+
+def home_level() -> HomeLevel | None:
+    """The data root's level per its marker; None when it carries no marker.
+
+    The pipeline has never required a marker (the rib and the workflows
+    refuse an unmarked folder before they call it), so an unmarked root is
+    no level to check, not a refusal. A marker with no ``level`` is the d2
+    every pre-level home is, ``declared=False``.
+    """
+    try:
+        text = marker_path().read_text(encoding="utf-8")
+    except OSError:
+        return None
+    kind = re.search(r"^\s*kind:\s*(\S+)\s*$", text, re.MULTILINE)
+    if kind is None or kind.group(1) != "touchline-data":
+        raise MarkerError(
+            f"{marker_path()} is not a Touchline marker "
+            f"(kind: {kind.group(1) if kind else '(absent)'})"
+        )
+    level = re.search(r"^\s*level:\s*(\S+)\s*$", text, re.MULTILINE)
+    if level is None:
+        return HomeLevel(UNDECLARED_HOME_LEVEL, declared=False)
+    value = level.group(1).lower()
+    if value not in HOME_LEVELS:
+        raise MarkerError(
+            f"{marker_path()} states level: {level.group(1)}, "
+            f"which is not one of {', '.join(HOME_LEVELS)}"
+        )
+    return HomeLevel(value, declared=True)

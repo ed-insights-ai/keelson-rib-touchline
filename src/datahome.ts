@@ -8,6 +8,7 @@
 
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
+import { CONFERENCE_LEVELS, type ConferenceLevel, isConferenceLevel } from "./levels.ts";
 import {
   type FixturesFile,
   fixturesFileSchema,
@@ -54,10 +55,40 @@ export function dataHome(root: string): DataHome {
   };
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// A data home collects ONE NCAA level. The marker may say which:
+//
+//   kind: touchline-data
+//   version: 1
+//   level: d1
+//
+// `level` is optional because every home made before levels existed carries
+// none, and every one of those is Division II: until the Division I men's
+// conferences were onboarded the membership record held Division II
+// conferences only, so nothing any rib could collect into such a home was at
+// another level. That is the one place the default is provably what the home
+// means, so an absent level reads as d2 (UNDECLARED_HOME_LEVEL) — and never
+// silently: `homeLevel` returns `declared: false`, and every reader that acts
+// on the level (the collect guard, the cadence, the workflow preflights,
+// touchline_status, the Python collector's own guard) says it assumed d2 and
+// how to declare it. A level the marker states but that is not d1/d2/d3 is a
+// broken marker and refuses like a foreign one: guessing past a typo is how a
+// home ends up collecting the wrong level.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** What a marker with no `level` line means. See the block above for why d2
+ *  and only d2 is provable. */
+export const UNDECLARED_HOME_LEVEL: ConferenceLevel = "d2";
+
 export type MarkerState =
-  | { state: "marked"; version: number }
+  | { state: "marked"; version: number; level?: ConferenceLevel }
   | { state: "unmarked" }
   | { state: "foreign"; detail: string };
+
+/** The `level:` value a marker text states, if any (unvalidated). */
+function markerLevelText(text: string): string | undefined {
+  return /^\s*level:\s*(\S+)\s*$/m.exec(text)?.[1];
+}
 
 /** Read the marker without throwing. `unmarked` means "empty or not ours yet";
  *  `foreign` means a file of that name exists but is not a Touchline marker,
@@ -74,7 +105,53 @@ export async function readMarker(root: string): Promise<MarkerState> {
     return { state: "foreign", detail: `kind: ${kind ?? "(absent)"}` };
   }
   const version = Number(/^\s*version:\s*(\d+)\s*$/m.exec(text)?.[1] ?? "1");
-  return { state: "marked", version };
+  const levelText = markerLevelText(text);
+  if (levelText === undefined) return { state: "marked", version };
+  const level = levelText.toLowerCase();
+  if (!isConferenceLevel(level)) {
+    return {
+      state: "foreign",
+      detail: `level: ${levelText} is not one of ${CONFERENCE_LEVELS.join(", ")}`,
+    };
+  }
+  return { state: "marked", version, level };
+}
+
+/** The NCAA level a data home collects at. `declared` is false when the
+ *  marker carries no level and `level` is the d2 every pre-level home is;
+ *  `note` is then the sentence a reader must surface rather than swallow. */
+export interface HomeLevel {
+  level: ConferenceLevel;
+  declared: boolean;
+  note?: string;
+}
+
+export function undeclaredLevelNote(root: string): string {
+  return `${root}/${MARKER_FILE} declares no level, so it is read as ${UNDECLARED_HOME_LEVEL}: every data home made before levels existed is Division II. Add the line "level: ${UNDECLARED_HOME_LEVEL}" to the marker to declare it.`;
+}
+
+/** The level of a marked home; undefined for anything that is not one. */
+export async function homeLevel(root: string): Promise<HomeLevel | undefined> {
+  const marker = await readMarker(root);
+  if (marker.state !== "marked") return undefined;
+  if (marker.level) return { level: marker.level, declared: true };
+  return { level: UNDECLARED_HOME_LEVEL, declared: false, note: undeclaredLevelNote(root) };
+}
+
+/** Why a collect of a `conferenceLevel` conference into a `home` must be
+ *  refused, or undefined when the levels agree. Names both levels: this is
+ *  the guard that keeps Division I data out of a Division II home after a
+ *  slip of the project picker. */
+export function levelMismatch(
+  root: string,
+  home: HomeLevel,
+  conference: string,
+  conferenceLevel: ConferenceLevel,
+): string | undefined {
+  if (home.level === conferenceLevel) return undefined;
+  return `REFUSED: ${conference} is a ${conferenceLevel} conference and the data home ${root} collects ${home.level} (${
+    home.declared ? "declared in its marker" : "assumed: its marker declares no level"
+  }). A home holds one NCAA level; collect ${conference} into a ${conferenceLevel} home instead. Nothing was fetched or written.`;
 }
 
 /** True when the directory holds nothing but VCS/OS bookkeeping — the
@@ -138,13 +215,18 @@ export function explainRefusal(root: string, state: HomeState): string | undefin
   }
 }
 
-const MARKER_BODY = [
-  "# Marker file: identifies this directory as a Touchline data home.",
-  "# The touchline rib validates this file before running workflows here.",
-  `kind: ${MARKER_KIND}`,
-  "version: 1",
-  "",
-].join("\n");
+function markerBody(level: ConferenceLevel): string {
+  return [
+    "# Marker file: identifies this directory as a Touchline data home.",
+    "# The touchline rib validates this file before running workflows here.",
+    "# level: the one NCAA level this home collects (d1, d2 or d3); a collect",
+    "# of a conference at any other level is refused.",
+    `kind: ${MARKER_KIND}`,
+    "version: 1",
+    `level: ${level}`,
+    "",
+  ].join("\n");
+}
 
 const README_BODY = [
   "# Touchline data",
@@ -169,17 +251,28 @@ const README_BODY = [
 export interface BootstrapResult {
   created: string[];
   alreadyMarked: boolean;
+  /** The home's level after bootstrap, and whether its marker states it. */
+  level: HomeLevel;
+  /** True when this call added a `level:` line to an existing marker. */
+  levelWritten: boolean;
 }
 
 /** Make a directory into a Touchline data home. Idempotent: an already-marked
  *  home gets its missing subdirectories filled in and nothing overwritten.
+ *
+ *  A new marker always states its level: `opts.level`, else d2 (the caller
+ *  reports which). An existing marker with no level gets `opts.level`
+ *  appended when one is passed — declaring what the home is, never changing
+ *  it — and an existing marker that states a DIFFERENT level is refused: a
+ *  home's level is what its data is, and relabelling it would not move a
+ *  single file.
  *
  *  Refuses anything that is neither empty nor already ours. `force` exists for
  *  the deliberate "yes, adopt this populated directory" case and must never be
  *  set from an inferred intent — only from an explicit human instruction. */
 export async function bootstrapDataHome(
   root: string,
-  opts: { force?: boolean } = {},
+  opts: { force?: boolean; level?: ConferenceLevel } = {},
 ): Promise<BootstrapResult> {
   const state = await dataHomeState(root);
   if (state.state === "foreign" || state.state === "missing") {
@@ -189,6 +282,22 @@ export async function bootstrapDataHome(
     throw new Error(explainRefusal(root, state) as string);
   }
   const marker = await readMarker(root);
+  if (marker.state === "marked" && marker.level && opts.level && marker.level !== opts.level) {
+    throw new Error(
+      `${root} is already a ${marker.level} data home (its ${MARKER_FILE} says level: ${marker.level}); it cannot become a ${opts.level} home. Create a separate home for ${opts.level}.`,
+    );
+  }
+  let levelWritten = false;
+  if (marker.state === "marked" && !marker.level && opts.level) {
+    const path = join(root, MARKER_FILE);
+    const text = await readFile(path, "utf8");
+    await writeFile(
+      path,
+      `${text}${text.endsWith("\n") ? "" : "\n"}level: ${opts.level}\n`,
+      "utf8",
+    );
+    levelWritten = true;
+  }
   const created: string[] = [];
   const home = dataHome(root);
   for (const dir of [
@@ -212,9 +321,11 @@ export async function bootstrapDataHome(
       created.push(rel);
     }
   };
-  await writeIfAbsent(MARKER_FILE, MARKER_BODY);
+  await writeIfAbsent(MARKER_FILE, markerBody(opts.level ?? UNDECLARED_HOME_LEVEL));
   await writeIfAbsent("README.md", README_BODY);
-  return { created, alreadyMarked: marker.state === "marked" };
+  const level = await homeLevel(root);
+  if (!level) throw new Error(`${root} carries no readable ${MARKER_FILE} after bootstrap.`);
+  return { created, alreadyMarked: marker.state === "marked", level, levelWritten };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
