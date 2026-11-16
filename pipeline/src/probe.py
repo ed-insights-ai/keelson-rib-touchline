@@ -13,7 +13,7 @@ from urllib.parse import urlparse
 import requests
 from bs4 import BeautifulSoup
 
-from src import presto
+from src import presto, wmt
 from src.gazetteer import parse_town
 from src.sidearm_live import (
     LAYER_MATCHES,
@@ -37,6 +37,7 @@ PLATFORM_SIDEARM = "sidearm"
 PLATFORM_SIDEARM_LEGACY = "sidearm_legacy"
 PLATFORM_STATCREW = "statcrew"
 PLATFORM_PRESTOSPORTS = presto.PLATFORM
+PLATFORM_WMT = wmt.PLATFORM
 PLATFORM_UNKNOWN = "unknown"
 
 LAYER_PRESENT = "present"
@@ -76,6 +77,10 @@ def classify_platform(html: str) -> tuple[str, list[str]]:
     presto_evidence = presto.is_presto(html)
     if presto_evidence:
         return PLATFORM_PRESTOSPORTS, presto_evidence
+
+    wmt_evidence = wmt.is_wmt(html)
+    if wmt_evidence:
+        return PLATFORM_WMT, wmt_evidence
 
     soup = BeautifulSoup(html, "lxml")
     text = soup.get_text(" ", strip=True)
@@ -134,12 +139,18 @@ def fetch_schedule_page(
     if platform == PLATFORM_PRESTOSPORTS:
         url = presto.layer_url(base_url, year, LAYER_SCHEDULE)
         return presto.fetch_page(session, url, year, LAYER_SCHEDULE)
+    if platform == PLATFORM_WMT:
+        return wmt.fetch_season_page(session, base_url, year, LAYER_SCHEDULE)
     return fetch_published_page(session, base_url, year, LAYER_SCHEDULE)
 
 
 def _schedule_markup(html: str, platform: str) -> bool:
     if platform == PLATFORM_PRESTOSPORTS:
         return presto.has_schedule_markup(html)
+    if platform == PLATFORM_WMT:
+        # The page proved its sport and season before it was returned; a
+        # WMT season page is the schedule's own address.
+        return True
     return _has_schedule_markup(html)
 
 
@@ -259,6 +270,47 @@ def _presto_layers(
     return layers
 
 
+def _wmt_layers(session: requests.Session, base_url: str, year: int) -> dict[str, str]:
+    """Each layer through the recipe's own fetch and parse, so the probe
+    judges exactly what the collector would read."""
+    layers: dict[str, str] = {}
+    try:
+        schedule = wmt.fetch_layer(session, base_url, year, LAYER_SCHEDULE)
+        fixtures = wmt.parse_schedule(
+            schedule.page.html,
+            page_url=schedule.page.final_url,
+            year=year,
+            owner_slug="probe",
+            aliases={},
+        )
+        layers[LAYER_SCHEDULE] = LAYER_PRESENT if fixtures else LAYER_ABSENT
+        layers[LAYER_MATCHES] = (
+            LAYER_PRESENT
+            if wmt.boxscore_links(schedule.page.html, schedule.page.final_url)
+            else LAYER_ABSENT
+        )
+    except LiveCollectionError as exc:
+        layers[LAYER_SCHEDULE] = _layer_error(exc)
+        layers[LAYER_MATCHES] = _layer_error(exc)
+    try:
+        roster = wmt.fetch_layer(session, base_url, year, LAYER_ROSTER)
+        players = wmt.parse_roster(roster.page.html, page_url=roster.page.final_url)
+        layers[LAYER_ROSTER] = LAYER_PRESENT if players else LAYER_ABSENT
+    except LiveCollectionError as exc:
+        layers[LAYER_ROSTER] = _layer_error(exc)
+    try:
+        stats = wmt.fetch_layer(session, base_url, year, LAYER_STATS)
+        stat_players, stat_keepers = wmt.parse_stats(
+            stats.page.html, page_url=stats.page.final_url
+        )
+        layers[LAYER_STATS] = (
+            LAYER_PRESENT if stat_players or stat_keepers else LAYER_ABSENT
+        )
+    except LiveCollectionError as exc:
+        layers[LAYER_STATS] = _layer_error(exc)
+    return layers
+
+
 def probe_layers(
     session: requests.Session,
     base_url: str,
@@ -278,6 +330,8 @@ def probe_layers(
     """
     if platform == PLATFORM_PRESTOSPORTS:
         layers = _presto_layers(session, base_url, year, landing_html)
+    elif platform == PLATFORM_WMT:
+        layers = _wmt_layers(session, base_url, year)
     else:
         layers = _sidearm_layers(session, base_url, year)
     return {
@@ -610,10 +664,17 @@ def draft_stanza(
     beside them unchanged.  A mascot the site did not yield becomes a comment
     naming the gap rather than an empty value; an abbreviation of one letter
     (or none) is written empty with a comment saying the short form must be
-    set by hand, never padded into an initialism.  For PrestoSports,
-    ``base_url`` is the sport landing page and both ``scraper`` and
-    ``live_scraper`` name the platform.
+    set by hand, never padded into an initialism.  For PrestoSports and
+    WMT, ``base_url`` is the sport landing page and both ``scraper`` and
+    ``live_scraper`` name the platform; a WMT ``base_url`` is the site's own
+    ``{origin}/sports/{sport}`` (``mens-soccer`` or ``msoc``), the sport path
+    the season proofs check every page against.
     """
+    if platform == PLATFORM_WMT:
+        try:
+            base_url = wmt.sport_base(base_url)[2]
+        except LiveCollectionError:
+            pass  # not a sport landing page: drafted as given, for a person to fix
     scraper = platform
     live_scraper = platform
     alias_list = list(aliases)
@@ -642,7 +703,7 @@ def draft_stanza(
     # config.py reads a missing ``live_scraper`` as SideArm, so a platform
     # with a live path of its own is written out; the hand-authored StatCrew
     # stanzas leave it absent because their live sites are SideArm.
-    if live_scraper != scraper or live_scraper == PLATFORM_PRESTOSPORTS:
+    if live_scraper != scraper or live_scraper in (PLATFORM_PRESTOSPORTS, PLATFORM_WMT):
         lines.append(_toml_line("live_scraper", live_scraper))
     lines.extend(
         [

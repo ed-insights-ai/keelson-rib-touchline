@@ -1574,6 +1574,50 @@ def parse_stats(
     return players, keepers
 
 
+def is_wmt(html: str) -> list[str]:
+    """The evidence that a page is a WMT Digital site, or nothing.
+
+    Measured on the landing and schedule pages of all three Nuxt and both
+    WordPress sites captured: the Nuxt generation renders a
+    ``__NUXT_DATA__`` payload carrying WMT's ``oas-config`` settings store
+    (and links its ``wmt.games`` statistics); the WordPress generation loads
+    the ``wmt-stats-wordpress-plugin`` and declares ``var wmtGames``.
+    """
+    evidence: list[str] = []
+    if "__NUXT_DATA__" in html and "oas-config" in html:
+        evidence.append("Nuxt __NUXT_DATA__ payload with the WMT oas-config store")
+    if "wmt-stats-wordpress-plugin" in html:
+        evidence.append("wmt-stats-wordpress-plugin assets")
+    if re.search(r"\bvar\s+wmtGames\s*=", html):
+        evidence.append("inline wmtGames statistics configuration")
+    if evidence and stats_origin(html):
+        evidence.append("WMT statistics host named")
+    return evidence
+
+
+def fetch_season_page(
+    session: requests.Session, base_url: str, year: int, kind: str = LAYER_SCHEDULE
+) -> PublishedPage:
+    """One layer's season page, located and proven, with nothing else
+    fetched: what the probe asks of a candidate season."""
+    fetcher = _Fetcher(session, year, kind)
+    _, sport, base = sport_base(base_url)
+    page, slug = _season_page(fetcher, base, year, kind)
+    wordpress = is_wordpress(page.body)
+    _GENERATIONS[urlparse(base).netloc] = (
+        GENERATION_WORDPRESS if wordpress else GENERATION_NUXT
+    )
+    if wordpress:
+        prove_wordpress_page(
+            page.body, year=year, kind=kind, sport=sport, url=page.final_url
+        )
+    else:
+        prove_nuxt_page(
+            page.body, year=year, kind=kind, sport=sport, slug=slug, url=page.final_url
+        )
+    return PublishedPage(page.url, page.final_url, page.body)
+
+
 # --- The WordPress generation ------------------------------------------------
 #
 # South Carolina and Kentucky (FINDINGS.md section 4): the schedule and

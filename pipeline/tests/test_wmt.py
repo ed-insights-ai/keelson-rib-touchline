@@ -1147,3 +1147,76 @@ def test_a_site_seen_to_be_wordpress_is_asked_its_own_addresses(monkeypatch) -> 
         SC_CUMESTATS_URL,
         SC_TEAM_URL,
     ]
+
+
+# --- The probe ---------------------------------------------------------------------
+
+
+def test_the_probe_fingerprints_both_wmt_generations() -> None:
+    from src.probe import PLATFORM_WMT, classify_platform
+
+    platform, evidence = classify_platform(SCHEDULE_PAGE)
+    assert platform == PLATFORM_WMT == "wmt"
+    assert evidence == [
+        "Nuxt __NUXT_DATA__ payload with the WMT oas-config store",
+        "WMT statistics host named",
+    ]
+    platform, evidence = classify_platform(
+        _fixture("wmt_southcarolina_schedule_2025.html")
+    )
+    assert platform == PLATFORM_WMT
+    assert "inline wmtGames statistics configuration" in evidence
+    # Neither SideArm's nor PrestoSports's markup is mistaken for WMT.
+    assert wmt.is_wmt(_fixture("prestosports_tampa_schedule_2025.html")) == []
+    assert wmt.is_wmt(_fixture("sidearm_boxscore_6126.html")) == []
+
+
+@pytest.mark.parametrize(
+    ("base", "site", "landing", "seasons"),
+    [
+        (BASE, _seattle_site, "wmt_seattleu_schedule_2025.html", "2025"),
+        (SC, _south_carolina_site, "wmt_southcarolina_schedule_2025.html", "2024-2025"),
+    ],
+)
+def test_the_probe_drafts_a_wmt_stanza_with_the_sites_sport_path(
+    base: str, site, landing: str, seasons: str, capsys
+) -> None:
+    """The landing page here is the captured season page (the sport landing
+    page itself was not captured; it carries the same markers)."""
+    import tomllib
+
+    from scripts import probe as probe_cli
+
+    session = site(**{base: _fixture(landing)})
+    if base == SC:
+        # As the site does: the 2025 season served under the 2024 path.
+        session.pages[f"{SC}/schedule/season/2024/"] = session.pages[SC_SCHEDULE_URL]
+    exit_code = probe_cli.main(
+        [
+            "--url",
+            f"{base}/",
+            "--conference",
+            "X",
+            "--seasons",
+            seasons,
+            "--name",
+            "Owner",
+        ],
+        session=session,
+    )
+    out = capsys.readouterr().out
+    assert exit_code == 0
+    assert "Platform: wmt" in out
+    for layer in ("schedule", "roster", "stats", "matches"):
+        assert f"  {layer}: present" in out
+    # South Carolina serves 2025 under the 2024 path too: refused, not served.
+    assert "Served seasons: 2025\n" in out
+    assert "Seasons not seen" not in out
+    stanza = tomllib.loads(
+        out.split("Draft schools.toml stanza:\n", 1)[1].split("\n\n")[0]
+    )
+    school = stanza["schools"][0]
+    assert (school["scraper"], school["live_scraper"]) == ("wmt", "wmt")
+    assert school["base_url"] == base
+    assert school["years"] == [2025]
+    assert school["enabled"] is False
