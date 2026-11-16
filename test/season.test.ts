@@ -50,6 +50,7 @@ describe("the budget fleet", () => {
   test("a programme ask is budgeted at its conference's full fleet", async () => {
     _setMembershipCache({
       conferences: ["GAC"],
+      conference_profiles: { GAC: { level: "d2", names: ["Great American Conference"] } },
       memberships: {
         harding: { men: window("GAC") },
         "rogers-state": { men: window("GAC") },
@@ -88,7 +89,11 @@ describe("the budget fleet", () => {
   test("the requested fleet is a floor even when membership resolves smaller", async () => {
     // A slug can outlive its window in the record; the ask itself is still
     // going to be collected, so the budget never drops below it.
-    _setMembershipCache({ conferences: ["GAC"], memberships: {} });
+    _setMembershipCache({
+      conferences: ["GAC"],
+      conference_profiles: { GAC: { level: "d2", names: ["Great American Conference"] } },
+      memberships: {},
+    });
     const fleet = await collectFleetSize(
       {
         kind: "programme",

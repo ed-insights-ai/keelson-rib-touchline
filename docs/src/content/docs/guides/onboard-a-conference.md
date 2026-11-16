@@ -230,9 +230,24 @@ layers were present, and which seasons were served.
 Four files change and nothing else should (measured on the RMAC and SSC
 adds, 2026-09-02, beads tl-clk.5 and tl-891):
 
-1. `data/reference/membership.json`: the conference joins `conferences`;
-   one window per programme, `source` written as URL + accessed date + the
-   sentence that proves the window (see the GSC entries for the shape).
+1. `data/reference/membership.json`: the conference joins `conferences`
+   and gets its entry in `conference_profiles`, the conference as a record:
+   `level` (`d1`, `d2` or `d3`, the NCAA level; never "division", which
+   already means the conference's own split on a window) and `names`, the
+   long names it is printed under in schedule headers, full and short
+   ("Great American Conference", "Great American"). The schedule parser
+   reads a tournament header by them where the header carries neither the
+   word "conference" nor the code, so "Great Midwest Tournament" is the
+   G-MAC's postseason because the G-MAC's profile says so, not because the
+   parser knows the conference. A code that is an ordinary English word
+   also sets `"code_is_word": true`: the code alone then never names the
+   conference ("Summit City Tournament" is not a postseason), only its
+   `names` do, and a one-word name is read only directly before the
+   championship word. A declared conference with no profile, and a profile
+   for an undeclared code, are both refused by `check-membership` and by
+   `bun test`. Then one window per programme, `source` written as URL +
+   accessed date + the sentence that proves the window (see the GSC
+   entries for the shape).
 2. `pipeline/config/schools.toml`: one stanza per programme, pasted from
    the probe and checked against the site: `name` as passed to `--name`,
    `aliases` covering the opponent spellings the member schools actually
@@ -273,7 +288,7 @@ adds, 2026-09-02, beads tl-clk.5 and tl-891):
    `pipeline/data/gazetteer/` are rewritten by the same run.
 4. `contracts/membership.json` + `contracts/CHANGELOG.md`: the membership
    fixture's conference list must equal the packaged file's, so the
-   conference joins it with one window.
+   conference joins it with its profile and one window.
 
 `test/board.test.ts` asserts the shape of `knownConferences()` against the
 shipped membership file (its `conferences` minus `independent` and

@@ -4,6 +4,35 @@ One line per change to a published contract, newest first. A fixture change
 without a line here is incomplete; a writer change without a fixture change
 fails `pipeline/tests/test_contracts.py`.
 
+## 2026-11-15
+
+- Membership reference: a required top-level `conference_profiles` map,
+  keyed by conference code, each entry `{level, names, code_is_word?}`: the
+  conference as a record instead of a bare code. `level` is the NCAA level
+  it plays at, one of `d1`, `d2`, `d3` (the word is `level` because
+  `division` already means a conference's own split on a window). `names`
+  is the non-empty list of long names the conference is printed under in
+  schedule headers ("Great American Conference", "Great American"), which
+  the schedule parser reads a tournament header by where the header carries
+  neither the word "conference" nor the code; the table of Division II
+  names that lived in `pipeline/src/sidearm_live.py` is now these entries,
+  every alternative kept. `code_is_word`, optional and false when absent,
+  says the code is an ordinary English word, so the code alone never names
+  the conference in a header. `conferences` and the map are one set: every
+  declared conference except the structural `independent` and `non_member`
+  carries a profile, and a profile for an undeclared or structural code is
+  refused, by `validate` in `pipeline/src/membership.py` and by the rib's
+  `membershipFileSchema`. The packaged file and the fixture carry the 21
+  collected conferences, all `d2`; the fixture exhibits `code_is_word` once
+  (`false`, on `CACC`). `conference_level` and `conferences_at_level`
+  (Python), `conferenceLevel` and `activeConferences(gender, level)`
+  (TypeScript) and `bin/resolve-membership.ts conferences <gender> --level
+  <d1|d2|d3>` expose the level; the un-flagged `conferences <gender>` line
+  is unchanged. Same untagged reference. No season file's shape changes:
+  measured over all 2,313 archived schedule pages of the Division II data
+  home, every one of the 1,110 (header, conference) classifications and
+  every parsed fixture is identical before and after.
+
 ## 2026-11-08
 
 - Membership reference: `NSIC` joins `conferences`, with one window

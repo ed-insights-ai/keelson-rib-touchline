@@ -131,13 +131,14 @@ MEMBERSHIP = Contract(
     schema=None,
     records=frozenset(
         {
+            ("conference_profiles",),
             ("memberships",),
             ("memberships", KEY),
             ("standings_archives",),
             ("standings_archives", KEY, "seasons"),
         }
     ),
-    enums=frozenset(),
+    enums=frozenset({("conference_profiles", KEY, "level")}),
 )
 
 PROGRAMMES = Contract(

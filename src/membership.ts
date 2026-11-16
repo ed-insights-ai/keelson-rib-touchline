@@ -61,6 +61,57 @@ export const standingsArchiveSchema = z
   .strict();
 export type StandingsArchive = z.infer<typeof standingsArchiveSchema>;
 
+/** The NCAA levels a conference can play at. The word is "level" on purpose:
+ *  "division" already means a conference's own East/West split on a window
+ *  (and a gender in the cadence script). */
+export const CONFERENCE_LEVELS = ["d1", "d2", "d3"] as const;
+export type ConferenceLevel = (typeof CONFERENCE_LEVELS)[number];
+
+/** The two codes `conferences` carries that are not conferences. */
+const STRUCTURAL_CODES: readonly string[] = ["independent", "non_member"];
+
+/** One conference as a record, not a bare code: the NCAA level it plays at
+ *  and the long names it is printed under in schedule headers ("Great
+ *  American Conference", "Great American"), which is how the schedule parser
+ *  reads a tournament header that carries neither the word "conference" nor
+ *  the code. `code_is_word` says the code is an ordinary English word, so
+ *  the code alone never names the conference in a header; only `names` do. */
+export const conferenceProfileSchema = z
+  .object({
+    level: z.enum(CONFERENCE_LEVELS),
+    names: z.array(z.string().regex(/\w/, "a printed name carries a word")).min(1),
+    code_is_word: z.boolean().optional(),
+  })
+  .strict();
+export type ConferenceProfile = z.infer<typeof conferenceProfileSchema>;
+
+/** Where `conference_profiles` and `conferences` disagree, one sentence per
+ *  disagreement: the two are one set. Every declared conference carries a
+ *  profile, a profile names a declared conference, and the structural codes
+ *  carry none. The same rule pipeline/src/membership.py's `validate` holds. */
+export function conferenceProfileErrors(file: {
+  conferences: string[];
+  conference_profiles?: Record<string, unknown>;
+}): string[] {
+  const profiles = file.conference_profiles ?? {};
+  const declared = new Set(file.conferences);
+  const errors: string[] = [];
+  for (const code of [...declared].sort()) {
+    if (STRUCTURAL_CODES.includes(code) || code in profiles) continue;
+    errors.push(
+      `conference '${code}' has no conference_profiles entry; every declared conference carries its level and printed names`,
+    );
+  }
+  for (const code of Object.keys(profiles)) {
+    if (STRUCTURAL_CODES.includes(code)) {
+      errors.push(`conference_profiles['${code}'] is a structural code, not a conference`);
+    } else if (!declared.has(code)) {
+      errors.push(`conference_profiles['${code}'] names an undeclared conference code`);
+    }
+  }
+  return errors;
+}
+
 /** The membership reference's contract. It carries no `schema` tag: the file
  *  predates the tagged season files and is authored, not collected. The
  *  sample at contracts/membership.json is the shape both this loader and
@@ -71,13 +122,20 @@ export const membershipFileSchema = z
     /** The authored horizon, inclusive. */
     seasons: z.object({ from: z.number().int(), to: z.number().int() }).strict().optional(),
     conferences: z.array(z.string().min(1)),
+    /** Keyed by conference code: one profile per declared conference. */
+    conference_profiles: z.record(z.string().min(1), conferenceProfileSchema),
     description: z.string().optional(),
     memberships: z.record(z.string(), z.record(z.string(), z.array(membershipWindowSchema))),
     /** Keyed by conference code; optional, and absent for every conference
      *  whose records pages are the evidence. */
     standings_archives: z.record(z.string().min(1), standingsArchiveSchema).optional(),
   })
-  .strict();
+  .strict()
+  .superRefine((file, context) => {
+    for (const message of conferenceProfileErrors(file)) {
+      context.addIssue({ code: z.ZodIssueCode.custom, message, path: ["conference_profiles"] });
+    }
+  });
 export type MembershipFile = z.infer<typeof membershipFileSchema>;
 
 let cached: MembershipFile | undefined;
@@ -229,13 +287,41 @@ export async function knownConferences(): Promise<string[]> {
   return file.conferences.filter((c) => c !== "independent" && c !== "non_member");
 }
 
+/** A conference's profile: its NCAA level and printed names. Undefined for
+ *  the structural codes and for a code the file does not declare. */
+export async function conferenceProfile(
+  conference: string,
+): Promise<ConferenceProfile | undefined> {
+  const file = await loadMembership();
+  return file.conference_profiles?.[conference.trim().toUpperCase()];
+}
+
+/** The NCAA level a conference plays at. Throws for a declared conference
+ *  with no profile rather than guess one: a level-filtered sweep that
+ *  quietly dropped a conference would read as "collected everything". */
+export async function conferenceLevel(conference: string): Promise<ConferenceLevel> {
+  const profile = await conferenceProfile(conference);
+  if (!profile) {
+    throw new Error(
+      `conference '${conference}' has no conference_profiles entry in ${membershipPath()}; its level is unknown`,
+    );
+  }
+  return profile.level;
+}
+
 /** The conferences a scheduled collect should sweep for one gender: every
  *  advertised conference that authors at least one membership window in that
  *  gender, sorted. A conference the file knows only through another gender's
  *  windows (or none at all) has no member to collect, so it is left out rather
  *  than sent to the sites to be refused. Nothing here names a conference; a
- *  newly authored one joins the set the day its windows merge. */
-export async function activeConferences(gender: string): Promise<string[]> {
+ *  newly authored one joins the set the day its windows merge.
+ *
+ *  With a `level`, only the conferences whose profile names that NCAA level.
+ *  Without one the set is exactly what it was before profiles existed. */
+export async function activeConferences(
+  gender: string,
+  level?: ConferenceLevel,
+): Promise<string[]> {
   const file = await loadMembership();
   const advertised = new Set(await knownConferences());
   const active = new Set<string>();
@@ -245,7 +331,13 @@ export async function activeConferences(gender: string): Promise<string[]> {
       if (advertised.has(conference)) active.add(conference);
     }
   }
-  return [...active].sort();
+  const sorted = [...active].sort();
+  if (level === undefined) return sorted;
+  const atLevel: string[] = [];
+  for (const conference of sorted) {
+    if ((await conferenceLevel(conference)) === level) atLevel.push(conference);
+  }
+  return atLevel;
 }
 
 /** Resolve free text ("the whole GAC", "Harding") to a target set. */

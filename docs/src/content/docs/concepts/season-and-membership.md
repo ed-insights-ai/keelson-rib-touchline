@@ -15,6 +15,7 @@ The document earns that trust by surviving `validate` in `pipeline/src/membershi
 
 - every window carries a non-empty `source` citation, because membership is a claim about the world, and claims cite;
 - the declared conference list must include the structural codes `independent` and `non_member`;
+- every other declared conference carries a `conference_profiles` entry, its NCAA `level` (`d1`, `d2`, `d3`) and the `names` it is printed under, and no profile names a conference the list does not declare;
 - a programme's authored seasons may have no gaps; the validator's own error says to "cover them explicitly with an independent or non_member window";
 - windows may not overlap, and every configured programme must be covered.
 

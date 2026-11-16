@@ -17,6 +17,40 @@ from src.config import SchoolConfig, load_schools
 #: per-season records pages keeps its member lists instead.
 STANDINGS_ARCHIVES = "standings_archives"
 
+#: The top-level key carrying, per conference code, what the conference is:
+#: its NCAA level and the names it is printed under.
+CONFERENCE_PROFILES = "conference_profiles"
+
+#: The NCAA levels a conference can play at. The word is "level" on purpose:
+#: "division" already means a conference's own East/West split on a
+#: membership window (and a gender in the cadence script).
+LEVELS = ("d1", "d2", "d3")
+
+#: The two codes ``conferences`` carries that are not conferences: a window
+#: needs something to name for a season outside every conference.
+STRUCTURAL_CODES = frozenset({"independent", "non_member"})
+
+_PROFILE_FIELDS = frozenset({"level", "names", "code_is_word"})
+
+
+@dataclass(frozen=True)
+class ConferenceProfile:
+    """One conference as a record, not a bare code.
+
+    ``level`` is the NCAA level it plays at. ``names`` are the long names it
+    is printed under in schedule headers ("Great American Conference",
+    "Great American"), which is how a header that carries neither the word
+    "conference" nor the code is still read as that conference's postseason
+    (``sidearm_live.tournament_stage``). ``code_is_word`` says the code is
+    an ordinary English word (a code such as PATRIOT or SUMMIT), so the code
+    alone never names the conference in a header; only its ``names`` do.
+    """
+
+    code: str
+    level: str
+    names: tuple[str, ...]
+    code_is_word: bool = False
+
 
 def load_membership(
     path: str | Path | None = None,
@@ -49,6 +83,69 @@ def load_membership(
     if not isinstance(document, dict):
         raise ValueError("membership.json root must be a JSON object")
     return document
+
+
+def conference_profiles(
+    document: dict[str, Any] | None = None,
+) -> dict[str, ConferenceProfile]:
+    """Every well-formed conference profile in the document, by code.
+
+    A reader, not a judge: a malformed entry is left out here and named by
+    ``validate``, so a collect never dies over a profile check-membership
+    would have refused before the file shipped.
+    """
+    membership_document = document if document is not None else load_membership()
+    raw = membership_document.get(CONFERENCE_PROFILES)
+    if not isinstance(raw, dict):
+        return {}
+
+    profiles: dict[str, ConferenceProfile] = {}
+    for code, entry in raw.items():
+        if not isinstance(code, str) or not isinstance(entry, dict):
+            continue
+        level = entry.get("level")
+        names = entry.get("names")
+        if level not in LEVELS or not isinstance(names, list):
+            continue
+        printed = tuple(
+            " ".join(name.split())
+            for name in names
+            if isinstance(name, str) and name.strip()
+        )
+        if not printed:
+            continue
+        profiles[code] = ConferenceProfile(
+            code=code,
+            level=level,
+            names=printed,
+            code_is_word=entry.get("code_is_word") is True,
+        )
+    return profiles
+
+
+def conference_level(
+    conference: str,
+    *,
+    document: dict[str, Any] | None = None,
+) -> str | None:
+    """The NCAA level a conference plays at, or None for a code with no profile."""
+    profile = conference_profiles(document).get(conference)
+    return None if profile is None else profile.level
+
+
+def conferences_at_level(
+    level: str,
+    *,
+    document: dict[str, Any] | None = None,
+) -> list[str]:
+    """Every conference code whose profile names ``level``, sorted."""
+    if level not in LEVELS:
+        raise ValueError(f"unknown level {level!r}; known: {', '.join(LEVELS)}")
+    return sorted(
+        code
+        for code, profile in conference_profiles(document).items()
+        if profile.level == level
+    )
 
 
 def conference_for(
@@ -271,12 +368,82 @@ def _declared_conferences(
     if len(conferences) != len(declared):
         errors.append("conferences must not contain duplicate codes")
 
-    missing_structural = sorted({"independent", "non_member"} - declared)
+    missing_structural = sorted(STRUCTURAL_CODES - declared)
     if missing_structural:
         errors.append(
             f"conferences must declare structural codes: {missing_structural}"
         )
     return declared
+
+
+def _validate_conference_profiles(
+    document: dict[str, Any],
+    errors: list[str],
+    *,
+    declared: set[str] | None,
+) -> None:
+    """Hold ``conference_profiles`` to the declared conference list.
+
+    Every conference the file declares carries a profile, and a profile
+    names a declared conference: the two lists are one set, so a conference
+    cannot ship without its level and printed names, and a profile cannot
+    quietly teach the schedule parser a name for a conference the rib does
+    not collect. The structural codes are not conferences and carry none.
+    """
+    profiles = document.get(CONFERENCE_PROFILES)
+    if not isinstance(profiles, dict):
+        errors.append(
+            f"{CONFERENCE_PROFILES} must be a JSON object keyed by conference code"
+        )
+        return
+
+    if declared is not None:
+        for conference in sorted(declared - STRUCTURAL_CODES - set(profiles)):
+            errors.append(
+                f"conference {conference!r} has no {CONFERENCE_PROFILES} entry; "
+                "every declared conference carries its level and printed names"
+            )
+
+    for conference, profile in profiles.items():
+        label = f"{CONFERENCE_PROFILES}[{conference!r}]"
+        if not isinstance(conference, str) or not conference:
+            errors.append(f"{CONFERENCE_PROFILES} has invalid conference key")
+            continue
+        if conference in STRUCTURAL_CODES:
+            errors.append(f"{label} is a structural code, not a conference")
+            continue
+        if declared is not None and conference not in declared:
+            errors.append(f"{label} names an undeclared conference code")
+        if not isinstance(profile, dict):
+            errors.append(f"{label} must be a JSON object")
+            continue
+
+        unknown = sorted(set(profile) - _PROFILE_FIELDS)
+        if unknown:
+            errors.append(f"{label} has unknown fields: {unknown}")
+
+        level = profile.get("level")
+        if level not in LEVELS:
+            errors.append(f"{label} level must be one of {list(LEVELS)}, not {level!r}")
+
+        names = profile.get("names")
+        if not isinstance(names, list) or not names:
+            errors.append(f"{label} names must be a non-empty list of strings")
+        else:
+            folded: set[str] = set()
+            for name in names:
+                if not isinstance(name, str) or not re.search(r"\w", name):
+                    errors.append(
+                        f"{label} names must be non-empty strings, not {name!r}"
+                    )
+                    continue
+                key = " ".join(name.split()).casefold()
+                if key in folded:
+                    errors.append(f"{label} names repeat {name!r}")
+                folded.add(key)
+
+        if "code_is_word" in profile and not isinstance(profile["code_is_word"], bool):
+            errors.append(f"{label} code_is_word must be true or false")
 
 
 def _validate_standings_archives(
@@ -483,6 +650,7 @@ def validate(
 
     span = _season_span(document, errors)
     declared = _declared_conferences(document, errors)
+    _validate_conference_profiles(document, errors, declared=declared)
     _validate_standings_archives(document, errors, span=span)
 
     if schools is None:

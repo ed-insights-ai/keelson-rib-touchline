@@ -71,7 +71,13 @@ from bs4 import BeautifulSoup
 from urllib3.util.retry import Retry
 
 from src.config import SchoolConfig, programme_slug
-from src.membership import conference_for, load_membership, members_of
+from src.membership import (
+    STRUCTURAL_CODES,
+    conference_for,
+    conference_profiles,
+    load_membership,
+    members_of,
+)
 from src.page_state import BoxArchive, PageState, PageStateStore, content_signature
 from src.tls import TruststoreHTTPAdapter
 
@@ -924,6 +930,9 @@ def calendar_event_skip(date: str, name: str) -> str:
 # 2024, games 13162 and 13163 — five rows that minted a programme called
 # "ncaa". Like "TBA" it must be the whole string, so "NCAA Selection Show"
 # stays with the round words and no name merely containing it is caught.
+# The level the slot may carry is any of the three, spelled any way a site
+# does ("NCAA D2", "NCAA DI", "NCAA Division III", "NCAA Division 1"): the
+# rib is not one NCAA division's, and no programme is named for one.
 _ROUND_PLACEHOLDER = re.compile(
     r"\b(?:tournament|championships?|quarte(?:r)?-?finals?|semi-?finals?|finals?"
     r"|(?:\d{1,2}(?:st|nd|rd|th)|first|second|third|fourth|opening)\s+rounds?"
@@ -932,7 +941,7 @@ _ROUND_PLACEHOLDER = re.compile(
     re.IGNORECASE,
 )
 _UNNAMED_OPPONENT = re.compile(
-    r"tbd|tba|ncaa(?:\s+(?:d2|dii|division\s+ii))?", re.IGNORECASE
+    r"tbd|tba|ncaa(?:\s+(?:d(?:ivision)?[\s-]*)?(?:i{1,3}|[123]))?", re.IGNORECASE
 )
 _PARENTHETICAL = re.compile(r"\([^)]*\)")
 
@@ -1815,7 +1824,9 @@ def _forfeit_scores(side: str) -> tuple[int, int]:
 #   conference code the membership reference lists ("GLVC Championship",
 #   "GAC/MIAA Men's Soccer Championship"), or one of the long names the
 #   archive prints without either ("Northeast 10 Championship", "Great
-#   Midwest Tournament", "GULF SOUTH CHAMPIONSHIPS").
+#   Midwest Tournament", "GULF SOUTH CHAMPIONSHIPS"). Codes and names are
+#   both data: the reference's ``conference_profiles`` (``ConferenceHeaders``
+#   below). No conference is named in this module.
 #
 # The round is the row's own ``.sidearm-schedule-game-promotion-name``, kept
 # verbatim and only when it names a round: the same element carries "Watch
@@ -1828,54 +1839,161 @@ _NCAA_POSTSEASON_WORD = re.compile(
     re.IGNORECASE,
 )
 _OTHER_BODY = re.compile(r"\b(?:NCCAA|USCAA|NAIA|NJCAA)\b", re.IGNORECASE)
-_CHAMPIONSHIP_WORD = re.compile(
-    r"\b(?:tournament|championships?|final\s+four)\b", re.IGNORECASE
-)
+_CHAMPIONSHIP = r"(?:tournament|championships?|final\s+four)\b"
+_CHAMPIONSHIP_WORD = re.compile(rf"\b{_CHAMPIONSHIP}", re.IGNORECASE)
 _CONFERENCE_WORD = re.compile(r"\bconference\b", re.IGNORECASE)
-_CONFERENCE_LONG_NAME = re.compile(
-    r"\b(?:northeast[- ]?10|great\s+midwest|gulf\s+south|pacific\s+west"
-    r"|sunshine\s+state|lone\s+star|peach\s+belt|south\s+atlantic|east\s+coast"
-    r"|mountain\s+east|rocky\s+mountain|great\s+lakes|great\s+northwest"
-    r"|great\s+american|central\s+atlantic|california\s+collegiate"
-    r"|pennsylvania\s+state)\b",
-    re.IGNORECASE,
-)
 _ROUND_WORD = re.compile(
     r"\b(?:rounds?|(?:quarter|semi)-?finals?|finals?|championship|final\s+four"
     r"|elite\s+eight)\b",
     re.IGNORECASE,
 )
 
-_conference_code_cache: list[re.Pattern[str]] = []
+# What may stand between a one-word name and the championship word it
+# qualifies: the season, the gender, the sport ("American Men's Soccer
+# Championship"). Anything else between them is another event's name.
+_HEADER_QUALIFIER = r"(?:\d{4}|(?:wo)?men['’]?s|soccer)"
+_NEVER = r"(?!x)x"
 
 
-def _conference_code() -> re.Pattern[str]:
-    """Every conference code the membership reference lists, as one pattern.
+class ConferenceHeaders:
+    """How a tournament header names a conference, read from the reference.
 
-    Read from configuration, never named here, so a conference added to the
-    reference is recognised in a header the day it is added.
+    Built from the membership document's ``conferences`` and
+    ``conference_profiles``, never from a table here, so a conference added
+    to the reference is recognised in a header the day it is added. A
+    conference is named by:
+
+    * its code as a bare token, any case ("GLVC Championship", "PacWest
+      Tournament"), unless its profile says ``code_is_word``: a code that is
+      an ordinary English word (PATRIOT, SUMMIT, IVY) would read "Patriot
+      Invitational Tournament" and "Summit City Tournament" as conference
+      postseason, so such a code never names its conference alone;
+    * one of its profile's ``names`` as a whole phrase, any case, a space or
+      hyphen in the name matching any run of either ("Northeast-10" reads
+      "Northeast 10 Championship"; "Great Midwest" reads "Great Midwest
+      Tournament");
+    * a ``names`` entry that is a single alphabetic word ("American"), only
+      where it directly qualifies the championship word, with nothing but
+      the season, gender and sport between: "American Championship" and
+      "American Men's Soccer Championship", never "American International
+      Tournament". One word is not a phrase; alone it is as ambiguous as a
+      word code.
+
+    A declared code with no profile is still read as a bare token, as it
+    was before profiles existed, so an older mirrored reference degrades to
+    the code rule instead of to nothing.
     """
-    if not _conference_code_cache:
-        codes = [
+
+    def __init__(self, document: Mapping[str, object]) -> None:
+        declared = [
             str(code)
-            for code in load_membership().get("conferences") or []
-            if code not in {"independent", "non_member"}
+            for code in document.get("conferences") or []  # type: ignore[union-attr]
+            if code not in STRUCTURAL_CODES
         ]
-        alternatives = "|".join(
-            rf"(?<![\w-]){re.escape(code)}(?![\w-])"
-            for code in sorted(codes, key=len, reverse=True)
+        profiles = conference_profiles(dict(document))
+        sources: dict[str, list[str]] = {}
+        signature: list[tuple[str, bool, tuple[str, ...]]] = []
+        for code in sorted({*declared, *profiles}):
+            profile = profiles.get(code)
+            code_is_word = profile is not None and profile.code_is_word
+            names = () if profile is None else profile.names
+            signature.append((code, code_is_word, names))
+            alternatives = sources.setdefault(code, [])
+            if not code_is_word:
+                alternatives.append(rf"(?<![\w-]){re.escape(code)}(?![\w-])")
+            # Longest name first, so the span a name claims is its widest.
+            for name in sorted(names, key=len, reverse=True):
+                words = [word for word in re.split(r"[\s-]+", name) if word]
+                if not words:
+                    continue
+                if len(words) == 1 and words[0].isalpha():
+                    alternatives.append(
+                        rf"(?<![\w-]){re.escape(words[0])}"
+                        rf"(?=(?:\s+{_HEADER_QUALIFIER})*\s+{_CHAMPIONSHIP})"
+                    )
+                else:
+                    phrase = r"[\s-]+".join(re.escape(word) for word in words)
+                    alternatives.append(rf"(?<!\w){phrase}(?!\w)")
+        self._patterns = {
+            code: re.compile("|".join(alternatives), re.IGNORECASE)
+            for code, alternatives in sources.items()
+            if alternatives
+        }
+        self._any = re.compile(
+            "|".join(pattern.pattern for pattern in self._patterns.values()) or _NEVER,
+            re.IGNORECASE,
         )
-        _conference_code_cache.append(
-            re.compile(alternatives or r"(?!x)x", re.IGNORECASE)
-        )
-    return _conference_code_cache[0]
+        #: What of the reference shapes a header's reading, for
+        #: ``parse_fingerprint``: the names used to live in this module's
+        #: source, which the fingerprint hashes, and a name edited in the
+        #: data must re-read the archive the same way.
+        self.signature: list[tuple[str, bool, tuple[str, ...]]] = signature
+
+    def names_a_conference(self, header: str) -> bool:
+        """Whether the header carries any conference's code or printed name."""
+        return self._any.search(header) is not None
+
+    def named(self, header: str) -> list[str]:
+        """The conferences the header names, in the order it names them.
+
+        A name inside another conference's longer name is the longer one's:
+        "Great American Conference Tournament" is the Great American's, not
+        also a conference printed as "American Conference". A name two
+        conferences are both printed under ("Great Lakes") names both.
+        """
+        spans: list[tuple[int, int, str]] = []
+        for code, pattern in self._patterns.items():
+            spans.extend(
+                (match.start(), match.end(), code) for match in pattern.finditer(header)
+            )
+        kept = [
+            (start, end, code)
+            for start, end, code in spans
+            if not any(
+                other_start <= start
+                and end <= other_end
+                and (other_end - other_start) > (end - start)
+                for other_start, other_end, _ in spans
+            )
+        ]
+        named: list[str] = []
+        for _, _, code in sorted(kept):
+            if code not in named:
+                named.append(code)
+        return named
 
 
-def tournament_stage(header: str) -> dict[str, str] | None:
+_conference_headers_cache: list[ConferenceHeaders] = []
+
+
+def conference_headers() -> ConferenceHeaders:
+    """The header reader for the loaded membership reference, built once."""
+    if not _conference_headers_cache:
+        _conference_headers_cache.append(ConferenceHeaders(load_membership()))
+    return _conference_headers_cache[0]
+
+
+def conference_header_signature() -> object:
+    """The reference's contribution to a schedule parse's fingerprint.
+
+    None on an install with no readable membership reference, where a
+    collect already runs on the stanza defaults.
+    """
+    try:
+        return conference_headers().signature
+    except (OSError, ValueError):
+        return None
+
+
+def tournament_stage(
+    header: str, *, headers: ConferenceHeaders | None = None
+) -> dict[str, str] | None:
     """The stage a tournament block's header publishes, or nothing.
 
     Nothing means the block is not a postseason (a senior day, an
     invitational): its rows are classified like any row outside a block.
+    ``headers`` is how a conference is recognised; by default the loaded
+    membership reference's (``conference_headers``).
     """
     text = " ".join(header.split())
     if not text:
@@ -1886,8 +2004,7 @@ def tournament_stage(header: str) -> dict[str, str] | None:
         return {"phase": "unknown", "source": text}
     if _CHAMPIONSHIP_WORD.search(text) and (
         _CONFERENCE_WORD.search(text)
-        or _conference_code().search(text)
-        or _CONFERENCE_LONG_NAME.search(text)
+        or (headers or conference_headers()).names_a_conference(text)
     ):
         return {"phase": "postseason", "competition": "conference", "source": text}
     return None
@@ -4495,6 +4612,9 @@ def collect_programme(
             # parse's identity when there is one; without one the inputs are
             # exactly what they were.
             *(() if scope is None else (scope.fingerprint(slug),)),
+            # The codes and printed names a tournament header is read by
+            # are reference data, so an edited name re-reads the archive.
+            conference_header_signature(),
             *recipe.parse_identity,
         )
         state = (
