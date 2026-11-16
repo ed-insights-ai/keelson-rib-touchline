@@ -402,6 +402,15 @@ class GatedSession(requests.Session):
         super().__init__()
         self._gate = gate
 
+    def presume_paced(self, url: str) -> None:
+        """Pace ``url``'s host from now on, before any challenge is seen.
+
+        For a recipe that learns a shared host only from a served page (the
+        WMT statistics host every WMT programme converges on): the recipe
+        asks for the pace before its first request there.
+        """
+        self._gate.presume_paced(host_of(url))
+
     def request(self, method, url, *args, **kwargs):  # type: ignore[override]
         host = host_of(url)
         with self._gate.slot(host):

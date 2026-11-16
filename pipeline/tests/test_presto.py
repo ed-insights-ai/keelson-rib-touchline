@@ -51,7 +51,7 @@ from src.sidearm_live import (
     orient_match,
 )
 
-FIXTURES = Path("tests/fixtures")
+FIXTURES = Path(__file__).parent / "fixtures"
 BASE = "https://www.tampaspartans.com/sports/msoc"
 SCHEDULE = (FIXTURES / "prestosports_tampa_schedule_2025.html").read_text()
 SCHEDULE_2026 = (FIXTURES / "prestosports_tampa_schedule_2026.html").read_text()

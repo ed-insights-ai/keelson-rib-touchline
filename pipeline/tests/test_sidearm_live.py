@@ -1779,7 +1779,8 @@ def test_play_by_play_reads_every_period_with_team_attribution() -> None:
     from src.sidearm_live import parse_boxscore_page
 
     detail = parse_boxscore_page(
-        Path("tests/fixtures/sidearm_boxscore_6126.html").read_text(), page_url="x"
+        (Path(__file__).parent / "fixtures" / "sidearm_boxscore_6126.html").read_text(),
+        page_url="x",
     )
     # Sides resolve through the column-header abbreviations, so an event's
     # team index agrees with the Score By Period order, not column position.

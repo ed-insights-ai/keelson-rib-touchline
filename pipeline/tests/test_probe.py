@@ -27,7 +27,7 @@ from src.probe import (
     survey_seasons,
 )
 
-FIXTURES = Path("tests/fixtures")
+FIXTURES = Path(__file__).parent / "fixtures"
 PRESTO_BASE = "https://www.tampaspartans.com/sports/msoc"
 
 

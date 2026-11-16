@@ -134,6 +134,17 @@
       "source_url": "https://www.tampaspartans.com/sports/msoc/2025-26/teams/tampa?tmpl=teaminfo-network-monospace-template",
       "state": "complete"
     },
+    "2025/men/seattle-u/stats": {
+      "collector": "wmt-live",
+      "confirmed_at": "2026-11-15T19:00:00+00:00",
+      "count": 28,
+      "gender": "men",
+      "layer": "stats",
+      "programme": "seattle-u",
+      "season": 2025,
+      "source_url": "https://goseattleu.com/sports/mens-soccer/stats/season/2025",
+      "state": "complete"
+    },
     "2026/men/mississippi-college/matches": {
       "collector": "sidearm-live",
       "confirmed_at": "2026-09-01T11:30:42+00:00",
