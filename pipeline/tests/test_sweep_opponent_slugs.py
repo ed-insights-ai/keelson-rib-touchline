@@ -105,3 +105,29 @@ def test_a_pair_the_fold_alone_joins_names_the_rule(tmp_path: Path) -> None:
 def test_a_clean_data_home_reports_no_pairs(tmp_path: Path) -> None:
     out = sweep(_home(tmp_path, ROWS[-1:]))
     assert out["counts"]["pairs"] == 0 and out["findings"] == []
+
+
+def test_an_institution_split_pair_is_apart_not_a_fold(tmp_path: Path) -> None:
+    """Boston College (ACC) and Boston University (Patriot League) fold to one
+    key, "boston", but the institution word tells them apart and each
+    resolves to its own programme: two of them meeting one side on one date
+    are two fixtures, not one filed twice."""
+    rows = [
+        {"id": "a", "date": "2025-09-02", "home": "boston-college", "away": "harvard"},
+        {
+            "id": "b",
+            "date": "2025-09-02",
+            "home": "boston-university",
+            "away": "harvard",
+        },
+    ]
+    fixtures = tmp_path / "data" / "fixtures"
+    fixtures.mkdir(parents=True)
+    (fixtures / "2025-men-acc.json").write_text(json.dumps({"fixtures": rows}))
+    out = sweep(tmp_path)
+    assert out["counts"]["pairs"] == 1
+    assert out["counts"]["fold"] == 0 and out["counts"]["apart"] == 1
+    assert out["findings"] == [
+        "APART 2025-men-acc 2025-09-02 away=harvard: "
+        "boston-college | boston-university -> boston-college | boston-university"
+    ]

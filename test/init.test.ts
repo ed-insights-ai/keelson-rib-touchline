@@ -28,6 +28,7 @@ import {
 } from "../src/commands.ts";
 import { dataHomeState } from "../src/datahome.ts";
 import rib, { composeTouchlineBoard, setScope } from "../src/index.ts";
+import { getSelection } from "../src/state.ts";
 import { makeTouchlineTools } from "../src/tools.ts";
 
 const originalWorkspace = process.env.KEELSON_WORKSPACE;
@@ -381,12 +382,17 @@ describe("first-contact commands", () => {
     const ctx = fakeContext(projects);
 
     // the first home, with nothing active yet, becomes the active one
+    setScope(undefined);
     const first = await initTouchlineHome("d2-soccer", ctx);
     expect(first).toMatchObject({ ok: true, activated: true });
     const d2 = join(workspace, "d2-soccer");
     expect((await readActivationConfig()).ok && (await readActivationConfig())).toMatchObject({
       value: { dataDir: d2 },
     });
+    const d2Project = projects.find((p) => p.name === "d2-soccer");
+    if (!d2Project) throw new Error("init registered no d2 project");
+    // ... and the board's selection with it
+    expect(getSelection().scopeId).toBe(d2Project.id);
 
     // the second does not move it — through the tool, as an agent calls it
     const init = makeTouchlineTools({ ctx, refreshBoard: () => undefined }).find(
@@ -409,8 +415,19 @@ describe("first-contact commands", () => {
     expect(await readFile(join(workspace, "d1-soccer", "touchline-data.yaml"), "utf8")).toContain(
       "\nlevel: d1\n",
     );
+    // the board, status and an implicit collect still act on the d2 home:
+    // creating the second home did not select it
+    expect(getSelection().scopeId).toBe(d2Project.id);
+    // re-initializing the active home keeps it selected
+    expect(await initTouchlineHome("d2-soccer", ctx)).toMatchObject({ ok: true, activated: false });
+    expect(getSelection().scopeId).toBe(d2Project.id);
     // an explicit switch is still the picker's to make
     rib.registerTools?.(ctx);
+    // registerTools persists the package route with a fire-and-forget
+    // ensureActivationConfig(), which rewrites the dataDir it read; let it
+    // land before the selection writes its own, or the two race and the
+    // older dataDir can win.
+    await Bun.sleep(100);
     const d1Project = projects.find((p) => p.name === "d1-soccer");
     if (!d1Project) throw new Error("init registered no d1 project");
     expect(
@@ -438,6 +455,21 @@ describe("first-contact commands", () => {
     const old = join(workspace, "old-home");
     await mkdir(old);
     await writeFile(join(old, "touchline-data.yaml"), "kind: touchline-data\nversion: 1\n");
+    // ... and it is already d2, so it cannot be declared anything else: d1
+    // would relabel its Division II files and admit d1 collects beside them
+    for (const other of ["d1", "d3"] as const) {
+      const relabelled = await initTouchlineHome("old-home", ctx, { level: other });
+      expect(relabelled.ok).toBe(false);
+      if (!relabelled.ok) {
+        expect(relabelled.error).toContain(
+          "is already a d2 data home: its touchline-data.yaml declares no level",
+        );
+        expect(relabelled.error).toContain(`It cannot become a ${other} home.`);
+      }
+      expect(await readFile(join(old, "touchline-data.yaml"), "utf8")).toBe(
+        "kind: touchline-data\nversion: 1\n",
+      );
+    }
     const declared = await initTouchlineHome("old-home", ctx, { level: "d2" });
     expect(declared).toMatchObject({ ok: true, created: false, levelWritten: true });
     expect(await readFile(join(old, "touchline-data.yaml"), "utf8")).toBe(

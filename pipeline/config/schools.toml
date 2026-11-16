@@ -11490,6 +11490,10 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# Peers print "Southern Methodist University" (Louisville 2026,
+# sidearm:louisville:26360, linked to smumustangs.com; UIW 2026,
+# sidearm:uiw:7777); SMU's page holds both matches.
+aliases      = ["Southern Methodist"]
 city         = "Dallas, Texas"
 city_source  = "https://smumustangs.com/sports/mens-soccer/schedule (schedule page home rows print \"Dallas, Texas\", Washburne Soccer and Track Stadium; 13 of 13 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -11553,6 +11557,12 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# Peers print "Pittsburgh" and "University of Pittsburgh" (twelve 2026
+# rows: Maryland sidearm:maryland:20219 and Bucknell sidearm:bucknell:21163
+# linked to pittsburghpanthers.com; Penn State, Penn, SMU, Cornell, Cal,
+# Louisville, Syracuse twice, North Carolina, Virginia); Pitt's page holds
+# all twelve matches.
+aliases      = ["Pittsburgh"]
 city         = "Pittsburgh, Pa."
 city_source  = "https://pittsburghpanthers.com/sports/mens-soccer/schedule (schedule page home rows print \"Pittsburgh, PA\", Ambrose Urbanic Field; 12 of 12 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -11647,6 +11657,14 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# Peers print "N.C. State" (Charlotte 2024, sidearm:charlotte:19251, linked
+# to gopack.com; High Point 2023 and 2024, Winthrop and Stetson 2024, all at
+# Raleigh); NC State's pages hold all five. "North Carolina State" and
+# "North Carolina State University" (Howard 2023 sidearm:howard:10239 and
+# Hofstra 2024 sidearm:hofstra:13208, both at Raleigh; Stetson 2023
+# sidearm:stetson:14776) otherwise fall to North Carolina by token subset;
+# NC State's pages hold all three (nc-state:22908, 23465, 22906).
+aliases      = ["N.C. State", "North Carolina State"]
 city         = "Raleigh, N.C."
 city_source  = "https://gopack.com/sports/mens-soccer/schedule (schedule page home rows print \"Raleigh, NC\", Dail Soccer Field/Track Complex; 9 of 9 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -12068,6 +12086,10 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# AAC peers print "USF" (FIU 2026, sidearm:fiu:14900; FAU 2026,
+# sidearm:florida-atlantic:24690); South Florida's page holds both. A
+# member alias, never global: "USF" is also San Francisco's (WCC).
+member_aliases = ["USF"]
 city         = "Tampa, Fla."
 city_source  = "https://gousfbulls.com/sports/mens-soccer/schedule (schedule page home rows print \"Tampa, FL\", Corbett Stadium; 11 of 11 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -12090,7 +12112,9 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["University at Albany"]
+# Princeton 2026 prints "Albany" (sidearm:princeton:21712, linked to
+# ualbanysports.com, at Albany, NY); UAlbany's page holds the match.
+aliases      = ["University at Albany", "Albany"]
 city         = "Albany, N.Y."
 city_source  = "https://ualbanysports.com/sports/mens-soccer/schedule (schedule page home rows print \"Albany, N.Y.\", Bob Ford Field at Tom & Mary Casey Stadium; 8 of 9 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -12183,6 +12207,11 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# Peers print "University of Massachusetts Lowell", "Massachusetts Lowell"
+# and "Massachusetts-Lowell" (2026: UMass sidearm:umass:16810 linked to
+# goriverhawks.com; UIW, Holy Cross, Merrimack, Binghamton, Bryant); UMass
+# Lowell's page holds all six matches.
+aliases      = ["Massachusetts Lowell"]
 city         = "Lowell, Mass."
 city_source  = "https://goriverhawks.com/sports/mens-soccer/schedule (schedule page home rows print \"Lowell, Mass.\", Cushing Field; 8 of 8 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -12820,7 +12849,9 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["University of South Carolina - Upstate"]
+# Clemson 2024 prints "Upstate" (wmt:clemson:853); USC Upstate's page holds
+# the match.
+aliases      = ["University of South Carolina - Upstate", "Upstate"]
 city         = "Spartanburg, S.C."
 city_source  = "https://upstatespartans.com/sports/mens-soccer/schedule (schedule page home rows print \"Spartanburg, S.C.\", County University Soccer Stadium; 5 of 5 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -12919,7 +12950,10 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["California State University at Bakersfield"]
+# Peers print "CSU Bakersfield" (seven 2026 rows: UNLV
+# sidearm:unlv:17917, Gonzaga, San Francisco and Oregon State linked to
+# gorunners.com; Stanford, Utah Tech, UCLA); CSUB's page holds all seven.
+aliases      = ["California State University at Bakersfield", "CSU Bakersfield"]
 city         = "Bakersfield, Calif."
 city_source  = "https://gorunners.com/sports/mens-soccer/schedule (schedule page home rows print \"Bakersfield, CA\", Main Soccer Field; 9 of 9 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -12950,7 +12984,9 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["California State University at Northridge"]
+# Houston Christian 2026 prints "Cal State Northridge" (sidearm:hcu:6674,
+# at Northridge, California); CSUN's page holds the match.
+aliases      = ["California State University at Northridge", "Cal State Northridge"]
 city         = "Northridge, Calif."
 city_source  = "https://gomatadors.com/sports/mens-soccer/schedule (schedule page home rows print \"Northridge, Calif\", Matador Soccer Field; 12 of 12 home rows) (read 2026-11-15)"
 gazetteer_geoid = "0644000"
@@ -12968,6 +13004,12 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# Peers print "Cal St. Fullerton" (Seattle U wmt:seattle-u:8743, San Jose
+# State wmt:san-jose-state:8601 at Titan Stadium), "California State
+# Fullerton" (Oregon State sidearm:oregon-state:22827) and "CSU Fullerton"
+# (Gonzaga sidearm:gonzaga:10283), the last two linked to
+# fullertontitans.com; Cal State Fullerton's page holds all four (2026).
+aliases      = ["Cal St. Fullerton", "California State Fullerton", "CSU Fullerton"]
 city         = "Fullerton, Calif."
 city_source  = "https://fullertontitans.com/sports/mens-soccer/schedule (schedule page home rows print \"Fullerton, CA\", Titan Stadium; 8 of 8 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -13066,7 +13108,11 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["UNC Wilmington"]
+# "University of North Carolina Wilmington" (Queens 2023
+# sidearm:queens-charlotte:11044; George Mason 2024
+# sidearm:george-mason:13043, at Wilmington, NC) otherwise falls to North
+# Carolina by token subset; UNCW's pages hold both (uncw:10100, 10608).
+aliases      = ["UNC Wilmington", "University of North Carolina Wilmington"]
 city         = "Wilmington, N.C."
 city_source  = "https://uncwsports.com/sports/mens-soccer/schedule (schedule page home rows print \"Wilmington, N.C.\", UNCW Soccer Stadium; 10 of 10 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -13171,6 +13217,9 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# Bradley 2025 prints "Fort Wayne" (sidearm:bradley:22571, linked to
+# gomastodons.com); Purdue Fort Wayne's page holds the match.
+aliases      = ["Fort Wayne"]
 city         = "Fort Wayne, Ind."
 city_source  = "https://gomastodons.com/sports/mens-soccer/schedule (schedule page home rows print \"Fort Wayne, Ind.\", Hefner Soccer Complex; 11 of 11 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -13282,6 +13331,10 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# Peers print "Detroit" (Maryland 2024, sidearm:maryland:18206, linked to
+# detroittitans.com; Cleveland State 2023 and Northern Kentucky 2024 at
+# Detroit); Detroit Mercy's pages hold all three.
+aliases      = ["Detroit"]
 city         = "Detroit, Mich."
 city_source  = "https://detroittitans.com/sports/mens-soccer/schedule (schedule page home rows print \"Detroit, Mich.\", Titan Field; 9 of 9 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -13297,6 +13350,19 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# The programme was IUPUI through 2023 and is IU Indianapolis (IU Indy) from
+# 2024: one athletics site, iuindyjags.com, serves 2023-2026 under one sport
+# path, its 2023 schedule holds all 18 matches peers filed against "IUPUI"
+# (Wright State sidearm:wright-state:9531 and Purdue Fort Wayne
+# sidearm:purdue-fort-wayne:14414 link it to iuindyjags.com), the home ground
+# is Michael A. Carroll Stadium under both names, and the archived pages
+# still carry IUPUI facility names. Peers also print "IU Indianapolis"
+# (2024: Akron sidearm:akron:10450 and Purdue Fort Wayne
+# sidearm:purdue-fort-wayne:15835, linked to iuindyjags.com), "Indiana
+# University Indianapolis" (Bellarmine 2024, sidearm:bellarmine:8064) and
+# "Indiana University-Purdue University Indianapolis" (Southern Indiana
+# 2023, sidearm:southern-indiana:10931).
+aliases      = ["IUPUI", "IU Indianapolis", "Indiana University Indianapolis", "Indiana University-Purdue University Indianapolis"]
 city         = "Indianapolis, Ind."
 city_source  = "https://iuindyjags.com/sports/mens-soccer/schedule (schedule page home rows print \"Indianapolis, Ind.\", Michael A. Carroll Stadium; 9 of 9 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -13713,6 +13779,9 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# Seattle U 2026 prints "Western Mich." (wmt:seattle-u:8741, at Kalamazoo,
+# MI); Western Michigan's page holds the match.
+aliases      = ["Western Mich."]
 city         = "Kalamazoo, Mich."
 city_source  = "https://wmubroncos.com/sports/mens-soccer/schedule (schedule page home rows print \"Kalamazoo, Mich.\", WMU Soccer Complex; 11 of 12 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14049,6 +14118,12 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# Peers print "SIU Edwardsville" and "SIU-Edwardsville" (Bradley 2023,
+# sidearm:bradley:21811, and Air Force 2025, sidearm:air-force:21421, linked
+# to siuecougars.com; Southern Indiana 2024 twice and 2025) and "Southern
+# Illinois University Edwardsville" (Southern Indiana 2023,
+# sidearm:southern-indiana:10938 and 10945); SIUE's pages hold all seven.
+aliases      = ["SIU Edwardsville", "Southern Illinois University Edwardsville"]
 city         = "Edwardsville, Ill."
 city_source  = "https://siuecougars.com/sports/mens-soccer/schedule (schedule page home rows print \"Edwardsville, Ill.\", Ralph Korte Stadium; 9 of 9 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14126,7 +14201,10 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["University of Texas Rio Grande Valley"]
+# Peers print "UT Rio Grande Valley" (Houston Christian 2026 three times,
+# sidearm:hcu:6679; Eastern Illinois sidearm:eastern-illinois:14160; three
+# at Edinburg, Texas); UTRGV's page holds all four.
+aliases      = ["University of Texas Rio Grande Valley", "UT Rio Grande Valley"]
 city         = "Edinburg, Texas"
 city_source  = "https://goutrgv.com/sports/mens-soccer/schedule (schedule page home rows print \"Edinburg, Texas\", UTRGV Soccer and Track & Field Complex; 8 of 8 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14183,6 +14261,13 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# Peers print "Cal Baptist" (2026: Denver sidearm:denver:16051 and Oregon
+# State sidearm:oregon-state:22769 linked to cbulancers.com; Campbell,
+# Pacific); California Baptist's page holds all four. UC Riverside prints
+# "CBU" (sidearm:uc-riverside:15274, linked to cbulancers.com): a member
+# alias, since "CBU" is also Christian Brothers's (Division II).
+aliases      = ["Cal Baptist"]
+member_aliases = ["CBU"]
 city         = "Riverside, Calif."
 city_source  = "https://cbulancers.com/sports/mens-soccer/schedule (schedule page home rows print \"Riverside, Calif.\", CBU Soccer Stadium; 8 of 8 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14286,6 +14371,11 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# Lafayette 2026 prints "Boston" (sidearm:lafayette:13995, a Patriot
+# League game at Boston, Mass.); Boston University's page holds it. Bare
+# "Boston" folds to the key Boston College shares, so it is a member
+# alias: inside the Patriot League it names only this programme.
+member_aliases = ["Boston"]
 city         = "Boston, Mass."
 city_source  = "https://goterriers.com/sports/mens-soccer/schedule (schedule page home rows print \"Boston, MA\", Nickerson Field; 9 of 9 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14362,6 +14452,15 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# Army 2026 prints "Loyola Md." (sidearm:army-west-point:20280, linked to
+# loyolagreyhounds.com). Patriot peers print "Loyola" and "Loyola (Md.)"
+# (Lehigh sidearm:lehigh:16057 and Bucknell twice, linked to
+# loyolagreyhounds.com; Holy Cross, Lafayette, Colgate, Navy); Loyola
+# Maryland's page holds every one. "Loyola" (the parenthetical drops) is
+# also Loyola Chicago's on Horizon, OVC and MVC pages, so it is a member
+# alias only.
+aliases      = ["Loyola Md."]
+member_aliases = ["Loyola"]
 city         = "Baltimore, Md."
 city_source  = "https://loyolagreyhounds.com/sports/mens-soccer/schedule (schedule page home rows print \"Baltimore, Md.\", Ridley Athletic Complex; 9 of 9 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14522,7 +14621,9 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Virginia Military Institute"]
+# ETSU 2023 prints "Virginia Military" (sidearm:etsu:11228, at Lexington,
+# Va.); VMI's page holds the match.
+aliases      = ["Virginia Military Institute", "Virginia Military"]
 city         = "Lexington, Va."
 city_source  = "https://vmikeydets.com/sports/mens-soccer/schedule (schedule page home rows print \"Lexington, VA\", Patchin Field; 11 of 11 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14563,6 +14664,9 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# NC State 2026 prints "UMKC" (sidearm:nc-state:24661, linked to
+# kcroos.com); Kansas City's page holds the match.
+aliases      = ["UMKC"]
 city         = "Kansas City, Mo."
 city_source  = "https://kcroos.com/sports/mens-soccer/schedule (schedule page home rows print \"Kansas City, Mo.\", Durwood Soccer Stadium; 10 of 10 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14578,6 +14682,10 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# Peers print "Nebraska at Omaha" (UMass 2026, sidearm:umass:16819, linked
+# to omavs.com) and "University of Nebraska at Omaha" (Yale 2026,
+# sidearm:yale:21506, at Omaha, NE); Omaha's page holds both.
+aliases      = ["Nebraska at Omaha"]
 city         = "Omaha, Neb."
 city_source  = "https://omahamavs.com/sports/mens-soccer/schedule (schedule page home rows print \"Omaha, Neb.\", Caniglia Field; 12 of 12 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14700,6 +14808,10 @@ scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
 enabled      = true
+# Georgia State 2026 prints "Central Florida" (sidearm:georgia-state:10535,
+# at Orlando, FL); UCF's page holds the match. A member alias: the fold
+# reads "College of Central Florida" as the same key.
+member_aliases = ["Central Florida"]
 city         = "Orlando, Fla."
 city_source  = "https://ucfknights.com/sports/mens-soccer/schedule (schedule page, 10 home rows: \"Orlando, Fla. / UCF Soccer Complex\") (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14731,6 +14843,9 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# Old Dominion 2026 prints "Coastal Caro." (wmt:old-dominion:15086);
+# Coastal Carolina's page holds the match.
+aliases      = ["Coastal Caro."]
 city         = "Conway, S.C."
 city_source  = "https://goccusports.com/sports/mens-soccer/schedule (schedule page home rows print \"Conway, S.C.\"; 11 of 11 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14797,6 +14912,10 @@ scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
 enabled      = true
+# Sun Belt peer Marshall prints "ODU" (2023 sidearm:marshall:9351, 2024
+# sidearm:marshall:10643, linked to odusports.com); Old Dominion's pages
+# hold both. A member alias: "ODU" is also Ohio Dominican's (Division II).
+member_aliases = ["ODU"]
 city         = "Norfolk, Va."
 city_source  = "https://odusports.com/sports/mens-soccer/schedule (schedule page home rows print \"Norfolk, Va.\"; 22 of 22 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14881,9 +15000,21 @@ years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# WCC peer Saint Mary's prints "USF" (2023,
+# sidearm:saint-marys-california:11139, linked to usfdons.com, at San
+# Francisco); San Francisco's page holds it. A member alias: "USF" is also
+# South Florida's AAC member alias, so a page outside both conferences reads
+# it as the nearer claimant (tl-4sg.9.1), South Florida on every archived
+# such row (Clemson 2023, Georgia Southern 2024, Stetson 2024 and 2025).
+member_aliases = ["USF"]
 city         = "San Francisco, Calif."
 city_source  = "https://usfdons.com/sports/mens-soccer/schedule (schedule page home rows print \"San Francisco, Calif.\", Negoesco Stadium; 8 of 8 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
+# The Gazetteer's internal point for San Francisco lies in the Pacific; the
+# same override the San Francisco State stanza carries (tui-vu9).
+point        = { lat = 37.7775, lon = -122.41639 }
+point_source = "Wikipedia, San Francisco, the article's title coordinates 37°46′39″N 122°24′59″W, https://en.wikipedia.org/wiki/San_Francisco (read 2026-11-09)"
+point_reason = "the city's boundary takes in the Farallon Islands, so the internal point lies in the Pacific, 46 km west of the peninsula the city stands on (tui-vu9)"
 
 [[schools]]
 name         = "Seattle U"
@@ -14897,7 +15028,9 @@ scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Seattle University"]
+# San Jose State 2023 prints "SeattleU" (wmt:san-jose-state:6004, at
+# Seattle, Wash.); Seattle U's page holds the match.
+aliases      = ["Seattle University", "SeattleU"]
 city         = "Seattle, Wash."
 city_source  = "https://goseattleu.com/sports/mens-soccer/schedule (schedule page home rows print \"Seattle, WA\"; 20 of 20 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"

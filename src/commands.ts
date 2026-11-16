@@ -212,8 +212,15 @@ export async function initTouchlineHome(
   const project =
     projects.find((p) => p.name.toLowerCase() === name.toLowerCase() && p.rootPath === rootPath) ??
     existing;
-  if (project) setScope(project.id);
   const active = await resolveActivationDataDir();
+  // The board's selection follows the active home, never the newest one: a
+  // second home made beside the active one is registered and reported, and
+  // the board, touchline_status and an implicit collect keep acting on the
+  // home that was already active. Only a first home, activated just above,
+  // becomes the selection by being created; re-initializing the active home
+  // keeps it selected. Switching is the picker's act (select-project).
+  const isActive = active.ok && active.dataDir === rootPath;
+  if (project && (activated || isActive)) setScope(project.id);
   return {
     ok: true,
     name,

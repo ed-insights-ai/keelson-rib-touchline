@@ -132,21 +132,63 @@ def home_level() -> HomeLevel | None:
     """
     try:
         text = marker_path().read_text(encoding="utf-8")
-    except OSError:
+    except FileNotFoundError:
         return None
+    except OSError as exc:
+        # Present but unreadable is not "no marker": that would lift the
+        # level guard off a home whose marker may well say d1.
+        raise MarkerError(f"{marker_path()} could not be read ({exc})") from exc
     kind = re.search(r"^\s*kind:\s*(\S+)\s*$", text, re.MULTILINE)
     if kind is None or kind.group(1) != "touchline-data":
         raise MarkerError(
             f"{marker_path()} is not a Touchline marker "
             f"(kind: {kind.group(1) if kind else '(absent)'})"
         )
-    level = re.search(r"^\s*level:\s*(\S+)\s*$", text, re.MULTILINE)
+    try:
+        level = marker_level(text)
+    except ValueError as exc:
+        raise MarkerError(f"{marker_path()} {exc}") from exc
     if level is None:
         return HomeLevel(UNDECLARED_HOME_LEVEL, declared=False)
-    value = level.group(1).lower()
-    if value not in HOME_LEVELS:
-        raise MarkerError(
-            f"{marker_path()} states level: {level.group(1)}, "
-            f"which is not one of {', '.join(HOME_LEVELS)}"
+    return HomeLevel(level, declared=True)
+
+
+#: A line that states the ``level`` key, whatever its value: the key is
+#: found apart from the value, so a value the reader cannot use is refused
+#: rather than read as an absent key.
+_LEVEL_KEY = re.compile(r"^[ \t]*level[ \t]*:(?P<value>.*)$", re.MULTILINE)
+#: A YAML inline comment: ``#`` at the start of the value or after a space.
+_INLINE_COMMENT = re.compile(r"(?:^|[ \t])#.*$")
+
+
+def marker_level(text: str) -> str | None:
+    """The level a marker's text declares; None only when no line states the key.
+
+    The one rule both marker readers hold (this one and ``readMarker`` in
+    src/datahome.ts, which the cadence and the workflow guards reach through
+    bin/resolve-membership.ts), checked against one set of vectors
+    (pipeline/tests/fixtures/marker_levels.json). The key is found apart
+    from its value; an inline comment is stripped (``level: d1 # Division
+    I`` is d1); one pair of matching quotes is unwrapped; the case is
+    folded. What remains must be exactly d1, d2 or d3: an empty value, two
+    words (``level: d4 extra``) or a key stated twice raises ValueError
+    naming the line, and a caller refuses the marker. Only a marker with no
+    ``level`` line takes the legacy default.
+    """
+    found = list(_LEVEL_KEY.finditer(text.replace("\r\n", "\n")))
+    if not found:
+        return None
+    if len(found) > 1:
+        raise ValueError(
+            f"states level {len(found)} times; a marker declares one level"
         )
-    return HomeLevel(value, declared=True)
+    raw = found[0].group("value")
+    value = _INLINE_COMMENT.sub("", raw).strip()
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in "'\"":
+        value = value[1:-1].strip()
+    if value.lower() not in HOME_LEVELS:
+        shown = raw.strip() or "(empty)"
+        raise ValueError(
+            f"states level: {shown}, which is not one of {', '.join(HOME_LEVELS)}"
+        )
+    return value.lower()

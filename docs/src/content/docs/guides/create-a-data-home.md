@@ -26,12 +26,22 @@ level: d1
 refused before anything is fetched, naming both levels, by the
 `touchline_collect` tool, by the `level-guard` node of the `touchline-collect`
 and `touchline-backfill` workflows, by the daily cadence for a pinned
-conference, and once more by `collect-board` itself. That is what keeps
+conference, and once more by `collect-board` itself. `collect-board` also
+holds every programme it would fetch to the home's level for the season,
+the ones asked for and the ones a stored season file adds back to the ask:
+Pitt asked for in a GAC collect, or Mercyhurst (Division I from 2024) listed
+in a stored 2026 PSAC file, is refused by name before the reference mirrors
+are written, and the stored file stands as it was. That is what keeps
 Division I data out of a Division II home after a slip of the project picker.
 A level that is not one of the three makes the marker unusable: the home is
-refused like a foreign one, never guessed past.
+refused like a foreign one, never guessed past. The line is read as YAML
+reads it: an inline comment is ignored (`level: d1 # Division I` is d1) and
+quotes are allowed, but an empty value, a second word (`level: d4 extra`)
+or the key stated twice is refused, not read as a missing level. Every
+reader (the rib, the cadence and workflow guards, and `collect-board`)
+holds one rule, checked against one set of vectors.
 
-A marker with no `level` is read as `d2`, and every reader says it assumed
+A marker with no `level` line is read as `d2`, and every reader says it assumed
 so. Every home made before levels existed is Division II (until the
 Division I men's conferences were onboarded the membership record held
 nothing else), so for those homes d2 is what the data already is. To declare
@@ -40,8 +50,9 @@ home with `level: d2`.
 
 `touchline_init` writes a level into every marker it creates: the `level` it
 was given, else `d2`, and the reply says which. On an existing home whose
-marker has no level it adds the given one; on a home whose marker states a
-different level it refuses. `touchline_collect` into an empty folder makes it
+marker has no level it adds the given one only when that is `d2`, the level
+such a home already is; any other level, and any level different from one
+the marker states, is refused. `touchline_collect` into an empty folder makes it
 a home at the level of what it collects.
 
 ## The five states

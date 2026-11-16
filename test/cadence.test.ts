@@ -1476,7 +1476,7 @@ describe("bin/touchline-collect-cadence.sh data homes and levels", () => {
     );
     expect(d1Log).toContain("touchline cadence: data home level d1 declared.");
     expect(d1Log).toContain(
-      "touchline cadence: skipped (no men 2026 members): WAC — at the home's level but with no member this season; not collected.",
+      "touchline cadence: skipped (no men 2026 members): WAC (at the home's level but with no member this season; not collected).",
     );
     expect(d1Log).toContain("touchline cadence: d1 conferences resolved from membership: [ACC]");
     // nothing landed in the D2 home's log or record, and its lock is untouched

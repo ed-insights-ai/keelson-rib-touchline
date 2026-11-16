@@ -85,9 +85,45 @@ export type MarkerState =
   | { state: "unmarked" }
   | { state: "foreign"; detail: string };
 
-/** The `level:` value a marker text states, if any (unvalidated). */
-function markerLevelText(text: string): string | undefined {
-  return /^\s*level:\s*(\S+)\s*$/m.exec(text)?.[1];
+/** What a marker's text says about its level: no `level` line at all (the
+ *  legacy default applies), a valid declaration, or a line the reader
+ *  cannot use (refused, never defaulted past). */
+export type MarkerLevelText =
+  | { state: "absent" }
+  | { state: "declared"; level: ConferenceLevel }
+  | { state: "invalid"; detail: string };
+
+/** Read the `level` key of a marker's text. The rule pipeline/src/paths.py
+ *  `marker_level` holds, checked against the same vectors
+ *  (pipeline/tests/fixtures/marker_levels.json): the key is found apart from
+ *  its value; an inline comment is stripped (`level: d1 # Division I` is
+ *  d1); one pair of matching quotes is unwrapped; the case is folded. What
+ *  remains must be exactly d1, d2 or d3: an empty value, two words
+ *  (`level: d4 extra`) or the key stated twice is invalid. Only a marker
+ *  with no `level` line is absent. */
+export function markerLevel(text: string): MarkerLevelText {
+  const found = [...text.replace(/\r\n/g, "\n").matchAll(/^[ \t]*level[ \t]*:(.*)$/gm)];
+  if (found.length === 0) return { state: "absent" };
+  if (found.length > 1) {
+    return {
+      state: "invalid",
+      detail: `level is stated ${found.length} times; a marker declares one level`,
+    };
+  }
+  const raw = found[0]?.[1] ?? "";
+  let value = raw.replace(/(?:^|[ \t])#.*$/, "").trim();
+  const quote = value[0];
+  if (value.length >= 2 && (quote === "'" || quote === '"') && value.endsWith(quote)) {
+    value = value.slice(1, -1).trim();
+  }
+  const level = value.toLowerCase();
+  if (!isConferenceLevel(level)) {
+    return {
+      state: "invalid",
+      detail: `level: ${raw.trim() || "(empty)"} is not one of ${CONFERENCE_LEVELS.join(", ")}`,
+    };
+  }
+  return { state: "declared", level };
 }
 
 /** Read the marker without throwing. `unmarked` means "empty or not ours yet";
@@ -97,24 +133,22 @@ export async function readMarker(root: string): Promise<MarkerState> {
   let text: string;
   try {
     text = await readFile(join(root, MARKER_FILE), "utf8");
-  } catch {
-    return { state: "unmarked" };
+  } catch (err) {
+    // Only an absent marker is unmarked. One that exists but cannot be read
+    // is refused, never read as unmarked: that would lift the level guard
+    // off a home whose marker may say d1.
+    if ((err as NodeJS.ErrnoException).code === "ENOENT") return { state: "unmarked" };
+    return { state: "foreign", detail: `unreadable: ${(err as Error).message}` };
   }
   const kind = /^\s*kind:\s*(\S+)\s*$/m.exec(text)?.[1];
   if (kind !== MARKER_KIND) {
     return { state: "foreign", detail: `kind: ${kind ?? "(absent)"}` };
   }
   const version = Number(/^\s*version:\s*(\d+)\s*$/m.exec(text)?.[1] ?? "1");
-  const levelText = markerLevelText(text);
-  if (levelText === undefined) return { state: "marked", version };
-  const level = levelText.toLowerCase();
-  if (!isConferenceLevel(level)) {
-    return {
-      state: "foreign",
-      detail: `level: ${levelText} is not one of ${CONFERENCE_LEVELS.join(", ")}`,
-    };
-  }
-  return { state: "marked", version, level };
+  const level = markerLevel(text);
+  if (level.state === "absent") return { state: "marked", version };
+  if (level.state === "invalid") return { state: "foreign", detail: level.detail };
+  return { state: "marked", version, level: level.level };
 }
 
 /** The NCAA level a data home collects at. `declared` is false when the
@@ -263,8 +297,9 @@ export interface BootstrapResult {
  *  A new marker always states its level: `opts.level`, else d2 (the caller
  *  reports which). An existing marker with no level gets `opts.level`
  *  appended when one is passed — declaring what the home is, never changing
- *  it — and an existing marker that states a DIFFERENT level is refused: a
- *  home's level is what its data is, and relabelling it would not move a
+ *  it, so only d2, the level such a home already is — and an existing marker
+ *  whose effective level (stated, or the undeclared d2) DIFFERS is refused:
+ *  a home's level is what its data is, and relabelling it would not move a
  *  single file.
  *
  *  Refuses anything that is neither empty nor already ours. `force` exists for
@@ -282,9 +317,16 @@ export async function bootstrapDataHome(
     throw new Error(explainRefusal(root, state) as string);
   }
   const marker = await readMarker(root);
-  if (marker.state === "marked" && marker.level && opts.level && marker.level !== opts.level) {
+  // The existing level is the EFFECTIVE one: a marker with no level line is
+  // already a d2 home (UNDECLARED_HOME_LEVEL; its data is Division II), so it
+  // can only be declared d2. Appending another level would relabel its
+  // Division II files and let the guards admit that level beside them.
+  const existing = marker.state === "marked" ? (marker.level ?? UNDECLARED_HOME_LEVEL) : undefined;
+  if (existing && opts.level && existing !== opts.level) {
     throw new Error(
-      `${root} is already a ${marker.level} data home (its ${MARKER_FILE} says level: ${marker.level}); it cannot become a ${opts.level} home. Create a separate home for ${opts.level}.`,
+      marker.state === "marked" && marker.level
+        ? `${root} is already a ${existing} data home (its ${MARKER_FILE} says level: ${existing}); it cannot become a ${opts.level} home. Create a separate home for ${opts.level}.`
+        : `${root} is already a ${existing} data home: its ${MARKER_FILE} declares no level, and a home made before levels existed is Division II, so it can only be declared ${existing}. It cannot become a ${opts.level} home. Create a separate home for ${opts.level}.`,
     );
   }
   let levelWritten = false;

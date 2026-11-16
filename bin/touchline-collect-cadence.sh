@@ -440,7 +440,7 @@ if [ "$MODE" != "archive" ]; then
         --level "$HOME_LEVEL" --season "$SEASON" 2>"$PROG_CACHE/conferences.err") \
       || die "cannot resolve the $HOME_LEVEL conference set from membership: $(head -1 "$PROG_CACHE/conferences.err" 2>/dev/null)"
     if [ -s "$PROG_CACHE/conferences.err" ]; then
-      log "touchline cadence: $(head -1 "$PROG_CACHE/conferences.err") — at the home's level but with no member this season; not collected."
+      log "touchline cadence: $(head -1 "$PROG_CACHE/conferences.err") (at the home's level but with no member this season; not collected)."
     fi
     log "touchline cadence: $HOME_LEVEL conferences resolved from membership: [$CONFERENCES]"
   else

@@ -845,6 +845,42 @@ def test_a_conference_past_its_horizon_carries_its_last_members_forward():
         ) == membership.members_of("UPPER", "men", season, document=document)
 
 
+def test_carry_forward_never_restores_a_programme_that_moved_on_after_the_horizon():
+    """LOWER is authored through 2025. ``former`` is LOWER's 2022-2025 and
+    UPPER's for 2026 only, so by 2027 its UPPER window has ended too. It
+    left LOWER after the horizon: a 2027 LOWER collect must not read it as
+    LOWER's again, and ``refuse_uncovered`` must not admit it under LOWER."""
+    from scripts.collect_board import UncoveredSeason, refuse_uncovered
+
+    document = _horizon_document()
+    document["memberships"]["former"] = {
+        "men": [_window("LOWER", 2022, 2025), _window("UPPER", 2026, 2026)]
+    }
+    document["memberships"]["anchor"] = {"men": [_window("UPPER", 2022, 2027)]}
+
+    def reads(season: int, conference: str) -> str | None:
+        return membership.conference_in_effect(
+            "former", "men", season, conference, document=document
+        )
+
+    assert reads(2025, "LOWER") == "LOWER"
+    assert reads(2026, "LOWER") == "UPPER"
+    # 2027: past LOWER's horizon and past the end of the UPPER window
+    assert reads(2027, "LOWER") is None
+    assert reads(2027, "UPPER") is None
+    assert "former" not in membership.members_in_effect(
+        "LOWER", "men", 2027, document=document
+    )
+    # the stayer, who never moved on, is still carried forward
+    assert membership.members_in_effect("LOWER", "men", 2027, document=document) == {
+        "stayer"
+    }
+    with pytest.raises(UncoveredSeason) as refused:
+        refuse_uncovered(["former"], "men", 2027, "LOWER", document)
+    assert refused.value.programmes == ["former"]
+    refuse_uncovered(["stayer"], "men", 2027, "LOWER", document)
+
+
 def _divisional_window(
     conference: str, division: str, from_season: int, to_season: int
 ) -> dict:

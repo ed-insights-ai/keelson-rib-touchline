@@ -1,0 +1,27 @@
+{
+  "description": "How a data home's touchline-data.yaml states its NCAA level. One set of vectors for every marker reader: pipeline/src/paths.py marker_level and home_level (tests/test_paths.py), src/datahome.ts markerLevel and readMarker, and bin/resolve-membership.ts home-level, which the cadence and the workflow guards call (test/datahome.test.ts). 'absent' takes the legacy d2 default and says it assumed it; 'invalid' refuses the marker; anything else is the declared level.",
+  "vectors": [
+    { "name": "no level line", "text": "kind: touchline-data\nversion: 1\n", "expect": "absent" },
+    { "name": "a commented-out level line", "text": "kind: touchline-data\nversion: 1\n# level: d1\n", "expect": "absent" },
+    { "name": "a longer key is not the level key", "text": "kind: touchline-data\nversion: 1\nlevels: d1\n", "expect": "absent" },
+    { "name": "plain d1", "text": "kind: touchline-data\nversion: 1\nlevel: d1\n", "expect": "d1" },
+    { "name": "plain d2 without a final newline", "text": "kind: touchline-data\nversion: 1\nlevel: d2", "expect": "d2" },
+    { "name": "upper case", "text": "kind: touchline-data\nversion: 1\nlevel: D3\n", "expect": "d3" },
+    { "name": "an inline comment", "text": "kind: touchline-data\nversion: 1\nlevel: d1 # Division I\n", "expect": "d1" },
+    { "name": "an inline comment after a tab", "text": "kind: touchline-data\nversion: 1\nlevel: d2\t# Division II\n", "expect": "d2" },
+    { "name": "double quotes", "text": "kind: touchline-data\nversion: 1\nlevel: \"d1\"\n", "expect": "d1" },
+    { "name": "single quotes and a comment", "text": "kind: touchline-data\nversion: 1\nlevel: 'd2' # legacy\n", "expect": "d2" },
+    { "name": "space before the colon", "text": "kind: touchline-data\nversion: 1\nlevel : d1\n", "expect": "d1" },
+    { "name": "indented key", "text": "kind: touchline-data\nversion: 1\n  level: d1\n", "expect": "d1" },
+    { "name": "CRLF line endings", "text": "kind: touchline-data\r\nversion: 1\r\nlevel: d1\r\n", "expect": "d1" },
+    { "name": "the d1 home's marker as written", "text": "# Marker file: identifies this directory as a Touchline data home.\n# The touchline rib validates this file before running workflows here.\nkind: touchline-data\nversion: 1\n# The NCAA level this home holds. A collect of a conference at another level is refused.\nlevel: d1\n", "expect": "d1" },
+    { "name": "an unknown level", "text": "kind: touchline-data\nversion: 1\nlevel: d4\n", "expect": "invalid" },
+    { "name": "an unknown level with an extra word", "text": "kind: touchline-data\nversion: 1\nlevel: d4 extra\n", "expect": "invalid" },
+    { "name": "a valid level with an extra word", "text": "kind: touchline-data\nversion: 1\nlevel: d1 extra\n", "expect": "invalid" },
+    { "name": "an empty value", "text": "kind: touchline-data\nversion: 1\nlevel:\n", "expect": "invalid" },
+    { "name": "a value that is only a comment", "text": "kind: touchline-data\nversion: 1\nlevel: # d1\n", "expect": "invalid" },
+    { "name": "a hash inside the value is not a comment", "text": "kind: touchline-data\nversion: 1\nlevel: d1#x\n", "expect": "invalid" },
+    { "name": "the key stated twice", "text": "kind: touchline-data\nversion: 1\nlevel: d1\nlevel: d2\n", "expect": "invalid" },
+    { "name": "unbalanced quotes", "text": "kind: touchline-data\nversion: 1\nlevel: \"d1\n", "expect": "invalid" }
+  ]
+}

@@ -24,7 +24,7 @@ import sys
 from pathlib import Path
 
 from src.config import load_schools
-from src.membership import load_membership, shard_stanzas
+from src.membership import load_membership, shard_programmes, shard_stanzas
 from src.paths import data_root
 from src.sidearm_live import identity_aliases, opponent_slug
 
@@ -61,9 +61,13 @@ def _side_of(
 def compare(home: Path) -> dict[str, object]:
     """Sweep every (fixtures, matches) pair under a data home. Pure; no I/O beyond reading."""
     schools = load_schools()
+    # Only an absent record falls back to the gender-wide table. A record
+    # that is present but unreadable or malformed raises: resolving against
+    # every level would compare fixtures collected at one level against
+    # programmes from another.
     try:
         document: dict[str, object] | None = load_membership()
-    except (OSError, ValueError):
+    except FileNotFoundError:
         document = None
     findings: list[str] = []
     counts = {
@@ -83,17 +87,21 @@ def compare(home: Path) -> dict[str, object]:
         mpath = home / "data" / "matches" / f"{name}.json"
         if not mpath.exists():
             continue
-        fixtures = {
-            str(f["id"]): f
-            for f in json.loads(fpath.read_text())["fixtures"]
-            if "id" in f
-        }
+        payload = json.loads(fpath.read_text())
+        fixtures = {str(f["id"]): f for f in payload["fixtures"] if "id" in f}
         raw = json.loads(mpath.read_text())
         matches = raw.get("matches", raw) if isinstance(raw, dict) else {}
         # The table the file's collect resolved against: its conference's
-        # NCAA level that season, so a slug is re-read the way it was minted.
+        # NCAA level that season (a structural shard's, its programmes'), so
+        # a slug is re-read the way it was minted.
         aliases = identity_aliases(
-            shard_stanzas(schools, name, document=document), gender=gender
+            shard_stanzas(
+                schools,
+                name,
+                programmes=shard_programmes(payload),
+                document=document,
+            ),
+            gender=gender,
         )
         counts["cells"] += 1
         for fid, box in matches.items():

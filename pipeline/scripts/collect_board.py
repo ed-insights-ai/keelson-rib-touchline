@@ -37,7 +37,7 @@ import os
 import sys
 import threading
 import time
-from collections.abc import Callable, Mapping
+from collections.abc import Callable, Iterable, Mapping
 from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
 from dataclasses import replace
 from datetime import datetime, timezone
@@ -55,17 +55,21 @@ from src.fetch_pool import (
 from src.config import DEFAULT_CONFIG, SchoolConfig, load_schools
 from src.identity import IdentityReport, SeasonSources, resolve_matches
 from src.membership import (
+    MixedLevels,
+    collect_level,
     collecting_level,
     conference_for,
     conference_in_effect,
     division_for,
     has_windows,
     load_membership,
+    programme_level,
     resolution_stanzas,
+    stanzas_at_level,
 )
 from src.page_state import BoxArchive, PageStateStore
 from src.programmes import load_programmes, programme_points
-from src.recipes import PRESTO, SIDEARM, NoCollector, Recipe, live_recipe
+from src.recipes import PRESTO, SIDEARM, WMT, NoCollector, Recipe, live_recipe
 from src.sidearm_live import (
     DEFAULT_LAYERS,
     LAYER_MATCHES,
@@ -104,6 +108,7 @@ MATCHES_SCHEMA = "touchline.matches/2"
 COLLECTORS: Mapping[str, str] = {
     SIDEARM.platform: "sidearm-live",
     PRESTO.platform: "presto-live",
+    WMT.platform: "wmt-live",
 }
 COLLECTOR = COLLECTORS[SIDEARM.platform]
 
@@ -379,6 +384,7 @@ def collect_identity(
     *,
     document: dict[str, object] | None,
     points: dict[str, tuple[float, float]] | None = None,
+    programmes: Iterable[str] = (),
 ) -> tuple[dict[str, str], set[str], ResolutionScope]:
     """What one conference-season collect resolves opponent text with.
 
@@ -393,7 +399,10 @@ def collect_identity(
     (``membership.resolution_stanzas``), so a Division II page's "Penn State
     Abington" stays itself instead of folding onto Division I "Penn State",
     and a Division I page's "California" is Cal, not California (Pa.). Text
-    naming a school at another level mints its slug from the text.
+    naming a school at another level mints its slug from the text. A
+    structural code (independent, non_member) has no profile, so its level
+    is the level of the ``programmes`` collected (``membership.collect_level``),
+    and programmes at two levels in one collect raise ``MixedLevels``.
 
     Identity and membership are different questions and use different sets.
     The map spans every stanza at the level, so an out-of-conference
@@ -412,9 +421,15 @@ def collect_identity(
     every page in it; with ``points`` an ambiguous name no member claims
     breaks by distance to the collecting school (tl-4sg.9.1).
     """
-    in_scope = resolution_stanzas(
-        schools, gender, conference, season, document=document
+    level = collect_level(
+        schools,
+        gender,
+        conference,
+        season,
+        programmes=programmes,
+        document=document,
     )
+    in_scope = stanzas_at_level(schools, gender, level, season, document=document)
     aliases = identity_aliases(in_scope, gender)
     members = conference_members(
         schools, gender, conference, season=season, document=document
@@ -426,9 +441,7 @@ def collect_identity(
         conference=conference,
         season=season,
         points=points,
-        level=None
-        if document is None
-        else collecting_level(conference, document=document),
+        level=level,
     )
     return aliases, members, scope
 
@@ -926,6 +939,7 @@ def collect(
         season,
         document=membership_document,
         points=_programme_points(),
+        programmes=wanted,
     )
     results = []
     errors: list[str] = []
@@ -944,7 +958,9 @@ def collect(
     # with polite spacing and per-host pacing, holds across both phases and
     # every worker — so two programmes on one host share one pace.  A
     # PrestoSports host starts paced (the platform is known to challenge a
-    # burst); any host is paced from its first observed HTTP 202.
+    # burst); the WMT statistics host is paced by the recipe before its
+    # first request there (one host shared by every WMT programme); any
+    # host is paced from its first observed HTTP 202.
     # Sessions are per thread — requests makes no thread-safety promise.
     if gate is None:
         gate = HostGate(policy=PacingPolicy.from_env())
@@ -1808,6 +1824,96 @@ def level_refusal(conference: str) -> str | None:
     )
 
 
+def programme_level_refusal(
+    wanted: list[str],
+    widened: list[str],
+    *,
+    schools: list[SchoolConfig],
+    gender: str,
+    season: int,
+    conference: str,
+    season_key: str,
+    document: dict[str, object] | None,
+) -> str | None:
+    """Why the final programme list of a collect must not run in this home.
+
+    ``level_refusal`` holds the conference to the home's level; this holds
+    every programme the run would fetch, the ones asked for and the ones
+    ``widen_to_existing_scope`` restored from the stored season files. A
+    covering window passes ``refuse_uncovered`` whatever conference it
+    names, so without this a Division I programme (Pitt, ACC) asked for in a
+    GAC collect, or Mercyhurst (NEC from 2024) restored into a 2026 PSAC
+    shard, would be fetched into a Division II home and parsed with the
+    Division II identity table. Each programme's level is its level that
+    season (``programme_level``, its stanza conference the fallback); one
+    with no level anywhere passes, as every collect did before levels.
+
+    The level held is the home's; a root with no marker holds the collect's
+    own (``collect_level``), and a structural collect whose programmes span
+    two levels is refused there. Nothing is synced, fetched or written
+    before this runs, and a refusal drops no stored row.
+    """
+    if document is None:
+        return None
+    try:
+        home = paths.home_level()
+    except paths.MarkerError as exc:
+        return f"REFUSED: {exc}. Nothing was fetched or written."
+    if home is not None:
+        held = home.level
+        where = f"the data home {paths.data_root()} collects {held}"
+    else:
+        try:
+            held = collect_level(
+                schools,
+                gender,
+                conference,
+                season,
+                programmes=wanted,
+                document=document,
+            )
+        except MixedLevels as exc:
+            return f"{exc} Nothing was fetched or written."
+        if held is None:
+            return None
+        where = f"this {conference.upper()} collect resolves at {held}"
+    stanza = {
+        programme_slug(school.name): school.conference
+        for school in schools
+        if school.gender == gender
+    }
+    found: list[str] = []
+    restored: list[str] = []
+    for slug in wanted:
+        level = programme_level(
+            slug,
+            gender,
+            season,
+            stanza_conference=stanza.get(slug, ""),
+            document=document,
+        )
+        if level is None or level == held:
+            continue
+        found.append(f"{slug} ({level} in {season})")
+        if slug in widened:
+            restored.append(slug)
+    if not found:
+        return None
+    lines = [
+        f"REFUSED: {where}, and these {gender} programmes are at another NCAA "
+        f"level for {season}: {', '.join(found)}. A collect fetches and "
+        "resolves one level; collect them into a home of their level. "
+        "Nothing was fetched or written."
+    ]
+    if restored:
+        lines.append(
+            f"{', '.join(restored)} came from this data home's existing "
+            f"{season_key} files, which a run always refreshes whole; those "
+            "files stand as they are."
+        )
+    return "\n".join(lines)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Collect published schedule and roster pages into board JSON."
@@ -1890,9 +1996,6 @@ def main() -> int:
     if refusal:
         print(refusal, file=sys.stderr)
         return 2
-    for sync_note in (sync_membership_reference(), sync_programmes_reference()):
-        if sync_note:
-            print(sync_note)
     season_key = f"{args.season}-{args.gender}-{conference_slug}"
     fixture_path = data_root / "data" / "fixtures" / f"{season_key}.json"
     roster_path = data_root / "data" / "rosters" / f"{season_key}.json"
@@ -1907,6 +2010,24 @@ def main() -> int:
             f"collection already covers {', '.join(widened)}; a run refreshes the whole "
             "unit rather than narrowing the file."
         )
+    # Every programme of the final, widened list at the home's level, before
+    # the reference mirrors are written or anything is fetched.
+    refusal = programme_level_refusal(
+        wanted,
+        widened,
+        schools=load_schools(Path(args.config)),
+        gender=args.gender,
+        season=args.season,
+        conference=args.conference,
+        season_key=season_key,
+        document=_membership_document(),
+    )
+    if refusal:
+        print(refusal, file=sys.stderr)
+        return 2
+    for sync_note in (sync_membership_reference(), sync_programmes_reference()):
+        if sync_note:
+            print(sync_note)
 
     layers = tuple(value.strip() for value in args.layers.split(",") if value.strip())
     unknown = [layer for layer in layers if layer not in DEFAULT_LAYERS]
@@ -1965,6 +2086,11 @@ def main() -> int:
                 else None
             ),
         )
+    except MixedLevels as refusal:
+        # Refused before any fetch (collect_identity runs before the first
+        # request); the season files stand as they were.
+        print(str(refusal), file=sys.stderr)
+        return 2
     except UncoveredSeason as refusal:
         # Nothing was fetched and nothing was written: the season files stand
         # as they were.  Named on stderr, exit 2 like any ask the collector
@@ -2065,6 +2191,7 @@ def main() -> int:
                 args.gender,
                 args.conference,
                 args.season,
+                programmes=wanted,
                 document=_membership_document(),
             )
         }

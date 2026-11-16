@@ -1779,7 +1779,8 @@ def test_play_by_play_reads_every_period_with_team_attribution() -> None:
     from src.sidearm_live import parse_boxscore_page
 
     detail = parse_boxscore_page(
-        Path("tests/fixtures/sidearm_boxscore_6126.html").read_text(), page_url="x"
+        (Path(__file__).parent / "fixtures" / "sidearm_boxscore_6126.html").read_text(),
+        page_url="x",
     )
     # Sides resolve through the column-header abbreviations, so an event's
     # team index agrees with the Score By Period order, not column position.
@@ -4577,6 +4578,82 @@ def test_the_scrimmage_marker_keeps_its_word_boundary() -> None:
     assert _exhibition_marked("Blue-Grey Scrimmage")
     assert _exhibition_marked("Drexel University (scrimmage)")
     assert not _exhibition_marked("Scrimmagers FC")
+
+
+@pytest.mark.parametrize(
+    ("name", "year", "owner_slug", "other"),
+    [
+        # d2-soccer: "(Ex.)", one of 10 such Division II rows.
+        (
+            "sidearm_south_dakota_mines_schedule_2026_11525.html",
+            2026,
+            "south-dakota-mines",
+            "gillette",
+        ),
+        # d1-soccer: the intrasquad "Blue & Gold Game (Exh.)".
+        ("sidearm_etsu_schedule_2023_11213.html", 2023, "etsu", "blue-and-gold-game"),
+        # d1-soccer: lower case and no stop, "(ex)".
+        ("sidearm_hcu_schedule_2026_6669.html", 2026, "hcu", "dallas-richland"),
+    ],
+)
+def test_an_abbreviated_exhibition_mark_is_an_exhibition(
+    name: str, year: int, owner_slug: str, other: str
+) -> None:
+    """A row printing the mark as a parenthesised abbreviation was counted
+    as a played fixture: 84 Division II rows and 300 Division I rows over
+    the archive (2026-11-15). The abbreviation is dropped from the name as
+    "(Exhibition)" is."""
+    row = _archived_row(name, year=year, owner_slug=owner_slug)
+    assert row["match_type"] == "exhibition"
+    assert row["conference_game"] is False
+    assert other in (row["home"], row["away"])
+
+
+def test_a_place_in_parentheses_is_not_an_exhibition_mark() -> None:
+    """academy-of-art 2023, game 6744: "#20 St. Mary's (Tex.)", a played
+    match whose parenthetical begins with the letters of the mark."""
+    row = _archived_row(
+        "sidearm_academy_of_art_schedule_2023_6744.html",
+        year=2023,
+        owner_slug="academy-of-art",
+    )
+    assert "match_type" not in row
+    assert (row["home_score"], row["away_score"]) == (0, 3)
+
+
+@pytest.mark.parametrize(
+    ("text", "marked"),
+    [
+        # Every abbreviated form printed on an opponent cell in either data
+        # home (2026-11-15), and the forms the marker already read.
+        ("Iona (Exh.)", True),
+        ("UAB (EXH)", True),
+        ("Mercer (Ex.)", True),
+        ("St. Bonaventure (EX)", True),
+        ("SMU (exh.)", True),
+        ("North American (EXH.)", True),
+        ("Warner Pacific (Ore.) (Exh)", True),
+        ("Akron (ex)", True),
+        ("University of Rhode Island (EXB.)", True),
+        ("Lewis & Clark CC (ex.)", True),
+        ("Michigan (EXB)", True),
+        ("New Haven (Exh).", True),
+        ("Governors State (exhib)", True),
+        ("Belhaven (Exhibition - JV)", True),
+        # Rejected: parentheticals and words that merely start with the
+        # letters, every one printed on an archived page.
+        ("Trinity University (Texas)", False),
+        ("#20 St. Mary's (Tex.)", False),
+        ("St. Mary's (Tex)", False),
+        ("Raymond, Sr. and Joan Reid Wall of Excellence Unveiling", False),
+    ],
+)
+def test_the_exhibition_mark_reads_only_a_whole_abbreviated_parenthetical(
+    text: str, marked: bool
+) -> None:
+    from src.sidearm_live import _exhibition_marked
+
+    assert _exhibition_marked(text) is marked
 
 
 # Bead tl-11p7: a schedule row whose opponent is not a team (an alumni game,

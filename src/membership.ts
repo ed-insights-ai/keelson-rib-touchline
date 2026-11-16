@@ -229,6 +229,11 @@ export async function resolveConference(
     if (extrapolated && windows.some((w) => season >= w.from_season && season <= w.to_season)) {
       continue;
     }
+    // Nor is a programme whose windows moved it on after the horizon, even
+    // once that later window has ended: LOWER authored through 2025, a
+    // programme LOWER's 2022-2025 and UPPER's for 2026 has left LOWER, and a
+    // 2027 LOWER ask must not restore it. The same rule as conference_in_effect.
+    if (extrapolated && windows.some((w) => w.from_season > effective)) continue;
     const hit = windows.find((w) => effective >= w.from_season && effective <= w.to_season);
     if (!hit || hit.conference.toUpperCase() !== wanted) continue;
     slugs.push(slug);
@@ -246,6 +251,26 @@ export async function resolveConference(
     authoredThrough,
     known,
   };
+}
+
+/** Why a conference request resolved to no programme, in one clause, or
+ *  undefined when it resolved to some. A conference request with no member
+ *  is refused, never sent on as an empty or guessed list, and the refusal
+ *  says which of the four reasons it is: the WAC's men in 2026 are past its
+ *  horizon with every 2025 member authored elsewhere, which is not the same
+ *  as a code the record does not know. */
+export function emptyResolutionReason(res: Resolution): string | undefined {
+  if (res.slugs.length) return undefined;
+  if (!res.known.some((code) => code.toUpperCase() === res.conference)) {
+    return `${res.conference} is not a conference the membership record declares`;
+  }
+  if (res.authoredThrough === 0) {
+    return `the membership record authors no ${res.gender} window in ${res.conference}`;
+  }
+  if (res.extrapolated) {
+    return `the membership record authors ${res.conference} ${res.gender} through ${res.authoredThrough}, and every programme of its ${res.authoredThrough} roster is authored elsewhere for ${res.season}, so none is carried forward`;
+  }
+  return `no ${res.gender} window places a programme in ${res.conference} for ${res.season}`;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

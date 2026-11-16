@@ -769,3 +769,45 @@ def test_the_header_reading_is_part_of_the_schedule_parse_identity() -> None:
         },
     }
     assert ConferenceHeaders(edited).signature != conference_headers().signature
+
+
+def test_the_generic_conference_word_never_reads_another_levels_conference() -> None:
+    """A Division II reader refuses "Big Ten Tournament" (no Division II
+    conference named), so "Big Ten Conference Tournament" must not reach
+    conference postseason through the generic word either, in a block
+    header or an opponent annotation. An unnamed "Conference Tournament",
+    and one naming the reader's own conference, still classify."""
+    d2 = ConferenceHeaders(D1_REFERENCE, "d2")
+    d1 = ConferenceHeaders(D1_REFERENCE, "d1")
+    conference = {"phase": "postseason", "competition": "conference"}
+
+    def stage(header: str, reader: ConferenceHeaders) -> dict[str, str] | None:
+        found = tournament_stage(header, headers=reader)
+        return (
+            None if found is None else {k: v for k, v in found.items() if k != "source"}
+        )
+
+    for header in (
+        "Big Ten Tournament",
+        "Big Ten Conference Tournament",
+        "Missouri Valley Conference Tournament",
+        "2025 Sun Belt Conference Men's Soccer Championship",
+        "American Athletic Conference Championship",
+    ):
+        assert stage(header, d2) is None, header
+        assert stage(header, d1) == conference, header
+        assert stage(header, D1_HEADERS) == conference, header
+    for header in (
+        "Conference Tournament",
+        "Conference Championship First Round",
+        "Great American Conference Tournament",
+        "GAC Conference Tournament",
+    ):
+        assert stage(header, d2) == conference, header
+    # and the reverse: a Division I page reading a Division II conference
+    assert stage("Great American Conference Tournament", d1) is None
+    assert stage("Conference Tournament", d1) == conference
+    assert d2.names_another_level("Big Ten Conference Tournament")
+    assert not d2.names_another_level("Great American Conference Tournament")
+    assert not d2.names_another_level("Conference Tournament")
+    assert not D1_HEADERS.names_another_level("Big Ten Conference Tournament")

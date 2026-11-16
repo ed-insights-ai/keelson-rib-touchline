@@ -64,6 +64,7 @@ from dataclasses import dataclass
 from dataclasses import field as dataclass_field
 from datetime import datetime
 from pathlib import Path
+from typing import TYPE_CHECKING
 from urllib.parse import urljoin, urlparse
 
 import requests
@@ -82,6 +83,9 @@ from src.membership import (
 )
 from src.page_state import BoxArchive, PageState, PageStateStore, content_signature
 from src.tls import TruststoreHTTPAdapter
+
+if TYPE_CHECKING:
+    from src.recipes import Recipe
 
 _LOG = logging.getLogger(__name__)
 
@@ -105,6 +109,26 @@ def http_status(exc: requests.RequestException) -> int | None:
     response = getattr(exc, "response", None)
     status = getattr(response, "status_code", None)
     return status if isinstance(status, int) else None
+
+
+def failure_detail(exc: LiveCollectionError) -> str:
+    """What HTTP said, in the words the report prints after ``error``.
+
+    A 403 is not nothing (bead tl-v1q.6): the status rides the exception when
+    the server answered one; a timeout or a refused connection is named as
+    such; the remaining case is a page that was served but could not prove
+    its season.
+    """
+    if exc.status is not None:
+        return f"HTTP {exc.status}"
+    cause = exc.__cause__
+    if isinstance(cause, requests.Timeout):
+        return "timeout"
+    if isinstance(cause, requests.ConnectionError):
+        return "connection failed"
+    if isinstance(cause, requests.RequestException):
+        return "request failed"
+    return "season not proven"
 
 
 @dataclass(frozen=True)
@@ -265,7 +289,12 @@ _HTML_TAG = re.compile(r"<[A-Za-z!][^>]*>")
 
 
 def assert_served_body(
-    response: requests.Response, *, year: int, kind: str, url: str
+    response: requests.Response,
+    *,
+    year: int,
+    kind: str,
+    url: str,
+    body: str = "html",
 ) -> None:
     """Refuse a 2xx answer that is not the page.
 
@@ -277,22 +306,40 @@ def assert_served_body(
     parser problem.  A 2xx other than 200, or a body with no HTML in it, is
     refused here with the status attached, so the layer's outcome and the
     probe say what HTTP said.  No challenge is answered or bypassed.
+
+    ``body="json"`` is for an API answer (the WMT recipe's schedule-events
+    and ``wmt.games`` bodies): the body must then parse as a JSON object or
+    array, so an HTML challenge page served in place of the JSON is refused
+    the same way.  The default, ``"html"``, is exactly the check every
+    SideArm and PrestoSports page has always had.
     """
+    if body not in ("html", "json"):
+        raise ValueError(f"{body!r} is not a served body kind (html, json)")
     status = response.status_code
     text = response.text or ""
     if not text.strip():
-        body = "an empty body"
-    elif _HTML_TAG.search(text) is None:
-        body = "a body carrying no HTML"
+        served = "an empty body"
+    elif body == "json" and not _is_json_document(text):
+        served = "a body that is not a JSON document"
+    elif body == "html" and _HTML_TAG.search(text) is None:
+        served = "a body carrying no HTML"
     elif status != 200 and status in range(200, 300):
-        body = "an HTML body"
+        served = "a JSON body" if body == "json" else "an HTML body"
     else:
         return
     raise LiveCollectionError(
-        f"[{year}] {kind} page {url} answered HTTP {status} with {body} "
+        f"[{year}] {kind} page {url} answered HTTP {status} with {served} "
         f"(served a challenge, not the page)",
         status=status,
     )
+
+
+def _is_json_document(text: str) -> bool:
+    try:
+        value = json.loads(text)
+    except ValueError:
+        return False
+    return isinstance(value, (dict, list))
 
 
 def fetch_published_page_conditional(
@@ -1490,8 +1537,10 @@ class ResolutionScope:
     season: int
     members: frozenset[str]
     claims: Mapping[str, str]
-    # The NCAA level the collect resolves at (``membership.collecting_level``),
-    # None for a conference with no profile. Every mapping below was built
+    # The NCAA level the collect resolves at (``membership.collect_level``):
+    # the conference profile's, or for a structural code (independent,
+    # non_member) the level of the programmes collected; None only when
+    # neither says. Every mapping below was built
     # from that level's stanzas alone (``membership.resolution_stanzas``); a
     # tournament header is read against that level's conferences only
     # (``conference_headers``). Not in ``fingerprint``: the header signature
@@ -1553,6 +1602,14 @@ class ResolutionScope:
             f"resolution: {printed!r} on {owner}'s page read as {chosen} "
             f"({nearest:,.0f} km) {over}",
         )
+
+    def note_page(self, owner: str, printed: str, line: str) -> None:
+        """Record a run-log ``line`` about ``printed`` on ``owner``'s page.
+
+        For a recipe that reads an opponent from a field other than the
+        printed one, or declines to: once per page owner and printed text.
+        """
+        self._record(f"{owner}\x00{printed}", line)
 
     def _record(self, printed: str, line: str) -> None:
         with self._lock:
@@ -2252,11 +2309,16 @@ class ConferenceHeaders:
     With a ``level`` only that level's conferences (and any declared code
     with no profile) are read: a collect reads its pages for its own
     level's postseasons, as it resolves their opponent text against its own
-    level's stanzas, so adding another level's conferences to the reference
-    neither changes how this level's headers classify nor re-reads this
-    level's archive (the signature is the level's). A Division II page that
-    printed a Division I conference's name beside a championship word would
-    otherwise be stamped a conference postseason the day that name landed.
+    level's stanzas. A Division II page that printed a Division I
+    conference's name beside a championship word would otherwise be stamped
+    a conference postseason the day that name landed.
+
+    The other levels' conferences are still known, for one question only
+    (``names_another_level``): a header the generic word "conference"
+    would classify ("Big Ten Conference Tournament" on a Division II page)
+    is another level's postseason when the names it carries are all another
+    level's. So the other levels' names do steer this level's reading, and
+    the signature carries them beside the level's own.
     """
 
     def __init__(
@@ -2302,15 +2364,52 @@ class ConferenceHeaders:
             "|".join(pattern.pattern for pattern in self._patterns.values()) or _NEVER,
             re.IGNORECASE,
         )
+        #: Every conference of every level, for ``names_another_level``;
+        #: None when this reader is already every level's.
+        self._every_level: ConferenceHeaders | None = (
+            None if level is None else ConferenceHeaders(document, None)
+        )
         #: What of the reference shapes a header's reading, for
         #: ``parse_fingerprint``: the names used to live in this module's
         #: source, which the fingerprint hashes, and a name edited in the
-        #: data must re-read the archive the same way.
-        self.signature: list[tuple[str, bool, tuple[str, ...]]] = signature
+        #: data must re-read the archive the same way. A levelled reader's
+        #: signature carries the other levels' entries after its own.
+        self.signature: list[object] = list(signature)
+        if self._every_level is not None:
+            self.signature.append(
+                [
+                    entry
+                    for entry in self._every_level.signature
+                    if isinstance(entry, tuple) and entry[0] not in self._patterns
+                ]
+            )
 
     def names_a_conference(self, header: str) -> bool:
-        """Whether the header carries any conference's code or printed name."""
-        return self._any.search(header) is not None
+        """Whether the header carries any of this reader's conferences' codes
+        or printed names.
+
+        A levelled reader decides with every level's names in view, so a
+        name of its own level printed inside another level's longer name is
+        the longer one's (``named``): a Division I reader does not take
+        "Great American Conference Tournament" for the American's because
+        "American Conference" sits inside it.
+        """
+        if self._every_level is None:
+            return self._any.search(header) is not None
+        return any(code in self._patterns for code in self._every_level.named(header))
+
+    def names_another_level(self, header: str) -> bool:
+        """Whether every conference the header names is another level's.
+
+        Read with every level's names (``named``, so a name inside a longer
+        one is the longer one's): true when the header names at least one
+        conference and none of them is this reader's. Always false for a
+        reader of every level.
+        """
+        if self._every_level is None:
+            return False
+        named = self._every_level.named(header)
+        return bool(named) and not any(code in self._patterns for code in named)
 
     def named(self, header: str) -> list[str]:
         """The conferences the header names, in the order it names them.
@@ -2391,11 +2490,21 @@ def tournament_stage(
         return {"phase": "postseason", "competition": "ncaa", "source": text}
     if _OTHER_BODY.search(text):
         return {"phase": "unknown", "source": text}
-    if _CHAMPIONSHIP_WORD.search(text) and (
-        _CONFERENCE_WORD.search(text)
-        or (headers or conference_headers(level)).names_a_conference(text)
-    ):
-        return {"phase": "postseason", "competition": "conference", "source": text}
+    if _CHAMPIONSHIP_WORD.search(text):
+        reader = headers or conference_headers(level)
+        # A conference of the reading level named outright, or the generic
+        # word ("Conference Tournament", the unnamed header) unless the
+        # header names only another level's conferences: "Big Ten Conference
+        # Tournament" on a Division II page is no Division II postseason,
+        # exactly as "Big Ten Tournament" is not.
+        if reader.names_a_conference(text) or (
+            _CONFERENCE_WORD.search(text) and not reader.names_another_level(text)
+        ):
+            return {
+                "phase": "postseason",
+                "competition": "conference",
+                "source": text,
+            }
     return None
 
 
@@ -2518,14 +2627,23 @@ def _names_side(
     printed = " ".join(name.split()).strip(" .,(")
     if not printed:
         return None
+    # The keys in ``opponent_slug``'s order, institution key first, and the
+    # first one that names a side decides: "Union University" is read under
+    # its institution key and never also under its folded "union", which
+    # Union College's member alias claims, or every institution-qualified
+    # name of a split pair would name both sides again.
     hits: set[str] = set()
     for key in _lookup_keys(printed):
-        for resolved in (
-            aliases.get(key),
-            scope.claims.get(key) if scope is not None else None,
-        ):
-            if resolved in sides:
-                hits.add(resolved)
+        hits = {
+            resolved
+            for resolved in (
+                aliases.get(key),
+                scope.claims.get(key) if scope is not None else None,
+            )
+            if resolved in sides
+        }
+        if hits:
+            break
     if scope is not None:
         for side in sides:
             abbreviation = scope.abbreviations.get(side, "")
@@ -2720,8 +2838,20 @@ def _oriented_scores(
 # "Blue-Grey Scrimmage"); bounded on both sides so a name that merely
 # contains the letters stays a name (no archived opponent name carries the
 # word, checked 2026-09-03).
+#
+# Sites also abbreviate the mark inside a parenthetical of its own: "(Exh.)"
+# (242 opponent cells over both data homes, 2026-11-15), "(EXH)" 48, "(Ex.)"
+# 28, "(EX)" 24, "(exh.)" 18, "(EXH.)" 9, "(Exh)" 6, "(ex)" 5, "(EXB.)" 4,
+# "(ex.)" 3, "(EXB)" 2 ("Blue & Gold Game (Exh.)", "Michigan (EXB)"). Only
+# the whole parenthetical is the mark, so "(Texas)", "(Tex.)" and a name
+# that merely begins "Ex" stay names: of 324 distinct opponent-cell
+# parentheticals, every other one starting "ex" is a spelled-out form the
+# marker already reads ("(Exhibition)", "(Exhib.)", "(Exhibtion)"), and the
+# only "ex" word outside one was a calendar event ("Wall of Excellence
+# Unveiling").
 _EXHIBITION_MARKER = re.compile(
-    r"\bexhib|\bfriendl(?:y|ies)\b|\bscrimmage\b", re.IGNORECASE
+    r"\bexhib|\bfriendl(?:y|ies)\b|\bscrimmage\b|\((?:ex|exh|exb)\.?\)",
+    re.IGNORECASE,
 )
 
 
@@ -4918,6 +5048,44 @@ def parse_fingerprint(*inputs: object) -> str:
     return digest.hexdigest()
 
 
+def _fetch_layer(
+    recipe: Recipe,
+    client: requests.Session,
+    base_url: str,
+    url: str,
+    year: int,
+    kind: str,
+    *,
+    state: PageState | None,
+    want_validators: bool,
+) -> ConditionalFetch:
+    """One season layer through the recipe's own fetch when it has one.
+
+    A recipe whose layer is more than one served body (WMT: a season page
+    plus the API answers it names) carries ``fetch_layer``, which fetches,
+    proves and bundles them and answers the same ``ConditionalFetch`` this
+    seam does; every other recipe is one conditional fetch of ``url``.
+    """
+    if recipe.fetch_layer is not None:
+        return recipe.fetch_layer(
+            client,
+            base_url,
+            year,
+            kind,
+            state=state,
+            want_validators=want_validators,
+        )
+    return fetch_published_page_conditional(
+        client,
+        url,
+        year,
+        kind,
+        state=state,
+        want_validators=want_validators,
+        served_season=recipe.assert_served_season,
+    )
+
+
 def collect_programme(
     school: SchoolConfig,
     year: int,
@@ -5020,14 +5188,15 @@ def collect_programme(
         )
         try:
             schedule_url = recipe.layer_url(base_url, year, LAYER_SCHEDULE)
-            fetched = fetch_published_page_conditional(
+            fetched = _fetch_layer(
+                recipe,
                 client,
+                base_url,
                 schedule_url,
                 year,
                 LAYER_SCHEDULE,
                 state=state,
                 want_validators=page_cache is not None,
-                served_season=recipe.assert_served_season,
             )
             if fetched.unchanged and state is not None and page_cache is not None:
                 schedule_url = state.final_url
@@ -5157,14 +5326,15 @@ def collect_programme(
         state = page_cache.load(slug, LAYER_ROSTER, fingerprint) if page_cache else None
         try:
             roster_url = recipe.layer_url(base_url, year, LAYER_ROSTER)
-            fetched = fetch_published_page_conditional(
+            fetched = _fetch_layer(
+                recipe,
                 client,
+                base_url,
                 roster_url,
                 year,
                 LAYER_ROSTER,
                 state=state,
                 want_validators=page_cache is not None,
-                served_season=recipe.assert_served_season,
             )
             if fetched.unchanged and state is not None and page_cache is not None:
                 roster_url = state.final_url
@@ -5256,19 +5426,21 @@ def collect_programme(
         try:
             # A platform whose statistics page the base URL alone cannot
             # name locates it first, through this collection's session.
+            # A recipe that fetches its own layers locates them itself.
             stats_url = (
                 recipe.locate_stats(client, base_url, year)
-                if recipe.locate_stats is not None
+                if recipe.locate_stats is not None and recipe.fetch_layer is None
                 else recipe.layer_url(base_url, year, LAYER_STATS)
             )
-            fetched = fetch_published_page_conditional(
+            fetched = _fetch_layer(
+                recipe,
                 client,
+                base_url,
                 stats_url,
                 year,
                 LAYER_STATS,
                 state=state,
                 want_validators=page_cache is not None,
-                served_season=recipe.assert_served_season,
             )
             if fetched.unchanged and state is not None and page_cache is not None:
                 stats_url = state.final_url

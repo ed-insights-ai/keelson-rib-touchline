@@ -108,8 +108,22 @@ row shapes: the schedule and roster pages, the team page's print template
 player's season line; the team page itself fills its individual tables by
 script), and the `boxscores/{yyyymmdd}_{id}.xml` pages the schedule links.
 The roster's abbreviations are normalised to the SideArm vocabulary ("Def."
-is Defender, "Sr." is Senior, "6-4" is 6'4", "200" is 200 lbs). Coverage
-cells name the collector per platform: `sidearm-live` or `presto-live`.
+is Defender, "Sr." is Senior, "6-4" is 6'4", "200" is 200 lbs).
+
+A WMT Digital site (`live_scraper = "wmt"`, `base_url` the site's own
+`{origin}/sports/{sport}`, `mens-soccer` or `msoc`) collects the same four
+layers into the same shapes from more than one served body per layer: the
+season page's `__NUXT_DATA__` payload proves the sport and season and names
+the schedule, the site's `/website-api/schedule-events` lists the matches,
+and season statistics and box scores come from the `wmt.games` JSON API
+the site's own pages point at. Each layer's bodies are archived together,
+as served, as one bundle in the layer's raw page. The WordPress generation
+(South Carolina, Kentucky) server-renders its schedule and roster and serves
+its current season under any season path, so `route_vars` and the page
+title prove the season, and box scores are joined to its rows by date
+through the `wmt.games` team season's Game by Game table. Its rows publish
+no conference flag, so its fixtures carry no `conference_game`. Coverage cells name the
+collector per platform: `sidearm-live`, `presto-live` or `wmt-live`.
 
 `derive_identity` (`pipeline/src/probe.py`) fills the identity fields from
 what the site says of itself, reading the landing page and the newest served

@@ -25,8 +25,10 @@ import { CONFERENCE_LEVELS, type ConferenceLevel } from "./levels.ts";
 import {
   collectFleetSize,
   conferenceProfile,
+  emptyResolutionReason,
   knownConferences,
   programmeLevel,
+  resolveConference,
   resolveTargets,
   titleFromSlug,
 } from "./membership.ts";
@@ -192,7 +194,7 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
         .enum(CONFERENCE_LEVELS)
         .optional()
         .describe(
-          "The one NCAA level this home collects: d1, d2 or d3, written into its marker. A collect of a conference at another level is refused. Defaults to d2 for a new home; on an existing home with no level it declares one.",
+          "The one NCAA level this home collects: d1, d2 or d3, written into its marker. A collect of a conference at another level is refused. Defaults to d2 for a new home. An existing home with no level is already d2 (every home made before levels is Division II), so only d2 can be declared on it; any other level is refused.",
         ),
     }),
     state_changing: true,
@@ -375,7 +377,18 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
         );
       }
       if (!target.slugs.length) {
-        return emit(tctx, `No programmes resolved for ${subject} ${args.gender} ${season}.`, true);
+        // A conference with no member this season is refused with its reason
+        // (past its horizon, every member authored elsewhere; or no window at
+        // all), never sent to the collector as an empty or stale list.
+        const reason =
+          target.kind === "conference"
+            ? emptyResolutionReason(await resolveConference(target.conference, args.gender, season))
+            : undefined;
+        return emit(
+          tctx,
+          `REFUSED: no programmes resolved for ${subject} ${args.gender} ${season}${reason ? `: ${reason}` : ""}. Nothing was fetched or written.`,
+          true,
+        );
       }
       out.push(
         `Resolved ${target.conference} · ${args.gender} · ${season} → ${target.slugs.length} programme${target.slugs.length === 1 ? "" : "s"}: ${target.slugs

@@ -52,7 +52,9 @@ inputs:
 # from_season + (slot - 1); a slot past to_season prints SKIPPED and exits 0.
 # Slots chain with trigger_rule all_done so one failed season is reported and
 # the later seasons still run: a partial backfill with named failures beats a
-# run that stops at the first gap.
+# run that stops at the first gap. all_done also runs them after the
+# level-guard node refused, so every slot asks the same guard again before
+# it resolves a member (bin/backfill-slot.sh) and refuses on its own.
 # ─────────────────────────────────────────────────────────────────────────────
 
 nodes:

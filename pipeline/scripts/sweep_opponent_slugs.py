@@ -31,7 +31,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from src.config import load_schools
-from src.membership import load_membership, shard_stanzas
+from src.membership import load_membership, shard_programmes, shard_stanzas
 from src.paths import data_root
 from src.sidearm_live import (
     FOLD_INSTITUTION,
@@ -72,7 +72,11 @@ def _how_joined(variants: list[str], aliases: dict[str, str]) -> tuple[str, str]
             if rule != FOLD_INSTITUTION
         }
     )
-    if len(keys) == 1:
+    # One folded key is a fold only while it still resolves to one
+    # programme: "boston-college" and "boston-university" fold to one key,
+    # and the institution word the table keeps is what tells them apart
+    # (``institution_split_keys``), so they are apart, not one side twice.
+    if len(keys) == 1 and len(resolved) == 1:
         return "fold", "+".join(rules) or FOLD_INSTITUTION
     if len(resolved) == 1:
         return "alias", next(iter(resolved))
@@ -82,9 +86,13 @@ def _how_joined(variants: list[str], aliases: dict[str, str]) -> tuple[str, str]
 def sweep(home: Path) -> dict[str, object]:
     """Pair every same-date same-side twin under a data home. Pure; reads only."""
     schools = load_schools()
+    # Only an absent record falls back to the gender-wide table. A record
+    # that is present but unreadable or malformed raises: resolving against
+    # every level would compare fixtures collected at one level against
+    # programmes from another.
     try:
         document: dict[str, object] | None = load_membership()
-    except (OSError, ValueError):
+    except FileNotFoundError:
         document = None
     findings: list[str] = []
     counts = {"files": 0, "pairs": 0, "fold": 0, "alias": 0, "apart": 0}
@@ -95,12 +103,20 @@ def sweep(home: Path) -> dict[str, object]:
         if cell is None:
             continue
         name, gender = cell
-        rows = json.loads(fpath.read_text()).get("fixtures", [])
+        payload = json.loads(fpath.read_text())
+        rows = payload.get("fixtures", [])
         counts["files"] += 1
         # The table the file's collect resolved against: its conference's
-        # NCAA level that season, so a slug is re-read the way it was minted.
+        # NCAA level that season (a structural shard's, its programmes'), so
+        # a slug is re-read the way it was minted.
         aliases = identity_aliases(
-            shard_stanzas(schools, name, document=document), gender=gender
+            shard_stanzas(
+                schools,
+                name,
+                programmes=shard_programmes(payload),
+                document=document,
+            ),
+            gender=gender,
         )
         groups: dict[tuple[str, str, str], set[str]] = defaultdict(set)
         for row in rows:
@@ -146,7 +162,20 @@ def main() -> int:
             )
         )
         return 0
-    out = sweep(home)
+    try:
+        out = sweep(home)
+    except (OSError, ValueError, KeyError, TypeError) as error:
+        print(
+            json.dumps(
+                {
+                    "check": CHECK,
+                    "verdict": "alarm",
+                    "headline": f"CHECK DID NOT RUN — {type(error).__name__}: {error}",
+                    "cause": "the membership record or a fixture file could not be read; inspect it by hand",
+                }
+            )
+        )
+        return 0
     for line in out["findings"]:
         print(line)
     counts = out["counts"]

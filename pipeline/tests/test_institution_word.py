@@ -282,7 +282,11 @@ def test_boston_college_and_boston_university_in_every_d1_2026_scope():
             assert opponent_slug(printed, aliases, scope=scope) == "boston-college"
         for printed in ("Boston University", "Boston U.", "Boston U", "Boston Univ."):
             assert opponent_slug(printed, aliases, scope=scope) == "boston-university"
-        assert opponent_slug("Boston", aliases, scope=scope) == "boston"
+        # Bare "Boston" names neither school, except inside the Patriot
+        # League, where Boston University's member alias reads it (Lafayette
+        # 2026, sidearm:lafayette:13995, a league game at Boston, Mass.).
+        bare = "boston-university" if conference == "PATRIOT" else "boston"
+        assert opponent_slug("Boston", aliases, scope=scope) == bare
         # "BC" is display-only: Bloomfield (Division II) prints it too.
         assert opponent_slug("BC", aliases, scope=scope) == "bc"
 
@@ -300,3 +304,44 @@ def test_a_bare_boston_alias_on_either_stanza_is_refused():
             "ambiguous identity (men, d1, seasons 2016-2026): 'boston' is "
             f"claimed bare by {slug} (alias)"
         )
+
+
+def test_a_shootout_naming_the_qualified_side_keeps_its_winner():
+    """Union College's member alias "Union" claims the folded key in its own
+    conference's collect, and "Union University" is held under its
+    institution key. A shootout cell naming "Union University" names that
+    side only: read under both keys it named both sides and the published
+    shootout was dropped."""
+    from src.sidearm_live import parse_shootout
+
+    schools = [
+        _school("Union College", "EAST", member_aliases=["Union"]),
+        _school("Union University", "WEST"),
+    ]
+    aliases, _members, scope = collect_identity(
+        schools, "men", "EAST", 2025, document=PAIR_DOC
+    )
+    assert opponent_slug("Union University", aliases, scope=scope) == (
+        "union-university"
+    )
+    for owner_is_home in (True, False):
+        shootout = parse_shootout(
+            "T, 1-1 Union University wins on PKs, 4-3",
+            owner_slug="union-college",
+            other_slug="union-university",
+            owner_is_home=owner_is_home,
+            aliases=aliases,
+            scope=scope,
+        )
+        assert shootout is not None
+        assert shootout["winner"] == "union-university"
+    # the bare word in Union College's own collect still names Union College
+    shootout = parse_shootout(
+        "T, 1-1 Union wins on PKs, 4-3",
+        owner_slug="union-college",
+        other_slug="union-university",
+        owner_is_home=True,
+        aliases=aliases,
+        scope=scope,
+    )
+    assert shootout is not None and shootout["winner"] == "union-college"
