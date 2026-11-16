@@ -25,7 +25,7 @@ from pathlib import Path
 
 from src import membership, presto
 from src.config import SchoolConfig, load_schools
-from src.membership import load_membership
+from src.membership import load_membership, resolution_stanzas
 from src.sidearm_live import (
     LAYER_SCHEDULE,
     STATE_EMPTY,
@@ -35,6 +35,7 @@ from src.sidearm_live import (
     hosted_other_match,
     identity_aliases,
     identity_collisions,
+    level_identity_collisions,
     member_alias_collisions,
     opponent_slug,
     own_side_opponent,
@@ -159,7 +160,7 @@ def test_a_member_alias_enters_no_gender_wide_map() -> None:
     assert MEN["dominican"] == "dominican"
     assert opponent_slug("Concordia", MEN) == "concordia"
     assert opponent_slug("Dominican", MEN) == "dominican"
-    assert identity_collisions(SCHOOLS) == []
+    assert level_identity_collisions(SCHOOLS, document=MEMBERSHIP) == []
     assert member_alias_collisions(SCHOOLS) == []
     assert membership.validate(MEMBERSHIP, schools=SCHOOLS) == []
 
@@ -441,11 +442,14 @@ POINTS = programme_points(load_programmes())
 
 
 def _scope_with_points(conference: str, season: int):
+    # The collect's own table: the stanzas at the conference's level that
+    # season. Over every stanza, Division I's homonyms ("California",
+    # "Saint Mary's", "LMU", "SMU") would join the tiebreak.
     members = conference_members(
         SCHOOLS, "men", conference, season=season, document=MEMBERSHIP
     )
     return resolution_scope(
-        SCHOOLS,
+        resolution_stanzas(SCHOOLS, "men", conference, season, document=MEMBERSHIP),
         "men",
         members,
         conference=conference,

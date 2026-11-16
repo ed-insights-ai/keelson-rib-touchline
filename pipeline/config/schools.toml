@@ -11455,8 +11455,11 @@ identity_accessed = "2026-11-08"
 #
 # Names are the conference labels (apostrophes dropped, display_name keeping
 # them), except where a label mints a slug already in the file or folds to
-# a key another Division I stanza claims (Queens, Charleston, Saint Mary's,
-# Boston College, Boston University; each stanza says why). Abbreviations
+# a key another Division I stanza claims (Queens, Charleston, Saint Mary's;
+# each stanza says why). Boston College and Boston University both fold to
+# "boston"; the institution word tells them apart, so the identity map holds
+# each under its institution key and bare "Boston" names neither
+# (sidearm_live.institution_split_keys). Abbreviations
 # are the published short forms; a SideArm schoolAbbrev that is a scoreboard
 # stat code (TLSA, MOST, RUTG, ...) is not used, and a bare initialism another
 # stanza carries is display-only. Peer spellings are left for the alias round
@@ -11680,17 +11683,8 @@ city         = "Syracuse, N.Y."
 city_source  = "https://cuse.com/sports/mens-soccer/schedule (schedule page home rows print \"Syracuse, NY\", SU Soccer Stadium; 10 of 10 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
 
-# Boston College and Boston University both fold to the identity key
-# "boston" (the fold drops "college" and "university"), so neither
-# may claim its own name: two Division I stanzas would collide. `name`
-# is qualified with the published nickname so each keeps a key of its
-# own, display_name carries the published name, and the bare published
-# names are NOT claimed. Opponent text "Boston College" / "Boston
-# University" will mint the stranger `boston` until the fold can keep
-# the institution word for this pair (a collector change, not data).
 [[schools]]
-name         = "Boston College Eagles"
-display_name = "Boston College"
+name         = "Boston College"
 abbreviation = "BC"
 abbreviation_resolves = false  # "BC" is also Bloomfield's (Division II)
 conference   = "ACC"
@@ -14280,10 +14274,8 @@ identity_accessed = "2026-11-15"
 #   10 sidearm, all four layers present, seasons 2023-2026
 # Tournament header read 2026-11-15 on loyolagreyhounds.com/sports/mens-soccer/schedule/2025: Patriot League Championships (page text, no block header).
 
-# See Boston College (ACC section): the pair folds to "boston".
 [[schools]]
-name         = "Boston University Terriers"
-display_name = "Boston University"
+name         = "Boston University"
 abbreviation = "BU"
 abbreviation_resolves = false  # "BU" is also Barry, Bentley, Bloomsburg, Biola's (Division II)
 conference   = "PATRIOT"

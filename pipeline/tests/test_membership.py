@@ -15,6 +15,8 @@ from src.config import SchoolConfig, load_schools
 from src.sidearm_live import (
     identity_aliases,
     identity_collisions,
+    level_identity_ambiguities,
+    level_identity_collisions,
     opponent_slug,
     programme_slug,
 )
@@ -487,7 +489,13 @@ def test_a_spelling_two_stanzas_claim_is_refused():
 
 
 def test_the_shipped_config_claims_no_spelling_twice():
-    assert identity_collisions(load_schools()) == []
+    # Per resolution table (one gender, one NCAA level, one season): since
+    # Division I joined the file, the gender-wide list shares keys across
+    # levels by design ("california" is California (Pa.)'s and Cal's), and
+    # those two never share a table.
+    schools, document = load_schools(), membership.load_membership()
+    assert level_identity_collisions(schools, document=document) == []
+    assert level_identity_ambiguities(schools, document=document) == []
 
 
 def test_a_display_name_is_never_an_identity_claim():
