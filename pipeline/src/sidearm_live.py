@@ -1769,9 +1769,15 @@ class ResolutionScope:
         """
         self._record(f"{owner}\x00{printed}", line)
 
-    def _record(self, printed: str, line: str) -> None:
+    def _record(self, printed: str, line: str, *, final: bool = False) -> None:
+        """Keep the first line per printed text, unless ``final``: a later
+        step that changed the answer (the state check) replaces the earlier
+        route's line, so the run log names the slug the side was given."""
         with self._lock:
-            self._notes.setdefault(printed, line)
+            if final:
+                self._notes[printed] = line
+            else:
+                self._notes.setdefault(printed, line)
 
     def notes(self) -> list[str]:
         """One run-log line per distinct printed text the scope re-pointed."""
@@ -1839,6 +1845,7 @@ class ResolutionScope:
             if home
             else f"resolution: {printed!r} read as {chosen}, the one {state} "
             "programme claiming the name",
+            final=True,
         )
 
     def fingerprint(self, owner: str | None = None) -> dict[str, object]:

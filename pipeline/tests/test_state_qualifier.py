@@ -277,3 +277,32 @@ def test_without_a_scope_nothing_changes() -> None:
     assert opponent_slug("Columbia College (S.C.)", identity_aliases(columbia)) == (
         "columbia"
     )
+
+
+def test_the_run_log_names_the_slug_the_state_check_gave() -> None:
+    """The member route notes "Dominican (N.Y.)" as Dominican of California
+    before the state check moves it to Dominican (N.Y.); the note it leaves
+    must be the final one, since collect-board prints the scope's notes."""
+    from src.programmes import load_programmes, programme_points
+
+    aliases, _, scope = collect_identity(
+        load_schools(),
+        "women",
+        "PACWEST",
+        2024,
+        document=load_membership(),
+        points=programme_points(load_programmes()),
+        programmes=("academy-of-art",),
+    )
+    printed = "Dominican (N.Y.)"
+    slug = opponent_slug(printed, aliases, scope=scope, owner="academy-of-art")
+    assert slug == "dominican"
+    lines = [line for line in scope.notes() if repr(printed) in line]
+    assert len(lines) == 1
+    assert "read as dominican:" in lines[0]
+    assert "dominican-of-california is in" in lines[0]
+    # A text no later step changes keeps its first note.
+    opponent_slug("Dominican", aliases, scope=scope, owner="academy-of-art")
+    assert any(
+        "'Dominican' read as dominican-of-california" in n for n in scope.notes()
+    )
