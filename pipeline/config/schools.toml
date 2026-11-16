@@ -1817,9 +1817,15 @@ city         = "Indianapolis, Ind."
 city_source  = "schedule-page home venue location, https://athletics.uindy.edu/sports/womens-soccer/schedule/2026"
 gazetteer_geoid = "1836003"
 identity_accessed = "2026-11-08"
+# The women's "MARY" does not resolve: every women's page that prints
+# "Mary" means the University of Mary (Bismarck), whose stanza claims the
+# folded key "mary" (measured 2026-11-16 over 2,313 Division II pages: 14
+# "Mary" sides, every one UMary's by link host goumary.com or twin). The
+# men's "MARY" stays: no UMary men's stanza claims the key.
 [[schools]]
 name         = "Maryville"
 abbreviation = "MARY"
+abbreviation_resolves = false  # "Mary" is the University of Mary's (NSIC women)
 conference   = "GLVC"
 mascot       = "Saints"
 gender       = "women"
@@ -11077,10 +11083,10 @@ identity_accessed = "2026-11-08"
 #   name is qualified ("Wayne State Nebraska") and the bare spellings the
 #   NSIC prints ("Wayne State", "Wayne State College") are member aliases.
 # - "University of Mary" and its boxes' "Mary" fold to "mary", which the
-#   GLVC's Maryville claims through its resolving abbreviation "MARY" (both
-#   genders). The name is the records label "UMary" and the long name is a
-#   member alias; the abbreviation is the site's "UMARY", not the member
-#   JSON's "MARY".
+#   GLVC's Maryville men claim through their resolving abbreviation "MARY"
+#   (the women's no longer resolves; see the UMary stanza). The name is the
+#   records label "UMary" and the long name an alias; the abbreviation is
+#   the site's "UMARY", not the member JSON's "MARY".
 # - "Minnesota State University Moorhead" and "Southwest Minn. St." each
 #   contain every token of "Minnesota State" (Mankato), so without an exact
 #   alias the unique-token fallback hands them to Mankato. Both are aliases
@@ -11364,12 +11370,16 @@ identity_accessed = "2026-11-08"
 
 # University of Mary (Bismarck). The records print "UMary", which opponent
 # text mints as umary; eight peers print it. Seven peers print "University
-# of Mary" and boxes print "Mary", which fold to "mary", the key the GLVC's
-# Maryville claims through its resolving abbreviation "MARY". So the long
-# name is a member alias: it resolves here inside an NSIC collect, and by
-# the nearest-claimant rule elsewhere (tl-b3v, tl-4sg.9.1). The member
-# JSON's short form "MARY" is Maryville's; UMARY is the site's own
-# scoreboard form.
+# of Mary" and boxes print "Mary", which fold to "mary". That key was the
+# GLVC Maryville women's resolving abbreviation "MARY", and the long name a
+# member alias that reached UMary outside the NSIC only by the distance
+# tiebreak, which read four MIAA/GLIAC rows as Maryville (central-missouri
+# and grand-valley-state 2023 "Mary", emporia-state 2024 and washburn 2025
+# "University of Mary": link host goumary.com on each, twin on UMary's own
+# page the same day). Maryville women's "MARY" no longer resolves, so the
+# long name is a plain alias and "Mary" is UMary's at every women's page of
+# the level. The member JSON's short form "MARY" is Maryville's; UMARY is
+# the site's own scoreboard form.
 [[schools]]
 name         = "UMary"
 abbreviation = "UMARY"
@@ -11381,7 +11391,7 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-member_aliases = ["University of Mary"]
+aliases      = ["University of Mary"]
 city         = "Bismarck, N.D."
 city_source  = "schedule-page home venue location, https://www.goumary.com/sports/womens-soccer (Bismarck, N.D., read by the probe 2026-11-08); the northernsun.org member JSON prints Bismarck, N.D."
 identity_accessed = "2026-11-08"
