@@ -45,8 +45,9 @@ home with `level: d2`.
 
 `touchline_init` writes a level into every marker it creates: the `level` it
 was given, else `d2`, and the reply says which. On an existing home whose
-marker has no level it adds the given one; on a home whose marker states a
-different level it refuses. `touchline_collect` into an empty folder makes it
+marker has no level it adds the given one only when that is `d2`, the level
+such a home already is; any other level, and any level different from one
+the marker states, is refused. `touchline_collect` into an empty folder makes it
 a home at the level of what it collects.
 
 ## The five states

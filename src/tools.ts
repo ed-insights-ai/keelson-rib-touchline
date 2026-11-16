@@ -192,7 +192,7 @@ export function makeTouchlineTools(deps: ToolDeps): ToolDefinition[] {
         .enum(CONFERENCE_LEVELS)
         .optional()
         .describe(
-          "The one NCAA level this home collects: d1, d2 or d3, written into its marker. A collect of a conference at another level is refused. Defaults to d2 for a new home; on an existing home with no level it declares one.",
+          "The one NCAA level this home collects: d1, d2 or d3, written into its marker. A collect of a conference at another level is refused. Defaults to d2 for a new home. An existing home with no level is already d2 (every home made before levels is Division II), so only d2 can be declared on it; any other level is refused.",
         ),
     }),
     state_changing: true,

@@ -450,6 +450,21 @@ describe("first-contact commands", () => {
     const old = join(workspace, "old-home");
     await mkdir(old);
     await writeFile(join(old, "touchline-data.yaml"), "kind: touchline-data\nversion: 1\n");
+    // ... and it is already d2, so it cannot be declared anything else: d1
+    // would relabel its Division II files and admit d1 collects beside them
+    for (const other of ["d1", "d3"] as const) {
+      const relabelled = await initTouchlineHome("old-home", ctx, { level: other });
+      expect(relabelled.ok).toBe(false);
+      if (!relabelled.ok) {
+        expect(relabelled.error).toContain(
+          "is already a d2 data home: its touchline-data.yaml declares no level",
+        );
+        expect(relabelled.error).toContain(`It cannot become a ${other} home.`);
+      }
+      expect(await readFile(join(old, "touchline-data.yaml"), "utf8")).toBe(
+        "kind: touchline-data\nversion: 1\n",
+      );
+    }
     const declared = await initTouchlineHome("old-home", ctx, { level: "d2" });
     expect(declared).toMatchObject({ ok: true, created: false, levelWritten: true });
     expect(await readFile(join(old, "touchline-data.yaml"), "utf8")).toBe(

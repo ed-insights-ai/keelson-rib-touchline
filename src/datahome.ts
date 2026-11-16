@@ -293,8 +293,9 @@ export interface BootstrapResult {
  *  A new marker always states its level: `opts.level`, else d2 (the caller
  *  reports which). An existing marker with no level gets `opts.level`
  *  appended when one is passed — declaring what the home is, never changing
- *  it — and an existing marker that states a DIFFERENT level is refused: a
- *  home's level is what its data is, and relabelling it would not move a
+ *  it, so only d2, the level such a home already is — and an existing marker
+ *  whose effective level (stated, or the undeclared d2) DIFFERS is refused:
+ *  a home's level is what its data is, and relabelling it would not move a
  *  single file.
  *
  *  Refuses anything that is neither empty nor already ours. `force` exists for
@@ -312,9 +313,16 @@ export async function bootstrapDataHome(
     throw new Error(explainRefusal(root, state) as string);
   }
   const marker = await readMarker(root);
-  if (marker.state === "marked" && marker.level && opts.level && marker.level !== opts.level) {
+  // The existing level is the EFFECTIVE one: a marker with no level line is
+  // already a d2 home (UNDECLARED_HOME_LEVEL; its data is Division II), so it
+  // can only be declared d2. Appending another level would relabel its
+  // Division II files and let the guards admit that level beside them.
+  const existing = marker.state === "marked" ? (marker.level ?? UNDECLARED_HOME_LEVEL) : undefined;
+  if (existing && opts.level && existing !== opts.level) {
     throw new Error(
-      `${root} is already a ${marker.level} data home (its ${MARKER_FILE} says level: ${marker.level}); it cannot become a ${opts.level} home. Create a separate home for ${opts.level}.`,
+      marker.state === "marked" && marker.level
+        ? `${root} is already a ${existing} data home (its ${MARKER_FILE} says level: ${existing}); it cannot become a ${opts.level} home. Create a separate home for ${opts.level}.`
+        : `${root} is already a ${existing} data home: its ${MARKER_FILE} declares no level, and a home made before levels existed is Division II, so it can only be declared ${existing}. It cannot become a ${opts.level} home. Create a separate home for ${opts.level}.`,
     );
   }
   let levelWritten = false;
