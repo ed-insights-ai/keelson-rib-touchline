@@ -76,6 +76,7 @@ from src.membership import (
     conference_in_effect,
     conference_profiles,
     has_windows,
+    level_scopes,
     load_membership,
     members_in_effect,
 )
@@ -1050,6 +1051,15 @@ def identity_aliases(
     Oklahoma State, which fields no men's soccer. The platform audit found the
     same class of error at 103 rows when the historical derivation ran
     gender-blind.
+
+    Level scoping is not optional either, and it is the caller's: a collect
+    passes the stanzas of its conference's NCAA level for the season
+    (``membership.resolution_stanzas``), never the whole file. Division I
+    and Division II share names and name tokens ("California" is California
+    (Pa.) in one and Cal in the other; "Penn State Abington" holds every
+    token of "Penn State"), so one table across levels hands one level's
+    text to the other's programmes. Text naming a school at another level
+    mints its slug from the text, as text naming an unknown school does.
     """
     aliases: dict[str, str] = {}
     for school in schools:
@@ -1118,6 +1128,48 @@ def identity_collisions(
     return collisions
 
 
+def level_identity_collisions(
+    schools: list[SchoolConfig],
+    *,
+    document: dict[str, object],
+) -> list[tuple[str, str, str, list[tuple[str, str]]]]:
+    """Every spelling two stanzas of one resolution table both claim.
+
+    ``identity_collisions`` within each table a collect can resolve against
+    (``membership.level_scopes``: one gender, one NCAA level, one season),
+    one entry per (gender, level, key, claimants) as ``(gender, scope, key,
+    claimants)``, where ``scope`` names the level and the seasons the pair
+    is in that table together ("d2, seasons 2016-2026"). Two stanzas that
+    are never at one level in one season never share a table, so a key both
+    claim is no collision: Charleston (W.Va.), Division II, and the College of
+    Charleston, Division I, may both claim "charleston". Two that are, even
+    for one season (a reclassifier beside a school of the level it left),
+    may not. Programme slugs stay unique across every level: that is the
+    loader's duplicate ``(gender, slug)`` refusal, not this.
+    """
+    found: dict[tuple[str, str, str, tuple[tuple[str, str], ...]], list[int]] = {}
+    for gender, level, season, stanzas in level_scopes(schools, document=document):
+        for _, key, claimants in identity_collisions(stanzas):
+            found.setdefault((gender, level, key, tuple(claimants)), []).append(season)
+    return [
+        (gender, f"{level}, seasons {_season_ranges(seasons)}", key, list(claimants))
+        for (gender, level, key, claimants), seasons in found.items()
+    ]
+
+
+def _season_ranges(seasons: Sequence[int]) -> str:
+    """2016, 2017, 2018, 2021 as "2016-2018, 2021"."""
+    runs: list[list[int]] = []
+    for season in sorted(set(seasons)):
+        if runs and season == runs[-1][1] + 1:
+            runs[-1][1] = season
+        else:
+            runs.append([season, season])
+    return ", ".join(
+        str(start) if start == end else f"{start}-{end}" for start, end in runs
+    )
+
+
 def conference_members(
     schools: list[SchoolConfig],
     gender: str,
@@ -1129,10 +1181,11 @@ def conference_members(
     """Programme slugs belonging to ONE conference, for the conference-game test.
 
     Deliberately a different set from ``identity_aliases``.  That map should span
-    every configured school, because an out-of-conference opponent still deserves
-    a canonical slug.  Membership must not: deriving it from the whole alias map
-    marks a cross-conference fixture as a conference game, which is correct only
-    while exactly one conference is configured.
+    every configured school at the collecting level, because an
+    out-of-conference opponent still deserves a canonical slug.  Membership
+    must not: deriving it from the whole alias map marks a cross-conference
+    fixture as a conference game, which is correct only while exactly one
+    conference is configured.
 
     Scoped to the conference rather than to the run's requested programmes, since
     a fixture against a member we did not happen to collect is still a conference
@@ -1216,6 +1269,13 @@ class ResolutionScope:
     season: int
     members: frozenset[str]
     claims: Mapping[str, str]
+    # The NCAA level the collect resolves at (``membership.collecting_level``),
+    # None for a conference with no profile. Every mapping below was built
+    # from that level's stanzas alone (``membership.resolution_stanzas``); a
+    # tournament header is read against that level's conferences only
+    # (``conference_headers``). Not in ``fingerprint``: the header signature
+    # the schedule fingerprint carries beside it is already the level's.
+    level: str | None = None
     # An AMBIGUOUS key and every programme of the gender that claims it: one
     # by name, alias or resolving abbreviation and another by a member alias
     # (two stanzas claiming one spelling gender-wide is a collision the
@@ -1351,12 +1411,21 @@ def resolution_scope(
     conference: str,
     season: int,
     points: Mapping[str, tuple[float, float]] | None = None,
+    level: str | None = None,
 ) -> ResolutionScope:
     """The scope one collect resolves inside: ``members`` and their claims.
 
     ``members`` is the membership resolver's answer for the conference-season
     (``conference_members``), never a conference literal; a member with no
     stanza (a dead host recorded membership-only) claims nothing.
+
+    ``schools`` is the collect's level-scoped stanza list
+    (``membership.resolution_stanzas``), the same list its identity map is
+    built from, so every claimant, member-only alias and tiebreak candidate
+    here is a programme at the collecting level that season: a Division I
+    stanza can never win a Division II page's text by distance or by being
+    the only claimant, nor the reverse. ``level`` is that level, carried
+    for the tournament-header reader.
 
     ``points`` is every programme's point by slug (``programme_points`` over
     the loaded programmes.json), read once per collect; with it the scope can
@@ -1404,6 +1473,7 @@ def resolution_scope(
         season=season,
         members=frozenset(members),
         claims=claims,
+        level=level,
         claimants={
             key: frozenset(slugs - unborn or slugs)
             for key, slugs in claimed.items()
@@ -1431,6 +1501,13 @@ def ncaa_side(
     gender-wide rule left unresolved is read again, and only to the one
     programme whose member alias it is (``ResolutionScope.member_only``); a
     key two programmes claim, or none, stays as it was.
+
+    "The only programme" means the only one at the collecting level that
+    season: an NCAA tie is between two programmes of one division, and the
+    scope's ``member_only`` and the ``aliases`` passed here are both built
+    from that level's stanzas (``membership.resolution_stanzas``). Read
+    across every stanza of the gender, a Division II tie's stranger could be
+    handed to a Division I programme's member alias.
     """
     if scope is None or slug == owner:
         return slug
@@ -1584,7 +1661,15 @@ def _division_seed_key(
 
 
 def _unscoped_slug(key: str, aliases: dict[str, str]) -> str:
-    """The gender-wide rule: exact claim, unique multi-token match, or the key."""
+    """The table-wide rule: exact claim, unique multi-token match, or the key.
+
+    "Table-wide" is the ``aliases`` given: on the collection path that is
+    one gender's stanzas at the collecting level for the season
+    (``membership.resolution_stanzas``), so the token-subset fallback can
+    only ever pick a programme of that level. Over every level at once,
+    "Penn State Abington" is a token superset of Division I "Penn State" and
+    re-points to it, and "North Carolina Wesleyan" to "North Carolina".
+    """
     if key in aliases:
         return aliases[key]
 
@@ -1899,9 +1984,20 @@ class ConferenceHeaders:
     A declared code with no profile is still read as a bare token, as it
     was before profiles existed, so an older mirrored reference degrades to
     the code rule instead of to nothing.
+
+    With a ``level`` only that level's conferences (and any declared code
+    with no profile) are read: a collect reads its pages for its own
+    level's postseasons, as it resolves their opponent text against its own
+    level's stanzas, so adding another level's conferences to the reference
+    neither changes how this level's headers classify nor re-reads this
+    level's archive (the signature is the level's). A Division II page that
+    printed a Division I conference's name beside a championship word would
+    otherwise be stamped a conference postseason the day that name landed.
     """
 
-    def __init__(self, document: Mapping[str, object]) -> None:
+    def __init__(
+        self, document: Mapping[str, object], level: str | None = None
+    ) -> None:
         declared = [
             str(code)
             for code in document.get("conferences") or []  # type: ignore[union-attr]
@@ -1912,6 +2008,8 @@ class ConferenceHeaders:
         signature: list[tuple[str, bool, tuple[str, ...]]] = []
         for code in sorted({*declared, *profiles}):
             profile = profiles.get(code)
+            if level is not None and profile is not None and profile.level != level:
+                continue
             code_is_word = profile is not None and profile.code_is_word
             names = () if profile is None else profile.names
             signature.append((code, code_is_word, names))
@@ -1980,37 +2078,45 @@ class ConferenceHeaders:
         return named
 
 
-_conference_headers_cache: list[ConferenceHeaders] = []
+_conference_headers_cache: dict[str | None, ConferenceHeaders] = {}
 
 
-def conference_headers() -> ConferenceHeaders:
-    """The header reader for the loaded membership reference, built once."""
-    if not _conference_headers_cache:
-        _conference_headers_cache.append(ConferenceHeaders(load_membership()))
-    return _conference_headers_cache[0]
+def conference_headers(level: str | None = None) -> ConferenceHeaders:
+    """The header reader for the loaded membership reference, built once per level.
+
+    ``level`` None reads every conference; a collect passes its own level
+    (``ResolutionScope.level``).
+    """
+    if level not in _conference_headers_cache:
+        _conference_headers_cache[level] = ConferenceHeaders(load_membership(), level)
+    return _conference_headers_cache[level]
 
 
-def conference_header_signature() -> object:
+def conference_header_signature(level: str | None = None) -> object:
     """The reference's contribution to a schedule parse's fingerprint.
 
-    None on an install with no readable membership reference, where a
-    collect already runs on the stanza defaults.
+    The signature of the reader the parse uses: the collecting level's
+    (``conference_headers``). None on an install with no readable membership
+    reference, where a collect already runs on the stanza defaults.
     """
     try:
-        return conference_headers().signature
+        return conference_headers(level).signature
     except (OSError, ValueError):
         return None
 
 
 def tournament_stage(
-    header: str, *, headers: ConferenceHeaders | None = None
+    header: str,
+    *,
+    headers: ConferenceHeaders | None = None,
+    level: str | None = None,
 ) -> dict[str, str] | None:
     """The stage a tournament block's header publishes, or nothing.
 
     Nothing means the block is not a postseason (a senior day, an
     invitational): its rows are classified like any row outside a block.
     ``headers`` is how a conference is recognised; by default the loaded
-    membership reference's (``conference_headers``).
+    membership reference's at ``level`` (``conference_headers``).
     """
     text = " ".join(header.split())
     if not text:
@@ -2021,14 +2127,17 @@ def tournament_stage(
         return {"phase": "unknown", "source": text}
     if _CHAMPIONSHIP_WORD.search(text) and (
         _CONFERENCE_WORD.search(text)
-        or (headers or conference_headers()).names_a_conference(text)
+        or (headers or conference_headers(level)).names_a_conference(text)
     ):
         return {"phase": "postseason", "competition": "conference", "source": text}
     return None
 
 
 def _dom_stages(
-    rows: Sequence[object], dates: Mapping[int, str]
+    rows: Sequence[object],
+    dates: Mapping[int, str],
+    *,
+    level: str | None = None,
 ) -> dict[int, dict[str, str]]:
     """Each row's stage, keyed by ``id(row)``; a row with no stage is absent.
 
@@ -2059,7 +2168,9 @@ def _dom_stages(
         block = row.find_parent("div", class_="sidearm-schedule-tournament")  # type: ignore[attr-defined]
         if block is not None:
             header = block.find("p", recursive=False)
-            stage = tournament_stage(header.get_text(" ", strip=True) if header else "")
+            stage = tournament_stage(
+                header.get_text(" ", strip=True) if header else "", level=level
+            )
             if stage is not None and stage["phase"] == "postseason":
                 stage = dict(stage)
                 label = _first_text(row, ".sidearm-schedule-game-promotion-name")
@@ -2068,7 +2179,7 @@ def _dom_stages(
         if stage is None:
             opponent = _first_text(row, ".sidearm-schedule-game-opponent-name") or ""
             for annotation in _PARENTHETICAL.findall(opponent):
-                found = tournament_stage(annotation.strip("() "))
+                found = tournament_stage(annotation.strip("() "), level=level)
                 if found is not None and found["phase"] == "postseason":
                     stage = dict(found)
                     if _ROUND_WORD.search(found["source"]):
@@ -2583,6 +2694,8 @@ def _parse_schedule_dom(
             for row in rows
             if (date := _dom_row_date(row, year)) is not None
         },
+        # A header is read for the collecting level's conferences only.
+        level=None if scope is None else scope.level,
     )
     # Falling back to the whole alias map preserves single-conference behaviour
     # for callers that have no member list to give, which is every test fixture
@@ -4631,7 +4744,9 @@ def collect_programme(
             *(() if scope is None else (scope.fingerprint(slug),)),
             # The codes and printed names a tournament header is read by
             # are reference data, so an edited name re-reads the archive.
-            conference_header_signature(),
+            # Only the collecting level's: another level's conference added
+            # to the reference re-reads nothing here.
+            conference_header_signature(None if scope is None else scope.level),
             *recipe.parse_identity,
         )
         state = (

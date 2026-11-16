@@ -11,7 +11,7 @@ from typing import Any
 from bs4 import BeautifulSoup
 
 from src import paths
-from src.config import SchoolConfig, load_schools
+from src.config import SchoolConfig, load_schools, programme_slug
 
 #: The top-level key naming, per conference code, where a conference with no
 #: per-season records pages keeps its member lists instead.
@@ -146,6 +146,303 @@ def conferences_at_level(
         for code, profile in conference_profiles(document).items()
         if profile.level == level
     )
+
+
+def collecting_level(
+    conference: str,
+    *,
+    document: dict[str, Any] | None = None,
+) -> str | None:
+    """The NCAA level a collect of ``conference`` resolves opponent text at.
+
+    The conference's profile level, its code compared without case the way
+    ``conference_in_effect`` compares it. None for a code with no profile (a
+    structural code, or a reference older than profiles): such a collect has
+    no level to scope to and resolves against every stanza of the gender, as
+    every collect did before levels existed.
+    """
+    profiles = conference_profiles(document)
+    wanted = conference.strip().casefold()
+    for code, profile in profiles.items():
+        if code.casefold() == wanted:
+            return profile.level
+    return None
+
+
+def _levelled_windows(
+    windows: object, profiles: dict[str, ConferenceProfile]
+) -> list[tuple[int, int, str]]:
+    """(from, to, level) for each well-formed window naming a profiled conference."""
+    if not isinstance(windows, list):
+        return []
+    levelled: list[tuple[int, int, str]] = []
+    for window in windows:
+        if not isinstance(window, dict):
+            continue
+        from_season, to_season = window.get("from_season"), window.get("to_season")
+        profile = profiles.get(window.get("conference"))  # type: ignore[arg-type]
+        if _is_year(from_season) and _is_year(to_season) and profile is not None:
+            levelled.append((from_season, to_season, profile.level))
+    return levelled
+
+
+def _level_in_season(
+    levelled: list[tuple[int, int, str]],
+    season_year: int,
+    stanza_level: str | None,
+) -> str | None:
+    """The rule ``programme_level`` documents, over pre-read windows."""
+    if not levelled:
+        return stanza_level
+    for from_season, to_season, level in levelled:
+        if from_season <= season_year <= to_season:
+            return level
+    before = [
+        (to_season, level)
+        for _, to_season, level in levelled
+        if to_season < season_year
+    ]
+    if before:
+        return max(before)[1]
+    return min((from_season, level) for from_season, _, level in levelled)[1]
+
+
+def programme_level(
+    slug: str,
+    gender: str,
+    season_year: int,
+    *,
+    stanza_conference: str = "",
+    document: dict[str, Any] | None = None,
+) -> str | None:
+    """The NCAA level a programme is resolved at in one season.
+
+    The level of the conference its window for the season names: Mercyhurst
+    men, PSAC (d2) 2022-2023 and a Division I conference from 2024, is at d2
+    for 2023 and d1 for 2024. Opponent text is resolved only against the
+    stanzas at the collecting conference's level that season
+    (``stanzas_at_level``), so this is what decides which table a stanza
+    sits in.
+
+    A season no level-bearing window covers (before the programme's first
+    window, after its last, or covered only by a structural ``independent``
+    or ``non_member`` window, which names no conference and so no level)
+    takes the level of the latest level-bearing window that ended before
+    it, else of the earliest one after it: a leaver keeps the level it left
+    from until a window says otherwise, and an arrival the level it arrived
+    at. That is the rule that keeps every Division II table exactly what it
+    was before levels existed. Every stanza sat in one table per gender then,
+    in every season; Mercyhurst, whose PSAC windows end in 2023, is still at
+    d2 for 2024-2026 until its Division I window is authored, and Oklahoma
+    Baptist, GAC through 2019 and ``non_member`` after, is still at d2. Being
+    in a level's table is not membership of a conference:
+    ``conference_in_effect`` answers that, and still puts such a programme
+    in none.
+
+    A programme with no level-bearing window at all takes its stanza
+    conference's level, the default ``has_windows`` gives a programme the
+    reference has not reached. None when that has no profile either:
+    ``stanzas_at_level`` then keeps the stanza in every level's table, as
+    before levels, and ``validate`` refuses such a stanza in a shipped config.
+    """
+    membership_document = document if document is not None else load_membership()
+    profiles = conference_profiles(membership_document)
+    memberships = membership_document.get("memberships")
+    genders = memberships.get(slug) if isinstance(memberships, dict) else None
+    windows = genders.get(gender) if isinstance(genders, dict) else None
+    stanza = profiles.get(stanza_conference)
+    return _level_in_season(
+        _levelled_windows(windows, profiles),
+        season_year,
+        None if stanza is None else stanza.level,
+    )
+
+
+def stanzas_at_level(
+    schools: list[SchoolConfig],
+    gender: str,
+    level: str | None,
+    season_year: int,
+    *,
+    document: dict[str, Any] | None = None,
+) -> list[SchoolConfig]:
+    """The stanzas of one gender that opponent text may resolve to, in file order.
+
+    One NCAA level in one season (``programme_level``). The order is the
+    file's, so a map built from the result keeps last-stanza-wins exactly
+    where it held before; leaving a level's stanzas out of another level's
+    table therefore cannot change a key that level's stanzas alone claim.
+    A stanza with no level is kept at every level. With no ``level`` (a
+    collect of a conference with no profile) every stanza of the gender is
+    kept: there is nothing to scope to.
+    """
+    of_gender = [school for school in schools if school.gender == gender]
+    if level is None:
+        return of_gender
+    membership_document = document if document is not None else load_membership()
+    profiles = conference_profiles(membership_document)
+    memberships = membership_document.get("memberships")
+    if not isinstance(memberships, dict):
+        memberships = {}
+    kept: list[SchoolConfig] = []
+    for school in of_gender:
+        genders = memberships.get(programme_slug(school.name))
+        windows = genders.get(gender) if isinstance(genders, dict) else None
+        stanza = profiles.get(school.conference)
+        held = _level_in_season(
+            _levelled_windows(windows, profiles),
+            season_year,
+            None if stanza is None else stanza.level,
+        )
+        if held is None or held == level:
+            kept.append(school)
+    return kept
+
+
+def resolution_stanzas(
+    schools: list[SchoolConfig],
+    gender: str,
+    conference: str,
+    season_year: int,
+    *,
+    document: dict[str, Any] | None,
+) -> list[SchoolConfig]:
+    """The stanzas a collect of one conference-season resolves opponent text to.
+
+    ``stanzas_at_level`` at the conference's level (``collecting_level``).
+    The one place a collect's identity scope is decided: the identity map,
+    the resolution scope's member claims, member-only aliases and distance
+    tiebreak, and so ``ncaa_side``, are all built from this list, and the
+    schedule parse fingerprint hashes what they are built into. Text naming
+    a school at another level resolves to nothing here and mints its slug
+    from the text, as text naming an unknown school does. With no document
+    (an install without the membership reference) every stanza of the
+    gender is kept, as before.
+    """
+    if document is None:
+        return [school for school in schools if school.gender == gender]
+    return stanzas_at_level(
+        schools,
+        gender,
+        collecting_level(conference, document=document),
+        season_year,
+        document=document,
+    )
+
+
+def shard_stanzas(
+    schools: list[SchoolConfig],
+    stem: str,
+    *,
+    document: dict[str, Any] | None,
+) -> list[SchoolConfig]:
+    """The stanzas a season file's collect resolved against, from its file name.
+
+    ``stem`` is a season file's name without ``.json``,
+    ``{season}-{gender}-{conference slug}`` ("2024-men-g-mac"); the slug is
+    matched back to a declared code. A read-only check that re-resolves
+    stored text the way the collect did (check_box_scores.py,
+    sweep_opponent_slugs.py) reads it in this table. A stem it cannot read,
+    or a document it does not have, gives every stanza of the stem's gender:
+    the table before levels.
+    """
+    season, _, rest = stem.partition("-")
+    gender, _, shard = rest.partition("-")
+    of_gender = [school for school in schools if school.gender == gender]
+    if document is None or not season.isdigit() or not shard:
+        return of_gender
+    codes = document.get("conferences")
+    for code in codes if isinstance(codes, list) else []:
+        if isinstance(code, str) and programme_slug(code) == shard:
+            return resolution_stanzas(
+                schools, gender, code, int(season), document=document
+            )
+    return of_gender
+
+
+def level_scopes(
+    schools: list[SchoolConfig],
+    *,
+    document: dict[str, Any],
+) -> list[tuple[str, str, int, list[SchoolConfig]]]:
+    """Every (gender, level, season, stanzas) table a collect can resolve against.
+
+    The seasons are the document's span (``seasons``), or every season a
+    window names when it has none; a season outside them reads the same
+    windows as the span's nearest end, so the span answers for it. One
+    table per level some stanza holds that season; a stanza with no level
+    sits in each. When no stanza of a gender has a level that season, the
+    one table is labelled ``"unlevelled"``. check-membership refuses an
+    identity key two stanzas of one table claim.
+    """
+    raw = document.get("seasons")
+    if (
+        isinstance(raw, dict)
+        and _is_year(raw.get("from"))
+        and _is_year(raw.get("to"))
+        and raw["from"] <= raw["to"]
+    ):
+        seasons = list(range(raw["from"], raw["to"] + 1))
+    else:
+        memberships = document.get("memberships")
+        years = {
+            year
+            for genders in (
+                memberships.values() if isinstance(memberships, dict) else []
+            )
+            if isinstance(genders, dict)
+            for windows in genders.values()
+            if isinstance(windows, list)
+            for window in windows
+            if isinstance(window, dict)
+            and _is_year(window.get("from_season"))
+            and _is_year(window.get("to_season"))
+            for year in range(window["from_season"], window["to_season"] + 1)
+        }
+        seasons = sorted(years) or [0]
+    tables: list[tuple[str, str, int, list[SchoolConfig]]] = []
+    genders: list[str] = []
+    for school in schools:
+        if school.gender not in genders:
+            genders.append(school.gender)
+    for gender in genders:
+        for season in seasons:
+            held = {
+                programme_level(
+                    programme_slug(school.name),
+                    gender,
+                    season,
+                    stanza_conference=school.conference,
+                    document=document,
+                )
+                for school in schools
+                if school.gender == gender
+            }
+            levels = [level for level in LEVELS if level in held]
+            if not levels:
+                tables.append(
+                    (
+                        gender,
+                        "unlevelled",
+                        season,
+                        stanzas_at_level(
+                            schools, gender, None, season, document=document
+                        ),
+                    )
+                )
+                continue
+            for level in levels:
+                tables.append(
+                    (
+                        gender,
+                        level,
+                        season,
+                        stanzas_at_level(
+                            schools, gender, level, season, document=document
+                        ),
+                    )
+                )
+    return tables
 
 
 def conference_for(
@@ -818,20 +1115,49 @@ def validate(
     if schools is None:
         schools = load_schools()
     from src.sidearm_live import (
-        identity_collisions,
+        level_identity_collisions,
         member_alias_collisions,
-        programme_slug,
     )
 
-    # Identity is gender-wide and last-stanza-wins, so a spelling two stanzas
-    # claim is refused here rather than resolved silently at collect time.
-    for gender, key, claimants in identity_collisions(schools):
+    # Identity is one table per gender, NCAA level and season, last stanza
+    # wins, so a spelling two stanzas of one table claim is refused here
+    # rather than resolved silently at collect time. Two stanzas never at
+    # one level in one season share no table, and a key both claim is no
+    # collision; the scope says which table the pair met in.
+    for gender, scope, key, claimants in level_identity_collisions(
+        schools, document=document
+    ):
         named = " and ".join(f"{slug} ({label})" for slug, label in claimants)
         errors.append(
-            f"identity collision ({gender}): {key!r} is claimed by {named}; "
-            "drop the alias or set abbreviation_resolves = false on the "
-            "stanzas that share the initialism"
+            f"identity collision ({gender}, {scope}): {key!r} is claimed by "
+            f"{named}; drop the alias or set abbreviation_resolves = false on "
+            "the stanzas that share the initialism"
         )
+    # A stanza with no level would sit in every level's table, the
+    # cross-level capture the scope exists to prevent. A stanza conference
+    # that is declared already answers through its own profile check, so
+    # only a programme whose windows are all structural and whose stanza
+    # names no declared conference is named here.
+    for school in schools:
+        slug = programme_slug(school.name)
+        if declared is not None and school.conference in declared - STRUCTURAL_CODES:
+            continue
+        if (
+            programme_level(
+                slug,
+                school.gender,
+                span[0] if span is not None else 0,
+                stanza_conference=school.conference,
+                document=document,
+            )
+            is None
+        ):
+            errors.append(
+                f"{slug}:{school.gender} has no NCAA level: no window names a "
+                "conference with a profile and its stanza conference "
+                f"{school.conference!r} has none, so it would resolve opponent "
+                "text at every level"
+            )
     # A member alias resolves only inside its conference's scope, so the one
     # spelling it may not share is a fellow member's.
     for gender, conference, key, claimants in member_alias_collisions(schools):
@@ -1046,11 +1372,24 @@ def verify_standings(
     if not page.names:
         raise ValueError("standings page carries no team rows")
 
-    stanzas = schools if schools is not None else load_schools()
+    # The table a collect of this conference-season resolves against: the
+    # stanzas at the conference's NCAA level that season.
+    stanzas = resolution_stanzas(
+        schools if schools is not None else load_schools(),
+        gender,
+        conference,
+        season_year,
+        document=membership_document,
+    )
     aliases = identity_aliases(stanzas, gender)
     expected = members_of(conference, gender, season_year, document=membership_document)
     scope = resolution_scope(
-        stanzas, gender, set(expected), conference=conference, season=season_year
+        stanzas,
+        gender,
+        set(expected),
+        conference=conference,
+        season=season_year,
+        level=collecting_level(conference, document=membership_document),
     )
     slugs = {name: opponent_slug(name, aliases, scope=scope) for name in page.names}
     return StandingsVerdict(

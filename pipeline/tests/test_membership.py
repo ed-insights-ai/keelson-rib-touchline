@@ -456,7 +456,8 @@ def test_a_spelling_two_stanzas_claim_is_refused():
     roosevelt = replace(_school("Roosevelt", "LSC"), abbreviation="RU")
     errors = membership.validate(document, schools=[*schools, rockhurst, roosevelt])
     assert errors == [
-        "identity collision (men): 'ru' is claimed by rockhurst (abbreviation) "
+        "identity collision (men, d2, seasons 2019-2026): 'ru' is claimed by "
+        "rockhurst (abbreviation) "
         "and roosevelt (abbreviation); drop the alias or set "
         "abbreviation_resolves = false on the stanzas that share the initialism"
     ]

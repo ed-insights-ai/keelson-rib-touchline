@@ -31,6 +31,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from src.config import load_schools
+from src.membership import load_membership, shard_stanzas
 from src.paths import data_root
 from src.sidearm_live import (
     FOLD_INSTITUTION,
@@ -81,6 +82,10 @@ def _how_joined(variants: list[str], aliases: dict[str, str]) -> tuple[str, str]
 def sweep(home: Path) -> dict[str, object]:
     """Pair every same-date same-side twin under a data home. Pure; reads only."""
     schools = load_schools()
+    try:
+        document: dict[str, object] | None = load_membership()
+    except (OSError, ValueError):
+        document = None
     findings: list[str] = []
     counts = {"files": 0, "pairs": 0, "fold": 0, "alias": 0, "apart": 0}
     variants: dict[str, set[str]] = defaultdict(set)
@@ -92,7 +97,11 @@ def sweep(home: Path) -> dict[str, object]:
         name, gender = cell
         rows = json.loads(fpath.read_text()).get("fixtures", [])
         counts["files"] += 1
-        aliases = identity_aliases(schools, gender=gender)
+        # The table the file's collect resolved against: its conference's
+        # NCAA level that season, so a slug is re-read the way it was minted.
+        aliases = identity_aliases(
+            shard_stanzas(schools, name, document=document), gender=gender
+        )
         groups: dict[tuple[str, str, str], set[str]] = defaultdict(set)
         for row in rows:
             date, home_slug, away_slug = (

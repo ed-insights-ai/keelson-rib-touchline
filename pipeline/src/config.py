@@ -61,12 +61,14 @@ class SchoolConfig:
     # to be stated. Scoped per stanza, which keeps the map gender-correct.
     aliases: list[str] = field(default_factory=list)
     # Whether ``abbreviation`` also resolves opponent text. The identity map
-    # is one table per gender across every stanza, last stanza wins, so a
-    # bare initialism two stanzas share ("BU", "RU", "SCSU") would silently
-    # re-point one school's spelling to another's; such a stanza sets this
-    # false and its abbreviation stays display-only (coverage cells, the
-    # programmes reference) while only its name and aliases resolve.
-    # check-membership refuses any spelling two stanzas of one gender claim.
+    # is one table per gender and NCAA level for a season, across every
+    # stanza at that level (membership.resolution_stanzas), last stanza
+    # wins, so a bare initialism two stanzas share ("BU", "RU", "SCSU")
+    # would silently re-point one school's spelling to another's; such a
+    # stanza sets this false and its abbreviation stays display-only
+    # (coverage cells, the programmes reference) while only its name and
+    # aliases resolve. check-membership refuses any spelling two stanzas of
+    # one gender claim while they share a level in some season.
     abbreviation_resolves: bool = True
     # Published spellings that identify this programme only among its
     # conference peers. A peer's schedule page prints the short name the
