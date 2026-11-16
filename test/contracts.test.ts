@@ -76,6 +76,55 @@ describe("every published contract fixture parses under the rib's strict schema"
     const fixture = membershipFileSchema.parse(read("membership.json"));
     const packaged = membershipFileSchema.parse(JSON.parse(readFileSync(membershipPath(), "utf8")));
     expect(fixture.conferences).toEqual(packaged.conferences);
+    // One profile per declared conference, in both: the conference is a
+    // record (its NCAA level, the names it is printed under), not a code.
+    const collectable = (file: typeof packaged) =>
+      file.conferences.filter((c) => c !== "independent" && c !== "non_member").sort();
+    expect(Object.keys(packaged.conference_profiles).sort()).toEqual(collectable(packaged));
+    expect(Object.keys(fixture.conference_profiles).sort()).toEqual(collectable(fixture));
+    // The fixture exhibits the optional flag; the packaged file needs none yet.
+    expect(Object.values(fixture.conference_profiles).some((p) => "code_is_word" in p)).toBe(true);
+  });
+
+  test("membership.json refuses a conference without its profile, and a profile without its conference", () => {
+    const fixture = read("membership.json") as {
+      conferences: string[];
+      conference_profiles: Record<string, Record<string, unknown>>;
+    };
+    const messages = (file: unknown): string[] => {
+      const result = membershipFileSchema.safeParse(file);
+      return result.success ? [] : result.error.issues.map((issue) => issue.message);
+    };
+    expect(messages(fixture)).toEqual([]);
+
+    const [code] = Object.keys(fixture.conference_profiles) as [string];
+    const { [code]: dropped, ...rest } = fixture.conference_profiles;
+    expect(messages({ ...fixture, conference_profiles: rest })).toEqual([
+      `conference '${code}' has no conference_profiles entry; every declared conference carries its level and printed names`,
+    ]);
+    expect(
+      messages({
+        ...fixture,
+        conference_profiles: {
+          ...fixture.conference_profiles,
+          NEWC: dropped,
+          independent: dropped,
+        },
+      }),
+    ).toEqual([
+      "conference_profiles['NEWC'] names an undeclared conference code",
+      "conference_profiles['independent'] is a structural code, not a conference",
+    ]);
+    const { conference_profiles: _none, ...bare } = fixture;
+    expect(messages(bare).length).toBeGreaterThan(0);
+
+    const malformed = (profile: Record<string, unknown>) =>
+      messages({ ...fixture, conference_profiles: { ...rest, [code]: profile } }).length;
+    expect(malformed({ level: "division-two", names: ["A Test Conference"] })).toBeGreaterThan(0);
+    expect(malformed({ level: "d2", names: [] })).toBeGreaterThan(0);
+    expect(malformed({ level: "d2", names: [" "] })).toBeGreaterThan(0);
+    expect(malformed({ level: "d2", names: ["A Test Conference"], code_is_word: "no" })).toBe(1);
+    expect(malformed({ level: "d2", names: ["A Test Conference"], division: "East" })).toBe(1);
   });
 
   test("no fixture exists without a schema to read it", () => {

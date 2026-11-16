@@ -11,7 +11,16 @@ import { mkdir, mkdtemp, utimes, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { packageDir } from "../src/datahome.ts";
-import { activeConferences, loadMembership, resolveConference } from "../src/membership.ts";
+import {
+  _resetMembershipCache,
+  _setMembershipCache,
+  activeConferences,
+  CONFERENCE_LEVELS,
+  conferenceLevel,
+  loadMembership,
+  type MembershipFile,
+  resolveConference,
+} from "../src/membership.ts";
 
 const pkg = packageDir();
 const resolver = join(pkg, "bin", "resolve-membership.ts");
@@ -150,6 +159,116 @@ describe("bin/resolve-membership.ts", () => {
     const r = await run(["bun", resolver, "conferences", "mixed"]);
     expect(r.code).toBe(1);
     expect(r.stderr).toContain("no conference authors a mixed membership window");
+  });
+
+  test("conferences --level keeps only that NCAA level, read from the profiles", async () => {
+    const file = await loadMembership();
+    for (const gender of ["men", "women"]) {
+      const all = await activeConferences(gender);
+      const seen: string[] = [];
+      for (const level of CONFERENCE_LEVELS) {
+        const expected = all.filter((code) => file.conference_profiles[code]?.level === level);
+        expect(await activeConferences(gender, level)).toEqual(expected);
+        const r = await run(["bun", resolver, "conferences", gender, "--level", level]);
+        if (expected.length) {
+          expect(r.code).toBe(0);
+          expect(r.stdout).toBe(`${expected.join(" ")}\n`);
+        } else {
+          // A level nobody is authored at is a refusal, never an empty line.
+          expect(r.code).toBe(1);
+          expect(r.stdout).toBe("");
+          expect(r.stderr).toContain(
+            `no ${level} conference authors a ${gender} membership window`,
+          );
+        }
+        seen.push(...expected);
+      }
+      // The levels partition the sweep: every conference at exactly one.
+      expect(seen.sort()).toEqual(all);
+    }
+  });
+
+  test("the level flag reads in either position and either spelling", async () => {
+    const plain = await run(["bun", resolver, "conferences", "men", "--level", "d2"]);
+    expect(plain.code).toBe(0);
+    for (const args of [
+      ["conferences", "--level", "d2", "men"],
+      ["conferences", "men", "--level=d2"],
+      ["conferences", "men", "--level", "D2"],
+    ]) {
+      const r = await run(["bun", resolver, ...args]);
+      expect(r.code).toBe(0);
+      expect(r.stdout).toBe(plain.stdout);
+    }
+  });
+
+  test("the un-flagged conferences line is the level-blind one, byte for byte", async () => {
+    for (const gender of ["men", "women"]) {
+      const r = await run(["bun", resolver, "conferences", gender]);
+      expect(r.code).toBe(0);
+      expect(r.stdout).toBe(`${(await activeConferences(gender)).join(" ")}\n`);
+      expect(r.stderr).toBe("");
+    }
+  });
+
+  test("a level that is not one of the three is refused by name", async () => {
+    for (const args of [
+      ["conferences", "men", "--level", "division-two"],
+      ["conferences", "men", "--level"],
+    ]) {
+      const r = await run(["bun", resolver, ...args]);
+      expect(r.code).toBe(1);
+      expect(r.stdout).toBe("");
+      expect(r.stderr).toContain("is not one of d1, d2, d3");
+    }
+    const stray = await run(["bun", resolver, "conferences", "men", "--division", "d2"]);
+    expect(stray.code).toBe(1);
+    expect(stray.stderr).toContain("usage:");
+  });
+});
+
+describe("conference levels", () => {
+  const file: MembershipFile = {
+    conferences: ["UPPER", "LOWER", "independent", "non_member"],
+    conference_profiles: {
+      UPPER: { level: "d1", names: ["Upper Test League"], code_is_word: true },
+      LOWER: { level: "d2", names: ["Lower Test Conference"] },
+    },
+    memberships: {
+      one: { men: [{ conference: "UPPER", from_season: 2024, to_season: 2026, source: "t" }] },
+      two: { men: [{ conference: "LOWER", from_season: 2024, to_season: 2026, source: "t" }] },
+      three: { women: [{ conference: "LOWER", from_season: 2024, to_season: 2026, source: "t" }] },
+    },
+  };
+
+  test("a sweep filtered by level keeps that level's conferences only", async () => {
+    _setMembershipCache(file);
+    try {
+      expect(await activeConferences("men")).toEqual(["LOWER", "UPPER"]);
+      expect(await activeConferences("men", "d1")).toEqual(["UPPER"]);
+      expect(await activeConferences("men", "d2")).toEqual(["LOWER"]);
+      expect(await activeConferences("men", "d3")).toEqual([]);
+      expect(await activeConferences("women", "d1")).toEqual([]);
+      expect(await conferenceLevel("upper")).toBe("d1");
+    } finally {
+      _resetMembershipCache();
+    }
+  });
+
+  test("a conference with no profile stops a level-filtered sweep, never thins it", async () => {
+    _setMembershipCache({
+      ...file,
+      conference_profiles: { LOWER: file.conference_profiles.LOWER! },
+    });
+    try {
+      // Un-filtered, the sweep is what it always was.
+      expect(await activeConferences("men")).toEqual(["LOWER", "UPPER"]);
+      expect(activeConferences("men", "d2")).rejects.toThrow(
+        "conference 'UPPER' has no conference_profiles entry",
+      );
+    } finally {
+      _resetMembershipCache();
+    }
   });
 });
 

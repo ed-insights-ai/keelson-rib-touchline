@@ -29,6 +29,7 @@ from src.sidearm_live import (
     LayerOutcome,
     ProgrammeCollection,
     collect_programme,
+    conference_header_signature,
     parse_fingerprint,
     write_raw_pages,
 )
@@ -282,7 +283,9 @@ def test_a_stale_fingerprint_reparses_the_archive_without_a_transfer(
     assert second.outcomes[LAYER_SCHEDULE].unchanged is True
     assert len(second.fixtures) == 1
     refreshed = json.loads(path.read_text(encoding="utf-8"))
-    assert refreshed["fingerprint"] == parse_fingerprint(2026, _ALIASES, None)
+    assert refreshed["fingerprint"] == parse_fingerprint(
+        2026, _ALIASES, None, conference_header_signature()
+    )
     assert len(refreshed["parsed"]["fixtures"]) == 1
 
 
@@ -293,7 +296,7 @@ def test_a_sidecar_without_its_archived_page_validates_nothing(
     _first_collect(store, tmp_path, {"ETag": '"abc"'})
     store.html_path("harding", LAYER_SCHEDULE).unlink()
 
-    fingerprint = parse_fingerprint(2026, _ALIASES, None)
+    fingerprint = parse_fingerprint(2026, _ALIASES, None, conference_header_signature())
     assert store.load("harding", LAYER_SCHEDULE, fingerprint) is None
 
     # And with nothing to validate against, the next collect is a full,

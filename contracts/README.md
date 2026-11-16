@@ -69,5 +69,14 @@ The fixtures promise what the writer *can* emit, not only what it has:
   with its windows. `fixtures-2.json` carries the same `division` on one
   `programmes[]` entry. No packaged window names a division yet.
 
+- `membership.json` carries `"code_is_word": false` on the `CACC` profile,
+  the one place the optional flag appears: no packaged profile needs it,
+  because no collected conference's code is an ordinary English word. Every
+  `level` is `d2` for the same reason the conference list is what it is:
+  the fixture's conferences must equal the packaged file's, a profile for
+  an undeclared code is refused, and no Division I or III conference is
+  declared yet. `d1` and `d3` join the fixture with the first conference
+  authored at that level.
+
 All were restamped from real rows and are called out here so nobody goes
 looking for the page they came from.

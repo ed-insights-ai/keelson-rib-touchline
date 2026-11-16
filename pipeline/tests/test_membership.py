@@ -45,6 +45,13 @@ def _school(name: str, conference: str) -> SchoolConfig:
     )
 
 
+def _profiles(*codes: str, level: str = "d2") -> dict:
+    """A profile per code, for a test document that must validate."""
+    return {
+        code: {"level": level, "names": [f"{code} Test Conference"]} for code in codes
+    }
+
+
 def _multi_conference_case() -> tuple[dict, list[SchoolConfig]]:
     schools = [
         _school("Harding", "GAC"),
@@ -56,6 +63,7 @@ def _multi_conference_case() -> tuple[dict, list[SchoolConfig]]:
         "version": 1,
         "seasons": {"from": 2019, "to": 2026},
         "conferences": ["GAC", "LSC", "independent", "non_member"],
+        "conference_profiles": _profiles("GAC", "LSC"),
         "memberships": {
             "harding": {
                 "men": [
@@ -343,6 +351,12 @@ def test_validation_accepts_declared_conference(membership_document):
     document["conferences"].append("NEWC")
     document["memberships"]["harding"]["men"][0]["conference"] = "NEWC"
 
+    # Declaring it means the code AND its record: level and printed names.
+    assert membership.validate(document) == [
+        "conference 'NEWC' has no conference_profiles entry; every declared "
+        "conference carries its level and printed names"
+    ]
+    document["conference_profiles"].update(_profiles("NEWC"))
     assert membership.validate(document) == []
 
 
@@ -558,6 +572,131 @@ def _window(conference: str, from_season: int, to_season: int) -> dict:
     }
 
 
+# ── conference profiles: the conference as a record ─────────────────────────
+
+
+#: The twenty-one conferences the rib collected before any other level was
+#: authored, every one Division II. A fact about them, not about the file:
+#: the test below must keep passing on the day another level's conferences
+#: join the reference.
+DIVISION_TWO = {
+    "CACC",
+    "CC",
+    "CCAA",
+    "ECC",
+    "G-MAC",
+    "GAC",
+    "GLIAC",
+    "GLVC",
+    "GNAC",
+    "GSC",
+    "LSC",
+    "MEC",
+    "MIAA",
+    "NE10",
+    "NSIC",
+    "PACWEST",
+    "PBC",
+    "PSAC",
+    "RMAC",
+    "SAC",
+    "SSC",
+}
+
+
+def test_every_shipped_conference_carries_a_profile(membership_document):
+    profiles = membership.conference_profiles(membership_document)
+    declared = set(membership_document["conferences"]) - membership.STRUCTURAL_CODES
+    assert set(profiles) == declared
+    assert all(profile.names for profile in profiles.values())
+    # The levels partition the declared conferences: none is left out of a
+    # level-filtered sweep, none is swept twice.
+    by_level = {
+        level: membership.conferences_at_level(level, document=membership_document)
+        for level in membership.LEVELS
+    }
+    assert sorted(code for codes in by_level.values() for code in codes) == sorted(
+        declared
+    )
+    assert len(DIVISION_TWO) == 21
+    assert DIVISION_TWO <= set(by_level["d2"])
+    assert membership.conference_level("GAC", document=membership_document) == "d2"
+    assert profiles["GAC"].names == ("Great American Conference", "Great American")
+
+
+def test_a_profile_reads_level_names_and_the_word_flag():
+    document, _ = _multi_conference_case()
+    document["conference_profiles"] = {
+        "GAC": {"level": "d2", "names": ["Great  American Conference"]},
+        "LSC": {"level": "d1", "names": ["Lone Star"], "code_is_word": True},
+    }
+    profiles = membership.conference_profiles(document)
+    assert profiles["GAC"] == membership.ConferenceProfile(
+        code="GAC", level="d2", names=("Great American Conference",)
+    )
+    assert profiles["LSC"].code_is_word is True
+    assert membership.conference_level("LSC", document=document) == "d1"
+    assert membership.conference_level("independent", document=document) is None
+    assert membership.conferences_at_level("d1", document=document) == ["LSC"]
+    assert membership.conferences_at_level("d3", document=document) == []
+    with pytest.raises(ValueError, match="unknown level 'division-two'"):
+        membership.conferences_at_level("division-two", document=document)
+
+
+def test_a_declared_conference_without_a_profile_is_refused():
+    document, schools = _multi_conference_case()
+    del document["conference_profiles"]["LSC"]
+    assert membership.validate(document, schools=schools) == [
+        "conference 'LSC' has no conference_profiles entry; every declared "
+        "conference carries its level and printed names"
+    ]
+
+    del document["conference_profiles"]
+    assert membership.validate(document, schools=schools) == [
+        "conference_profiles must be a JSON object keyed by conference code"
+    ]
+
+
+def test_a_profile_for_an_undeclared_code_is_refused():
+    document, schools = _multi_conference_case()
+    document["conference_profiles"].update(_profiles("NEWC"))
+    assert membership.validate(document, schools=schools) == [
+        "conference_profiles['NEWC'] names an undeclared conference code"
+    ]
+
+    document, schools = _multi_conference_case()
+    document["conference_profiles"].update(_profiles("independent"))
+    assert membership.validate(document, schools=schools) == [
+        "conference_profiles['independent'] is a structural code, not a conference"
+    ]
+
+
+def test_a_malformed_profile_is_refused_field_by_field():
+    document, schools = _multi_conference_case()
+    document["conference_profiles"]["GAC"] = {
+        "level": "II",
+        "names": [],
+        "code_is_word": "no",
+        "division": "d2",
+    }
+    document["conference_profiles"]["LSC"] = {
+        "level": "d2",
+        "names": ["Lone Star", " ", "lone  star", 7],
+    }
+    errors = membership.validate(document, schools=schools)
+    assert errors == [
+        "conference_profiles['GAC'] has unknown fields: ['division']",
+        "conference_profiles['GAC'] level must be one of ['d1', 'd2', 'd3'], not 'II'",
+        "conference_profiles['GAC'] names must be a non-empty list of strings",
+        "conference_profiles['GAC'] code_is_word must be true or false",
+        "conference_profiles['LSC'] names must be non-empty strings, not ' '",
+        "conference_profiles['LSC'] names repeat 'lone  star'",
+        "conference_profiles['LSC'] names must be non-empty strings, not 7",
+    ]
+    # The reader leaves a malformed profile out rather than guess at it.
+    assert set(membership.conference_profiles(document)) == {"LSC"}
+
+
 def _mid_window_mover_document() -> dict:
     """Trevecca: G-MAC 2022-2023 then GSC from 2024, on one slug."""
     return {
@@ -591,6 +730,112 @@ def test_members_of_resolves_a_mid_window_mover_per_season():
     assert membership.members_of("GAC", "women", 2022, document=document) == set()
 
 
+# ── a season no window covers ────────────────────────────────────────────────
+
+
+def _horizon_document() -> dict:
+    """Two conferences with different horizons, and every way to be uncovered.
+
+    UPPER is authored through 2026, LOWER through 2025 only. ``leaver`` left
+    UPPER after 2023 (the Mercyhurst shape), ``arriver`` joined it in 2025,
+    ``stayer`` is a LOWER member through LOWER's last authored season, and
+    ``mover`` left LOWER for UPPER in 2025 (the Trevecca shape).
+    """
+    return {
+        "version": 1,
+        "seasons": {"from": 2022, "to": 2026},
+        "conferences": ["UPPER", "LOWER", "independent", "non_member"],
+        "conference_profiles": _profiles("UPPER", "LOWER"),
+        "memberships": {
+            "anchor": {"men": [_window("UPPER", 2022, 2026)]},
+            "leaver": {"men": [_window("UPPER", 2022, 2023)]},
+            "arriver": {"men": [_window("UPPER", 2025, 2026)]},
+            "stayer": {"men": [_window("LOWER", 2022, 2025)]},
+            "mover": {
+                "men": [_window("LOWER", 2022, 2024), _window("UPPER", 2025, 2026)]
+            },
+        },
+    }
+
+
+def test_a_conference_has_its_own_authored_horizon():
+    document = _horizon_document()
+    assert membership.authored_through("UPPER", "men", document=document) == 2026
+    assert membership.authored_through("LOWER", "men", document=document) == 2025
+    # Without case, as the rib's resolveConference compares the code.
+    assert membership.authored_through(" lower ", "men", document=document) == 2025
+    assert membership.authored_through("UPPER", "women", document=document) == 0
+    assert membership.authored_through("independent", "men", document=document) == 0
+    # A season is carried forward only past the conference's own horizon.
+    assert membership.effective_season("LOWER", "men", 2026, document=document) == 2025
+    assert membership.effective_season("LOWER", "men", 2024, document=document) == 2024
+    assert membership.effective_season("UPPER", "men", 2026, document=document) == 2026
+    assert (
+        membership.effective_season("UPPER", "women", 2026, document=document) == 2026
+    )
+
+
+def test_a_programme_with_windows_is_governed_by_them_alone():
+    document = _horizon_document()
+
+    def reads(slug: str, season: int, conference: str) -> str | None:
+        return membership.conference_in_effect(
+            slug, "men", season, conference, document=document
+        )
+
+    assert membership.has_windows("leaver", "men", document=document)
+    assert not membership.has_windows("leaver", "women", document=document)
+    assert not membership.has_windows("stranger", "men", document=document)
+
+    # Inside its windows a programme is where they say.
+    assert reads("leaver", 2023, "UPPER") == "UPPER"
+    # After its last window it is in no conference: UPPER is authored
+    # through 2026, so nothing is carried forward for 2024.
+    for season in (2024, 2025, 2026):
+        assert reads("leaver", season, "UPPER") is None
+    # Before its first window, the same.
+    assert reads("arriver", 2024, "UPPER") is None
+    assert reads("arriver", 2025, "UPPER") == "UPPER"
+
+
+def test_a_conference_past_its_horizon_carries_its_last_members_forward():
+    document = _horizon_document()
+
+    def reads(slug: str, season: int, conference: str) -> str | None:
+        return membership.conference_in_effect(
+            slug, "men", season, conference, document=document
+        )
+
+    # LOWER is authored through 2025: its 2025 member is still read as its
+    # member for a 2026 collect, the season the rib resolves as extrapolated.
+    assert reads("stayer", 2026, "LOWER") == "LOWER"
+    assert reads("stayer", 2026, "lower") == "LOWER"
+    # Carried into the conference being read, never into another one.
+    assert reads("stayer", 2026, "UPPER") is None
+    # A programme whose own window covers the season is not carried anywhere:
+    # the mover is UPPER's from 2025, whatever LOWER's horizon is.
+    assert reads("mover", 2026, "LOWER") == "UPPER"
+    assert reads("mover", 2024, "LOWER") == "LOWER"
+
+    assert membership.members_in_effect("LOWER", "men", 2026, document=document) == {
+        "stayer"
+    }
+    assert membership.members_in_effect("LOWER", "men", 2024, document=document) == {
+        "stayer",
+        "mover",
+    }
+    assert membership.members_in_effect("UPPER", "men", 2026, document=document) == {
+        "anchor",
+        "arriver",
+        "mover",
+    }
+    # Where the conference authors the season the set is members_of exactly.
+    for season in range(2022, 2027):
+        assert membership.members_in_effect(
+            "UPPER", "men", season, document=document
+        ) == membership.members_of("UPPER", "men", season, document=document)
+
+
 def _divisional_window(
     conference: str, division: str, from_season: int, to_season: int
 ) -> dict:
@@ -605,6 +850,7 @@ def _divisional_document() -> dict:
         "version": 1,
         "seasons": {"from": 2022, "to": 2026},
         "conferences": ["CC", "GAC", "independent", "non_member"],
+        "conference_profiles": _profiles("CC", "GAC"),
         "memberships": {
             "north-greenville": {
                 "men": [
@@ -874,6 +1120,7 @@ def _sac_case(season: int) -> tuple[dict, list[SchoolConfig]]:
         "version": 1,
         "seasons": {"from": 2022, "to": 2026},
         "conferences": ["SAC", "independent", "non_member"],
+        "conference_profiles": _profiles("SAC"),
         "standings_archives": {
             "SAC": {
                 "url_template": "https://www.thesac.com/standings.aspx?standings={id}",

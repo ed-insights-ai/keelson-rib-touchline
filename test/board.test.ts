@@ -90,6 +90,10 @@ describe("membership resolution", () => {
   test("adding a conference to membership data advertises it without code changes", async () => {
     const membership: MembershipFile = {
       conferences: ["GAC", "LSC", "independent", "non_member"],
+      conference_profiles: {
+        GAC: { level: "d2", names: ["Great American Conference"] },
+        LSC: { level: "d2", names: ["Lone Star Conference"] },
+      },
       memberships: {},
     };
 
@@ -166,6 +170,10 @@ describe("membership resolution", () => {
     });
     const membership: MembershipFile = {
       conferences: ["CC", "GAC", "independent", "non_member"],
+      conference_profiles: {
+        CC: { level: "d2", names: ["Conference Carolinas"] },
+        GAC: { level: "d2", names: ["Great American Conference"] },
+      },
       memberships: {
         "north-greenville": {
           men: [window("Southwest", 2023, 2023), window("Northwest", 2024, 2026)],
@@ -1443,6 +1451,10 @@ describe("understanding the ask", () => {
   test("a programme reads its own conference horizon", async () => {
     const membership: MembershipFile = {
       conferences: ["GAC", "LSC", "independent", "non_member"],
+      conference_profiles: {
+        GAC: { level: "d2", names: ["Great American Conference"] },
+        LSC: { level: "d2", names: ["Lone Star Conference"] },
+      },
       memberships: {
         harding: {
           men: [

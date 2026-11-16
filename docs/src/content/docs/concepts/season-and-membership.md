@@ -15,10 +15,13 @@ The document earns that trust by surviving `validate` in `pipeline/src/membershi
 
 - every window carries a non-empty `source` citation, because membership is a claim about the world, and claims cite;
 - the declared conference list must include the structural codes `independent` and `non_member`;
+- every other declared conference carries a `conference_profiles` entry, its NCAA `level` (`d1`, `d2`, `d3`) and the `names` it is printed under, and no profile names a conference the list does not declare;
 - a programme's authored seasons may have no gaps; the validator's own error says to "cover them explicitly with an independent or non_member window";
 - windows may not overlap, and every configured programme must be covered.
 
 The gap rule is [Absence is data](../absence-is-data/) applied to time. A season nobody wrote down is not "unknown, assume the current conference"; it is a validation failure until someone authors what was true, even when what was true is independence.
+
+The collector holds the same line outside the authored range. A programme with windows is governed by them alone: for a season before its first window or after its last it is in no conference, `conference_members` in `pipeline/src/sidearm_live.py` leaves it out of every member set, and `collect-board` refuses to collect it as a member, naming the programme and the season. The stanza's `conference` in `schools.toml` answers only for a programme the document authors no window for. The single uncovered season the collector still answers is the one the next section describes: a season past the conference's own horizon, where `conference_in_effect` in `pipeline/src/membership.py` reads the conference's last authored season for the members whose own windows have not since moved them, so the pipeline and the resolver name the same members for an extrapolated collect.
 
 ## Every conference has a horizon
 

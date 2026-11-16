@@ -17,6 +17,40 @@ from src.config import SchoolConfig, load_schools
 #: per-season records pages keeps its member lists instead.
 STANDINGS_ARCHIVES = "standings_archives"
 
+#: The top-level key carrying, per conference code, what the conference is:
+#: its NCAA level and the names it is printed under.
+CONFERENCE_PROFILES = "conference_profiles"
+
+#: The NCAA levels a conference can play at. The word is "level" on purpose:
+#: "division" already means a conference's own East/West split on a
+#: membership window (and a gender in the cadence script).
+LEVELS = ("d1", "d2", "d3")
+
+#: The two codes ``conferences`` carries that are not conferences: a window
+#: needs something to name for a season outside every conference.
+STRUCTURAL_CODES = frozenset({"independent", "non_member"})
+
+_PROFILE_FIELDS = frozenset({"level", "names", "code_is_word"})
+
+
+@dataclass(frozen=True)
+class ConferenceProfile:
+    """One conference as a record, not a bare code.
+
+    ``level`` is the NCAA level it plays at. ``names`` are the long names it
+    is printed under in schedule headers ("Great American Conference",
+    "Great American"), which is how a header that carries neither the word
+    "conference" nor the code is still read as that conference's postseason
+    (``sidearm_live.tournament_stage``). ``code_is_word`` says the code is
+    an ordinary English word (a code such as PATRIOT or SUMMIT), so the code
+    alone never names the conference in a header; only its ``names`` do.
+    """
+
+    code: str
+    level: str
+    names: tuple[str, ...]
+    code_is_word: bool = False
+
 
 def load_membership(
     path: str | Path | None = None,
@@ -51,6 +85,69 @@ def load_membership(
     return document
 
 
+def conference_profiles(
+    document: dict[str, Any] | None = None,
+) -> dict[str, ConferenceProfile]:
+    """Every well-formed conference profile in the document, by code.
+
+    A reader, not a judge: a malformed entry is left out here and named by
+    ``validate``, so a collect never dies over a profile check-membership
+    would have refused before the file shipped.
+    """
+    membership_document = document if document is not None else load_membership()
+    raw = membership_document.get(CONFERENCE_PROFILES)
+    if not isinstance(raw, dict):
+        return {}
+
+    profiles: dict[str, ConferenceProfile] = {}
+    for code, entry in raw.items():
+        if not isinstance(code, str) or not isinstance(entry, dict):
+            continue
+        level = entry.get("level")
+        names = entry.get("names")
+        if level not in LEVELS or not isinstance(names, list):
+            continue
+        printed = tuple(
+            " ".join(name.split())
+            for name in names
+            if isinstance(name, str) and name.strip()
+        )
+        if not printed:
+            continue
+        profiles[code] = ConferenceProfile(
+            code=code,
+            level=level,
+            names=printed,
+            code_is_word=entry.get("code_is_word") is True,
+        )
+    return profiles
+
+
+def conference_level(
+    conference: str,
+    *,
+    document: dict[str, Any] | None = None,
+) -> str | None:
+    """The NCAA level a conference plays at, or None for a code with no profile."""
+    profile = conference_profiles(document).get(conference)
+    return None if profile is None else profile.level
+
+
+def conferences_at_level(
+    level: str,
+    *,
+    document: dict[str, Any] | None = None,
+) -> list[str]:
+    """Every conference code whose profile names ``level``, sorted."""
+    if level not in LEVELS:
+        raise ValueError(f"unknown level {level!r}; known: {', '.join(LEVELS)}")
+    return sorted(
+        code
+        for code, profile in conference_profiles(document).items()
+        if profile.level == level
+    )
+
+
 def conference_for(
     slug: str,
     gender: str,
@@ -68,6 +165,168 @@ def conference_for(
     if not isinstance(genders, dict):
         return None
     return _window_conference(genders.get(gender), season_year)
+
+
+def has_windows(
+    slug: str,
+    gender: str,
+    *,
+    document: dict[str, Any] | None = None,
+) -> bool:
+    """Whether the document authors any membership window for the programme.
+
+    The line between the two ways a programme's conference is known. One
+    with authored windows is governed by them alone: a season none of them
+    covers is a season it is in no conference, never a season to guess from
+    its stanza. One with none is a programme the reference has not reached,
+    and its stanza's ``conference`` is all there is.
+    """
+    membership_document = document if document is not None else load_membership()
+    memberships = membership_document.get("memberships")
+    if not isinstance(memberships, dict):
+        return False
+    genders = memberships.get(slug)
+    if not isinstance(genders, dict):
+        return False
+    windows = genders.get(gender)
+    return isinstance(windows, list) and any(
+        isinstance(window, dict)
+        and _is_year(window.get("from_season"))
+        and _is_year(window.get("to_season"))
+        and isinstance(window.get("conference"), str)
+        for window in windows
+    )
+
+
+def authored_through(
+    conference: str,
+    gender: str,
+    *,
+    document: dict[str, Any] | None = None,
+) -> int:
+    """The last season any window authors for one conference and gender.
+
+    The conference's own horizon, 0 when no window names it. Scoped to the
+    conference, never the file, for the reason ``resolveConference`` in
+    src/membership.ts gives: one conference authored through 2025 beside
+    another through 2026 must not read its horizon off its neighbour. The
+    code is compared without case, as that resolver compares it.
+    """
+    membership_document = document if document is not None else load_membership()
+    memberships = membership_document.get("memberships")
+    if not isinstance(memberships, dict):
+        return 0
+    wanted = conference.strip().casefold()
+    through = 0
+    for genders in memberships.values():
+        if not isinstance(genders, dict):
+            continue
+        windows = genders.get(gender)
+        if not isinstance(windows, list):
+            continue
+        for window in windows:
+            if not isinstance(window, dict):
+                continue
+            named = window.get("conference")
+            to_season = window.get("to_season")
+            if (
+                isinstance(named, str)
+                and named.casefold() == wanted
+                and _is_year(to_season)
+                and to_season > through
+            ):
+                through = to_season
+    return through
+
+
+def effective_season(
+    conference: str,
+    gender: str,
+    season_year: int,
+    *,
+    document: dict[str, Any] | None = None,
+) -> int:
+    """The season whose windows answer for ``season_year`` in a conference.
+
+    The season itself, unless it lies past the conference's last authored
+    season: then that last season, carried forward. This is the one place a
+    season no window covers is still answered, and it is the answer
+    ``resolveConference`` gives (the collect it resolves is stamped
+    ``membership_extrapolated``): the GAC authored through 2025 keeps its
+    2025 members for a 2026 collect. It is a statement about the
+    conference's horizon, not about any programme, so a programme that left
+    inside the horizon (Mercyhurst, PSAC through 2023 while the PSAC is
+    authored through 2026) is not carried anywhere.
+    """
+    through = authored_through(conference, gender, document=document)
+    return through if 0 < through < season_year else season_year
+
+
+def conference_in_effect(
+    slug: str,
+    gender: str,
+    season_year: int,
+    conference: str,
+    *,
+    document: dict[str, Any] | None = None,
+) -> str | None:
+    """A programme's conference for one season, as a collect of ``conference`` reads it.
+
+    The programme's own window covering the season always answers. With none,
+    the only answer left is the carry-forward: the season lies past
+    ``conference``'s authored horizon and the programme's window for that
+    conference's last authored season names that same conference, so the
+    programme is still read as its member (``effective_season``). Anything
+    else is None, a season the programme is in no conference: it is never
+    filled in from a stanza, and never from another conference's horizon.
+
+    So a programme whose own windows already say where it went is not
+    carried anywhere (Trevecca, GSC from 2024, is no G-MAC member in 2024
+    whatever the G-MAC's horizon is), and one carried forward is carried
+    only into the conference being read.
+    """
+    membership_document = document if document is not None else load_membership()
+    declared = conference_for(slug, gender, season_year, document=membership_document)
+    if declared is not None:
+        return declared
+    effective = effective_season(
+        conference, gender, season_year, document=membership_document
+    )
+    if effective == season_year:
+        return None
+    carried = conference_for(slug, gender, effective, document=membership_document)
+    if carried is not None and carried.casefold() == conference.strip().casefold():
+        return carried
+    return None
+
+
+def members_in_effect(
+    conference: str,
+    gender: str,
+    season_year: int,
+    *,
+    document: dict[str, Any] | None = None,
+) -> set[str]:
+    """Every slug ``conference_in_effect`` places in the conference that season.
+
+    ``members_of`` with the conference's horizon honoured: identical to it
+    for every season the conference authors, and its last authored season's
+    members, less any whose own window has since moved them, for a season
+    past that.
+    """
+    membership_document = document if document is not None else load_membership()
+    memberships = membership_document.get("memberships")
+    if not isinstance(memberships, dict):
+        return set()
+    return {
+        slug
+        for slug in memberships
+        if isinstance(slug, str)
+        and conference_in_effect(
+            slug, gender, season_year, conference, document=membership_document
+        )
+        == conference
+    }
 
 
 def division_for(
@@ -271,12 +530,82 @@ def _declared_conferences(
     if len(conferences) != len(declared):
         errors.append("conferences must not contain duplicate codes")
 
-    missing_structural = sorted({"independent", "non_member"} - declared)
+    missing_structural = sorted(STRUCTURAL_CODES - declared)
     if missing_structural:
         errors.append(
             f"conferences must declare structural codes: {missing_structural}"
         )
     return declared
+
+
+def _validate_conference_profiles(
+    document: dict[str, Any],
+    errors: list[str],
+    *,
+    declared: set[str] | None,
+) -> None:
+    """Hold ``conference_profiles`` to the declared conference list.
+
+    Every conference the file declares carries a profile, and a profile
+    names a declared conference: the two lists are one set, so a conference
+    cannot ship without its level and printed names, and a profile cannot
+    quietly teach the schedule parser a name for a conference the rib does
+    not collect. The structural codes are not conferences and carry none.
+    """
+    profiles = document.get(CONFERENCE_PROFILES)
+    if not isinstance(profiles, dict):
+        errors.append(
+            f"{CONFERENCE_PROFILES} must be a JSON object keyed by conference code"
+        )
+        return
+
+    if declared is not None:
+        for conference in sorted(declared - STRUCTURAL_CODES - set(profiles)):
+            errors.append(
+                f"conference {conference!r} has no {CONFERENCE_PROFILES} entry; "
+                "every declared conference carries its level and printed names"
+            )
+
+    for conference, profile in profiles.items():
+        label = f"{CONFERENCE_PROFILES}[{conference!r}]"
+        if not isinstance(conference, str) or not conference:
+            errors.append(f"{CONFERENCE_PROFILES} has invalid conference key")
+            continue
+        if conference in STRUCTURAL_CODES:
+            errors.append(f"{label} is a structural code, not a conference")
+            continue
+        if declared is not None and conference not in declared:
+            errors.append(f"{label} names an undeclared conference code")
+        if not isinstance(profile, dict):
+            errors.append(f"{label} must be a JSON object")
+            continue
+
+        unknown = sorted(set(profile) - _PROFILE_FIELDS)
+        if unknown:
+            errors.append(f"{label} has unknown fields: {unknown}")
+
+        level = profile.get("level")
+        if level not in LEVELS:
+            errors.append(f"{label} level must be one of {list(LEVELS)}, not {level!r}")
+
+        names = profile.get("names")
+        if not isinstance(names, list) or not names:
+            errors.append(f"{label} names must be a non-empty list of strings")
+        else:
+            folded: set[str] = set()
+            for name in names:
+                if not isinstance(name, str) or not re.search(r"\w", name):
+                    errors.append(
+                        f"{label} names must be non-empty strings, not {name!r}"
+                    )
+                    continue
+                key = " ".join(name.split()).casefold()
+                if key in folded:
+                    errors.append(f"{label} names repeat {name!r}")
+                folded.add(key)
+
+        if "code_is_word" in profile and not isinstance(profile["code_is_word"], bool):
+            errors.append(f"{label} code_is_word must be true or false")
 
 
 def _validate_standings_archives(
@@ -483,6 +812,7 @@ def validate(
 
     span = _season_span(document, errors)
     declared = _declared_conferences(document, errors)
+    _validate_conference_profiles(document, errors, declared=declared)
     _validate_standings_archives(document, errors, span=span)
 
     if schools is None:

@@ -1121,6 +1121,112 @@ def test_conference_members_with_a_season_keeps_the_stanza_as_the_default() -> N
     )
 
 
+def _stanza(name: str, conference: str) -> SchoolConfig:
+    return SchoolConfig(
+        name=name,
+        abbreviation=name[:3].upper(),
+        conference=conference,
+        prefix=name[:3].lower(),
+        base_url="https://example.test/sports/mens-soccer",
+        gender="men",
+    )
+
+
+def _uncovered_season_case() -> tuple[list[SchoolConfig], dict]:
+    def window(conference: str, from_season: int, to_season: int) -> dict:
+        return {
+            "conference": conference,
+            "from_season": from_season,
+            "to_season": to_season,
+            "source": "test fixture",
+        }
+
+    schools = [
+        _stanza("Anchor", "UPPER"),
+        # Left UPPER after 2023; the stanza still says UPPER.
+        _stanza("Leaver", "UPPER"),
+        # Joined UPPER in 2025; the stanza says UPPER for every season.
+        _stanza("Arriver", "UPPER"),
+        # LOWER is authored through 2025 only.
+        _stanza("Stayer", "LOWER"),
+        # No window anywhere: the reference has not reached it.
+        _stanza("Unwindowed", "UPPER"),
+    ]
+    document = {
+        "version": 1,
+        "seasons": {"from": 2022, "to": 2026},
+        "conferences": ["UPPER", "LOWER", "independent", "non_member"],
+        "memberships": {
+            "anchor": {"men": [window("UPPER", 2022, 2026)]},
+            "leaver": {"men": [window("UPPER", 2022, 2023)]},
+            "arriver": {"men": [window("UPPER", 2025, 2026)]},
+            "stayer": {"men": [window("LOWER", 2022, 2025)]},
+        },
+    }
+    return schools, document
+
+
+def test_conference_members_never_reads_an_uncovered_season_off_the_stanza() -> None:
+    """A programme with windows is in no conference for a season none covers.
+
+    The stanza used to answer for it, with the conference the programme had
+    left or had not yet joined.
+    """
+    schools, document = _uncovered_season_case()
+
+    def members(season: int) -> set[str]:
+        return conference_members(
+            schools, "men", "UPPER", season=season, document=document
+        )
+
+    assert members(2023) == {"anchor", "leaver", "unwindowed"}
+    assert members(2024) == {"anchor", "unwindowed"}
+    assert members(2025) == {"anchor", "arriver", "unwindowed"}
+    assert members(2026) == {"anchor", "arriver", "unwindowed"}
+    # The stanza is still the default for the programme with no window at all,
+    # and still the whole answer when no season is asked.
+    assert conference_members(schools, "men", "UPPER") == {
+        "anchor",
+        "leaver",
+        "arriver",
+        "unwindowed",
+    }
+
+
+def test_conference_members_carries_a_conference_past_its_own_horizon() -> None:
+    """The legitimate uncovered season: one past the CONFERENCE's last authored
+    season, which the rib resolves as extrapolated (the GAC, authored through
+    2025, collected for 2026)."""
+    schools, document = _uncovered_season_case()
+    for season in (2025, 2026, 2027):
+        assert conference_members(
+            schools, "men", "LOWER", season=season, document=document
+        ) == {"stayer"}
+    # Not a licence to carry a leaver: UPPER authors 2024, so 2024 is read.
+    assert "leaver" not in conference_members(
+        schools, "men", "UPPER", season=2027, document=document
+    )
+
+
+def test_the_shipped_mercyhurst_is_a_psac_member_only_under_its_windows() -> None:
+    """Measured: PSAC windows 2022-2023, stanza conference PSAC, and the
+    stanza kept it a PSAC member for 2024, 2025 and 2026."""
+    from src.config import load_schools
+    from src.membership import load_membership
+
+    schools = load_schools()
+    document = load_membership()
+    for gender in ("men", "women"):
+        for season in (2022, 2023):
+            assert "mercyhurst" in conference_members(
+                schools, gender, "PSAC", season=season, document=document
+            )
+        for season in (2024, 2025, 2026):
+            assert "mercyhurst" not in conference_members(
+                schools, gender, "PSAC", season=season, document=document
+            )
+
+
 def test_conference_members_counts_a_membership_only_slug() -> None:
     schools = _with_trevecca()
     document = _mid_window_mover_document()

@@ -44,7 +44,7 @@ blank cell means the script never returns that code.
 
 | Script | 0 | 1 | 2 | 3 |
 |---|---|---|---|---|
-| `collect-board` | the coverage manifest was written and describes reality, gaps and all | the manifest write failed | usage: empty `--programmes`, a `--conference` with no letter or digit, or unknown or empty `--layers` | |
+| `collect-board` | the coverage manifest was written and describes reality, gaps and all | the manifest write failed | usage: empty `--programmes`, a `--conference` with no letter or digit, or unknown or empty `--layers`; or a refusal before any fetch: a programme with authored membership windows asked for a season none of them covers, named with the season | |
 | `build-digest` | digest written | | fixtures missing for the season, or the focus slug unknown | |
 | `render-report` | rendered: PDFs written and the HTML intermediates removed, or HTML kept when no Chrome is found | | no digest at the expected path | the Chrome PDF print failed; the HTML that did not print survives |
 | `build-profile` | profile written | | the `--findings` file does not exist, or the player has no trace in the season files | |

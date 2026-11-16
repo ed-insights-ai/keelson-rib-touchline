@@ -39,7 +39,7 @@ Collects a conference or one programme for one season into the data home. Inputs
 
 Exit semantics: exit 0 from `collect` is a defined claim, the coverage manifest was written and describes reality, gaps included. A non-zero exit means no manifest was written, and nothing printed above it is a claim that data landed.
 
-The resolver behind `resolve-programmes` is also a command line for anything outside the rib's TypeScript, such as the daily cadence script: `bun bin/resolve-membership.ts conference {conference} {gender} {season}` prints the flag and the member list, and `bun bin/resolve-membership.ts conferences {gender}` prints, sorted on one line, every advertised conference that authors at least one membership window for that gender. Neither names a conference; both read the packaged record.
+The resolver behind `resolve-programmes` is also a command line for anything outside the rib's TypeScript, such as the daily cadence script: `bun bin/resolve-membership.ts conference {conference} {gender} {season}` prints the flag and the member list, and `bun bin/resolve-membership.ts conferences {gender}` prints, sorted on one line, every advertised conference that authors at least one membership window for that gender. With `--level d1|d2|d3` that line keeps only the conferences whose `conference_profiles` entry names that NCAA level, and the command exits 1 when none do or when a conference carries no profile; without the flag the line is level-blind, as it always was. Neither names a conference; both read the packaged record.
 
 ## touchline-backfill
 

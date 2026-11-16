@@ -19,9 +19,12 @@
 //     comma-separated member slugs); exit 1 with a reason on stderr when no
 //     member resolves.
 //
-//   bun bin/resolve-membership.ts conferences <gender>
+//   bun bin/resolve-membership.ts conferences <gender> [--level d1|d2|d3]
 //     prints the conferences that author at least one membership window for
 //     that gender, space-separated on one line, sorted; exit 1 when none do.
+//     With --level, only the conferences whose profile names that NCAA
+//     level; exit 1 when none do, or when a conference carries no profile.
+//     Without it the line is exactly what it was before levels existed.
 //
 //   bun bin/resolve-membership.ts divisions <CONF> <gender> <season>
 //     prints "<slug>=<division>" pairs, space-separated on one line, sorted
@@ -30,10 +33,16 @@
 //     the conference line keeps its two-token shape for the bash callers.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { activeConferences, knownConferences, resolveConference } from "../src/membership.ts";
+import {
+  activeConferences,
+  CONFERENCE_LEVELS,
+  type ConferenceLevel,
+  knownConferences,
+  resolveConference,
+} from "../src/membership.ts";
 
 const USAGE =
-  "usage: resolve-membership.ts conference <CONF> <gender> <season> | conferences <gender> | divisions <CONF> <gender> <season>";
+  "usage: resolve-membership.ts conference <CONF> <gender> <season> | conferences <gender> [--level d1|d2|d3] | divisions <CONF> <gender> <season>";
 
 function fail(message: string): never {
   process.stderr.write(`${message}\n`);
@@ -74,15 +83,50 @@ if (mode === "conference") {
     .map(([slug, division]) => `${slug}=${division}`);
   process.stdout.write(`${pairs.join(" ")}\n`);
 } else if (mode === "conferences") {
-  const [gender] = rest;
-  if (!gender) fail(USAGE);
-  const active = await activeConferences(gender);
-  if (!active.length) {
-    fail(
-      `no conference authors a ${gender} membership window (known conferences: ${(await knownConferences()).join(", ")})`,
-    );
+  // `--level d2` or `--level=d2`, before or after the gender.
+  let levelText: string | undefined;
+  const positional: string[] = [];
+  for (let index = 0; index < rest.length; index += 1) {
+    const argument = rest[index] ?? "";
+    if (argument === "--level") {
+      levelText = rest[index + 1] ?? "";
+      index += 1;
+    } else if (argument.startsWith("--level=")) {
+      levelText = argument.slice("--level=".length);
+    } else if (argument.startsWith("--")) {
+      fail(USAGE);
+    } else {
+      positional.push(argument);
+    }
   }
-  process.stdout.write(`${active.join(" ")}\n`);
+  const [gender] = positional;
+  if (!gender || positional.length !== 1) fail(USAGE);
+  if (levelText === undefined) {
+    const active = await activeConferences(gender);
+    if (!active.length) {
+      fail(
+        `no conference authors a ${gender} membership window (known conferences: ${(await knownConferences()).join(", ")})`,
+      );
+    }
+    process.stdout.write(`${active.join(" ")}\n`);
+  } else {
+    const level = CONFERENCE_LEVELS.find((known) => known === levelText.toLowerCase());
+    if (!level) {
+      fail(`level '${levelText}' is not one of ${CONFERENCE_LEVELS.join(", ")}`);
+    }
+    let active: string[];
+    try {
+      active = await activeConferences(gender, level satisfies ConferenceLevel);
+    } catch (error) {
+      fail(error instanceof Error ? error.message : String(error));
+    }
+    if (!active.length) {
+      fail(
+        `no ${level} conference authors a ${gender} membership window (known conferences: ${(await knownConferences()).join(", ")})`,
+      );
+    }
+    process.stdout.write(`${active.join(" ")}\n`);
+  }
 } else {
   fail(USAGE);
 }

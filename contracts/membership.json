@@ -29,6 +29,93 @@
     "independent",
     "non_member"
   ],
+  "conference_profiles": {
+    "CACC": {
+      "level": "d2",
+      "names": ["Central Atlantic Collegiate Conference", "Central Atlantic"],
+      "code_is_word": false
+    },
+    "CC": {
+      "level": "d2",
+      "names": ["Conference Carolinas"]
+    },
+    "CCAA": {
+      "level": "d2",
+      "names": ["California Collegiate Athletic Association", "California Collegiate"]
+    },
+    "ECC": {
+      "level": "d2",
+      "names": ["East Coast Conference", "East Coast"]
+    },
+    "G-MAC": {
+      "level": "d2",
+      "names": ["Great Midwest Athletic Conference", "Great Midwest"]
+    },
+    "GAC": {
+      "level": "d2",
+      "names": ["Great American Conference", "Great American"]
+    },
+    "GLIAC": {
+      "level": "d2",
+      "names": ["Great Lakes Intercollegiate Athletic Conference", "Great Lakes"]
+    },
+    "GLVC": {
+      "level": "d2",
+      "names": ["Great Lakes Valley Conference", "Great Lakes"]
+    },
+    "GNAC": {
+      "level": "d2",
+      "names": ["Great Northwest Athletic Conference", "Great Northwest"]
+    },
+    "GSC": {
+      "level": "d2",
+      "names": ["Gulf South Conference", "Gulf South"]
+    },
+    "LSC": {
+      "level": "d2",
+      "names": ["Lone Star Conference", "Lone Star"]
+    },
+    "MEC": {
+      "level": "d2",
+      "names": ["Mountain East Conference", "Mountain East"]
+    },
+    "MIAA": {
+      "level": "d2",
+      "names": ["Mid-America Intercollegiate Athletics Association"]
+    },
+    "NE10": {
+      "level": "d2",
+      "names": ["Northeast-10 Conference", "Northeast-10", "Northeast10"]
+    },
+    "NSIC": {
+      "level": "d2",
+      "names": ["Northern Sun Intercollegiate Conference"]
+    },
+    "PACWEST": {
+      "level": "d2",
+      "names": ["Pacific West Conference", "Pacific West"]
+    },
+    "PBC": {
+      "level": "d2",
+      "names": ["Peach Belt Conference", "Peach Belt"]
+    },
+    "PSAC": {
+      "level": "d2",
+      "names": ["Pennsylvania State Athletic Conference", "Pennsylvania State"]
+    },
+    "RMAC": {
+      "level": "d2",
+      "names": ["Rocky Mountain Athletic Conference", "Rocky Mountain"]
+    },
+    "SAC": {
+      "level": "d2",
+      "names": ["South Atlantic Conference", "South Atlantic"]
+    },
+    "SSC": {
+      "level": "d2",
+      "names": ["Sunshine State Conference", "Sunshine State"]
+    }
+  },
   "description": "Contract fixture: season-aware conference-membership windows per programme (institution_slug x gender). Each window cites its source. Identity and membership are separate axes.",
   "memberships": {
     "adelphi": {
