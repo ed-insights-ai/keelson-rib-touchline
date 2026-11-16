@@ -28,6 +28,7 @@ import {
 } from "../src/commands.ts";
 import { dataHomeState } from "../src/datahome.ts";
 import rib, { composeTouchlineBoard, setScope } from "../src/index.ts";
+import { getSelection } from "../src/state.ts";
 import { makeTouchlineTools } from "../src/tools.ts";
 
 const originalWorkspace = process.env.KEELSON_WORKSPACE;
@@ -381,12 +382,17 @@ describe("first-contact commands", () => {
     const ctx = fakeContext(projects);
 
     // the first home, with nothing active yet, becomes the active one
+    setScope(undefined);
     const first = await initTouchlineHome("d2-soccer", ctx);
     expect(first).toMatchObject({ ok: true, activated: true });
     const d2 = join(workspace, "d2-soccer");
     expect((await readActivationConfig()).ok && (await readActivationConfig())).toMatchObject({
       value: { dataDir: d2 },
     });
+    const d2Project = projects.find((p) => p.name === "d2-soccer");
+    if (!d2Project) throw new Error("init registered no d2 project");
+    // ... and the board's selection with it
+    expect(getSelection().scopeId).toBe(d2Project.id);
 
     // the second does not move it — through the tool, as an agent calls it
     const init = makeTouchlineTools({ ctx, refreshBoard: () => undefined }).find(
@@ -409,6 +415,12 @@ describe("first-contact commands", () => {
     expect(await readFile(join(workspace, "d1-soccer", "touchline-data.yaml"), "utf8")).toContain(
       "\nlevel: d1\n",
     );
+    // the board, status and an implicit collect still act on the d2 home:
+    // creating the second home did not select it
+    expect(getSelection().scopeId).toBe(d2Project.id);
+    // re-initializing the active home keeps it selected
+    expect(await initTouchlineHome("d2-soccer", ctx)).toMatchObject({ ok: true, activated: false });
+    expect(getSelection().scopeId).toBe(d2Project.id);
     // an explicit switch is still the picker's to make
     rib.registerTools?.(ctx);
     const d1Project = projects.find((p) => p.name === "d1-soccer");
