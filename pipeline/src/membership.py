@@ -1451,6 +1451,10 @@ _STANDINGS_HEADING = re.compile(
     r"(?P<season>\d{4})\s+(?P<gender>Men|Women)'s\s+Soccer\s+Standings"
 )
 
+# A leading cell that is not the school: a blank one (the NEC's 2022 table)
+# or a bare place number (the WCC's 2022 table prints 1-8 before the name).
+_NOT_A_NAME_CELL = re.compile(r"^(?:T-?)?\d*\.?$")
+
 
 def parse_standings_page(html: str) -> StandingsPage:
     """Read the team names off a SideArm ``standings.aspx`` page.
@@ -1458,9 +1462,12 @@ def parse_standings_page(html: str) -> StandingsPage:
     The skin prints each row's school twice, in a wide cell and a narrow one
     (and the live 2026 skin prints the narrow one first), so the name is the
     first cell's link text, or the cell's own text on a skin that prints
-    plain names. The season and gender come from the table's caption or the
-    page heading ("2022 Men's Soccer Standings"); a page served for another
-    season is refused by the caller rather than counted.
+    plain names. A skin that leads the row with a blank cell or a place
+    number (the NEC's and the WCC's 2022 tables) has that cell skipped: the
+    name is the first cell that is neither. The season and gender come from
+    the table's caption or the page heading ("2022 Men's Soccer
+    Standings"); a page served for another season is refused by the caller
+    rather than counted.
     """
     soup = BeautifulSoup(html, "lxml")
     table = soup.select_one("table.sidearm-standings-table") or soup.select_one(
@@ -1469,13 +1476,12 @@ def parse_standings_page(html: str) -> StandingsPage:
     names: list[str] = []
     if table is not None:
         for row in table.select("tbody tr"):
-            cell = row.find("td")
-            if cell is None:
-                continue
-            link = cell.find("a")
-            text = (link or cell).get_text(" ", strip=True)
-            if text:
-                names.append(text)
+            for cell in row.find_all("td"):
+                link = cell.find("a")
+                text = (link or cell).get_text(" ", strip=True)
+                if not _NOT_A_NAME_CELL.match(text):
+                    names.append(text)
+                    break
 
     heading_texts = []
     if table is not None and table.caption is not None:
