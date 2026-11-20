@@ -4982,7 +4982,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Mercyhurst University"]
+# The 2024 Howard v Mercyhurst box prints "Mercyhurst Lakers"
+# (sidearm:howard:11038; read 2026-11-20 by box-vs-fixture).
+aliases      = ["Mercyhurst University", "Mercyhurst Lakers"]
 city         = "Erie, Pa."
 city_source  = "schedule-page home venue location, https://hurstathletics.com/sports/mens-soccer/schedule/2023"
 identity_accessed = "2026-09-03"
@@ -11911,6 +11913,11 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# Dayton and Rhode Island 2022 print "Loyola" (sidearm:dayton:13870,
+# sidearm:rhode-island:10034, both at Loyola Soccer Park), minting a
+# stranger beside the member. "Loyola" is also Loyola Maryland's on
+# Patriot pages, so it is a member alias only (the A10 has one Loyola).
+member_aliases = ["Loyola"]
 city         = "Chicago, Ill."
 city_source  = "https://loyolaramblers.com/sports/mens-soccer/schedule (schedule page home rows print \"Chicago, Ill.\", Loyola Soccer Park; 9 of 9 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -12130,6 +12137,9 @@ enabled      = true
 # sidearm:florida-atlantic:24690); South Florida's page holds both. A
 # member alias, never global: "USF" is also San Francisco's (WCC).
 member_aliases = ["USF"]
+# The 2024 South Florida v Seattle U box prints "South Fla."
+# (sidearm:south-florida:13385; read 2026-11-20 by box-vs-fixture).
+aliases      = ["South Fla."]
 city         = "Tampa, Fla."
 city_source  = "https://gousfbulls.com/sports/mens-soccer/schedule (schedule page home rows print \"Tampa, FL\", Corbett Stadium; 11 of 11 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -13204,7 +13214,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Charleston"]
+# The 2023 and 2024 Georgia Southern boxes print "Col. of Charleston"
+# (sidearm:charleston-south-carolina:11436 and :11946; read 2026-11-20 by box-vs-fixture).
+aliases      = ["Charleston", "Col. of Charleston"]
 city         = "Mount Pleasant, S.C."
 city_source  = "https://cofcsports.com/sports/mens-soccer/schedule (schedule page home rows print \"Mount Pleasant, S.C.\", Ralph Lundy Field at Patriots Point; 8 of 9 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -13436,6 +13448,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# The 2022 NKU v Southern Indiana box prints "Northern Ky."
+# (sidearm:northern-kentucky:6182; read 2026-11-20 by box-vs-fixture).
+aliases      = ["Northern Ky."]
 city         = "Highland Heights, Ky."
 city_source  = "https://nkunorse.com/sports/mens-soccer/schedule (schedule page home rows print \"Highland Heights, Ky.\", NKU Soccer Stadium; 9 of 9 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -13546,6 +13561,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# The 2022 Harvard v Columbia box prints "Harvard Crimson"
+# (sidearm:columbia:12702; read 2026-11-20 by box-vs-fixture).
+aliases      = ["Harvard Crimson"]
 city         = "Cambridge, Mass."
 city_source  = "standings/ivyleague.com.html embedded conference school object location \"Cambridge, MA\" (the school's schedule page prints no home town) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -13577,6 +13595,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# The 2022 Harvard v Columbia box prints "Columbia Lions"
+# (sidearm:columbia:12702; read 2026-11-20 by box-vs-fixture).
+aliases      = ["Columbia Lions"]
 city         = "New York, N.Y."
 city_source  = "https://gocolumbialions.com/sports/mens-soccer/schedule (schedule page home rows print \"New York, N.Y.\", ROCCO B. COMMISSO SOCCER STADIUM; 8 of 8 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14116,6 +14137,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# The 2024 Howard v Mercyhurst box prints "Howard Bison"
+# (sidearm:howard:11038; read 2026-11-20 by box-vs-fixture).
+aliases      = ["Howard Bison"]
 city         = "Washington, D.C."
 city_source  = "https://hubison.com/sports/mens-soccer/schedule (schedule page home rows print \"Washington, D.C.\", Greene Stadium; 6 of 6 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14329,6 +14353,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# The 2022 NKU v Southern Indiana box prints "Southern Ind."
+# (sidearm:southern-indiana:10567; read 2026-11-20 by box-vs-fixture).
+aliases      = ["Southern Ind."]
 city         = "Evansville, Ind."
 city_source  = "https://usiscreamingeagles.com/sports/mens-soccer/schedule (schedule page home rows print \"Evansville, IN\", Strassweg Field; 10 of 10 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -15019,6 +15046,9 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
+# The 2023 and 2024 Charleston boxes print "Ga. Southern"
+# (sidearm:georgia-southern:14140 and :16401; read 2026-11-20 by box-vs-fixture).
+aliases      = ["Ga. Southern"]
 city         = "Statesboro, Ga."
 city_source  = "https://gseagles.com/sports/mens-soccer/schedule (schedule page home rows print \"Statesboro\" with no state; 9 of 9); state from standings/sunbeltsports.org.html school object location \"Statesboro, Georgia\" (read 2026-11-15)"
 identity_accessed = "2026-11-15"

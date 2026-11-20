@@ -134,14 +134,17 @@ def test_a_programme_in_another_state_is_refused(
     assert identity(printed, conference, season) == slug, page
 
 
-# The one claimant of the bare word in the printed state: every twin is on
-# Loyola Maryland's own page the same day.
+# The one claimant of the bare word in the printed state: every Maryland twin
+# is on Loyola Maryland's own page the same day.
 CLAIMED = [
     ("Loyola (Md.)", "AE", 2026, "loyola-maryland"),  # umbc
     ("Loyola (Md.)", "SUNBELT", 2023, "loyola-maryland"),  # west-virginia
     ("Loyola (MD)", "IVY", 2023, "loyola-maryland"),  # princeton
     ("Loyola (MD) (Exh.)", "A10", 2026, "loyola-maryland"),  # george-washington
     ("Loyola (Md.)", "PATRIOT", 2026, "loyola-maryland"),  # holy-cross, as before
+    # Loyola Chicago's A10 member alias "Loyola" makes it the Illinois
+    # claimant of the bare word, read on any page that prints the state.
+    ("Loyola (Ill.)", "OVC", 2025, "loyola-chicago"),
 ]
 
 
@@ -166,9 +169,6 @@ UNCHANGED = [
     ("Boston College", "AE", 2025, "boston-college"),
     ("Boston University", "PATRIOT", 2026, "boston-university"),
     ("Charleston", "PATRIOT", 2025, "charleston-south-carolina"),
-    # Loyola Chicago claims no bare "Loyola", so the Illinois qualifier has no
-    # claimant to pick and the side keeps the text's slug.
-    ("Loyola (Ill.)", "OVC", 2025, "loyola"),
 ]
 
 
