@@ -12956,6 +12956,41 @@
         }
       }
     },
+    "st-francis-brooklyn": {
+      "name": "St. Francis Brooklyn",
+      "nickname": "Terriers",
+      "abbreviation": "SFBK",
+      "city": "Brooklyn, N.Y.",
+      "point": {
+        "lat": 40.635,
+        "lon": -73.9506
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://sfcathletics.com/sports/mens-soccer",
+          "accessed": "2026-11-20"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://sfcathletics.com/sports/mens-soccer",
+          "accessed": "2026-11-20"
+        },
+        "city": {
+          "source": "https://sfcathletics.com/sports/mens-soccer/schedule/2022 (schedule page home rows print \"Brooklyn Heights, NY\", Brooklyn Bridge Park-Pier 5, a neighbourhood of the borough; the page footer prints \"Brooklyn, NY\") (read 2026-11-20); St. Francis College's main site, https://www.sfc.edu/, is the Brooklyn college the athletics site names",
+          "accessed": "2026-11-20"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (County Subdivisions, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_cousubs_national.zip",
+          "geoid": "3604710022",
+          "name": "Brooklyn borough",
+          "state": "NY",
+          "accessed": "2023-09-26",
+          "note": "county subdivision; the places file has no entry for this town"
+        }
+      }
+    },
     "st-johns": {
       "name": "St. John's",
       "nickname": "Red Storm",

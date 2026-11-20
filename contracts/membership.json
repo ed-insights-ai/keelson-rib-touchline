@@ -29,6 +29,7 @@
     "IVY",
     "LSC",
     "MAAC",
+    "MAC",
     "MEC",
     "MIAA",
     "MVC",
@@ -152,6 +153,10 @@
     "MAAC": {
       "level": "d1",
       "names": ["Metro Atlantic Athletic Conference", "Metro Conference", "Metro Atlantic", "Metro"]
+    },
+    "MAC": {
+      "level": "d1",
+      "names": ["Mid-American Conference", "Mid-American"]
     },
     "MEC": {
       "level": "d2",
@@ -707,6 +712,16 @@
           "from_season": 2026,
           "to_season": 2026,
           "source": "West Coast Conference, men's soccer 2026 (accessed 2026-11-15), listed under the label Denver. 2026: Listed among 9 teams in the West Coast Conference 2026 men's soccer standings (census capture 2026-11-15) (https://wccsports.com/standings.aspx?path=msoc). Arrived for 2026: in 2025 it played in The Summit League, Listed among 7 teams on the The Summit League 2025 men's soccer conference records page (census capture 2026-11-15) (https://thesummitleague.org/stats.aspx?path=msoc&year=2025&conf=true)."
+        }
+      ]
+    },
+    "western-michigan": {
+      "men": [
+        {
+          "conference": "MAC",
+          "from_season": 2022,
+          "to_season": 2022,
+          "source": "Mid-American Conference, men's soccer 2022 (accessed 2026-11-20), listed under the label Western Michigan. 2022: Listed among 5 teams on the Mid-American Conference 2022 men's soccer conference records page and in its archived 2022 standings (https://getsomemaction.com/standings.aspx?standings=177) (capture 2026-11-20) (https://getsomemaction.com/stats.aspx?path=msoc&year=2022&conf=true). 2022 is the first season of the Division I depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival. Left after 2022: in 2023 it is listed by the Missouri Valley Conference, Listed among 9 teams on the Missouri Valley Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://mvc-sports.com/stats.aspx?path=msoc&year=2023&conf=true)."
         }
       ]
     }

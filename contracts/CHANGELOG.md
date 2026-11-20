@@ -4,6 +4,18 @@ One line per change to a published contract, newest first. A fixture change
 without a line here is incomplete; a writer change without a fixture change
 fails `pipeline/tests/test_contracts.py`.
 
+## 2026-11-20
+
+- Membership reference: `MAC` (the Mid-American Conference, which
+  sponsored Division I men's soccer through 2022) joins `conferences` with
+  a `conference_profiles` entry at `level` `d1` (`names` "Mid-American
+  Conference", "Mid-American"). The fixture carries it with one men's window
+  copied from the packaged file (Western Michigan, MAC 2022), so its
+  conference list still equals the packaged one. No shape change: the
+  packaged file's Division I men's windows now reach back to 2022, the ACC's
+  2022 windows carry `division` ("Atlantic", "Coastal") as its 2022
+  standings print them, and no Division II window or profile changes.
+
 ## 2026-11-15
 
 - Membership reference: the 24 NCAA Division I men's soccer conferences

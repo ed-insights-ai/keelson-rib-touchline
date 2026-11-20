@@ -11454,6 +11454,27 @@ identity_accessed = "2026-11-08"
 # `independent`. WAC tournament header read 2026-11-15 on
 # gculopes.com/sports/mens-soccer/schedule/2025: "WAC Tournament".
 #
+# Depth extended to 2022-2026 on 2026-11-20 (the Division I 2022 season,
+# for the tier estimate's prior season): 23 conferences sponsored Division
+# I men's soccer in 2022, 210 programmes, each conference-season held
+# against the conference's own archived 2022 standings (check-membership
+# --standings). The Mid-American Conference (5: Akron, Bowling Green,
+# Northern Illinois, Western Michigan, Chicago State) sponsored it through
+# 2022 and has no block: its programmes are filed under their 2026
+# conference. Conference USA (its archive ends 2021; FIU, Florida Atlantic,
+# Charlotte and UAB are on the American's 2022 table), the OVC and the
+# Mountain West (no 2022 archive entry, records "no statistics available")
+# did not sponsor it in 2022. 209 existing stanzas gain 2022 in `years`
+# (every site served a 2022 season to the probe except Harvard, which
+# reads as it did for 2023-2026); St. Francis Brooklyn (NEC 2022 only) is
+# new at the end of the NEC block; HCU gains its pre-rename name "Houston
+# Baptist" as an alias; UIW's 2022 season is `independent`. The 2022
+# probe verdicts are the "Probed 2026-11-20 for 2022" lines in each block,
+# by the stanzas filed there.
+#
+# MAC tournament header read 2026-11-20 on gozips.com/sports/mens-soccer/
+# schedule/2022: "Mid-American Conference Championship".
+#
 # Membership: data/reference/membership.json, one window per conference
 # (and per division) stint, each citing the conference's own records page
 # (stats.aspx?path=msoc&year=Y&conf=true) per season, the live 2026
@@ -11482,11 +11503,15 @@ identity_accessed = "2026-11-08"
 # accepts the value. The WMT recipe is being written on another branch.
 
 # ------------------------------------------------------------
-# ACC (Atlantic Coast Conference) - 15 stanzas here; members 2023/2024/2025/2026 = 12/15/15/15
+# ACC (Atlantic Coast Conference) - 15 stanzas here; members 2022/2023/2024/2025/2026 = 12/12/15/15/15
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   10 sidearm, all four layers present, seasons 2023-2026
 #   5 unknown: schedule error (HTTP 404), roster error (HTTP 404), stats error (HTTP 404), matches error (HTTP 404); seasons none proved -> authored as wmt (census reading, see the stanza or facts notes): Clemson, Virginia Tech, Notre Dame, Virginia, Stanford
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   10 sidearm, all four layers present, season 2022 served
+#   4 wmt, all four layers present, season 2022 served
+#   1 wmt, schedule present, roster present, stats present, matches error (box-score join not read: not proven), season 2022 served: virginia-tech
 # Tournament header read 2026-11-15 on godeacs.com/sports/mens-soccer/schedule/2025: ACC Championship.
 
 [[schools]]
@@ -11496,7 +11521,7 @@ conference   = "ACC"
 mascot       = "Mustangs"
 gender       = "men"
 base_url     = "https://smumustangs.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11515,7 +11540,7 @@ conference   = "ACC"
 mascot       = "Tigers"
 gender       = "men"
 base_url     = "https://clemsontigers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
@@ -11532,7 +11557,7 @@ conference   = "ACC"
 mascot       = "Demon Deacons"
 gender       = "men"
 base_url     = "https://godeacs.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11548,7 +11573,7 @@ conference   = "ACC"
 mascot       = "Cardinals"
 gender       = "men"
 base_url     = "https://gocards.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11563,7 +11588,7 @@ conference   = "ACC"
 mascot       = "Panthers"
 gender       = "men"
 base_url     = "https://pittsburghpanthers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11584,7 +11609,7 @@ conference   = "ACC"
 mascot       = "Hokies"
 gender       = "men"
 base_url     = "https://hokiesports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
@@ -11600,7 +11625,7 @@ conference   = "ACC"
 mascot       = "Tar Heels"
 gender       = "men"
 base_url     = "https://goheels.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11615,7 +11640,7 @@ conference   = "ACC"
 mascot       = "Fighting Irish"
 gender       = "men"
 base_url     = "https://fightingirish.com/sports/msoc"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
@@ -11631,7 +11656,7 @@ conference   = "ACC"
 mascot       = "Cavaliers"
 gender       = "men"
 base_url     = "https://virginiasports.com/sports/msoc"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
@@ -11648,7 +11673,7 @@ conference   = "ACC"
 mascot       = "Golden Bears"
 gender       = "men"
 base_url     = "https://calbears.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11663,7 +11688,7 @@ conference   = "ACC"
 mascot       = "Wolfpack"
 gender       = "men"
 base_url     = "https://gopack.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11686,7 +11711,7 @@ conference   = "ACC"
 mascot       = "Cardinal"
 gender       = "men"
 base_url     = "https://gostanford.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
@@ -11703,7 +11728,7 @@ conference   = "ACC"
 mascot       = "Orange"
 gender       = "men"
 base_url     = "https://cuse.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11719,7 +11744,7 @@ conference   = "ACC"
 mascot       = "Eagles"
 gender       = "men"
 base_url     = "https://bceagles.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11734,7 +11759,7 @@ conference   = "ACC"
 mascot       = "Blue Devils"
 gender       = "men"
 base_url     = "https://goduke.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11743,11 +11768,14 @@ city_source  = "https://goduke.com/sports/mens-soccer/schedule (schedule page ho
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# A10 (Atlantic 10 Conference) - 13 stanzas here; members 2023/2024/2025/2026 = 14/14/13/13
+# A10 (Atlantic 10 Conference) - 13 stanzas here; members 2022/2023/2024/2025/2026 = 14/14/14/13/13
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   12 sidearm, all four layers present, seasons 2023-2026
 #   1 sidearm: schedule present, roster absent, stats present, matches present; seasons 2023-2026: George Mason
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   12 sidearm, all four layers present, season 2022 served
+#   1 sidearm, schedule present, roster absent, stats present, matches present, season 2022 served: george-mason
 # Tournament header read 2026-11-15 on slubillikens.com/sports/mens-soccer/schedule/2025: A-10 Championship.
 
 [[schools]]
@@ -11757,7 +11785,7 @@ conference   = "A10"
 mascot       = "Dukes"
 gender       = "men"
 base_url     = "https://goduquesne.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11773,7 +11801,7 @@ conference   = "A10"
 mascot       = "Billikens"
 gender       = "men"
 base_url     = "https://slubillikens.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11788,7 +11816,7 @@ conference   = "A10"
 mascot       = "Patriots"
 gender       = "men"
 base_url     = "https://gomason.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11803,7 +11831,7 @@ conference   = "A10"
 mascot       = "Rams"
 gender       = "men"
 base_url     = "https://gorhody.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11818,7 +11846,7 @@ conference   = "A10"
 mascot       = "Rams"
 gender       = "men"
 base_url     = "https://fordhamsports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11833,7 +11861,7 @@ conference   = "A10"
 mascot       = "Wildcats"
 gender       = "men"
 base_url     = "https://davidsonwildcats.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11849,7 +11877,7 @@ conference   = "A10"
 mascot       = "Flyers"
 gender       = "men"
 base_url     = "https://daytonflyers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11864,7 +11892,7 @@ conference   = "A10"
 mascot       = "Explorers"
 gender       = "men"
 base_url     = "https://goexplorers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11879,7 +11907,7 @@ conference   = "A10"
 mascot       = "Ramblers"
 gender       = "men"
 base_url     = "https://loyolaramblers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11895,7 +11923,7 @@ conference   = "A10"
 mascot       = "Bonnies"
 gender       = "men"
 base_url     = "https://gobonnies.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11910,7 +11938,7 @@ conference   = "A10"
 mascot       = "Rams"
 gender       = "men"
 base_url     = "https://vcuathletics.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11928,7 +11956,7 @@ conference   = "A10"
 mascot       = "Hawks"
 gender       = "men"
 base_url     = "https://sjuhawks.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11943,7 +11971,7 @@ conference   = "A10"
 mascot       = "Revolutionaries"
 gender       = "men"
 base_url     = "https://gwsports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11952,10 +11980,12 @@ city_source  = "https://gwsports.com/sports/mens-soccer/schedule (schedule page 
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# AAC (American Conference) - 9 stanzas here; members 2023/2024/2025/2026 = 9/8/9/9
+# AAC (American Conference) - 9 stanzas here; members 2022/2023/2024/2025/2026 = 10/9/8/9/9
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   9 sidearm, all four layers present, seasons 2023-2026
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   9 sidearm, all four layers present, season 2022 served
 # Tournament header read 2026-11-15 on charlotte49ers.com/sports/mens-soccer/schedule/2025: American Conference Championships.
 
 # abbreviation: the site config's schoolAbbrev "TLSA" is a scoreboard stat code; the plain name is used.
@@ -11966,7 +11996,7 @@ conference   = "AAC"
 mascot       = "Hurricane"
 gender       = "men"
 base_url     = "https://tulsahurricane.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11982,7 +12012,7 @@ conference   = "AAC"
 mascot       = "Bears"
 gender       = "men"
 base_url     = "https://missouristatebears.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -11998,7 +12028,7 @@ conference   = "AAC"
 mascot       = "49ers"
 gender       = "men"
 base_url     = "https://charlotte49ers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12013,7 +12043,7 @@ conference   = "AAC"
 mascot       = "Owls"
 gender       = "men"
 base_url     = "https://fausports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12029,7 +12059,7 @@ conference   = "AAC"
 mascot       = "Tigers"
 gender       = "men"
 base_url     = "https://gotigersgo.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12044,7 +12074,7 @@ conference   = "AAC"
 mascot       = "Panthers"
 gender       = "men"
 base_url     = "https://fiusports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12060,7 +12090,7 @@ conference   = "AAC"
 mascot       = "Blazers"
 gender       = "men"
 base_url     = "https://uabsports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12076,7 +12106,7 @@ conference   = "AAC"
 mascot       = "Owls"
 gender       = "men"
 base_url     = "https://owlsports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12092,7 +12122,7 @@ conference   = "AAC"
 mascot       = "Bulls"
 gender       = "men"
 base_url     = "https://gousfbulls.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12105,10 +12135,12 @@ city_source  = "https://gousfbulls.com/sports/mens-soccer/schedule (schedule pag
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# AE (America East Conference) - 8 stanzas here; members 2023/2024/2025/2026 = 8/8/8/8
+# AE (America East Conference) - 8 stanzas here; members 2022/2023/2024/2025/2026 = 8/8/8/8/8
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   8 sidearm, all four layers present, seasons 2023-2026
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   8 sidearm, all four layers present, season 2022 served
 # Tournament header read 2026-11-15 on uvmathletics.com/sports/mens-soccer/schedule/2025: America East Tournament.
 
 [[schools]]
@@ -12118,7 +12150,7 @@ conference   = "AE"
 mascot       = "Great Danes"
 gender       = "men"
 base_url     = "https://ualbanysports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12136,7 +12168,7 @@ conference   = "AE"
 mascot       = "Catamounts"
 gender       = "men"
 base_url     = "https://uvmathletics.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12151,7 +12183,7 @@ conference   = "AE"
 mascot       = "Bulldogs"
 gender       = "men"
 base_url     = "https://bryantbulldogs.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12166,7 +12198,7 @@ conference   = "AE"
 mascot       = "Highlanders"
 gender       = "men"
 base_url     = "https://njithighlanders.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12183,7 +12215,7 @@ conference   = "AE"
 mascot       = "Wildcats"
 gender       = "men"
 base_url     = "https://unhwildcats.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12198,7 +12230,7 @@ conference   = "AE"
 mascot       = "Bearcats"
 gender       = "men"
 base_url     = "https://binghamtonbearcats.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12213,7 +12245,7 @@ conference   = "AE"
 mascot       = "River Hawks"
 gender       = "men"
 base_url     = "https://goriverhawks.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12233,7 +12265,7 @@ conference   = "AE"
 mascot       = "Retrievers"
 gender       = "men"
 base_url     = "https://umbcretrievers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12243,10 +12275,12 @@ city_source  = "https://umbcretrievers.com/sports/mens-soccer/schedule (schedule
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# ASUN (Atlantic Sun Conference) - 8 stanzas here; members 2023/2024/2025/2026 = 8/8/8/9
+# ASUN (Atlantic Sun Conference) - 8 stanzas here; members 2022/2023/2024/2025/2026 = 9/8/8/8/9
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   8 sidearm, all four layers present, seasons 2023-2026
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   8 sidearm, all four layers present, season 2022 served
 # Tournament header read 2026-11-15 on lipscombsports.com/sports/mens-soccer/schedule/2025: ASUN Championship.
 
 [[schools]]
@@ -12256,7 +12290,7 @@ conference   = "ASUN"
 mascot       = "Ospreys"
 gender       = "men"
 base_url     = "https://unfospreys.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12271,7 +12305,7 @@ conference   = "ASUN"
 mascot       = "Bears"
 gender       = "men"
 base_url     = "https://ucasports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12286,7 +12320,7 @@ conference   = "ASUN"
 mascot       = "Hatters"
 gender       = "men"
 base_url     = "https://gohatters.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12301,7 +12335,7 @@ conference   = "ASUN"
 mascot       = "Knights"
 gender       = "men"
 base_url     = "https://athletics.bellarmine.edu/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12325,7 +12359,7 @@ conference   = "ASUN"
 mascot       = "Royals"
 gender       = "men"
 base_url     = "https://queensathletics.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12341,7 +12375,7 @@ conference   = "ASUN"
 mascot       = "Dolphins"
 gender       = "men"
 base_url     = "https://judolphins.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12356,7 +12390,7 @@ conference   = "ASUN"
 mascot       = "Bisons"
 gender       = "men"
 base_url     = "https://lipscombsports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12372,7 +12406,7 @@ conference   = "ASUN"
 mascot       = "Eagles"
 gender       = "men"
 base_url     = "https://fgcuathletics.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12382,12 +12416,15 @@ city_source  = "https://fgcuathletics.com/sports/mens-soccer/schedule (schedule 
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# B1G (Big Ten Conference) - 11 stanzas here; members 2023/2024/2025/2026 = 9/11/11/11
+# B1G (Big Ten Conference) - 11 stanzas here; members 2022/2023/2024/2025/2026 = 9/9/11/11/11
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   8 sidearm, all four layers present, seasons 2023-2026
 #   2 unknown: schedule error (HTTP 404), roster error (HTTP 404), stats error (HTTP 404), matches error (HTTP 404); seasons none proved -> authored as wmt (census reading, see the stanza or facts notes): Northwestern, Penn State
 #   1 unknown: schedule absent, roster error (HTTP 404), stats absent, matches present; seasons none proved -> authored as wmt (census reading, see the stanza or facts notes): UCLA
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   8 sidearm, all four layers present, season 2022 served
+#   3 wmt, all four layers present, season 2022 served: ucla, northwestern, penn-state
 # Tournament header read 2026-11-15 on umterps.com/sports/mens-soccer/schedule/2025: Big Ten Tournament.
 
 [[schools]]
@@ -12397,7 +12434,7 @@ conference   = "B1G"
 mascot       = "Hoosiers"
 gender       = "men"
 base_url     = "https://iuhoosiers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12413,7 +12450,7 @@ conference   = "B1G"
 mascot       = "Huskies"
 gender       = "men"
 base_url     = "https://gohuskies.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12430,7 +12467,7 @@ conference   = "B1G"
 mascot       = "Scarlet Knights"
 gender       = "men"
 base_url     = "https://scarletknights.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12446,7 +12483,7 @@ conference   = "B1G"
 mascot       = "Spartans"
 gender       = "men"
 base_url     = "https://msuspartans.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12462,7 +12499,7 @@ conference   = "B1G"
 mascot       = "Terrapins"
 gender       = "men"
 base_url     = "https://umterps.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12477,7 +12514,7 @@ conference   = "B1G"
 mascot       = "Bruins"
 gender       = "men"
 base_url     = "https://uclabruins.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
@@ -12494,7 +12531,7 @@ conference   = "B1G"
 mascot       = "Badgers"
 gender       = "men"
 base_url     = "https://uwbadgers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12510,7 +12547,7 @@ conference   = "B1G"
 mascot       = "Wildcats"
 gender       = "men"
 base_url     = "https://nusports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
@@ -12527,7 +12564,7 @@ conference   = "B1G"
 mascot       = "Buckeyes"
 gender       = "men"
 base_url     = "https://ohiostatebuckeyes.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12543,7 +12580,7 @@ conference   = "B1G"
 mascot       = "Wolverines"
 gender       = "men"
 base_url     = "https://mgoblue.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12558,7 +12595,7 @@ conference   = "B1G"
 mascot       = "Nittany Lions"
 gender       = "men"
 base_url     = "https://gopsusports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
@@ -12570,10 +12607,12 @@ gazetteer_note = "University Park is the name of Penn State's primary campus, no
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# BIGEAST (Big East Conference) - 12 stanzas here; members 2023/2024/2025/2026 = 12/12/12/12
+# BIGEAST (Big East Conference) - 12 stanzas here; members 2022/2023/2024/2025/2026 = 11/12/12/12/12
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   12 sidearm, all four layers present, seasons 2023-2026
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   12 sidearm, all four layers present, season 2022 served
 # Tournament header read 2026-11-15 on gozips.com/sports/mens-soccer/schedule/2025: Big East Conference Tournament Semifinals.
 
 [[schools]]
@@ -12583,7 +12622,7 @@ conference   = "BIGEAST"
 mascot       = "Hoyas"
 gender       = "men"
 base_url     = "https://guhoyas.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12599,7 +12638,7 @@ conference   = "BIGEAST"
 mascot       = "Pirates"
 gender       = "men"
 base_url     = "https://shupirates.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12615,7 +12654,7 @@ conference   = "BIGEAST"
 mascot       = "Huskies"
 gender       = "men"
 base_url     = "https://uconnhuskies.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12633,7 +12672,7 @@ conference   = "BIGEAST"
 mascot       = "Red Storm"
 gender       = "men"
 base_url     = "https://redstormsports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12648,7 +12687,7 @@ conference   = "BIGEAST"
 mascot       = "Friars"
 gender       = "men"
 base_url     = "https://friars.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12663,7 +12702,7 @@ conference   = "BIGEAST"
 mascot       = "Wildcats"
 gender       = "men"
 base_url     = "https://villanova.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12679,7 +12718,7 @@ conference   = "BIGEAST"
 mascot       = "Bluejays"
 gender       = "men"
 base_url     = "https://gocreighton.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12695,7 +12734,7 @@ conference   = "BIGEAST"
 mascot       = "Zips"
 gender       = "men"
 base_url     = "https://gozips.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12710,7 +12749,7 @@ conference   = "BIGEAST"
 mascot       = "Musketeers"
 gender       = "men"
 base_url     = "https://goxavier.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12725,7 +12764,7 @@ conference   = "BIGEAST"
 mascot       = "Bulldogs"
 gender       = "men"
 base_url     = "https://butlersports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12741,7 +12780,7 @@ conference   = "BIGEAST"
 mascot       = "Golden Eagles"
 gender       = "men"
 base_url     = "https://gomarquette.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12756,7 +12795,7 @@ conference   = "BIGEAST"
 mascot       = "Blue Demons"
 gender       = "men"
 base_url     = "https://depaulbluedemons.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12765,10 +12804,12 @@ city_source  = "https://depaulbluedemons.com/sports/mens-soccer/schedule (schedu
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# BIGSOUTH (Big South Conference) - 8 stanzas here; members 2023/2024/2025/2026 = 8/8/8/8
+# BIGSOUTH (Big South Conference) - 8 stanzas here; members 2022/2023/2024/2025/2026 = 9/8/8/8/8
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   8 sidearm, all four layers present, seasons 2023-2026
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   8 sidearm, all four layers present, season 2022 served
 # Tournament header read 2026-11-15 on highpointpanthers.com/sports/mens-soccer/schedule/2025: Big South Conference Championship.
 
 [[schools]]
@@ -12779,7 +12820,7 @@ conference   = "BIGSOUTH"
 mascot       = "Panthers"
 gender       = "men"
 base_url     = "https://highpointpanthers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12794,7 +12835,7 @@ conference   = "BIGSOUTH"
 mascot       = "Runnin' Bulldogs"
 gender       = "men"
 base_url     = "https://gwusports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12809,7 +12850,7 @@ conference   = "BIGSOUTH"
 mascot       = "Bulldogs"
 gender       = "men"
 base_url     = "https://uncabulldogs.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12825,7 +12866,7 @@ conference   = "BIGSOUTH"
 mascot       = "Eagles"
 gender       = "men"
 base_url     = "https://winthropeagles.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12840,7 +12881,7 @@ conference   = "BIGSOUTH"
 mascot       = "Lancers"
 gender       = "men"
 base_url     = "https://longwoodlancers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12855,7 +12896,7 @@ conference   = "BIGSOUTH"
 mascot       = "Spartans"
 gender       = "men"
 base_url     = "https://upstatespartans.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12873,7 +12914,7 @@ conference   = "BIGSOUTH"
 mascot       = "Highlanders"
 gender       = "men"
 base_url     = "https://radfordathletics.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12888,7 +12929,7 @@ conference   = "BIGSOUTH"
 mascot       = "Blue Hose"
 gender       = "men"
 base_url     = "https://gobluehose.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12897,10 +12938,12 @@ city_source  = "https://gobluehose.com/sports/mens-soccer/schedule (schedule pag
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# BIGWEST (Big West Conference) - 7 stanzas here; members 2023/2024/2025/2026 = 10/10/10/7
+# BIGWEST (Big West Conference) - 7 stanzas here; members 2022/2023/2024/2025/2026 = 10/10/10/10/7
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   7 sidearm, all four layers present, seasons 2023-2026
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   7 sidearm, all four layers present, season 2022 served
 # Tournament header read 2026-11-15 on ucsbgauchos.com/sports/mens-soccer/schedule/2025: The Big West Championship.
 
 [[schools]]
@@ -12910,7 +12953,7 @@ conference   = "BIGWEST"
 mascot       = "Wolverines"
 gender       = "men"
 base_url     = "https://gouvu.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12925,7 +12968,7 @@ conference   = "BIGWEST"
 mascot       = "Anteaters"
 gender       = "men"
 base_url     = "https://ucirvinesports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12940,7 +12983,7 @@ conference   = "BIGWEST"
 mascot       = "Gauchos"
 gender       = "men"
 base_url     = "https://ucsbgauchos.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12956,7 +12999,7 @@ conference   = "BIGWEST"
 mascot       = "Roadrunners"
 gender       = "men"
 base_url     = "https://gorunners.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12975,7 +13018,7 @@ conference   = "BIGWEST"
 mascot       = "Hornets"
 gender       = "men"
 base_url     = "https://hornetsports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -12990,7 +13033,7 @@ conference   = "BIGWEST"
 mascot       = "Matadors"
 gender       = "men"
 base_url     = "https://gomatadors.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13010,7 +13053,7 @@ conference   = "BIGWEST"
 mascot       = "Titans"
 gender       = "men"
 base_url     = "https://fullertontitans.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13025,10 +13068,12 @@ city_source  = "https://fullertontitans.com/sports/mens-soccer/schedule (schedul
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# CAA (Coastal Athletic Association) - 10 stanzas here; members 2023/2024/2025/2026 = 11/11/10/10
+# CAA (Coastal Athletic Association) - 10 stanzas here; members 2022/2023/2024/2025/2026 = 10/11/11/10/10
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   10 sidearm, all four layers present, seasons 2023-2026
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   10 sidearm, all four layers present, season 2022 served
 # Tournament header read 2026-11-15 on cofcsports.com/sports/mens-soccer/schedule/2025: CAA Tournament (page text, no block header).
 
 [[schools]]
@@ -13039,7 +13084,7 @@ conference   = "CAA"
 mascot       = "Seawolves"
 gender       = "men"
 base_url     = "https://stonybrookathletics.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13054,7 +13099,7 @@ conference   = "CAA"
 mascot       = "Pride"
 gender       = "men"
 base_url     = "https://gohofstra.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13069,7 +13114,7 @@ conference   = "CAA"
 mascot       = "Dragons"
 gender       = "men"
 base_url     = "https://drexeldragons.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13084,7 +13129,7 @@ conference   = "CAA"
 mascot       = "Huskies"
 gender       = "men"
 base_url     = "https://nuhuskies.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13099,7 +13144,7 @@ conference   = "CAA"
 mascot       = "Hawks"
 gender       = "men"
 base_url     = "https://monmouthhawks.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13114,7 +13159,7 @@ conference   = "CAA"
 mascot       = "Seahawks"
 gender       = "men"
 base_url     = "https://uncwsports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13134,7 +13179,7 @@ conference   = "CAA"
 mascot       = "Phoenix"
 gender       = "men"
 base_url     = "https://elonphoenix.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13155,7 +13200,7 @@ conference   = "CAA"
 mascot       = "Cougars"
 gender       = "men"
 base_url     = "https://cofcsports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13171,7 +13216,7 @@ conference   = "CAA"
 mascot       = "Tribe"
 gender       = "men"
 base_url     = "https://tribeathletics.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13186,7 +13231,7 @@ conference   = "CAA"
 mascot       = "Camels"
 gender       = "men"
 base_url     = "https://gocamels.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13195,10 +13240,12 @@ city_source  = "https://gocamels.com/sports/mens-soccer/schedule (schedule page 
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# HORIZON (Horizon League) - 11 stanzas here; members 2023/2024/2025/2026 = 10/10/10/11
+# HORIZON (Horizon League) - 11 stanzas here; members 2022/2023/2024/2025/2026 = 10/10/10/10/11
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   11 sidearm, all four layers present, seasons 2023-2026
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   11 sidearm, all four layers present, season 2022 served
 # Tournament header read 2026-11-15 on goldengrizzlies.com/sports/mens-soccer/schedule/2025: Horizon League Men's Soccer Tournament.
 
 [[schools]]
@@ -13208,7 +13255,7 @@ conference   = "HORIZON"
 mascot       = "Panthers"
 gender       = "men"
 base_url     = "https://mkepanthers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13223,7 +13270,7 @@ conference   = "HORIZON"
 mascot       = "Mastodons"
 gender       = "men"
 base_url     = "https://gomastodons.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13241,7 +13288,7 @@ conference   = "HORIZON"
 mascot       = "Colonials"
 gender       = "men"
 base_url     = "https://rmucolonials.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13260,7 +13307,7 @@ conference   = "HORIZON"
 mascot       = "Huskies"
 gender       = "men"
 base_url     = "https://niuhuskies.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13275,7 +13322,7 @@ conference   = "HORIZON"
 mascot       = "Raiders"
 gender       = "men"
 base_url     = "https://wsuraiders.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13291,7 +13338,7 @@ conference   = "HORIZON"
 mascot       = "Vikings"
 gender       = "men"
 base_url     = "https://csuvikings.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13306,7 +13353,7 @@ conference   = "HORIZON"
 mascot       = "Golden Grizzlies"
 gender       = "men"
 base_url     = "https://goldengrizzlies.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13321,7 +13368,7 @@ conference   = "HORIZON"
 mascot       = "Phoenix"
 gender       = "men"
 base_url     = "https://greenbayphoenix.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13337,7 +13384,7 @@ conference   = "HORIZON"
 mascot       = "Titans"
 gender       = "men"
 base_url     = "https://detroittitans.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13356,7 +13403,7 @@ conference   = "HORIZON"
 mascot       = "Jaguars"
 gender       = "men"
 base_url     = "https://iuindyjags.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13385,7 +13432,7 @@ conference   = "HORIZON"
 mascot       = "Norse"
 gender       = "men"
 base_url     = "https://nkunorse.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13394,11 +13441,15 @@ city_source  = "https://nkunorse.com/sports/mens-soccer/schedule (schedule page 
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# IVY (Ivy League) - 8 stanzas here; members 2023/2024/2025/2026 = 8/8/8/8
+# IVY (Ivy League) - 8 stanzas here; members 2022/2023/2024/2025/2026 = 8/8/8/8/8
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   7 sidearm, all four layers present, seasons 2023-2026
 #   1 unknown: schedule absent, roster absent, stats absent, matches absent; seasons none proved -> authored as sidearm (census reading, see the stanza or facts notes): Harvard
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   1 sidearm, schedule present, roster error (season not proven), stats present, matches present, season 2022 served: cornell
+#   6 sidearm, all four layers present, season 2022 served
+#   1 unknown: nothing read, season 2022 not proved -> 2022 added by the census reading, as for 2023-2026: harvard
 # Tournament header read 2026-11-15 on goprincetontigers.com/sports/mens-soccer/schedule/2025: Ivy League Tournament.
 
 [[schools]]
@@ -13408,7 +13459,7 @@ conference   = "IVY"
 mascot       = "Big Red"
 gender       = "men"
 base_url     = "https://cornellbigred.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13423,7 +13474,7 @@ conference   = "IVY"
 mascot       = "Quakers"
 gender       = "men"
 base_url     = "https://pennathletics.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13439,7 +13490,7 @@ conference   = "IVY"
 mascot       = "Bulldogs"
 gender       = "men"
 base_url     = "https://yalebulldogs.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13454,7 +13505,7 @@ conference   = "IVY"
 mascot       = "Bears"
 gender       = "men"
 base_url     = "https://brownbears.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13470,7 +13521,7 @@ conference   = "IVY"
 mascot       = "Big Green"
 gender       = "men"
 base_url     = "https://dartmouthsports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13491,7 +13542,7 @@ conference   = "IVY"
 mascot       = "Crimson"
 gender       = "men"
 base_url     = "https://gocrimson.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13507,7 +13558,7 @@ conference   = "IVY"
 mascot       = "Tigers"
 gender       = "men"
 base_url     = "https://goprincetontigers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13522,7 +13573,7 @@ conference   = "IVY"
 mascot       = "Lions"
 gender       = "men"
 base_url     = "https://gocolumbialions.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13531,10 +13582,12 @@ city_source  = "https://gocolumbialions.com/sports/mens-soccer/schedule (schedul
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# MAAC (Metro Atlantic Athletic Conference (the Metro Conference)) - 13 stanzas here; members 2023/2024/2025/2026 = 11/13/13/13
+# MAAC (Metro Atlantic Athletic Conference (the Metro Conference)) - 13 stanzas here; members 2022/2023/2024/2025/2026 = 11/11/13/13/13
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   13 sidearm, all four layers present, seasons 2023-2026
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   13 sidearm, all four layers present, season 2022 served
 # Tournament header read 2026-11-15 on gobobcats.com/sports/mens-soccer/schedule/2025: Metro Tournament.
 
 [[schools]]
@@ -13544,7 +13597,7 @@ conference   = "MAAC"
 mascot       = "Stags"
 gender       = "men"
 base_url     = "https://fairfieldstags.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13559,7 +13612,7 @@ conference   = "MAAC"
 mascot       = "Red Foxes"
 gender       = "men"
 base_url     = "https://goredfoxes.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13574,7 +13627,7 @@ conference   = "MAAC"
 mascot       = "Bobcats"
 gender       = "men"
 base_url     = "https://gobobcats.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13590,7 +13643,7 @@ conference   = "MAAC"
 mascot       = "Pioneers"
 gender       = "men"
 base_url     = "https://sacredheartpioneers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13605,7 +13658,7 @@ conference   = "MAAC"
 mascot       = "Purple Eagles"
 gender       = "men"
 base_url     = "https://purpleeagles.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13621,7 +13674,7 @@ conference   = "MAAC"
 mascot       = "Warriors"
 gender       = "men"
 base_url     = "https://merrimackathletics.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13636,7 +13689,7 @@ conference   = "MAAC"
 mascot       = "Gaels"
 gender       = "men"
 base_url     = "https://ionagaels.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13651,7 +13704,7 @@ conference   = "MAAC"
 mascot       = "Saints"
 gender       = "men"
 base_url     = "https://sienasaints.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13666,7 +13719,7 @@ conference   = "MAAC"
 mascot       = "Broncs"
 gender       = "men"
 base_url     = "https://gobroncs.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13683,7 +13736,7 @@ conference   = "MAAC"
 mascot       = "Peacocks"
 gender       = "men"
 base_url     = "https://saintpeterspeacocks.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13699,7 +13752,7 @@ conference   = "MAAC"
 mascot       = "Mountaineers"
 gender       = "men"
 base_url     = "https://mountathletics.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13714,7 +13767,7 @@ conference   = "MAAC"
 mascot       = "Jaspers"
 gender       = "men"
 base_url     = "https://gojaspers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13731,7 +13784,7 @@ conference   = "MAAC"
 mascot       = "Griffins"
 gender       = "men"
 base_url     = "https://gogriffs.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13740,11 +13793,15 @@ city_source  = "https://gogriffs.com/sports/mens-soccer/schedule (schedule page 
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# MVC (Missouri Valley Conference) - 7 stanzas here; members 2023/2024/2025/2026 = 9/9/8/7
+# MVC (Missouri Valley Conference) - 7 stanzas here; members 2022/2023/2024/2025/2026 = 7/9/9/8/7
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   6 sidearm, all four layers present, seasons 2023-2026: Bowling Green, Evansville, Western Michigan, Belmont, UIC, Drake
 #   1 sidearm: schedule present, roster absent, stats present, matches present; seasons 2023-2026: Bradley
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   5 sidearm, all four layers present, season 2022 served
+#   1 sidearm, schedule present, roster present, stats present, matches absent, season 2022 served: evansville
+#   1 sidearm, schedule present, roster absent, stats present, matches present, season 2022 served: bradley
 # Tournament header read 2026-11-15 on wmubroncos.com/sports/mens-soccer/schedule/2025: MVC Tournament.
 
 [[schools]]
@@ -13754,7 +13811,7 @@ conference   = "MVC"
 mascot       = "Falcons"
 gender       = "men"
 base_url     = "https://bgsufalcons.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13770,7 +13827,7 @@ conference   = "MVC"
 mascot       = "Purple Aces"
 gender       = "men"
 base_url     = "https://gopurpleaces.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13785,7 +13842,7 @@ conference   = "MVC"
 mascot       = "Broncos"
 gender       = "men"
 base_url     = "https://wmubroncos.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13803,7 +13860,7 @@ conference   = "MVC"
 mascot       = "Bruins"
 gender       = "men"
 base_url     = "https://belmontbruins.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13819,7 +13876,7 @@ conference   = "MVC"
 mascot       = "Flames"
 gender       = "men"
 base_url     = "https://uicflames.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13834,7 +13891,7 @@ conference   = "MVC"
 mascot       = "Bulldogs"
 gender       = "men"
 base_url     = "https://godrakebulldogs.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13849,7 +13906,7 @@ conference   = "MVC"
 mascot       = "Braves"
 gender       = "men"
 base_url     = "https://bradleybraves.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13858,11 +13915,14 @@ city_source  = "https://bradleybraves.com/sports/mens-soccer/schedule (schedule 
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# MW (Mountain West Conference) - 6 stanzas here; members 2023/2024/2025/2026 = 0/0/0/6
+# MW (Mountain West Conference) - 6 stanzas here; members 2022/2023/2024/2025/2026 = 0/0/0/0/6
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   5 sidearm, all four layers present, seasons 2023-2026: Grand Canyon, UNLV, Air Force, UC Davis, Utah Tech
 #   1 unknown: schedule error (HTTP 404), roster error (HTTP 404), stats error (HTTP 404), matches error (HTTP 404); seasons none proved -> authored as wmt (census reading, see the stanza or facts notes): San José State
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   5 sidearm, all four layers present, season 2022 served
+#   1 wmt, all four layers present, season 2022 served: san-jose-state
 # Tournament header read 2026-11-15 on unlvrebels.com/sports/mens-soccer/schedule/2026: Mountain West Tournament.
 
 [[schools]]
@@ -13873,7 +13933,7 @@ conference   = "MW"
 mascot       = "Lopes"
 gender       = "men"
 base_url     = "https://gculopes.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13888,7 +13948,7 @@ conference   = "MW"
 mascot       = "Rebels"
 gender       = "men"
 base_url     = "https://unlvrebels.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13906,7 +13966,7 @@ conference   = "MW"
 mascot       = "Spartans"
 gender       = "men"
 base_url     = "https://sjsuspartans.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
@@ -13923,7 +13983,7 @@ conference   = "MW"
 mascot       = "Falcons"
 gender       = "men"
 base_url     = "https://goairforcefalcons.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13941,7 +14001,7 @@ conference   = "MW"
 mascot       = "Aggies"
 gender       = "men"
 base_url     = "https://ucdavisaggies.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13957,7 +14017,7 @@ conference   = "MW"
 mascot       = "Trailblazers"
 gender       = "men"
 base_url     = "https://utahtechtrailblazers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13966,12 +14026,16 @@ city_source  = "https://utahtechtrailblazers.com/sports/mens-soccer/schedule (sc
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# NEC (Northeast Conference) - 7 stanzas here; members 2023/2024/2025/2026 = 9/9/10/9
+# NEC (Northeast Conference) - 8 stanzas here; members 2022/2023/2024/2025/2026 = 9/9/9/10/9
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   5 sidearm, all four layers present, seasons 2023-2026: LIU, FDU, Stonehill, Howard, Chicago State
 #   1 prestosports, all four layers present, seasons 2023-2026: Central Connecticut
 #   1 not probed (platform sidearm by reading): Saint Francis
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   6 sidearm, all four layers present, season 2022 served
+#   1 prestosports, all four layers present, season 2022 served: central-connecticut
+#   1 sidearm, schedule present, roster error (HTTP 404), stats present, matches present, season 2022 served: st-francis-brooklyn
 # Tournament header read 2026-11-15 on fduknights.com/sports/mens-soccer/schedule/2025: NEC Championship.
 
 [[schools]]
@@ -13981,7 +14045,7 @@ conference   = "NEC"
 mascot       = "Sharks"
 gender       = "men"
 base_url     = "https://liuathletics.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -13997,7 +14061,7 @@ conference   = "NEC"
 mascot       = "Knights"
 gender       = "men"
 base_url     = "https://fduknights.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14016,7 +14080,7 @@ conference   = "NEC"
 mascot       = "Blue Devils"
 gender       = "men"
 base_url     = "https://ccsubluedevils.com/sports/msoc"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "prestosports"
 live_scraper = "prestosports"
 data_status  = "unverified"
@@ -14033,7 +14097,7 @@ conference   = "NEC"
 mascot       = "Skyhawks"
 gender       = "men"
 base_url     = "https://stonehillskyhawks.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14048,7 +14112,7 @@ conference   = "NEC"
 mascot       = "Bison"
 gender       = "men"
 base_url     = "https://hubison.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14064,7 +14128,7 @@ conference   = "NEC"
 mascot       = "Cougars"
 gender       = "men"
 base_url     = "https://gocsucougars.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14086,7 +14150,7 @@ conference   = "NEC"
 mascot       = "Red Flash"
 gender       = "men"
 base_url     = "https://sfuathletics.com/sports/mens-soccer"
-years        = [2023, 2024, 2025]
+years        = [2022, 2023, 2024, 2025]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14094,11 +14158,43 @@ city         = "Loretto, Pa."
 city_source  = "https://sfuathletics.com/sports/mens-soccer/schedule/2025 (schedule page home rows print \"Loretto, PA\", Stokes Soccerplex; 8 of 9 home rows, the ninth \"Loretto, Pa.\") (read 2026-11-15)"
 identity_accessed = "2026-11-15"
 
+# Last Division I season 2022 (NEC 2022, the first season of the depth);
+# St. Francis College ended its whole athletics programme after the spring
+# 2023 semester (announced 2023-03-20), so `years` and the one window are
+# 2022 and no window covers 2023. Not Saint Francis (Pa.) above: the NEC's
+# 2022 table lists both, and before this stanza the label "St. Francis
+# Brooklyn" minted `saint-francis`. Probed 2026-11-20 (uv run probe
+# --seasons 2022): sidearm (legacy markup), schedule, stats and matches
+# present, roster HTTP 404, season 2022 served; the season selector ends at
+# 2022 and /schedule/2023 redirects to it. The bare host root fails to
+# answer; the sport paths answer 200. SFBK is the site's own scoreboard
+# short form (home_short_name on 15 rows of the 2022 schedule; SFB on the
+# away rows).
+[[schools]]
+name         = "St. Francis Brooklyn"
+abbreviation = "SFBK"
+conference   = "NEC"
+mascot       = "Terriers"
+gender       = "men"
+base_url     = "https://sfcathletics.com/sports/mens-soccer"
+years        = [2022]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+# No alias: "St. Francis College" folds to `saint francis`, the key Saint
+# Francis (Pa.) holds by name, and check-membership refuses the pair; peer
+# spellings are the alias round's after the first collect.
+city         = "Brooklyn, N.Y."
+city_source  = "https://sfcathletics.com/sports/mens-soccer/schedule/2022 (schedule page home rows print \"Brooklyn Heights, NY\", Brooklyn Bridge Park-Pier 5, a neighbourhood of the borough; the page footer prints \"Brooklyn, NY\") (read 2026-11-20); St. Francis College's main site, https://www.sfc.edu/, is the Brooklyn college the athletics site names"
+identity_accessed = "2026-11-20"
+
 # ------------------------------------------------------------
-# OVC (Ohio Valley Conference) - 8 stanzas here; members 2023/2024/2025/2026 = 8/8/8/8
+# OVC (Ohio Valley Conference) - 8 stanzas here; members 2022/2023/2024/2025/2026 = 0/8/8/8/8
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   8 sidearm, all four layers present, seasons 2023-2026
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   7 sidearm, all four layers present, season 2022 served
 # Tournament header read 2026-11-15 on siuecougars.com/sports/mens-soccer/schedule/2025: OVC Tournament.
 
 [[schools]]
@@ -14109,7 +14205,7 @@ conference   = "OVC"
 mascot       = "Lions"
 gender       = "men"
 base_url     = "https://lindenwoodlions.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14124,7 +14220,7 @@ conference   = "OVC"
 mascot       = "Cougars"
 gender       = "men"
 base_url     = "https://siuecougars.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14161,11 +14257,14 @@ conference   = "OVC"
 mascot       = "Huskies"
 gender       = "men"
 base_url     = "https://hcuhuskies.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Houston Christian University"]
+# Houston Baptist University renamed itself Houston Christian in September
+# 2022; the WAC's archived 2022 standings (Wayback 2023-11-06, standings=98)
+# print the old name, so it resolves here (the renamed rule: the slug stays).
+aliases      = ["Houston Christian University", "Houston Baptist", "Houston Baptist University"]
 city         = "Houston, Texas"
 city_source  = "https://hcuhuskies.com/sports/mens-soccer/schedule (schedule page home rows print \"Houston, Texas\", Sorrels Field; 11 of 12 home rows) (read 2026-11-15)"
 identity_accessed = "2026-11-15"
@@ -14177,7 +14276,7 @@ conference   = "OVC"
 mascot       = "Leathernecks"
 gender       = "men"
 base_url     = "https://goleathernecks.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14192,7 +14291,7 @@ conference   = "OVC"
 mascot       = "Panthers"
 gender       = "men"
 base_url     = "https://eiupanthers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14207,7 +14306,7 @@ conference   = "OVC"
 mascot       = "Vaqueros"
 gender       = "men"
 base_url     = "https://goutrgv.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14226,7 +14325,7 @@ conference   = "OVC"
 mascot       = "Screaming Eagles"
 gender       = "men"
 base_url     = "https://usiscreamingeagles.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14235,12 +14334,16 @@ city_source  = "https://usiscreamingeagles.com/sports/mens-soccer/schedule (sche
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# PAC12 (Pac-12 Conference) - 7 stanzas here; members 2023/2024/2025/2026 = 6/0/0/7
+# PAC12 (Pac-12 Conference) - 7 stanzas here; members 2022/2023/2024/2025/2026 = 6/6/0/0/7
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   5 sidearm, all four layers present, seasons 2023-2026: Oregon State, California Baptist, UC Riverside, UC San Diego, Cal Poly
 #   1 unknown: schedule error (HTTP 404), roster error (HTTP 404), stats error (HTTP 404), matches error (HTTP 404); seasons none proved -> authored as wmt (census reading, see the stanza or facts notes): San Diego State
 #   1 sidearm: schedule present, roster present, stats present, matches present; seasons 2024-2026: Gonzaga
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   5 sidearm, all four layers present, season 2022 served
+#   1 wmt, schedule present, roster present, stats present, matches error (box-score join not read: not proven), season 2022 served: san-diego-state
+#   1 sidearm, schedule present, roster absent, stats present, matches present, season 2022 served: cal-poly
 # Tournament header read 2026-11-15 on osubeavers.com/sports/mens-soccer/schedule/2026: Pac-12 Tournament (page text, no block header).
 
 # abbreviation: the site config's schoolAbbrev "ORST" is a scoreboard stat code; the plain name is used.
@@ -14251,7 +14354,7 @@ conference   = "PAC12"
 mascot       = "Beavers"
 gender       = "men"
 base_url     = "https://osubeavers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14267,7 +14370,7 @@ conference   = "PAC12"
 mascot       = "Lancers"
 gender       = "men"
 base_url     = "https://cbulancers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14289,7 +14392,7 @@ conference   = "PAC12"
 mascot       = "Aztecs"
 gender       = "men"
 base_url     = "https://goaztecs.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
@@ -14305,7 +14408,7 @@ conference   = "PAC12"
 mascot       = "Highlanders"
 gender       = "men"
 base_url     = "https://gohighlanders.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14320,7 +14423,7 @@ conference   = "PAC12"
 mascot       = "Tritons"
 gender       = "men"
 base_url     = "https://ucsdtritons.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14337,7 +14440,7 @@ conference   = "PAC12"
 mascot       = "Mustangs"
 gender       = "men"
 base_url     = "https://gopoly.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14354,7 +14457,7 @@ conference   = "PAC12"
 mascot       = "Bulldogs"
 gender       = "men"
 base_url     = "https://gozags.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14363,10 +14466,12 @@ city_source  = "https://gozags.com/sports/mens-soccer/schedule (schedule page ho
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# PATRIOT (Patriot League) - 10 stanzas here; members 2023/2024/2025/2026 = 10/10/10/10
+# PATRIOT (Patriot League) - 10 stanzas here; members 2022/2023/2024/2025/2026 = 10/10/10/10/10
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   10 sidearm, all four layers present, seasons 2023-2026
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   10 sidearm, all four layers present, season 2022 served
 # Tournament header read 2026-11-15 on loyolagreyhounds.com/sports/mens-soccer/schedule/2025: Patriot League Championships (page text, no block header).
 
 [[schools]]
@@ -14377,7 +14482,7 @@ conference   = "PATRIOT"
 mascot       = "Terriers"
 gender       = "men"
 base_url     = "https://goterriers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14398,7 +14503,7 @@ conference   = "PATRIOT"
 mascot       = "Eagles"
 gender       = "men"
 base_url     = "https://aueagles.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14413,7 +14518,7 @@ conference   = "PATRIOT"
 mascot       = "Mountain Hawks"
 gender       = "men"
 base_url     = "https://lehighsports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14428,7 +14533,7 @@ conference   = "PATRIOT"
 mascot       = "Bison"
 gender       = "men"
 base_url     = "https://bucknellbison.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14443,7 +14548,7 @@ conference   = "PATRIOT"
 mascot       = "Leopards"
 gender       = "men"
 base_url     = "https://goleopards.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14458,7 +14563,7 @@ conference   = "PATRIOT"
 mascot       = "Greyhounds"
 gender       = "men"
 base_url     = "https://loyolagreyhounds.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14482,7 +14587,7 @@ conference   = "PATRIOT"
 mascot       = "Crusaders"
 gender       = "men"
 base_url     = "https://goholycross.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14497,7 +14602,7 @@ conference   = "PATRIOT"
 mascot       = "Midshipmen"
 gender       = "men"
 base_url     = "https://navysports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14513,7 +14618,7 @@ conference   = "PATRIOT"
 mascot       = "Black Knights"
 gender       = "men"
 base_url     = "https://goarmywestpoint.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14528,7 +14633,7 @@ conference   = "PATRIOT"
 mascot       = "Raiders"
 gender       = "men"
 base_url     = "https://colgateathletics.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14537,10 +14642,13 @@ city_source  = "https://colgateathletics.com/sports/mens-soccer/schedule (schedu
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# SOCON (Southern Conference) - 7 stanzas here; members 2023/2024/2025/2026 = 6/6/6/7
+# SOCON (Southern Conference) - 7 stanzas here; members 2022/2023/2024/2025/2026 = 6/6/6/6/7
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   7 sidearm, all four layers present, seasons 2023-2026
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   6 sidearm, all four layers present, season 2022 served
+#   1 sidearm, schedule present, roster error (season not proven), stats error (season not proven), matches absent, season 2022 served: etsu
 # Tournament header read 2026-11-15 on mercerbears.com/sports/mens-soccer/schedule/2025: Southern Conference Tournament.
 
 [[schools]]
@@ -14550,7 +14658,7 @@ conference   = "SOCON"
 mascot       = "Paladins"
 gender       = "men"
 base_url     = "https://furmanpaladins.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14565,7 +14673,7 @@ conference   = "SOCON"
 mascot       = "Terriers"
 gender       = "men"
 base_url     = "https://woffordterriers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14580,7 +14688,7 @@ conference   = "SOCON"
 mascot       = "Spartans"
 gender       = "men"
 base_url     = "https://uncgspartans.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14595,7 +14703,7 @@ conference   = "SOCON"
 mascot       = "Buccaneers"
 gender       = "men"
 base_url     = "https://etsubucs.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14612,7 +14720,7 @@ conference   = "SOCON"
 mascot       = "Flames"
 gender       = "men"
 base_url     = "https://libertyflames.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14627,7 +14735,7 @@ conference   = "SOCON"
 mascot       = "Keydets"
 gender       = "men"
 base_url     = "https://vmikeydets.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14646,7 +14754,7 @@ conference   = "SOCON"
 mascot       = "Bears"
 gender       = "men"
 base_url     = "https://mercerbears.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14656,11 +14764,13 @@ gazetteer_geoid = "1349008"
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# SUMMIT (The Summit League) - 6 stanzas here; members 2023/2024/2025/2026 = 6/5/7/6
+# SUMMIT (The Summit League) - 6 stanzas here; members 2022/2023/2024/2025/2026 = 9/6/5/7/6
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   5 sidearm, all four layers present, seasons 2023-2026: Kansas City, Omaha, UMass, Oral Roberts, Delaware
 #   1 sidearm: schedule absent, roster absent, stats absent, matches absent; seasons none proved: St. Thomas
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   6 sidearm, all four layers present, season 2022 served
 # Tournament header read 2026-11-15 on denverpioneers.com/sports/mens-soccer/schedule/2025: Summit League Tournament.
 
 [[schools]]
@@ -14670,7 +14780,7 @@ conference   = "SUMMIT"
 mascot       = "Roos"
 gender       = "men"
 base_url     = "https://kcroos.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14688,7 +14798,7 @@ conference   = "SUMMIT"
 mascot       = "Mavericks"
 gender       = "men"
 base_url     = "https://omahamavs.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14707,7 +14817,7 @@ conference   = "SUMMIT"
 mascot       = "Minutemen"
 gender       = "men"
 base_url     = "https://umassathletics.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14724,7 +14834,7 @@ conference   = "SUMMIT"
 mascot       = "Golden Eagles"
 gender       = "men"
 base_url     = "https://oruathletics.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14742,7 +14852,7 @@ conference   = "SUMMIT"
 mascot       = "Tommies"
 gender       = "men"
 base_url     = "https://tommiesports.com/sports/msoc"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14758,7 +14868,7 @@ conference   = "SUMMIT"
 mascot       = "Blue Hens"
 gender       = "men"
 base_url     = "https://bluehens.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14767,12 +14877,16 @@ city_source  = "https://bluehens.com/sports/mens-soccer/schedule (schedule page 
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# SUNBELT (Sun Belt Conference) - 10 stanzas here; members 2023/2024/2025/2026 = 10/10/10/10
+# SUNBELT (Sun Belt Conference) - 10 stanzas here; members 2022/2023/2024/2025/2026 = 9/10/10/10/10
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   6 sidearm, all four layers present, seasons 2023-2026: West Virginia, Marshall, James Madison, Coastal Carolina, Georgia Southern, Georgia State
 #   2 unknown: schedule error (HTTP 404), roster error (HTTP 404), stats error (HTTP 404), matches error (HTTP 404); seasons none proved -> authored as wmt (census reading, see the stanza or facts notes): UCF, Old Dominion
 #   2 unknown: schedule error (season not proven), roster error (HTTP 404), stats error (HTTP 404), matches error (season not proven); seasons none proved -> authored as wmt (census reading, see the stanza or facts notes): South Carolina, Kentucky
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   6 sidearm, all four layers present, season 2022 served
+#   3 wmt, all four layers present, season 2022 served: ucf, south-carolina, kentucky
+#   1 wmt, schedule present, roster present, stats present, matches error (box-score join not read: not proven), season 2022 served: old-dominion
 # Tournament header read 2026-11-15 on herdzone.com/sports/mens-soccer/schedule/2025: 2025 Sun Belt Conference Men's Soccer Championship.
 
 [[schools]]
@@ -14782,7 +14896,7 @@ conference   = "SUNBELT"
 mascot       = "Mountaineers"
 gender       = "men"
 base_url     = "https://wvusports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14798,7 +14912,7 @@ conference   = "SUNBELT"
 mascot       = "Thundering Herd"
 gender       = "men"
 base_url     = "https://herdzone.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14813,7 +14927,7 @@ conference   = "SUNBELT"
 mascot       = "Knights"
 gender       = "men"
 base_url     = "https://ucfknights.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
@@ -14833,7 +14947,7 @@ conference   = "SUNBELT"
 mascot       = "Dukes"
 gender       = "men"
 base_url     = "https://jmusports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14849,7 +14963,7 @@ conference   = "SUNBELT"
 mascot       = "Chanticleers"
 gender       = "men"
 base_url     = "https://goccusports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14867,7 +14981,7 @@ conference   = "SUNBELT"
 mascot       = "Gamecocks"
 gender       = "men"
 base_url     = "https://gamecocksonline.com/sports/msoc/"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
@@ -14883,7 +14997,7 @@ conference   = "SUNBELT"
 mascot       = "Wildcats"
 gender       = "men"
 base_url     = "https://ukathletics.com/sports/msoc/"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
@@ -14901,7 +15015,7 @@ conference   = "SUNBELT"
 mascot       = "Eagles"
 gender       = "men"
 base_url     = "https://gseagles.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14917,7 +15031,7 @@ conference   = "SUNBELT"
 mascot       = "Monarchs"
 gender       = "men"
 base_url     = "https://odusports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
@@ -14937,7 +15051,7 @@ conference   = "SUNBELT"
 mascot       = "Panthers"
 gender       = "men"
 base_url     = "https://georgiastatesports.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14946,11 +15060,14 @@ city_source  = "https://georgiastatesports.com/sports/mens-soccer/schedule (sche
 identity_accessed = "2026-11-15"
 
 # ------------------------------------------------------------
-# WCC (West Coast Conference) - 9 stanzas here; members 2023/2024/2025/2026 = 8/9/10/9
+# WCC (West Coast Conference) - 9 stanzas here; members 2022/2023/2024/2025/2026 = 8/8/9/10/9
 # ------------------------------------------------------------
 # Probed 2026-11-15 (census probe, uv run probe --seasons 2023-2026):
 #   8 sidearm, all four layers present, seasons 2023-2026
 #   1 unknown: schedule error (HTTP 404), roster error (HTTP 404), stats error (HTTP 404), matches error (HTTP 404); seasons none proved -> authored as wmt (census reading, see the stanza or facts notes): Seattle U
+# Probed 2026-11-20 for 2022 (uv run probe --seasons 2022), stanzas here that played it:
+#   8 sidearm, all four layers present, season 2022 served
+#   1 wmt, all four layers present, season 2022 served: seattle-u
 # Tournament header read 2026-11-15 on portlandpilots.com/sports/mens-soccer/schedule/2025: WCC Tournament (page text, no block header).
 
 [[schools]]
@@ -14960,7 +15077,7 @@ conference   = "WCC"
 mascot       = "Pilots"
 gender       = "men"
 base_url     = "https://portlandpilots.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14975,7 +15092,7 @@ conference   = "WCC"
 mascot       = "Toreros"
 gender       = "men"
 base_url     = "https://usdtoreros.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -14990,7 +15107,7 @@ conference   = "WCC"
 mascot       = "Pioneers"
 gender       = "men"
 base_url     = "https://denverpioneers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -15006,7 +15123,7 @@ conference   = "WCC"
 mascot       = "Dons"
 gender       = "men"
 base_url     = "https://usfdons.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -15033,7 +15150,7 @@ conference   = "WCC"
 mascot       = "Redhawks"
 gender       = "men"
 base_url     = "https://goseattleu.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "wmt"
 live_scraper = "wmt"
 data_status  = "unverified"
@@ -15052,7 +15169,7 @@ conference   = "WCC"
 mascot       = "Tigers"
 gender       = "men"
 base_url     = "https://pacifictigers.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -15067,7 +15184,7 @@ conference   = "WCC"
 mascot       = "Broncos"
 gender       = "men"
 base_url     = "https://santaclarabroncos.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -15082,7 +15199,7 @@ conference   = "WCC"
 mascot       = "Lions"
 gender       = "men"
 base_url     = "https://lmulions.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
@@ -15104,7 +15221,7 @@ conference   = "WCC"
 mascot       = "Gaels"
 gender       = "men"
 base_url     = "https://smcgaels.com/sports/mens-soccer"
-years        = [2023, 2024, 2025, 2026]
+years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true

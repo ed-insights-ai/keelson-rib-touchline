@@ -992,20 +992,23 @@ def test_the_shipped_conferences_carry_divisions_only_where_printed(
     # undivided list as the men's is. The MEC's men's
     # standings print North and South too, but the men's windows were
     # authored without them, so they stay unlabelled until a ruling adds
-    # them. Two Division I men's conferences print divisions on their
-    # standings: the Big East ("East Division", "Midwest Division") in every
-    # authored season, 2023-2026, and the CAA ("North", "South") from 2025,
-    # its 2023 and 2024 tables being one undivided list. The all-or-none rule
-    # holds on the shipped
+    # them. Three Division I men's conferences print divisions on their
+    # standings: the Big East ("East Division", "Midwest Division") from
+    # 2023, its 2022 table being one undivided list; the CAA ("North",
+    # "South") from 2025, its 2022-2024 tables being one undivided list; and
+    # the ACC ("Atlantic", "Coastal") in 2022 only, one table from 2023. The
+    # labelled span is (first season, last season or None for open). The
+    # all-or-none rule holds on the shipped
     # file, nothing is labelled anywhere else, and every member of a
     # labelled conference-season carries one of its printed divisions.
     divisional = {
-        ("CC", "men"): (2023, {"East", "Northwest", "Southwest"}),
-        ("PSAC", "women"): (2022, {"East", "West"}),
-        ("CC", "women"): (2023, {"East", "Northwest", "Southwest"}),
-        ("MEC", "women"): (2022, {"North", "South"}),
-        ("BIGEAST", "men"): (2023, {"East Division", "Midwest Division"}),
-        ("CAA", "men"): (2025, {"North", "South"}),
+        ("CC", "men"): (2023, None, {"East", "Northwest", "Southwest"}),
+        ("PSAC", "women"): (2022, None, {"East", "West"}),
+        ("CC", "women"): (2023, None, {"East", "Northwest", "Southwest"}),
+        ("MEC", "women"): (2022, None, {"North", "South"}),
+        ("BIGEAST", "men"): (2023, None, {"East Division", "Midwest Division"}),
+        ("CAA", "men"): (2025, None, {"North", "South"}),
+        ("ACC", "men"): (2022, 2022, {"Atlantic", "Coastal"}),
     }
     span = membership_document["seasons"]
     for conference in membership_document["conferences"]:
@@ -1015,12 +1018,16 @@ def test_the_shipped_conferences_carry_divisions_only_where_printed(
                     conference, gender, season, document=membership_document
                 )
                 labelled = divisional.get((conference, gender))
-                if labelled is not None and season >= labelled[0]:
+                if (
+                    labelled is not None
+                    and season >= labelled[0]
+                    and (labelled[1] is None or season <= labelled[1])
+                ):
                     members = membership.members_of(
                         conference, gender, season, document=membership_document
                     )
                     assert set(divisions) == set(members)
-                    assert set(divisions.values()) == labelled[1]
+                    assert set(divisions.values()) == labelled[2]
                 else:
                     assert divisions == {}
     # The one split on a slug with the conference unchanged.
@@ -1151,6 +1158,36 @@ def test_sac_standings_pages_reproduce_the_research_counts(season):
     assert page.gender == "men"
     assert len(page.names) == SAC_STANDINGS[season][1]
     assert len(set(page.names)) == len(page.names)
+
+
+def _ranked_standings_page(lead_cells: list[str], names: list[str]) -> str:
+    rows = "".join(
+        f"<tr><td>{lead}</td><td><a href='#'>{name}</a></td>"
+        f"<td>{name}</td><td>3-1-5</td></tr>"
+        for lead, name in zip(lead_cells, names, strict=True)
+    )
+    return (
+        "<html><body><h2>2022 Men's Soccer Standings</h2>"
+        "<table class='sidearm-table sidearm-standings-table'>"
+        "<caption>2022 Men's Soccer Standings</caption>"
+        "<thead><tr><th></th><th>School</th><th>School</th><th>Conf</th></tr></thead>"
+        f"<tbody>{rows}</tbody></table></body></html>"
+    )
+
+
+def test_a_leading_place_number_or_blank_cell_is_not_the_school():
+    # The WCC's archived 2022 men's table prints the place (1-8) in the first
+    # cell and the NEC's prints a blank one; reading the first cell named
+    # every WCC row "1".."8" and gave the NEC no rows at all.
+    ranked = membership.parse_standings_page(
+        _ranked_standings_page(["1", "2", "T-3"], ["San Diego", "Portland", "LMU"])
+    )
+    assert ranked.names == ["San Diego", "Portland", "LMU"]
+    assert (ranked.season, ranked.gender) == (2022, "men")
+    blank = membership.parse_standings_page(
+        _ranked_standings_page(["", ""], ["FDU *", "Stonehill"])
+    )
+    assert blank.names == ["FDU *", "Stonehill"]
 
 
 def test_the_2021_boundary_page_lists_queens_nc():

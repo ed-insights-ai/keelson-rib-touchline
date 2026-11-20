@@ -817,6 +817,55 @@ ran 2016-2025, and the 2022-2025 tables list the same seven.
 | academic-year schedule paths | Anderson 2022/2023, Michigan Tech 2022/2023, Southwest Baptist 2023 and Jamestown 2025 file a season under `/schedule/2022-23`, and `/schedule/2022` redirects to the live season; a plain-year collect does not reach them |
 | scratchpad research is not durable | a reboot cleared the batch outputs before integration; they were rebuilt from the agents' transcripts and re-captured standings pages. Integrate the same session, or keep batch output outside `/tmp` |
 
+### 8.7 Division I men's 2022, one season back (2026-11-20)
+
+Division I men's soccer was authored 2023-2026 (#139); the player tiers
+need a prior season to blend into each estimate, so the depth went back
+one season. The decision was not filed with `bd remember` (the Dolt server
+was down for the session); this entry is the record. The set was read from
+the records, not assumed from the 24 profiles: 23 conferences sponsored
+Division I men's soccer in 2022, 210 programmes. The Mid-American
+Conference (5) sponsored it through 2022 and gained a profile; Conference
+USA did not (its standings archive ends at 2021, and FIU, Florida Atlantic,
+Charlotte and UAB are on the American's 2022 table); the OVC and the
+Mountain West list no 2022 standings and answer "no statistics available".
+Every conference-season was held against the conference's own archived 2022
+standings, `check-membership --standings ... --season 2022`: 22 of 23
+reproduce. The Pac-12 does not, by an archive gap named below; its six
+windows cite a Wayback capture of the 2022 table instead, and the resolver
+returns those six.
+
+| touchpoint | change |
+|---|---|
+| `data/reference/membership.json` | `MAC` added (profile `d1`, names "Mid-American Conference", "Mid-American"); 173 windows extended from 2023 to 2022; 38 new 2022 windows: 13 movers (UCF, Liberty, Campbell, SIUE, Southern Indiana, Lindenwood, Eastern Illinois, HCU, and the five MAC programmes), 12 ACC windows carrying `division` (2022 only), 11 undivided Big East windows (divisions from 2023), St. Francis Brooklyn, and UIW `independent` |
+| `pipeline/config/schools.toml` | 2022 in `years` on 209 stanzas; St. Francis Brooklyn new at the end of the NEC block; "Houston Baptist" aliased on HCU; each Division I block header gains its 2022 count and a "Probed 2026-11-20 for 2022" verdict |
+| `data/reference/programmes.json`, Gazetteer fixtures | rebuilt: one row, Brooklyn through the county subdivisions file (Brooklyn borough) |
+| `contracts/membership.json`, `contracts/CHANGELOG.md` | `MAC` joins the fixture with one window (Western Michigan) |
+| `pipeline/src/membership.py` | a fifth file: `parse_standings_page` read the first cell, which on the NEC's 2022 table is blank and on the WCC's is the place number; it now takes the first cell that is neither |
+| `pipeline/tests/test_membership.py` | the divisions test modelled a labelled span as "from this season on"; the ACC's 2022-only divisions needed an end season |
+| `test/workflows.test.ts` | the tl-clk.6 lesson again: the 2026 Division I sweep test pinned its skip list to "WAC", and the MAC (2022 only) now skips too; it names both, and a 2022 sweep test (23 conferences, MW and OVC skipped) sits beside it |
+
+Conference sources for 2022, as probed: 21 SideArm conference sites served
+both the 2022 records page and the 2022 standings archive id
+(`standings.aspx?path=msoc` lists every season's id in its selector).
+`wacsports.com` now serves the United Athletic Conference: its standings
+index answers HTTP 500 and its id 98 is another table, so the WAC's 2022
+season is a Wayback capture of id 98 (2023-11-06), whose id came from the
+2025-02-07 capture of the index. Every programme site served a 2022 season
+to the probe except Harvard, which reads nothing, as it did for 2023-2026.
+
+**Where this page was wrong or silent**
+
+| finding | what happened |
+|---|---|
+| a conference archive that drops departed members | pac-12.com's 2022 records page and its archived 2022 standings (id 97) list Oregon State alone; the five who left have lost their rows. The 2022 table is a Wayback capture of the pre-SideArm pac-12.com (`/mens-soccer/standings`, 2022-12-26), six teams, which `parse_standings_page` cannot read (no SideArm table), so the Pac-12 count is held through the resolver only |
+| a conference host taken over by a successor | the WAC's host now answers as the UAC, and its id 98 is a six-team table with no season heading, so `verify_standings` cannot refuse it as another season; only the names disagreeing would show it. Read the heading before trusting a live id on a renamed host |
+| a sport a conference stopped sponsoring | the MAC is not among the current profiles because it stopped after 2022; its five members moved to the Big East, the MVC and the OVC. Step 1's checklist reads only from the programme's side; check the conference's side too |
+| a division split that lasts one season | the ACC printed Atlantic and Coastal in 2022 and one table from 2023, and the Big East printed one table in 2022 and two divisions from 2023: both directions split every member's window at the season boundary, because the all-or-none rule is per conference-season |
+| a renamed school on the old record | the WAC's 2022 table prints "Houston Baptist"; HCU keeps its slug and the old name is an alias (the Mississippi College rule) |
+| a "St." label folding to a "Saint" programme | before its stanza, "St. Francis Brooklyn" minted `saint-francis`, Saint Francis (Pa.), which is on the same NEC table: listing each season's slugs and looking for a slug minted twice caught it. "St. Francis College" as an alias folds to the same key and is refused |
+| a dead host that was the sandbox | `sfcathletics.com` failed name resolution from a sandboxed fetch and served the 2022 schedule, statistics and box scores to the probe run outside it. Re-check a dead host outside any sandbox before filing it |
+
 ## Related
 
 - [Onboard a school](../onboard-a-school/): the per-site probe and stanza.
