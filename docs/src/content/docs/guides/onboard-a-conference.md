@@ -865,6 +865,7 @@ to the probe except Harvard, which reads nothing, as it did for 2023-2026.
 | a renamed school on the old record | the WAC's 2022 table prints "Houston Baptist"; HCU keeps its slug and the old name is an alias (the Mississippi College rule) |
 | a "St." label folding to a "Saint" programme | before its stanza, "St. Francis Brooklyn" minted `saint-francis`, Saint Francis (Pa.), which is on the same NEC table: listing each season's slugs and looking for a slug minted twice caught it. "St. Francis College" as an alias folds to the same key and is refused |
 | a dead host that was the sandbox | `sfcathletics.com` failed name resolution from a sandboxed fetch and served the 2022 schedule, statistics and box scores to the probe run outside it. Re-check a dead host outside any sandbox before filing it |
+| the alias round was small | the first collect (23 of 23 conferences, 2,709 box scores) left one stranger beside a member: Dayton and Rhode Island print "Loyola" for Loyola Chicago, now an A10 member alias, which also gives the "Loyola (Ill.)" qualifier its claimant on any page. `box-vs-fixture` named ten boxes across 2022-2025 whose team names resolved to nothing ("Northern Ky.", "Harvard Crimson", "Col. of Charleston" and the like); each became a stanza alias, and the check reads 0 unresolved on the Division I home |
 
 ## Related
 

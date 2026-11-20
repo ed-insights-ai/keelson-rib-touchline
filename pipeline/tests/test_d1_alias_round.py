@@ -72,6 +72,17 @@ HISTORY_SPELLINGS = [
     # Member aliases, inside the programme's own conference.
     ("ODU", "SUNBELT", 2023, "old-dominion"),
     ("USF", "WCC", 2023, "san-francisco"),
+    ("Loyola", "A10", 2022, "loyola-chicago"),  # dayton, rhode-island
+    # The 2022 round: box-score spellings box-vs-fixture could not resolve.
+    ("Northern Ky.", "SUMMIT", 2022, "northern-kentucky"),
+    ("Southern Ind.", "HORIZON", 2022, "southern-indiana"),
+    ("Harvard Crimson", "IVY", 2022, "harvard"),
+    ("Columbia Lions", "IVY", 2022, "columbia"),
+    ("Ga. Southern", "CAA", 2023, "georgia-southern"),
+    ("Col. of Charleston", "SUNBELT", 2023, "charleston-south-carolina"),
+    ("South Fla.", "AAC", 2024, "south-florida"),
+    ("Howard Bison", "NEC", 2024, "howard"),
+    ("Mercyhurst Lakers", "NEC", 2024, "mercyhurst"),
 ]
 
 # Ambiguous outside the conference that reads them one way: they stay the
@@ -81,10 +92,10 @@ HISTORY_SPELLINGS = [
 #
 # "Loyola (Md.)" left this list when a printed state became evidence: it is
 # Loyola Maryland on every page (tests/test_state_qualifier.py). "Loyola
-# (Ill.)" stays: Loyola Chicago claims no bare "Loyola".
+# (Ill.)" left it when Loyola Chicago took bare "Loyola" as an A10 member
+# alias (the 2022 round): the Illinois qualifier now has its claimant.
 STAY_STRANGERS = [
     ("Loyola", "MVC", "loyola"),
-    ("Loyola (Ill.)", "OVC", "loyola"),
     ("USF", "ASUN", "usf"),
     ("Boston", "ACC", "boston"),
     ("CBU", "WCC", "cbu"),
