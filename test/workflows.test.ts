@@ -305,7 +305,7 @@ describe("conference levels", () => {
     }
   });
 
-  test("the shipped record: the 2026 Division I men's sweep is 23 conferences, the WAC left out by name", async () => {
+  test("the shipped record: the 2026 Division I men's sweep is 23 conferences, the MAC and the WAC left out by name", async () => {
     const r = await run([
       "bun",
       resolver,
@@ -319,9 +319,29 @@ describe("conference levels", () => {
     expect(r.code).toBe(0);
     expect(r.stdout.trim().split(" ")).toHaveLength(23);
     expect(r.stdout).not.toContain("WAC");
-    expect(r.stderr).toBe("skipped (no men 2026 members): WAC\n");
+    expect(r.stdout).not.toContain("MAC");
+    expect(r.stderr).toBe("skipped (no men 2026 members): MAC WAC\n");
     const wac = await run(["bun", resolver, "conference", "WAC", "men", "2026"]);
     expect(wac.code).toBe(1);
+  });
+
+  test("the shipped record: the 2022 Division I men's sweep is 23 conferences, the MW and the OVC left out by name", async () => {
+    const r = await run([
+      "bun",
+      resolver,
+      "conferences",
+      "men",
+      "--level",
+      "d1",
+      "--season",
+      "2022",
+    ]);
+    expect(r.code).toBe(0);
+    const swept = r.stdout.trim().split(" ");
+    expect(swept).toHaveLength(23);
+    expect(swept).toContain("MAC");
+    expect(swept).toContain("WAC");
+    expect(r.stderr).toBe("skipped (no men 2022 members): MW OVC\n");
   });
 
   test("a conference with no profile stops a level-filtered sweep, never thins it", async () => {
