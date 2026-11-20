@@ -227,6 +227,10 @@ printf 'bun %s\\n' "$*" >>"$CADENCE_FAKE_LOG"
 if [ "$1" = "run" ] && [ "$2" = "journal" ] && [ -n "\${TOUCHLINE_RECOLLECTED:-}" ]; then
   printf 'bun env TOUCHLINE_RECOLLECTED=%s\\n' "$TOUCHLINE_RECOLLECTED" >>"$CADENCE_FAKE_LOG"
 fi
+if [ "$1" = "run" ] && [ "$2" = "journal" ] && [ -n "\${TOUCHLINE_NCAA_DIVISION:-}" ]; then
+  printf 'bun env TOUCHLINE_NCAA_DIVISION=%s TOUCHLINE_DATA_DIR=%s\\n' \\
+    "$TOUCHLINE_NCAA_DIVISION" "\${TOUCHLINE_DATA_DIR:-unset}" >>"$CADENCE_FAKE_LOG"
+fi
 case "$1" in
   *resolve-membership.ts)
     case "$2" in
@@ -286,11 +290,17 @@ case "$1" in
     if [ -n "\${CADENCE_FAKE_JOURNAL_FAIL:-}" ]; then
       printf 'journal: model call failed\\n'; exit 1
     fi
+    # the site writes a division other than d2 into journal/<division>
+    jdir="$TOUCHLINE_UI_DIR/journal"
+    case "\${TOUCHLINE_NCAA_DIVISION:-d2}" in
+      d2) ;;
+      *) jdir="$jdir/$TOUCHLINE_NCAA_DIVISION"; mkdir -p "$jdir" ;;
+    esac
     for k in $(printf '%s' "$keys" | tr ',' ' '); do
       printf '{"key":"%s","generated":"%s"}\\n' "$k" "$(date -u '+%Y-%m-%dT%H:%M:%SZ')" \\
-        >"$TOUCHLINE_UI_DIR/journal/journal-\${TOUCHLINE_SEASON}-\${TOUCHLINE_GENDER}-$k.json"
+        >"$jdir/journal-\${TOUCHLINE_SEASON}-\${TOUCHLINE_GENDER}-$k.json"
       printf '{"ok":true}\\n' \\
-        >"$TOUCHLINE_UI_DIR/journal/journal-\${TOUCHLINE_SEASON}-\${TOUCHLINE_GENDER}-$k.validation.json"
+        >"$jdir/journal-\${TOUCHLINE_SEASON}-\${TOUCHLINE_GENDER}-$k.validation.json"
     done
     printf 'journal: wrote [%s]\\n' "$keys"
     exit 0
@@ -1516,6 +1526,116 @@ describe("bin/touchline-collect-cadence.sh data homes and levels", () => {
     );
     expect(d1Log).toContain(
       `FATAL: the full loop (journal, publish, push) runs only for the site's home, ${h.data}`,
+    );
+  });
+
+  test(
+    "collect-journal on a second home journals its changed conferences into journal/<level>, commits them on the site's main, and publishes nothing",
+    async () => {
+      const h = await makeHarness();
+      const d1 = await addHome(h, "d1-soccer", "d1");
+      const r = await h.cadence("collect-journal", {
+        TOUCHLINE_DATA_HOME: d1,
+        TOUCHLINE_DATA_DIR: h.data,
+        TOUCHLINE_ARCHIVE_DIR: "",
+        CADENCE_FAKE_CONFERENCES: "ACC",
+        CADENCE_FAKE_PLAN: "ACC=changed",
+      });
+      expect(r.code).toBe(0);
+
+      // the conference leg, then the national leg, each pointed at Division I
+      // with the site home's data dir dropped; nothing publishes
+      const calls = await h.calls();
+      const iJournal = calls.indexOf("bun run journal run --conference acc --write");
+      const iNational = calls.indexOf("bun run journal run --national --write");
+      expect(iJournal).toBeGreaterThan(-1);
+      expect(iNational).toBeGreaterThan(iJournal);
+      expect(calls).toContain("bun env TOUCHLINE_NCAA_DIVISION=d1 TOUCHLINE_DATA_DIR=unset");
+      expect(calls).not.toContain("just publish");
+
+      // committed on the site's main, in the level's folder, and pushed
+      const siteSubject = await h.git(h.site, "log", "-1", "--format=%s");
+      expect(siteSubject).toMatch(
+        /^chore\(journal\): cadence regeneration \d{4}-\d{2}-\d{2} d1 \[acc national\]$/,
+      );
+      const files = await h.git(h.site, "show", "--name-only", "--format=", "HEAD");
+      for (const key of ["acc", "national"]) {
+        expect(files).toContain(`journal/d1/journal-${SEASON}-${GENDER}-${key}.json`);
+        expect(files).toContain(`journal/d1/journal-${SEASON}-${GENDER}-${key}.validation.json`);
+      }
+      expect(files).not.toMatch(/^journal\/journal-/m);
+      expect(await h.git(h.site, "status", "--porcelain")).toBe("");
+      expect(await h.git(h.siteRemote, "rev-parse", "--short", "main")).toBe(
+        await h.git(h.site, "rev-parse", "--short", "HEAD"),
+      );
+
+      const d1Log = await readFile(
+        join(h.home, ".keelson", "logs", "touchline-collect-cadence.d1-soccer.log"),
+        "utf8",
+      );
+      expect(d1Log).toContain("  journal acc regenerated and validated.");
+      expect(d1Log).toContain("  journal national regenerated and validated.");
+      expect(d1Log).toContain(
+        "mode=collect-journal — journals written and committed; no publish here, the site's run publishes them.",
+      );
+      const rec = JSON.parse(
+        (
+          await readFile(
+            join(h.home, ".keelson", "logs", "touchline-cadence-runs.d1-soccer.jsonl"),
+            "utf8",
+          )
+        ).trim(),
+      );
+      expect(rec.mode).toBe("collect-journal");
+      expect(rec.journaled).toEqual(["acc", "national"]);
+      expect(rec.journal_model_calls).toBe(2);
+      expect(rec.publish).toBe("skipped (no change)");
+      expect(rec.archive).toBe("skipped (mode collect-journal)");
+      // the site home's log never saw this run
+      expect(existsSync(h.logFile)).toBe(false);
+    },
+    LOOP_TIMEOUT,
+  );
+
+  test(
+    "collect-journal with nothing changed spends no model call and commits nothing",
+    async () => {
+      const h = await makeHarness();
+      const d1 = await addHome(h, "d1-soccer", "d1");
+      const before = await h.git(h.site, "rev-parse", "HEAD");
+      const r = await h.cadence("collect-journal", {
+        TOUCHLINE_DATA_HOME: d1,
+        TOUCHLINE_ARCHIVE_DIR: "",
+        // GAC stands in for a Division I conference here: the d1 home's
+        // fixture boards are GAC's and LSC's, and churn on a committed board
+        // is the no-change case
+        TOUCHLINE_CONFERENCES: "GAC",
+        CADENCE_FAKE_LEVELS: "GAC=d1",
+        CADENCE_FAKE_PLAN: "GAC=churn",
+      });
+      expect(r.code).toBe(0);
+      const calls = await h.calls();
+      expect(calls).not.toContain("journal run");
+      expect(calls).not.toContain("just publish");
+      expect(await h.git(h.site, "rev-parse", "HEAD")).toBe(before);
+      const d1Log = await readFile(
+        join(h.home, ".keelson", "logs", "touchline-collect-cadence.d1-soccer.log"),
+        "utf8",
+      );
+      expect(d1Log).toContain(
+        "mode=collect-journal — no conference changed, nothing to journal; the site's run publishes.",
+      );
+    },
+    LOOP_TIMEOUT,
+  );
+
+  test("collect-journal is refused on the site's home before anything is collected", async () => {
+    const h = await makeHarness();
+    const r = await h.cadence("collect-journal", { TOUCHLINE_CONFERENCES: "GAC" });
+    expect(r.code).toBe(1);
+    expect(await h.calls()).toBe("");
+    expect(await h.log()).toContain(
+      `FATAL: collect-journal is for a home other than the site's; ${h.data} journals in its full loop.`,
     );
   });
 

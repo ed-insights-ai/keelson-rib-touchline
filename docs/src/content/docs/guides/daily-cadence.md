@@ -78,6 +78,7 @@ The first argument selects the mode; no argument is the full loop.
 |---|---|---|
 | `loop` (default) | all the legs | what launchd runs at 06:30 |
 | `collect` | collect and detect only: no journal, no commit, no publish, no data push, no archive | the site's justfile delegates its collect step here (`TOUCHLINE_COLLECT_CMD="sh {shim} collect"`) so `just` does not run the journal twice |
+| `collect-journal` | a home other than the site's only: collect and detect, then journal the changed conferences and the national journal into touchline-ui's `journal/<level>/`, commit them on its `main` and push. No publish, no data push, no archive | the Division I home's morning job, scheduled ahead of the site's run so that run's publish carries its journals |
 | `archive` | the archive leg alone, under the same PID lock, whatever the day: no collect, no journal, no publish, no data push | take a tarball set by hand, or catch up a missed Sunday |
 | `version` | prints the packaged script path, the package dir, the package version and its `git describe`, then exits 0 | proves the shim resolves the installed package without taking the lock or collecting |
 | `plan` | resolves what a collect would collect today, the home's level, the conference set (one run per gender, as below) and every conference's programmes, prints it and exits. No lock, no log file, no run record, no keelson call, no git | check a config or membership change before the morning run |
@@ -112,7 +113,7 @@ its directory name:
 | run record | `~/.keelson/logs/touchline-cadence-runs.jsonl` | `~/.keelson/logs/touchline-cadence-runs.d1-soccer.jsonl` |
 | archive root | `~/keelson/archive/raw-html` | `~/keelson/archive/d1-soccer/raw-html` |
 | keelson project | `d2-soccer` | `d1-soccer` |
-| modes | all | `collect`, `archive`, `plan`, `paths` |
+| modes | all but `collect-journal` | `collect`, `collect-journal`, `archive`, `plan`, `paths` |
 
 So two homes' cadences run side by side, neither waiting on the other's lock,
 and two homes archiving on the same Sunday never write one directory.
@@ -145,22 +146,34 @@ gender (`men`, or `TOUCHLINE_GENDER`) and resolves its set from membership.
 A single-gender run reads its home's pin for that gender unless
 `TOUCHLINE_CONFERENCES` is set at all.
 
-### Collect only: what a Division I publish still needs
+### Journals for a second home: `collect-journal`
 
-The journal and publish legs belong to the site, and the site
-(`touchline-ui`) publishes the default home. A cadence for any other home is
-refused the full loop, before it takes its lock, with one `FATAL` naming the
-home; it runs `collect` (collect, detect, commit in the data home) and, on its
-own schedule, `archive`. It never pushes the data home; push it by hand, or
-add a remote push to its job.
+The publish leg belongs to the site, and the site (`touchline-ui`) builds
+every division in one publish: Division II at its base path and Division I
+under `/d1`, each from its own data home and its own journal folder
+(`journal/` and `journal/d1/`). A cadence for any other home is refused the
+full loop, before it takes its lock, with one `FATAL` naming the home, so two
+runs never race over one gh-pages.
 
-A Division I site is not designed yet. Publishing the D1 home needs, at
-least: a site build that reads `~/keelson/d1-soccer` instead of (or beside)
-d2-soccer; journal files that do not collide with the Division II ones
-(today both are `journal/journal-{season}-{gender}-{conf}.json` in one
-checkout, and the national journal is one per gender); a publish target of
-its own (`just publish` pushes one gh-pages); and a `genders` list for that
-build. Until those exist, the D1 cadence's job is `collect`.
+What a second home does run is `collect-journal`: the same collect and detect
+as `collect`, then, for the conferences whose board really moved, the journal
+legs the full loop runs (one pooled conference call, then the national one,
+each capped), pointed at the home's level (`TOUCHLINE_NCAA_DIVISION=<level>`,
+with the site home's `TOUCHLINE_DATA_DIR` and `TOUCHLINE_JOURNAL_DIR` dropped,
+as touchline-ui's `just journal-d1` does). The validated files land in
+`journal/<level>/` and are committed on touchline-ui's `main` as
+`chore(journal): cadence regeneration <date> <level> [<keys>]`, then pushed;
+a checkout on any other branch is logged and left uncommitted, as in the loop.
+A quiet morning spends no model call. It never publishes and never pushes the
+data home; the site's own run, later the same morning, publishes what it
+wrote. The site home is refused `collect-journal`: it journals inside its
+loop.
+
+Schedule it ahead of the site's 06:30 run. A Division I collect of 23
+conferences takes about ten minutes and its journal about as long again, so a
+05:30 start lands both before the site publishes; a run that overruns is
+caught by the next morning's publish, and the site labels a journal older than
+its board ("JOURNAL WRITTEN FOR AN EARLIER COLLECT") until then.
 
 ### Running a second home's cadence
 
@@ -173,13 +186,13 @@ A second launchd job, beside the first, with the home in its environment:
   <string>/usr/bin/caffeinate</string><string>-i</string><string>-s</string>
   <string>/bin/sh</string>
   <string>/Users/{you}/.keelson/scripts/touchline-collect-cadence.sh</string>
-  <string>collect</string>
+  <string>collect-journal</string>
 </array>
 <key>EnvironmentVariables</key>
 <dict><key>TOUCHLINE_DATA_HOME</key><string>/Users/{you}/keelson/d1-soccer</string></dict>
 <key>StandardOutPath</key><string>/Users/{you}/.keelson/logs/touchline-collect-cadence.d1-soccer.log</string>
 <key>StandardErrorPath</key><string>/Users/{you}/.keelson/logs/touchline-collect-cadence.d1-soccer.log</string>
-<key>StartCalendarInterval</key><dict><key>Hour</key><integer>7</integer><key>Minute</key><integer>15</integer></dict>
+<key>StartCalendarInterval</key><dict><key>Hour</key><integer>5</integer><key>Minute</key><integer>30</integer></dict>
 ```
 
 The shim is the same file: it resolves the package once and passes
