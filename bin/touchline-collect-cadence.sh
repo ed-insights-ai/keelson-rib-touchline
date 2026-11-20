@@ -77,6 +77,14 @@
 #                         to this script; set
 #                           TOUCHLINE_COLLECT_CMD="sh <this script> collect"
 #                         there so `just` does not run the journal twice.
+#         collect-journal a home OTHER than the site's only: collect+detect,
+#                         then journal its changed conferences and its
+#                         national journal into touchline-ui's
+#                         journal/<level>/ and commit them there (tui-zb6).
+#                         No publish, no push of the data home, no archive:
+#                         the site's own run publishes every division, so
+#                         this run is scheduled ahead of it and its journals
+#                         ride that publish.
 #         archive         the archive step only, under the same PID lock,
 #                         regardless of the day: no collect, no journal, no
 #                         publish, no push. The way to take a tarball set
@@ -217,10 +225,15 @@ logblock() { # indent stdin into the log, line by line
 }
 die() { log "FATAL: $*"; exit 1; }
 
-case "$MODE" in loop|collect|archive|plan|paths|version) ;; *)
+case "$MODE" in loop|collect|collect-journal|archive|plan|paths|version) ;; *)
   mkdir -p "$(dirname "$LOG_FILE")"
-  die "unknown mode '$MODE' — use no argument (full loop), 'collect', 'archive', 'plan', 'paths' or 'version'." ;;
+  die "unknown mode '$MODE' — use no argument (full loop), 'collect', 'collect-journal', 'archive', 'plan', 'paths' or 'version'." ;;
 esac
+
+# The two modes that collect without publishing share every collect-side
+# branch below; collect-journal then journals what changed.
+IS_COLLECT=0
+case "$MODE" in collect|collect-journal) IS_COLLECT=1 ;; esac
 
 # ── paths: what this home's cadence would use, printed, nothing touched ─────
 if [ "$MODE" = "paths" ]; then
@@ -256,7 +269,13 @@ fi
 #    commit) and `archive`; its full loop would journal and publish another
 #    level's board over the site's, so it stops here, before the lock. ──────
 if [ "$MODE" = "loop" ] && [ "$IS_DEFAULT_HOME" != 1 ]; then
-  die "the full loop (journal, publish, push) runs only for the site's home, $DEFAULT_DATA_HOME; $DATA_HOME runs 'collect' (and 'archive'). Nothing was collected. See docs: guides/daily-cadence.md, 'A second data home'."
+  die "the full loop (journal, publish, push) runs only for the site's home, $DEFAULT_DATA_HOME; $DATA_HOME runs 'collect' or 'collect-journal' (and 'archive'). Nothing was collected. See docs: guides/daily-cadence.md, 'A second data home'."
+fi
+# The site's home journals inside its full loop, into journal/ itself; a
+# collect-journal there would write the same files outside the loop's commit
+# and publish, so it is refused the same way.
+if [ "$MODE" = "collect-journal" ] && [ "$IS_DEFAULT_HOME" = 1 ]; then
+  die "collect-journal is for a home other than the site's; $DATA_HOME journals in its full loop. Nothing was collected."
 fi
 
 # ── divisions: one complete run per gender, in order ────────────────────────
@@ -294,7 +313,7 @@ home_cfg() { # $1 = jq filter applied to this home's config section; prints its 
 home_cfg_conferences() { # $1 = gender; this home's pinned conference list, space-separated
   home_cfg "(.conferences // {})[\"$1\"] // empty | if type == \"array\" then join(\" \") else . end"
 }
-if [ -z "${TOUCHLINE_GENDER:-}" ] && { [ "$MODE" = "loop" ] || [ "$MODE" = "collect" ] || [ "$MODE" = "plan" ]; }; then
+if [ -z "${TOUCHLINE_GENDER:-}" ] && { [ "$MODE" = "loop" ] || [ "$IS_COLLECT" = 1 ] || [ "$MODE" = "plan" ]; }; then
   GENDERS="${TOUCHLINE_GENDERS:-}"
   if [ -z "$GENDERS" ]; then
     GENDERS=$(home_cfg '(.genders // []) | if type == "array" then join(",") else . end')
@@ -334,7 +353,7 @@ fi
 # follows this home's pin for its gender too, unless TOUCHLINE_CONFERENCES is
 # set at all: the divisions block above hands each child its list that way,
 # an empty one meaning "resolve from membership".
-if [ -z "${TOUCHLINE_CONFERENCES+set}" ] && { [ "$MODE" = "loop" ] || [ "$MODE" = "collect" ] || [ "$MODE" = "plan" ]; }; then
+if [ -z "${TOUCHLINE_CONFERENCES+set}" ] && { [ "$MODE" = "loop" ] || [ "$IS_COLLECT" = 1 ] || [ "$MODE" = "plan" ]; }; then
   CONFERENCES=$(home_cfg_conferences "$GENDER")
 fi
 
@@ -387,6 +406,8 @@ if [ "$MODE" != "plan" ]; then
 fi
 if [ "$MODE" = "loop" ]; then
   command -v just >/dev/null 2>&1 || die "required tool 'just' is not on PATH"
+fi
+if [ "$MODE" = "loop" ] || [ "$MODE" = "collect-journal" ]; then
   [ -f "$UI_DIR/justfile" ] || die "touchline-ui not found at $UI_DIR (no justfile)"
 fi
 # the archive step (loop and archive modes) compresses through zstd; tar is
@@ -658,13 +679,35 @@ capped() { # $1 = seconds, rest = command; returns 124 on timeout
   wait "$_cpid"
 }
 
+# Where this home's journals live in touchline-ui, and how its journal CLI is
+# called. The site's home writes journal/, as every run before homes did.
+# Another home writes its level's folder, journal/<level> (the folder
+# touchline-ui's site.config names for that division's build), with the CLI
+# pointed at that division and none of the site home's paths inherited: the
+# same environment touchline-ui's `just journal-d1` gives it (tui-zb6).
+# A home other than the site's names its level in the journal commit, so the
+# site's history tells a Division I regeneration from a Division II one.
+JOURNAL_LABEL=""
+[ "$IS_DEFAULT_HOME" = 1 ] || JOURNAL_LABEL=" $HOME_LEVEL"
+journal_rel() {
+  if [ "$IS_DEFAULT_HOME" = 1 ]; then printf 'journal'; else printf 'journal/%s' "$HOME_LEVEL"; fi
+}
+# shellcheck disable=SC2317,SC2329 # invoked through the legs, which capped invokes.
+journal_cli() { # rest = the journal CLI's arguments
+  if [ "$IS_DEFAULT_HOME" = 1 ]; then
+    bun run journal "$@"
+  else
+    env -u TOUCHLINE_DATA_DIR -u TOUCHLINE_JOURNAL_DIR \
+      TOUCHLINE_NCAA_DIVISION="$HOME_LEVEL" TOUCHLINE_GENDER="$GENDER" bun run journal "$@"
+  fi
+}
 # shellcheck disable=SC2317,SC2329 # invoked indirectly through capped.
-journal_leg() { cd "$UI_DIR" && bun run journal run --conference "$JR_KEYS" --write; }
+journal_leg() { cd "$UI_DIR" && journal_cli run --conference "$JR_KEYS" --write; }
 # The national leg runs AFTER the conference legs: its brief reads the cards'
 # lines and the wires, so it must see today's conference journals (justfile
 # `journal` orders them the same way). One more model call per run.
 # shellcheck disable=SC2317,SC2329 # invoked indirectly through capped.
-national_leg() { cd "$UI_DIR" && bun run journal run --national --write; }
+national_leg() { cd "$UI_DIR" && journal_cli run --national --write; }
 
 # ── build stamp: the deployed site's touchline-build meta, read from the
 #    artefact `just publish` built, so the run record names the build it
@@ -1138,6 +1181,9 @@ publish_site() {
 if [ "$MODE" = "collect" ]; then
   log "mode=collect — stopping after collect+detect (no journal, no publish)."
   ARCHIVE_RESULT="skipped (mode collect)"
+elif [ "$MODE" = "collect-journal" ] && [ -z "$CHANGED" ]; then
+  log "mode=collect-journal — no conference changed, nothing to journal; the site's run publishes."
+  ARCHIVE_RESULT="skipped (mode collect-journal)"
 elif [ -z "$CHANGED" ] && [ -n "$RECOLLECTED" ]; then
   # Every conference that collected came back unchanged. Nothing to journal
   # (no model call), but the site is dated by when it last looked, so it is
@@ -1168,7 +1214,7 @@ else
   fi
   for lc in $CHANGED; do
     # shellcheck disable=SC3013 # -nt is not POSIX but every sh this runs under (macOS bash-as-sh, dash) has it.
-    if [ "$UI_DIR/journal/journal-${SEASON}-${GENDER}-${lc}.validation.json" -nt "$JR_STAMP" ]; then
+    if [ "$UI_DIR/$(journal_rel)/journal-${SEASON}-${GENDER}-${lc}.validation.json" -nt "$JR_STAMP" ]; then
       log "  journal $lc regenerated and validated."
       JOURNALED="${JOURNALED:+$JOURNALED }$lc"
     else
@@ -1196,7 +1242,7 @@ else
       log "  national journal call exited $njrc — the home page keeps its previous headline."
     fi
     # shellcheck disable=SC3013 # see the conference leg above.
-    if [ "$UI_DIR/journal/journal-${SEASON}-${GENDER}-national.validation.json" -nt "$NJ_STAMP" ]; then
+    if [ "$UI_DIR/$(journal_rel)/journal-${SEASON}-${GENDER}-national.validation.json" -nt "$NJ_STAMP" ]; then
       log "  journal national regenerated and validated."
       JOURNALED="$JOURNALED national"
     else
@@ -1220,13 +1266,13 @@ else
     else
       for lc in $JOURNALED; do
         git -C "$UI_DIR" add \
-          "journal/journal-${SEASON}-${GENDER}-${lc}.json" \
-          "journal/journal-${SEASON}-${GENDER}-${lc}.validation.json" 2>&1 | logblock
+          "$(journal_rel)/journal-${SEASON}-${GENDER}-${lc}.json" \
+          "$(journal_rel)/journal-${SEASON}-${GENDER}-${lc}.validation.json" 2>&1 | logblock
       done
       if git -C "$UI_DIR" diff --cached --quiet; then
         log "journal commit: regenerated files match HEAD — nothing to commit."
         JOURNAL_COMMIT="no-op"
-      elif git -C "$UI_DIR" commit -q -m "chore(journal): cadence regeneration $(date '+%Y-%m-%d') [$JOURNALED]"; then
+      elif git -C "$UI_DIR" commit -q -m "chore(journal): cadence regeneration $(date '+%Y-%m-%d')${JOURNAL_LABEL} [$JOURNALED]"; then
         JOURNAL_COMMIT=$(git -C "$UI_DIR" rev-parse --short HEAD)
         log "journal commit: $JOURNAL_COMMIT on main [$JOURNALED]."
         UPOUT=$(git -C "$UI_DIR" push origin main 2>&1)
@@ -1246,8 +1292,15 @@ else
     fi
   fi
 
-  log "publish: changed=[$CHANGED] — running 'just publish' in $UI_DIR (rebuild + link check + gh-pages push + deployed-host assertion)."
-  publish_site
+  if [ "$MODE" = "collect-journal" ]; then
+    # This home's journals ride the site's own run, which builds and publishes
+    # every division; publishing here would race it over gh-pages.
+    log "mode=collect-journal — journals written and committed; no publish here, the site's run publishes them."
+    ARCHIVE_RESULT="skipped (mode collect-journal)"
+  else
+    log "publish: changed=[$CHANGED] — running 'just publish' in $UI_DIR (rebuild + link check + gh-pages push + deployed-host assertion)."
+    publish_site
+  fi
 fi
 
 # ── push the data home's record (tl-151, full loop only): collects commit
