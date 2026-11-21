@@ -35,7 +35,7 @@ drafts a disabled `schools.toml` stanza in the house layout for human
 review, with `abbreviation`, `mascot` and `aliases` read off the site.
 Writes no local data.
 
-- **Inputs**: `--url` (repeatable), `--name` (the slug-minting name, one per `--url` in order, or none), `--conference`, `--seasons` (a year or inclusive range, default the current year back through 2016), `--json`.
+- **Inputs**: `--url` (repeatable), `--name` (the slug-minting name, one per `--url` in order, or none), `--conference`, `--gender` (`men` or `women`, for a sport slug that names no gender; a slug that names one must agree), `--seasons` (a year or inclusive range, default the current year back through 2016), `--json`.
 - **Outputs**: a report per URL on stdout, including the draft stanza.
 - **Exit**: 0 every URL probed; 1 any URL invalid or unfetchable; 2 `--name` given for some URLs but not all.
 
@@ -68,8 +68,8 @@ Validate the authored conference-membership reference artifact against the
 contract in `pipeline/src/membership.py`: dated windows, mandatory sources,
 no gaps, no overlaps, every configured programme covered.
 
-- **Inputs**: none; reads `data/reference/membership.json`.
-- **Exit**: 0 valid; 1 one line per violation.
+- **Inputs**: none; reads `data/reference/membership.json`. With `--standings` (a captured standings page), `--conference`, `--season` and `--gender`, it also reproduces that conference-season's members from the page; `--assert-season` and `--assert-gender` assert what the page's heading leaves unsaid, and are printed with the verdict.
+- **Exit**: 0 valid (and, with `--standings`, the page agrees); 1 one line per violation, a disagreement, or a page the check cannot hold to the season and gender asked.
 
 ### sweep-opponent-slugs
 

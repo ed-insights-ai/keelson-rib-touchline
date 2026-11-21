@@ -23,13 +23,19 @@ season page and the API answers it names), so it carries ``fetch_layer``,
 which fetches, proves and bundles them in place of the single conditional
 fetch.  ``LIVE_COLLECTORS`` maps a stanza's ``live_scraper`` value onto its
 recipe.
+
+A recipe whose proofs need the programme's gender (WMT's: a site may name
+its women's soccer plain "Soccer" at ``/sports/soccer``, so the sport path
+cannot say) names those members in ``gendered``, and the collectors call
+``for_gender`` with the stanza's gender before they read the table.
 """
 
 from __future__ import annotations
 
+import functools
 import hashlib
 from collections.abc import Callable, Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from types import ModuleType
 from typing import Any
@@ -122,6 +128,23 @@ class Recipe:
     #: the raw archive keeps.  ``None`` means one conditional fetch of
     #: ``layer_url`` (or ``locate_stats``) is the whole layer.
     fetch_layer: Callable[..., ConditionalFetch] | None = None
+    #: The members that prove the programme's gender and so take a
+    #: ``gender`` keyword, which ``for_gender`` binds.  Empty for a platform
+    #: whose pages are read by the sport path or a per-event sport code.
+    gendered: tuple[str, ...] = ()
+
+    def for_gender(self, gender: str) -> Recipe:
+        """This recipe with the stanza's ``gender`` bound into every member
+        ``gendered`` names; the recipe itself when it names none."""
+        if not self.gendered:
+            return self
+        return replace(
+            self,
+            **{
+                name: functools.partial(getattr(self, name), gender=gender)
+                for name in self.gendered
+            },
+        )
 
 
 def _late(module: ModuleType, name: str) -> Callable[..., Any]:
@@ -191,6 +214,7 @@ WMT = Recipe(
     parse_match=_late(wmt, "parse_match_page"),
     parse_identity=(_source_digest(wmt.__file__),),
     fetch_layer=_late(wmt, "fetch_layer"),
+    gendered=("fetch_layer", "assert_served_season", "collect_match", "parse_match"),
 )
 
 LIVE_COLLECTORS: Mapping[str, Recipe] = {

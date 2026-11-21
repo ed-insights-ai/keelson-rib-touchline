@@ -49,15 +49,50 @@ def _landing_url(raw_url: str) -> str:
     return url
 
 
-def _gender_from_url(url: str) -> str:
+GENDERS = ("men", "women")
+
+# The sport slugs that name their programme's gender: "mens-soccer",
+# "womens-soccer", the SideArm and PrestoSports "msoc" and "wsoc", and
+# "m-soccer" and "w-soccer" (Carson-Newman, Arkansas). "soccer" (Texas A&M,
+# Auburn, UTSA, Arizona State, Purdue, Nebraska), "soc" (Miami) and "sc"
+# (LSU) name none: each is the one soccer programme of a school that
+# fields no men's team.
+_SLUG_GENDERS = (
+    ("men", re.compile(r"^(?:mens-.+|msoc|m-soccer)$")),
+    ("women", re.compile(r"^(?:womens-.+|wsoc|w-soccer)$")),
+)
+
+
+def _slug_gender(url: str) -> str | None:
     sport_slug = urlparse(url).path.rstrip("/").rsplit("/", 1)[-1].lower()
-    if sport_slug.startswith("mens-") or sport_slug == "msoc":
-        return "men"
-    if sport_slug.startswith("womens-") or sport_slug == "wsoc":
-        return "women"
+    for gender, pattern in _SLUG_GENDERS:
+        if pattern.match(sport_slug):
+            return gender
+    return None
+
+
+def _gender_from_url(url: str, stated: str | None = None) -> str:
+    """The programme's gender: the sport slug's, else ``--gender``'s.
+
+    A slug that names a gender is the site's own word and must agree with
+    ``--gender`` when both are given; a slug that names none takes
+    ``--gender``; with neither, the URL is refused rather than guessed.
+    """
+    sport_slug = urlparse(url).path.rstrip("/").rsplit("/", 1)[-1]
+    named = _slug_gender(url)
+    if named is not None and stated is not None and named != stated:
+        raise ValueError(
+            f"{url}: sport slug {sport_slug!r} names {named}'s soccer, "
+            f"but --gender says {stated}"
+        )
+    if named is not None:
+        return named
+    if stated is not None:
+        return stated
     raise ValueError(
-        f"{url}: sport slug must start with 'mens-' or 'womens-' (or be the "
-        "PrestoSports 'msoc' or 'wsoc') to derive gender"
+        f"{url}: sport slug {sport_slug!r} names no gender (it is not 'mens-' or "
+        "'womens-' led, nor 'msoc', 'wsoc', 'm-soccer' or 'w-soccer'); pass "
+        "--gender men or --gender women, the stanza's gender"
     )
 
 
@@ -76,6 +111,14 @@ def main(
     )
     parser.add_argument(
         "--conference", required=True, help="Conference for draft stanzas."
+    )
+    parser.add_argument(
+        "--gender",
+        choices=GENDERS,
+        help=(
+            "The programme's gender, for a sport slug that names none "
+            "(/sports/soccer); a slug that names one must agree with it."
+        ),
     )
     parser.add_argument(
         "--name",
@@ -115,7 +158,7 @@ def main(
         landing_html = ""
         not_seen = ""
         try:
-            gender = _gender_from_url(url)
+            gender = _gender_from_url(url, args.gender)
             response = client.get(url, timeout=30)
             response.raise_for_status()
             landing_html = response.text
@@ -139,9 +182,9 @@ def main(
             platform, evidence = classify_platform(landing_html)
         layer_year = max(args.seasons)
         layers = probe_layers(
-            client, url, layer_year, platform, landing_html=landing_html
+            client, url, layer_year, platform, landing_html=landing_html, gender=gender
         )
-        survey = survey_seasons(client, url, args.seasons, platform)
+        survey = survey_seasons(client, url, args.seasons, platform, gender=gender)
         seasons = survey.served
         # The schedule page is where a site describes itself ("The official
         # 2026 Men's Soccer schedule for the Truman State University
@@ -150,7 +193,9 @@ def main(
         pages = [landing_html] if landing_html else []
         if seasons:
             try:
-                schedule = fetch_schedule_page(client, url, max(seasons), platform)
+                schedule = fetch_schedule_page(
+                    client, url, max(seasons), platform, gender=gender
+                )
                 pages.append(schedule.html)
             except LiveCollectionError:
                 pass
@@ -187,7 +232,10 @@ def main(
         )
 
     if args.json:
-        payloads = [asdict(report) for report in reports]
+        payloads = [
+            {**asdict(report), "served_nothing": report.served_nothing}
+            for report in reports
+        ]
         payload: object = payloads[0] if len(payloads) == 1 else payloads
         print(json.dumps(payload, indent=2))
     else:

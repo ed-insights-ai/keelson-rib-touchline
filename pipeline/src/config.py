@@ -70,6 +70,17 @@ class SchoolConfig:
     # aliases resolve. check-membership refuses any spelling two stanzas of
     # one gender claim while they share a level in some season.
     abbreviation_resolves: bool = True
+    # Whether this stanza's spellings that carry an institution word
+    # ("Colorado College") resolve only with the word kept, under their
+    # institution key, and never through the fold that drops it. The fold
+    # files "Colorado College" under "colorado", the key Colorado (Big 12)
+    # claims bare; left to the institution-word rule, the pair splits that
+    # key and bare "Colorado" names neither school. A stanza that sets this
+    # takes no part in that split: "Colorado College" (and "Colorado
+    # Coll.") resolve to it, bare "Colorado" stays Colorado's, and a table
+    # with no bare claimant mints "colorado" from the text, never this
+    # programme. Set it only where the bare name never means this school.
+    keep_institution_word: bool = False
     # Published spellings that identify this programme only among its
     # conference peers. A peer's schedule page prints the short name the
     # conference uses ("Dominican" for Dominican of California on Chaminade's
@@ -292,6 +303,7 @@ def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
             mascot=entry.get("mascot", ""),
             aliases=entry.get("aliases", []),
             abbreviation_resolves=entry.get("abbreviation_resolves", True),
+            keep_institution_word=entry.get("keep_institution_word", False) is True,
             member_aliases=entry.get("member_aliases", []),
             first_season=int(entry.get("first_season", 0)),
             city=entry.get("city", ""),

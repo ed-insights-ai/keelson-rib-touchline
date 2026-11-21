@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import dataclasses
 import json
 import re
 from collections.abc import Iterable
@@ -36,6 +37,12 @@ LEVELS = ("d1", "d2", "d3")
 #: The two codes ``conferences`` carries that are not conferences: a window
 #: needs something to name for a season outside every conference.
 STRUCTURAL_CODES = frozenset({"independent", "non_member"})
+
+#: The one structural code whose window may state an NCAA level
+#: (``"level": "d1"``): an independent's programme is classified by the
+#: NCAA though no conference carries it (South Carolina State, the RPI's
+#: lone "DI Independent" in 2026 women's soccer).
+INDEPENDENT = "independent"
 
 _PROFILE_FIELDS = frozenset({"level", "names", "code_is_word"})
 
@@ -178,10 +185,25 @@ def collecting_level(
     return None
 
 
+def _window_level(
+    window: dict[str, Any], profiles: dict[str, ConferenceProfile]
+) -> str | None:
+    """A window's NCAA level: its conference profile's, or the level an
+    ``independent`` window states; None for every other window."""
+    profile = profiles.get(window.get("conference"))  # type: ignore[arg-type]
+    if profile is not None:
+        return profile.level
+    stated = window.get("level")
+    if window.get("conference") == INDEPENDENT and stated in LEVELS:
+        return stated
+    return None
+
+
 def _levelled_windows(
     windows: object, profiles: dict[str, ConferenceProfile]
 ) -> list[tuple[int, int, str]]:
-    """(from, to, level) for each well-formed window naming a profiled conference."""
+    """(from, to, level) for each well-formed window that carries a level:
+    one naming a profiled conference, or an independent window stating it."""
     if not isinstance(windows, list):
         return []
     levelled: list[tuple[int, int, str]] = []
@@ -189,9 +211,9 @@ def _levelled_windows(
         if not isinstance(window, dict):
             continue
         from_season, to_season = window.get("from_season"), window.get("to_season")
-        profile = profiles.get(window.get("conference"))  # type: ignore[arg-type]
-        if _is_year(from_season) and _is_year(to_season) and profile is not None:
-            levelled.append((from_season, to_season, profile.level))
+        level = _window_level(window, profiles)
+        if _is_year(from_season) and _is_year(to_season) and level is not None:
+            levelled.append((from_season, to_season, level))
     return levelled
 
 
@@ -247,6 +269,10 @@ def programme_level(
     in a level's table is not membership of a conference:
     ``conference_in_effect`` answers that, and still puts such a programme
     in none.
+
+    An ``independent`` window that states a level (``"level": "d1"``) is
+    level-bearing for its own seasons: South Carolina State, a Division I
+    independent with no conference, is at d1.
 
     A programme with no level-bearing window at all takes its stanza
     conference's level, the default ``has_windows`` gives a programme the
@@ -1148,6 +1174,23 @@ def _validate_windows(
                     "spelled as the conference prints it"
                 )
 
+        if "level" in window:
+            level = window.get("level")
+            if conference != INDEPENDENT:
+                why = (
+                    "a non_member window has no level"
+                    if conference == "non_member"
+                    else "a conference's window takes its profile's level"
+                )
+                errors.append(
+                    f"{label} states level {level!r}, but only an independent "
+                    f"window may: {why}"
+                )
+            elif level not in LEVELS:
+                errors.append(
+                    f"{label} level must be one of {', '.join(LEVELS)}, not {level!r}"
+                )
+
         from_season = window.get("from_season")
         to_season = window.get("to_season")
         if not _is_year(from_season):
@@ -1281,6 +1324,7 @@ def validate(
             strangers = load_declared_strangers()
     from src.sidearm_live import (
         declared_stranger_errors,
+        kept_word_errors,
         level_identity_ambiguities,
         level_identity_collisions,
         member_alias_collisions,
@@ -1314,6 +1358,7 @@ def validate(
             f"programmes it folds to ({split}), so it resolves to none of "
             "them; drop the spelling or keep its institution word"
         )
+    errors.extend(kept_word_errors(schools))
     # A stanza with no level would sit in every level's table, the
     # cross-level capture the scope exists to prevent. A stanza conference
     # that is declared already answers through its own profile check, so
@@ -1440,16 +1485,82 @@ def standings_archive_url(
 
 @dataclass(frozen=True)
 class StandingsPage:
-    """What a SideArm ``standings.aspx`` page says about itself."""
+    """What a SideArm ``standings.aspx`` page says about itself.
+
+    ``season`` and ``gender`` are what the headings say when every heading
+    that names one agrees, and None where none names it or two disagree;
+    ``season_witnesses`` and ``gender_witnesses`` are every reading, each
+    with the heading text it came from, so a disagreement can be refused
+    and quoted. ``divisions`` maps each team name printed under an in-table
+    division header row to that row's label, and is empty for a table with
+    none.
+    """
 
     season: int | None
     gender: str | None
     names: list[str]
+    divisions: dict[str, str] = dataclasses.field(default_factory=dict)
+    #: The first heading that names a season or a gender, or the first one
+    #: the page prints, so a refusal can quote what the page says.
+    heading: str = ""
+    season_witnesses: tuple[tuple[int, str], ...] = ()
+    gender_witnesses: tuple[tuple[str, str], ...] = ()
+
+    def disagreements(self) -> list[str]:
+        """One sentence per field two headings name differently."""
+        found = []
+        for label, witnesses in (
+            ("season", self.season_witnesses),
+            ("gender", self.gender_witnesses),
+        ):
+            if len({value for value, _ in witnesses}) > 1:
+                readings = "; ".join(
+                    f"{value} in {text!r}" for value, text in dict.fromkeys(witnesses)
+                )
+                found.append(f"its headings name more than one {label} ({readings})")
+        return found
 
 
-_STANDINGS_HEADING = re.compile(
-    r"(?P<season>\d{4})\s+(?P<gender>Men|Women)'s\s+Soccer\s+Standings"
+#: A season a heading names, wherever it stands in the heading ("2026
+#: Soccer Standings", "Men's Soccer Standings 2026"): a year, or an
+#: academic year ("2025-26", "2025-2026"), which is the fall it opens. Two
+#: four-digit years that are not consecutive ("2022-2026") are two seasons.
+_HEADING_SEASON = re.compile(
+    r"(?<!\d)(?P<year>(?:19|20)\d{2})(?:\s*[-\u2013/]\s*(?P<next>\d{4}|\d{2}))?(?!\d)"
 )
+#: A gender a heading names: spelled out ("Women's Soccer Standings",
+#: "2026 NEC Women's Soccer Standings") or as the UAC's initial ("2026
+#: Soccer (W) Standings").
+_HEADING_GENDER = re.compile(
+    r"\b(?P<word>men|women)['\u2019]s\b|\((?P<initial>[mw])\)", re.IGNORECASE
+)
+_GENDER_INITIALS = {"m": "men", "w": "women"}
+
+
+def _heading_seasons(text: str) -> list[int]:
+    seasons = []
+    for match in _HEADING_SEASON.finditer(text):
+        year = int(match.group("year"))
+        seasons.append(year)
+        following = match.group("next")
+        if following is None:
+            continue
+        if len(following) == 2:
+            # "2025-26" opens the 2025 season; "2026-11" is no academic year
+            # and names nothing beyond its first year.
+            continue
+        if int(following) != year + 1:
+            seasons.append(int(following))
+    return seasons
+
+
+def _heading_genders(text: str) -> list[str]:
+    genders = []
+    for match in _HEADING_GENDER.finditer(text):
+        named = (match.group("word") or match.group("initial")).lower()
+        genders.append(_GENDER_INITIALS.get(named, named))
+    return genders
+
 
 # A leading cell that is not the school: a blank one (the NEC's 2022 table)
 # or a bare place number (the WCC's 2022 table prints 1-8 before the name).
@@ -1464,23 +1575,40 @@ def parse_standings_page(html: str) -> StandingsPage:
     first cell's link text, or the cell's own text on a skin that prints
     plain names. A skin that leads the row with a blank cell or a place
     number (the NEC's and the WCC's 2022 tables) has that cell skipped: the
-    name is the first cell that is neither. The season and gender come from
-    the table's caption or the page heading ("2022 Men's Soccer
-    Standings"); a page served for another season is refused by the caller
-    rather than counted.
+    name is the first cell that is neither. A body row of header cells
+    alone is a division header (the UAC's "Blue Division" and "Red
+    Division" rows inside its one 2026 table): it is no team, and its label
+    is the division of every team below it until the next one. The season
+    and gender are read from every heading the page prints, the table's
+    caption, each h1 and h2 and the ``<title>``: any year or academic year
+    ("2025-26") is a season witness and any "Men's", "Women's", "(M)" or
+    "(W)" a gender witness, wherever it stands in the text. The caller
+    refuses a page whose witnesses disagree, or name another season or
+    gender than the one asked about, rather than counting it, and one whose
+    headings name neither unless it is asserted.
     """
     soup = BeautifulSoup(html, "lxml")
     table = soup.select_one("table.sidearm-standings-table") or soup.select_one(
         "table.standings"
     )
     names: list[str] = []
+    divisions: dict[str, str] = {}
     if table is not None:
+        division: str | None = None
         for row in table.select("tbody tr"):
-            for cell in row.find_all("td"):
+            cells = row.find_all("td")
+            headers = row.find_all("th")
+            if not cells and headers:
+                label = headers[0].get_text(" ", strip=True)
+                division = label or division
+                continue
+            for cell in cells:
                 link = cell.find("a")
                 text = (link or cell).get_text(" ", strip=True)
                 if not _NOT_A_NAME_CELL.match(text):
                     names.append(text)
+                    if division is not None:
+                        divisions[text] = division
                     break
 
     heading_texts = []
@@ -1491,15 +1619,28 @@ def parse_standings_page(html: str) -> StandingsPage:
     )
     if soup.title is not None:
         heading_texts.append(soup.title.get_text(" ", strip=True))
-    season: int | None = None
-    gender: str | None = None
-    for text in heading_texts:
-        match = _STANDINGS_HEADING.search(text)
-        if match:
-            season = int(match.group("season"))
-            gender = match.group("gender").lower()
-            break
-    return StandingsPage(season=season, gender=gender, names=names)
+    season_witnesses = [
+        (season, text) for text in heading_texts for season in _heading_seasons(text)
+    ]
+    gender_witnesses = [
+        (gender, text) for text in heading_texts for gender in _heading_genders(text)
+    ]
+    seasons = {season for season, _ in season_witnesses}
+    genders = {gender for gender, _ in gender_witnesses}
+    witnessed = [text for _, text in (*season_witnesses, *gender_witnesses)]
+    heading = next(
+        (text for text in heading_texts if text in witnessed),
+        heading_texts[0] if heading_texts else "",
+    )
+    return StandingsPage(
+        season=next(iter(seasons)) if len(seasons) == 1 else None,
+        gender=next(iter(genders)) if len(genders) == 1 else None,
+        names=names,
+        divisions=divisions,
+        heading=heading,
+        season_witnesses=tuple(season_witnesses),
+        gender_witnesses=tuple(gender_witnesses),
+    )
 
 
 @dataclass(frozen=True)
@@ -1510,10 +1651,45 @@ class StandingsVerdict:
     page: StandingsPage
     slugs: dict[str, str]
     expected: set[str]
+    #: Each member's window division for the season, by slug (members
+    #: whose window carries one).
+    divisions: dict[str, str] = dataclasses.field(default_factory=dict)
+    #: What the operator asserted because the page's heading does not say
+    #: it, "season" and/or "gender"; empty when the heading said both.
+    asserted: tuple[str, ...] = ()
 
     @property
     def read(self) -> set[str]:
         return set(self.slugs.values())
+
+    @property
+    def division_mismatches(self) -> dict[str, tuple[str | None, str | None]]:
+        """``slug: (page division, window division)`` for every listed member
+        the two disagree on; empty when the page prints no division rows at
+        all, which ``division_note`` reports instead: a combined table (the
+        Big East's, the CAA's) cannot disagree with the windows' divisions,
+        it only does not show them."""
+        printed = {
+            self.slugs[name]: label for name, label in self.page.divisions.items()
+        }
+        if not printed:
+            return {}
+        return {
+            slug: (printed.get(slug), self.divisions.get(slug))
+            for slug in sorted(self.read & self.expected)
+            if printed.get(slug) != self.divisions.get(slug)
+        }
+
+    @property
+    def division_note(self) -> str | None:
+        """Why the windows' divisions went unchecked: the page prints none."""
+        if self.page.divisions or not self.divisions:
+            return None
+        return (
+            "page prints no divisions, so the windows' "
+            f"{len(set(self.divisions.values()))} divisions are not checked "
+            "against it"
+        )
 
     @property
     def missing(self) -> set[str]:
@@ -1527,7 +1703,7 @@ class StandingsVerdict:
 
     @property
     def agrees(self) -> bool:
-        return not self.missing and not self.strangers
+        return not self.missing and not self.strangers and not self.division_mismatches
 
 
 def verify_standings(
@@ -1538,6 +1714,8 @@ def verify_standings(
     *,
     document: dict[str, Any] | None = None,
     schools: list[SchoolConfig] | None = None,
+    assert_season: bool = False,
+    assert_gender: bool = False,
 ) -> StandingsVerdict:
     """Compare a standings page's team names with the resolved members.
 
@@ -1549,19 +1727,52 @@ def verify_standings(
     for a school no stanza knows yet, so the verdict for a conference not yet
     in schools.toml still reads as the slugs its stanzas will mint.
 
-    Raises ``ValueError`` when the page names another season or gender than
-    the one asked about, so a wrong archive id cannot pass as agreement.
+    Raises ``ValueError`` when two of the page's headings name different
+    seasons or genders (a caption "2026 Soccer Standings" beside a title
+    "2025 Women's Soccer Standings"), or when they name another season or
+    gender than the one asked about, so a wrong archive id cannot pass as
+    agreement; and when no heading names the season or the gender ("2026
+    Soccer Standings") unless the operator asserts it (``assert_season``,
+    ``assert_gender``). An assertion only fills a field no heading names:
+    the verdict records each one, and it never overrides what a heading
+    does say.
+
+    The divisions the page prints in its table (``StandingsPage.divisions``)
+    are held against the windows' (``divisions_of``): a member listed under
+    another division than its window's, or a page printing divisions the
+    windows do not carry, does not agree. A page that prints no division
+    rows at all is a combined table, which the verdict notes
+    (``division_note``) rather than refuses.
     """
     from src.sidearm_live import identity_aliases, opponent_slug, resolution_scope
 
     membership_document = document if document is not None else load_membership()
     page = parse_standings_page(html)
+    disagreements = page.disagreements()
+    if disagreements:
+        raise ValueError(
+            "standings page contradicts itself: " + "; ".join(disagreements)
+        )
     if page.season is not None and page.season != season_year:
         raise ValueError(
             f"standings page is the {page.season} season, not {season_year}"
         )
     if page.gender is not None and page.gender != gender:
         raise ValueError(f"standings page is {page.gender}'s soccer, not {gender}'s")
+    asserted: list[str] = []
+    for label, read, wanted, flag, given in (
+        ("season", page.season, season_year, "--assert-season", assert_season),
+        ("gender", page.gender, gender, "--assert-gender", assert_gender),
+    ):
+        if read is not None:
+            continue
+        if not given:
+            raise ValueError(
+                f"standings page names no {label} (its heading reads "
+                f"{page.heading or 'nothing'!r}), so it cannot be held to {wanted}; "
+                f"pass {flag} to assert it is the {wanted} page"
+            )
+        asserted.append(label)
     if not page.names:
         raise ValueError("standings page carries no team rows")
 
@@ -1594,4 +1805,8 @@ def verify_standings(
         page=page,
         slugs=slugs,
         expected=expected,
+        divisions=divisions_of(
+            conference, gender, season_year, document=membership_document
+        ),
+        asserted=tuple(asserted),
     )

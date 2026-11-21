@@ -21,10 +21,16 @@ uv run --project pipeline probe \
   --conference GAC
 ```
 
-- `--url` is repeatable and must be an absolute HTTP(S) URL. The sport slug
-  must start with `mens-` or `womens-`: gender is derived from it, and
-  `pipeline/scripts/probe.py` refuses a URL that cannot say which programme
-  it names.
+- `--url` is repeatable and must be an absolute HTTP(S) URL. Gender is
+  read from the sport slug when the slug names one: `mens-…` or
+  `womens-…`, `msoc` or `wsoc`, `m-soccer` or `w-soccer`. Many women's
+  programmes sit at a slug that names none, because the school fields no
+  men's team: `/sports/soccer` (Nebraska, Texas A&M, Purdue), `/sports/soc`
+  (Miami, the Big 12's standings path), `/sports/sc` (LSU).
+- `--gender men|women` is the stanza's gender, for a slug that names none.
+  A slug that names a gender must agree with it, and
+  `pipeline/scripts/probe.py` refuses a URL that names neither in the slug
+  nor by `--gender`, rather than guess which programme it is.
 - `--name` is the slug-minting name for the matching `--url`, in order, one
   per URL or none. It is the one identity field a person chooses, because
   `programme_slug(name)` keys membership and every coverage cell and never
@@ -77,6 +83,17 @@ year in its final URL path or its title, and carry schedule markup. A page
 the site served that proves another season drops silently; a season whose
 fetch was refused is listed on a `Seasons not seen` line with its status.
 
+A site that answered HTTP 200 but proved no season and showed no layer is
+reported as exactly that, never as a platform verdict or a refusal:
+
+```text
+Served nothing: https://{host}/sports/soccer answered HTTP 200 with nothing in it (every layer absent, no season proven); not a refusal, and not proof the programme publishes nothing: check the sport path
+```
+
+`--json` carries it as `"served_nothing": true`. Ohio and St. Thomas
+answered so at their women's `/sports/soccer` paths on 2026-11-20: the path
+is the first thing to check, before any recipe.
+
 ## 3. Review the draft stanza
 
 `draft_stanza` renders a `[[schools]]` entry in the house layout that is
@@ -111,7 +128,8 @@ The roster's abbreviations are normalised to the SideArm vocabulary ("Def."
 is Defender, "Sr." is Senior, "6-4" is 6'4", "200" is 200 lbs).
 
 A WMT Digital site (`live_scraper = "wmt"`, `base_url` the site's own
-`{origin}/sports/{sport}`, `mens-soccer` or `msoc`) collects the same four
+`{origin}/sports/{sport}`: `mens-soccer` or `msoc`, `womens-soccer` or
+`wsoc`, or a path that names no gender, `soccer`) collects the same four
 layers into the same shapes from more than one served body per layer: the
 season page's `__NUXT_DATA__` payload proves the sport and season and names
 the schedule, the site's `/website-api/schedule-events` lists the matches,
@@ -124,6 +142,19 @@ title prove the season, and box scores are joined to its rows by date
 through the `wmt.games` team season's Game by Game table. Its rows publish
 no conference flag, so its fixtures carry no `conference_game`. Coverage cells name the
 collector per platform: `sidearm-live`, `presto-live` or `wmt-live`.
+
+The WMT proofs take the stanza's `gender` (the probe's: the slug's, else
+`--gender`). The sport's name must be soccer: "Men's Soccer" exactly for a
+men's stanza, and "Women's Soccer" or plain "Soccer" (as Nebraska, Purdue
+and Little Rock name their women's programme) for a women's one. Every witness the site publishes beside it (the
+slug, the abbreviation such as `WSOC`, the Nuxt sport view's gender field)
+must not name the other gender; the `wmt.games` team season and every game
+must carry the gender's sport code, `MSO` for men's and `WSO` for women's.
+A plain "Soccer" no witness genders takes the stanza's gender, which must
+be women's. Arkansas
+(`/sport/w-soccer/`) is the older WordPress generation, with opaque season
+ids and no `/schedule/season/{year}/` page: no WMT recipe reads it, and the
+collect names it a gap rather than guessing a recipe.
 
 `derive_identity` (`pipeline/src/probe.py`) fills the identity fields from
 what the site says of itself, reading the landing page and the newest served

@@ -109,8 +109,24 @@ BUNDLE_SCHEMA = "touchline.wmt-bundle/1"
 GENERATION_NUXT = "nuxt"
 GENERATION_WORDPRESS = "wordpress"
 
-#: ``wmt.games``'s code for men's soccer, on every team and game it serves.
-SPORT_CODE = "MSO"
+#: ``wmt.games``'s code for each gender's soccer, on every team and game it
+#: serves: ``MSO`` on the fifteen men's programmes measured 2026-11-15,
+#: ``WSO`` on the women's teams of Seattle U (587058) and Nebraska (602773),
+#: measured 2026-11-20.
+SPORT_CODES = {"men": "MSO", "women": "WSO"}
+#: The men's code, the one every WMT proof checked before women's soccer.
+SPORT_CODE = SPORT_CODES["men"]
+
+
+def sport_code(gender: str) -> str:
+    """``wmt.games``'s code for one gender's soccer; any other gender is refused."""
+    try:
+        return SPORT_CODES[gender]
+    except KeyError:
+        raise LiveCollectionError(
+            f"{gender!r} is not a soccer gender WMT serves ({', '.join(SPORT_CODES)})"
+        ) from None
+
 
 # --- Bodies and bundles -------------------------------------------------------
 
@@ -373,17 +389,31 @@ class _Fetcher:
 # --- Addresses -----------------------------------------------------------------
 
 _SPORT_PATH = re.compile(r"^(?P<prefix>.*?/sports/(?P<sport>[A-Za-z0-9_-]+))/?$")
+#: The older WMT WordPress generation's sport path, ``/sport/{sport}/``
+#: (Arkansas, ``arkansasrazorbacks.com/sport/w-soccer/``, measured
+#: 2026-11-20): a "bordeaux" schedule template whose seasons are picked by an
+#: opaque select ("1989-90" onward) and whose ``/schedule/season/{year}/``
+#: answers 404.  Neither generation above reads it.
+_OLDER_SPORT_PATH = re.compile(r"^.*?/sport/[A-Za-z0-9_-]+/?$")
 
 
 def sport_base(base_url: str) -> tuple[str, str, str]:
     """``(origin, sport, base)`` for a stanza's ``{origin}/sports/{sport}``.
 
     The sport path is the site's own (``mens-soccer`` on most, ``msoc`` on
-    Virginia, Notre Dame and both WordPress sites) and is read from the
-    stanza's URL, never assumed.
+    Virginia, Notre Dame and both WordPress sites; ``womens-soccer``,
+    ``wsoc``, or a path naming no gender, ``soccer``, ``soc`` or ``sc``, on
+    the women's sites) and is read from the stanza's URL, never assumed.
+    Its gender is the stanza's, proven on every page (``prove_sport``).
     """
     parsed = urlparse(base_url.strip())
     match = _SPORT_PATH.match(parsed.path)
+    if parsed.netloc and match is None and _OLDER_SPORT_PATH.match(parsed.path):
+        raise LiveCollectionError(
+            f"{base_url} is the older WMT WordPress generation's /sport/{{sport}} "
+            f"path (opaque season ids, no /schedule/season/{{year}}/ page), which "
+            f"no WMT recipe reads"
+        )
     if not parsed.scheme or not parsed.netloc or match is None:
         raise LiveCollectionError(
             f"{base_url} is not a WMT sport landing page ({{origin}}/sports/{{sport}})"
@@ -461,7 +491,20 @@ def stats_origin(html: str) -> str | None:
 # --- Proofs --------------------------------------------------------------------
 
 _LEADING_YEAR = re.compile(r"^\s*(\d{4})\b")
-_MENS_SOCCER = re.compile(r"^\s*men'?s\s+soccer\s*$", re.IGNORECASE)
+#: The sport names a soccer programme is published under: "Men's Soccer",
+#: "Women's Soccer", or plain "Soccer" (Nebraska, Purdue, Little Rock,
+#: Washington State and Miami name their women's programme so, measured
+#: 2026-11-20), which says nothing of gender and so proves a women's
+#: stanza only (``prove_sport``).
+_SOCCER_NAME = re.compile(r"^\s*(?:(?P<gender>men|women)'?s\s+)?soccer\s*$", re.I)
+#: A sport's other self-descriptions, read for gender with every character
+#: but letters dropped: the slug ("womens-soccer", "wsoc"), the
+#: abbreviation ("WSOC", "W. Soccer") and the view's own ``gender``
+#: ("female").  "soccer" and "soc" (Miami) name no gender.
+_GENDERED_FORMS = (
+    ("women", re.compile(r"^(?:womens?|female|w(?:soc|soccer|so))")),
+    ("men", re.compile(r"^(?:mens?|male|m(?:soc|soccer|so))")),
+)
 
 
 def _leading_year(text: object) -> int | None:
@@ -469,8 +512,64 @@ def _leading_year(text: object) -> int | None:
     return int(match.group(1)) if match else None
 
 
-def _is_mens_soccer(name: object) -> bool:
-    return bool(_MENS_SOCCER.match(str(name or "").replace("’", "'")))
+def _form_gender(value: object) -> str | None:
+    """The gender one self-description names, or None for a neutral one."""
+    form = re.sub(r"[^a-z]", "", str(value or "").lower())
+    for gender, pattern in _GENDERED_FORMS:
+        if pattern.match(form):
+            return gender
+    return None
+
+
+def prove_sport(
+    name: object,
+    *,
+    witnesses: dict[str, object],
+    gender: str,
+    year: int,
+    url: str,
+) -> None:
+    """Refuse a sport that is not soccer, or is the other gender's.
+
+    The sport's name must be soccer: "Men's Soccer" exactly for a men's
+    stanza, as every men's site measured names it, and "Women's Soccer" or
+    a plain "Soccer" for a women's one.  Its gender is read from every witness
+    the site publishes: the name ("Women's Soccer"), and the slug, the
+    abbreviation and the view's ``gender`` field, by ``witnesses``.  Any
+    witness naming another gender than the stanza's refuses the page, so
+    Little Rock's "Soccer" at ``womens-soccer`` (abbreviation WSOC) is never
+    a men's page.  A sport no witness genders (Miami's "Soccer", slug and
+    abbreviation ``soc``: its one soccer programme is the women's) is the
+    stanza's gender for a women's stanza only: the stanza is the only thing
+    that names it, and the ``wmt.games`` team and games prove the gender
+    again by their sport code.  A men's stanza is never proven by a name
+    that leaves the gender unsaid.
+    """
+    sport_code(gender)
+    text = str(name or "").replace("’", "'")
+    match = _SOCCER_NAME.match(text)
+    if match is None:
+        raise LiveCollectionError(
+            f"[{year}] {url} is the {name!r} sport, not {gender}'s soccer"
+        )
+    told = {"name": match.group("gender").lower()} if match.group("gender") else {}
+    for label, value in witnesses.items():
+        named = _form_gender(value)
+        if named is not None:
+            told[label] = named
+    other = {label: named for label, named in told.items() if named != gender}
+    if other:
+        evidence = ", ".join(
+            f"{label} {witnesses.get(label, name)!r}" for label in other
+        )
+        raise LiveCollectionError(
+            f"[{year}] {url} is the {name!r} sport ({evidence}), not {gender}'s soccer"
+        )
+    if match.group("gender") is None and gender != "women":
+        raise LiveCollectionError(
+            f"[{year}] {url} is the {name!r} sport, which names no gender: "
+            f"not {gender}'s soccer, which a site names \"Men's Soccer\""
+        )
 
 
 def _nuxt_data(state: dict[str, Any]) -> dict[str, Any]:
@@ -520,15 +619,24 @@ class NuxtPage:
 
 
 def prove_nuxt_page(
-    html: str, *, year: int, kind: str, sport: str, slug: str, url: str
+    html: str,
+    *,
+    year: int,
+    kind: str,
+    sport: str,
+    slug: str,
+    url: str,
+    gender: str = "men",
 ) -> NuxtPage:
-    """Refuse a Nuxt season page that is not men's soccer's ``year`` season.
+    """Refuse a Nuxt season page that is not ``gender``'s soccer's ``year``
+    season.
 
     Three witnesses, every one required.  The dashboard entity the page
     renders (``{"type": "schedule", "id": 75, "seasonSlug": "2025"}``) must
     be the layer's type and name the requested slug.  The sport view
-    (``sport-view-{sport}``) must be the stanza's sport path and be named
-    men's soccer.  The season object (``sport-{sport}-schedule-by-slug-
+    (``sport-view-{sport}``) must be the stanza's sport path and be soccer
+    of the stanza's gender (``prove_sport``: its name, slug, abbreviation
+    and ``gender`` field).  The season object (``sport-{sport}-schedule-by-slug-
     {slug}`` or ``sport-{sport}-roster-season-{slug}``) must be the entity
     itself, belong to that sport, and carry a season whose slug is the one
     asked for and whose name leads with ``year`` ("2025", "2025-26";
@@ -555,10 +663,17 @@ def prove_nuxt_page(
         raise LiveCollectionError(
             f"[{year}] {url} renders no sport view for /sports/{sport}"
         )
-    if not _is_mens_soccer(view.get("name")):
-        raise LiveCollectionError(
-            f"[{year}] {url} is the {view.get('name')!r} sport, not men's soccer"
-        )
+    prove_sport(
+        view.get("name"),
+        witnesses={
+            "slug": view.get("slug"),
+            "abbreviation": view.get("abbreviation"),
+            "gender": view.get("gender"),
+        },
+        gender=gender,
+        year=year,
+        url=url,
+    )
     season_object = data.get(key.format(sport=sport, slug=slug))
     if not isinstance(season_object, dict):
         raise LiveCollectionError(
@@ -634,9 +749,11 @@ def _season_page(
     )
 
 
-def prove_team_season(season: Any, *, team_id: object, year: int, url: str) -> None:
-    """Refuse a ``wmt.games`` team season that is not men's soccer's
-    ``year`` season for ``team_id``.
+def prove_team_season(
+    season: Any, *, team_id: object, year: int, url: str, gender: str = "men"
+) -> None:
+    """Refuse a ``wmt.games`` team season that is not ``gender``'s soccer's
+    ``year`` season for ``team_id`` (``sportCode`` ``MSO`` or ``WSO``).
 
     ``academicYear`` names the spring the season ends in: 2026 for fall 2025
     (Seattle U's 604058 reads ``academicYear: 2026, seasonLabel:
@@ -651,10 +768,11 @@ def prove_team_season(season: Any, *, team_id: object, year: int, url: str) -> N
         raise LiveCollectionError(
             f"[{year}] requested statistics team {team_id} but {url} served team {team.get('id')}"
         )
-    if team.get("sportCode") != SPORT_CODE:
+    code = sport_code(gender)
+    if team.get("sportCode") != code:
         raise LiveCollectionError(
             f"[{year}] statistics team {team_id} is sport {team.get('sportCode')!r}, "
-            f"not men's soccer ({SPORT_CODE})"
+            f"not {gender}'s soccer ({code})"
         )
     academic = _stat_int(str(team.get("academicYear") or ""))
     if academic is None:
@@ -667,9 +785,11 @@ def prove_team_season(season: Any, *, team_id: object, year: int, url: str) -> N
         )
 
 
-def prove_game(game: Any, *, game_id: object, year: int, url: str) -> dict[str, Any]:
-    """The header of a ``wmt.games`` game that is the requested men's
-    soccer game, or a refusal."""
+def prove_game(
+    game: Any, *, game_id: object, year: int, url: str, gender: str = "men"
+) -> dict[str, Any]:
+    """The header of a ``wmt.games`` game that is the requested game of
+    ``gender``'s soccer, or a refusal."""
     header = game.get("header") if isinstance(game, dict) else None
     if not isinstance(header, dict):
         raise LiveCollectionError(f"[{year}] {url} carries no game header")
@@ -677,9 +797,11 @@ def prove_game(game: Any, *, game_id: object, year: int, url: str) -> dict[str, 
         raise LiveCollectionError(
             f"[{year}] requested game {game_id} but {url} served game {header.get('gameId')}"
         )
-    if header.get("sportCode") != SPORT_CODE:
+    code = sport_code(gender)
+    if header.get("sportCode") != code:
         raise LiveCollectionError(
-            f"[{year}] game {game_id} is sport {header.get('sportCode')!r}, not men's soccer"
+            f"[{year}] game {game_id} is sport {header.get('sportCode')!r}, "
+            f"not {gender}'s soccer ({code})"
         )
     return header
 
@@ -776,7 +898,12 @@ def _unlinked_result(event: dict[str, Any]) -> bool:
 
 
 def locate_team_by_game(
-    fetcher: _Fetcher, events: list[dict[str, Any]], *, year: int, origin: str
+    fetcher: _Fetcher,
+    events: list[dict[str, Any]],
+    *,
+    year: int,
+    origin: str,
+    gender: str = "men",
 ) -> tuple[list[Part], int]:
     """The season's statistics team, read off one of its own games.
 
@@ -797,7 +924,9 @@ def locate_team_by_game(
             continue
         url = game_url(origin, game_id)
         game_part = fetcher.require("game", url, expect="json", conditional=True)
-        header = prove_game(game_part.json(), game_id=game_id, year=year, url=url)
+        header = prove_game(
+            game_part.json(), game_id=game_id, year=year, url=url, gender=gender
+        )
         owner = header.get(side)
         team_id = owner.get("teamId") if isinstance(owner, dict) else None
         if not team_id:
@@ -809,7 +938,9 @@ def locate_team_by_game(
             "season", season_url, expect="json", conditional=True
         )
         season = season_part.json()
-        prove_team_season(season, team_id=team_id, year=year, url=season_url)
+        prove_team_season(
+            season, team_id=team_id, year=year, url=season_url, gender=gender
+        )
         if int(game_id) not in {row[1] for row in game_by_game(season)}:
             raise LiveCollectionError(
                 f"[{year}] statistics team {team_id} (the {side} side of game "
@@ -928,11 +1059,23 @@ def local_kickoff(value: object, timezone: str) -> datetime | None:
 
 
 def _fetch_nuxt(
-    fetcher: _Fetcher, page: Part, slug: str, base_url: str, year: int, kind: str
+    fetcher: _Fetcher,
+    page: Part,
+    slug: str,
+    base_url: str,
+    year: int,
+    kind: str,
+    gender: str = "men",
 ) -> tuple[list[Part], list[str]]:
     origin, sport, _ = sport_base(base_url)
     proven = prove_nuxt_page(
-        page.body, year=year, kind=kind, sport=sport, slug=slug, url=page.final_url
+        page.body,
+        year=year,
+        kind=kind,
+        sport=sport,
+        slug=slug,
+        url=page.final_url,
+        gender=gender,
     )
     parts = [page]
     notes: list[str] = []
@@ -966,7 +1109,7 @@ def _fetch_nuxt(
                         f"[{year}] {page.final_url} names no statistics host"
                     )
                 located, team_id = locate_team_by_game(
-                    fetcher, events, year=year, origin=origin_stats
+                    fetcher, events, year=year, origin=origin_stats, gender=gender
                 )
                 parts.extend(located)
                 notes.append(
@@ -1002,7 +1145,11 @@ def _fetch_nuxt(
             )
             try:
                 prove_team_season(
-                    season_part.json(), team_id=team_id, year=year, url=url
+                    season_part.json(),
+                    team_id=team_id,
+                    year=year,
+                    url=url,
+                    gender=gender,
                 )
                 parts.append(season_part)
                 return parts, notes
@@ -1031,7 +1178,7 @@ def _fetch_nuxt(
         event_parts, events = _fetch_events(fetcher, origin, schedule_id)
         parts.extend(event_parts)
         located, located_id = locate_team_by_game(
-            fetcher, events, year=year, origin=origin_stats
+            fetcher, events, year=year, origin=origin_stats, gender=gender
         )
         parts.extend(located)
         notes.append(
@@ -1048,8 +1195,13 @@ def fetch_layer(
     *,
     state: PageState | None = None,
     want_validators: bool = False,
+    gender: str = "men",
 ) -> ConditionalFetch:
     """Fetch, prove and bundle every body one season layer relies on.
+
+    ``gender`` is the stanza's: every page, team season and game the layer
+    reads must prove it is that gender's soccer (``prove_sport``,
+    ``sport_code``), whatever the sport path says.
 
     The recipe's replacement for the single conditional fetch: the returned
     page is the bundle (``Bundle.text``), proven part by part before it is
@@ -1072,10 +1224,10 @@ def fetch_layer(
     )
     if is_wordpress(first.body):
         generation = GENERATION_WORDPRESS
-        parts, notes = _fetch_wordpress(fetcher, first, base_url, year, kind)
+        parts, notes = _fetch_wordpress(fetcher, first, base_url, year, kind, gender)
     else:
         generation = GENERATION_NUXT
-        parts, notes = _fetch_nuxt(fetcher, first, slug, base_url, year, kind)
+        parts, notes = _fetch_nuxt(fetcher, first, slug, base_url, year, kind, gender)
     bundle = Bundle(kind, year, generation, tuple(parts), tuple(notes))
     text = bundle.text()
     page = PublishedPage(layer_url(base_url, year, kind), bundle.final_url, text)
@@ -1161,19 +1313,32 @@ def _bundle_of(html: str, kind: str, year: int | None = None) -> Bundle:
     return bundle
 
 
-def assert_served_season(page: PublishedPage, year: int, kind: str) -> None:
+def assert_served_season(
+    page: PublishedPage, year: int, kind: str, *, gender: str = "men"
+) -> None:
     """The recipe's season proof over a bundle: every part proves again."""
     bundle = _bundle_of(page.html, kind, year)
     first = bundle.parts[0]
     _, sport, _ = sport_base(_base_of(first.final_url))
     if bundle.generation == GENERATION_WORDPRESS:
         prove_wordpress_page(
-            first.body, year=year, kind=kind, sport=sport, url=first.final_url
+            first.body,
+            year=year,
+            kind=kind,
+            sport=sport,
+            url=first.final_url,
+            gender=gender,
         )
         return
     slug = _slug_of(first.final_url)
     prove_nuxt_page(
-        first.body, year=year, kind=kind, sport=sport, slug=slug, url=first.final_url
+        first.body,
+        year=year,
+        kind=kind,
+        sport=sport,
+        slug=slug,
+        url=first.final_url,
+        gender=gender,
     )
 
 
@@ -1773,10 +1938,15 @@ def is_wmt(html: str) -> list[str]:
 
 
 def fetch_season_page(
-    session: requests.Session, base_url: str, year: int, kind: str = LAYER_SCHEDULE
+    session: requests.Session,
+    base_url: str,
+    year: int,
+    kind: str = LAYER_SCHEDULE,
+    *,
+    gender: str = "men",
 ) -> PublishedPage:
-    """One layer's season page, located and proven, with nothing else
-    fetched: what the probe asks of a candidate season."""
+    """One layer's season page, located and proven ``gender``'s soccer, with
+    nothing else fetched: what the probe asks of a candidate season."""
     fetcher = _Fetcher(session, year, kind)
     _, sport, base = sport_base(base_url)
     page, slug = _season_page(fetcher, base, year, kind)
@@ -1786,11 +1956,22 @@ def fetch_season_page(
     )
     if wordpress:
         prove_wordpress_page(
-            page.body, year=year, kind=kind, sport=sport, url=page.final_url
+            page.body,
+            year=year,
+            kind=kind,
+            sport=sport,
+            url=page.final_url,
+            gender=gender,
         )
     else:
         prove_nuxt_page(
-            page.body, year=year, kind=kind, sport=sport, slug=slug, url=page.final_url
+            page.body,
+            year=year,
+            kind=kind,
+            sport=sport,
+            slug=slug,
+            url=page.final_url,
+            gender=gender,
         )
     return PublishedPage(page.url, page.final_url, page.body)
 
@@ -1848,16 +2029,19 @@ def _page_title(html: str) -> str:
 
 
 def prove_wordpress_page(
-    html: str, *, year: int, kind: str, sport: str, url: str
+    html: str, *, year: int, kind: str, sport: str, url: str, gender: str = "men"
 ) -> None:
-    """Refuse a WordPress season page that is not men's soccer's ``year``.
+    """Refuse a WordPress season page that is not ``gender``'s soccer's
+    ``year``.
 
     Two witnesses, both required, because the path proves nothing
     (``/schedule/season/2031/`` answers 200 with the 2026 season, measured
     on both sites): ``route_vars`` must name the stanza's sport category
-    (slug and a men's soccer name) and the requested season as its
-    ``current_season``, and the ``<title>`` must lead with "Men's Soccer
-    {Schedule|Roster|Cumulative Statistics} {year}".
+    (its slug, and a soccer name of the stanza's gender, ``prove_sport``)
+    and the requested season as its ``current_season``, and the
+    ``<title>`` must lead with the category's own name and the layer, "Men's
+    Soccer {Schedule|Roster|Cumulative Statistics} {year}" ("Women's Soccer
+    Schedule 2025" on both sites' women's pages).
     """
     route = wp_route_vars(html)
     if route is None:
@@ -1869,11 +2053,18 @@ def prove_wordpress_page(
         if isinstance(route.get("sport_category"), dict)
         else {}
     )
-    if category.get("slug") != sport or not _is_mens_soccer(category.get("name")):
+    if category.get("slug") != sport:
         raise LiveCollectionError(
             f"[{year}] {url} renders sport category {category.get('slug')!r} "
-            f"({category.get('name')!r}), not men's soccer at /sports/{sport}"
+            f"({category.get('name')!r}), not {gender}'s soccer at /sports/{sport}"
         )
+    prove_sport(
+        category.get("name"),
+        witnesses={"slug": category.get("slug")},
+        gender=gender,
+        year=year,
+        url=url,
+    )
     season = (
         route.get("current_season")
         if isinstance(route.get("current_season"), dict)
@@ -1886,7 +2077,8 @@ def prove_wordpress_page(
             f"{served or 'unnamed'} season (route_vars current_season)"
         )
     title = _page_title(html)
-    expected = f"Men's Soccer {_WP_LAYER_TITLE[kind]} {year}"
+    sport_name = " ".join(str(category.get("name")).replace("’", "'").split())
+    expected = f"{sport_name} {_WP_LAYER_TITLE[kind]} {year}"
     if not re.match(rf"{re.escape(expected)}(?!\d)", title, re.I):
         raise LiveCollectionError(
             f"[{year}] {url} is titled {title!r}, not {expected!r}"
@@ -2125,7 +2317,7 @@ def _wordpress_links(bundle: Bundle) -> dict[str, str]:
 
 
 def _wordpress_team_season(
-    fetcher: _Fetcher, cume: Part, year: int
+    fetcher: _Fetcher, cume: Part, year: int, gender: str = "men"
 ) -> tuple[Part, int]:
     """The team season the ``cumestats`` page's iframe names, proven."""
     match = _STATS_IFRAME.search(cume.body)
@@ -2138,12 +2330,19 @@ def _wordpress_team_season(
     team_id = int(match.group(1))
     url = team_season_url(origin, team_id)
     season_part = fetcher.require("season", url, expect="json", conditional=True)
-    prove_team_season(season_part.json(), team_id=team_id, year=year, url=url)
+    prove_team_season(
+        season_part.json(), team_id=team_id, year=year, url=url, gender=gender
+    )
     return season_part, team_id
 
 
 def _fetch_wordpress(
-    fetcher: _Fetcher, page: Part, base_url: str, year: int, kind: str
+    fetcher: _Fetcher,
+    page: Part,
+    base_url: str,
+    year: int,
+    kind: str,
+    gender: str = "men",
 ) -> tuple[list[Part], list[str]]:
     _, sport, base = sport_base(base_url)
     notes: list[str] = []
@@ -2151,7 +2350,12 @@ def _fetch_wordpress(
     if kind == LAYER_STATS and "/cumestats/" not in urlparse(page.final_url).path:
         page = fetcher.require("page", cume_url)
     prove_wordpress_page(
-        page.body, year=year, kind=kind, sport=sport, url=page.final_url
+        page.body,
+        year=year,
+        kind=kind,
+        sport=sport,
+        url=page.final_url,
+        gender=gender,
     )
     parts = [page]
     if kind == LAYER_SCHEDULE:
@@ -2165,8 +2369,11 @@ def _fetch_wordpress(
                     kind=LAYER_STATS,
                     sport=sport,
                     url=cume.final_url,
+                    gender=gender,
                 )
-                season_part, team_id = _wordpress_team_season(fetcher, cume, year)
+                season_part, team_id = _wordpress_team_season(
+                    fetcher, cume, year, gender
+                )
                 parts.extend([cume, season_part])
                 notes.append(f"box scores joined by date to statistics team {team_id}")
             except LiveCollectionError as exc:
@@ -2180,7 +2387,7 @@ def _fetch_wordpress(
                 f"[{year}] {page.final_url} proved its season but renders no roster table"
             )
     else:
-        season_part, _ = _wordpress_team_season(fetcher, page, year)
+        season_part, _ = _wordpress_team_season(fetcher, page, year, gender)
         parts.append(season_part)
     return parts, notes
 
@@ -2559,12 +2766,16 @@ def _names_both_sides(
 
 
 def assert_served_match(
-    page: PublishedPage, year: int, fixture: dict[str, object]
+    page: PublishedPage,
+    year: int,
+    fixture: dict[str, object],
+    *,
+    gender: str = "men",
 ) -> dict[str, Any]:
     """A ``wmt.games`` game must prove it is the fixture's match.
 
-    The served game is the requested id (``header.gameId``), men's soccer
-    (``sportCode == "MSO"``), finalized, dated the fixture's date by its own
+    The served game is the requested id (``header.gameId``), the stanza's
+    gender's soccer (``sportCode`` ``MSO`` or ``WSO``), finalized, dated the fixture's date by its own
     ``gameDate`` (the venue's wall-clock time labelled ``Z``: the date is
     read as printed, never converted, trap 6.2), and its two sides name the
     fixture's two slugs.  Returns the decoded game.
@@ -2576,7 +2787,9 @@ def assert_served_match(
             f"[{year}] {fixture_id}: {page.requested_url} is not a wmt.games game"
         )
     game = decode_json_body(page.html, page.final_url)
-    header = prove_game(game, game_id=requested.group(1), year=year, url=page.final_url)
+    header = prove_game(
+        game, game_id=requested.group(1), year=year, url=page.final_url, gender=gender
+    )
     if header.get("finalized") is not True:
         raise LiveCollectionError(
             f"[{year}] {fixture_id}: game {requested.group(1)} is not finalized on the statistics host"
@@ -2601,10 +2814,14 @@ def assert_served_match(
 
 
 def parse_match_page(
-    page: PublishedPage, year: int, fixture: dict[str, object]
+    page: PublishedPage,
+    year: int,
+    fixture: dict[str, object],
+    *,
+    gender: str = "men",
 ) -> dict[str, object]:
     """Prove a served or archived game is the fixture's, then read it."""
-    game = assert_served_match(page, year, fixture)
+    game = assert_served_match(page, year, fixture, gender=gender)
     detail = parse_game(game, page_url=page.final_url)
     lacks = thin_box_lacks(game)
     if lacks:
@@ -2624,6 +2841,7 @@ def collect_match(
     fixture: dict[str, object],
     *,
     archive: BoxArchive | None = None,
+    gender: str = "men",
 ) -> dict[str, object]:
     """Fetch one fixture's ``wmt.games`` game, prove it, parse it, archive it.
 
@@ -2640,7 +2858,7 @@ def collect_match(
         ) from exc
     assert_served_body(response, year=year, kind="box-score", url=url, body="json")
     page = PublishedPage(url, str(getattr(response, "url", "") or url), response.text)
-    detail = parse_match_page(page, year, fixture)
+    detail = parse_match_page(page, year, fixture, gender=gender)
     if archive is not None:
         archive.save(
             requested_url=page.requested_url,

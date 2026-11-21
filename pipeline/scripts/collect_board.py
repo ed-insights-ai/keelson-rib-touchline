@@ -1218,7 +1218,9 @@ def _recipe_for(school: SchoolConfig) -> Recipe | None:
         return replace(
             recipe, boxscore_links=boxscore_links, collect_match=collect_match
         )
-    return recipe
+    # A platform that proves the programme's gender (WMT's box scores carry
+    # a sport code) proves the stanza's.
+    return None if recipe is None else recipe.for_gender(school.gender)
 
 
 def _assemble(
