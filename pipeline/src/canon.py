@@ -189,11 +189,12 @@ PROGRAMMES = {
 # Mirrors the live collector's rank handling, and must stay in step with it:
 # see sidearm_live._RANK_PREFIX for the enumeration of published forms this
 # grammar is built from. In short, a poll or tournament rank arrives as "#9",
-# "No. 23", a bare "9", "RV" for receiving-votes, a bracketed seed "(3)" or
-# "[7]", a seed spelled as a word "3-seed", any of these slash-joined, and any
-# of these stacked in front of another. Leaving one in mints an identity that
-# drifts with the poll.
-_RANK_VALUE = r"(?:rv|\d{1,2})"
+# "No. 23", a bare "9", "RV" for receiving-votes, "NR" for not-ranked, a
+# bracketed seed "(3)" or "[7]", a seed spelled as a word "3-seed", any of
+# these slash-joined with the first slot allowed empty or a dash ("/#5",
+# "-/#21"), and any of these stacked in front of another. Leaving one in mints
+# an identity that drifts with the poll.
+_RANK_VALUE = r"(?:rv|nr|\d{1,2})"
 _RANK_TOKEN = (
     r"(?:"
     rf"\(\s*{_RANK_VALUE}\s*\)|\[\s*{_RANK_VALUE}\s*\]"
@@ -204,7 +205,7 @@ _RANK_TOKEN = (
 # A hash-marked rank glued to the name by a hyphen ("#21-McKendree") is the
 # live grammar's _RANK_HASH_HYPHEN, mirrored here.
 _RANK_PREFIX = re.compile(
-    rf"^(?:{_RANK_TOKEN}(?:\s*/\s*{_RANK_TOKEN})*\s+)*"
+    rf"^(?:-?\s*/\s*)?(?:{_RANK_TOKEN}(?:\s*/\s*{_RANK_TOKEN})*\s+)*"
     rf"(?:{_RANK_TOKEN}(?:\s*/\s*{_RANK_TOKEN})*\s+|#\s*\d{{1,2}}-(?=[a-z])(?!seed\b))",
     re.IGNORECASE,
 )

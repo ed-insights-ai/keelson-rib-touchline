@@ -17969,7 +17969,7 @@ enabled      = true
 city         = "Murfreesboro, Tenn."
 city_source  = "https://conferenceusa.com/standings.aspx?path=wsoc embedded school record location \"Murfreesboro, TN\"; the women's schedule page prints no home town (probe) (read 2026-11-20); second source: peer schedule pages fetched 2026-11-20 (/sports/womens-soccer/schedule), town printed on their rows: bluehens.com prints \"Murfreesboro, Tenn.\"; gobearkats.com prints \"Murfreesboro, Tenn.\"; jaxstatesports.com prints \"Murfreesboro, Tenn.\""
 identity_accessed = "2026-11-20"
-aliases      = ["Middle Tennessee", "Middle Tennessee State", "Middle Tenn."]
+aliases      = ["Middle Tennessee", "Middle Tennessee State", "Middle Tenn.", "Middle Tennesse"]  # "Middle Tennesse": nmstatesports.com 2026 prints the typo (game 19305)
 
 [[schools]]
 name         = "Sam Houston"
@@ -19093,8 +19093,7 @@ identity_accessed = "2026-11-20"
 # The men's stanza 'Grand Canyon' (MW) supplies name, abbreviation, mascot, city and aliases; the host is the same.
 [[schools]]
 name         = "Grand Canyon"
-abbreviation = "GCU"
-abbreviation_resolves = false  # "GCU" is display-only on the men's stanza
+abbreviation = "GCU"  # resolves: Georgian Court's "GCU" is Division II and shares no table (nevadawolfpack.com and arizonawildcats.com 2026 print "GCU")
 conference   = "MW"
 mascot       = "Lopes"
 gender       = "women"
@@ -19170,6 +19169,7 @@ enabled      = true
 city         = "Reno, Nev."
 city_source  = "https://nevadawolfpack.com/sports/womens-soccer/schedule (probe 2026-11-20: town printed most on home rows) (read 2026-11-20); second source: https://themw.com/standings.aspx?path=wsoc embedded school record location \"Reno, NV\""
 identity_accessed = "2026-11-20"
+aliases      = ["UNR"]  # unlvrebels.com 2026 prints "UNR" (game 17890)
 
 # The men's stanza 'San Jose State' (MW) supplies name, abbreviation, mascot, city and aliases; the host is the same.
 # WMT Digital (nuxt (website-api answered; __NUXT_DATA__ on the sport page per the probe)): the probe reads every layer "season not proven" (or refuses the path);
@@ -20423,8 +20423,9 @@ city         = "Commerce, Texas"
 city_source  = "https://www.southland.org/standings.aspx?path=wsoc embedded school record location \"Commerce, TX\"; the women's schedule page prints no home town (probe) (read 2026-11-20); second source: peer schedule pages fetched 2026-11-20 (/sports/womens-soccer/schedule), town printed on their rows: acusports.com prints \"Commerce, TX\"; geauxcolonels.com prints \"Commerce, TX\"; goislanders.com prints \"Commerce, TX\""
 identity_accessed = "2026-11-20"
 
-# The Southland prints the bare "Southeastern": a member alias, so it
-# names this programme only inside a Southland collect.
+# The Southland prints the bare "Southeastern", and SFA's page "SLU"
+# (sfajacks.com 2026, game 14219): member aliases, so they name this
+# programme only inside a Southland collect. "SLU" is Saint Louis's too.
 [[schools]]
 name         = "Southeastern Louisiana"
 abbreviation = "SLU"
@@ -20437,7 +20438,7 @@ years        = [2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-member_aliases = ["Southeastern"]
+member_aliases = ["Southeastern", "SLU"]
 city         = "Hammond, La."
 city_source  = "https://lionsports.net/sports/womens-soccer/schedule (probe 2026-11-20: town printed most on home rows) (read 2026-11-20); second source: https://www.southland.org/standings.aspx?path=wsoc embedded school record location \"Hammond, LA\""
 identity_accessed = "2026-11-20"
@@ -20792,7 +20793,7 @@ enabled      = true
 city         = "Lafayette, La."
 city_source  = "https://ragincajuns.com/sports/womens-soccer/schedule/2026 (server payload home rows print \"Lafayette\" with no state, Home Bank Soccer & Track Complex; 9); state from the Sun Belt object (read 2026-11-20); second source: standings/SUNBELT-women-2026.html embedded conference school object (location \"Lafayette, Louisiana\")"
 identity_accessed = "2026-11-20"
-aliases      = ["UL Lafayette"]
+aliases      = ["UL Lafayette", "Ragin' Cajuns"]  # "Ragin' Cajuns": ulmwarhawks.com 2026 prints the nickname alone (game 16604)
 
 [[schools]]
 name         = "ULM"

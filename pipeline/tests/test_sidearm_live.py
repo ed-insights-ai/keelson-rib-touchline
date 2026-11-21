@@ -3428,6 +3428,16 @@ def test_a_division_seed_is_a_rank_prefix() -> None:
         ("#21-McKendree", "McKendree"),
         ("#15-Ashland", "Ashland"),
         ("#4-seed Harding", "Harding"),
+        # "NR", not ranked, in either poll slot (texaslonghorns.com 2026
+        # games 22747, 23752, 23864; slubillikens.com 2026 game 18687), and a
+        # dash holding the empty first slot (the WMT site ucfknights.com
+        # 2026, event 12189; bead tui-l57).
+        ("#24/NR Auburn", "Auburn"),
+        ("#25/NR Arkansas", "Arkansas"),
+        ("#23/NR Houston", "Houston"),
+        ("NR/No. 20 Kansas", "Kansas"),
+        ("-/#21 LSU", "LSU"),
+        ("-/#19 Texas Tech", "Texas Tech"),
         # Real names that lead with a numeral, a letter-dash, or a dash keep
         # every character: a token must end in whitespace and a dash only
         # follows a rank.
@@ -3435,6 +3445,9 @@ def test_a_division_seed_is_a_rank_prefix() -> None:
         ("T-Bird College", "T-Bird College"),
         ("21-McKendree", "21-McKendree"),
         ("Lynn - University", "Lynn - University"),
+        ("Nrthwest College", "Nrthwest College"),
+        ("NR-Tech", "NR-Tech"),
+        ("- Lynn University", "- Lynn University"),
         ("UT Tyler", "UT Tyler"),
         (
             "2023 DII Men's Soccer Selection Show",

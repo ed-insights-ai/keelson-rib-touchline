@@ -792,23 +792,38 @@ def assert_schedule_proven(
 #                               its "Seed" word, or a division letter
 #   No. 1/ No. 1 seed - Lynn    a lone dash between the prefix and the name
 #
+# Division I women's 2026 (bead tui-l57) printed two more ways a poll slot
+# says "unranked", each minting a ranked twin of a real slug:
+#
+#   #24/NR  NR/No. 20           "NR", not ranked, in either poll slot
+#                               (measured "#24/NR Auburn", "#25/NR Arkansas"
+#                               and "#23/NR Houston" on texaslonghorns.com
+#                               2026 games 22747, 23752 and 23864, filed as
+#                               24-nr-auburn, 25-nr-arkansas, 23-nr-houston;
+#                               "NR/No. 20 Kansas" on slubillikens.com 2026
+#                               game 18687, filed as nr-no-20-kansas)
+#   -/#21                       a dash holding the empty first slot (measured
+#                               "-/#21 LSU" and "-/#19 Texas Tech" on the WMT
+#                               site ucfknights.com 2026, event 12189 filed as
+#                               21-lsu)
+#
 # So a token is a value carrying an optional marker or bracket, tokens may be
-# slash- or pipe-joined with the first slot allowed empty, the whole prefix
-# repeats, and a lone dash after it belongs to the prefix.
+# slash- or pipe-joined with the first slot allowed empty or a dash, the whole
+# prefix repeats, and a lone dash after it belongs to the prefix.
 #
 # Two limits stop it eating real names. Two digits is the whole range a poll
 # uses, and every token must be followed by whitespace — which is why
 # "5th-Seed Oklahoma Christian" loses the seed and keeps the school, and why
-# the bare "rv" alternative does not bite Rverside. What leads an opponent
-# string far more often than a rank is an all-caps abbreviation: UT Tyler at
-# 127 rows, MSU Denver at 17, CSU Pueblo and USC Aiken behind them. None of
-# those match.
+# the bare "rv" and "nr" alternatives bite neither Rverside nor a name that
+# merely begins "Nr". What leads an opponent string far more often than a
+# rank is an all-caps abbreviation: UT Tyler at 127 rows, MSU Denver at 17,
+# CSU Pueblo and USC Aiken behind them. None of those match.
 #
 # A conference that seeds its tournament by division writes the division
 # letter onto the seed (measured "No. 2E West Chester (PSAC Quarterfinal)" on
 # lockhavenathletics.com 2025), so a value may carry one trailing letter; the
 # whitespace rule still keeps "2E" from being the start of a word.
-_RANK_VALUE = r"(?:rv|t-\d{1,2}|\d{1,2}[a-z]?)"
+_RANK_VALUE = r"(?:rv|nr|t-\d{1,2}|\d{1,2}[a-z]?)"
 _RANK_MARKER = r"(?:#|no\.?)?"
 _RANK_BRACKETED = rf"{_RANK_MARKER}\s*{_RANK_VALUE}(?:\s*seed)?"
 _RANK_TOKEN = (
@@ -827,7 +842,7 @@ _RANK_JOINER = r"\s*[/|]\s*"
 # and "T-Bird College" stay whole, and a bare "21-" is never read as a rank.
 _RANK_HASH_HYPHEN = r"#\s*\d{1,2}-(?=[a-z])(?!seed\b)"
 _RANK_PREFIX = re.compile(
-    rf"^(?:{_RANK_JOINER})?(?:{_RANK_TOKEN}(?:{_RANK_JOINER}{_RANK_TOKEN})*\s+)*"
+    rf"^(?:-?{_RANK_JOINER})?(?:{_RANK_TOKEN}(?:{_RANK_JOINER}{_RANK_TOKEN})*\s+)*"
     rf"(?:{_RANK_TOKEN}(?:{_RANK_JOINER}{_RANK_TOKEN})*\s+|{_RANK_HASH_HYPHEN})"
     r"(?:-\s+)?",
     re.IGNORECASE,

@@ -53,6 +53,10 @@ def test_normalize_strips_every_published_rank_form():
         "RV/#11 Harding",
         "#11/RV Harding",
         "#21-Harding",
+        "#24/NR Harding",
+        "NR/No. 20 Harding",
+        "-/#21 Harding",
+        "/#5 Harding",
     ):
         assert normalize(published) == normalize("Harding") == "harding"
 
@@ -61,6 +65,8 @@ def test_normalize_leaves_a_name_that_merely_starts_with_rv():
     """The trailing-whitespace requirement is what makes a bare "rv" safe."""
     assert normalize("Rverside") == "rverside"
     assert normalize("RVing Club") == "rving club"
+    # And the same of "nr", not ranked.
+    assert normalize("Nrthwest College") == "nrthwest college"
     # An all-caps abbreviation leads far more often than a rank does.
     for abbr in ("UT Tyler", "MSU Denver", "CSU Pueblo", "USC Aiken"):
         assert normalize(abbr) == abbr.lower()
