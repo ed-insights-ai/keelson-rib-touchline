@@ -123,6 +123,17 @@ ROWS = [
         "saint-josephs",
         "saint-josephs-ny",
     ),
+    # The opponent link is St. Mary's (Texas)'s, and its logo is captioned
+    # "St. Mary's University (TX)" (Division I women's 2023).
+    (
+        "St. Mary's",
+        "texas-southern",
+        "SWAC",
+        2023,
+        "women",
+        "saint-marys-california",
+        "saint-marys",
+    ),
     # The twin is on Division II St. Mary's (Texas)'s page the same day.
     (
         "St. Mary's (Exhibition)",
@@ -292,6 +303,7 @@ UNCHANGED = [
         "charleston-south-carolina",
     ),
     ("Saint Mary's", "cal-state-la", "CCAA", 2022, "men", "saint-marys"),
+    ("St. Mary's", "pepperdine", "WCC", 2023, "women", "saint-marys-california"),
     ("Maryville", "cedarville", "G-MAC", 2023, "women", "maryville"),
     ("Jefferson", "adelphi", "NE10", 2024, "women", "jefferson"),
     ("Tusculum College", "lee", "GSC", 2016, "men", "tusculum"),
@@ -360,7 +372,7 @@ def test_what_the_parenthetical_says_still_counts() -> None:
 
 def test_schools_toml_declarations_are_valid() -> None:
     declared = load_declared_strangers()
-    assert len(declared) == 15
+    assert len(declared) == 16
     assert all(entry.source for entry in declared)
     errors = declared_stranger_errors(
         declared, load_schools(), document=load_membership()

@@ -15665,6 +15665,7 @@ enabled      = true
 city         = "Birmingham, Ala."
 city_source  = "https://uabsports.com/sports/mens-soccer/schedule (schedule page home rows print \"Birmingham, Ala.\", PNC Field; 12 of 12 home rows) (read 2026-11-15) (the men's stanza's reading; the women's page: https://uabsports.com/sports/womens-soccer/schedule/2025 (SideArm __NUXT_DATA__ schedule rows, location_indicator \"H\", location \"Birmingham, Ala.\", 13 of 13 home rows))"
 identity_accessed = "2026-11-20"
+aliases      = ["Alabama at Birmingham"]  # fiusports.com 2022 "University of Alabama at Birmingham" (game 10528)
 
 [[schools]]
 name         = "Rice"
@@ -17715,6 +17716,7 @@ enabled      = true
 city         = "Riverside, Calif."
 city_source  = "https://gohighlanders.com/sports/mens-soccer/schedule (schedule page home rows print \"Riverside, Calif.\", UCR Soccer Stadium; 9 of 9 home rows) (read 2026-11-15) (the men's stanza's reading; the women's page: schools.toml men's stanza UC Riverside (city \"Riverside, Calif.\"); the women's schedule page prints no home town (probe))"
 identity_accessed = "2026-11-20"
+aliases      = ["California Riverside"]  # goviks.com 2023 (game 4898); ucdavisaggies.com and cbulancers.com 2023 "University of California Riverside" (26917, 15474)
 
 # The men's stanza 'Cal State Bakersfield' (BIGWEST) supplies name, abbreviation, mascot, city and aliases; the host is the same.
 [[schools]]
@@ -18173,6 +18175,7 @@ enabled      = true
 city         = "Youngstown, Ohio"
 city_source  = "https://ysusports.com/sports/womens-soccer/schedule/2026 (schedule page home rows print \"Youngstown, Ohio\"; 11 mentions) (read 2026-11-20); second source: https://horizonleague.org/standings.aspx?path=wsoc (embedded conference school record for \"Youngstown State\": location \"Youngstown, OH\") (read 2026-11-20)"
 identity_accessed = "2026-11-20"
+aliases      = ["Youngstown"]  # rmucolonials.com 2023 (game 9619)
 
 # The men's stanza 'Northern Kentucky' (HORIZON) supplies name, abbreviation, mascot, city and aliases; the host is the same.
 [[schools]]
@@ -18909,6 +18912,7 @@ enabled      = true
 city         = "Mount Pleasant, Mich."
 city_source  = "https://cmuchippewas.com/sports/womens-soccer/schedule/2026 (schedule page home rows print \"Mount Pleasant, Mich.\"; 10 mentions) (read 2026-11-20); second source: https://getsomemaction.com/standings.aspx?path=wsoc (embedded conference school record for \"Central Michigan\": location \"Mount Pleasant, MI\") (read 2026-11-20)"
 identity_accessed = "2026-11-20"
+aliases      = ["Central Mich."]  # cmuchippewas.com 2023 box score (game 8163)
 
 # ------------------------------------------------------------
 # MVC women (Missouri Valley Conference) - 10 stanzas here; members 2022/2023/2024/2025/2026 = 11/11/11/10/10
@@ -19060,6 +19064,7 @@ enabled      = true
 city         = "Chicago, Ill."
 city_source  = "https://uicflames.com/sports/mens-soccer/schedule (schedule page home rows print \"Chicago, Ill.\", Flames Field; 12 of 12 home rows) (read 2026-11-15) (the men's stanza's reading; the women's page: schools.toml men's stanza UIC (city_source: https://uicflames.com/sports/mens-soccer/schedule (schedule page home rows print \"Chicago, Ill.\", Flames Field; 12 of 12 home rows) (read 2026-11-15)))"
 identity_accessed = "2026-11-20"
+aliases      = ["Illinois Chicago"]  # gosycamores.com 2022 (game 14092); usiscreamingeagles.com 2022 "University of Illinois Chicago (Exhibition)" (10543)
 
 # The MVC and the site print "UNI" (og:site_name "UNI Athletics"); the
 # description names the "University of Northern Iowa Panthers", claimed as
@@ -19407,6 +19412,7 @@ enabled      = true
 city         = "De Witt, N.Y."
 city_source  = "design/batch1-membership-2026-09-02.md (DeWitt campus, Syracuse mailing address; spelled as the 2023 Gazetteer places file spells the CDP) (the men's stanza's reading; the women's page: https://lemoynedolphins.com/sports/womens-soccer/schedule/2026 home rows print the venue only (\"Ted Grant Field\"), no town; city taken from schools.toml men's stanza Le Moyne (\"De Witt, N.Y.\"))"
 identity_accessed = "2026-11-20"
+aliases      = ["LeMoyne"]  # sfuathletics.com 2023 and 2025 (games 11648, 13216), owlsports.com 2025 (14637); dsuhornets.com 2024 "LeMoyne College" (7791)
 
 # City: the women's home rows split 4 Central Islip, N.Y. and 3 Brookville,
 # N.Y. (2026); the majority is used, where the men's stanza says Brookville
@@ -19533,6 +19539,7 @@ enabled      = true
 city         = "Martin, Tenn."
 city_source  = "https://utmsports.com/sports/womens-soccer/schedule/2026 (schedule page home rows print \"Martin, Tenn.\"; 13 mentions) (read 2026-11-20); second source: https://ovcsports.com/standings.aspx?path=wsoc (embedded conference school record for \"UT Martin\": location \"Martin, Tenn.\") (read 2026-11-20)"
 identity_accessed = "2026-11-20"
+aliases      = ["Tennessee at Martin"]  # lindenwoodlions.com and usiscreamingeagles.com 2022 "University of Tennessee at Martin" (games 24804, 10559)
 
 [[schools]]
 name         = "Southeast Missouri"
@@ -20145,6 +20152,7 @@ enabled      = true
 city         = "Oxford, Miss."
 city_source  = "https://olemisssports.com/sports/womens-soccer/schedule/2025 (SideArm __NUXT_DATA__ schedule rows, location_indicator \"H\", location \"Oxford, Miss.\", 9 of 9 home rows) (read 2026-11-20); second source: https://georgiadogs.com/sports/womens-soccer/schedule/2025 (away row at Ole Miss, location \"Oxford, Miss.\"); https://uabsports.com/sports/womens-soccer/schedule/2025 (away row at Ole Miss, location \"Oxford, Miss.\")"
 identity_accessed = "2026-11-20"
+member_aliases = ["Mississippi"]  # SEC peers print the state name (floridagators.com 2022 "#13 Mississippi", game 25237; 2025, game 27350); a member alias, since "Mississippi College" (Division II) folds to the same key
 
 [[schools]]
 name         = "Mississippi State"
@@ -20178,6 +20186,7 @@ enabled      = true
 city         = "Columbia, Mo."
 city_source  = "https://mutigers.com/website-api/schedule-events?filter[schedule_id]=655 (2025 schedule events, venue_type home, location \"Columbia, Mo.\", 10 home rows) (read 2026-11-20); second source: https://hailstate.com/sports/womens-soccer/schedule/2025 (away row at Missouri, location \"Columbia, Mo.\"); https://rolltide.com/sports/womens-soccer/schedule/2025 (away row at Missouri, location \"Columbia, Mo.\")"
 identity_accessed = "2026-11-20"
+aliases      = ["Mizzou"]  # ukathletics.com 2022 (WMT, 20221020-mizzou), omahamavs.com 2022 (game 17689)
 
 # The men's stanza 'South Carolina' (SUNBELT) supplies name, abbreviation, mascot, city and aliases; the host is the same.
 # WMT Digital (wordpress): the probe reads every layer "season not proven" (or refuses the path);
@@ -20521,7 +20530,7 @@ years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["Houston Christian University", "Houston Baptist"]
+aliases      = ["Houston Christian University", "Houston Baptist", "HBU"]  # "HBU": goislanders.com 2022 (game 6886), the name before the rename
 city         = "Houston, Texas"
 city_source  = "https://hcuhuskies.com/sports/mens-soccer/schedule (schedule page home rows print \"Houston, Texas\", Sorrels Field; 11 of 12 home rows) (read 2026-11-15) (the men's stanza's reading; the women's page: https://hcuhuskies.com/sports/womens-soccer/schedule (probe 2026-11-20: town printed most on home rows))"
 identity_accessed = "2026-11-20"
@@ -21004,7 +21013,7 @@ enabled      = true
 city         = "Monroe, La."
 city_source  = "probe/SUNBELT-women.json (women's schedule home rows \"Monroe, La.\", Brown Stadium; 10) (read 2026-11-20); second source: standings/SUNBELT-women-2026.html embedded conference school object (location \"Monroe, Louisiana\")"
 identity_accessed = "2026-11-20"
-aliases      = ["Louisiana-Monroe"]
+aliases      = ["Louisiana-Monroe", "UL Monroe"]  # "UL Monroe": gseagles.com 2022 (game 13594), okstate.com 2024 (16420), ucasports.com 2025 (11924); "UL-Monroe" on mcneesesports.com 2023 (12167) and riceowls.com 2026 (28901)
 
 [[schools]]
 name         = "Louisiana Tech"
@@ -21588,7 +21597,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Orangeburg, S.C."
 city_source  = "https://scsuathletics.com/sports/womens-soccer/schedule/2026 (schedule page home rows print \"Orangeburg, SC\", Oliver C. Dawson Stadium / Willie Jeffries Field; 7 of 7 home rows) (read 2026-11-20); second source: meacsports.com embedded school object location \"Orangeburg, SC\" (batches/independent/meac-standings-wbball.html)"
-aliases      = ["South Carolina St."]
+aliases      = ["South Carolina St.", "SC State"]  # "SC State": gwusports.com 2023 and 2025 (games 7746, 8664), etsubucs.com 2023 (11247); its own 2022 box score prints "SC State University" (5825)
 identity_accessed = "2026-11-20"
 
 # ---------------------------------------------------------------------------
@@ -21650,6 +21659,13 @@ spelling = "St. Mary's (Exhibition)"
 owner    = "utrgv"
 slug     = "saint-marys"  # Division II St. Mary's (Texas), San Antonio
 source   = "utrgv/2023-men-schedule.html 2023-08-19 exhibition at \"Brownsville, TX\" and 2025-men 2025-08-19 at Edinburg, opponent link rattlerathletics.com (St. Mary's, San Antonio), read as Saint Mary's of California; twin on St. Mary's (Texas)'s 2025 page, none on Saint Mary's of California's"
+
+[[not_a_programme]]
+level    = "d1"
+spelling = "St. Mary's"
+owner    = "texas-southern"
+slug     = "saint-marys"  # Division II St. Mary's (Texas), San Antonio
+source   = "texas-southern/2023-women-schedule.html: 2023-08-27 at Alexander Durley Stadium, opponent link rattlerathletics.com and logo \"St. Mary's University (TX)\", read as Saint Mary's of California; the box score codes the side STMARY (game 4783)"
 
 [[not_a_programme]]
 level    = "d2"

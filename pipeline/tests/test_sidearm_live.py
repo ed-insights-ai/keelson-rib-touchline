@@ -3438,6 +3438,20 @@ def test_a_division_seed_is_a_rank_prefix() -> None:
         ("NR/No. 20 Kansas", "Kansas"),
         ("-/#21 LSU", "LSU"),
         ("-/#19 Texas Tech", "Texas Tech"),
+        # Division I women's 2022-2025: a dash in the second poll slot
+        # (tulsahurricane.com 2024 game 15519), a hyphenated bracketed seed
+        # (texastech.com 2025 game 21293), a marked rank closed by a full
+        # stop (texastech.com 2023 game 20332), and the seed word as a
+        # participle (rolltide.com 2022 game 15801).
+        ("#19/- Memphis", "Memphis"),
+        ("(5-Seed) #23/18 Baylor", "Baylor"),
+        ("No. 14. Texas", "Texas"),
+        ("5th-seeded Vanderbilt", "Vanderbilt"),
+        # And two the men's and the WAC's pages printed: a doubled dash
+        # (gousfbulls.com 2024 game 13385) and "Seeded" as its own word
+        # (cbulancers.com 2024 game 16258).
+        ("No. 23/-- Seattle", "Seattle"),
+        ("#2 Seeded UCLA", "UCLA"),
         # Real names that lead with a numeral, a letter-dash, or a dash keep
         # every character: a token must end in whitespace and a dash only
         # follows a rank.
@@ -3448,6 +3462,8 @@ def test_a_division_seed_is_a_rank_prefix() -> None:
         ("Nrthwest College", "Nrthwest College"),
         ("NR-Tech", "NR-Tech"),
         ("- Lynn University", "- Lynn University"),
+        ("14. Texas", "14. Texas"),
+        ("Seededorf College", "Seededorf College"),
         ("UT Tyler", "UT Tyler"),
         (
             "2023 DII Men's Soccer Selection Show",
@@ -3564,6 +3580,84 @@ def test_the_events_payload_skips_a_hosted_other_match_and_names_it() -> None:
     assert [row["id"] for row in fixtures] == ["sidearm:hostville:13071"]
     assert (fixtures[0]["home"], fixtures[0]["away"]) == ("hostville", "alpha")
     assert skips == ["hosted other-match skipped: 2026-08-27, Alpha v Bravo"]
+
+
+def test_the_events_payload_skips_a_bracket_result_row_and_names_it() -> None:
+    """A page listing a tournament it did not play prints each played match
+    as "winner def. loser, score" in the opponent title (uncbears.com 2022,
+    games 11894 and 12125-12127): minted as weber-state-def-4-sacramento-
+    state-1-1, and "#3 Portland State def. #6 Montana, 3-0" as a Portland
+    State match the owner never played."""
+    real = {
+        "id": 13071,
+        "date": "2026-10-23T19:00:00",
+        "location_indicator": "H",
+        "schedule": {"title": "2026 Women's Soccer Schedule"},
+        "opponent": {"title": "Alpha"},
+        "result": {"status": "N"},
+    }
+    events = [
+        {
+            **real,
+            "id": 13070 - offset,
+            "date": "2026-11-02T14:00:00",
+            "location_indicator": "N",
+            "opponent": {"title": title},
+        }
+        for offset, title in enumerate(
+            [
+                "#5 Alpha def. #4 Bravo, 1-1 (4-2 PKs)",
+                "#3 Bravo def. #6 Alpha, 3-0",
+                "#1 Alpha vs. #2 Bravo",
+            ]
+        )
+    ]
+    component = {"type": "events", "data": [*events, real]}
+    html = (
+        "<html><head><title>2026 Women's Soccer Schedule - Host</title></head>"
+        f"<body><script>\nvar obj = {json.dumps(component)};\n</script></body></html>"
+    )
+    skips: list[str] = []
+    fixtures = parse_schedule_page(
+        html,
+        page_url="https://host.test/sports/womens-soccer/schedule/2026",
+        year=2026,
+        owner_slug=_HOST,
+        aliases=_HOST_ALIASES,
+        skips=skips,
+        gender="women",
+    )
+    assert [row["id"] for row in fixtures] == ["sidearm:hostville:13071"]
+    assert skips == [
+        "hosted other-match skipped: 2026-11-02, Alpha v Bravo",
+        "hosted other-match skipped: 2026-11-02, Bravo v Alpha",
+        "hosted other-match skipped: 2026-11-02, Alpha v Bravo",
+    ]
+
+
+def test_a_result_row_naming_the_owner_is_the_owners_fixture() -> None:
+    """ "Hostville def. Alpha, 2-1" on Hostville's page is its match v Alpha;
+    a name merely starting "Def" is not split."""
+    html = _schedule_html(
+        {
+            "id": 13072,
+            "date": "2026-11-02T14:00:00",
+            "location_indicator": "H",
+            "schedule": {"title": "2026 Men's Soccer Schedule"},
+            "opponent": {"title": "#2 Hostville def. #7 Alpha, 2-1"},
+            "result": {"status": "N"},
+        }
+    )
+    fixtures = parse_schedule_page(
+        html,
+        page_url="https://host.test/sports/mens-soccer/schedule/2026",
+        year=2026,
+        owner_slug=_HOST,
+        aliases=_HOST_ALIASES,
+        skips=[],
+    )
+    assert [(row["home"], row["away"]) for row in fixtures] == [("hostville", "alpha")]
+    assert opponent_slug("Defiance College", {}) == "defiance"
 
 
 def test_the_events_payload_skips_a_round_placeholder_and_names_it() -> None:

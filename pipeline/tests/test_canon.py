@@ -57,6 +57,12 @@ def test_normalize_strips_every_published_rank_form():
         "NR/No. 20 Harding",
         "-/#21 Harding",
         "/#5 Harding",
+        "#19/- Harding",
+        "(5-Seed) #23/18 Harding",
+        "No. 14. Harding",
+        "5th-seeded Harding",
+        "#2 Seeded Harding",
+        "No. 23/-- Harding",
     ):
         assert normalize(published) == normalize("Harding") == "harding"
 
@@ -67,6 +73,8 @@ def test_normalize_leaves_a_name_that_merely_starts_with_rv():
     assert normalize("RVing Club") == "rving club"
     # And the same of "nr", not ranked.
     assert normalize("Nrthwest College") == "nrthwest college"
+    # A full stop is read after a marked value only.
+    assert normalize("14. Harding") == "14. harding"
     # An all-caps abbreviation leads far more often than a rank does.
     for abbr in ("UT Tyler", "MSU Denver", "CSU Pueblo", "USC Aiken"):
         assert normalize(abbr) == abbr.lower()

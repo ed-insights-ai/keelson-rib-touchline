@@ -807,9 +807,31 @@ def assert_schedule_proven(
 #                               site ucfknights.com 2026, event 12189 filed as
 #                               21-lsu)
 #
+# Division I 2022-2025 printed four more, each filed beside the programme's
+# own row on the same day:
+#
+#   #19/-  No. 23/--            a dash, or two, holding the empty second
+#                               slot (measured "#19/- Memphis" on
+#                               tulsahurricane.com 2024 game 15519, filed as
+#                               19-memphis; "No. 23/-- Seattle" on the men's
+#                               gousfbulls.com 2024 game 13385, filed as
+#                               no-23-seattle)
+#   (5-Seed)                    a bracketed seed with a hyphen before its
+#                               word (measured "(5-Seed) #23/18 Baylor" on
+#                               texastech.com 2025 game 21293, filed as
+#                               23-18-baylor)
+#   No. 14.                     a marked rank closed by a full stop (measured
+#                               "No. 14. Texas" on texastech.com 2023 game
+#                               20332, filed as no-14-texas)
+#   5th-seeded  #2 Seeded       the seed word as a participle (measured
+#                               "5th-seeded Vanderbilt" on rolltide.com 2022
+#                               game 15801, filed as 5th-seeded-vanderbilt;
+#                               "#2 Seeded UCLA" on cbulancers.com 2024 game
+#                               16258, filed as seeded-ucla)
+#
 # So a token is a value carrying an optional marker or bracket, tokens may be
-# slash- or pipe-joined with the first slot allowed empty or a dash, the whole
-# prefix repeats, and a lone dash after it belongs to the prefix.
+# slash- or pipe-joined with the first or last slot allowed empty or a dash,
+# the whole prefix repeats, and a lone dash after it belongs to the prefix.
 #
 # Two limits stop it eating real names. Two digits is the whole range a poll
 # uses, and every token must be followed by whitespace — which is why
@@ -817,7 +839,9 @@ def assert_schedule_proven(
 # the bare "rv" and "nr" alternatives bite neither Rverside nor a name that
 # merely begins "Nr". What leads an opponent string far more often than a
 # rank is an all-caps abbreviation: UT Tyler at 127 rows, MSU Denver at 17,
-# CSU Pueblo and USC Aiken behind them. None of those match.
+# CSU Pueblo and USC Aiken behind them. None of those match. The full stop
+# after a value is read only behind a marker ("#" or "No."), so a bare "14."
+# is never a rank.
 #
 # A conference that seeds its tournament by division writes the division
 # letter onto the seed (measured "No. 2E West Chester (PSAC Quarterfinal)" on
@@ -825,11 +849,12 @@ def assert_schedule_proven(
 # whitespace rule still keeps "2E" from being the start of a word.
 _RANK_VALUE = r"(?:rv|nr|t-\d{1,2}|\d{1,2}[a-z]?)"
 _RANK_MARKER = r"(?:#|no\.?)?"
-_RANK_BRACKETED = rf"{_RANK_MARKER}\s*{_RANK_VALUE}(?:\s*seed)?"
+_RANK_BRACKETED = rf"{_RANK_MARKER}\s*{_RANK_VALUE}(?:[-\s]*seed)?"
 _RANK_TOKEN = (
     r"(?:"
     rf"\(\s*{_RANK_BRACKETED}\s*\)|\[\s*{_RANK_BRACKETED}\s*\]"
-    rf"|{_RANK_MARKER}\s*\d{{1,2}}(?:st|nd|rd|th)?[-\s]seed"
+    rf"|{_RANK_MARKER}\s*\d{{1,2}}(?:st|nd|rd|th)?[-\s]seed(?:ed)?"
+    r"|(?:#|no\.?)\s*\d{1,2}\."
     rf"|{_RANK_MARKER}\s*{_RANK_VALUE}"
     r")"
 )
@@ -842,8 +867,10 @@ _RANK_JOINER = r"\s*[/|]\s*"
 # and "T-Bird College" stay whole, and a bare "21-" is never read as a rank.
 _RANK_HASH_HYPHEN = r"#\s*\d{1,2}-(?=[a-z])(?!seed\b)"
 _RANK_PREFIX = re.compile(
-    rf"^(?:-?{_RANK_JOINER})?(?:{_RANK_TOKEN}(?:{_RANK_JOINER}{_RANK_TOKEN})*\s+)*"
-    rf"(?:{_RANK_TOKEN}(?:{_RANK_JOINER}{_RANK_TOKEN})*\s+|{_RANK_HASH_HYPHEN})"
+    rf"^(?:-?{_RANK_JOINER})?"
+    rf"(?:{_RANK_TOKEN}(?:{_RANK_JOINER}{_RANK_TOKEN})*(?:{_RANK_JOINER}-{{1,2}})?\s+)*"
+    rf"(?:{_RANK_TOKEN}(?:{_RANK_JOINER}{_RANK_TOKEN})*(?:{_RANK_JOINER}-{{1,2}})?\s+"
+    rf"|{_RANK_HASH_HYPHEN})"
     r"(?:-\s+)?",
     re.IGNORECASE,
 )
@@ -887,15 +914,23 @@ def _split_orientation(name: str) -> tuple[str | None, str]:
 # The word between two team names on a row a tournament host publishes for
 # a match it staged but did not play: "0 Colorado Mesa vs 1 Midwestern"
 # (westminstergriffins.com 2023), "Western Oregon University vs Metropolitan
-# State University of Denver" (the same site, 2026).
-_TWO_TEAM_SPLIT = re.compile(r"\s+(?:vs\.?|v\.?)\s+", re.IGNORECASE)
+# State University of Denver" (the same site, 2026). A page may also print
+# the bracket's results as rows once they are played, winner first and the
+# score after a comma: "#5 Weber State def. #4 Sacramento State, 1-1 (4-2
+# PKs)" and three more on uncbears.com 2022 (games 11894, 12125-12127),
+# Northern Colorado listing the Big Sky tournament it did not play in. The
+# first was filed as weber-state-def-4-sacramento-state-1-1, and "#3
+# Portland State def. #6 Montana, 3-0" as a Portland State match. No
+# programme carries "def" as a word, and no name a comma and a score.
+_TWO_TEAM_SPLIT = re.compile(r"\s+(?:vs\.?|v\.?|def\.?)\s+", re.IGNORECASE)
+_RESULT_TAIL = re.compile(r",\s*\d{1,2}\s*-\s*\d{1,2}\b.*$")
 
 
 def _two_team_names(opponent_name: str) -> tuple[str, str] | None:
     parts = _TWO_TEAM_SPLIT.split(opponent_name, maxsplit=1)
     if len(parts) != 2:
         return None
-    first, second = (_clean_team_name(part) for part in parts)
+    first, second = (_clean_team_name(_RESULT_TAIL.sub("", part)) for part in parts)
     if not first or not second:
         return None
     return first, second
