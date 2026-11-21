@@ -18,6 +18,8 @@ WordPress schedule page trimmed to its title and ``route_vars``.
 
 from __future__ import annotations
 
+import dataclasses
+import inspect
 import json
 
 import pytest
@@ -137,9 +139,8 @@ def test_the_same_page_is_never_a_mens_page() -> None:
         # Washington State: the view's own gender field.
         ("Soccer", {"slug": "womens-soccer", "gender": "female"}, "women"),
         ("Men's Soccer", {"slug": "mens-soccer", "abbreviation": "M. Soccer"}, "men"),
-        # Miami: no witness names a gender, so the stanza's stands either way.
+        # Miami: no witness names a gender, so a women's stanza's stands.
         ("Soccer", {"slug": "soc", "abbreviation": "soc", "gender": None}, "women"),
-        ("Soccer", {"slug": "soc", "abbreviation": "soc", "gender": None}, "men"),
     ],
 )
 def test_a_sport_proves_the_gender_its_witnesses_name(
@@ -157,6 +158,17 @@ def test_a_sport_proves_the_gender_its_witnesses_name(
         ("Women's Soccer", {"slug": "soccer"}, "men", "name"),
         ("Men's Soccer", {"slug": "msoc"}, "women", "slug 'msoc'"),
         ("Football", {"slug": "football"}, "women", "not women's soccer"),
+        # A men's stanza is proven by "Men's Soccer" alone, as before women's
+        # WMT collection: a name that leaves the gender unsaid proves no men's
+        # page, even where no other witness genders it.
+        (
+            "Soccer",
+            {"slug": "soc", "abbreviation": "soc", "gender": None},
+            "men",
+            "not men's soccer",
+        ),
+        ("Soccer", {"slug": "soccer"}, "men", "not men's soccer"),
+        ("Soccer", {}, "men", "not men's soccer"),
     ],
 )
 def test_a_sport_any_witness_genders_otherwise_is_refused(
@@ -258,6 +270,28 @@ def test_the_board_collector_binds_the_stanzas_gender_into_the_box_score_proof()
     # A platform whose pages name their sport binds nothing.
     assert SIDEARM.for_gender("women") is SIDEARM
     assert PRESTO.for_gender("women") is PRESTO
+
+
+def test_every_wmt_member_that_proves_gender_is_bound(monkeypatch) -> None:
+    # Each recipe member that calls a wmt function taking ``gender`` is in
+    # ``gendered``; one left out proves every stanza as men's.
+    # parse_schedule is handed the stanza's gender by its caller and reads
+    # nothing from it.
+    taking_gender = {
+        field.name
+        for field in dataclasses.fields(WMT)
+        if callable(member := getattr(WMT, field.name))
+        and hasattr(wmt, getattr(member, "__name__", ""))
+        and "gender" in inspect.signature(getattr(wmt, member.__name__)).parameters
+    } - {"parse_schedule"}
+    assert "assert_served_season" in taking_gender
+    assert set(WMT.gendered) == taking_gender
+
+    seen: dict[str, object] = {}
+    monkeypatch.setattr(wmt, "assert_served_season", lambda *a, **k: seen.update(k))
+    page = PublishedPage(GAME_URL, GAME_URL, GAME)
+    WMT.for_gender("women").assert_served_season(page, 2025, LAYER_SCHEDULE)
+    assert seen == {"gender": "women"}
 
 
 # --- The WordPress generation ------------------------------------------------------

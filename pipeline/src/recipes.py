@@ -214,7 +214,7 @@ WMT = Recipe(
     parse_match=_late(wmt, "parse_match_page"),
     parse_identity=(_source_digest(wmt.__file__),),
     fetch_layer=_late(wmt, "fetch_layer"),
-    gendered=("fetch_layer", "collect_match", "parse_match"),
+    gendered=("fetch_layer", "assert_served_season", "collect_match", "parse_match"),
 )
 
 LIVE_COLLECTORS: Mapping[str, Recipe] = {

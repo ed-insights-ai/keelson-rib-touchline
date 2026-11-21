@@ -144,13 +144,14 @@ no conference flag, so its fixtures carry no `conference_game`. Coverage cells n
 collector per platform: `sidearm-live`, `presto-live` or `wmt-live`.
 
 The WMT proofs take the stanza's `gender` (the probe's: the slug's, else
-`--gender`). The sport's name must be soccer ("Men's Soccer", "Women's
-Soccer", or plain "Soccer", as Nebraska, Purdue and Little Rock name their
-women's programme), and every witness the site publishes beside it (the
+`--gender`). The sport's name must be soccer: "Men's Soccer" exactly for a
+men's stanza, and "Women's Soccer" or plain "Soccer" (as Nebraska, Purdue
+and Little Rock name their women's programme) for a women's one. Every witness the site publishes beside it (the
 slug, the abbreviation such as `WSOC`, the Nuxt sport view's gender field)
 must not name the other gender; the `wmt.games` team season and every game
 must carry the gender's sport code, `MSO` for men's and `WSO` for women's.
-A sport no witness genders takes the stanza's gender. Arkansas
+A plain "Soccer" no witness genders takes the stanza's gender, which must
+be women's. Arkansas
 (`/sport/w-soccer/`) is the older WordPress generation, with opaque season
 ids and no `/schedule/season/{year}/` page: no WMT recipe reads it, and the
 collect names it a gap rather than guessing a recipe.

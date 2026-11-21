@@ -494,7 +494,8 @@ _LEADING_YEAR = re.compile(r"^\s*(\d{4})\b")
 #: The sport names a soccer programme is published under: "Men's Soccer",
 #: "Women's Soccer", or plain "Soccer" (Nebraska, Purdue, Little Rock,
 #: Washington State and Miami name their women's programme so, measured
-#: 2026-11-20), which says nothing of gender.
+#: 2026-11-20), which says nothing of gender and so proves a women's
+#: stanza only (``prove_sport``).
 _SOCCER_NAME = re.compile(r"^\s*(?:(?P<gender>men|women)'?s\s+)?soccer\s*$", re.I)
 #: A sport's other self-descriptions, read for gender with every character
 #: but letters dropped: the slug ("womens-soccer", "wsoc"), the
@@ -530,15 +531,19 @@ def prove_sport(
 ) -> None:
     """Refuse a sport that is not soccer, or is the other gender's.
 
-    The sport's name must be soccer.  Its gender is read from every witness
+    The sport's name must be soccer: "Men's Soccer" exactly for a men's
+    stanza, as every men's site measured names it, and "Women's Soccer" or
+    a plain "Soccer" for a women's one.  Its gender is read from every witness
     the site publishes: the name ("Women's Soccer"), and the slug, the
     abbreviation and the view's ``gender`` field, by ``witnesses``.  Any
     witness naming another gender than the stanza's refuses the page, so
     Little Rock's "Soccer" at ``womens-soccer`` (abbreviation WSOC) is never
     a men's page.  A sport no witness genders (Miami's "Soccer", slug and
     abbreviation ``soc``: its one soccer programme is the women's) is the
-    stanza's gender: the stanza is the only thing that names it, and the
-    ``wmt.games`` team and games prove the gender again by their sport code.
+    stanza's gender for a women's stanza only: the stanza is the only thing
+    that names it, and the ``wmt.games`` team and games prove the gender
+    again by their sport code.  A men's stanza is never proven by a name
+    that leaves the gender unsaid.
     """
     sport_code(gender)
     text = str(name or "").replace("’", "'")
@@ -559,6 +564,11 @@ def prove_sport(
         )
         raise LiveCollectionError(
             f"[{year}] {url} is the {name!r} sport ({evidence}), not {gender}'s soccer"
+        )
+    if match.group("gender") is None and gender != "women":
+        raise LiveCollectionError(
+            f"[{year}] {url} is the {name!r} sport, which names no gender: "
+            f"not {gender}'s soccer, which a site names \"Men's Soccer\""
         )
 
 
