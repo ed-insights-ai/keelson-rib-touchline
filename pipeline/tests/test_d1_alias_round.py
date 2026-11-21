@@ -18,6 +18,14 @@ same-day duplicates left after the first collect: a typo ("Middle
 Tennesse"), initials no stanza resolved ("GCU", "UNR"), "SLU", which is
 Saint Louis's too and so a Southland member alias, and a nickname printed
 alone ("Ragin' Cajuns").
+
+The fourth (2026-11-21) is the 2022-2025 history: the long and old forms
+peers print ("LeMoyne", "California Riverside", "Youngstown", "Alabama at
+Birmingham", "Illinois Chicago", "Tennessee at Martin", "Mizzou", "HBU",
+"UL Monroe", "SC State") and one box abbreviation ("Central Mich.").
+"Mississippi" is an SEC member alias on Ole Miss: the institution-word fold
+reads "Mississippi College" (Division II) as the same key, so the bare
+state name is Ole Miss only inside an SEC collect.
 """
 
 import pytest
@@ -195,3 +203,72 @@ def test_a_womens_ambiguous_spelling_stays_its_own_text(
     women_identity, printed: str, conference: str, slug: str
 ) -> None:
     assert women_identity(printed, conference) == slug
+
+
+# The fourth women's round: same-day duplicates and unresolved box names of
+# the 2022-2025 backfill (printed, conference, season, programme).
+HISTORY_SPELLINGS = [
+    ("LeMoyne", "NEC", 2023, "le-moyne"),  # sfuathletics.com, game 11648
+    ("LeMoyne College", "NEC", 2024, "le-moyne"),  # dsuhornets.com, game 7791
+    ("LeMoyne", "AAC", 2025, "le-moyne"),  # owlsports.com, game 14637
+    ("#13 Mississippi", "SEC", 2022, "ole-miss"),  # floridagators.com, 25237
+    ("Mississippi", "SEC", 2025, "ole-miss"),  # floridagators.com, game 27350
+    ("California Riverside", "BIGSKY", 2023, "uc-riverside"),  # goviks.com
+    ("University of California Riverside", "BIGWEST", 2023, "uc-riverside"),
+    ("Youngstown", "HORIZON", 2023, "youngstown-state"),  # rmucolonials.com
+    ("University of Alabama at Birmingham", "CUSA", 2022, "uab"),  # fiusports
+    ("Illinois Chicago", "MVC", 2022, "uic"),  # gosycamores.com, game 14092
+    ("University of Illinois Chicago (Exhibition)", "OVC", 2022, "uic"),
+    ("University of Tennessee at Martin", "OVC", 2022, "ut-martin"),
+    ("Mizzou", "SEC", 2022, "missouri"),  # ukathletics.com (WMT)
+    ("Mizzou", "SUMMIT", 2022, "missouri"),  # omahamavs.com, game 17689
+    ("HBU", "SOUTHLAND", 2022, "hcu"),  # goislanders.com, game 6886
+    ("UL Monroe", "SUNBELT", 2022, "ulm"),  # gseagles.com, game 13594
+    ("UL-Monroe (Exhibition)", "SOUTHLAND", 2023, "ulm"),  # mcneesesports.com
+    ("UL-Monroe", "AAC", 2026, "ulm"),  # riceowls.com, game 28901
+    ("SC State", "BIGSOUTH", 2023, "south-carolina-state"),  # gwusports.com
+    ("SC State University", "independent", 2022, "south-carolina-state"),
+    ("Central Mich.", "MAC", 2023, "central-michigan"),  # cmuchippewas.com box
+]
+
+# Outside an SEC collect the bare state name stays its own text, and so does
+# "Mississippi College", which folds to the same key.
+HISTORY_STAY_STRANGERS = [
+    ("Mississippi College", "ASUN", 2022, "mississippi"),  # queensathletics.com
+    ("Mississippi", "SWAC", 2024, "mississippi"),
+    ("Mississippi State", "SEC", 2025, "mississippi-state"),
+]
+
+
+@pytest.fixture(scope="module")
+def season_identity():
+    schools = load_schools()
+    document = load_membership()
+    cache: dict[tuple[str, int], tuple[dict[str, str], object]] = {}
+
+    def resolve(printed: str, conference: str, season: int) -> str:
+        if (conference, season) not in cache:
+            aliases, _, scope = collect_identity(
+                schools, "women", conference, season, document=document
+            )
+            cache[(conference, season)] = (aliases, scope)
+        aliases, scope = cache[(conference, season)]
+        return opponent_slug(printed, aliases, scope=scope)  # type: ignore[arg-type]
+
+    return resolve
+
+
+@pytest.mark.parametrize(("printed", "conference", "season", "slug"), HISTORY_SPELLINGS)
+def test_a_history_spelling_resolves_to_the_programme(
+    season_identity, printed: str, conference: str, season: int, slug: str
+) -> None:
+    assert season_identity(printed, conference, season) == slug
+
+
+@pytest.mark.parametrize(
+    ("printed", "conference", "season", "slug"), HISTORY_STAY_STRANGERS
+)
+def test_a_history_spelling_another_school_shares_stays_its_text(
+    season_identity, printed: str, conference: str, season: int, slug: str
+) -> None:
+    assert season_identity(printed, conference, season) == slug
