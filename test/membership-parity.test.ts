@@ -144,7 +144,10 @@ describe("resolveConference and members_in_effect agree", () => {
     const { compared, differ } = await compare(file);
     expect(compared).toBe(file.conferences.length * 2 * (LAST - FIRST + 1));
     expect(differ).toEqual([]);
-  }, 30_000);
+    // The Python side scans every window once per conference-season
+    // (authored_through), so it grows with the record: about 18s on the
+    // Division I men's record, about 38s once Division I women's 2026 joined.
+  }, 120_000);
 
   test("when a programme moves in the season right after its old conference's horizon", async () => {
     const { differ } = await compare(MOVES_AT_THE_HORIZON);

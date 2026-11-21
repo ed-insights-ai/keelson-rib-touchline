@@ -6,6 +6,17 @@ fails `pipeline/tests/test_contracts.py`.
 
 ## 2026-11-20
 
+- Membership reference: seven NCAA Division I conferences that sponsor
+  women's soccer and not men's join `conferences`, each with a
+  `conference_profiles` entry at `level` `d1` (`BIG12`, `BIGSKY`, `CUSA`,
+  `SEC`, `SOUTHLAND`, `SWAC`, `UAC`; `code_is_word` true on `SOUTHLAND`).
+  The fixture carries each with one women's 2026 window copied from the
+  packaged file (its first Division I women's windows), so its conference
+  list still equals the packaged one; `UAC` (Abilene Christian) exhibits a
+  `division` as the United Athletic Conference's 2026 table prints it. No
+  shape change: the packaged file gains Division I women's windows for 2026
+  (and the 2024-2025 seasons of three movers from Division II), and no men's
+  or Division II window, profile or resolver answer changes.
 - Membership reference: `MAC` (the Mid-American Conference, which
   sponsored Division I men's soccer through 2022) joins `conferences` with
   a `conference_profiles` entry at `level` `d1` (`names` "Mid-American

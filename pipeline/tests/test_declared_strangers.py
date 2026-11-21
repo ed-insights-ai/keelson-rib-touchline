@@ -360,7 +360,7 @@ def test_what_the_parenthetical_says_still_counts() -> None:
 
 def test_schools_toml_declarations_are_valid() -> None:
     declared = load_declared_strangers()
-    assert len(declared) == 15
+    assert len(declared) == 16
     assert all(entry.source for entry in declared)
     errors = declared_stranger_errors(
         declared, load_schools(), document=load_membership()
