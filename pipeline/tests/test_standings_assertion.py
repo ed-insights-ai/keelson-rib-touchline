@@ -260,3 +260,158 @@ def test_the_cli_records_the_assertion(monkeypatch, capsys, tmp_path):
     out = capsys.readouterr().out
     assert "gender asserted, not read: women" in out
     assert "agreement" in out
+
+
+# ── every heading is a witness, and witnesses must agree ───────────────────
+
+
+def _headed(html: str, old: str, new: str) -> str:
+    """``html`` with every heading that reads ``old`` (caption, h2, title)
+    reading ``new``."""
+    assert old in html
+    return html.replace(old, new)
+
+
+@pytest.mark.parametrize(
+    ("heading", "season", "gender"),
+    [
+        ("2026 Women's Soccer Conference Standings", 2026, "women"),
+        ("Men's Soccer Standings 2026", 2026, "men"),
+        ("2025-26 Women's Soccer Standings", 2025, "women"),
+        ("2025-2026 Men’s Soccer Standings", 2025, "men"),
+        ("Soccer (M) Standings", None, "men"),
+    ],
+)
+def test_a_heading_is_read_wherever_it_names_the_season_or_gender(
+    heading, season, gender
+):
+    page = membership.parse_standings_page(
+        _headed(BIG12, "2026 Soccer Standings", heading)
+    )
+    assert (page.season, page.gender) == (season, gender)
+
+
+def test_headings_that_disagree_are_refused_whatever_is_asserted():
+    # The caption names 2026 and no gender; the h2 and title name 2025 and
+    # women. Read field by field, they made a (2026, women) no heading says.
+    html = BIG12.replace(
+        "<h2>2026 Soccer Standings</h2>", "<h2>2025 Women's Soccer Standings</h2>"
+    ).replace(
+        "2026 Soccer Standings - Big 12", "2025 Women's Soccer Standings - Big 12"
+    )
+    page = membership.parse_standings_page(html)
+    assert page.season is None
+    assert {season for season, _ in page.season_witnesses} == {2025, 2026}
+    document, schools = _case("BIG12", 2026, _names(BIG12))
+    with pytest.raises(ValueError, match="more than one season.*2026.*2025"):
+        membership.verify_standings(
+            html,
+            "BIG12",
+            "women",
+            2026,
+            document=document,
+            schools=schools,
+            assert_season=True,
+            assert_gender=True,
+        )
+
+    # Two genders: the UAC's "(W)" beside a title naming men's soccer.
+    html = UAC.replace(
+        "2026 Soccer (W) Standings - United", "2026 Men's Soccer Standings - United"
+    )
+    document, schools = _case("UAC", 2026, _names(UAC), UAC_DIVISIONS)
+    with pytest.raises(ValueError, match="more than one gender"):
+        membership.verify_standings(
+            html,
+            "UAC",
+            "women",
+            2026,
+            document=document,
+            schools=schools,
+            assert_gender=True,
+        )
+
+
+def test_a_heading_the_old_pattern_missed_still_refuses_another_page(
+    monkeypatch, capsys, tmp_path
+):
+    # The UAC page relabelled "2025 Men's Soccer Conference Standings" read
+    # nothing, so the assertion flags passed it as the 2026 women's page.
+    from scripts.check_membership import main
+
+    html = _headed(
+        UAC, "2026 Soccer (W) Standings", "2025 Men's Soccer Conference Standings"
+    )
+    document, schools = _case("UAC", 2026, _names(UAC), UAC_DIVISIONS)
+    monkeypatch.setattr(membership, "load_membership", lambda *a, **k: document)
+    monkeypatch.setattr(membership, "validate", lambda *a, **k: [])
+    monkeypatch.setattr(membership, "load_schools", lambda *a, **k: schools)
+    page = tmp_path / "uac-2026.html"
+    page.write_text(html, encoding="utf-8")
+    argv = ["--standings", str(page), "--conference", "UAC", "--season", "2026"]
+    flags = ["--gender", "women", "--assert-season", "--assert-gender"]
+
+    assert main([*argv, *flags]) == 1
+    captured = capsys.readouterr()
+    assert "agreement" not in captured.out
+    assert "2025 season, not 2026" in captured.err
+
+    # The gender alone contradicts the request too.
+    page.write_text(
+        _headed(UAC, "2026 Soccer (W) Standings", "2026 Men's Soccer Standings"),
+        encoding="utf-8",
+    )
+    assert main([*argv, *flags]) == 1
+    assert "men's soccer, not women's" in capsys.readouterr().err
+
+
+# ── a page that prints no divisions is a note, not a disagreement ──────────
+
+
+def test_a_page_printing_no_divisions_is_noted_not_refused(
+    monkeypatch, capsys, tmp_path
+):
+    # A combined table (the Big East's, the CAA's) beside windows that carry
+    # divisions: the page cannot disagree with what it does not print.
+    names = _names(BIG12)
+    halves = {name: "East" if index % 2 else "West" for index, name in enumerate(names)}
+    document, schools = _case("BIG12", 2026, names, halves)
+    verdict = membership.verify_standings(
+        BIG12,
+        "BIG12",
+        "women",
+        2026,
+        document=document,
+        schools=schools,
+        assert_gender=True,
+    )
+    assert verdict.division_mismatches == {}
+    assert verdict.agrees
+    assert verdict.division_note is not None
+    assert verdict.division_note.startswith("page prints no divisions")
+
+    from scripts.check_membership import main
+
+    monkeypatch.setattr(membership, "load_membership", lambda *a, **k: document)
+    monkeypatch.setattr(membership, "validate", lambda *a, **k: [])
+    monkeypatch.setattr(membership, "load_schools", lambda *a, **k: schools)
+    page = tmp_path / "big12-2026.html"
+    page.write_text(BIG12, encoding="utf-8")
+    argv = ["--standings", str(page), "--conference", "BIG12", "--season", "2026"]
+    assert main([*argv, "--gender", "women", "--assert-gender"]) == 0
+    out = capsys.readouterr().out
+    assert "note: page prints no divisions" in out
+    assert "agreement" in out
+
+    # Windows with no divisions need no note.
+    document, schools = _case("BIG12", 2026, names)
+    verdict = membership.verify_standings(
+        BIG12,
+        "BIG12",
+        "women",
+        2026,
+        document=document,
+        schools=schools,
+        assert_gender=True,
+    )
+    assert verdict.division_note is None

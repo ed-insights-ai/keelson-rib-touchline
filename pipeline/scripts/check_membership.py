@@ -10,10 +10,12 @@ Two modes, no network in either:
   whose site publishes no per-season records pages (the SAC): the page the
   ``source`` sentence cites, read back offline.
 
-A page whose heading names no season or no gender ("2026 Soccer
+A page whose headings name no season or no gender ("2026 Soccer
 Standings") is refused unless ``--assert-season`` or ``--assert-gender``
-asserts it; the verdict prints every assertion, and a heading that says
-otherwise is refused whatever is asserted.
+asserts it; the verdict prints every assertion. A page whose headings
+disagree with each other, or name another season or gender than asked,
+is refused whatever is asserted. A page that prints no division rows
+beside windows that carry divisions gets a note, not a refusal.
 """
 
 from __future__ import annotations
@@ -140,9 +142,11 @@ def _check_standings(
         division = verdict.page.divisions.get(name)
         print(f"    {name} -> {slug}" + (f" ({division})" if division else ""))
     print(f"  windows resolve {len(verdict.expected)} members")
+    if verdict.division_note:
+        print(f"  note: {verdict.division_note}")
     if verdict.agrees:
         print("  agreement: every name on the page is a member and nobody is missing")
-        if verdict.page.divisions or verdict.divisions:
+        if verdict.page.divisions:
             print("  divisions: every member is printed under its window's division")
         return 0
     for slug in sorted(verdict.missing):

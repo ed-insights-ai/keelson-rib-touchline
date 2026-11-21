@@ -71,8 +71,12 @@ printed by slug. The same command reproduces the count for a records-page
 conference from a captured `standings.aspx?path=msoc` too; nothing about
 those conferences changes.
 
-The season and gender are read off the page's standings heading ("2022
-Men's Soccer Standings", "2026 Soccer (W) Standings"). Some headings say
+The season and gender are read off every heading the page prints (the
+table's caption, each h1 and h2, and the `<title>`): any year or academic
+year ("2025-26") is a season, and any "Men's", "Women's", "(M)" or "(W)" a
+gender, wherever it stands ("2022 Men's Soccer Standings", "2026 Soccer
+(W) Standings", "Men's Soccer Standings 2026"). Headings that name
+different seasons or genders are refused outright. Some headings say
 less: the Big 12 prints "2026 Soccer Standings" and the OVC's 2022 page
 "2022 Soccer Standings", with no gender. Such a page is refused, naming
 what it leaves unsaid, unless you assert it after reading the page
@@ -85,12 +89,15 @@ uv run --project pipeline check-membership --standings big12-2026.html \
 
 `--assert-season` does the same for a heading with no year. The assertion
 is printed with the verdict (`gender asserted, not read: women`) and only
-fills a gap: a page whose heading names another season or gender is
-refused whatever you assert. A conference that prints its divisions as
-header rows inside one table (the UAC's Blue and Red divisions in 2026) has
-each row read as the following teams' division and held against the
-windows' `division`. A team printed under another division than its window
-says is a disagreement, printed on stderr.
+fills a field no heading names: a page whose headings name another season
+or gender is refused whatever you assert. A conference that prints its
+divisions as header rows inside one table (the UAC's Blue and Red divisions
+in 2026) has each row read as the following teams' division and held
+against the windows' `division`. A team printed under another division than
+its window says is a disagreement, printed on stderr. A combined table that
+prints no division rows at all, beside windows that carry divisions (the
+Big East's or the CAA's), is not one: the verdict prints `note: page prints
+no divisions` and the names alone decide it.
 
 Then run the **realignment-trap checklist**. Verify each item against a
 records page; never assume it from memory:
