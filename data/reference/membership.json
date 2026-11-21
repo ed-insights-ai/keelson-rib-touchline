@@ -1492,7 +1492,8 @@
           "conference": "CAA",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Campbell. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "South",
+          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Campbell. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints two divisions, \"North\" and \"South\"; campbell is listed under \"South\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -1703,7 +1704,8 @@
           "conference": "CAA",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Charleston. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "South",
+          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Charleston. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints two divisions, \"North\" and \"South\"; charleston-south-carolina is listed under \"South\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -2032,6 +2034,16 @@
           "from_season": 2022,
           "to_season": 2026,
           "source": "Rocky Mountain Athletic Conference, 2022 and 2026 Women's Soccer records, https://rmacsports.org/stats.aspx?path=wsoc&year=2022&conf=true and https://rmacsports.org/stats.aspx?path=wsoc&year=2026&conf=true (accessed 2026-11-08); listed in both under the label Colorado Christian, and in every season between (year=2023, 2024, 2025). The 2021 records (year=2021) list it too, so the window opens at the depth's start, not an arrival. It is on the 2026 table, so the window runs to the depth's end. The standings archive (https://rmacsports.org/standings.aspx?standings=161, 172, 187, 201 and 212 for 2022-2026 (2026 is the live table at standings.aspx?path=wsoc) lists the same members as the records pages, one table with no divisions."
+        }
+      ]
+    },
+    "colorado-college": {
+      "women": [
+        {
+          "conference": "MW",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Mountain West Conference, women's soccer 2026 (accessed 2026-11-20). 2026: Listed among 11 teams in the Mountain West Conference 2026 women's soccer standings (capture 2026-11-20) (https://themw.com/standings.aspx?path=wsoc). Colorado College is an affiliate: the Mountain West's embedded school record marks Colorado College member_type \"A\", and plays the full table. The Mountain West Conference 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -2623,7 +2635,8 @@
           "conference": "CAA",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Drexel. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "North",
+          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Drexel. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints two divisions, \"North\" and \"South\"; drexel is listed under \"North\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -2860,7 +2873,8 @@
           "conference": "CAA",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Elon. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "South",
+          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Elon. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints two divisions, \"North\" and \"South\"; elon is listed under \"South\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -3749,7 +3763,8 @@
           "conference": "CAA",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Hampton. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "South",
+          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Hampton. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints two divisions, \"North\" and \"South\"; hampton is listed under \"South\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -3898,7 +3913,8 @@
           "conference": "CAA",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Hofstra. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "North",
+          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Hofstra. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints two divisions, \"North\" and \"South\"; hofstra is listed under \"North\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -4281,7 +4297,8 @@
           "conference": "SUMMIT",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "The Summit League, women's soccer 2026 (accessed 2026-11-20), listed under the label Kansas City. 2026: Listed among 8 teams in the The Summit League 2026 women's soccer standings (capture 2026-11-20, archive id 197) (https://thesummitleague.org/standings.aspx?path=wsoc). The Summit League 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "Pod B",
+          "source": "The Summit League, women's soccer 2026 (accessed 2026-11-20), listed under the label Kansas City. 2026: Listed among 8 teams in the The Summit League 2026 women's soccer standings (capture 2026-11-20, archive id 197) (https://thesummitleague.org/standings.aspx?path=wsoc). The Summit League 2026 table prints two divisions, \"Pod A\" and \"Pod B\"; kansas-city is listed under \"Pod B\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -5659,7 +5676,8 @@
           "conference": "CAA",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Monmouth. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "North",
+          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Monmouth. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints two divisions, \"North\" and \"South\"; monmouth is listed under \"North\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -6104,7 +6122,8 @@
           "conference": "SUMMIT",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "The Summit League, women's soccer 2026 (accessed 2026-11-20), listed under the label North Dakota. 2026: Listed among 8 teams in the The Summit League 2026 women's soccer standings (capture 2026-11-20, archive id 197) (https://thesummitleague.org/standings.aspx?path=wsoc). The Summit League 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "Pod A",
+          "source": "The Summit League, women's soccer 2026 (accessed 2026-11-20), listed under the label North Dakota. 2026: Listed among 8 teams in the The Summit League 2026 women's soccer standings (capture 2026-11-20, archive id 197) (https://thesummitleague.org/standings.aspx?path=wsoc). The Summit League 2026 table prints two divisions, \"Pod A\" and \"Pod B\"; north-dakota is listed under \"Pod A\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -6114,7 +6133,8 @@
           "conference": "SUMMIT",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "The Summit League, women's soccer 2026 (accessed 2026-11-20), listed under the label North Dakota State. 2026: Listed among 8 teams in the The Summit League 2026 women's soccer standings (capture 2026-11-20, archive id 197) (https://thesummitleague.org/standings.aspx?path=wsoc). The Summit League 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "Pod A",
+          "source": "The Summit League, women's soccer 2026 (accessed 2026-11-20), listed under the label North Dakota State. 2026: Listed among 8 teams in the The Summit League 2026 women's soccer standings (capture 2026-11-20, archive id 197) (https://thesummitleague.org/standings.aspx?path=wsoc). The Summit League 2026 table prints two divisions, \"Pod A\" and \"Pod B\"; north-dakota-state is listed under \"Pod A\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -6231,7 +6251,8 @@
           "conference": "CAA",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Northeastern. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "North",
+          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Northeastern. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints two divisions, \"North\" and \"South\"; northeastern is listed under \"North\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -6669,7 +6690,8 @@
           "conference": "SUMMIT",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "The Summit League, women's soccer 2026 (accessed 2026-11-20), listed under the label Omaha. 2026: Listed among 8 teams in the The Summit League 2026 women's soccer standings (capture 2026-11-20, archive id 197) (https://thesummitleague.org/standings.aspx?path=wsoc). The Summit League 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "Pod B",
+          "source": "The Summit League, women's soccer 2026 (accessed 2026-11-20), listed under the label Omaha. 2026: Listed among 8 teams in the The Summit League 2026 women's soccer standings (capture 2026-11-20, archive id 197) (https://thesummitleague.org/standings.aspx?path=wsoc). The Summit League 2026 table prints two divisions, \"Pod A\" and \"Pod B\"; omaha is listed under \"Pod B\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -6687,7 +6709,8 @@
           "conference": "SUMMIT",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "The Summit League, women's soccer 2026 (accessed 2026-11-20), listed under the label Oral Roberts. 2026: Listed among 8 teams in the The Summit League 2026 women's soccer standings (capture 2026-11-20, archive id 197) (https://thesummitleague.org/standings.aspx?path=wsoc). The Summit League 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "Pod B",
+          "source": "The Summit League, women's soccer 2026 (accessed 2026-11-20), listed under the label Oral Roberts. 2026: Listed among 8 teams in the The Summit League 2026 women's soccer standings (capture 2026-11-20, archive id 197) (https://thesummitleague.org/standings.aspx?path=wsoc). The Summit League 2026 table prints two divisions, \"Pod A\" and \"Pod B\"; oral-roberts is listed under \"Pod B\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -7557,7 +7580,8 @@
           "conference": "SUMMIT",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "The Summit League, women's soccer 2026 (accessed 2026-11-20), listed under the label South Dakota. 2026: Listed among 8 teams in the The Summit League 2026 women's soccer standings (capture 2026-11-20, archive id 197) (https://thesummitleague.org/standings.aspx?path=wsoc). The Summit League 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "Pod A",
+          "source": "The Summit League, women's soccer 2026 (accessed 2026-11-20), listed under the label South Dakota. 2026: Listed among 8 teams in the The Summit League 2026 women's soccer standings (capture 2026-11-20, archive id 197) (https://thesummitleague.org/standings.aspx?path=wsoc). The Summit League 2026 table prints two divisions, \"Pod A\" and \"Pod B\"; south-dakota is listed under \"Pod A\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -7567,7 +7591,8 @@
           "conference": "SUMMIT",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "The Summit League, women's soccer 2026 (accessed 2026-11-20), listed under the label South Dakota State. 2026: Listed among 8 teams in the The Summit League 2026 women's soccer standings (capture 2026-11-20, archive id 197) (https://thesummitleague.org/standings.aspx?path=wsoc). The Summit League 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "Pod A",
+          "source": "The Summit League, women's soccer 2026 (accessed 2026-11-20), listed under the label South Dakota State. 2026: Listed among 8 teams in the The Summit League 2026 women's soccer standings (capture 2026-11-20, archive id 197) (https://thesummitleague.org/standings.aspx?path=wsoc). The Summit League 2026 table prints two divisions, \"Pod A\" and \"Pod B\"; south-dakota-state is listed under \"Pod A\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -8263,6 +8288,17 @@
         }
       ]
     },
+    "south-carolina-state": {
+      "women": [
+        {
+          "conference": "independent",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Division I independent, women's soccer 2026 (accessed 2026-11-20). 2026: the NCAA women's soccer RPI through games of Nov. 15, 2026 lists \"South Carolina St.\" as the one team under \"DI Independent\" (https://www.ncaa.com/rankings/soccer-women/d1/ncaa-womens-soccer-rpi), and none of the 31 conferences' 2026 women's standings lists it; its own 2026 schedule prints Conf 0-0 (Overall 2-14-1) against a Division I slate (https://scsuathletics.com/sports/womens-soccer/schedule/2026). 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival.",
+          "level": "d1"
+        }
+      ]
+    },
     "south-dakota-mines": {
       "men": [
         {
@@ -8532,7 +8568,8 @@
           "conference": "SUMMIT",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "The Summit League, women's soccer 2026 (accessed 2026-11-20), listed under the label St. Thomas. 2026: Listed among 8 teams in the The Summit League 2026 women's soccer standings (capture 2026-11-20, archive id 197) (https://thesummitleague.org/standings.aspx?path=wsoc). The Summit League 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "Pod B",
+          "source": "The Summit League, women's soccer 2026 (accessed 2026-11-20), listed under the label St. Thomas. 2026: Listed among 8 teams in the The Summit League 2026 women's soccer standings (capture 2026-11-20, archive id 197) (https://thesummitleague.org/standings.aspx?path=wsoc). The Summit League 2026 table prints two divisions, \"Pod A\" and \"Pod B\"; st-thomas is listed under \"Pod B\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -8671,7 +8708,8 @@
           "conference": "CAA",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Stony Brook. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "North",
+          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Stony Brook. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints two divisions, \"North\" and \"South\"; stony-brook is listed under \"North\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -8935,7 +8973,8 @@
           "conference": "CAA",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Towson. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "North",
+          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label Towson. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints two divisions, \"North\" and \"South\"; towson is listed under \"North\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -9500,7 +9539,8 @@
           "conference": "CAA",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label UNCW. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "South",
+          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label UNCW. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints two divisions, \"North\" and \"South\"; uncw is listed under \"South\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
@@ -10517,7 +10557,8 @@
           "conference": "CAA",
           "from_season": 2026,
           "to_season": 2026,
-          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label William & Mary. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+          "division": "South",
+          "source": "Coastal Athletic Association, women's soccer 2026 (accessed 2026-11-20), listed under the label William & Mary. 2026: Listed among 12 teams in the Coastal Athletic Association 2026 women's soccer standings (capture 2026-11-20, archive id 241) (https://caasports.com/standings.aspx?path=wsoc). The Coastal Athletic Association 2026 table prints two divisions, \"North\" and \"South\"; william-mary is listed under \"South\". 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     },
