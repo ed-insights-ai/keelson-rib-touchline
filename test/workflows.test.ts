@@ -389,6 +389,28 @@ describe("conference levels", () => {
     expect(r.stderr).toBe("skipped (no men 2022 members): MW OVC\n");
   });
 
+  test("the shipped record: the Division I women's sweep is 31 conferences in 2022 and 2026, 30 in 2024, the WAC and the UAC never both", async () => {
+    const sweep = async (season: string) =>
+      run(["bun", resolver, "conferences", "women", "--level", "d1", "--season", season]);
+    const early = await sweep("2022");
+    expect(early.code).toBe(0);
+    const swept = early.stdout.trim().split(" ");
+    expect(swept).toHaveLength(31);
+    expect(swept).toContain("WAC");
+    expect(swept).toContain("PAC12");
+    expect(early.stderr).toBe("skipped (no women 2022 members): UAC\n");
+    // The Pac-12 printed no table in 2024 or 2025: its two remaining
+    // programmes played those seasons as WCC affiliates.
+    const middle = await sweep("2024");
+    expect(middle.code).toBe(0);
+    expect(middle.stdout.trim().split(" ")).toHaveLength(30);
+    expect(middle.stderr).toBe("skipped (no women 2024 members): PAC12 UAC\n");
+    const late = await sweep("2026");
+    expect(late.code).toBe(0);
+    expect(late.stdout.trim().split(" ")).toHaveLength(31);
+    expect(late.stderr).toBe("skipped (no women 2026 members): WAC\n");
+  });
+
   test("a conference with no profile stops a level-filtered sweep, never thins it", async () => {
     _setMembershipCache({
       ...file,

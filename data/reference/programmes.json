@@ -10606,6 +10606,40 @@
         }
       }
     },
+    "mississippi-valley-state": {
+      "name": "Mississippi Valley State",
+      "nickname": "Delta Devils",
+      "abbreviation": "MVSU",
+      "city": "Itta Bena, Miss.",
+      "point": {
+        "lat": 33.5009,
+        "lon": -90.3243
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://mvsusports.com/sports/womens-soccer",
+          "accessed": "2026-11-20"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://mvsusports.com/sports/womens-soccer",
+          "accessed": "2026-11-20"
+        },
+        "city": {
+          "source": "probe/SWAC-women.json (home rows \"Itta Bena, Mississippi\", Mississippi Valley Soccer Complex) (read 2026-11-20); second source: standings/SWAC-women-2026.html embedded conference school object (location \"Itta Bena, MS\")",
+          "accessed": "2026-11-20"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "2835260",
+          "name": "Itta Bena city",
+          "state": "MS",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "missouri": {
       "name": "Missouri",
       "nickname": "Tigers",

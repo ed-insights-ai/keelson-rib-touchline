@@ -969,6 +969,62 @@ of 11); 347 of the 349 programmes are authored.
 
 **The same-day duplicates (2026-11-21).** Eleven women's rows were a match filed twice on one day, once under a stranger slug beside the member's own row. Five were a rank the grammar did not read. Texas printed "#24/NR Auburn", "#25/NR Arkansas" and "#23/NR Houston", and Saint Louis printed "NR/No. 20 Kansas", so the slugs kept the "NR" (not ranked). UCF's WMT site printed "-/#21 LSU", a dash holding the empty first poll slot, and the slug kept the 21. The WMT parser already cleans names through the SideArm grammar, so the fix went into the grammar and its `canon` mirror: "NR" is a rank value, and the empty first slot may hold a dash. The other six were spellings no stanza covered. "Middle Tennesse" is New Mexico State's typo for MTSU. Nevada's and Arizona's pages print "GCU", and Georgian Court's "GCU" is Division II and shares no table, so Grand Canyon's women's abbreviation now resolves. UNLV's page prints "UNR" for Nevada, and ULM's prints Louisiana's nickname alone ("Ragin' Cajuns"), each a stanza alias. SFA's page prints "SLU", which is Saint Louis's too, so it is a Southland member alias on Southeastern Louisiana and stays its own text outside a Southland collect.
 
+### 8.9 Division I women's 2022-2025, four seasons back (2026-11-21)
+
+The second of the two Division I women's PRs (epic tui-hxk): the player
+tiers blend each player's earlier season into the estimate, and the career
+and tenure views need the seasons before 2026. The decision is the owner's
+ruling of 2026-11-20 (depth 2022-2026, in two PRs), filed with `bd remember`
+as `d1-women-onboarding-decisions-2026-11-20`. The set was read from each
+season's own tables, not carried back from the 2026 profiles: 31
+conferences sponsored Division I women's soccer in 2022 and 2023 and 30 in
+2024 and 2025, 344, 345, 347 and 348 programmes on their tables. The WAC
+(12, 10, 8, 6) is the 2022-2025 conference the UAC replaced in 2026; the
+Pac-12 printed a table in 2022 and 2023 only. Three programmes played as
+Division I independents (South Carolina State 2022-2025, Chicago State
+2022-2023, Delaware State 2022). The research batches of 8.8 had already
+captured every 2022-2025 table, so this PR read them back rather than
+fetching again. Every conference-season was held against the conference's
+own archived women's standings, `check-membership --standings ...
+--gender women --season Y`: 116 of the 117 captured SideArm pages
+reproduce (the Southland's 2022 counted twice, the live archive and its
+Wayback capture). The SWAC's 2024 table does not, by design (Alcorn State,
+below). The Pac-12's 2022 and 2023 tables and the SEC's four seasons are
+held through the resolver only. The resolver returns the table's count for
+121 of the 122 conference-seasons; for the SWAC's 2024 it returns ten, the
+table's nine and Alcorn State.
+
+| touchpoint | change |
+|---|---|
+| `data/reference/membership.json` | 289 women's 2026 windows extended back over the seasons the programme played in the same conference and division; 157 new windows: 70 movers (the ten Pac-12 programmes that left after 2023, the American's six from Conference USA, the WAC's dispersal, Washington State and Oregon State through the WCC and back to the Pac-12, and the rest), the division splits, the three independents, and three programmes on no 2026 table; 56 2026-only windows rewritten to say where the programme played in 2025; West Georgia's ASUN 2025 window gains "Graphite Division" |
+| `pipeline/config/schools.toml` | 2022-2025 in `years` on 348 stanzas after a probe of every site, each block header with its counts per season, the probe verdicts and the archive ids; Saint Francis and St. Francis Brooklyn new at the end of the NEC block, Mississippi Valley State at the end of the SWAC block; aliases "Brigham Young" (BYU), "LA Tech" (Louisiana Tech) and "Texas A&M-Commerce" (East Texas A&M) |
+| `data/reference/programmes.json`, Gazetteer fixtures | rebuilt: one row, Itta Bena city (Mississippi Valley State); the two St. Francis stanzas keep their men's rows |
+| `pipeline/tests/test_membership.py` | the divisions test names the women's 2022-2025 divisions: the Sun Belt 2022-2025, the SEC 2022, the American 2023, the ASUN 2025, and the CAA from 2025 rather than 2026 |
+| `test/workflows.test.ts` | a women's sweep test: 31 conferences in 2022 (UAC skipped), 30 in 2024 (PAC12 and UAC), 31 in 2026 (WAC) |
+
+Divisions came from each season's table, all or none per conference-season:
+the Sun Belt printed East Division and West Division through 2025, the
+American East and West in 2023 only, the ASUN Gold Division and Graphite
+Division in 2025 only, and the CAA North and South from 2025. The 2026-only
+deferral 8.8 recorded is now closed: with the ASUN's whole 2025 authored,
+West Georgia's 2025 window carries its division. Every site was probed with
+`--seasons 2022-2025`. 334 served all four layers for every season; the
+WMT sites now prove their seasons, since #148 fixed the collectors.
+
+**Where this page was wrong or silent**
+
+| finding | what happened |
+|---|---|
+| a live archive that reprints today's name | the Southland's archived 2022 table (id 107) prints "East Texas A&M", the 2025 name; its Wayback capture of 2023-01-04 prints "Texas A&M-Commerce". The rename rule applies (the slug stays, the old name is an alias), and both captures reproduce. A live archive is not a period source for a label |
+| a JSON-only conference's divisions | the SEC's standings API groups its 2022 and 2023 rows by two division ids and exposes no label, and `include=division` is refused. The old secsports.com page, through Wayback, printed "SEC - East" and "SEC - West" in 2022 (2022-10-31) and one table in 2023 (2023-10-25), although the 2023 API still carries two ids. The ids are not printed text, so only 2022 is divided. Read the page the conference printed, not the API's grouping |
+| a capture that names the wrong season | a Wayback copy of the SEC page from 2023-01-05, headed "2022 Standings", carries records that match neither the 2022 API rows nor the 2022-10-31 capture. Hold a capture's records against a second source before trusting its heading |
+| a canceled season inside a window | Alcorn State's 2024 schedule lists all 20 matches "Canceled", and the SWAC's 2024 table omits it. Under the Spring Hill rule the window stays continuous, so the standings check names Alcorn missing from that one page. Mississippi Valley State's 2025 cancels every SWAC match and it has no 2026 page, so its window ends at 2024, its last table |
+| independents the tables cannot show | South Carolina State, Chicago State and Delaware State are on no table in the seasons they played, and each one's own schedule prints "Conf 0-0" for those seasons. They are authored as `independent` with `"level": "d1"` (rib #148). A programme whose conference windows start after 2022 had to be checked on its own site, since the tables cannot show such a season |
+| a conference host serving its predecessor | uacsports.com serves the WAC's women's archive (2013-2025) under the UAC banner, with ids out of order (2023 is 93, 2024 is 91). The headings name the season, so `verify_standings` refuses a wrong id; read every id's heading |
+| headings the check reads no gender from | the Big 12 ("2022 Soccer Standings", sport path `soc`) and the OVC's 2022 table ("2022 Soccer Standings") need `--assert-gender`. The NEC's 2022-2025 captions name the gender, unlike its 2026 one |
+| academic-year schedule paths, again | App State 2022, UC Santa Barbara 2022, Ohio State 2022 and 2023, Florida State and Gonzaga file seasons under `/schedule/2022-23`, and Oklahoma's schedule is client-rendered: the probe proves fewer seasons than they played, and `years` follows the windows. Arizona State, Purdue and Auburn answer HTTP 404 on the probe's plain-year paths, and Harvard reads nothing, as in 2026 |
+| a Division II season the history missed | Le Moyne's own 2022 women's schedule prints a Northeast-10 record (Conf 3-7-2), but the NE10's 2022 archive does not list it, and no Division II window covers that season. It is the 8.8 open question, still open: Le Moyne's women's windows start at the NEC in 2023 |
+
 ## Related
 
 - [Onboard a school](../onboard-a-school/): the per-site probe and stanza.

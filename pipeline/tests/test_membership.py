@@ -996,11 +996,15 @@ def test_the_shipped_conferences_carry_divisions_only_where_printed(
     # standings: the Big East ("East Division", "Midwest Division") from
     # 2023, its 2022 table being one undivided list; the CAA ("North",
     # "South") from 2025, its 2022-2024 tables being one undivided list; and
-    # the ACC ("Atlantic", "Coastal") in 2022 only, one table from 2023. Three
-    # Division I women's conferences do in 2026, the women's depth's first
-    # season: the United Athletic Conference ("Blue Division", "Red
-    # Division"), the CAA ("North", "South") and the Summit League ("Pod A",
-    # "Pod B"). The labelled span is (first season, last season or None for
+    # the ACC ("Atlantic", "Coastal") in 2022 only, one table from 2023. Seven
+    # Division I women's conferences do in some season of the women's
+    # 2022-2026 depth: the Sun Belt ("East Division", "West Division")
+    # 2022-2025, the SEC ("SEC - East", "SEC - West", its 2022 page) in 2022
+    # only, the American ("East", "West") in 2023 only, the ASUN ("Gold
+    # Division", "Graphite Division") in 2025 only, the CAA ("North",
+    # "South") from 2025, and in 2026 the United Athletic Conference ("Blue
+    # Division", "Red Division") and the Summit League ("Pod A", "Pod B").
+    # The labelled span is (first season, last season or None for
     # open). The
     # all-or-none rule holds on the shipped
     # file, nothing is labelled anywhere else, and every member of a
@@ -1014,7 +1018,11 @@ def test_the_shipped_conferences_carry_divisions_only_where_printed(
         ("CAA", "men"): (2025, None, {"North", "South"}),
         ("ACC", "men"): (2022, 2022, {"Atlantic", "Coastal"}),
         ("UAC", "women"): (2026, None, {"Blue Division", "Red Division"}),
-        ("CAA", "women"): (2026, None, {"North", "South"}),
+        ("CAA", "women"): (2025, None, {"North", "South"}),
+        ("SUNBELT", "women"): (2022, 2025, {"East Division", "West Division"}),
+        ("SEC", "women"): (2022, 2022, {"SEC - East", "SEC - West"}),
+        ("AAC", "women"): (2023, 2023, {"East", "West"}),
+        ("ASUN", "women"): (2025, 2025, {"Gold Division", "Graphite Division"}),
         ("SUMMIT", "women"): (2026, None, {"Pod A", "Pod B"}),
     }
     span = membership_document["seasons"]
