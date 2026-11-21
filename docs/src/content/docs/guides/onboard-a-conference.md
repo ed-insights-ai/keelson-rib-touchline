@@ -71,6 +71,27 @@ printed by slug. The same command reproduces the count for a records-page
 conference from a captured `standings.aspx?path=msoc` too; nothing about
 those conferences changes.
 
+The season and gender are read off the page's standings heading ("2022
+Men's Soccer Standings", "2026 Soccer (W) Standings"). Some headings say
+less: the Big 12 prints "2026 Soccer Standings" and the OVC's 2022 page
+"2022 Soccer Standings", with no gender. Such a page is refused, naming
+what it leaves unsaid, unless you assert it after reading the page
+yourself:
+
+```bash
+uv run --project pipeline check-membership --standings big12-2026.html \
+  --conference BIG12 --season 2026 --gender women --assert-gender
+```
+
+`--assert-season` does the same for a heading with no year. The assertion
+is printed with the verdict (`gender asserted, not read: women`) and only
+fills a gap: a page whose heading names another season or gender is
+refused whatever you assert. A conference that prints its divisions as
+header rows inside one table (the UAC's Blue and Red divisions in 2026) has
+each row read as the following teams' division and held against the
+windows' `division`. A team printed under another division than its window
+says is a disagreement, printed on stderr.
+
 Then run the **realignment-trap checklist**. Verify each item against a
 records page; never assume it from memory:
 
@@ -115,6 +136,21 @@ records page; never assume it from memory:
   reduces to `lincoln` and `check-membership` refuses it. Peer schedules
   that print only the bare name for the newcomer are the alias round's
   problem, not the loader's.
+- **A bare name beside a worded one** (Colorado, Big 12, and Colorado
+  College, a Mountain West affiliate, both Division I in women's soccer).
+  "College" and "University" are institution words, so "Colorado College"
+  folds to `colorado`, Colorado's own key. The institution-word rule splits
+  such a key: each worded spelling resolves under its institution key
+  ("colorado college") and the bare key resolves to neither, so
+  `check-membership` refuses Colorado's own name as an ambiguous identity.
+  That is right where peers print the bare word for the worded school
+  ("Union" for Union College stays refused). Where nobody does, the worded
+  stanza says so with `keep_institution_word = true`: its worded spellings
+  resolve under their institution keys alone and take no part in the fold,
+  so the bare "Colorado" stays Colorado's. The flag is refused on a stanza
+  none of whose claimed spellings carries an institution word, and two
+  stanzas claiming the kept spelling still collide. No stanza sets it by
+  default, so every resolution without it is the one it was.
 - **Non-participation is not a membership break.** Spring Hill and West
   Florida are absent from the GSC's 2020 statistics because the conference
   postponed the season; their windows stay continuous and the collect names
@@ -160,6 +196,17 @@ anywhere. The resolvers carry it through (`division_for` and
 divisions`), and the fixtures file's `programmes[]` entries carry it beside
 `conference`, which is how the site groups a standings table without any
 per-conference configuration.
+
+A programme's NCAA level comes from its windows' conference profiles. An
+`independent` window has no profile, so a programme that is only ever
+independent (South Carolina State, Division I women's soccer's lone
+independent in 2026) has no level, and `check-membership` refuses it ("has
+no NCAA level"). Its window states the level the NCAA classifies it at:
+`"level": "d1"` (`d1`, `d2` or `d3`). The statement governs that window's
+seasons alone, and only an independent window may carry it: a conference's
+window takes its profile's level, and a `non_member` window names no
+programme the NCAA classifies, so `check-membership` refuses `level` on
+either.
 
 ## 2. Probe every site and record the verdicts
 

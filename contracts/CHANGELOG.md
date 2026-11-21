@@ -6,6 +6,14 @@ fails `pipeline/tests/test_contracts.py`.
 
 ## 2026-11-20
 
+- Membership reference: a window may carry `level` (`d1`, `d2` or `d3`),
+  and only an `independent` one may. It is the NCAA level of an
+  independent's programme, which no conference profile carries (South
+  Carolina State, a Division I independent in 2026 women's soccer). The
+  fixture carries it on a synthetic `contract-example-independent-level`
+  women's window; `programme_level` and the site's `programmeLevel` read it
+  for the seasons that window covers. check-membership refuses `level` on a
+  conference's or a `non_member` window, and any value outside the levels.
 - Membership reference: seven NCAA Division I conferences that sponsor
   women's soccer and not men's join `conferences`, each with a
   `conference_profiles` entry at `level` `d1` (`BIG12`, `BIGSKY`, `CUSA`,

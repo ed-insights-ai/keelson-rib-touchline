@@ -115,13 +115,21 @@ def fetch_schedule_page(
     base_url: str,
     year: int,
     platform: str = PLATFORM_SIDEARM,
+    *,
+    gender: str = "men",
 ) -> PublishedPage:
-    """Fetch and prove one season's schedule page at the platform's own URL."""
+    """Fetch and prove one season's schedule page at the platform's own URL.
+
+    ``gender`` is the programme's: a WMT page must prove it is that gender's
+    soccer, since its sport path may name none (``/sports/soccer``).
+    """
     if platform == PLATFORM_PRESTOSPORTS:
         url = presto.layer_url(base_url, year, LAYER_SCHEDULE)
         return presto.fetch_page(session, url, year, LAYER_SCHEDULE)
     if platform == PLATFORM_WMT:
-        return wmt.fetch_season_page(session, base_url, year, LAYER_SCHEDULE)
+        return wmt.fetch_season_page(
+            session, base_url, year, LAYER_SCHEDULE, gender=gender
+        )
     return fetch_published_page(session, base_url, year, LAYER_SCHEDULE)
 
 
@@ -136,7 +144,7 @@ def _schedule_markup(html: str, platform: str) -> bool:
 
 
 def _sidearm_layers(
-    session: requests.Session, base_url: str, year: int
+    session: requests.Session, base_url: str, year: int, gender: str = "men"
 ) -> dict[str, str]:
     layers: dict[str, str] = {}
     try:
@@ -147,6 +155,7 @@ def _sidearm_layers(
             year=year,
             owner_slug="probe",
             aliases={},
+            gender=gender,
         )
         layers[LAYER_SCHEDULE] = (
             LAYER_PRESENT
@@ -251,18 +260,24 @@ def _presto_layers(
     return layers
 
 
-def _wmt_layers(session: requests.Session, base_url: str, year: int) -> dict[str, str]:
+def _wmt_layers(
+    session: requests.Session, base_url: str, year: int, gender: str = "men"
+) -> dict[str, str]:
     """Each layer through the recipe's own fetch and parse, so the probe
-    judges exactly what the collector would read."""
+    judges exactly what the collector would read, for the programme's
+    gender."""
     layers: dict[str, str] = {}
     try:
-        schedule = wmt.fetch_layer(session, base_url, year, LAYER_SCHEDULE)
+        schedule = wmt.fetch_layer(
+            session, base_url, year, LAYER_SCHEDULE, gender=gender
+        )
         fixtures = wmt.parse_schedule(
             schedule.page.html,
             page_url=schedule.page.final_url,
             year=year,
             owner_slug="probe",
             aliases={},
+            gender=gender,
         )
         layers[LAYER_SCHEDULE] = LAYER_PRESENT if fixtures else LAYER_ABSENT
         # A schedule whose box scores are reached only through the Game by
@@ -281,13 +296,13 @@ def _wmt_layers(session: requests.Session, base_url: str, year: int) -> dict[str
         layers[LAYER_SCHEDULE] = _layer_error(exc)
         layers[LAYER_MATCHES] = _layer_error(exc)
     try:
-        roster = wmt.fetch_layer(session, base_url, year, LAYER_ROSTER)
+        roster = wmt.fetch_layer(session, base_url, year, LAYER_ROSTER, gender=gender)
         players = wmt.parse_roster(roster.page.html, page_url=roster.page.final_url)
         layers[LAYER_ROSTER] = LAYER_PRESENT if players else LAYER_ABSENT
     except LiveCollectionError as exc:
         layers[LAYER_ROSTER] = _layer_error(exc)
     try:
-        stats = wmt.fetch_layer(session, base_url, year, LAYER_STATS)
+        stats = wmt.fetch_layer(session, base_url, year, LAYER_STATS, gender=gender)
         stat_players, stat_keepers = wmt.parse_stats(
             stats.page.html, page_url=stats.page.final_url
         )
@@ -306,8 +321,13 @@ def probe_layers(
     platform: str = PLATFORM_SIDEARM,
     *,
     landing_html: str = "",
+    gender: str = "men",
 ) -> dict[str, str]:
     """Report whether each live collection layer is present for one season.
+
+    ``gender`` is the programme's, read through to the collectors' own
+    proofs and parses (a WMT sport page proves its gender; a SideArm
+    schedule keeps only that gender's soccer events).
 
     A layer whose page was not served reads ``error (HTTP 403)``, ``error
     (timeout)`` and so on: what HTTP said is a suffix on the error value,
@@ -319,9 +339,9 @@ def probe_layers(
     if platform == PLATFORM_PRESTOSPORTS:
         layers = _presto_layers(session, base_url, year, landing_html)
     elif platform == PLATFORM_WMT:
-        layers = _wmt_layers(session, base_url, year)
+        layers = _wmt_layers(session, base_url, year, gender)
     else:
-        layers = _sidearm_layers(session, base_url, year)
+        layers = _sidearm_layers(session, base_url, year, gender)
     return {
         layer: layers[layer]
         for layer in (LAYER_SCHEDULE, LAYER_ROSTER, LAYER_STATS, LAYER_MATCHES)
@@ -342,6 +362,8 @@ def survey_seasons(
     base_url: str,
     years: Iterable[int],
     platform: str = PLATFORM_SIDEARM,
+    *,
+    gender: str = "men",
 ) -> SeasonSurvey:
     """Prove each candidate season's schedule page, naming the fetches refused.
 
@@ -355,7 +377,7 @@ def survey_seasons(
     errors: dict[int, str] = {}
     for year in years:
         try:
-            page = fetch_schedule_page(session, base_url, year, platform)
+            page = fetch_schedule_page(session, base_url, year, platform, gender=gender)
         except LiveCollectionError as exc:
             if _fetch_failed(exc):
                 errors[year] = failure_detail(exc)
@@ -370,9 +392,11 @@ def served_seasons(
     base_url: str,
     years: Iterable[int],
     platform: str = PLATFORM_SIDEARM,
+    *,
+    gender: str = "men",
 ) -> list[int]:
     """Return candidate seasons whose schedule page proves the requested year."""
-    return survey_seasons(session, base_url, years, platform).served
+    return survey_seasons(session, base_url, years, platform, gender=gender).served
 
 
 # Words that carry no identity when they lead a published name.  They are
@@ -655,7 +679,8 @@ def draft_stanza(
     set by hand, never padded into an initialism.  For PrestoSports and
     WMT, ``base_url`` is the sport landing page and both ``scraper`` and
     ``live_scraper`` name the platform; a WMT ``base_url`` is the site's own
-    ``{origin}/sports/{sport}`` (``mens-soccer`` or ``msoc``), the sport path
+    ``{origin}/sports/{sport}`` (``mens-soccer``, ``msoc``, ``womens-soccer``,
+    ``wsoc``, or a path naming no gender, ``soccer``), the sport path
     the season proofs check every page against.
     """
     if platform == PLATFORM_WMT:
@@ -733,6 +758,24 @@ class ProbeReport:
     #: Stanza fields the probe could not fill and a person must ("abbreviation").
     hand_edits: list[str] = field(default_factory=list)
 
+    @property
+    def served_nothing(self) -> bool:
+        """The landing page answered, yet nothing the collector reads is there.
+
+        Every layer absent and no season proven, with no layer refused and no
+        season fetch refused: the site served a page (Ohio's and St. Thomas's
+        ``/sports/womens-soccer`` answer 200 with a template, "@season @sport
+        Schedule"; their programme lives at ``/sports/wsoc``), so this is
+        neither a refusal nor a programme that publishes nothing.
+        """
+        return (
+            not self.not_seen
+            and not self.seasons
+            and not self.season_errors
+            and bool(self.layers)
+            and all(value == LAYER_ABSENT for value in self.layers.values())
+        )
+
     def render(self) -> str:
         if self.not_seen:
             platform = f"{self.platform} — {self.not_seen} from {self.url}"
@@ -752,6 +795,12 @@ class ProbeReport:
             for layer in (LAYER_SCHEDULE, LAYER_ROSTER, LAYER_STATS, LAYER_MATCHES)
         )
         lines.append(f"Served seasons: {seasons}")
+        if self.served_nothing:
+            lines.append(
+                f"Served nothing: {self.url} answered HTTP 200 with nothing in it "
+                "(every layer absent, no season proven); not a refusal, and not "
+                "proof the programme publishes nothing: check the sport path"
+            )
         if self.season_errors:
             lines.append(
                 "Seasons not seen: "

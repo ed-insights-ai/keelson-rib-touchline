@@ -19,6 +19,7 @@ import {
   activeConferencesInSeason,
   CONFERENCE_LEVELS,
   conferenceLevel,
+  knownProgrammes,
   loadMembership,
   type MembershipFile,
   programmeLevel,
@@ -300,6 +301,50 @@ describe("conference levels", () => {
         skipped: ["ENDED"],
       });
       expect(await programmeLevel("b", "men", 2026)).toBe("d1");
+    } finally {
+      _resetMembershipCache();
+    }
+  });
+
+  test("an independent window may state its level; a programme with no other window takes it", async () => {
+    _setMembershipCache({
+      conferences: ["LOWER"],
+      conference_profiles: { LOWER: { level: "d2", names: ["Lower League"] } },
+      memberships: {
+        stated: {
+          women: [
+            {
+              conference: "independent",
+              from_season: 2026,
+              to_season: 2026,
+              source: "t",
+              level: "d1",
+            },
+          ],
+        },
+        unstated: {
+          women: [{ conference: "independent", from_season: 2026, to_season: 2026, source: "t" }],
+        },
+        reclassifier: {
+          women: [
+            { conference: "LOWER", from_season: 2024, to_season: 2024, source: "t" },
+            {
+              conference: "independent",
+              from_season: 2025,
+              to_season: 2025,
+              source: "t",
+              level: "d1",
+            },
+          ],
+        },
+      },
+    });
+    try {
+      expect(await programmeLevel("stated", "women", 2026)).toBe("d1");
+      expect(await programmeLevel("unstated", "women", 2026)).toBeUndefined();
+      expect(await programmeLevel("reclassifier", "women", 2024)).toBe("d2");
+      expect(await programmeLevel("reclassifier", "women", 2025)).toBe("d1");
+      expect(await knownProgrammes("women", "d1")).toEqual(["reclassifier", "stated"]);
     } finally {
       _resetMembershipCache();
     }

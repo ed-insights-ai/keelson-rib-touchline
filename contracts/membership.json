@@ -499,6 +499,17 @@
         }
       ]
     },
+    "contract-example-independent-level": {
+      "women": [
+        {
+          "conference": "independent",
+          "level": "d1",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Contract fixture, synthetic: the independent window that states its NCAA level, South Carolina State's 2026 women's window (the NCAA RPI's lone DI Independent) restamped onto a contract slug. Only an independent window may carry level; a conference's window takes its profile's level, and check-membership refuses level anywhere else."
+        }
+      ]
+    },
     "minnesota-state": {
       "women": [
         {

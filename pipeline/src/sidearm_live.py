@@ -1188,8 +1188,13 @@ def institution_split_keys(
             key = _identity_key(candidate)
             if not key:
                 continue
+            is_worded = _institution_key(candidate) not in ("", key)
+            if is_worded and school.keep_institution_word:
+                # Held under its institution key alone (``_claim_keys``), so
+                # it claims no folded key to split.
+                continue
             owners.setdefault(key, set()).add(slug)
-            if _institution_key(candidate) not in ("", key):
+            if is_worded:
                 worded.add(key)
     return frozenset(key for key in worded if len(owners[key]) > 1)
 
@@ -1260,19 +1265,26 @@ def stanza_state(school: SchoolConfig) -> str | None:
     return None if town is None else town.usps
 
 
-def _claim_keys(candidate: str, split: frozenset[str]) -> tuple[str, ...]:
+def _claim_keys(
+    candidate: str, split: frozenset[str], *, keeps_word: bool = False
+) -> tuple[str, ...]:
     """The keys one claimed spelling registers under, given the split keys.
 
     Its folded key, unless an institution word splits that key: then its
     institution key, or nothing for a bare spelling, which names every
-    programme the split key joins.
+    programme the split key joins. A worded spelling of a stanza that keeps
+    its institution word (``keep_institution_word``: Colorado College) is
+    held under its institution key whether or not anything splits its
+    folded key.
     """
     key = _identity_key(candidate)
     if not key:
         return ()
+    institution = _institution_key(candidate)
+    if keeps_word and institution and institution != key:
+        return (institution,)
     if key not in split:
         return (key,)
-    institution = _institution_key(candidate)
     return (institution,) if institution and institution != key else ()
 
 
@@ -1313,7 +1325,8 @@ def identity_aliases(
             continue
         slug = programme_slug(school.name)
         for candidate in _identity_spellings(school):
-            for key in _claim_keys(candidate, split):
+            keeps = school.keep_institution_word
+            for key in _claim_keys(candidate, split, keeps_word=keeps):
                 if key != _identity_key(candidate) and aliases.get(key, slug) != slug:
                     contested.add(key)
                 aliases[key] = slug
@@ -1351,6 +1364,31 @@ def _claimed_fields(school: SchoolConfig) -> list[tuple[str, str]]:
     return fields
 
 
+def kept_word_errors(schools: list[SchoolConfig]) -> list[str]:
+    """A ``keep_institution_word`` stanza that claims no worded spelling.
+
+    The flag changes only how a spelling carrying an institution word
+    registers, so on a stanza whose name, aliases and resolving
+    abbreviation carry none it says something the stanza does not do.
+    """
+    errors = []
+    for school in schools:
+        if not school.keep_institution_word:
+            continue
+        worded = [
+            candidate
+            for candidate in _identity_spellings(school)
+            if _institution_key(candidate) not in ("", _identity_key(candidate))
+        ]
+        if not worded:
+            errors.append(
+                f"{programme_slug(school.name)}:{school.gender} sets "
+                "keep_institution_word, but none of its claimed spellings "
+                "carries an institution word (University, College)"
+            )
+    return errors
+
+
 def _gender_splits(schools: list[SchoolConfig]) -> dict[str, frozenset[str]]:
     genders = {school.gender for school in schools}
     return {gender: institution_split_keys(schools, gender) for gender in genders}
@@ -1375,6 +1413,8 @@ def identity_collisions(
     to "boston". Their institution keys are checked instead, so two stanzas
     that both claim "Boston College" still collide, on "boston college". A
     bare spelling of a split key is ``identity_ambiguities``'s to report.
+    A worded spelling of a stanza that keeps its institution word is checked
+    under its institution key, the one key it claims.
     """
     splits = _gender_splits(schools)
     claims: dict[tuple[str, str], dict[str, list[tuple[str, str]]]] = {}
@@ -1384,7 +1424,10 @@ def identity_collisions(
             key = _identity_key(candidate)
             if not key:
                 continue
-            if key in splits[school.gender]:
+            kept = _institution_key(candidate)
+            if school.keep_institution_word and kept and kept != key:
+                key = kept
+            elif key in splits[school.gender]:
                 institution = _institution_key(candidate)
                 if not institution or institution == key:
                     continue
@@ -1980,15 +2023,19 @@ def resolution_scope(
                     folded.setdefault(key, set()).add(slug)
         if school.abbreviation:
             abbreviations[slug] = school.abbreviation
+        keeps = school.keep_institution_word
         identity = [
             key
             for candidate in _identity_spellings(school)
-            for key in _claim_keys(candidate, split)
+            for key in _claim_keys(candidate, split, keeps_word=keeps)
         ]
         member = [
             key
             for candidate in school.member_aliases
-            for key in (_claim_keys(candidate, split) or (_identity_key(candidate),))
+            for key in (
+                _claim_keys(candidate, split, keeps_word=keeps)
+                or (_identity_key(candidate),)
+            )
         ]
         for key in (*identity, *member):
             if not key:
@@ -5517,6 +5564,8 @@ def collect_programme(
     from src.recipes import NoCollector, live_recipe
 
     recipe = live_recipe(platform)
+    if recipe is not None:
+        recipe = recipe.for_gender(school.gender)
     if recipe is None:
         reason = (
             f"{school.name} {school.gender}: no live collector for platform "

@@ -36,7 +36,10 @@ import { CONFERENCE_LEVELS, type ConferenceLevel } from "./levels.ts";
  *  from 2023); optional, and a change of division splits the window the way
  *  a change of conference does. check-membership holds each
  *  conference-season to all-or-none: every member's window carries one or
- *  none does. */
+ *  none does. `level` is an `independent` window's NCAA level (South
+ *  Carolina State, a Division I independent, is at "d1"): a conference's
+ *  window takes its profile's level, and check-membership refuses `level`
+ *  on any window but an independent one. */
 export const membershipWindowSchema = z
   .object({
     conference: z.string().min(1),
@@ -44,6 +47,7 @@ export const membershipWindowSchema = z
     to_season: z.number().int(),
     source: z.string().min(1),
     division: z.string().min(1).optional(),
+    level: z.enum(CONFERENCE_LEVELS).optional(),
   })
   .strict();
 export type Window = z.infer<typeof membershipWindowSchema>;
@@ -299,6 +303,15 @@ export type Target =
     }
   | { kind: "unknown"; subject: string; knownConferences: string[]; suggestions: string[] };
 
+/** A window's NCAA level, as pipeline/src/membership.py `_window_level`
+ *  reads it: its conference profile's, or the level an `independent`
+ *  window states; undefined for every other window. */
+function windowLevel(file: MembershipFile, w: Window): ConferenceLevel | undefined {
+  const profiled = file.conference_profiles?.[w.conference.toUpperCase()]?.level;
+  if (profiled) return profiled;
+  return w.conference === "independent" ? w.level : undefined;
+}
+
 function normalize(s: string): string {
   return s
     .toLowerCase()
@@ -316,10 +329,7 @@ export async function knownProgrammes(gender: string, level?: ConferenceLevel): 
     .filter(([, byGender]) => (byGender[gender]?.length ?? 0) > 0)
     .filter(
       ([, byGender]) =>
-        level === undefined ||
-        (byGender[gender] ?? []).some(
-          (w) => file.conference_profiles?.[w.conference.toUpperCase()]?.level === level,
-        ),
+        level === undefined || (byGender[gender] ?? []).some((w) => windowLevel(file, w) === level),
     )
     .map(([slug]) => slug)
     .sort();
@@ -362,11 +372,12 @@ export async function conferenceLevel(conference: string): Promise<ConferenceLev
 
 /** The NCAA level a programme plays at in one season, read off its windows
  *  the way pipeline/src/membership.py `programme_level` reads it: the level
- *  of the conference its window for the season names; for a season no
- *  level-bearing window covers (an independent or non-member year, or past
- *  its last window), the level of the latest level-bearing window that ended
+ *  of the conference its window for the season names, or the level its
+ *  independent window states; for a season no level-bearing window covers
+ *  (an independent year that states none, a non-member year, or past its
+ *  last window), the level of the latest level-bearing window that ended
  *  before it, else of the earliest one after it. Undefined only for a
- *  programme no window ever puts in a profiled conference. */
+ *  programme no window ever gives a level. */
 export async function programmeLevel(
   slug: string,
   gender: string,
@@ -374,7 +385,7 @@ export async function programmeLevel(
 ): Promise<ConferenceLevel | undefined> {
   const file = await loadMembership();
   const levelled = (file.memberships[slug]?.[gender] ?? []).flatMap((w) => {
-    const level = file.conference_profiles?.[w.conference.toUpperCase()]?.level;
+    const level = windowLevel(file, w);
     return level ? [{ from: w.from_season, to: w.to_season, level }] : [];
   });
   const covering = levelled.find((w) => season >= w.from && season <= w.to);
