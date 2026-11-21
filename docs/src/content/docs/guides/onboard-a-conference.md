@@ -867,6 +867,50 @@ to the probe except Harvard, which reads nothing, as it did for 2023-2026.
 | a dead host that was the sandbox | `sfcathletics.com` failed name resolution from a sandboxed fetch and served the 2022 schedule, statistics and box scores to the probe run outside it. Re-check a dead host outside any sandbox before filing it |
 | the alias round was small | the first collect (23 of 23 conferences, 2,709 box scores) left one stranger beside a member: Dayton and Rhode Island print "Loyola" for Loyola Chicago, now an A10 member alias, which also gives the "Loyola (Ill.)" qualifier its claimant on any page. `box-vs-fixture` named ten boxes across 2022-2025 whose team names resolved to nothing ("Northern Ky.", "Harvard Crimson", "Col. of Charleston" and the like); each became a stanza alias, and the check reads 0 unresolved on the Division I home |
 
+### 8.8 Division I women's 2026 (2026-11-20)
+
+Division I women's soccer, 2026 only: the first of two PRs (the 2022-2025
+history is the second, epic tui-hxk). The scope came from the NCAA's own
+records, not from the men's profiles: 31 conferences sponsor it, every one
+with an automatic qualifier, plus one independent, South Carolina State (the
+NCAA RPI's lone "DI Independent"), 349 programmes. Seven of the 31 sponsor
+women's soccer and not men's and gained a profile (`BIG12`, `BIGSKY`,
+`CUSA`, `SEC`, `SOUTHLAND`, `SWAC`, `UAC`); the United Athletic Conference is
+the renamed WAC, and women's 2026 is authored under `UAC`. Research ran as
+five regional read-only batches, durable under
+`d1-soccer/docs/onboarding-2026-11-20-women/`, and one session integrated
+them with a generator beside the batches. Every conference-season was held
+against the conference's own 2026 women's standings,
+`check-membership --standings ... --gender women --season 2026`: 29 of 30
+captured pages reproduce, the MW does not (Colorado College, below), and
+the SEC's standings are JSON, so its 16 are held through the resolver only.
+The resolver returns the table's count for every conference but the MW (10
+of 11); 347 of the 349 programmes are authored.
+
+| touchpoint | change |
+|---|---|
+| `data/reference/membership.json` | seven profiles (`code_is_word` on `SOUTHLAND`); 349 women's windows: one 2026 window for each of 343 new slugs (`UAC` windows carry "Blue Division" or "Red Division" as its table prints them), the four movers' 2026 windows, and the Division I seasons three movers played before 2026 (West Georgia ASUN 2024 and 2025, Mercyhurst NEC from 2024, New Haven NEC from 2025) |
+| `pipeline/config/schools.toml` | a Division I women's section of 343 stanzas, grouped by 2026 conference, each block header with its count, the probe verdicts and the standings page; 212 reuse a men's Division I stanza's name, abbreviation, mascot, city, pin and aliases with the women's sport URL; West Florida, West Georgia, New Haven and Mercyhurst keep their Division II women's stanzas and gain 2026 in `years`; 32 WMT sites carry `live_scraper = "wmt"`; Colorado College and South Carolina State are written commented out |
+| `data/reference/programmes.json`, Gazetteer fixtures | rebuilt: 134 new rows; Boise (`Boise City city`), Nashville (the Vanderbilt row, the consolidated place) and Athens pinned |
+| `contracts/membership.json`, `contracts/CHANGELOG.md` | the seven codes join the fixture with one women's 2026 window each (Abilene Christian exhibits a UAC division) |
+| `biome.json` | a fifth file: `membership.json` passed 1 MiB, and Biome skips a file over `files.maxSize` with a warning and exit 0, so the gate had silently stopped checking it; the limit is 4 MiB |
+| `test/membership-parity.test.ts` | the shipped-record parity test ran past its 30 s budget: the Python resolver scans every window once per conference-season (`authored_through`), about 18 s on the men's record and 38 s with the women's 2026; the budget is 120 s |
+| `pipeline/tests/test_membership.py` | the divisions test names the UAC women's 2026 divisions |
+
+**Where this page was wrong or silent**
+
+| finding | what happened |
+|---|---|
+| `/members` pages are gone | every conference's `/members` page answered 404; hosts came from the member records the standings pages embed (`athletics_website`), with the public host where a record names an admin CMS host |
+| the probe drafts no city | on the current SideArm schedule layout the probe returns no town, so cities were read off the schedule payload's home rows or the conference member record by hand, and each `city_source` says which |
+| a "2026 only" PR still authors a mover's earlier Division I seasons | check-membership refuses a gap between a slug's windows ("cover them explicitly"), and a mover's Division II window ends before 2026: the seasons between are authored from the conference's archived tables, the true conference rather than a structural placeholder. Divisions label a conference-season all or none, so West Georgia's ASUN 2025 window carries none although that table prints Gold and Graphite |
+| a bare name beside an institution-worded one at one level | "Colorado College" folds to `colorado`, the key the Big 12's Colorado claims bare. The key splits on the institution word and bare "Colorado" resolves to neither, which check-membership refuses as ambiguous; qualifying the name around the fold would file every printed "Colorado College" under Colorado (the Boston failure before c3b0c2c). The stanza is written commented out, so the MW standings check reads "Colorado College" as `colorado` and fails: the identity rule needs a way to hold the pair |
+| an independent with no conference has no level | a level comes from a window naming a profiled conference, else the stanza conference's profile, and `independent` has neither, so South Carolina State's stanza is refused ("has no NCAA level"). `enabled = false` does not take a stanza out of the identity or level checks, and a window on a slug no stanza mints is refused ("unknown institution slug"), so neither a stanza nor a window can be shipped; both held-out windows are drafted in the onboarding record |
+| headings the standings check does not read | the NEC ("2026 NEC Women's Soccer Standings"), the Big 12 ("2026 Soccer Standings", sport path `soc`) and the UAC print captions `_STANDINGS_HEADING` does not match, so `verify_standings` reads their names but cannot refuse another season's page; the SEC renders its table in the browser from an API, and `--standings` cannot read it |
+| table labels the site does not print | Conference USA prints "NM State" and "Jax State", the Southland "A&M-Corpus Christi": the standings check named each as a stranger, and each became an alias |
+| a town that falls to a county division | unpinned, Athens, Ga. matched "Athens CCD" through the county subdivisions file and the build passed; only reading every new row's point caught it (the Honolulu CCD lesson). Pin a consolidated city to its place row |
+| one programmes row per slug | a women's stanza that reuses a men's slug keeps the men's row: LIU women play at Central Islip by their home rows, the row stays the men's Brookville |
+
 ## Related
 
 - [Onboard a school](../onboard-a-school/): the per-site probe and stanza.
