@@ -12,6 +12,12 @@ aliases, read only inside the programme's own conference.
 The second round, over the 634 archived 2023-2025 pages, adds the spellings
 only the history seasons print: IU Indy's old name and its long forms, and
 the expanded names a token subset had been reading as North Carolina.
+
+The women's rounds follow the same rule. The third (2026-11-21) is the
+same-day duplicates left after the first collect: a typo ("Middle
+Tennesse"), initials no stanza resolved ("GCU", "UNR"), "SLU", which is
+Saint Louis's too and so a Southland member alias, and a nickname printed
+alone ("Ragin' Cajuns").
 """
 
 import pytest
@@ -105,6 +111,24 @@ STAY_STRANGERS = [
     ("Central Florida", "AAC", "central-florida"),
 ]
 
+# The third women's round (bead tui-l57): same-day duplicates of the 2026
+# women's collect, each a peer's spelling of a member on the printing page
+# (printed, the collecting conference whose page printed it, programme).
+WOMEN_SPELLINGS = [
+    ("Middle Tennesse", "CUSA", "mtsu"),  # nmstatesports.com, game 19305
+    ("GCU", "MW", "grand-canyon"),  # nevadawolfpack.com, game 14181
+    ("GCU", "BIG12", "grand-canyon"),  # arizonawildcats.com, game 31801
+    ("UNR", "MW", "nevada"),  # unlvrebels.com, game 17890
+    ("SLU", "SOUTHLAND", "southeastern-louisiana"),  # sfajacks.com, game 14219
+    ("Ragin' Cajuns", "SUNBELT", "louisiana"),  # ulmwarhawks.com, game 16604
+]
+
+# "SLU" is Saint Louis's too: outside a Southland collect it stays its text.
+WOMEN_STAY_STRANGERS = [
+    ("SLU", "A10", "slu"),
+    ("SLU", "SEC", "slu"),
+]
+
 
 @pytest.fixture(scope="module")
 def identity():
@@ -143,3 +167,31 @@ def test_an_ambiguous_spelling_stays_its_own_text(
     identity, printed: str, conference: str, slug: str
 ) -> None:
     assert identity(printed, conference) == slug
+
+
+@pytest.fixture(scope="module")
+def women_identity():
+    schools = load_schools()
+    document = load_membership()
+
+    def resolve(printed: str, conference: str) -> str:
+        aliases, _, scope = collect_identity(
+            schools, "women", conference, 2026, document=document
+        )
+        return opponent_slug(printed, aliases, scope=scope)  # type: ignore[arg-type]
+
+    return resolve
+
+
+@pytest.mark.parametrize(("printed", "conference", "slug"), WOMEN_SPELLINGS)
+def test_womens_peer_spelling_resolves_to_the_programme(
+    women_identity, printed: str, conference: str, slug: str
+) -> None:
+    assert women_identity(printed, conference) == slug
+
+
+@pytest.mark.parametrize(("printed", "conference", "slug"), WOMEN_STAY_STRANGERS)
+def test_a_womens_ambiguous_spelling_stays_its_own_text(
+    women_identity, printed: str, conference: str, slug: str
+) -> None:
+    assert women_identity(printed, conference) == slug

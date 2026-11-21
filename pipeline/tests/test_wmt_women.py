@@ -27,7 +27,8 @@ import pytest
 from scripts import collect_board
 from scripts import probe as probe_cli
 from src import wmt
-from src.config import SchoolConfig
+from src.config import SchoolConfig, load_schools
+from src.membership import load_membership
 from src.probe import LAYER_ABSENT, ProbeReport
 from src.recipes import PRESTO, SIDEARM, WMT
 from src.sidearm_live import (
@@ -395,3 +396,35 @@ def test_a_200_with_nothing_in_it_is_reported_as_exactly_that() -> None:
     assert not ProbeReport(**{**report.__dict__, "seasons": [2026]}).served_nothing
     present = {**report.layers, "roster": "present"}
     assert not ProbeReport(**{**report.__dict__, "layers": present}).served_nothing
+
+
+# --- Rank prefixes on a WMT schedule (bead tui-l57) --------------------------
+
+
+def test_a_dash_in_the_empty_poll_slot_is_not_in_the_slug() -> None:
+    """ucfknights.com 2026 women: ``opponent_name`` "-/#21 LSU" (event 12189,
+    UCF won 2-1 at LSU), a dash holding the first poll slot, was filed as
+    home=21-lsu beside LSU's own record. The WMT parser cleans the prefix
+    through the same ``_clean_team_name`` as SideArm; the grammar had no
+    dash slot. Three events verbatim from the archived bundle, the third a
+    two-poll prefix the grammar already read."""
+    aliases, members, scope = collect_board.collect_identity(
+        load_schools(), "women", "BIG12", 2026, document=load_membership()
+    )
+    html = _fixture("wmt_ucf_women_schedule_bundle_2026.json")
+    rows = wmt.parse_schedule(
+        html,
+        page_url=wmt.read_bundle(html).final_url,
+        year=2026,
+        owner_slug="ucf",
+        aliases=aliases,
+        members=members,
+        scope=scope,
+        gender="women",
+    )
+    sides = {str(row["id"]): (row["home"], row["away"]) for row in rows}
+    assert sides == {
+        "wmt:ucf:12189": ("lsu", "ucf"),  # "-/#21 LSU"
+        "wmt:ucf:11867": ("ucf", "texas-tech"),  # "-/#19 Texas Tech"
+        "wmt:ucf:11873": ("west-virginia", "ucf"),  # "#12/14 West Virginia"
+    }
