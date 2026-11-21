@@ -16638,6 +16638,7 @@ enabled      = true
 city         = "Los Angeles, Calif."
 city_source  = "https://usctrojans.com/sports/womens-soccer/schedule/2026 (schedule page home rows print \"Los Angeles, Calif.\"; 10 mentions) (read 2026-11-20); second source: https://bigten.org/standings.aspx?path=wsoc (embedded conference school record for \"USC\": location \"Los Angeles, CA\") (read 2026-11-20)"
 identity_accessed = "2026-11-20"
+aliases      = ["Southern California"]
 
 [[schools]]
 name         = "Oregon"
@@ -17312,6 +17313,7 @@ enabled      = true
 city         = "Charleston, S.C."
 city_source  = "https://csusports.com/sports/womens-soccer/schedule/2026 (server payload home rows print \"Charleston, S.C.\", CSU Soccer Field; 13 home entries) (read 2026-11-20); second source: standings/BIGSOUTH-women-2026.html embedded conference school object (location \"Charleston, SC\")"
 identity_accessed = "2026-11-20"
+aliases      = ["Charleston So."]
 
 # The men's stanza 'Gardner-Webb' (BIGSOUTH) supplies name, abbreviation, mascot, city and aliases; the host is the same.
 [[schools]]
@@ -17900,6 +17902,7 @@ enabled      = true
 city         = "Bowling Green, Ky."
 city_source  = "https://conferenceusa.com/standings.aspx?path=wsoc embedded school record location \"Bowling Green, KY\"; the women's schedule page prints no home town (probe) (read 2026-11-20); second source: peer schedule pages fetched 2026-11-20 (/sports/womens-soccer/schedule), town printed on their rows: bluehens.com prints \"Bowling Green, KY\"; gobearkats.com prints \"Bowling Green, KY\"; goblueraiders.com prints \"Bowling Green, KY\""
 identity_accessed = "2026-11-20"
+aliases      = ["Western Kentucky", "Western Ky."]
 
 # The men's stanza 'Delaware' (SUMMIT) supplies name, abbreviation, mascot, city and aliases; the host is the same.
 [[schools]]
@@ -17966,6 +17969,7 @@ enabled      = true
 city         = "Murfreesboro, Tenn."
 city_source  = "https://conferenceusa.com/standings.aspx?path=wsoc embedded school record location \"Murfreesboro, TN\"; the women's schedule page prints no home town (probe) (read 2026-11-20); second source: peer schedule pages fetched 2026-11-20 (/sports/womens-soccer/schedule), town printed on their rows: bluehens.com prints \"Murfreesboro, Tenn.\"; gobearkats.com prints \"Murfreesboro, Tenn.\"; jaxstatesports.com prints \"Murfreesboro, Tenn.\""
 identity_accessed = "2026-11-20"
+aliases      = ["Middle Tennessee", "Middle Tennessee State", "Middle Tenn."]
 
 [[schools]]
 name         = "Sam Houston"
@@ -18982,40 +18986,31 @@ identity_accessed = "2026-11-20"
 # ------------------------------------------------------------
 # MW women (Mountain West Conference) - 10 stanzas here; members 2026 = 11
 # ------------------------------------------------------------
-# Written commented out (each says why): Colorado College.
 # Probed 2026-11-20 (uv run probe, the women's sport pages; batches/probe/MW-women*.json):
 #   9 sidearm, all four layers present, seasons 2022-2026
 #   2 wmt, schedule error (season not proven), roster error (season not proven), stats error (season not proven), matches error (season not proven), seasons 2022-2026: New Mexico, San Jose State
 # Standings 2026: https://themw.com/standings.aspx?path=wsoc, 11 teams, one table, no divisions.
 # Affiliates on the table: Colorado College.
 
-# HELD OUT OF THE TABLE: written commented out. "Colorado College" folds to
-# `colorado`, the key the Big 12's Colorado claims bare by name. The fold
-# drops "College", so the key splits on the institution word
-# (sidearm_live.institution_split_keys) and bare "Colorado" would resolve to
-# neither; check-membership refuses that as an ambiguous identity. Colorado's
-# `name` is its slug and the bare word is what every table prints for it,
-# and qualifying Colorado College's `name` around the fold would file every
-# printed "Colorado College" under Colorado (the pre-c3b0c2c Boston
-# failure). The pair needs the identity rule to hold a bare name beside a
-# worded one (a follow-up). Until then it has no stanza and no Mountain
-# West window (check-membership refuses a window on a slug no stanza
-# mints); the window is drafted in the onboarding record
-# (integrate/held-out-windows.json).
-# [[schools]]
-# name         = "Colorado College"
-# abbreviation = "CC"
-# conference   = "MW"
-# mascot       = "Tigers"
-# gender       = "women"
-# base_url     = "https://cctigers.com/sports/womens-soccer"
-# years        = [2026]
-# scraper      = "sidearm"
-# data_status  = "unverified"
-# enabled      = true
-# city         = "Colorado Springs, Colo."
-# city_source  = "https://themw.com/standings.aspx?path=wsoc embedded school record location \"Colorado Springs, CO\"; the women's schedule page prints no home town (probe) (read 2026-11-20); second source: peer schedule pages fetched 2026-11-20 (/sports/womens-soccer/schedule), town printed on their rows: csurams.com prints \"Colorado Springs, CO\"; denverpioneers.com prints \"Colorado Springs, CO\"; gculopes.com prints \"Colorado Springs, Colo.\""
-# identity_accessed = "2026-11-20"
+# "Colorado College" folds to `colorado`, the key the Big 12's Colorado claims
+# bare by name; keep_institution_word keeps the worded spelling its own key,
+# so "Colorado College" resolves here and bare "Colorado" stays Colorado's.
+[[schools]]
+name         = "Colorado College"
+keep_institution_word = true  # "Colorado College" beside the Big 12's bare "Colorado" (rib #148)
+abbreviation = "CC"
+conference   = "MW"
+mascot       = "Tigers"
+gender       = "women"
+base_url     = "https://cctigers.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Colorado Springs, Colo."
+city_source  = "https://themw.com/standings.aspx?path=wsoc embedded school record location \"Colorado Springs, CO\"; the women's schedule page prints no home town (probe) (read 2026-11-20); second source: peer schedule pages fetched 2026-11-20 (/sports/womens-soccer/schedule), town printed on their rows: csurams.com prints \"Colorado Springs, CO\"; denverpioneers.com prints \"Colorado Springs, CO\"; gculopes.com prints \"Colorado Springs, Colo.\""
+identity_accessed = "2026-11-20"
+aliases      = ["Colorado Col."]
 
 [[schools]]
 name         = "Wyoming"
@@ -19159,6 +19154,7 @@ enabled      = true
 city         = "El Paso, Texas"
 city_source  = "https://utepathletics.com/sports/womens-soccer/schedule (probe 2026-11-20: town printed most on home rows) (read 2026-11-20); second source: https://themw.com/standings.aspx?path=wsoc embedded school record location \"El Paso, TX\""
 identity_accessed = "2026-11-20"
+aliases      = ["Texas-El Paso"]
 
 [[schools]]
 name         = "Nevada"
@@ -19393,6 +19389,7 @@ enabled      = true
 city         = "Cape Girardeau, Mo."
 city_source  = "https://semoredhawks.com/sports/womens-soccer/schedule/2026 (schedule page home rows print \"Cape Girardeau, Mo.\"; 8 mentions) (read 2026-11-20); second source: https://ovcsports.com/standings.aspx?path=wsoc (embedded conference school record for \"Southeast Missouri\": location \"Cape Girardeau, Mo.\") (read 2026-11-20)"
 identity_accessed = "2026-11-20"
+aliases      = ["Southeast Missouri State"]
 
 # The men's stanza 'Lindenwood' (OVC) supplies name, abbreviation, mascot, city and aliases; the host is the same.
 [[schools]]
@@ -19957,6 +19954,7 @@ enabled      = true
 city         = "Baton Rouge, La."
 city_source  = "https://lsusports.net/website-api/schedule-events?filter[schedule_id]=13 (2025 schedule events, venue_type home, location \"Baton Rouge, La. (LSU Soccer Stadium)\", 10 home rows) (read 2026-11-20); second source: https://floridagators.com/sports/womens-soccer/schedule/2025 (away row at LSU, location \"Baton Rouge, LA\"); https://rolltide.com/sports/womens-soccer/schedule/2025 (away row at LSU, location \"Baton Rouge, La.\")"
 identity_accessed = "2026-11-20"
+aliases      = ["Louisiana State"]
 
 [[schools]]
 name         = "Ole Miss"
@@ -20137,6 +20135,7 @@ enabled      = true
 city         = "Chattanooga, Tenn."
 city_source  = "https://gomocs.com/sports/womens-soccer/schedule/2026 (server payload home rows print \"Chattanooga, Tenn.\", Finley Stadium; 13 home entries) (read 2026-11-20); second source: standings/SOCON-women-2026.html embedded conference school object (location \"Chattanooga, Tenn.\")"
 identity_accessed = "2026-11-20"
+aliases      = ["Tennessee-Chattanooga", "UT Chattanooga"]
 
 # The men's stanza 'ETSU' (SOCON) supplies name, abbreviation, mascot, city and aliases; the host is the same.
 [[schools]]
@@ -20150,7 +20149,7 @@ years        = [2026]
 scraper      = "sidearm"
 data_status  = "unverified"
 enabled      = true
-aliases      = ["East Tennessee State University"]
+aliases      = ["East Tennessee State University", "East Tennessee"]
 city         = "Johnson City, Tenn."
 city_source  = "https://etsubucs.com/sports/mens-soccer/schedule (schedule page home rows print \"Johnson City, Tenn.\", Summers-Taylor Stadium; 12 of 12 home rows) (read 2026-11-15) (the men's stanza's reading; the women's page: probe/SOCON-women.json (women's schedule home rows, derive_identity))"
 identity_accessed = "2026-11-20"
@@ -20391,6 +20390,7 @@ enabled      = true
 city         = "Lake Charles, La."
 city_source  = "https://mcneesesports.com/sports/womens-soccer/schedule (probe 2026-11-20: town printed most on home rows) (read 2026-11-20); second source: https://www.southland.org/standings.aspx?path=wsoc embedded school record location \"Lake Charles, LA\""
 identity_accessed = "2026-11-20"
+aliases      = ["McNeese State"]
 
 [[schools]]
 name         = "Nicholls"
@@ -20406,6 +20406,7 @@ enabled      = true
 city         = "Thibodaux, La."
 city_source  = "https://geauxcolonels.com/sports/womens-soccer/schedule (probe 2026-11-20: town printed most on home rows) (read 2026-11-20); second source: https://www.southland.org/standings.aspx?path=wsoc embedded school record location \"Thibodaux, LA\""
 identity_accessed = "2026-11-20"
+aliases      = ["Nicholls State"]
 
 [[schools]]
 name         = "East Texas A&M"
@@ -20440,6 +20441,7 @@ member_aliases = ["Southeastern"]
 city         = "Hammond, La."
 city_source  = "https://lionsports.net/sports/womens-soccer/schedule (probe 2026-11-20: town printed most on home rows) (read 2026-11-20); second source: https://www.southland.org/standings.aspx?path=wsoc embedded school record location \"Hammond, LA\""
 identity_accessed = "2026-11-20"
+aliases      = ["Southeastern La."]
 
 [[schools]]
 name         = "SFA"
@@ -20455,6 +20457,7 @@ enabled      = true
 city         = "Nacogdoches, Texas"
 city_source  = "https://www.southland.org/standings.aspx?path=wsoc embedded school record location \"Nacogdoches, TX\"; the women's schedule page prints no home town (probe) (read 2026-11-20); second source: peer schedule pages fetched 2026-11-20 (/sports/womens-soccer/schedule), town printed on their rows: goislanders.com prints \"Nacogdoches, TX\"; lamarcardinals.com prints \"Nacogdoches, Texas\"; lionsports.net prints \"Nacogdoches, TX\""
 identity_accessed = "2026-11-20"
+aliases      = ["Stephen F. Austin"]
 
 # The Southland's 2026 table prints "A&M-Corpus Christi" (an alias); the
 # site prints "Texas A&M-Corpus Christi".
@@ -20789,6 +20792,7 @@ enabled      = true
 city         = "Lafayette, La."
 city_source  = "https://ragincajuns.com/sports/womens-soccer/schedule/2026 (server payload home rows print \"Lafayette\" with no state, Home Bank Soccer & Track Complex; 9); state from the Sun Belt object (read 2026-11-20); second source: standings/SUNBELT-women-2026.html embedded conference school object (location \"Lafayette, Louisiana\")"
 identity_accessed = "2026-11-20"
+aliases      = ["UL Lafayette"]
 
 [[schools]]
 name         = "ULM"
@@ -20804,6 +20808,7 @@ enabled      = true
 city         = "Monroe, La."
 city_source  = "probe/SUNBELT-women.json (women's schedule home rows \"Monroe, La.\", Brown Stadium; 10) (read 2026-11-20); second source: standings/SUNBELT-women-2026.html embedded conference school object (location \"Monroe, Louisiana\")"
 identity_accessed = "2026-11-20"
+aliases      = ["Louisiana-Monroe"]
 
 [[schools]]
 name         = "Louisiana Tech"
@@ -20849,6 +20854,7 @@ enabled      = true
 city         = "Hattiesburg, Miss."
 city_source  = "standings/SUNBELT-women-2026.html embedded conference school object (location \"Hattiesburg, Mississippi\") (read 2026-11-20)"
 identity_accessed = "2026-11-20"
+aliases      = ["Southern Mississippi", "Southern Miss."]
 
 [[schools]]
 name         = "Troy"
@@ -20950,6 +20956,7 @@ enabled      = true
 city         = "Ruston, La."
 city_source  = "probe/SWAC-women.json (home rows \"Ruston, LA\", Ruston Sports Complex; 9 of 9) (read 2026-11-20); second source: standings/SWAC-women-2026.html embedded conference school object (location \"Grambling, LA\")"
 identity_accessed = "2026-11-20"
+aliases      = ["Grambling"]
 
 [[schools]]
 name         = "Jackson State"
@@ -20980,6 +20987,7 @@ enabled      = true
 city         = "Prairie View, Texas"
 city_source  = "probe/SWAC-women.json (home rows \"Prairie View, Texas\", PVAMU Soccer Complex; 11) (read 2026-11-20); second source: standings/SWAC-women-2026.html embedded conference school object (location \"Prairie View, TX\")"
 identity_accessed = "2026-11-20"
+aliases      = ["Prairie View"]
 
 [[schools]]
 name         = "Southern"
@@ -20995,6 +21003,7 @@ enabled      = true
 city         = "Baton Rouge, La."
 city_source  = "probe/SWAC-women.json (home rows \"Baton Rouge, LA\", A. W. Mumford Stadium; 11) (read 2026-11-20); second source: standings/SWAC-women-2026.html embedded conference school object (location \"Baton Rouge, LA\")"
 identity_accessed = "2026-11-20"
+aliases      = ["Southern U."]
 
 [[schools]]
 name         = "Texas Southern"
@@ -21036,6 +21045,7 @@ enabled      = true
 city         = "Richmond, Ky."
 city_source  = "https://ekusports.com/sports/womens-soccer/schedule (probe 2026-11-20: town printed most on home rows) (read 2026-11-20); second source: https://uacsports.com/standings.aspx?path=wsoc embedded school record location \"Richmond, Ky.\""
 identity_accessed = "2026-11-20"
+aliases      = ["Eastern Kentucky", "Eastern Ky."]
 
 [[schools]]
 name         = "North Alabama"
@@ -21098,6 +21108,7 @@ enabled      = true
 city         = "Stephenville, Texas"
 city_source  = "https://tarletonsports.com/sports/wsoc/schedule (probe 2026-11-20: town printed most on home rows) (read 2026-11-20); second source: https://uacsports.com/standings.aspx?path=wsoc embedded school record location \"Stephenville, Texas\""
 identity_accessed = "2026-11-20"
+aliases      = ["Tarleton"]
 
 # Mascot: the women's schedule page and the UAC record print "Sugar Bears",
 # the women's teams' name; the men's stanza carries Bears.
@@ -21319,34 +21330,27 @@ identity_accessed = "2026-11-20"
 # ------------------------------------------------------------
 # Division I women's independent - 1 stanza here; 2026 = 1
 # ------------------------------------------------------------
-# Written commented out (each says why): South Carolina State.
 # Probed 2026-11-20 (uv run probe, the women's sport pages; batches/probe/INDEPENDENT-women*.json):
 #   1 sidearm, all four layers present, season 2026: South Carolina State
 # Independent: the NCAA RPI's "DI Independent" (batches/sweep/rpi_by_conf.json).
 
-# HELD OUT OF THE TABLE: written commented out. A stanza's NCAA level comes
-# from a window naming a profiled conference, else its stanza conference's
-# profile (membership.programme_level). South Carolina State's one window is
-# `independent`, structural and level-less, and `independent` has no profile,
-# so check-membership refuses the stanza ("has no NCAA level": it would sit
-# in every level's table). The rib has no way yet to say a Division I
-# independent is at d1 (a follow-up). Until then it has no stanza and no
-# window (check-membership refuses a window on a slug no stanza mints); the
-# window is drafted in the onboarding record (integrate/held-out-windows.json).
-# [[schools]]
-# name         = "South Carolina State"
-# abbreviation = "SCS"
-# conference   = "independent"
-# mascot       = "Bulldogs"
-# gender       = "women"
-# base_url     = "https://scsuathletics.com/sports/womens-soccer"
-# years        = [2026]
-# scraper      = "sidearm"
-# data_status  = "unverified"
-# enabled      = true
-# city         = "Orangeburg, S.C."
-# city_source  = "https://scsuathletics.com/sports/womens-soccer/schedule/2026 (schedule page home rows print \"Orangeburg, SC\", Oliver C. Dawson Stadium / Willie Jeffries Field; 7 of 7 home rows) (read 2026-11-20); second source: meacsports.com embedded school object location \"Orangeburg, SC\" (batches/independent/meac-standings-wbball.html)"
-# identity_accessed = "2026-11-20"
+# Its one window is `independent`, which states "level": "d1" (rib #148), so
+# the stanza sits in the Division I table alone.
+[[schools]]
+name         = "South Carolina State"
+abbreviation = "SCS"
+conference   = "independent"
+mascot       = "Bulldogs"
+gender       = "women"
+base_url     = "https://scsuathletics.com/sports/womens-soccer"
+years        = [2026]
+scraper      = "sidearm"
+data_status  = "unverified"
+enabled      = true
+city         = "Orangeburg, S.C."
+city_source  = "https://scsuathletics.com/sports/womens-soccer/schedule/2026 (schedule page home rows print \"Orangeburg, SC\", Oliver C. Dawson Stadium / Willie Jeffries Field; 7 of 7 home rows) (read 2026-11-20); second source: meacsports.com embedded school object location \"Orangeburg, SC\" (batches/independent/meac-standings-wbball.html)"
+aliases      = ["South Carolina St."]
+identity_accessed = "2026-11-20"
 
 # ---------------------------------------------------------------------------
 # Spellings declared NOT a programme at one level
@@ -21366,12 +21370,6 @@ identity_accessed = "2026-11-20"
 # `slug` is the stranger slug the side mints, the one the level already
 # gives the same school where it has one. check-membership validates every
 # entry (src/sidearm_live.py declared_stranger_errors).
-
-[[not_a_programme]]
-level    = "d1"
-spelling = "Colorado College"
-slug     = "colorado-college"  # the Mountain West women's affiliate, held out of membership until tui-hxk.4 lands
-source   = "mountainwest.com 2026 women's soccer standings (onboarding-2026-11-20-women/batches/standings/MW-women-2026.html) list Colorado College beside the Big 12's Colorado; without this entry the spelling folds to colorado"
 
 [[not_a_programme]]
 level    = "d1"

@@ -3585,6 +3585,40 @@
         }
       }
     },
+    "colorado-college": {
+      "name": "Colorado College",
+      "nickname": "Tigers",
+      "abbreviation": "CC",
+      "city": "Colorado Springs, Colo.",
+      "point": {
+        "lat": 38.8673,
+        "lon": -104.7607
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://cctigers.com/sports/womens-soccer",
+          "accessed": "2026-11-20"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://cctigers.com/sports/womens-soccer",
+          "accessed": "2026-11-20"
+        },
+        "city": {
+          "source": "https://themw.com/standings.aspx?path=wsoc embedded school record location \"Colorado Springs, CO\"; the women's schedule page prints no home town (probe) (read 2026-11-20); second source: peer schedule pages fetched 2026-11-20 (/sports/womens-soccer/schedule), town printed on their rows: csurams.com prints \"Colorado Springs, CO\"; denverpioneers.com prints \"Colorado Springs, CO\"; gculopes.com prints \"Colorado Springs, Colo.\"",
+          "accessed": "2026-11-20"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "0816000",
+          "name": "Colorado Springs city",
+          "state": "CO",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
     "colorado-mesa": {
       "name": "Colorado Mesa",
       "nickname": "Mavericks",
@@ -15776,6 +15810,40 @@
           "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
           "geoid": "4516000",
           "name": "Columbia city",
+          "state": "SC",
+          "accessed": "2023-09-26"
+        }
+      }
+    },
+    "south-carolina-state": {
+      "name": "South Carolina State",
+      "nickname": "Bulldogs",
+      "abbreviation": "SCS",
+      "city": "Orangeburg, S.C.",
+      "point": {
+        "lat": 33.4936,
+        "lon": -80.8669
+      },
+      "provenance": {
+        "nickname": {
+          "source": "schools.toml mascot, as the site names itself",
+          "url": "https://scsuathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-20"
+        },
+        "abbreviation": {
+          "source": "schools.toml abbreviation, the site's own short form",
+          "url": "https://scsuathletics.com/sports/womens-soccer",
+          "accessed": "2026-11-20"
+        },
+        "city": {
+          "source": "https://scsuathletics.com/sports/womens-soccer/schedule/2026 (schedule page home rows print \"Orangeburg, SC\", Oliver C. Dawson Stadium / Willie Jeffries Field; 7 of 7 home rows) (read 2026-11-20); second source: meacsports.com embedded school object location \"Orangeburg, SC\" (batches/independent/meac-standings-wbball.html)",
+          "accessed": "2026-11-20"
+        },
+        "point": {
+          "source": "U.S. Census Bureau, 2023 Gazetteer Files (Places, national)",
+          "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer/2023_Gaz_place_national.zip",
+          "geoid": "4553080",
+          "name": "Orangeburg city",
           "state": "SC",
           "accessed": "2023-09-26"
         }

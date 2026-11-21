@@ -996,10 +996,11 @@ def test_the_shipped_conferences_carry_divisions_only_where_printed(
     # standings: the Big East ("East Division", "Midwest Division") from
     # 2023, its 2022 table being one undivided list; the CAA ("North",
     # "South") from 2025, its 2022-2024 tables being one undivided list; and
-    # the ACC ("Atlantic", "Coastal") in 2022 only, one table from 2023. One
-    # Division I women's conference does: the United Athletic Conference
-    # ("Blue Division", "Red Division") in 2026, the women's depth's first
-    # season. The labelled span is (first season, last season or None for
+    # the ACC ("Atlantic", "Coastal") in 2022 only, one table from 2023. Three
+    # Division I women's conferences do in 2026, the women's depth's first
+    # season: the United Athletic Conference ("Blue Division", "Red
+    # Division"), the CAA ("North", "South") and the Summit League ("Pod A",
+    # "Pod B"). The labelled span is (first season, last season or None for
     # open). The
     # all-or-none rule holds on the shipped
     # file, nothing is labelled anywhere else, and every member of a
@@ -1013,6 +1014,8 @@ def test_the_shipped_conferences_carry_divisions_only_where_printed(
         ("CAA", "men"): (2025, None, {"North", "South"}),
         ("ACC", "men"): (2022, 2022, {"Atlantic", "Coastal"}),
         ("UAC", "women"): (2026, None, {"Blue Division", "Red Division"}),
+        ("CAA", "women"): (2026, None, {"North", "South"}),
+        ("SUMMIT", "women"): (2026, None, {"Pod A", "Pod B"}),
     }
     span = membership_document["seasons"]
     for conference in membership_document["conferences"]:
