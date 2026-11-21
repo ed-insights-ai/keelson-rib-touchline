@@ -1394,6 +1394,20 @@ def _gender_splits(schools: list[SchoolConfig]) -> dict[str, frozenset[str]]:
     return {gender: institution_split_keys(schools, gender) for gender in genders}
 
 
+def _kept_institution_keys(schools: list[SchoolConfig]) -> dict[str, set[str]]:
+    """By gender, the institution keys a ``keep_institution_word`` stanza's
+    worded spellings are held under (``_claim_keys``)."""
+    kept: dict[str, set[str]] = {school.gender: set() for school in schools}
+    for school in schools:
+        if not school.keep_institution_word:
+            continue
+        for candidate in _identity_spellings(school):
+            institution = _institution_key(candidate)
+            if institution and institution != _identity_key(candidate):
+                kept[school.gender].add(institution)
+    return kept
+
+
 def identity_collisions(
     schools: list[SchoolConfig],
 ) -> list[tuple[str, str, list[tuple[str, str]]]]:
@@ -1414,9 +1428,14 @@ def identity_collisions(
     that both claim "Boston College" still collide, on "boston college". A
     bare spelling of a split key is ``identity_ambiguities``'s to report.
     A worded spelling of a stanza that keeps its institution word is checked
-    under its institution key, the one key it claims.
+    under its institution key, the one key it claims, and so is every other
+    stanza's spelling of that institution key, flagged or not: lookup reads
+    the institution key first, so an unflagged stanza's alias "Colorado
+    College" (filed under the folded "colorado") would resolve to the
+    flagged Colorado College, and the two collide on "colorado college".
     """
     splits = _gender_splits(schools)
+    kept_keys = _kept_institution_keys(schools)
     claims: dict[tuple[str, str], dict[str, list[tuple[str, str]]]] = {}
     for school in schools:
         slug = programme_slug(school.name)
@@ -1425,7 +1444,7 @@ def identity_collisions(
             if not key:
                 continue
             kept = _institution_key(candidate)
-            if school.keep_institution_word and kept and kept != key:
+            if kept and kept != key and kept in kept_keys[school.gender]:
                 key = kept
             elif key in splits[school.gender]:
                 institution = _institution_key(candidate)
