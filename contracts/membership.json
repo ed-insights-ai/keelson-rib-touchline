@@ -11,13 +11,16 @@
     "AE",
     "ASUN",
     "B1G",
+    "BIG12",
     "BIGEAST",
+    "BIGSKY",
     "BIGSOUTH",
     "BIGWEST",
     "CAA",
     "CACC",
     "CC",
     "CCAA",
+    "CUSA",
     "ECC",
     "G-MAC",
     "GAC",
@@ -45,10 +48,14 @@
     "PSAC",
     "RMAC",
     "SAC",
+    "SEC",
     "SOCON",
+    "SOUTHLAND",
     "SSC",
     "SUMMIT",
     "SUNBELT",
+    "SWAC",
+    "UAC",
     "WAC",
     "WCC",
     "independent",
@@ -79,9 +86,17 @@
       "level": "d1",
       "names": ["Big Ten Conference", "Big Ten"]
     },
+    "BIG12": {
+      "level": "d1",
+      "names": ["Big 12 Conference", "Big 12"]
+    },
     "BIGEAST": {
       "level": "d1",
       "names": ["Big East Conference", "Big East"]
+    },
+    "BIGSKY": {
+      "level": "d1",
+      "names": ["Big Sky Conference", "Big Sky"]
     },
     "BIGSOUTH": {
       "level": "d1",
@@ -107,6 +122,10 @@
     "CCAA": {
       "level": "d2",
       "names": ["California Collegiate Athletic Association", "California Collegiate"]
+    },
+    "CUSA": {
+      "level": "d1",
+      "names": ["Conference USA", "C-USA"]
     },
     "ECC": {
       "level": "d2",
@@ -219,9 +238,18 @@
       "level": "d2",
       "names": ["South Atlantic Conference", "South Atlantic"]
     },
+    "SEC": {
+      "level": "d1",
+      "names": ["Southeastern Conference"]
+    },
     "SOCON": {
       "level": "d1",
       "names": ["Southern Conference"]
+    },
+    "SOUTHLAND": {
+      "level": "d1",
+      "names": ["Southland Conference", "Southland"],
+      "code_is_word": true
     },
     "SSC": {
       "level": "d2",
@@ -235,6 +263,14 @@
     "SUNBELT": {
       "level": "d1",
       "names": ["Sun Belt Conference", "Sun Belt"]
+    },
+    "SWAC": {
+      "level": "d1",
+      "names": ["Southwestern Athletic Conference"]
+    },
+    "UAC": {
+      "level": "d1",
+      "names": ["United Athletic Conference"]
     },
     "WAC": {
       "level": "d1",
@@ -722,6 +758,77 @@
           "from_season": 2022,
           "to_season": 2022,
           "source": "Mid-American Conference, men's soccer 2022 (accessed 2026-11-20), listed under the label Western Michigan. 2022: Listed among 5 teams on the Mid-American Conference 2022 men's soccer conference records page and in its archived 2022 standings (https://getsomemaction.com/standings.aspx?standings=177) (capture 2026-11-20) (https://getsomemaction.com/stats.aspx?path=msoc&year=2022&conf=true). 2022 is the first season of the Division I depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival. Left after 2022: in 2023 it is listed by the Missouri Valley Conference, Listed among 9 teams on the Missouri Valley Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://mvc-sports.com/stats.aspx?path=msoc&year=2023&conf=true)."
+        }
+      ]
+    },
+    "arizona": {
+      "women": [
+        {
+          "conference": "BIG12",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Big 12 Conference, women's soccer 2026 (accessed 2026-11-20), listed under the label Arizona. 2026: Listed among 16 teams in the Big 12 Conference's 2026 soccer standings, archive id 238 under the sport path soc (the page heading prints \"2026 Soccer Standings\"; the Big 12 sponsors women's soccer only) (capture 2026-11-20) (https://big12sports.com/standings.aspx?standings=238&path=soc). The Big 12 Conference 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "eastern-washington": {
+      "women": [
+        {
+          "conference": "BIGSKY",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Big Sky Conference, women's soccer 2026 (accessed 2026-11-20), listed under the label Eastern Washington. 2026: Listed among 10 teams in the Big Sky Conference 2026 women's soccer standings (capture 2026-11-20) (https://bigskyconf.com/standings.aspx?path=wsoc). The Big Sky Conference 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "jacksonville-state": {
+      "women": [
+        {
+          "conference": "CUSA",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Conference USA, women's soccer 2026 (accessed 2026-11-20), listed under the label Jax State. 2026: Listed among 10 teams in the Conference USA 2026 women's soccer standings (capture 2026-11-20) (https://conferenceusa.com/standings.aspx?path=wsoc). The Conference USA 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "alabama": {
+      "women": [
+        {
+          "conference": "SEC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Southeastern Conference, women's soccer 2026 (accessed 2026-11-20). 2026: Listed among 16 teams in the Southeastern Conference 2026 soccer (women's) standings, read from the standings rows the page renders, https://www.secsports.com/api/schedules/329/standings, joined by school id to https://www.secsports.com/api/schools (capture 2026-11-20) (https://www.secsports.com/standings/soccer). The Southeastern Conference 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "east-texas-a-m": {
+      "women": [
+        {
+          "conference": "SOUTHLAND",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Southland Conference, women's soccer 2026 (accessed 2026-11-20), listed under the label East Texas A&M. 2026: Listed among 11 teams in the Southland Conference 2026 women's soccer standings (capture 2026-11-20) (https://www.southland.org/standings.aspx?path=wsoc). The Southland Conference 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "alabama-a-m": {
+      "women": [
+        {
+          "conference": "SWAC",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "Southwestern Athletic Conference, women's soccer 2026 (accessed 2026-11-20), listed under the label Alabama A&M. 2026: Listed among 9 teams in the Southwestern Athletic Conference 2026 women's soccer standings (capture 2026-11-20) (https://swac.org/standings.aspx?path=wsoc). The Southwestern Athletic Conference 2026 table prints one table with no divisions. 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "abilene-christian": {
+      "women": [
+        {
+          "conference": "UAC",
+          "division": "Red Division",
+          "from_season": 2026,
+          "to_season": 2026,
+          "source": "United Athletic Conference, women's soccer 2026 (accessed 2026-11-20), listed under the label Abilene Christian. 2026: Listed among 8 teams in the United Athletic Conference 2026 women's soccer standings (capture 2026-11-20) (https://uacsports.com/standings.aspx?path=wsoc). Division \"Red Division\" as printed on the United Athletic Conference's 2026 table, a row naming the division above its four teams (Blue Division and Red Division). 2026 is the first season of the Division I women's depth authored here (the 2022-2025 history is a later authoring), so the window's first year is the depth's edge, not an arrival."
         }
       ]
     }
