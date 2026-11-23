@@ -65,6 +65,16 @@ on:
       allow_shrink:
         type: string
         default: ""
+  # Daily, 90 minutes after Collect's own schedule (collect.yml, 14:17 UTC),
+  # while the season runs: TOUCHLINE_COLLECT_UNTIL, the same date Collect
+  # stops on (see the `when` job). A schedule and not a workflow_run on
+  # Collect, because nothing here reads what Collect writes: Collect writes
+  # only to the homes' `shadow` branch, and this builds from their main, the
+  # Mac's production data, and writes to neither. Chained to Collect, a
+  # Collect stuck on an offline runner would also stop the site, and every
+  # Collect completion, manual ones included, would queue here.
+  schedule:
+    - cron: "47 15 * * *"
   # A merge that changes the site's code (the pin, the scripts, this file)
   # deploys it, from SITE_SOURCE (data unless that variable says samples).
   push:
@@ -110,8 +120,38 @@ env:
   SIGNING_KEY: alias/touchline-snapshot-signing
 
 jobs:
+  when:
+    name: Is this run due
+    runs-on: ubuntu-latest
+    outputs:
+      go: ${{ steps.due.outputs.go }}
+    steps:
+      - name: Due
+        id: due
+        env:
+          EVENT: ${{ github.event_name }}
+          UNTIL: ${{ vars.TOUCHLINE_COLLECT_UNTIL }}
+        run: |
+          go=true
+          if [ "$EVENT" = schedule ]; then
+            today=$(date -u +%Y-%m-%d)
+            if [ -z "$UNTIL" ]; then
+              go=false; why="TOUCHLINE_COLLECT_UNTIL is not set"
+            elif [ "$today" \> "$UNTIL" ]; then
+              go=false; why="today ($today) is after TOUCHLINE_COLLECT_UNTIL ($UNTIL)"
+            else
+              why="daily run (the site reads the homes' main, not shadow)"
+            fi
+          else
+            why="$EVENT run"
+          fi
+          echo "go=$go" >> "$GITHUB_OUTPUT"
+          echo "Publish: $go: $why" | tee -a "$GITHUB_STEP_SUMMARY"
+
   bundle:
     name: Check contracts and cut the bundle
+    needs: when
+    if: needs.when.outputs.go == 'true'
     runs-on: ubuntu-latest
     # The App's secrets live in production; samples need no environment.
     environment: ${{ github.event_name != 'pull_request' && ((inputs.source != '' && inputs.source != 'default') && inputs.source || vars.SITE_SOURCE || 'data') == 'data' && 'production' || '' }}
