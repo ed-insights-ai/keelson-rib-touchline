@@ -1,0 +1,32 @@
+{
+  "schema": "touchline.rosters/1",
+  "season": 2026,
+  "gender": "women",
+  "collected_at": "2026-11-16T12:53:51+00:00",
+  "rosters": {
+    "east-central": {
+      "programme": "east-central",
+      "source_url": "https://ecutigers.com/sports/womens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Alexandra Naill",
+          "number": "0",
+          "height": "5'11\"",
+          "hometown": "Graham, WA",
+          "position": "GK",
+          "class_year": "Junior",
+          "source_url": "https://ecutigers.com/sports/womens-soccer/roster/alexandra-naill/7324"
+        },
+        {
+          "name": "Parker Frei",
+          "number": "1",
+          "height": "5'10\"",
+          "hometown": "Albuquerque, NM",
+          "position": "GK",
+          "class_year": "Junior",
+          "source_url": "https://ecutigers.com/sports/womens-soccer/roster/parker-frei/7301"
+        }
+      ]
+    }
+  }
+}

@@ -903,6 +903,7 @@ LOCKED_COLLECTS=""
 BUSY=""
 JOURNAL_SPEND=0
 PUBLISH_RESULT="skipped (no change)"
+CONTRACTS_RESULT="skipped (nothing collected)"
 JOURNAL_COMMIT="none"
 DATA_PUSH="skipped"
 BUILD_STAMP=""
@@ -927,7 +928,7 @@ finish_run() {
       --arg journal_model_calls "$JOURNAL_SPEND" --arg journal_commit "$JOURNAL_COMMIT" \
       --arg journaled "${JOURNALED:-}" --arg data_head "$DATA_HEAD" --arg data_push "$DATA_PUSH" \
       --arg build_stamp "$BUILD_STAMP" --arg publish "$PUBLISH_RESULT" --arg exit "$RUN_RC" \
-      --arg archive "$ARCHIVE_RESULT" \
+      --arg archive "$ARCHIVE_RESULT" --arg contracts "$CONTRACTS_RESULT" \
       'def words: split(" ") | map(select(. != ""));
        {started_at: $started_at, finished_at: $finished_at, mode: $mode,
         season: ($season | tonumber? // $season), gender: $gender,
@@ -938,13 +939,13 @@ finish_run() {
         journal_model_calls: ($journal_model_calls | tonumber), journal_commit: $journal_commit,
         journaled: ($journaled | words), data_head: $data_head, data_push: $data_push,
         build_stamp: (if $build_stamp == "" then null else $build_stamp end),
-        publish: $publish, exit: ($exit | tonumber), archive: $archive}' 2>&1); then
+        contracts: $contracts, publish: $publish, exit: ($exit | tonumber), archive: $archive}' 2>&1); then
     mkdir -p "$(dirname "$RUNS_FILE")" 2>/dev/null
     printf '%s\n' "$RECORD" >>"$RUNS_FILE" || log "WARNING: run record not written to $RUNS_FILE"
   else
     log "WARNING: run record could not be built — $RECORD"
   fi
-  log "run summary: mode=$MODE season=$SEASON collect=[${COLLECT_SUMMARY:-none}] changed=[${CHANGED:-none}] failed=[${FAILED_COLLECTS:-none}] journal_model_calls=$JOURNAL_SPEND journal_commit=$JOURNAL_COMMIT publish=$PUBLISH_RESULT exit=$RUN_RC data_head=$DATA_HEAD build=${BUILD_STAMP:-none} locked=[${LOCKED_COLLECTS:-none}] busy=${BUSY:-none} archive=$ARCHIVE_RESULT"
+  log "run summary: mode=$MODE season=$SEASON collect=[${COLLECT_SUMMARY:-none}] changed=[${CHANGED:-none}] failed=[${FAILED_COLLECTS:-none}] journal_model_calls=$JOURNAL_SPEND journal_commit=$JOURNAL_COMMIT publish=$PUBLISH_RESULT exit=$RUN_RC data_head=$DATA_HEAD build=${BUILD_STAMP:-none} locked=[${LOCKED_COLLECTS:-none}] busy=${BUSY:-none} archive=$ARCHIVE_RESULT contracts=$CONTRACTS_RESULT"
 }
 
 # ── archive mode: the archive step alone, under the lock taken above, any
@@ -1152,6 +1153,61 @@ for CONF in $CONFERENCES; do
     RUN_RC=1
   fi
 done
+
+# ── 2b: CONTRACTS — hold the whole data home to the rib's published contract
+#    samples (contracts/, `check-contracts` in the pipeline) once the collects
+#    are in, before anything is journaled or published. Drift is a field, a
+#    type or an enumerated value no sample carries: the site's and the desk's
+#    readers never agreed to it. It is LOUD and the run exits 1, but it does
+#    not stop the publish: anything the site's strict schemas cannot read
+#    already fails `just publish`, and holding back a season's daily update
+#    over a sample that lags its data would trade a known-good site for a
+#    stale one. A check that cannot run says so the same way. ───────────────
+check_contracts() {
+  # The same pipeline the collect used: touchline-collect.yml honours
+  # TOUCHLINE_PIPELINE_DIR before the rib's config, so this does too.
+  _pd="${TOUCHLINE_PIPELINE_DIR:-$(rib_package_dir)/pipeline}"
+  if [ ! -f "$_pd/pyproject.toml" ]; then
+    CONTRACTS_RESULT="not run (no pipeline)"
+    log "WARNING: contract check did NOT run — no pipeline at $_pd."
+    RUN_RC=1
+    return
+  fi
+  if ! command -v uv >/dev/null 2>&1; then
+    CONTRACTS_RESULT="not run (no uv)"
+    log "WARNING: contract check did NOT run — uv is not on PATH ($PATH)."
+    RUN_RC=1
+    return
+  fi
+  COUT=$(TOUCHLINE_DATA_DIR="$DATA_HOME" uv run --quiet --project "$_pd" check-contracts "$DATA_HOME" 2>&1)
+  crc=$?
+  # Drift is exit 1 WITH the check's own fail verdict; any other exit 1 (an
+  # uncaught Python error) is a check that did not run, not drift.
+  if [ "$crc" -eq 1 ] && ! printf '%s\n' "$COUT" | grep -q '"verdict": "fail"'; then
+    crc=2
+  fi
+  case "$crc" in
+    0)
+      CONTRACTS_RESULT="ok"
+      log "contracts: $(printf '%s\n' "$COUT" | tail -1 | jq -r '.headline // empty' 2>/dev/null)"
+      ;;
+    1)
+      CONTRACTS_RESULT="drift"
+      printf '%s\n' "$COUT" | grep -E '^(DRIFT|MISSING) ' | head -40 | logblock
+      log "CONTRACT DRIFT — the data home now carries shapes the rib's contracts/ samples never promised (listed above). The publish still runs; extend the samples and the readers' schemas (contracts/README.md), or fix the writer. Re-check: uv run --project $_pd check-contracts $DATA_HOME"
+      RUN_RC=1
+      ;;
+    *)
+      CONTRACTS_RESULT="not run (exit $crc)"
+      printf '%s\n' "$COUT" | grep -v '^warning: ' | tail -8 | logblock
+      log "WARNING: contract check did NOT run — check-contracts exited $crc (its last lines are above)."
+      RUN_RC=1
+      ;;
+  esac
+}
+if [ -n "$CHANGED" ] || [ -n "$RECOLLECTED" ]; then
+  check_contracts
+fi
 
 # The journal legs and the publish read the same report, so the national
 # journal is written against the same "today" the pages are built with.

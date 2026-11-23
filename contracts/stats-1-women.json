@@ -1,0 +1,76 @@
+{
+  "schema": "touchline.stats/1",
+  "season": 2026,
+  "gender": "women",
+  "collected_at": "2026-11-16T12:53:51+00:00",
+  "teams": {
+    "east-central": {
+      "programme": "east-central",
+      "source_url": "https://ecutigers.com/sports/womens-soccer/stats/2026",
+      "players": [
+        {
+          "name": "Addisyn Brown",
+          "player_id": "7303",
+          "number": "3",
+          "bio_url": "https://ecutigers.com/sports/womens-soccer/roster/addisyn-brown/7303",
+          "gp": 16,
+          "gs": 16,
+          "minutes": 1077,
+          "goals": 3,
+          "assists": 0,
+          "points": 6,
+          "shots": 9,
+          "shot_pct": 0.333,
+          "sog": 6,
+          "sog_pct": 0.667,
+          "game_winners": 0,
+          "yellow": 1,
+          "red": 0,
+          "penalty_goals": 1,
+          "penalty_attempts": 1
+        },
+        {
+          "name": "Estrella Hernandez",
+          "player_id": "7330",
+          "number": "19",
+          "bio_url": "https://ecutigers.com/sports/womens-soccer/roster/estrella-hernandez/7330",
+          "gp": 14,
+          "gs": 9,
+          "minutes": 855,
+          "goals": 3,
+          "assists": 0,
+          "points": 6,
+          "shots": 22,
+          "shot_pct": 0.136,
+          "sog": 8,
+          "sog_pct": 0.364,
+          "game_winners": 1,
+          "yellow": 0,
+          "red": 0,
+          "penalty_goals": 0,
+          "penalty_attempts": 0
+        }
+      ],
+      "keepers": [
+        {
+          "name": "Parker Frei",
+          "player_id": "7301",
+          "number": "1",
+          "bio_url": "https://ecutigers.com/sports/womens-soccer/roster/parker-frei/7301",
+          "gp": 14,
+          "gs": 11,
+          "minutes": 979,
+          "goals_against": 35,
+          "gaa": 3.22,
+          "saves": 64,
+          "save_pct": 0.646,
+          "wins": 0,
+          "losses": 11,
+          "ties": 0,
+          "shutouts": 0,
+          "shots_faced": 212
+        }
+      ]
+    }
+  }
+}

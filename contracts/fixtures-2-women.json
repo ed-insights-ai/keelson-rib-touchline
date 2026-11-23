@@ -1,0 +1,54 @@
+{
+  "schema": "touchline.fixtures/2",
+  "season": 2026,
+  "gender": "women",
+  "conference": "GAC",
+  "collected_at": "2026-11-16T12:53:51+00:00",
+  "membership_extrapolated": true,
+  "conference_game_source": "published:schedule-page",
+  "programmes": [
+    {
+      "slug": "east-central",
+      "name": "East Central",
+      "conference": "GAC",
+      "abbr": "ECU"
+    },
+    {
+      "slug": "harding",
+      "name": "Harding",
+      "conference": "GAC",
+      "abbr": "HUW"
+    }
+  ],
+  "fixtures": [
+    {
+      "id": "sidearm:east-central:7470",
+      "date": "2026-08-27",
+      "home": "regis",
+      "away": "east-central",
+      "status": "final",
+      "source_url": "https://ecutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "17:00",
+      "venue": "Denver, CO",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:harding:15256",
+      "date": "2026-08-27",
+      "home": "christian-brothers",
+      "away": "harding",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Memphis, TN",
+      "home_score": 0,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    }
+  ]
+}

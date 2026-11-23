@@ -43,6 +43,12 @@ const PUBLISHED = [
   ["rosters-1.json", ROSTERS_SCHEMA, rostersFileSchema],
   ["stats-1.json", STATS_SCHEMA, statsFileSchema],
   ["matches-2.json", MATCHES_SCHEMA, matchesFileSchema],
+  // A season file names one gender at its root; the women's value rides a
+  // companion cut from a women's file (contracts/README.md).
+  ["fixtures-2-women.json", FIXTURES_SCHEMA, fixturesFileSchema],
+  ["rosters-1-women.json", ROSTERS_SCHEMA, rostersFileSchema],
+  ["stats-1-women.json", STATS_SCHEMA, statsFileSchema],
+  ["matches-2-women.json", MATCHES_SCHEMA, matchesFileSchema],
 ] as const;
 
 describe("every published contract fixture parses under the rib's strict schema", () => {

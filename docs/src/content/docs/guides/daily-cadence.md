@@ -425,10 +425,11 @@ run summary: mode=loop season=2026 collect=[GAC=changed LSC=no-change]
   changed=[gac] failed=[none] journal_model_calls=2 journal_commit=95ff38f
   publish=succeeded exit=0 data_head=ce924f2 build=2026-09-06T14:16:59Z
   locked=[none] busy=none archive=skipped (not archive day; today is 4, archive day 7)
+  contracts=ok
 ```
 
 (one line in the log). The fields keep their positions; `data_head`, `build`,
-`locked`, `busy` and `archive` are appended at the end. `journal_model_calls` counts live
+`locked`, `busy`, `archive` and `contracts` are appended at the end. `journal_model_calls` counts live
 model calls made this run: the pooled conference call counts one per changed
 conference, the national call one more. A busy start reads
 `collect=[none] ... busy=touchline-backfill {run id}`.
@@ -460,6 +461,7 @@ write none).
 | `build_stamp` | the `touchline-build` meta content read from the site's `dist/index.html` after a successful publish, else `null` |
 | `publish` | `succeeded`, `FAILED (exit {n})`, or `skipped (no change)` |
 | `exit` | the run's exit code |
+| `contracts` | `ok`, `drift` (the log names each fact), `not run ({reason})`, or `skipped (nothing collected)`: the data home held to the rib's `contracts/` samples by `check-contracts`, after the collects and before the publish. Drift fails the run but does not hold back the publish |
 | `archive` | `ok {dir} {total size}`, `skipped (...)` (not the archive day, disabled, `collect` mode, or not reached on a busy start), or `FAILED ({reason})` |
 
 Read it with jq:

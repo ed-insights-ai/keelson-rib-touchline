@@ -69,6 +69,20 @@ jobs:
         if: steps.pipeline.outputs.exists == 'true'
         working-directory: pipeline
         run: uv run pytest -q
+      - name: Sample data homes within the contracts
+        # The real data homes are private and never reach CI; the samples
+        # under samples/ are byte-identical cuts of them. A fixture change
+        # that the real data no longer fits fails here, not on the next
+        # daily run. No samples yet (or none left), nothing to check.
+        if: steps.pipeline.outputs.exists == 'true'
+        working-directory: pipeline
+        run: |
+          set -- ../samples/*/data
+          if [ ! -d "$1" ]; then echo "no sample data homes under samples/"; exit 0; fi
+          homes=""
+          for d in "$@"; do homes="$homes ${d%/data}"; done
+          # shellcheck disable=SC2086
+          uv run check-contracts $homes
       - name: Await pipeline extraction
         if: steps.pipeline.outputs.exists != 'true'
         run: echo "No pipeline/pyproject.toml yet - pipeline CI is a no-op until the extraction lands."

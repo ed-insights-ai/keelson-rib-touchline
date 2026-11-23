@@ -541,6 +541,40 @@ def test_a_null_optional_field_is_drift(collected) -> None:
     assert found == {(("fixtures", contracts.ITEM, "neutral"), "null")}
 
 
+# ── the companions ───────────────────────────────────────────────────────────
+
+
+@pytest.mark.parametrize(
+    "contract", [c for c in contracts.CONTRACTS if c.companions], ids=lambda c: c.name
+)
+def test_companions_name_their_schema_and_carry_both_genders(
+    contract: contracts.Contract,
+) -> None:
+    """A season file names one gender at its root, so the women's value rides
+    a companion; between them the samples promise both values the writer
+    emits, and nothing else."""
+    documents = contract.documents()
+    assert all(document["schema"] == contract.schema for document in documents)
+    assert {document["gender"] for document in documents} == {"men", "women"}
+
+
+def test_matches_samples_carry_the_real_shapes_the_data_homes_showed() -> None:
+    """The three matches-2 shapes the D1 and D2 homes carried before the
+    samples did (2026-11-23): a team's offsides count, a keeper resolved
+    through the season roster, and a shootout the page sectioned as "5"."""
+    document = contracts.MATCHES.fixture()
+    match = ("matches", contracts.KEY)
+    promised = contracts.facts(document, contracts.MATCHES)
+    assert ((*match, "teams", contracts.ITEM, "offsides"), "integer") in promised
+    keeper_ref = (*match, "teams", contracts.ITEM, "keepers", contracts.ITEM)
+    assert contracts.values(
+        document, contracts.MATCHES, (*keeper_ref, "player_ref", "source")
+    ) >= {"page", "roster"}
+    assert "5" in contracts.values(
+        document, contracts.MATCHES, (*match, "plays", contracts.ITEM, "period")
+    )
+
+
 # ── a real data home, when one is offered ────────────────────────────────────
 
 DATA_DIR = os.environ.get("TOUCHLINE_CONTRACT_DATA_DIR")
@@ -549,21 +583,84 @@ DATA_DIR = os.environ.get("TOUCHLINE_CONTRACT_DATA_DIR")
 @pytest.mark.skipif(
     not DATA_DIR, reason="set TOUCHLINE_CONTRACT_DATA_DIR to check a real data home"
 )
-@pytest.mark.parametrize(
-    "contract",
-    [c for c in contracts.CONTRACTS if c is not contracts.MEMBERSHIP],
-    ids=lambda c: c.name,
-)
+@pytest.mark.parametrize("contract", contracts.CONTRACTS, ids=lambda c: c.name)
 def test_a_real_data_home_stays_within_the_contracts(
     contract: contracts.Contract,
 ) -> None:
     root = Path(str(DATA_DIR)).expanduser()
-    if contract is contracts.COVERAGE:
-        files = [coverage.coverage_path(root)]
-    else:
-        files = sorted((root / "data" / contract.name).glob("*.json"))
+    files = contracts.home_files(root, contract)
     assert files, f"no {contract.name} files under {root}"
+    promised = contract.promised()
     for path in files:
+        assert path.is_file(), f"{path} is missing"
         document = json.loads(path.read_text(encoding="utf-8"))
-        found = contracts.drift(document, contract)
+        found = contracts.facts(document, contract) - promised
         assert not found, f"{path}:\n{contracts.describe(found)}"
+
+
+# ── the publish-time check ───────────────────────────────────────────────────
+
+
+def _home(tmp_path: Path) -> Path:
+    """A data home holding exactly the contract samples, in their places."""
+    data = tmp_path / "data"
+    for contract in contracts.CONTRACTS:
+        for index, document in enumerate(contract.documents()):
+            target = contracts.home_files(tmp_path, contract)
+            path = (
+                target[0]
+                if contract
+                in (contracts.COVERAGE, contracts.PROGRAMMES, contracts.MEMBERSHIP)
+                else data / contract.name / f"2026-{document['gender']}-x{index}.json"
+            )
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(json.dumps(document), encoding="utf-8")
+    return tmp_path
+
+
+def test_check_contracts_passes_a_home_of_the_samples(tmp_path, capsys) -> None:
+    from scripts import check_contracts
+
+    assert check_contracts.main([str(_home(tmp_path))]) == 0
+    verdict = json.loads(capsys.readouterr().out.strip().splitlines()[-1])
+    assert verdict["check"] == "contracts" and verdict["verdict"] == "pass"
+
+
+def test_check_contracts_fails_on_drift_and_names_it(tmp_path, capsys) -> None:
+    from scripts import check_contracts
+
+    home = _home(tmp_path)
+    path = next((home / "data" / "matches").glob("*-men-*.json"))
+    document = json.loads(path.read_text(encoding="utf-8"))
+    match = next(iter(document["matches"].values()))
+    match["teams"][0]["throw_ins"] = 12
+    path.write_text(json.dumps(document), encoding="utf-8")
+    (home / "data" / "reference" / "programmes.json").unlink()
+
+    assert check_contracts.main([str(home)]) == 1
+    out = capsys.readouterr().out
+    assert "DRIFT matches: matches/*/teams/[]/throw_ins: integer (1 file," in out
+    assert "MISSING data/reference/programmes.json" in out
+    assert json.loads(out.strip().splitlines()[-1])["verdict"] == "fail"
+
+
+def test_check_contracts_refuses_a_directory_that_is_not_a_home(
+    tmp_path, capsys
+) -> None:
+    from scripts import check_contracts
+
+    assert check_contracts.main([str(tmp_path)]) == 1
+    assert "not a Touchline data home" in capsys.readouterr().out
+
+
+def test_check_contracts_alarms_rather_than_drifts_on_an_unreadable_file(
+    tmp_path, capsys
+) -> None:
+    from scripts import check_contracts
+
+    home = _home(tmp_path)
+    (home / "data" / "coverage.json").write_text("{not json", encoding="utf-8")
+    assert check_contracts.main([str(home)]) == 2
+    out = capsys.readouterr().out
+    assert "ERROR" in out and "JSONDecodeError" in out
+    assert json.loads(out.strip().splitlines()[-1])["verdict"] == "alarm"

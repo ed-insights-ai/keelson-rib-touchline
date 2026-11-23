@@ -47,12 +47,30 @@ class Contract:
     records: frozenset[FactPath] = frozenset()
     #: Paths whose string values form a closed set the reader enumerates.
     enums: frozenset[FactPath] = frozenset()
+    #: Further sample documents of the same schema, for shapes one document
+    #: cannot carry at once: a season file names one ``gender`` at its root,
+    #: so the women's value rides a companion cut from a women's file.
+    companions: tuple[str, ...] = ()
 
     def path(self) -> Path:
         return contracts_dir() / self.filename
 
     def fixture(self) -> Any:
         return json.loads(self.path().read_text(encoding="utf-8"))
+
+    def documents(self) -> list[Any]:
+        """The fixture and every companion, the fixture first."""
+        return [self.fixture()] + [
+            json.loads((contracts_dir() / name).read_text(encoding="utf-8"))
+            for name in self.companions
+        ]
+
+    def promised(self) -> set[Fact]:
+        """Every shape fact any of this contract's sample documents carries."""
+        found: set[Fact] = set()
+        for document in self.documents():
+            found |= facts(document, self)
+        return found
 
 
 def contracts_dir() -> Path:
@@ -90,6 +108,7 @@ FIXTURES = Contract(
             ("fixtures", ITEM, "stage", "competition"),
         }
     ),
+    companions=("fixtures-2-women.json",),
 )
 
 ROSTERS = Contract(
@@ -98,6 +117,7 @@ ROSTERS = Contract(
     schema="touchline.rosters/1",
     records=frozenset({("rosters",)}),
     enums=frozenset({("gender",)}),
+    companions=("rosters-1-women.json",),
 )
 
 STATS = Contract(
@@ -106,6 +126,7 @@ STATS = Contract(
     schema="touchline.stats/1",
     records=frozenset({("teams",)}),
     enums=frozenset({("gender",)}),
+    companions=("stats-1-women.json",),
 )
 
 MATCHES = Contract(
@@ -123,6 +144,7 @@ MATCHES = Contract(
             ("matches", KEY, "teams", ITEM, "keepers", ITEM, "player_ref", "source"),
         }
     ),
+    companions=("matches-2-women.json",),
 )
 
 MEMBERSHIP = Contract(
@@ -209,7 +231,7 @@ def drift(document: Any, contract: Contract) -> set[Fact]:
     field, a type, or an enumerated value the fixture has never promised,
     and the fixture (and the site's schema) must move before the writer.
     """
-    return facts(document, contract) - facts(contract.fixture(), contract)
+    return facts(document, contract) - contract.promised()
 
 
 def values(document: Any, contract: Contract, path: FactPath) -> set[str]:
@@ -220,6 +242,58 @@ def values(document: Any, contract: Contract, path: FactPath) -> set[str]:
         for fact_path, kind in facts(document, contract)
         if fact_path == path and kind.startswith(prefix)
     }
+
+
+def home_files(root: Path, contract: Contract) -> list[Path]:
+    """The files under a data home that publish under ``contract``.
+
+    The coverage manifest and the two reference files are single named files
+    (absent ones are returned anyway, for the caller to report); the season
+    schemas are every file in their directory, which may be empty.
+    """
+    data = root / "data"
+    if contract is COVERAGE:
+        return [data / "coverage.json"]
+    if contract is PROGRAMMES:
+        return [data / "reference" / "programmes.json"]
+    if contract is MEMBERSHIP:
+        return [data / "reference" / "membership.json"]
+    return sorted((data / contract.name).glob("*.json"))
+
+
+@dataclass
+class HomeReport:
+    """What one data home exhibits beyond the contracts."""
+
+    root: Path
+    checked: dict[str, int]
+    #: (contract name, fact) -> the files that exhibit it.
+    drift: dict[tuple[str, Fact], list[str]]
+    missing: list[Path]
+
+    @property
+    def ok(self) -> bool:
+        return not self.drift and not self.missing
+
+
+def check_home(root: Path) -> HomeReport:
+    """Hold every published file under a data home to its contract."""
+    report = HomeReport(root=root, checked={}, drift={}, missing=[])
+    for contract in CONTRACTS:
+        promised = contract.promised()
+        files = home_files(root, contract)
+        report.checked[contract.name] = 0
+        for path in files:
+            if not path.is_file():
+                report.missing.append(path)
+                continue
+            document = json.loads(path.read_text(encoding="utf-8"))
+            report.checked[contract.name] += 1
+            for fact in facts(document, contract) - promised:
+                report.drift.setdefault((contract.name, fact), []).append(
+                    str(path.relative_to(root))
+                )
+    return report
 
 
 def describe(found: set[Fact]) -> str:
