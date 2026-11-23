@@ -41,8 +41,8 @@
       "vcu"
     ]
   },
-  "people": "invented: 5267 real name tokens, every page id and every hometown town swapped for invented ones by pipeline/scripts/sample_names.py",
-  "cut_at": "2026-11-23T16:57:09+00:00",
+  "people": "invented: 5272 real name tokens, every page id and every hometown town swapped for invented ones by pipeline/scripts/sample_names.py",
+  "cut_at": "2026-11-23T17:03:05+00:00",
   "files": [
     {
       "path": "data/fixtures/2026-men-a10.json",
@@ -56,13 +56,13 @@
     },
     {
       "path": "data/stats/2026-men-a10.json",
-      "bytes": 206672,
-      "sha256": "994b848c3407c3a8857eb6882a3472321e6e526e00da19028b8ec0233e589582"
+      "bytes": 206668,
+      "sha256": "966664a8773ea047308a5eb5a76f2b4e06c12a1fdc9862480b3c5daeb2fbad72"
     },
     {
       "path": "data/matches/2026-men-a10.json",
-      "bytes": 5828850,
-      "sha256": "2c9e8bb1b01c99a81bc45147970e5e21f4cdaabdc7b15c4d8553facef4805a30"
+      "bytes": 5828646,
+      "sha256": "29252ebb14151cfd8e41496657aeec7c2d5103556be75fe2119a83c6f822451e"
     },
     {
       "path": "data/fixtures/2026-women-a10.json",
@@ -81,8 +81,8 @@
     },
     {
       "path": "data/matches/2026-women-a10.json",
-      "bytes": 6819516,
-      "sha256": "e40576ed8f91a83cc464267d17c71a5be354cac9017d2f4d5bec9ab33419b92b"
+      "bytes": 6819371,
+      "sha256": "18ff87d8f3113eb691a47c40941b3a0a4bd73d6fbcbad38461b7e6df644fd8b7"
     }
   ]
 }

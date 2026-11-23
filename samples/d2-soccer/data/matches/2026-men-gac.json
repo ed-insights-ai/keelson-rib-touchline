@@ -3772,7 +3772,7 @@
         },
         {
           "period": "1",
-          "text": "Yellow card on Jewell TESTAR.",
+          "text": "Yellow card on Jewell TEAM.",
           "clock": "34:28",
           "team": 1,
           "type": "yellow"
@@ -11242,7 +11242,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by RU Calick, Leste, bottom left, Testar save.",
+          "text": "Shot by RU Calick, Leste, bottom left, Team save.",
           "clock": "19:16",
           "team": 0,
           "type": "shot"
@@ -13268,14 +13268,14 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on ROCK TESTAR.",
+          "text": "Yellow card on ROCK TEAM.",
           "clock": "70:45",
           "team": 1,
           "type": "yellow"
         },
         {
           "period": "2",
-          "text": "Red card on ROCK TESTAR.",
+          "text": "Red card on ROCK TEAM.",
           "clock": "70:45",
           "team": 1,
           "type": "red"
@@ -14175,7 +14175,7 @@
           "scorer": "Edolska Curett",
           "season_total": 1,
           "assist": "Crodner Tlazane",
-          "description": "Sinde cross from Tlazane from the left side set up Curett near the penalty marker for the right-footed goal."
+          "description": "Short cross from Tlazane from the left side set up Curett near the penalty marker for the right-footed goal."
         },
         {
           "time": "39:12",
@@ -14199,7 +14199,7 @@
           "scorer": "Esundford Gladia",
           "season_total": 2,
           "assist": "Cremett Wunley , Lirdale Klaro",
-          "description": "Klaro and Wunley short passes inside the box set up Gladia in front of the net for the right-foot goal to the right corner of the net."
+          "description": "Klaro and Wunley sinde passes inside the box set up Gladia in front of the net for the right-foot goal to the right corner of the net."
         }
       ],
       "plays": [
@@ -15906,7 +15906,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by RSU Klidley, Jizon, bottom right, Testar save.",
+          "text": "Shot by RSU Klidley, Jizon, bottom right, Team save.",
           "clock": "25:58",
           "team": 1,
           "type": "shot"
@@ -16362,7 +16362,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on RSU TESTAR.",
+          "text": "Yellow card on RSU TEAM.",
           "clock": "59:21",
           "team": 1,
           "type": "yellow"
@@ -17957,7 +17957,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on MCK TESTAR.",
+          "text": "Yellow card on MCK TEAM.",
           "clock": "58:36",
           "team": 1,
           "type": "yellow"
@@ -21782,7 +21782,7 @@
         },
         {
           "period": "1",
-          "text": "Yellow card on FHSU TESTAR.",
+          "text": "Yellow card on FHSU TEAM.",
           "clock": "11:48",
           "team": 1,
           "type": "yellow"
@@ -26516,7 +26516,7 @@
         },
         {
           "period": "2",
-          "text": "FOR ROCK: , #34 Nendard, Salis, #10 Larlen, Ralby, #5 Stibar, Telick, #11 Ulendane, Oseta, #15 Prinddale, Jamford, #19 Stuzard, Nebo, #6 Hastard, Edolska, #41 Listford, Tlosen, #20 Genel, Clundsen, #25 Masen, Natby, #27 Hodes, Ponard.",
+          "text": "FOR ROCK: , #34 Nendard, Salis, #10 Larlen, Ralby, #5 Stibar, Telick, #11 Ulendane, Oseta, #15 Prinddale, Jamford, #19 Stuzard, Nebo, #6 Hastard, Edolska, #41 Listford, Tlosen, #20 Genel, Clundsen, #25 Masen, Natby, #27 Hestdale, Ponard.",
           "clock": "45:00",
           "team": 1,
           "type": "lineup"
@@ -26558,7 +26558,7 @@
         },
         {
           "period": "2",
-          "text": "ROCK substitution: Hodes, Ponard for Mevner, Rusel.",
+          "text": "ROCK substitution: Hestdale, Ponard for Mevner, Rusel.",
           "clock": "45:00",
           "team": 1,
           "type": "sub"
@@ -26628,7 +26628,7 @@
         },
         {
           "period": "2",
-          "text": "ROCK substitution: Lita, Restley for Hodes, Ponard.",
+          "text": "ROCK substitution: Lita, Restley for Hestdale, Ponard.",
           "clock": "45:00",
           "team": 1,
           "type": "sub"
@@ -27007,7 +27007,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on ROGER TESTAR.",
+          "text": "Yellow card on ROGER TEAM.",
           "clock": "81:48",
           "team": 0,
           "type": "yellow"
@@ -27920,7 +27920,7 @@
         },
         {
           "period": "1",
-          "text": "GOAL by DBU TESTAR.",
+          "text": "GOAL by DBU TEAM.",
           "clock": "11:27",
           "team": 0,
           "type": "goal",
@@ -28316,7 +28316,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by HU Siler, Alondett, bottom right, Testar save.",
+          "text": "Shot by HU Siler, Alondett, bottom right, Team save.",
           "clock": "50:00",
           "team": 1,
           "type": "shot"
@@ -29884,7 +29884,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by CBU Mulel, Abele, bottom center, Testar save.",
+          "text": "Shot by CBU Mulel, Abele, bottom center, Team save.",
           "clock": "57:49",
           "team": 0,
           "type": "shot"
@@ -30073,7 +30073,7 @@
         },
         {
           "period": "2",
-          "text": "CBU substitution: drimen, chase for Dremen, Trorer.",
+          "text": "CBU substitution: drimen, crostley for Dremen, Trorer.",
           "clock": "77:25",
           "team": 0,
           "type": "sub"
@@ -30237,7 +30237,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on CBU TESTAR.",
+          "text": "Yellow card on CBU TEAM.",
           "clock": "89:58",
           "team": 0,
           "type": "yellow"
@@ -31464,7 +31464,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by CSUP Clerlin, Natby, bottom right, Testar save.",
+          "text": "Shot by CSUP Clerlin, Natby, bottom right, Team save.",
           "clock": "59:19",
           "team": 1,
           "type": "shot"
@@ -31752,7 +31752,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on Newman TESTAR.",
+          "text": "Yellow card on Newman TEAM.",
           "clock": "88:55",
           "team": 0,
           "type": "yellow"
@@ -33288,14 +33288,14 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on NSU TESTAR.",
+          "text": "Yellow card on NSU TEAM.",
           "clock": "76:36",
           "team": 1,
           "type": "yellow"
         },
         {
           "period": "2",
-          "text": "Yellow card on NSU TESTAR.",
+          "text": "Yellow card on NSU TEAM.",
           "clock": "76:36",
           "team": 1,
           "type": "yellow"
@@ -36812,7 +36812,7 @@
         },
         {
           "period": "2",
-          "text": "Red card on RSU TESTAR.",
+          "text": "Red card on RSU TEAM.",
           "clock": "89:33",
           "team": 0,
           "type": "red"
@@ -38340,7 +38340,7 @@
               }
             },
             {
-              "name": "Ivotett H\u00e1nel",
+              "name": "Ivotett H\u00edvia",
               "position": "DEF",
               "number": "3",
               "started": true,
@@ -38965,7 +38965,7 @@
         },
         {
           "type": "yellow",
-          "player": "Ivotett H\u00e1nel",
+          "player": "Ivotett H\u00edvia",
           "number": "3",
           "time": "20:21",
           "team": 0
@@ -39174,7 +39174,7 @@
         },
         {
           "period": "1",
-          "text": "Yellow card on FLC H\u00e1nel, Ivotett.",
+          "text": "Yellow card on FLC H\u00edvia, Ivotett.",
           "clock": "20:21",
           "team": 0,
           "type": "yellow"
@@ -39412,7 +39412,7 @@
         },
         {
           "period": "2",
-          "text": "FOR FLC: , #1 Mazix, Lanin, #3 H\u00e1nel, Ivotett, #4 Dlandan, Tledon, #6 Brider Fuzby, Rulford, #7 Hodory, Adelvska, #9 Asivsen, S\u00faver, #10 Plasix, Frimane, #16 N'Uvon, Jano, #20 Blolvley, Wuler, #23 Mino, Nalvo, #27 Clavel, Foldale.",
+          "text": "FOR FLC: , #1 Mazix, Lanin, #3 H\u00edvia, Ivotett, #4 Dlandan, Tledon, #6 Brider Fuzby, Rulford, #7 Hodory, Adelvska, #9 Asivsen, S\u00faver, #10 Plasix, Frimane, #16 N'Uvon, Jano, #20 Blolvley, Wuler, #23 Mino, Nalvo, #27 Clavel, Foldale.",
           "clock": "45:00",
           "team": 0,
           "type": "lineup"
@@ -39867,7 +39867,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on FHS TESTAR.",
+          "text": "Yellow card on FHS TEAM.",
           "clock": "77:53",
           "team": 1,
           "type": "yellow"
@@ -42539,7 +42539,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on OBU TESTAR.",
+          "text": "Yellow card on OBU TEAM.",
           "clock": "55:41",
           "team": 0,
           "type": "yellow"
@@ -48499,7 +48499,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on UTD TESTAR.",
+          "text": "Yellow card on UTD TEAM.",
           "clock": "89:29",
           "team": 1,
           "type": "yellow"
@@ -49167,7 +49167,7 @@
           "scorer": "Jalvo Olulford",
           "season_total": 6,
           "assist": "Date Misick",
-          "description": "Lirford ball over the top from #3 Misick, collected by #9 Olulford just inside penalty box, 1v1 with keeper, rounds goalie from the right to score."
+          "description": "Long ball over the top from #3 Misick, collected by #9 Olulford just inside penalty box, 1v1 with keeper, rounds goalie from the right to score."
         },
         {
           "time": "83:53",
@@ -51117,14 +51117,14 @@
         },
         {
           "period": "1",
-          "text": "Shot by LCU Livell, Jirlford, bottom center, Testar save.",
+          "text": "Shot by LCU Livell, Jirlford, bottom center, Team save.",
           "clock": "43:31",
           "team": 1,
           "type": "shot"
         },
         {
           "period": "1",
-          "text": "Yellow card on FHS TESTAR.",
+          "text": "Yellow card on FHS TEAM.",
           "clock": "43:43",
           "team": 0,
           "type": "yellow"
@@ -51436,7 +51436,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on LCU TESTAR.",
+          "text": "Yellow card on LCU TEAM.",
           "clock": "72:21",
           "team": 1,
           "type": "yellow"
@@ -51464,7 +51464,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by FHS Walvick, Odalix, bottom center, Testar save.",
+          "text": "Shot by FHS Walvick, Odalix, bottom center, Team save.",
           "clock": "73:30",
           "team": 0,
           "type": "shot"
@@ -53807,7 +53807,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by RSU Molby, Crado, bottom left, Testar save.",
+          "text": "Shot by RSU Molby, Crado, bottom left, Team save.",
           "clock": "32:28",
           "team": 1,
           "type": "shot"
@@ -55635,7 +55635,7 @@
         },
         {
           "period": "1",
-          "text": "Eagles substitution: Mordale, Alorix for Wells, Jetin.",
+          "text": "Eagles substitution: Mordale, Alorix for Wundon, Jetin.",
           "clock": "45:00",
           "team": 1,
           "type": "sub"
@@ -55684,7 +55684,7 @@
         },
         {
           "period": "2",
-          "text": "Eagles substitution: Wells, Jetin for Mordale, Alorix.",
+          "text": "Eagles substitution: Wundon, Jetin for Mordale, Alorix.",
           "clock": "45:00",
           "team": 1,
           "type": "sub"
@@ -55999,14 +55999,14 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on Eagles TESTAR.",
+          "text": "Yellow card on Eagles TEAM.",
           "clock": "85:12",
           "team": 1,
           "type": "yellow"
         },
         {
           "period": "2",
-          "text": "Yellow card on SNU TESTAR.",
+          "text": "Yellow card on SNU TEAM.",
           "clock": "85:12",
           "team": 0,
           "type": "yellow"
@@ -61647,7 +61647,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on HU TESTAR.",
+          "text": "Yellow card on HU TEAM.",
           "clock": "51:20",
           "team": 0,
           "type": "yellow"
@@ -63417,7 +63417,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by NSU Aristner, Custane, bottom center, Testar save.",
+          "text": "Shot by NSU Aristner, Custane, bottom center, Team save.",
           "clock": "75:18",
           "team": 0,
           "type": "shot"
@@ -63473,14 +63473,14 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on NSU TESTAR.",
+          "text": "Yellow card on NSU TEAM.",
           "clock": "77:08",
           "team": 0,
           "type": "yellow"
         },
         {
           "period": "2",
-          "text": "Yellow card on FHSU TESTAR.",
+          "text": "Yellow card on FHSU TEAM.",
           "clock": "77:08",
           "team": 1,
           "type": "yellow"
@@ -64776,7 +64776,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on RSU TESTAR.",
+          "text": "Yellow card on RSU TEAM.",
           "clock": "49:07",
           "team": 0,
           "type": "yellow"
@@ -66242,7 +66242,7 @@
         },
         {
           "period": "1",
-          "text": "Yellow card on OUA TESTAR.",
+          "text": "Yellow card on OUA TEAM.",
           "clock": "31:01",
           "team": 0,
           "type": "yellow"
@@ -73870,7 +73870,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by OBU Wunley, Cremett, bottom center, Testar save.",
+          "text": "Shot by OBU Wunley, Cremett, bottom center, Team save.",
           "clock": "25:22",
           "team": 1,
           "type": "shot"
@@ -75560,7 +75560,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by HU Lendar, Nire, bottom left, Testar save.",
+          "text": "Shot by HU Lendar, Nire, bottom left, Team save.",
           "clock": "53:35",
           "team": 1,
           "type": "shot"
@@ -77345,7 +77345,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on NSU TESTAR.",
+          "text": "Yellow card on NSU TEAM.",
           "clock": "76:32",
           "team": 0,
           "type": "yellow"
@@ -85944,7 +85944,7 @@
           "scorer": "Crado Molby",
           "season_total": 2,
           "assist": "Lilvory Bisten",
-          "description": "Bisten short pass from the endline to Molby for the tap in near the right post."
+          "description": "Bisten sinde pass from the endline to Molby for the tap in near the right post."
         }
       ],
       "cards": [
@@ -87550,7 +87550,7 @@
           "scorer": "Jotley Lebsen",
           "season_total": 4,
           "assist": "Frenan Vudett",
-          "description": "Testar save on initial shot by #14, rebound scored by #7."
+          "description": "Team save on initial shot by #14, rebound scored by #7."
         },
         {
           "time": "81:48",
@@ -88259,7 +88259,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by FHSU Vudett, Frenan, bottom left, Testar save.",
+          "text": "Shot by FHSU Vudett, Frenan, bottom left, Team save.",
           "clock": "68:33",
           "team": 1,
           "type": "shot"
@@ -88277,7 +88277,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on FHSU TESTAR.",
+          "text": "Yellow card on FHSU TEAM.",
           "clock": "68:33",
           "team": 1,
           "type": "yellow"
@@ -92819,7 +92819,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on RSU TESTAR.",
+          "text": "Yellow card on RSU TEAM.",
           "clock": "54:28",
           "team": 1,
           "type": "yellow"
@@ -96121,7 +96121,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on SNU TESTAR.",
+          "text": "Yellow card on SNU TEAM.",
           "clock": "73:16",
           "team": 0,
           "type": "yellow"
@@ -96149,7 +96149,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on SNU TESTAR.",
+          "text": "Yellow card on SNU TEAM.",
           "clock": "75:20",
           "team": 0,
           "type": "yellow"
@@ -100945,7 +100945,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on NU TESTAR.",
+          "text": "Yellow card on NU TEAM.",
           "clock": "83:44",
           "team": 0,
           "type": "yellow"
@@ -103814,7 +103814,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by OBU Cevska, Arandina, bottom right, Testar save.",
+          "text": "Shot by OBU Cevska, Arandina, bottom right, Team save.",
           "clock": "80:00",
           "team": 1,
           "type": "shot"
@@ -106191,7 +106191,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by FHSU Gelard, Dledley, bottom left, Testar save.",
+          "text": "Shot by FHSU Gelard, Dledley, bottom left, Team save.",
           "clock": "12:09",
           "team": 1,
           "type": "shot"
@@ -106279,7 +106279,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by FHSU Clazory, Klilvett, bottom left, Testar save.",
+          "text": "Shot by FHSU Clazory, Klilvett, bottom left, Team save.",
           "clock": "24:03",
           "team": 1,
           "type": "shot"
@@ -106440,7 +106440,7 @@
         },
         {
           "period": "1",
-          "text": "Yellow card on OBU TESTAR.",
+          "text": "Yellow card on OBU TEAM.",
           "clock": "41:20",
           "team": 0,
           "type": "yellow"
@@ -109655,7 +109655,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on SNU TESTAR.",
+          "text": "Yellow card on SNU TEAM.",
           "clock": "84:37",
           "team": 0,
           "type": "yellow"
@@ -110469,7 +110469,7 @@
         },
         {
           "period": "1",
-          "text": "GOAL by FHSU TESTAR.",
+          "text": "GOAL by FHSU TEAM.",
           "clock": "08:23",
           "team": 1,
           "type": "goal",
@@ -110480,7 +110480,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by FHSU Vrirlix, Luzsen, bottom left, Testar save.",
+          "text": "Shot by FHSU Vrirlix, Luzsen, bottom left, Team save.",
           "clock": "08:38",
           "team": 1,
           "type": "shot"
@@ -111181,14 +111181,14 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on FHSU TESTAR.",
+          "text": "Yellow card on FHSU TEAM.",
           "clock": "80:09",
           "team": 1,
           "type": "yellow"
         },
         {
           "period": "2",
-          "text": "Red card on HU TESTAR.",
+          "text": "Red card on HU TEAM.",
           "clock": "80:09",
           "team": 0,
           "type": "red"
@@ -112108,7 +112108,7 @@
         },
         {
           "period": "1",
-          "text": "Yellow card on Tigers TESTAR.",
+          "text": "Yellow card on Tigers TEAM.",
           "clock": "36:07",
           "team": 0,
           "type": "yellow"
@@ -112185,7 +112185,7 @@
         },
         {
           "period": "1",
-          "text": "Yellow card on Tigers TESTAR.",
+          "text": "Yellow card on Tigers TEAM.",
           "clock": "45:00",
           "team": 0,
           "type": "yellow"
@@ -113670,7 +113670,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by NSU Ristard, Adistel, bottom center, Testar save.",
+          "text": "Shot by NSU Ristard, Adistel, bottom center, Team save.",
           "clock": "54:22",
           "team": 1,
           "type": "shot"
@@ -120959,14 +120959,14 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on NEW TESTAR.",
+          "text": "Yellow card on NEW TEAM.",
           "clock": "63:50",
           "team": 0,
           "type": "yellow"
         },
         {
           "period": "2",
-          "text": "Yellow card on NEW TESTAR.",
+          "text": "Yellow card on NEW TEAM.",
           "clock": "63:50",
           "team": 0,
           "type": "yellow"
@@ -122836,7 +122836,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by RSU Bisten, Lilvory, bottom center, Testar save.",
+          "text": "Shot by RSU Bisten, Lilvory, bottom center, Team save.",
           "clock": "84:31",
           "team": 1,
           "type": "shot"
@@ -126019,7 +126019,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by NSU Aristner, Custane, bottom center, Testar save.",
+          "text": "Shot by NSU Aristner, Custane, bottom center, Team save.",
           "clock": "89:33",
           "team": 0,
           "type": "shot"
@@ -127541,7 +127541,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on FHSU TESTAR.",
+          "text": "Yellow card on FHSU TEAM.",
           "clock": "72:49",
           "team": 1,
           "type": "yellow"

@@ -8610,7 +8610,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by SWOSU LuTe, Edadford, bottom left, Testar save.",
+          "text": "Shot by SWOSU LuTe, Edadford, bottom left, Team save.",
           "clock": "25:07",
           "team": 1,
           "type": "shot"
@@ -12381,7 +12381,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by PSU Movick, Milick, bottom center, Testar save.",
+          "text": "Shot by PSU Movick, Milick, bottom center, Team save.",
           "clock": "82:02",
           "team": 1,
           "type": "shot"
@@ -16419,7 +16419,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by MSU Rundby, Bredley, bottom left, Testar save.",
+          "text": "Shot by MSU Rundby, Bredley, bottom left, Team save.",
           "clock": "09:39",
           "team": 1,
           "type": "shot"
@@ -20188,7 +20188,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by UTT Nuster, Norlin, bottom right, Testar save.",
+          "text": "Shot by UTT Nuster, Norlin, bottom right, Team save.",
           "clock": "43:22",
           "team": 1,
           "type": "shot"
@@ -27376,7 +27376,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by HU Crabby, Cruvford, bottom left, Testar save.",
+          "text": "Shot by HU Crabby, Cruvford, bottom left, Team save.",
           "clock": "20:37",
           "team": 1,
           "type": "shot"
@@ -27761,7 +27761,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by HU Aristner, Maden, bottom right, Testar save.",
+          "text": "Shot by HU Aristner, Maden, bottom right, Team save.",
           "clock": "50:56",
           "team": 1,
           "type": "shot"
@@ -29393,7 +29393,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by UCO Cavner, Krunett, bottom center, Testar save.",
+          "text": "Shot by UCO Cavner, Krunett, bottom center, Team save.",
           "clock": "65:16",
           "team": 0,
           "type": "shot"
@@ -40285,7 +40285,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on NSU TESTAR.",
+          "text": "Yellow card on NSU TEAM.",
           "clock": "78:59",
           "team": 1,
           "type": "yellow"
@@ -46904,7 +46904,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by UCM Lanett, Horory, bottom center, Testar save.",
+          "text": "Shot by UCM Lanett, Horory, bottom center, Team save.",
           "clock": "32:39",
           "team": 0,
           "type": "shot"
@@ -47392,7 +47392,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by HU Crabby, Clorlford, bottom right, Testar save.",
+          "text": "Shot by HU Crabby, Clorlford, bottom right, Team save.",
           "clock": "74:03",
           "team": 1,
           "type": "shot"
@@ -52903,8 +52903,8 @@
           "time": "0:27",
           "scorer": "Jelvner Lurlane",
           "season_total": 1,
-          "assist": "Testar",
-          "description": "GOAL by Southern Nazarene Jelvner Lurlane (FIRST GOAL), Assist by Testar, goal number 1 for season."
+          "assist": "Team",
+          "description": "GOAL by Southern Nazarene Jelvner Lurlane (FIRST GOAL), Assist by Team, goal number 1 for season."
         },
         {
           "time": "13:32",
@@ -52953,7 +52953,7 @@
         },
         {
           "period": "1",
-          "text": "GOAL by Southern Nazarene Jelvner Lurlane (FIRST GOAL), Assist by Testar, goal number 1 for season.",
+          "text": "GOAL by Southern Nazarene Jelvner Lurlane (FIRST GOAL), Assist by Team, goal number 1 for season.",
           "clock": "0:27",
           "team": 0,
           "type": "goal",
@@ -53130,7 +53130,7 @@
         },
         {
           "period": "1",
-          "text": "Corner kick by Southern Nazarene Testar [25:05].",
+          "text": "Corner kick by Southern Nazarene Team [25:05].",
           "clock": "25:05",
           "team": 0,
           "type": "corner"
@@ -54347,7 +54347,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by SWOSU Hastton, Kronick, bottom center, Testar save.",
+          "text": "Shot by SWOSU Hastton, Kronick, bottom center, Team save.",
           "clock": "07:32",
           "team": 1,
           "type": "shot"
@@ -56492,7 +56492,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by HU Udimell, Mozan, bottom right, Testar save.",
+          "text": "Shot by HU Udimell, Mozan, bottom right, Team save.",
           "clock": "77:16",
           "team": 1,
           "type": "shot"
@@ -56506,7 +56506,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by HU Aristner, Maden, bottom center, Testar save.",
+          "text": "Shot by HU Aristner, Maden, bottom center, Team save.",
           "clock": "77:50",
           "team": 1,
           "type": "shot"
@@ -57405,7 +57405,7 @@
           "scorer": "Clela Jilvton",
           "season_total": 1,
           "assist": "Halner Blandsen",
-          "description": "Sinde pass from Blandsen from the endline near the goal on the right side set up Jilvton for tap-in in the lower right corner."
+          "description": "Short pass from Blandsen from the endline near the goal on the right side set up Jilvton for tap-in in the lower right corner."
         },
         {
           "time": "37:48",
@@ -57421,7 +57421,7 @@
           "scorer": "Horory Lanett",
           "season_total": 2,
           "assist": "Mandton Crene",
-          "description": "Sinde pass from Crene on the right side into the front of the box to Lanett for a left-footed goal."
+          "description": "Short pass from Crene on the right side into the front of the box to Lanett for a left-footed goal."
         },
         {
           "time": "62:05",
@@ -59230,7 +59230,7 @@
         },
         {
           "period": "1",
-          "text": "Yellow card on ESU TESTAR.",
+          "text": "Yellow card on ESU TEAM.",
           "clock": "22:48",
           "team": 1,
           "type": "yellow"
@@ -64018,7 +64018,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by SWOSU Klazick, Murell, bottom left, Testar save.",
+          "text": "Shot by SWOSU Klazick, Murell, bottom left, Team save.",
           "clock": "38:23",
           "team": 1,
           "type": "shot"
@@ -68887,7 +68887,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on SWOSU TESTAR.",
+          "text": "Yellow card on SWOSU TEAM.",
           "clock": "66:59",
           "team": 0,
           "type": "yellow"
@@ -70623,7 +70623,7 @@
         },
         {
           "period": "2",
-          "text": "GOAL by HU TESTAR.",
+          "text": "GOAL by HU TEAM.",
           "clock": "78:02",
           "team": 1,
           "type": "goal",
@@ -71524,7 +71524,7 @@
           "scorer": "Lotory Asedane",
           "season_total": 1,
           "assist": "MuZory Walvick",
-          "description": "Sinde back pass from Walvick to Asedane in the middle of the field for a shot into the top right corner of the net."
+          "description": "Short back pass from Walvick to Asedane in the middle of the field for a shot into the top right corner of the net."
         },
         {
           "time": "74:43",
@@ -82153,7 +82153,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on OBU TESTAR.",
+          "text": "Yellow card on OBU TEAM.",
           "clock": "87:31",
           "team": 1,
           "type": "yellow"
@@ -82181,7 +82181,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by OBU Asedane, Lotory, bottom left, Testar save.",
+          "text": "Shot by OBU Asedane, Lotory, bottom left, Team save.",
           "clock": "88:53",
           "team": 1,
           "type": "shot"
@@ -83355,7 +83355,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on SWOSU TESTAR.",
+          "text": "Yellow card on SWOSU TEAM.",
           "clock": "74:55",
           "team": 0,
           "type": "yellow"
@@ -96029,7 +96029,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by HU Crabby, Cruvford, bottom right, Testar save.",
+          "text": "Shot by HU Crabby, Cruvford, bottom right, Team save.",
           "clock": "18:59",
           "team": 1,
           "type": "shot"
@@ -108615,7 +108615,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by HU Udimell, Mozan, bottom left, Testar save.",
+          "text": "Shot by HU Udimell, Mozan, bottom left, Team save.",
           "clock": "25:10",
           "team": 0,
           "type": "shot"
@@ -114165,7 +114165,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by SNU Jurlard, Asulvford, bottom center, Testar save.",
+          "text": "Shot by SNU Jurlard, Asulvford, bottom center, Team save.",
           "clock": "08:03",
           "team": 0,
           "type": "shot"
@@ -114600,7 +114600,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by SNU Brebett, Bredley, bottom center, Testar save.",
+          "text": "Shot by SNU Brebett, Bredley, bottom center, Team save.",
           "clock": "61:59",
           "team": 0,
           "type": "shot"
@@ -117267,7 +117267,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on ECU TESTAR.",
+          "text": "Yellow card on ECU TEAM.",
           "clock": "56:07",
           "team": 1,
           "type": "yellow"
@@ -122007,7 +122007,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on SNU TESTAR.",
+          "text": "Yellow card on SNU TEAM.",
           "clock": "74:08",
           "team": 0,
           "type": "yellow"
@@ -123150,7 +123150,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by OUA Brustard, Rusis, bottom center, Testar save.",
+          "text": "Shot by OUA Brustard, Rusis, bottom center, Team save.",
           "clock": "47:54",
           "team": 1,
           "type": "shot"
@@ -123392,7 +123392,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by OUA Edudix, Overane, bottom center, Testar save.",
+          "text": "Shot by OUA Edudix, Overane, bottom center, Team save.",
           "clock": "81:30",
           "team": 1,
           "type": "shot"
@@ -124604,7 +124604,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on SWOSU TESTAR.",
+          "text": "Yellow card on SWOSU TEAM.",
           "clock": "77:29",
           "team": 0,
           "type": "yellow"
@@ -125743,7 +125743,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by WU Homan, Lolford, bottom center, Testar save.",
+          "text": "Shot by WU Homan, Lolford, bottom center, Team save.",
           "clock": "05:50",
           "team": 1,
           "type": "shot"

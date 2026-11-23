@@ -2613,7 +2613,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by TEM Restsen, Klebane, bottom left, Testar save.",
+          "text": "Shot by TEM Restsen, Klebane, bottom left, Team save.",
           "clock": "51:08",
           "team": 0,
           "type": "shot"
@@ -6175,7 +6175,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by DREX Lurlen, Rusel, bottom center, Testar save.",
+          "text": "Shot by DREX Lurlen, Rusel, bottom center, Team save.",
           "clock": "07:07",
           "team": 0,
           "type": "shot"
@@ -6797,7 +6797,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by SJU Pedane, Asutby, bottom center, Testar save.",
+          "text": "Shot by SJU Pedane, Asutby, bottom center, Team save.",
           "clock": "72:05",
           "team": 1,
           "type": "shot"
@@ -6881,7 +6881,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by DREX Druver, Jorell, bottom right, Testar save.",
+          "text": "Shot by DREX Druver, Jorell, bottom right, Team save.",
           "clock": "88:23",
           "team": 0,
           "type": "shot"
@@ -9062,7 +9062,7 @@
           "time": "62:47",
           "team": 1,
           "scorer": "0",
-          "description": "GOAL by WVU TESTAR."
+          "description": "GOAL by WVU TEAM."
         }
       ],
       "cards": [
@@ -9501,7 +9501,7 @@
         },
         {
           "period": "2",
-          "text": "GOAL by WVU TESTAR.",
+          "text": "GOAL by WVU TEAM.",
           "clock": "62:47",
           "team": 1,
           "type": "goal",
@@ -19491,7 +19491,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on PRO TESTAR.",
+          "text": "Yellow card on PRO TEAM.",
           "clock": "67:07",
           "team": 1,
           "type": "yellow"
@@ -31717,7 +31717,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by NCSU Brurlton, Jeve, bottom right, Testar save.",
+          "text": "Shot by NCSU Brurlton, Jeve, bottom right, Team save.",
           "clock": "51:11",
           "team": 0,
           "type": "shot"
@@ -31833,7 +31833,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by NCSU Clizix, Mundell, bottom left, Testar save.",
+          "text": "Shot by NCSU Clizix, Mundell, bottom left, Team save.",
           "clock": "64:16",
           "team": 0,
           "type": "shot"
@@ -34100,7 +34100,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by MSU Jaser, Elinford, bottom center, Testar save.",
+          "text": "Shot by MSU Jaser, Elinford, bottom center, Team save.",
           "clock": "26:59",
           "team": 1,
           "type": "shot"
@@ -34695,7 +34695,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by MSU Naben, Bredley, bottom left, Testar save.",
+          "text": "Shot by MSU Naben, Bredley, bottom left, Team save.",
           "clock": "82:35",
           "team": 1,
           "type": "shot"
@@ -34741,7 +34741,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by LUC Castane, Lastska, bottom right, Testar save.",
+          "text": "Shot by LUC Castane, Lastska, bottom right, Team save.",
           "clock": "86:28",
           "team": 0,
           "type": "shot"
@@ -39794,7 +39794,7 @@
         },
         {
           "period": "1",
-          "text": "Yellow card on GMU TESTAR.",
+          "text": "Yellow card on GMU TEAM.",
           "clock": "07:46",
           "team": 1,
           "type": "yellow"
@@ -53668,7 +53668,7 @@
           "time": "66:45",
           "team": 0,
           "scorer": "0",
-          "description": "GOAL by MSM TESTAR."
+          "description": "GOAL by MSM TEAM."
         },
         {
           "time": "77:25",
@@ -54392,7 +54392,7 @@
         },
         {
           "period": "2",
-          "text": "GOAL by MSM TESTAR.",
+          "text": "GOAL by MSM TEAM.",
           "clock": "66:45",
           "team": 0,
           "type": "goal",
@@ -58254,14 +58254,14 @@
           "scorer": "Sudett Cremo",
           "season_total": 2,
           "assist": "Ylulve Molvell",
-          "description": "Marui's shot is blocked, but comes straight back to her feet. Passes across the box to Cremo who puts in the uncontested shot."
+          "description": "Molvell's shot is blocked, but comes straight back to her feet. Passes across the box to Cremo who puts in the uncontested shot."
         },
         {
           "time": "19:23",
           "team": 1,
           "scorer": "Milett Meldale",
           "season_total": 5,
-          "description": "Shot from Molvell off the hand of UROSEN defender, Meldale steps up to the penalty spot after a VAR review and sinks the penalty lower right corner."
+          "description": "Shot from Molvell off the hand of URI defender, Meldale steps up to the penalty spot after a VAR review and sinks the penalty lower right corner."
         },
         {
           "time": "26:02",
@@ -58269,13 +58269,13 @@
           "scorer": "Klastard Saban Crerle",
           "season_total": 3,
           "assist": "Nilvdale Clava",
-          "description": "Chudowski carries the ball through the midfield before passing to Crerle on the wing, who cuts in and scores, far post."
+          "description": "Cazon carries the ball through the midfield before passing to Crerle on the wing, who cuts in and scores, far post."
         },
         {
           "time": "45:44",
           "team": 1,
           "scorer": "0",
-          "description": "Clulvia goes off defender marking Obose and into the back of the net."
+          "description": "Cross goes off defender marking Obose and into the back of the net."
         },
         {
           "time": "46:22",
@@ -58681,7 +58681,7 @@
         },
         {
           "period": "2",
-          "text": "GOAL by DUKE TESTAR.",
+          "text": "GOAL by DUKE TEAM.",
           "clock": "45:44",
           "team": 1,
           "type": "goal",
@@ -65250,7 +65250,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by ELO Maton, Ivasar, bottom right, Testar save.",
+          "text": "Shot by ELO Maton, Ivasar, bottom right, Team save.",
           "clock": "21:27",
           "team": 0,
           "type": "shot"
@@ -71488,7 +71488,7 @@
           "time": "00:34",
           "team": 1,
           "scorer": "0",
-          "description": "GOAL by UNH TESTAR."
+          "description": "GOAL by UNH TEAM."
         }
       ],
       "plays": [
@@ -71508,7 +71508,7 @@
         },
         {
           "period": "1",
-          "text": "GOAL by UNH TESTAR.",
+          "text": "GOAL by UNH TEAM.",
           "clock": "00:34",
           "team": 1,
           "type": "goal",
@@ -73588,7 +73588,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on ILL TESTAR.",
+          "text": "Yellow card on ILL TEAM.",
           "clock": "87:50",
           "team": 1,
           "type": "yellow"
@@ -76007,7 +76007,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on NCW TESTAR.",
+          "text": "Yellow card on NCW TEAM.",
           "clock": "48:21",
           "team": 1,
           "type": "yellow"
@@ -80858,7 +80858,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on KSU TESTAR.",
+          "text": "Yellow card on KSU TEAM.",
           "clock": "90:00",
           "team": 0,
           "type": "yellow"
@@ -82829,7 +82829,7 @@
           "time": "63:09",
           "team": 0,
           "scorer": "0",
-          "description": "GOAL by COL TESTAR."
+          "description": "GOAL by COL TEAM."
         },
         {
           "time": "79:50",
@@ -83451,7 +83451,7 @@
         },
         {
           "period": "2",
-          "text": "GOAL by COL TESTAR.",
+          "text": "GOAL by COL TEAM.",
           "clock": "63:09",
           "team": 0,
           "type": "goal",
@@ -95718,7 +95718,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by DUQ Klistska, Mover, bottom center, Testar save.",
+          "text": "Shot by DUQ Klistska, Mover, bottom center, Team save.",
           "clock": "19:19",
           "team": 1,
           "type": "shot"
@@ -105158,7 +105158,7 @@
         },
         {
           "period": "1",
-          "text": "Yellow card on CCU TESTAR.",
+          "text": "Yellow card on CCU TEAM.",
           "clock": "34:03",
           "team": 0,
           "type": "yellow"
@@ -107628,7 +107628,7 @@
           "time": "66:32",
           "team": 1,
           "scorer": "0",
-          "description": "GOAL by STONE TESTAR."
+          "description": "GOAL by STONE TEAM."
         }
       ],
       "plays": [
@@ -108037,7 +108037,7 @@
         },
         {
           "period": "2",
-          "text": "GOAL by STONE TESTAR.",
+          "text": "GOAL by STONE TEAM.",
           "clock": "66:32",
           "team": 1,
           "type": "goal",
@@ -117189,7 +117189,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by UVM Glibory, Maner, bottom center, Testar save.",
+          "text": "Shot by UVM Glibory, Maner, bottom center, Team save.",
           "clock": "85:23",
           "team": 0,
           "type": "shot"
@@ -119889,7 +119889,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on VCU TESTAR.",
+          "text": "Yellow card on VCU TEAM.",
           "clock": "66:59",
           "team": 0,
           "type": "yellow"
@@ -134904,7 +134904,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by RICH Zelven, Molsen, bottom left, Testar save.",
+          "text": "Shot by RICH Zelven, Molsen, bottom left, Team save.",
           "clock": "75:33",
           "team": 0,
           "type": "shot"
@@ -141555,7 +141555,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by DAY Glovix, Lalvin, bottom center, Testar save.",
+          "text": "Shot by DAY Glovix, Lalvin, bottom center, Team save.",
           "clock": "53:17",
           "team": 1,
           "type": "shot"
@@ -141831,7 +141831,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on BSU TESTAR.",
+          "text": "Yellow card on BSU TEAM.",
           "clock": "82:48",
           "team": 0,
           "type": "yellow"
@@ -142885,7 +142885,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by DUQ Bluben, Adundory, bottom right, Testar save.",
+          "text": "Shot by DUQ Bluben, Adundory, bottom right, Team save.",
           "clock": "34:17",
           "team": 1,
           "type": "shot"
@@ -154028,7 +154028,7 @@
           "time": "04:23",
           "team": 0,
           "scorer": "0",
-          "description": "GOAL by DAY TESTAR."
+          "description": "GOAL by DAY TEAM."
         },
         {
           "time": "49:11",
@@ -154080,7 +154080,7 @@
         },
         {
           "period": "1",
-          "text": "GOAL by DAY TESTAR.",
+          "text": "GOAL by DAY TEAM.",
           "clock": "04:23",
           "team": 0,
           "type": "goal",
@@ -154252,7 +154252,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by DAY Crestick, Missen, bottom center, Testar save.",
+          "text": "Shot by DAY Crestick, Missen, bottom center, Team save.",
           "clock": "41:08",
           "team": 0,
           "type": "shot"
@@ -157004,7 +157004,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by DC Blevon, Elinford, bottom center, Testar save.",
+          "text": "Shot by DC Blevon, Elinford, bottom center, Team save.",
           "clock": "59:47",
           "team": 0,
           "type": "shot"
@@ -158363,7 +158363,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on URI TESTAR.",
+          "text": "Yellow card on URI TEAM.",
           "clock": "51:53",
           "team": 0,
           "type": "yellow"
@@ -158591,7 +158591,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on DUQ TESTAR.",
+          "text": "Yellow card on DUQ TEAM.",
           "clock": "79:41",
           "team": 1,
           "type": "yellow"
@@ -160200,7 +160200,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on VCU TESTAR.",
+          "text": "Yellow card on VCU TEAM.",
           "clock": "65:51",
           "team": 0,
           "type": "yellow"
@@ -162633,7 +162633,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by GWU MaNdner, Klatell, bottom center, Testar save.",
+          "text": "Shot by GWU MaNdner, Klatell, bottom center, Team save.",
           "clock": "29:16",
           "team": 1,
           "type": "shot"
@@ -169387,7 +169387,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on LAS TESTAR.",
+          "text": "Yellow card on LAS TEAM.",
           "clock": "63:12",
           "team": 0,
           "type": "yellow"
@@ -170455,7 +170455,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by URI Stibia, Manel, bottom center, Testar save.",
+          "text": "Shot by URI Stibia, Manel, bottom center, Team save.",
           "clock": "51:19",
           "team": 1,
           "type": "shot"
@@ -172993,7 +172993,7 @@
         },
         {
           "period": "1",
-          "text": "Yellow card on UD  TESTAR.",
+          "text": "Yellow card on UD  TEAM.",
           "clock": "35:09",
           "team": 0,
           "type": "yellow"
@@ -177561,7 +177561,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on JOES TESTAR.",
+          "text": "Yellow card on JOES TEAM.",
           "clock": "90:00",
           "team": 0,
           "type": "yellow"
@@ -179568,7 +179568,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by RICH Zelven, Molsen, bottom right, Testar save.",
+          "text": "Shot by RICH Zelven, Molsen, bottom right, Team save.",
           "clock": "02:32",
           "team": 1,
           "type": "shot"
@@ -181089,7 +181089,7 @@
         },
         {
           "period": "1",
-          "text": "Yellow card on GMU TESTAR.",
+          "text": "Yellow card on GMU TEAM.",
           "clock": "15:02",
           "team": 0,
           "type": "yellow"
@@ -183013,7 +183013,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by DAY Crestick, Missen, bottom left, Testar save.",
+          "text": "Shot by DAY Crestick, Missen, bottom left, Team save.",
           "clock": "67:46",
           "team": 1,
           "type": "shot"
@@ -183027,7 +183027,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on DAY TESTAR.",
+          "text": "Yellow card on DAY TEAM.",
           "clock": "68:04",
           "team": 1,
           "type": "yellow"
@@ -187932,7 +187932,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by GWU Milix, Stunix, bottom right, Testar save.",
+          "text": "Shot by GWU Milix, Stunix, bottom right, Team save.",
           "clock": "20:49",
           "team": 0,
           "type": "shot"
@@ -188093,7 +188093,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by GWU Osidard, Irare, top, Testar save.",
+          "text": "Shot by GWU Osidard, Irare, top, Team save.",
           "clock": "32:20",
           "team": 0,
           "type": "shot"
@@ -194847,14 +194847,14 @@
         },
         {
           "period": "2",
-          "text": "Shot by GWU Osidard, Irare, top, Testar save.",
+          "text": "Shot by GWU Osidard, Irare, top, Team save.",
           "clock": "72:36",
           "team": 1,
           "type": "shot"
         },
         {
           "period": "2",
-          "text": "Yellow card on GMU TESTAR.",
+          "text": "Yellow card on GMU TEAM.",
           "clock": "72:45",
           "team": 0,
           "type": "yellow"
@@ -203992,7 +203992,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on DUQ TESTAR.",
+          "text": "Yellow card on DUQ TEAM.",
           "clock": "57:39",
           "team": 0,
           "type": "yellow"
@@ -206553,7 +206553,7 @@
         },
         {
           "period": "1",
-          "text": "Yellow card on LAS TESTAR.",
+          "text": "Yellow card on LAS TEAM.",
           "clock": "44:26",
           "team": 0,
           "type": "yellow"
@@ -211936,7 +211936,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on GMU TESTAR.",
+          "text": "Yellow card on GMU TEAM.",
           "clock": "78:30",
           "team": 0,
           "type": "yellow"
@@ -213253,7 +213253,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on VCU TESTAR.",
+          "text": "Yellow card on VCU TEAM.",
           "clock": "82:58",
           "team": 1,
           "type": "yellow"
@@ -217248,7 +217248,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on Exp TESTAR.",
+          "text": "Yellow card on Exp TEAM.",
           "clock": "63:29",
           "team": 0,
           "type": "yellow"
@@ -217381,7 +217381,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on Exp TESTAR.",
+          "text": "Yellow card on Exp TEAM.",
           "clock": "77:40",
           "team": 0,
           "type": "yellow"
@@ -226965,7 +226965,7 @@
           "time": "13:32",
           "team": 0,
           "scorer": "0",
-          "description": "GOAL by SBU TESTAR."
+          "description": "GOAL by SBU TEAM."
         },
         {
           "time": "31:22",
@@ -227113,7 +227113,7 @@
         },
         {
           "period": "1",
-          "text": "GOAL by SBU TESTAR.",
+          "text": "GOAL by SBU TEAM.",
           "clock": "13:32",
           "team": 0,
           "type": "goal",
@@ -230419,7 +230419,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on DAY TESTAR.",
+          "text": "Yellow card on DAY TEAM.",
           "clock": "81:50",
           "team": 0,
           "type": "yellow"
@@ -231482,7 +231482,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by GWU Prusel-Hodley, Elinford, bottom center, Testar save.",
+          "text": "Shot by GWU Prusel-Hodley, Elinford, bottom center, Team save.",
           "clock": "46:49",
           "team": 0,
           "type": "shot"
@@ -238145,7 +238145,7 @@
         },
         {
           "period": "1",
-          "text": "Shot by DAY Glovix, Lalvin, bottom right, Testar save.",
+          "text": "Shot by DAY Glovix, Lalvin, bottom right, Team save.",
           "clock": "19:59",
           "team": 1,
           "type": "shot"
@@ -238589,7 +238589,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on VCU TESTAR.",
+          "text": "Yellow card on VCU TEAM.",
           "clock": "73:12",
           "team": 0,
           "type": "yellow"
@@ -240863,7 +240863,7 @@
         },
         {
           "period": "1",
-          "text": "Yellow card on SLU TESTAR.",
+          "text": "Yellow card on SLU TEAM.",
           "clock": "42:17",
           "team": 1,
           "type": "yellow"
@@ -251346,7 +251346,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on GMU TESTAR.",
+          "text": "Yellow card on GMU TEAM.",
           "clock": "55:56",
           "team": 1,
           "type": "yellow"
@@ -252659,7 +252659,7 @@
         },
         {
           "period": "2",
-          "text": "Yellow card on LAS TESTAR.",
+          "text": "Yellow card on LAS TEAM.",
           "clock": "64:14",
           "team": 0,
           "type": "yellow"

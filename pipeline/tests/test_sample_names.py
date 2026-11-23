@@ -22,7 +22,7 @@ def _match_file() -> dict:
                         "name": "Harding",
                         "abbr": "HU",
                         "players": [
-                            {"name": "Payton Roehrich", "player_ref": {"id": "9"}},
+                            {"name": "Avery Brannock", "player_ref": {"id": "9"}},
                             {"name": "Ana Muñoz", "player_ref": {"id": "8"}},
                             {"name": "Liam O'Brien", "player_ref": {"id": "7"}},
                             {"name": "Drew Harding", "player_ref": {"id": "6"}},
@@ -33,21 +33,21 @@ def _match_file() -> dict:
                 ],
                 "scoring": [
                     {
-                        "scorer": "Payton Roehrich",
+                        "scorer": "Avery Brannock",
                         "assist": "Ana Munoz",
-                        "description": "GOAL by HU Roehrich, Payton Assist by MUNOZ,ANA.",
+                        "description": "GOAL by HU Brannock, Avery Assist by MUNOZ,ANA.",
                     }
                 ],
                 "cards": [{"player": "Liam O'Brien"}],
                 "plays": [
-                    {"text": "Roehrich, Payton at goalie for Harding"},
+                    {"text": "Brannock, Avery at goalie for Harding"},
                     {
-                        "text": "Foul on P. Roehrich; yellow card. Shot by Harding, Drew."
+                        "text": "Foul on A. Brannock; yellow card. Shot by Harding, Drew."
                     },
                     {"text": "Shot by Harding, Drew, saved. Harding substitution."},
                     {"text": "Drew a foul: O'Brien, Liam drew one too."},
                 ],
-                "officials": ["Referee: Payton Smith"],
+                "officials": ["Referee: Avery Smith"],
             }
         },
     }
@@ -60,10 +60,10 @@ def _roster_file() -> dict:
             "harding": {
                 "players": [
                     {
-                        "name": "Payton Roehrich",
+                        "name": "Avery Brannock",
                         "number": "1",
                         "hometown": "Lavon, Texas",
-                        "source_url": "https://x.example/sports/mens-soccer/roster/payton-roehrich/9246",
+                        "source_url": "https://x.example/sports/mens-soccer/roster/avery-brannock/9246",
                     }
                 ]
             }
@@ -85,19 +85,19 @@ def test_every_spelling_of_one_person_gets_the_same_invented_name() -> None:
     (matches, roster), names = _swapped()
     m = matches["matches"]["sidearm:harding:1"]
     first, last = m["teams"][0]["players"][0]["name"].split()
-    assert (first, last) != ("Payton", "Roehrich")
-    assert first[0] == "P" and last[0] == "R"
+    assert (first, last) != ("Avery", "Brannock")
+    assert first[0] == "A" and last[0] == "B"
     assert m["scoring"][0]["scorer"] == f"{first} {last}"
     assert m["scoring"][0]["description"].startswith(f"GOAL by HU {last}, {first} ")
     assert m["plays"][0]["text"] == f"{last}, {first} at goalie for Harding"
-    assert f"P. {last};" in m["plays"][1]["text"]
+    assert f"A. {last};" in m["plays"][1]["text"]
     assert roster["rosters"]["harding"]["players"][0]["name"] == f"{first} {last}"
     slug = f"{first}-{last}".lower()
     assert roster["rosters"]["harding"]["players"][0]["source_url"].endswith(
         f"/roster/{slug}/9246"
     )
     # A real name token never survives, in any case.
-    assert "roehrich" not in json.dumps([matches, roster]).lower()
+    assert "brannock" not in json.dumps([matches, roster]).lower()
 
 
 def test_case_accents_and_apostrophes_carry_over() -> None:
@@ -126,7 +126,7 @@ def test_teams_play_words_and_unnamed_fields_stay_as_published() -> None:
     assert "yellow card" in m["plays"][1]["text"]
     assert m["plays"][2]["text"].endswith("Harding substitution.")
     assert m["officials"][0].startswith("Referee: ")
-    assert "Payton" not in m["officials"][0]
+    assert "Avery" not in m["officials"][0]
     assert roster["rosters"]["harding"]["players"][0]["hometown"] == "Lavon, Texas"
     assert m["teams"][0]["players"][0]["player_ref"] == {"id": "9"}
     assert f"Shot by {surname}, " in m["plays"][2]["text"]
@@ -154,7 +154,7 @@ def test_invent_rewrites_a_home_and_refuses_nothing_on_clean_input(tmp_path) -> 
     report = invent(tmp_path)
     assert report["tokens"] > 0
     text = (tmp_path / "data" / "matches" / "2026-men-gac.json").read_text()
-    assert "Roehrich" not in text and "Payton" not in text
+    assert "Brannock" not in text and "Avery" not in text
 
 
 @pytest.mark.parametrize("home", sorted(p.name for p in SAMPLES.glob("*-soccer")))
@@ -170,7 +170,7 @@ def test_key_sourced_player_ids_fold_the_invented_name() -> None:
     doc = _match_file()
     line = doc["matches"]["sidearm:harding:1"]["teams"][0]["players"][0]
     line["number"] = "07"
-    line["player_ref"] = {"id": "harding:paytonroehrich:7", "source": "key"}
+    line["player_ref"] = {"id": "harding:averybrannock:7", "source": "key"}
     names = NameMap(vocabulary([doc]))
     apply(doc, names)
     assert rekey(doc, names) == []
@@ -221,3 +221,113 @@ def test_page_ids_and_hometown_towns_are_swapped_consistently() -> None:
     assert key["player_ref"]["id"] == "harding:anamunoz:8"
     town, rest = roster["rosters"]["harding"]["players"][0]["hometown"].split(",", 1)
     assert town != "Lavon" and rest == " Texas"
+
+
+def _one(plays: list[str], players: list[str], **match) -> tuple[dict, NameMap]:
+    from scripts.sample_names import apply, team_words
+
+    doc = {
+        "matches": {
+            "m": {
+                "teams": [
+                    {
+                        "name": "Harding",
+                        "abbr": "HU",
+                        "players": [
+                            {"name": n, "player_ref": {"id": str(i)}}
+                            for i, n in enumerate(players)
+                        ],
+                    },
+                    {"name": "Rhode Island", "abbr": "URI", "players": []},
+                ],
+                "plays": [{"text": t} for t in plays],
+                **match,
+            }
+        }
+    }
+    words = team_words([doc])
+    from scripts.sample_names import _people
+
+    names = NameMap(vocabulary([doc], words), words, set(_people(doc)))
+    apply(doc, names)
+    return doc["matches"]["m"], names
+
+
+def test_a_team_spelling_inside_a_given_name_first_name_is_swapped() -> None:
+    m, names = _one(
+        ["Shot by Drew Harding.", "Offside against Harding."], ["Drew Harding"]
+    )
+    new = m["teams"][0]["players"][0]["name"]
+    assert m["plays"][0]["text"] == f"Shot by {new}."
+    assert m["plays"][1]["text"] == "Offside against Harding."
+    assert residue({"matches": {"m": m}}, names) == []
+
+
+def test_possessives_text_only_people_and_play_words() -> None:
+    m, names = _one(
+        [
+            "Brannock's shot is blocked.",
+            "Kesselring carries the ball before passing to Brannock.",
+            "Short pass from Brannock, off the hand of URI defender.",
+            "Shot by HU Short, Anna.",
+        ],
+        ["Avery Brannock", "Anna Short"],
+    )
+    surname = m["teams"][0]["players"][0]["name"].split()[1]
+    texts = [p["text"] for p in m["plays"]]
+    assert texts[0] == f"{surname}'s shot is blocked."
+    assert "Kesselring" not in texts[1] and texts[1].endswith(f"passing to {surname}.")
+    assert texts[2].startswith("Short pass from ") and "URI defender" in texts[2]
+    assert "Short" not in texts[3]
+    assert residue({"matches": {"m": m}}, names) == []
+
+
+def test_the_team_line_stays_a_team_line() -> None:
+    m, _ = _one(
+        ["Yellow card on HU TEAM."],
+        ["Avery Brannock"],
+        cards=[{"player": "TEAM"}],
+        scoring=[{"scorer": "Team", "description": "Team save."}],
+    )
+    assert m["cards"][0]["player"] == "TEAM"
+    assert m["scoring"][0]["scorer"] == "Team"
+    assert m["plays"][0]["text"] == "Yellow card on HU TEAM."
+
+
+def test_a_name_of_kept_tokens_still_rekeys(tmp_path) -> None:
+    doc = _match_file()
+    line = doc["matches"]["sidearm:harding:1"]["teams"][0]["players"][0]
+    line["name"], line["number"] = "Ji Li", "7"
+    line["player_ref"] = {"id": "harding:jili:7", "source": "key"}
+    (tmp_path / "data" / "matches").mkdir(parents=True)
+    (tmp_path / "data" / "matches" / "2026-men-gac.json").write_text(json.dumps(doc))
+    invent(tmp_path)
+    out = json.loads((tmp_path / "data" / "matches" / "2026-men-gac.json").read_text())
+    ref = out["matches"]["sidearm:harding:1"]["teams"][0]["players"][0]["player_ref"]
+    assert ref == {"id": "harding:jili:7", "source": "key"}
+
+
+def test_folding_spellings_stay_one_person() -> None:
+    names = NameMap({"Høihjelle", "Hoihjelle"})
+    a, b = names.token("Høihjelle"), names.token("Hoihjelle")
+    assert fold(a) == fold(b)
+
+
+def test_a_page_id_the_cut_cannot_swap_is_refused(tmp_path) -> None:
+    roster = {
+        "rosters": {
+            "tampa": {
+                "players": [
+                    {
+                        "name": "Arlo Vale",
+                        "hometown": "Tampa, Fla.",
+                        "source_url": "https://x.example/sports/msoc/2026-27/bios/vale_arlo_2fev",
+                    }
+                ]
+            }
+        }
+    }
+    (tmp_path / "data" / "rosters").mkdir(parents=True)
+    (tmp_path / "data" / "rosters" / "2026-men-gac.json").write_text(json.dumps(roster))
+    with pytest.raises(SystemExit, match="cannot swap"):
+        invent(tmp_path)

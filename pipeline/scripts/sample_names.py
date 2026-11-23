@@ -7,8 +7,8 @@ and the swap is applied everywhere that token appears: the name fields, the
 play-by-play and goal descriptions, and the name slug in a roster or bio URL.
 
 The swap works on tokens, not whole names, so every spelling a vendor prints
-stays consistent: "Payton Roehrich", "Roehrich, Payton", "ROEHRICH,PAYTON",
-"P. Roehrich" and roster/payton-roehrich/9246 all become the same invented
+stays consistent: "Avery Brannock", "Brannock, Avery", "BRANNOCK,AVERY",
+"A. Brannock" and roster/avery-brannock/9246 all become the same invented
 person. An invented token keeps the real token's initial, its case pattern, an
 accent where the real one had one and an apostrophe where the real one had
 one, so initials, accent folding and case-insensitive joins work exactly as
@@ -38,7 +38,7 @@ import re
 import unicodedata
 from pathlib import Path
 
-from src.identity import fold_name
+from src.identity import _PLAIN_LETTERS, fold_name
 
 PEOPLE_LAYERS = ("rosters", "stats", "matches")
 
@@ -48,18 +48,31 @@ KEEP = frozenset(
     "jr sr ii iii iv v vi".split()
 )
 
-# Play-by-play vocabulary. A lowercase occurrence of one of these in free text
-# is the word, not a person ("yellow card", "cross", "drew a foul").
-PLAY_WORDS = frozenset(
+# Play-by-play vocabulary, in any case: the word, not a person ("yellow card",
+# "Short pass from", "PENALTY KICK MISS"). One that is also somebody's name is
+# still swapped where it sits in a name ("Short, Anna", "Anna Short").
+WORDS = frozenset(
     """
-    against and area assist at back ball bar beam block blocked bottom box by
-    card center chase clear corner cross day deflected deflection drew end far
-    field foot for foul free from front goal goalie half hand head header high
-    in keeper kick left line long miss missed near of off offside on out over
-    pass penalty period post quick rebound red right rush save saved short shot
-    start sub substitution ten the to top under volley wide win woodwork yellow
+    a about across after against all along an and area around as assist at
+    attempt attempts awarded away back ball bar beam behind block blocked bottom
+    box by card carries center chance chest chested clear clearance cleared
+    close converted corner cross crossbar cut cuts day deep defender defensive
+    deflected deflecting deflection direct down draw drawn drew end ended failed far
+    feet field final finish first following foot footed for forward foul free
+    from front gk goal goalie goalkeeper goals half hand head headed header high
+    hit home in initial inside into kick kicked knee left line long low made
+    middle miss missed near net no of off offside on one open or ot out outside
+    over overtime own pass passed passes passing path penalty period play player
+    post quick range rebound received recovered red right rush save saved scored
+    scores second shootout short shot shots side sliding spot start steal sub
+    substitution takeaway tapped team ten the third through throw to top two under
+    unknown
+    var volley wide win wing with woodwork yards yellow
     """.split()
 )
+
+# Name fields that name no person: the box score's team line.
+SENTINELS = frozenset({"team"})
 
 # Invented tokens never contain these: famous names and words nobody wants
 # printed as a student's name.
@@ -147,9 +160,18 @@ _ENDS = [
 
 
 def fold(token: str) -> str:
-    """The key a token is known by: accents off, lower case, one apostrophe."""
-    plain = unicodedata.normalize("NFKD", token.replace("’", "'"))
-    return "".join(c for c in plain if not unicodedata.combining(c)).lower()
+    """The key a token is known by: the identity module's plain letters (so
+    "Høihjelle" and "Hoihjelle" are one key), lower case, one apostrophe."""
+    text = unicodedata.normalize("NFKD", token.replace("’", "'").lower())
+    text = text.translate(_PLAIN_LETTERS)
+    return "".join(c for c in text if not unicodedata.combining(c))
+
+
+def _base(key: str) -> tuple[str, str]:
+    """A possessive's surname and its suffix: "brannock's" -> ("brannock", "'s")."""
+    if key.endswith("'s") and len(key) > 2:
+        return key[:-2], "'s"
+    return key, ""
 
 
 def _plain(key: str) -> str:
@@ -158,6 +180,11 @@ def _plain(key: str) -> str:
 
 def _kept(key: str) -> bool:
     return len(_plain(key)) <= 2 or key in KEEP
+
+
+def _sentinel(value: str) -> bool:
+    """A name field that names no person (a team save, an unnamed card)."""
+    return fold(value.strip()) in SENTINELS
 
 
 def _pool(letter: str) -> list[str]:
@@ -206,13 +233,26 @@ def _shape(invented: str, real: str) -> str:
 class NameMap:
     """An injective map from real name tokens to invented ones."""
 
-    def __init__(self, vocabulary: set[str]):
-        self.real = {fold(t) for t in vocabulary}
-        avoid = {_plain(k) for k in self.real}
+    def __init__(
+        self,
+        vocabulary: set[str],
+        words: set[str] = frozenset(),
+        people: set[str] = frozenset(),
+    ):
+        # Every full name the name fields hold, folded: "Drew Harding" in a
+        # Harding match is still a person.
+        self.people = {fold(n) for n in people}
+        self.real = {_base(fold(t))[0] for t in vocabulary}
+        # Team names, nicknames and abbreviations of the home: never a text-only
+        # person, and never what an invented token is.
+        self.words = set(words)
+        avoid = {_plain(k) for k in self.real} | {fold(w) for w in words}
         used: set[str] = set()
         self.map: dict[str, str] = {}
+        self.invented: set[str] = set()
         # fold_name(real) -> fold_name(invented), for key-sourced player ids.
         self.folded: dict[str, str] = {}
+        self.conflicts: list[str] = []
         for key in sorted(self.real):
             if _kept(key):
                 continue
@@ -236,27 +276,37 @@ class NameMap:
             used.add(cand)
             self.map[key] = cand
             self.map.setdefault(plain, cand)
+        self.invented = set(self.map.values())
 
-    def token(self, real: str, free_text: bool = False) -> str:
+    def known(self, token: str) -> str | None:
+        """The map key a token stands for, possessive or not; None if none."""
+        key, _ = _base(fold(token))
+        return key if key in self.map else None
+
+    def token(self, real: str) -> str:
         key = fold(real)
-        new = self.map.get(key)
+        base, suffix = _base(key)
+        new = self.map.get(base)
         if new is None:
             return real
-        if free_text and real.islower() and key in PLAY_WORDS:
-            return real
-        return _shape(new, real)
+        stem = real[: len(real) - len(suffix)] if suffix else real
+        return _shape(new, stem) + (real[len(stem) :] if suffix else "")
 
     def name(self, text: str) -> str:
+        if _sentinel(text):
+            return text
         return TOKEN.sub(lambda m: self.token(m.group(0)), text)
 
     def text(self, text: str, protect: list[str]) -> str:
-        """Free text: team names and abbreviations are left as published, except
-        where a comma follows, which is a surname ("Harding, Drew")."""
-        return _protected(
-            text,
-            protect,
-            lambda s: TOKEN.sub(lambda m: self.token(m.group(0), free_text=True), s),
-        )
+        """Free text: every person token swapped, the rest left as published."""
+        out, last = [], 0
+        for start, end, swap in _text_tokens(text, protect, self):
+            out.append(text[last:start])
+            tok = text[start:end]
+            out.append(self.token(tok) if swap else tok)
+            last = end
+        out.append(text[last:])
+        return "".join(out)
 
     def official(self, text: str) -> str:
         role, sep, who = text.partition(":")
@@ -266,10 +316,14 @@ class NameMap:
         m = ROSTER_SLUG.search(url)
         if m and new_name is not None:
             return url[: m.start(2)] + slugify(new_name) + url[m.end(2) :]
-        if m:
-            slug = "-".join(self.token(p) for p in m.group(2).split("-"))
-            return url[: m.start(2)] + slug + url[m.end(2) :]
-        return url
+        # Any other shape (a PrestoSports bios/hare_alex_xyz page): swap every
+        # name token in the path; veil() refuses the id it cannot swap.
+        head, sep, path = url.partition("://")
+        host, slash, rest = path.partition("/")
+        if not slash:
+            return url
+        rest = re.sub(r"[A-Za-z]+", lambda t: self.token(t.group(0)), rest)
+        return f"{head}{sep}{host}{slash}{rest}"
 
 
 def slugify(name: str) -> str:
@@ -277,24 +331,76 @@ def slugify(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", plain).strip("-")
 
 
-def _protected(text: str, protect: list[str], fn) -> str:
+def _spans(text: str, protect: list[str]) -> list[tuple[int, int]]:
+    """Where the text names one of the match's teams. "Harding, Drew" is a
+    person even in a Harding match, so a team spelling a comma follows is not
+    one; neither is one a person token runs into ("Drew Harding")."""
     if not protect:
-        return fn(text)
+        return []
     pat = re.compile(
         "|".join(
-            # "Harding, Drew" is a person even in a Harding match.
             r"(?<!\w)" + re.escape(p) + r"(?![\w,])"
             for p in sorted(set(protect), key=len, reverse=True)
             if p
         )
     )
-    out, last = [], 0
-    for m in pat.finditer(text):
-        out.append(fn(text[last : m.start()]))
-        out.append(m.group(0))
-        last = m.end()
-    out.append(fn(text[last:]))
-    return "".join(out)
+    return [(m.start(), m.end()) for m in pat.finditer(text)]
+
+
+def _text_tokens(text: str, protect: list[str], names: NameMap):
+    """(start, end, swap) for every token of a free text outside the match's
+    team spellings. swap is True for a person token."""
+    toks = [(m.start(), m.end(), m.group(0)) for m in TOKEN.finditer(text)]
+    spans = _spans(text, protect)
+    person = [names.known(t) is not None for _, _, t in toks]
+
+    def inside(i: int) -> bool:
+        s, e, _ = toks[i]
+        for a, b in spans:
+            if a <= s and e <= b:
+                # A person token right before the team spelling makes it a
+                # surname: "Shot by Drew Harding."
+                j = next((k for k in range(len(toks)) if toks[k][0] == a), None)
+                if j and person[j - 1] and text[toks[j - 1][1] : a] == " ":
+                    prev = toks[j - 1][2]
+                    if not _word(prev) or fold(f"{prev} {text[a:b]}") in names.people:
+                        return False
+                return True
+        return False
+
+    def neighbour_person(i: int) -> bool:
+        for j in (i - 1, i + 1):
+            if 0 <= j < len(toks) and person[j] and not _word(toks[j][2]):
+                gap = text[min(toks[i][1], toks[j][1]) : max(toks[i][0], toks[j][0])]
+                if gap.strip() in ("", ","):
+                    return True
+        return False
+
+    for i, (s, e, tok) in enumerate(toks):
+        if inside(i):
+            continue
+        if not person[i]:
+            yield s, e, False
+            continue
+        if _wordlike(tok):
+            # A play word (or a short ALL-CAPS abbreviation) that is also
+            # somebody's name: the word, unless it sits
+            # in a name ("Short, Anna", "Anna Short").
+            followed_by_comma = text[e : e + 1] == ","
+            yield s, e, followed_by_comma or neighbour_person(i)
+            continue
+        yield s, e, True
+
+
+def _wordlike(tok: str) -> bool:
+    """A play word, or a short ALL-CAPS abbreviation ("URI", "MCK", "OPSU")."""
+    return _word(tok) or (tok.isupper() and 2 <= len(tok) <= 4)
+
+
+def _word(tok: str) -> bool:
+    """Play-by-play vocabulary, in any case but ALL CAPS of more than one letter
+    is still a word ("GOAL", "Shot", "drew")."""
+    return fold(tok) in WORDS
 
 
 # -- what a season file names ------------------------------------------------
@@ -316,11 +422,57 @@ def _people(doc: dict) -> list[str]:
             names += [s.get("scorer") or "", s.get("assist") or ""]
         names += [c.get("player") or "" for c in match.get("cards", [])]
         names += [o.partition(":")[2] or o for o in match.get("officials") or []]
-    return names
+    return [n for n in names if n and not _sentinel(n)]
 
 
-def vocabulary(docs: list[dict]) -> set[str]:
-    return {t for d in docs for n in _people(d) for t in TOKEN.findall(n)}
+def _free_texts(doc: dict):
+    for match in (doc.get("matches") or {}).values():
+        protect = _protect_for(match)
+        for s in match.get("scoring", []):
+            if isinstance(s.get("description"), str):
+                yield s["description"], protect
+        for play in match.get("plays", []):
+            if isinstance(play.get("text"), str):
+                yield play["text"], protect
+
+
+def team_words(docs: list[dict], extra: list[str] = ()) -> set[str]:
+    """Every word of every team name, nickname and abbreviation the home holds."""
+    out: set[str] = set()
+    names = list(extra)
+    for d in docs:
+        for p in d.get("programmes") or []:
+            if isinstance(p, dict):
+                names += [p.get("name") or "", p.get("abbr") or ""]
+        for match in (d.get("matches") or {}).values():
+            for side in match.get("teams", []):
+                names += [side.get("name") or "", side.get("abbr") or ""]
+    for n in names:
+        out.update(TOKEN.findall(n))
+    return out
+
+
+def vocabulary(docs: list[dict], words: set[str] = frozenset()) -> set[str]:
+    """Every name token of every person: those the name fields hold, and those
+    only a play or a description names ("Kesselring carries the ball"): a
+    capitalised token that is not play vocabulary and not a team word."""
+    vocab = {t for d in docs for n in _people(d) for t in TOKEN.findall(n)}
+    known = {_base(fold(t))[0] for t in vocab}
+    for d in docs:
+        for text, protect in _free_texts(d):
+            spans = _spans(text, protect)
+            for m in TOKEN.finditer(text):
+                tok = m.group(0)
+                if any(a <= m.start() and m.end() <= b for a, b in spans):
+                    continue
+                key = _base(fold(tok))[0]
+                if key in known or not tok[0].isupper() or _wordlike(tok):
+                    continue
+                if tok in words or _base(tok)[0] in words or _kept(key):
+                    continue
+                vocab.add(tok)
+                known.add(key)
+    return vocab
 
 
 def _protect_for(match: dict) -> list[str]:
@@ -369,15 +521,27 @@ def _person(row: dict, names: NameMap, url_key: str) -> None:
     if isinstance(row.get("name"), str):
         old = row["name"]
         new = row["name"] = names.name(old)
-        if fold_name(old) != fold_name(new):
-            names.folded.setdefault(fold_name(old), fold_name(new))
+        was, now = fold_name(old), fold_name(new)
+        seen = names.folded.setdefault(was, now)
+        if seen != now:
+            names.conflicts.append(
+                f"{old!r} folds like a name already invented as {seen!r}, "
+                f"but became {now!r}"
+            )
+        ref = row.get("player_ref")
+        if isinstance(ref, dict) and ref.get("source") == "key":
+            slug, sep, rest = str(ref.get("id", "")).partition(":")
+            folded, sep2, number = rest.rpartition(":")
+            if sep and sep2 and folded == was:
+                ref["id"] = f"{slug}:{now}:{number}"
+                ref["_rekeyed"] = True
     if isinstance(row.get(url_key), str):
         row[url_key] = names.url(row[url_key], new)
 
 
 def rekey(doc: dict, names: NameMap) -> list[str]:
-    """Re-fold key-sourced player ids (programme:foldedname:number) from the
-    invented names; return the ids whose name no line of the home carried."""
+    """Re-fold the key-sourced player ids (programme:foldedname:number) a line's
+    own name did not; return those no name in the home folds to."""
     missed: list[str] = []
     for match in (doc.get("matches") or {}).values():
         for side in match.get("teams", []):
@@ -385,6 +549,8 @@ def rekey(doc: dict, names: NameMap) -> list[str]:
                 for p in side.get(k, []):
                     ref = p.get("player_ref")
                     if not isinstance(ref, dict) or ref.get("source") != "key":
+                        continue
+                    if ref.pop("_rekeyed", False):
                         continue
                     slug, sep, rest = str(ref.get("id", "")).partition(":")
                     folded, sep2, number = rest.rpartition(":")
@@ -394,7 +560,7 @@ def rekey(doc: dict, names: NameMap) -> list[str]:
                         )
                     elif folded in names.folded:
                         ref["id"] = f"{slug}:{names.folded[folded]}:{number}"
-                    elif folded not in names.folded.values():
+                    else:
                         missed.append(f"key id {ref['id']!r} folds no name in the home")
     return missed
 
@@ -403,46 +569,53 @@ def rekey(doc: dict, names: NameMap) -> list[str]:
 
 
 def residue(doc: dict, names: NameMap) -> list[str]:
-    """Every real (mapped) token still in a person-bearing field."""
+    """Every real token still where a person is named."""
     left: list[str] = []
+    real = names.real - {k for k in names.real if _kept(k)}
 
-    def scan(text: str, where: str, free: bool, protect: list[str] = ()) -> None:
-        def look(s: str) -> str:
-            for t in TOKEN.findall(s):
-                key = fold(t)
-                if key in names.map and not (
-                    free and t.islower() and key in PLAY_WORDS
-                ):
-                    left.append(f"{where}: {t!r} in {text!r}")
-            return s
-
-        _protected(text, list(protect), look) if free else look(text)
+    def look(text: str, where: str) -> None:
+        for t in TOKEN.findall(text):
+            key, _ = _base(fold(t))
+            if key in real and _plain(key) not in names.invented:
+                left.append(f"{where}: {t!r} in {text!r}")
 
     for name in _people(doc):
-        scan(name, "name", False)
-    for team in (doc.get("rosters") or {}).values():
-        for p in team.get("players", []):
-            scan(_slug(p.get("source_url")), "url", False)
-    for team in (doc.get("teams") or {}).values():
-        for k in ("players", "keepers"):
-            for p in team.get(k, []):
-                scan(_slug(p.get("bio_url")), "url", False)
-    for match in (doc.get("matches") or {}).values():
-        protect = _protect_for(match)
-        for side in match.get("teams", []):
-            for k in ("players", "keepers"):
-                for p in side.get(k, []):
-                    scan(_slug(p.get("bio_url")), "url", False)
-        for s in match.get("scoring", []):
-            scan(s.get("description") or "", "description", True, protect)
-        for play in match.get("plays", []):
-            scan(play.get("text") or "", "play", True, protect)
+        look(name, "name")
+    for url in _person_urls(doc):
+        look(
+            re.sub(r"[^A-Za-z]+", " ", url.partition("://")[2].partition("/")[2]), "url"
+        )
+    for text, protect in _free_texts(doc):
+        for s, e, swap in _text_tokens(text, protect, names):
+            tok = text[s:e]
+            key = names.known(tok)
+            if key is not None and swap and _plain(key) not in names.invented:
+                left.append(f"text: {tok!r} in {text!r}")
+            elif (
+                key is None
+                and tok[0].isupper()
+                and not _wordlike(tok)
+                and _plain(_base(fold(tok))[0]) not in names.invented
+                and tok not in names.words
+                and _base(tok)[0] not in names.words
+                and not _kept(_base(fold(tok))[0])
+            ):
+                left.append(f"text: unknown {tok!r} in {text!r}")
     return left
 
 
-def _slug(url) -> str:
-    m = ROSTER_SLUG.search(url or "")
-    return m.group(2).replace("-", " ") if m else ""
+def _person_urls(doc: dict) -> list[str]:
+    urls = []
+    for team in (doc.get("rosters") or {}).values():
+        urls += [p.get("source_url") for p in team.get("players", [])]
+    for team in (doc.get("teams") or {}).values():
+        for k in ("players", "keepers"):
+            urls += [p.get("bio_url") for p in team.get(k, [])]
+    for match in (doc.get("matches") or {}).values():
+        for side in match.get("teams", []):
+            for k in ("players", "keepers"):
+                urls += [p.get("bio_url") for p in side.get(k, [])]
+    return [u for u in urls if isinstance(u, str)]
 
 
 # -- page ids and hometowns ------------------------------------------------------
@@ -622,6 +795,9 @@ def veil(docs: list[dict]) -> list[str]:
     left: list[str] = []
     real_id_set, real_town_set = set(real_ids), set(real_towns)
     for d in docs:
+        for url in _person_urls(d):
+            if not ROSTER_SLUG.search(url) and re.search(r"/[^/]*\d[^/]*$", url):
+                left.append(f"url {url!r} carries a page id this cut cannot swap")
         ids, urls = _id_paths(d)
         left += [f"id {r[k]!r} is real" for r, k in ids if r[k] in real_id_set]
         for r, k in urls:
@@ -656,18 +832,41 @@ def _dump_like(path: Path, value, original: str) -> None:
     )
 
 
+def _programme_names(path: Path) -> list[str]:
+    if not path.is_file():
+        return []
+    out = []
+    for row in (
+        json.loads(path.read_text(encoding="utf-8")).get("programmes", {}).values()
+    ):
+        for k in ("name", "nickname", "abbreviation"):
+            if isinstance(row.get(k), str):
+                out.append(row[k])
+    return out
+
+
 def invent(home: Path) -> dict:
     """Swap every real person in a home's season files; refuse on any residue."""
     files = _season_files(home / "data")
     originals = {p: p.read_text(encoding="utf-8") for p in files}
     docs = {p: json.loads(s) for p, s in originals.items()}
-    names = NameMap(vocabulary(list(docs.values())))
+    words = team_words(
+        list(docs.values())
+        + [
+            json.loads(p.read_text())
+            for p in sorted((home / "data" / "fixtures").glob("*.json"))
+        ],
+        _programme_names(home / "data" / "reference" / "programmes.json"),
+    )
+    people = {n for d in docs.values() for n in _people(d)}
+    names = NameMap(vocabulary(list(docs.values()), words), words, people)
     left: list[str] = []
     for doc in docs.values():
         apply(doc, names)
     for path, doc in docs.items():
         left += [f"{path.name} {r}" for r in rekey(doc, names)]
         left += [f"{path.name} {r}" for r in residue(doc, names)]
+    left += names.conflicts
     left += veil(list(docs.values()))
     if left:
         shown = "\n  ".join(left[:20])

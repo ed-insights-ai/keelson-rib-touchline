@@ -36,8 +36,8 @@ of every player, keeper, scorer, assister, carded player and match official
 is swapped for an invented token, and the swap is applied wherever that token
 appears (name fields, play-by-play and goal text, the name slug in roster and
 bio URLs, and key-sourced `player_ref` ids, which are re-folded). The map
-works on tokens, so "Payton Roehrich", "Roehrich, Payton", "ROEHRICH,PAYTON"
-and "P. Roehrich" stay one person. An invented token keeps the real one's
+works on tokens, so "Avery Brannock", "Brannock, Avery", "BRANNOCK,AVERY"
+and "A. Brannock" stay one person. An invented token keeps the real one's
 first letter, case, accent and apostrophe, and the map is one-to-one, so
 initials, accent folding and joins behave as they did on the real data.
 
