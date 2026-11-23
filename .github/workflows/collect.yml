@@ -252,8 +252,9 @@ jobs:
             uv run --frozen --no-dev check-parity "$sample" "$out/$name" \
               --record "$out/$name.collect-record.json" \
               --json "$out/$name.parity.json" --report "$out/$name.parity.md" || p=$?
-            # A report, not a gate: the samples were cut days ago, so a live
-            # collect today differs from them by design.
+            # A report, not a gate: the samples were cut days ago and carry
+            # invented names, so a live collect today differs from them by
+            # design.
             echo "parity $name: exit ${p:-0}" | tee -a "$GITHUB_STEP_SUMMARY"
             p=0
             cat "$out/$name.parity.md" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true

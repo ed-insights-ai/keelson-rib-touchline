@@ -8,8 +8,11 @@ so it can be re-cut after any collect and nobody hand-edits it.
 
 What it copies, per (home, conference, season):
 
-- data/{fixtures,rosters,stats,matches}/{season}-{gender}-{conf}.json,
-  byte for byte, for each gender whose fixtures file exists;
+- data/{fixtures,rosters,stats,matches}/{season}-{gender}-{conf}.json for
+  each gender whose fixtures file exists, as collected except that every
+  person in them gets an invented name, page id and hometown town
+  (scripts/sample_names.py): the
+  samples are public, so nobody in them keeps a real one;
 - data/coverage.json, keeping only that season's cells for the conference's
   members;
 - data/reference/programmes.json, keeping only the programmes the copied
@@ -42,6 +45,7 @@ import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
+from scripts.sample_names import invent
 from src.paths import UNDECLARED_HOME_LEVEL, marker_level
 
 LAYERS = ("fixtures", "rosters", "stats", "matches")
@@ -101,7 +105,7 @@ def _cut_into(home: Path, conference: str, season: int, out: Path) -> dict:
     (out / "data").mkdir(parents=True)
     shutil.copy2(marker, out / "touchline-data.yaml")
 
-    files: list[dict] = []
+    files: list = []
     genders: list[str] = []
     members: dict[str, set[str]] = {}
     named: set[str] = set()
@@ -117,13 +121,7 @@ def _cut_into(home: Path, conference: str, season: int, out: Path) -> dict:
             dst = out / "data" / layer / src.name
             dst.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(src, dst)
-            files.append(
-                {
-                    "path": f"data/{layer}/{src.name}",
-                    "bytes": dst.stat().st_size,
-                    "sha256": _sha256(dst),
-                }
-            )
+            files.append(f"data/{layer}/{src.name}")
         # Read the staged copy, so the manifest and the trimmed references
         # describe exactly the files the sample holds.
         fixtures = _load(out / "data" / "fixtures" / f"{key}.json")
@@ -191,6 +189,16 @@ def _cut_into(home: Path, conference: str, season: int, out: Path) -> dict:
             }
         _dump(out / "data" / "reference" / "membership.json", membership)
 
+    # After the references are staged (programmes.json names the team
+    # nicknames the swap must leave alone), every person gets an invented
+    # name, the same one in every file; the cut refuses a sample in which
+    # any real name token survives.
+    people = invent(out)
+    files = [
+        {"path": f, "bytes": (out / f).stat().st_size, "sha256": _sha256(out / f)}
+        for f in files
+    ]
+
     manifest = {
         "schema": "touchline.sample/1",
         "description": (
@@ -203,6 +211,11 @@ def _cut_into(home: Path, conference: str, season: int, out: Path) -> dict:
         "conference": conference,
         "genders": genders,
         "programmes": {g: sorted(members[g]) for g in genders},
+        "people": (
+            f"invented: {people['tokens']} real name tokens, every page id and "
+            "every hometown town swapped for invented ones by "
+            "pipeline/scripts/sample_names.py"
+        ),
         "cut_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
         "files": files,
     }

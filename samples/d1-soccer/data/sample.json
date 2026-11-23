@@ -41,7 +41,8 @@
       "vcu"
     ]
   },
-  "cut_at": "2026-11-23T01:25:14+00:00",
+  "people": "invented: 5272 real name tokens, every page id and every hometown town swapped for invented ones by pipeline/scripts/sample_names.py",
+  "cut_at": "2026-11-23T17:18:39+00:00",
   "files": [
     {
       "path": "data/fixtures/2026-men-a10.json",
@@ -50,18 +51,18 @@
     },
     {
       "path": "data/rosters/2026-men-a10.json",
-      "bytes": 121818,
-      "sha256": "617ccdd64a58bbe5ff9ff1ed42baffcc8193f6a50750b494b500ae8f4c7c4322"
+      "bytes": 122618,
+      "sha256": "97da27fb2256c3c4a92a11e651a7ebfba6e3fd04cb7801c8ab3f84604df72770"
     },
     {
       "path": "data/stats/2026-men-a10.json",
-      "bytes": 206319,
-      "sha256": "e7666c3cb3557647fb2752b84b5a9c4fc00ab84b8ca8abcc80e097d9ac121746"
+      "bytes": 206668,
+      "sha256": "966664a8773ea047308a5eb5a76f2b4e06c12a1fdc9862480b3c5daeb2fbad72"
     },
     {
       "path": "data/matches/2026-men-a10.json",
-      "bytes": 5817904,
-      "sha256": "a6089815c66786ea74d9cae45b176b3040858d4e4d8ccc3f6aa13b13dc300b01"
+      "bytes": 5828648,
+      "sha256": "2e2c1a1d4b3875ca2576e775cf8d3066595608466c59183d7ebc91d9d114e7d7"
     },
     {
       "path": "data/fixtures/2026-women-a10.json",
@@ -70,18 +71,18 @@
     },
     {
       "path": "data/rosters/2026-women-a10.json",
-      "bytes": 115133,
-      "sha256": "6b4eaddbca50a641eda95da481ebf0113846cc180120f2bcd456b583fcc44ca5"
+      "bytes": 115641,
+      "sha256": "b4a890e52c2d9301da06f0ab5f27bd1e650e423ac8845e954efdd28d147a4dff"
     },
     {
       "path": "data/stats/2026-women-a10.json",
-      "bytes": 207278,
-      "sha256": "b4c4ef8fda63d80a74f6bf23ffea589ffabcf06659ad27f6ad38eba6d0f915e7"
+      "bytes": 207744,
+      "sha256": "f540ab3e0002aba99e20a97f378d50a8f82ecd115729f7e59f7987466c20f99b"
     },
     {
       "path": "data/matches/2026-women-a10.json",
-      "bytes": 6798169,
-      "sha256": "568a3967294be0e3f7d5540d16dd28c6b48c86196ef78bc544b37562a76b429a"
+      "bytes": 6819371,
+      "sha256": "f3707e12f334895dc4d965d06c4d97c4191aff4c56037d6d302adbb09cc8085c"
     }
   ]
 }

@@ -2,8 +2,8 @@
 # Hold the pinned desk to its oracle on the sample homes.
 #
 # The desk's fixtures/oracle/facts.json are figures counted by hand from the
-# 2026 Great American Conference files, which the rib's samples/d2-soccer
-# carries byte for byte. This builds the `all` index of the sample homes with
+# 2026 Great American Conference sample files (invented names), which the
+# rib's samples/d2-soccer carries byte for byte. This builds the `all` index of the sample homes with
 # the desk at the snapshot's pin and publishes it into a scratch folder with a
 # throwaway key and `--oracle`, so publish refuses if any team or player fact
 # does not hold. The oracle's fold cases are left out: they need the stand-in
