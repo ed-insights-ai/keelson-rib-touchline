@@ -212,6 +212,20 @@ data "aws_iam_policy_document" "publish_boundary" {
     actions   = ["kms:Sign", "kms:GetPublicKey", "kms:DescribeKey"]
     resources = [aws_kms_key.signing.arn]
   }
+
+  # Start the PrestoSports runner (runner.tf), and only it: the instance is
+  # picked by tag. No stop, no launch, no change; it stops itself.
+  statement {
+    sid       = "StartPrestoRunner"
+    actions   = ["ec2:StartInstances"]
+    resources = ["arn:aws:ec2:*:${local.account_id}:instance/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:ResourceTag/touchline-role"
+      values   = [local.runner_role_tag]
+    }
+  }
 }
 
 resource "aws_iam_policy" "publish_boundary" {

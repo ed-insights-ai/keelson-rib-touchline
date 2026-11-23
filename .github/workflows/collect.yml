@@ -17,6 +17,8 @@ name: Collect
 #                  shadow, sync raw HTML, and hand the presto units' work home
 #                  to the next job.
 #   presto-collect per division, on the self-hosted runner labelled `presto`.
+#                  With TOUCHLINE_PRESTO_RUNNER_INSTANCE set, shadow-hosted
+#                  starts that AWS instance first; it stops itself when idle.
 #                  Gets no secrets: only the work home artifact. Runs only when
 #                  the TOUCHLINE_PRESTO_RUNNER variable is `true`; otherwise
 #                  the presto units are recorded as skipped and the rest lands.
@@ -496,6 +498,33 @@ jobs:
           name: presto-home-${{ matrix.division }}
           path: ${{ runner.temp }}/presto-home.tgz
           retention-days: 1
+      - name: Start the presto runner
+        # The AWS runner is stopped between runs and stops itself when idle
+        # (infra/bootstrap/runner.tf). Unset, the runner is a machine that is
+        # always on, and there is nothing to start. A failure here is a
+        # warning: the presto job then waits in the queue as it would for any
+        # runner that is off.
+        if: env.PRESTO_ON == 'true' && vars.TOUCHLINE_PRESTO_RUNNER_INSTANCE != ''
+        env:
+          INSTANCE: ${{ vars.TOUCHLINE_PRESTO_RUNNER_INSTANCE }}
+        run: |
+          set -uo pipefail
+          case "$INSTANCE" in
+            i-*[!0-9a-f]*|i-) echo "::warning::TOUCHLINE_PRESTO_RUNNER_INSTANCE is not an instance id; the presto runner was not started."; exit 0 ;;
+            i-*) ;;
+            *) echo "::warning::TOUCHLINE_PRESTO_RUNNER_INSTANCE is not an instance id; the presto runner was not started."; exit 0 ;;
+          esac
+          # An instance that is still stopping refuses a start; wait it out.
+          for attempt in 1 2 3 4 5 6 7 8 9 10 11 12; do
+            if state=$(aws ec2 start-instances --instance-ids "$INSTANCE" \
+                --query 'StartingInstances[0].CurrentState.Name' --output text 2> "$RUNNER_TEMP/start.err"); then
+              echo "presto runner $INSTANCE: $state"
+              exit 0
+            fi
+            if ! grep -q IncorrectInstanceState "$RUNNER_TEMP/start.err"; then break; fi
+            sleep 15
+          done
+          echo "::warning::could not start the presto runner: $(tail -n 1 "$RUNNER_TEMP/start.err")"
       - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         if: always()
         with:
