@@ -1,0 +1,249 @@
+name: Publish site
+
+# The site half of the publish workflow (plan step "Site"): hold the data homes
+# to the contracts, cut the current-season bundle, build touchline-ui at the
+# pinned commit in site/touchline-ui.sha from it, upload only the files whose
+# content changed to the site bucket, invalidate CloudFront, and ask the live
+# site for real status codes. It runs beside gh-pages; nothing redirects here
+# yet.
+#
+# Source of the data:
+#   samples  the sample homes under samples/ (the default until the publisher
+#            App is installed on the data repos; the site then shows GAC and A10)
+#   data     the private d1-soccer and d2-soccer homes at their main, read with
+#            the touchline-publisher App (infra/GITHUB_APP.md); journals come
+#            from touchline-ui main, where the Mac commits them
+# A run takes the `source` input, else the repo variable SITE_SOURCE, else
+# samples.
+#
+# Snapshot seam: the snapshot job (DuckDB plus KMS signing, a later change)
+# goes between `bundle` and `site`. It reads the same homes at the commits the
+# bundle job reports (outputs.sources, also in each bundle's data/bundle.json),
+# and the release step that moves latest.json goes after `site`'s smoke check.
+#
+# Pull requests build and gate the sample site and deploy nothing. Only main,
+# through the `production` environment, can assume touchline-publish-site.
+
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "samples or data"
+        type: choice
+        options: [samples, data]
+        default: samples
+      allow_mass_delete:
+        description: "Allow a deploy that deletes over a quarter of the live site"
+        type: boolean
+        default: false
+  workflow_call:
+    inputs:
+      source:
+        type: string
+        default: ""
+      allow_mass_delete:
+        type: boolean
+        default: false
+  pull_request:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "samples/**"
+      - "contracts/**"
+      - "pipeline/scripts/cut_bundle.py"
+      - ".github/workflows/publish-site.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  # One deploy at a time; pull request builds run per branch beside it.
+  group: ${{ github.event_name == 'pull_request' && format('publish-site-{0}', github.ref) || 'publish-site-deploy' }}
+  cancel-in-progress: false
+
+env:
+  SOURCE: ${{ inputs.source || vars.SITE_SOURCE || 'samples' }}
+  # Division order: the root division first (infra/main site_root_division).
+  SITE_DIVISIONS: d2 d1
+  AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID || '822013580129' }}
+  AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+  # Terraform outputs site_bucket, site_distribution_id, site_url (infra/main).
+  SITE_BUCKET: ${{ vars.SITE_BUCKET || 'touchline-site-822013580129' }}
+  SITE_DISTRIBUTION_ID: ${{ vars.SITE_DISTRIBUTION_ID || 'E2OD2GJ3B1JTOK' }}
+  SITE_URL: ${{ vars.SITE_URL || 'https://dn1yvpcd2depb.cloudfront.net' }}
+
+jobs:
+  bundle:
+    name: Check contracts and cut the bundle
+    runs-on: ubuntu-latest
+    # The App's secrets live in production; samples need no environment.
+    environment: ${{ (inputs.source || vars.SITE_SOURCE || 'samples') == 'data' && 'production' || '' }}
+    outputs:
+      sources: ${{ steps.cut.outputs.sources }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: rib
+      - uses: astral-sh/setup-uv@v5
+      - name: Source
+        run: |
+          case "$SOURCE" in
+            samples) ;;
+            data)
+              if [ "$GITHUB_REF" != refs/heads/main ]; then
+                echo "::error::Only main may read the private data homes."; exit 1
+              fi ;;
+            *) echo "::error::source is samples or data, not '$SOURCE'"; exit 1 ;;
+          esac
+          echo "Publishing the site from: $SOURCE"
+      - name: Token for the data homes
+        if: env.SOURCE == 'data'
+        id: token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.TOUCHLINE_APP_ID }}
+          private-key: ${{ secrets.TOUCHLINE_APP_PRIVATE_KEY }}
+          owner: ed-insights-ai
+          repositories: d1-soccer,d2-soccer
+      - name: Check out d2-soccer
+        if: env.SOURCE == 'data'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ed-insights-ai/d2-soccer
+          token: ${{ steps.token.outputs.token }}
+          path: homes/d2-soccer
+      - name: Check out d1-soccer
+        if: env.SOURCE == 'data'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ed-insights-ai/d1-soccer
+          token: ${{ steps.token.outputs.token }}
+          path: homes/d1-soccer
+      - name: Sample homes
+        if: env.SOURCE == 'samples'
+        run: |
+          mkdir homes
+          for d in $SITE_DIVISIONS; do ln -s "$PWD/rib/samples/$d-soccer" "homes/$d-soccer"; done
+      - name: Homes within the contracts
+        working-directory: rib/pipeline
+        run: |
+          homes=""
+          for d in $SITE_DIVISIONS; do homes="$homes $GITHUB_WORKSPACE/homes/$d-soccer"; done
+          # shellcheck disable=SC2086
+          uv run check-contracts $homes
+      - name: Cut the current-season bundle
+        id: cut
+        working-directory: rib/pipeline
+        run: |
+          set -eu
+          sources=""
+          for d in $SITE_DIVISIONS; do
+            home="$GITHUB_WORKSPACE/homes/$d-soccer"
+            if [ "$SOURCE" = data ]; then sha=$(git -C "$home" rev-parse HEAD); else sha="samples@$(git -C .. rev-parse HEAD)"; fi
+            uv run python -m scripts.cut_bundle --home "$home" --source-sha "$sha" --out "$GITHUB_WORKSPACE/bundle/$d-soccer"
+            sources="$sources $d-soccer=$sha"
+          done
+          echo "sources=${sources# }" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site-bundle
+          path: bundle/
+          retention-days: 7
+
+  site:
+    name: Build, deploy and smoke-check the site
+    needs: bundle
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && 'production' || '' }}
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      DEPLOY: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: rib
+      - name: Pinned touchline-ui
+        id: ui
+        run: echo "sha=$(tr -d '[:space:]' < rib/site/touchline-ui.sha)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ed-insights-ai/touchline-ui
+          ref: ${{ steps.ui.outputs.sha }}
+          path: ui
+      - name: Today's journals
+        # Journals are data the Mac commits to touchline-ui main daily; the
+        # code stays pinned. The sample site uses the pinned commit's own.
+        if: env.SOURCE == 'data'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ed-insights-ai/touchline-ui
+          ref: main
+          path: journals
+          sparse-checkout: journal
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.13
+      - name: Install touchline-ui
+        working-directory: ui
+        run: bun install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          name: site-bundle
+          path: bundle
+      - name: Build and gate every build
+        run: |
+          if [ "$SOURCE" = data ]; then export TOUCHLINE_JOURNAL_DIR="$PWD/journals/journal"; fi
+          TOUCHLINE_CONTRACTS_DIR="$PWD/rib/contracts" \
+            sh rib/site/build.sh ui bundle "$SITE_URL" smoke.tsv
+          {
+            echo "### Site build"
+            echo "- source: \`$SOURCE\` (${{ needs.bundle.outputs.sources }})"
+            echo "- touchline-ui: \`${{ steps.ui.outputs.sha }}\`"
+            echo "- $(find ui/dist -type f | wc -l) files, $(du -sh ui/dist | cut -f1)"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: astral-sh/setup-uv@v5
+        if: env.DEPLOY == 'true'
+      - uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        if: env.DEPLOY == 'true'
+        with:
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/touchline-publish-site
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: touchline-site-${{ github.run_id }}
+      - name: Upload changed files
+        if: env.DEPLOY == 'true'
+        id: sync
+        run: |
+          set -eu
+          mass=""
+          if [ "${{ inputs.allow_mass_delete }}" = true ]; then mass="--allow-mass-delete"; fi
+          # shellcheck disable=SC2086
+          uv run rib/site/sync.py --dist ui/dist --bucket "$SITE_BUCKET" --changed-out changed.txt $mass | tee sync.json
+          summary=$(tail -n1 sync.json)
+          echo "changed=$(wc -l < changed.txt | tr -d ' ')" >> "$GITHUB_OUTPUT"
+          echo "- sync: \`$summary\`" >> "$GITHUB_STEP_SUMMARY"
+      - name: Invalidate CloudFront
+        # One wildcard path is one billed path (1,000 a month are free), and
+        # pages already expire in five minutes; this makes a deploy show now.
+        if: env.DEPLOY == 'true' && steps.sync.outputs.changed != '0'
+        run: |
+          set -eu
+          id=$(aws cloudfront create-invalidation --distribution-id "$SITE_DISTRIBUTION_ID" \
+            --paths '/*' --query Invalidation.Id --output text)
+          echo "invalidation $id"
+          aws cloudfront wait invalidation-completed --distribution-id "$SITE_DISTRIBUTION_ID" --id "$id"
+      - name: Smoke-check the live site
+        if: env.DEPLOY == 'true'
+        working-directory: ui
+        run: |
+          set -eu
+          status=0
+          while IFS="$(printf '\t')" read -r path stamp pages; do
+            url="$SITE_URL${path%/}/"
+            echo "→ $url"
+            bun scripts/deployed.ts "$url" "$stamp" "$pages" || status=1
+          done < ../smoke.tsv
+          echo "- live: $SITE_URL" >> "$GITHUB_STEP_SUMMARY"
+          exit $status
