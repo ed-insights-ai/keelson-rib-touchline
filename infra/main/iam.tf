@@ -11,9 +11,8 @@ data "aws_iam_role" "publish" {
 
 locals {
   writable_prefixes = concat(
-    ["raw/*", "news/*", "bundles/*", "latest.json"],
-    [for s in local.scopes : "snapshots/base/${s}/*"],
-    [for s in local.scopes : "snapshots/delta/${s}/*"],
+    ["raw/*", "news/*", "bundles/*"],
+    [for f in local.snapshot_folders : "${f}/*"],
   )
 }
 

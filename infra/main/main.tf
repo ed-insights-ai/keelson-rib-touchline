@@ -3,8 +3,15 @@ data "aws_caller_identity" "current" {}
 locals {
   account_id = data.aws_caller_identity.current.account_id
 
-  # Snapshot scopes: d1-men, d1-women, d2-men, ... from the two lists.
-  scopes = [for pair in setproduct(var.divisions, var.genders) : "${pair[0]}-${pair[1]}"]
+  # Snapshot scopes: `all` (every division and gender in one file, what the
+  # desk reads in the pilot) and d1-men, d1-women, d2-men, ... from the two lists.
+  scopes = concat(["all"], [for pair in setproduct(var.divisions, var.genders) : "${pair[0]}-${pair[1]}"])
+
+  # One published folder per source and scope: snapshots/<source>/<scope>/.
+  # `data` is built from the private data homes, `samples` from samples/ in
+  # the rib, so a sample run never mixes into the real dataset's history.
+  snapshot_sources = ["data", "samples"]
+  snapshot_folders = [for pair in setproduct(local.snapshot_sources, local.scopes) : "snapshots/${pair[0]}/${pair[1]}"]
 }
 
 # ---------------------------------------------------------------------------
@@ -12,16 +19,18 @@ locals {
 # prefix each, whatever the scope):
 #
 #   raw/<school>/...                 raw HTML cache, kept (re-parse, never re-scrape)
-#   snapshots/base/<scope>/...       signed DuckDB bases at a STABLE key per scope,
-#                                    overwritten each publish; the current version
-#                                    never expires, replaced ones are kept
-#                                    noncurrent_retention_days (a week of bases)
-#   snapshots/delta/<scope>/<id>...  signed daily deltas, expire after delta_retention_days
+#   snapshots/<source>/<scope>/      one touchline-desk publish folder, exactly as
+#                                    packages/data writes it: latest.json (moved
+#                                    last, by conditional write, only after the
+#                                    site smoke check), manifests/<id>.json and
+#                                    .sig, base/<id>.duckdb.zst, deltas/<a>__<b>.
+#                                    Deltas expire after delta_retention_days and
+#                                    bases after base_retention_days; manifests
+#                                    and latest.json are kept
 #   bundles/<build id>/...           current-season data bundles the site build reads,
 #                                    expire after 30 days (the built site itself is
 #                                    in the separate site bucket, site.tf)
 #   news/...                         journals, kept
-#   latest.json                      pointer the desk reads; moved by conditional write
 # ---------------------------------------------------------------------------
 
 resource "aws_s3_bucket" "data" {
@@ -47,11 +56,10 @@ resource "aws_s3_bucket_public_access_block" "data" {
   restrict_public_buckets = true
 }
 
-# Versioning, with old versions gone after a week. This is also how bases are
-# retained: the current base never expires, even through an off-season with no
-# publish runs (collection stops mid-December until summer), and the last
-# week of replaced bases stays readable by version id. The publish role has no
-# delete permission, so a bad run's overwrite is recoverable for a week.
+# Versioning, with old versions gone after a week. Snapshot files are written
+# once under their id (the publish job refuses to overwrite one), so only
+# latest.json gets replaced versions; the publish role has no delete
+# permission, so a bad run's overwrite is recoverable for a week.
 resource "aws_s3_bucket_versioning" "data" {
   bucket = aws_s3_bucket.data.id
   versioning_configuration {
@@ -91,14 +99,36 @@ resource "aws_s3_bucket_lifecycle_configuration" "data" {
     }
   }
 
-  rule {
-    id     = "expire-snapshot-deltas"
-    status = "Enabled"
-    filter {
-      prefix = "snapshots/delta/"
+  # Lifecycle prefixes take no wildcard, so one rule per published folder.
+  dynamic "rule" {
+    for_each = local.snapshot_folders
+    content {
+      id     = "expire-deltas-${replace(rule.value, "/", "-")}"
+      status = "Enabled"
+      filter {
+        prefix = "${rule.value}/deltas/"
+      }
+      expiration {
+        days = var.delta_retention_days
+      }
     }
-    expiration {
-      days = var.delta_retention_days
+  }
+
+  # A base is written once under its snapshot id and never overwritten. The
+  # current one is at most an off-season old (collection stops mid-December
+  # until summer), so a bound well past a year never takes the base that
+  # latest.json names, and the archive of old bases stops growing.
+  dynamic "rule" {
+    for_each = local.snapshot_folders
+    content {
+      id     = "expire-bases-${replace(rule.value, "/", "-")}"
+      status = "Enabled"
+      filter {
+        prefix = "${rule.value}/base/"
+      }
+      expiration {
+        days = var.base_retention_days
+      }
     }
   }
 

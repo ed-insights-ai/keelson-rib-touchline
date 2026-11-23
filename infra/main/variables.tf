@@ -27,13 +27,24 @@ variable "delta_retention_days" {
   default = 45
 }
 
+variable "base_retention_days" {
+  description = "Days a snapshot base is kept. Must stay well over an off-season (about eight months), since the current base is the newest one written."
+  type        = number
+  default     = 400
+
+  validation {
+    condition     = var.base_retention_days >= 300
+    error_message = "A base must outlive the off-season, when no new base is written."
+  }
+}
+
 variable "bundle_retention_days" {
   type    = number
   default = 30
 }
 
 variable "noncurrent_retention_days" {
-  description = "Days an overwritten object version stays readable. Also the history kept for snapshot bases, which live at a stable key per scope."
+  description = "Days an overwritten object version stays readable (latest.json and other replaced files)."
   type        = number
   default     = 7
 }
