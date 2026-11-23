@@ -159,7 +159,8 @@ for scope in $scopes; do
     "$sign_flag" "$sign_value" --collector "$PROVENANCE" --app "touchline-desk@$DESK_SHA"
   [ -n "$RUN_URL" ] && set -- "$@" --run "$RUN_URL"
   [ -n "$ALLOW_SHRINK" ] && set -- "$@" --allow-shrink "$ALLOW_SHRINK"
-  desk "$@" >"$WORK/publish.json" || fail "$scope: not published"
+  # The signer must be the key every check below verifies with.
+  TOUCHLINE_SNAPSHOT_PUBLIC_KEY="$PUBLIC_KEY" desk "$@" >"$WORK/publish.json" || fail "$scope: not published"
   engine=$(jq -r .result.engine "$WORK/publish.json")
   [ "$engine" = "$ENGINE" ] || fail "$scope: written by DuckDB $engine, but the pin is $ENGINE"
 

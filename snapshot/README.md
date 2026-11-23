@@ -43,9 +43,28 @@ deltas/<from>__<to>.duckdb.zst rows that changed since the last snapshot
      from the served one, and from the base alone
    - uploads every new file with `If-None-Match: *`, so nothing published is
      ever replaced, and stages `latest.json`
+
+   Two checks follow. Neither fails the job, so the site can still deploy,
+   but each one stops `release`:
+   - `oracle.sh` holds the pinned desk to its oracle. It builds the sample
+     homes (whose GAC files are the oracle's, byte for byte) and publishes
+     them into a scratch folder with `--oracle`, so every recounted team and
+     player fact must hold. The oracle's fold cases are left out because they
+     need the stand-in conference built by the desk's tests. Real homes are
+     not held to the oracle, since their GAC files kept growing after the
+     sample was frozen.
+   - `agree.sh` checks that the site and the desk show the same numbers.
+     touchline-ui at the site's pin prints each build's figures
+     (`scripts/figures.ts`) from the bundle, and `agree.py` compares them with
+     the `all` index just published (`desk-figures.mjs`). Every program's
+     won, drawn, lost, goals for, goals against and games must match. Player
+     lines are listed but not gated: the site prints each school's season
+     stats sheet, the desk sums box-score lines, and the two disagree where a
+     school's sheet does.
 3. `site` deploys and smoke-checks the live site. It needs `snapshot`, so a
    dataset that does not build, sign and verify keeps the site as it was.
-4. `release` runs only when the smoke check passed. `release.sh` writes each
+4. `release` runs only when the smoke check passed, and moves nothing unless
+   both checks above passed. `release.sh` writes each
    scope's `latest.json` with `If-Match` on the ETag the snapshot job read
    (`If-None-Match: *` for a first one), after checking its manifest is in the
    bucket. A scope someone else moved meanwhile is left alone and fails the job.
@@ -91,7 +110,4 @@ ENGINE=v2.0.0 PROVENANCE=local DESK_SHA=local sh snapshot/build.sh
 
 ## Not yet
 
-- The desk's oracle facts aren't checked here (`--no-oracle`). They describe
-  the oracle home, not every scope.
-- The number check that compares site figures with the desk's recount is a
-  separate step of the plan.
+- Old bases are never deleted; see `infra/main`'s lifecycle notes.
