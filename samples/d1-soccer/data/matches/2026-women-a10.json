@@ -59166,7 +59166,7 @@
               }
             },
             {
-              "name": "Jovsen Hose",
+              "name": "Jovsen Hoso",
               "position": "MID",
               "number": "23",
               "started": true,
@@ -59855,7 +59855,7 @@
         },
         {
           "period": "1",
-          "text": "Foul on Hose, Jovsen.",
+          "text": "Foul on Hoso, Jovsen.",
           "clock": "02:07",
           "team": 0,
           "type": "foul"
@@ -60059,7 +60059,7 @@
         },
         {
           "period": "1",
-          "text": "QUEENS substitution: Mebford, Aluvsen for Hose, Jovsen.",
+          "text": "QUEENS substitution: Mebford, Aluvsen for Hoso, Jovsen.",
           "clock": "29:47",
           "team": 0,
           "type": "sub"
@@ -60190,7 +60190,7 @@
         },
         {
           "period": "2",
-          "text": "FOR QUEENS: , #99 Krenda, Arudett, #23 Hose, Jovsen, #10 Stizory, Crestard, #4 Klunddale, Mundett, #12 Hovsen, Sirard, #22 Prindon, Alitina, #26 Mebford, Aluvsen, #25 Bondel, MuZford, #24 Nolvan, Crune, #32 Fulix, Tlunick, #30 Risin, Asatina.",
+          "text": "FOR QUEENS: , #99 Krenda, Arudett, #23 Hoso, Jovsen, #10 Stizory, Crestard, #4 Klunddale, Mundett, #12 Hovsen, Sirard, #22 Prindon, Alitina, #26 Mebford, Aluvsen, #25 Bondel, MuZford, #24 Nolvan, Crune, #32 Fulix, Tlunick, #30 Risin, Asatina.",
           "clock": "45:00",
           "team": 0,
           "type": "lineup"
@@ -60260,7 +60260,7 @@
         },
         {
           "period": "2",
-          "text": "QUEENS substitution: Hose, Jovsen for Stulell, Mirska.",
+          "text": "QUEENS substitution: Hoso, Jovsen for Stulell, Mirska.",
           "clock": "45:00",
           "team": 0,
           "type": "sub"
@@ -60509,7 +60509,7 @@
         },
         {
           "period": "2",
-          "text": "QUEENS substitution: Glurer, Mundell for Hose, Jovsen.",
+          "text": "QUEENS substitution: Glurer, Mundell for Hoso, Jovsen.",
           "clock": "73:28",
           "team": 0,
           "type": "sub"

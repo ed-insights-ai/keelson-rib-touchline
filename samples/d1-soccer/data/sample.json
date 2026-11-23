@@ -42,7 +42,7 @@
     ]
   },
   "people": "invented: 5272 real name tokens, every page id and every hometown town swapped for invented ones by pipeline/scripts/sample_names.py",
-  "cut_at": "2026-11-23T17:03:05+00:00",
+  "cut_at": "2026-11-23T17:18:39+00:00",
   "files": [
     {
       "path": "data/fixtures/2026-men-a10.json",
@@ -61,8 +61,8 @@
     },
     {
       "path": "data/matches/2026-men-a10.json",
-      "bytes": 5828646,
-      "sha256": "29252ebb14151cfd8e41496657aeec7c2d5103556be75fe2119a83c6f822451e"
+      "bytes": 5828648,
+      "sha256": "2e2c1a1d4b3875ca2576e775cf8d3066595608466c59183d7ebc91d9d114e7d7"
     },
     {
       "path": "data/fixtures/2026-women-a10.json",
@@ -82,7 +82,7 @@
     {
       "path": "data/matches/2026-women-a10.json",
       "bytes": 6819371,
-      "sha256": "18ff87d8f3113eb691a47c40941b3a0a4bd73d6fbcbad38461b7e6df644fd8b7"
+      "sha256": "f3707e12f334895dc4d965d06c4d97c4191aff4c56037d6d302adbb09cc8085c"
     }
   ]
 }

@@ -137,14 +137,6 @@ def _cut_into(home: Path, conference: str, season: int, out: Path) -> dict:
             f"no {season} fixtures for conference {conference!r} under {data}"
         )
 
-    # Every person gets an invented name, the same one in every file; the
-    # cut refuses a sample in which any real name token survives.
-    people = invent(out)
-    files = [
-        {"path": f, "bytes": (out / f).stat().st_size, "sha256": _sha256(out / f)}
-        for f in files
-    ]
-
     # Coverage: this season's cells for the members, per gender.
     coverage = _load(data / "coverage.json")
     coverage["cells"] = {
@@ -196,6 +188,16 @@ def _cut_into(home: Path, conference: str, season: int, out: Path) -> dict:
                 k: v for k, v in membership["standings_archives"].items() if k == code
             }
         _dump(out / "data" / "reference" / "membership.json", membership)
+
+    # After the references are staged (programmes.json names the team
+    # nicknames the swap must leave alone), every person gets an invented
+    # name, the same one in every file; the cut refuses a sample in which
+    # any real name token survives.
+    people = invent(out)
+    files = [
+        {"path": f, "bytes": (out / f).stat().st_size, "sha256": _sha256(out / f)}
+        for f in files
+    ]
 
     manifest = {
         "schema": "touchline.sample/1",

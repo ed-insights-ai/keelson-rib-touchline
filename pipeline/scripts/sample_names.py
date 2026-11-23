@@ -242,10 +242,22 @@ class NameMap:
         # Every full name the name fields hold, folded: "Drew Harding" in a
         # Harding match is still a person.
         self.people = {fold(n) for n in people}
+        # The same names as token pairs, so a text can be read for them in any
+        # of the shapes a play prints: "Drew Long", "Long, Drew", "D. Long".
+        self.pairs: set[tuple[str, str]] = set()
+        self.initialed: set[tuple[str, str]] = set()
+        self.surnames: set[str] = set()
+        for n in people:
+            keys = [_base(fold(t))[0] for t in TOKEN.findall(n)]
+            self.pairs |= set(zip(keys, keys[1:]))
+            if len(keys) > 1:
+                self.initialed |= {(keys[0][0], k) for k in keys[1:]}
+                self.surnames.add(keys[-1])
         self.real = {_base(fold(t))[0] for t in vocabulary}
         # Team names, nicknames and abbreviations of the home: never a text-only
         # person, and never what an invented token is.
         self.words = set(words)
+        self.word_keys = {fold(w) for w in words}
         avoid = {_plain(k) for k in self.real} | {fold(w) for w in words}
         used: set[str] = set()
         self.map: dict[str, str] = {}
@@ -317,7 +329,7 @@ class NameMap:
         if m and new_name is not None:
             return url[: m.start(2)] + slugify(new_name) + url[m.end(2) :]
         # Any other shape (a PrestoSports bios/hare_alex_xyz page): swap every
-        # name token in the path; veil() refuses the id it cannot swap.
+        # name token in the path; veil() refuses the page all the same.
         head, sep, path = url.partition("://")
         host, slash, rest = path.partition("/")
         if not slash:
@@ -353,6 +365,7 @@ def _text_tokens(text: str, protect: list[str], names: NameMap):
     toks = [(m.start(), m.end(), m.group(0)) for m in TOKEN.finditer(text)]
     spans = _spans(text, protect)
     person = [names.known(t) is not None for _, _, t in toks]
+    forced = _named(text, toks, person, names)
 
     def inside(i: int) -> bool:
         s, e, _ = toks[i]
@@ -377,6 +390,11 @@ def _text_tokens(text: str, protect: list[str], names: NameMap):
         return False
 
     for i, (s, e, tok) in enumerate(toks):
+        if i in forced:
+            # A known full name wins over every exemption below: a team
+            # spelling, a play word or an abbreviation that is also a name.
+            yield s, e, True
+            continue
         if inside(i):
             continue
         if not person[i]:
@@ -390,6 +408,39 @@ def _text_tokens(text: str, protect: list[str], names: NameMap):
             yield s, e, followed_by_comma or neighbour_person(i)
             continue
         yield s, e, True
+
+
+def _named(text: str, toks: list, person: list[bool], names: NameMap) -> set[int]:
+    """Indexes of the tokens that spell a known person: two tokens of one name
+    the name fields hold, given name first ("Drew Long"), surname first
+    ("Long, Drew") or behind an initial ("D. Long"); and an ALL-CAPS surname
+    that is no team word ("ROE")."""
+    keys = [_base(fold(t))[0] for _, _, t in toks]
+    hit: set[int] = set()
+    for i in range(len(toks) - 1):
+        j = i + 1
+        gap = text[toks[i][1] : toks[j][0]]
+        if not (person[i] or len(keys[i]) == 1) or not person[j]:
+            continue
+        if gap == " " and (keys[i], keys[j]) in names.pairs:
+            hit |= {i, j}
+        elif gap == ", " and (keys[j], keys[i]) in names.pairs:
+            hit |= {i, j}
+        elif gap in (". ", ".") and len(keys[i]) == 1:
+            if (keys[i], keys[j]) in names.initialed:
+                hit.add(j)
+    for i, (_, _, tok) in enumerate(toks):
+        if (
+            person[i]
+            and tok.isupper()
+            and len(tok) > 1
+            and keys[i] in names.surnames
+            and not _word(tok)
+            and tok not in names.words
+            and fold(tok) not in names.word_keys
+        ):
+            hit.add(i)
+    return {i for i in hit if person[i]}
 
 
 def _wordlike(tok: str) -> bool:
@@ -796,8 +847,10 @@ def veil(docs: list[dict]) -> list[str]:
     real_id_set, real_town_set = set(real_ids), set(real_towns)
     for d in docs:
         for url in _person_urls(d):
-            if not ROSTER_SLUG.search(url) and re.search(r"/[^/]*\d[^/]*$", url):
-                left.append(f"url {url!r} carries a page id this cut cannot swap")
+            if not ROSTER_SLUG.search(url):
+                # A PrestoSports bios/<name>_<id> page, or any shape this cut
+                # does not know: its id may be letters, so refuse it outright.
+                left.append(f"url {url!r} is not a roster page this cut can veil")
         ids, urls = _id_paths(d)
         left += [f"id {r[k]!r} is real" for r, k in ids if r[k] in real_id_set]
         for r, k in urls:

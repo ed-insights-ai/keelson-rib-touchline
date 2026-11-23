@@ -29,7 +29,7 @@
     ]
   },
   "people": "invented: 2416 real name tokens, every page id and every hometown town swapped for invented ones by pipeline/scripts/sample_names.py",
-  "cut_at": "2026-11-23T17:02:59+00:00",
+  "cut_at": "2026-11-23T17:18:32+00:00",
   "files": [
     {
       "path": "data/fixtures/2026-men-gac.json",

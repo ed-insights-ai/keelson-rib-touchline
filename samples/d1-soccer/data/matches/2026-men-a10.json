@@ -93445,7 +93445,7 @@
               }
             },
             {
-              "name": "Hose Korel",
+              "name": "Hoso Korel",
               "number": "22",
               "started": true,
               "shots": 1,
@@ -93454,7 +93454,7 @@
               "assists": 1,
               "minutes": 67,
               "player_ref": {
-                "id": "central-connecticut:hosekorel:22",
+                "id": "central-connecticut:hosokorel:22",
                 "source": "key"
               }
             },
@@ -93615,8 +93615,8 @@
           "team": 1,
           "scorer": "Sturlton Miston",
           "season_total": 4,
-          "assist": "Hose Korel",
-          "description": "GOAL by CCSU Miston, Sturlton Assist by Korel, Hose."
+          "assist": "Hoso Korel",
+          "description": "GOAL by CCSU Miston, Sturlton Assist by Korel, Hoso."
         }
       ],
       "cards": [
@@ -93964,7 +93964,7 @@
         },
         {
           "period": "2",
-          "text": "FOR CCSU: , #25 Frabel, Custane, #6 Virlell, Asorick, #4 MaRldale, Juzon, #17 Ride, Avusard, #19 Gazory, Cova, #15 Cirby, Dritin, #20 Crilford Do Arimell, Fredley, #10 Miston, Sturlton, #13 Gibett Parsen, Mebard, #2 Trusten, Hutix, #22 Korel, Hose.",
+          "text": "FOR CCSU: , #25 Frabel, Custane, #6 Virlell, Asorick, #4 MaRldale, Juzon, #17 Ride, Avusard, #19 Gazory, Cova, #15 Cirby, Dritin, #20 Crilford Do Arimell, Fredley, #10 Miston, Sturlton, #13 Gibett Parsen, Mebard, #2 Trusten, Hutix, #22 Korel, Hoso.",
           "clock": "45:00",
           "team": 1,
           "type": "lineup"
@@ -94024,7 +94024,7 @@
         },
         {
           "period": "2",
-          "text": "Shot by CCSU Korel, Hose, bottom left, saved by Stulven, Wuler.",
+          "text": "Shot by CCSU Korel, Hoso, bottom left, saved by Stulven, Wuler.",
           "clock": "57:35",
           "team": 1,
           "type": "shot"
@@ -94045,7 +94045,7 @@
         },
         {
           "period": "2",
-          "text": "GOAL by CCSU Miston, Sturlton Assist by Korel, Hose.",
+          "text": "GOAL by CCSU Miston, Sturlton Assist by Korel, Hoso.",
           "clock": "61:16",
           "team": 1,
           "type": "goal",
@@ -94119,7 +94119,7 @@
         },
         {
           "period": "2",
-          "text": "CCSU substitution: Wesska, Blunley-Manda for Korel, Hose.",
+          "text": "CCSU substitution: Wesska, Blunley-Manda for Korel, Hoso.",
           "clock": "66:48",
           "team": 1,
           "type": "sub"
@@ -119893,7 +119893,7 @@
           "fouls": 6,
           "players": [
             {
-              "name": "Hose Hizar",
+              "name": "Hoso Hizar",
               "position": "DEF",
               "number": "2",
               "started": true,
@@ -120838,7 +120838,7 @@
         },
         {
           "period": "2",
-          "text": "FOR NKU: , #30 Ploddale, Cleme, #2 Hizar, Hose, #3 Brundel Blumick, Sedory, #5 Rerlar, Jomon, #6 Ratick, Nadard, #7 Malen, Cuna, #14 Pabett, Ibilvon, #21 Alonska, Jarlton, #27 Flolo, Nebix, #18 Hordale, Dritin, #25 Gratory, Braron.",
+          "text": "FOR NKU: , #30 Ploddale, Cleme, #2 Hizar, Hoso, #3 Brundel Blumick, Sedory, #5 Rerlar, Jomon, #6 Ratick, Nadard, #7 Malen, Cuna, #14 Pabett, Ibilvon, #21 Alonska, Jarlton, #27 Flolo, Nebix, #18 Hordale, Dritin, #25 Gratory, Braron.",
           "clock": "45:00",
           "team": 0,
           "type": "lineup"
@@ -140816,7 +140816,7 @@
         },
         {
           "period": "1",
-          "text": "SLU substitution: Storlner, Natby for Fluvner, Drake.",
+          "text": "SLU substitution: Storlner, Natby for Fluvner, Drirle.",
           "clock": "30:01",
           "team": 1,
           "type": "sub"
@@ -140893,7 +140893,7 @@
         },
         {
           "period": "2",
-          "text": "SLU substitution: Fluvner, Drake for Storlner, Natby.",
+          "text": "SLU substitution: Fluvner, Drirle for Storlner, Natby.",
           "clock": "45:00",
           "team": 1,
           "type": "sub"

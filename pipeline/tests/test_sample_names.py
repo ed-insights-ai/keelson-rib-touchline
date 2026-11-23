@@ -282,6 +282,26 @@ def test_possessives_text_only_people_and_play_words() -> None:
     assert residue({"matches": {"m": m}}, names) == []
 
 
+def test_known_names_win_over_team_word_and_abbreviation_exemptions() -> None:
+    m, names = _one(
+        [
+            "Shot by D. Harding.",
+            "Goal by A. Short, assist Drew Long.",
+            "Save Long, Drew.",
+            "Foul on ROE.",
+            "Offside against Harding. Short pass from HU.",
+        ],
+        ["Drew Harding", "Anna Short", "Drew Long", "Anna Roe"],
+    )
+    texts = [p["text"] for p in m["plays"]]
+    assert "Harding" not in texts[0] and texts[0].startswith("Shot by D. ")
+    assert "Short" not in texts[1] and "Drew Long" not in texts[1]
+    assert "Long" not in texts[2] and "Drew" not in texts[2]
+    assert "ROE" not in texts[3]
+    assert texts[4] == "Offside against Harding. Short pass from HU."
+    assert residue({"matches": {"m": m}}, names) == []
+
+
 def test_the_team_line_stays_a_team_line() -> None:
     m, _ = _one(
         ["Yellow card on HU TEAM."],
@@ -313,7 +333,8 @@ def test_folding_spellings_stay_one_person() -> None:
     assert fold(a) == fold(b)
 
 
-def test_a_page_id_the_cut_cannot_swap_is_refused(tmp_path) -> None:
+@pytest.mark.parametrize("bio", ["vale_arlo_2fev", "vale_arlo_yjdw"])
+def test_a_page_id_the_cut_cannot_swap_is_refused(tmp_path, bio) -> None:
     roster = {
         "rosters": {
             "tampa": {
@@ -321,7 +342,7 @@ def test_a_page_id_the_cut_cannot_swap_is_refused(tmp_path) -> None:
                     {
                         "name": "Arlo Vale",
                         "hometown": "Tampa, Fla.",
-                        "source_url": "https://x.example/sports/msoc/2026-27/bios/vale_arlo_2fev",
+                        "source_url": f"https://x.example/sports/msoc/2026-27/bios/{bio}",
                     }
                 ]
             }
@@ -329,5 +350,5 @@ def test_a_page_id_the_cut_cannot_swap_is_refused(tmp_path) -> None:
     }
     (tmp_path / "data" / "rosters").mkdir(parents=True)
     (tmp_path / "data" / "rosters" / "2026-men-gac.json").write_text(json.dumps(roster))
-    with pytest.raises(SystemExit, match="cannot swap"):
+    with pytest.raises(SystemExit, match="not a roster page"):
         invent(tmp_path)
