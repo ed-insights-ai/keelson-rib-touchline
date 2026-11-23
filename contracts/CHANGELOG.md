@@ -12,7 +12,9 @@ fails `pipeline/tests/test_contracts.py`.
   part maps to one made-up part with the same first letter and letter case,
   everywhere it appears, so initials, "Last, First" forms, odd spacing and
   punctuation are exactly as the pages printed them. Team names, places,
-  numbers and ids are unchanged. The samples are copied to the shared
+  numbers and page ids are unchanged; the four key-sourced
+  `player_ref.id` values (`programme:foldedname:number`) now fold the
+  invented names. The samples are copied to the shared
   touchline-contracts repo, which other repos will build on.
 - No shape change: every shape below was already declared by `src/model.ts`
   (and the site's copy) and already written by the collector; the samples
