@@ -16,7 +16,7 @@
 // on PATH). Each scenario asserts on the run record JSON line, the cadence
 // log, and the git state the run leaves behind.
 
-import { describe, expect, test } from "bun:test";
+import { describe, expect, setDefaultTimeout, test } from "bun:test";
 import { existsSync, realpathSync } from "node:fs";
 import { chmod, mkdir, mkdtemp, readdir, readFile, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -31,6 +31,10 @@ const BUILD = "2026-09-06T06:31:00Z";
 // The journal legs are polled by the script's `capped` every 5s plus a 1s
 // stamp settle per leg; a loop run with a publish needs the long timeout.
 const LOOP_TIMEOUT = 120_000;
+// Every scenario runs the real script under /bin/sh against fresh git
+// repositories; on a loaded hosted runner even a one-conference collect run
+// has gone past bun's 5s default (CI run 45128100046), so the floor is higher.
+setDefaultTimeout(30_000);
 // The archive step needs a real zstd; ubuntu-latest ships one, a machine
 // without it skips those scenarios under a name that says so.
 const ZSTD = Bun.which("zstd");
