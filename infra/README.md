@@ -78,6 +78,12 @@ from upload, so a base superseded long after it was written goes at the next
 daily pass. Bases uploaded before tagging began carry no tag and are kept
 until a release supersedes them.
 
+Tagging needs `s3:PutObjectTagging` and `s3:GetObjectTagging` on bases in both
+the publish role's inline policy (`main/iam.tf`) and its boundary
+(`bootstrap/iam.tf`, `DataBaseTags`). The boundary is a bootstrap change, so
+Daniel applies it (`terraform apply` in `infra/bootstrap`) before the snapshot
+scripts start tagging.
+
 ## The site
 
 The built site (about 2.7 GB, about 4.9 GB with D3) is over GitHub Pages' 1 GB

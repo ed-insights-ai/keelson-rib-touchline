@@ -181,6 +181,14 @@ data "aws_iam_policy_document" "publish_boundary" {
     resources = ["${local.data_bucket_arn}/*"]
   }
 
+  # Snapshot bases carry a touchline-base tag the lifecycle prunes by
+  # (infra/main/main.tf); tags only, and only on bases.
+  statement {
+    sid       = "DataBaseTags"
+    actions   = ["s3:PutObjectTagging", "s3:GetObjectTagging"]
+    resources = ["${local.data_bucket_arn}/snapshots/*/base/*"]
+  }
+
   statement {
     sid       = "SiteList"
     actions   = ["s3:ListBucket"]
