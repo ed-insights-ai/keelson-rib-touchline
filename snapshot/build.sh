@@ -128,13 +128,16 @@ for scope in $scopes; do
       base=$(jq -r .base.url "$out/$manifest")
       fetch_object "$prefix/$base" "$out/$base" || fail "$scope: the manifest names $base, which is not there"
     fi
-    taken=$(aws s3api list-objects-v2 --bucket "$BUCKET" --prefix "$prefix/manifests/$DAY." \
-      --query 'Contents[].Key' --output json | jq '[.[]? | select(endswith(".json"))] | length')
+    aws s3api list-objects-v2 --bucket "$BUCKET" --prefix "$prefix/" \
+      --query 'Contents[].Key' --output json | jq -r '.[]?' >"$WORK/keys.txt"
   else
     [ -f "$out/latest.json" ] && etag=local
-    taken=$(find "$out/manifests" -name "$DAY.*.json" 2>/dev/null | wc -l | tr -d ' ')
+    find "$out" -type f >"$WORK/keys.txt"
   fi
-  id="$DAY.$((taken + 1))"
+  # Past every id of the day any file of the folder carries, including the
+  # files of a run that stopped before its manifest: those keys are taken.
+  taken=$(grep -oE "(^|[/_])$DAY\.[0-9]+\." "$WORK/keys.txt" | sed -E "s/^.*$DAY\.([0-9]+)\./\1/" | sort -n | tail -n 1)
+  id="$DAY.$((${taken:-0} + 1))"
 
   # 3. Verify what is served now, through the desk's own fetch, so the next
   #    snapshot's delta is checked from a state the app would accept.
