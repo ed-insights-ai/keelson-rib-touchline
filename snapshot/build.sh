@@ -13,9 +13,6 @@
 # every new file with a write that refuses to replace an existing object.
 # latest.json is NOT uploaded here: it is staged in $WORK/release for
 # snapshot/release.sh, which moves it only after the site smoke check passes.
-# Each base is uploaded tagged touchline-base=pending; release.sh tags it
-# current before naming it and the one it replaces superseded, and the bucket's
-# lifecycle prunes pending and superseded bases (infra/main/main.tf).
 #
 # Without BUCKET the folder lives only in $WORK, so running this twice
 # publishes a first snapshot and then a second one by delta (pull requests).
@@ -121,7 +118,6 @@ for scope in $scopes; do
 
   # 2. The folder's current state: the bucket's, or what an earlier local run left.
   etag=none
-  base=""
   if [ -n "$BUCKET" ]; then
     rm -rf "$out" && mkdir -p "$out"
     if fetch_object "$prefix/latest.json" "$out/latest.json"; then
@@ -140,10 +136,7 @@ for scope in $scopes; do
       fail "$scope: the listing of s3://$BUCKET/$prefix/ was not a key list"
     jq -r '.[]?' "$WORK/list.json" >"$WORK/keys.txt"
   else
-    if [ -f "$out/latest.json" ]; then
-      etag=local
-      base=$(jq -r .base.url "$out/$(jq -r .manifest "$out/latest.json")")
-    fi
+    [ -f "$out/latest.json" ] && etag=local
     find "$out" -type f >"$WORK/keys.txt"
   fi
   # Past every id of the day any file of the folder carries, including the
@@ -191,19 +184,14 @@ for scope in $scopes; do
   if [ -n "$BUCKET" ]; then
     while IFS= read -r file; do
       key="$prefix/${file#"$out"/}"
-      case "$key" in */base/*) set -- --tagging touchline-base=pending ;; *) set -- ;; esac
       aws s3api put-object --bucket "$BUCKET" --key "$key" --body "$file" \
-        --content-type "$(content_type "$file")" --if-none-match '*' "$@" >/dev/null ||
+        --content-type "$(content_type "$file")" --if-none-match '*' >/dev/null ||
         fail "$scope: could not write s3://$BUCKET/$key (it may already exist)"
       echo "uploaded $key"
     done <"$WORK/new.txt"
   fi
   cp "$out/latest.json" "$release/$scope.latest.json"
   printf '%s\n' "$etag" >"$release/$scope.etag"
-  # The base the new latest.json names, and the one the served latest.json
-  # names (empty for a first snapshot), for release.sh's tags.
-  jq -r .base.url "$out/$(jq -r .manifest "$out/latest.json")" >"$release/$scope.base"
-  printf '%s\n' "$base" >"$release/$scope.previous-base"
 
   base_bytes=$(jq -r .result.base.bytes "$WORK/publish.json")
   deltas=$(jq -r .result.deltas "$WORK/publish.json")

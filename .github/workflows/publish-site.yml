@@ -469,13 +469,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: steps.access.outputs.ok == 'true' && env.DEPLOY == 'true'
         with:
-          # ETags and base keys travel beside latest.json; all are small and
-          # carry no data. release.sh tags the bases by them.
+          # ETags travel beside latest.json; both are small and carry no data.
           name: snapshot-release-etags
-          path: |
-            work/release/*.etag
-            work/release/*.base
-            work/release/*.previous-base
+          path: work/release/*.etag
           retention-days: 7
 
   site:

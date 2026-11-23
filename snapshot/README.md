@@ -69,13 +69,6 @@ deltas/<from>__<to>.duckdb.zst rows that changed since the last snapshot
    (`If-None-Match: *` for a first one), after checking its manifest is in the
    bucket. A scope someone else moved meanwhile is left alone and fails the job.
 
-Bases are pruned by tag. Each base is uploaded as
-`touchline-base=pending`. Before `release.sh` names a base in `latest.json`,
-it tags that base `current`. Once the move succeeds, it tags the base it
-replaced `superseded`. The bucket expires pending and superseded bases after
-14 days (`infra/main`), so a base that a `latest.json` names is never
-expired.
-
 Until `release`, the desk sees nothing new. If a run stops after uploading,
 the files it wrote are orphans that no `latest.json` names; the next run
 publishes past them.
@@ -115,3 +108,6 @@ DIVISIONS="d2 d1" SOURCE=samples WORK=/tmp/snap SIGN=key:/tmp/k.key PUBLIC_KEY=/
 ENGINE=v2.0.0 PROVENANCE=local DESK_SHA=local sh snapshot/build.sh
 ```
 
+## Not yet
+
+- Old bases are never deleted; see `infra/main`'s lifecycle notes.
