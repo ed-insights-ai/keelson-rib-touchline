@@ -1,0 +1,569 @@
+{
+  "conference_profiles": {
+    "A10": {
+      "level": "d1",
+      "names": [
+        "Atlantic 10 Conference",
+        "Atlantic 10",
+        "A-10"
+      ]
+    },
+    "AAC": {
+      "level": "d1",
+      "names": [
+        "American Athletic Conference",
+        "American Conference"
+      ]
+    },
+    "ACC": {
+      "level": "d1",
+      "names": [
+        "Atlantic Coast Conference"
+      ]
+    },
+    "AE": {
+      "level": "d1",
+      "names": [
+        "America East Conference",
+        "America East"
+      ]
+    },
+    "ASUN": {
+      "level": "d1",
+      "names": [
+        "Atlantic Sun Conference",
+        "Atlantic Sun"
+      ]
+    },
+    "B1G": {
+      "level": "d1",
+      "names": [
+        "Big Ten Conference",
+        "Big Ten"
+      ]
+    },
+    "BIG12": {
+      "level": "d1",
+      "names": [
+        "Big 12 Conference",
+        "Big 12"
+      ]
+    },
+    "BIGEAST": {
+      "level": "d1",
+      "names": [
+        "Big East Conference",
+        "Big East"
+      ]
+    },
+    "BIGSKY": {
+      "level": "d1",
+      "names": [
+        "Big Sky Conference",
+        "Big Sky"
+      ]
+    },
+    "BIGSOUTH": {
+      "level": "d1",
+      "names": [
+        "Big South Conference",
+        "Big South"
+      ]
+    },
+    "BIGWEST": {
+      "level": "d1",
+      "names": [
+        "The Big West",
+        "Big West"
+      ]
+    },
+    "CAA": {
+      "level": "d1",
+      "names": [
+        "Coastal Athletic Association"
+      ]
+    },
+    "CACC": {
+      "level": "d2",
+      "names": [
+        "Central Atlantic Collegiate Conference",
+        "Central Atlantic"
+      ]
+    },
+    "CC": {
+      "level": "d2",
+      "names": [
+        "Conference Carolinas"
+      ]
+    },
+    "CCAA": {
+      "level": "d2",
+      "names": [
+        "California Collegiate Athletic Association",
+        "California Collegiate"
+      ]
+    },
+    "CUSA": {
+      "level": "d1",
+      "names": [
+        "Conference USA",
+        "C-USA"
+      ]
+    },
+    "ECC": {
+      "level": "d2",
+      "names": [
+        "East Coast Conference",
+        "East Coast"
+      ]
+    },
+    "G-MAC": {
+      "level": "d2",
+      "names": [
+        "Great Midwest Athletic Conference",
+        "Great Midwest"
+      ]
+    },
+    "GAC": {
+      "level": "d2",
+      "names": [
+        "Great American Conference",
+        "Great American"
+      ]
+    },
+    "GLIAC": {
+      "level": "d2",
+      "names": [
+        "Great Lakes Intercollegiate Athletic Conference",
+        "Great Lakes"
+      ]
+    },
+    "GLVC": {
+      "level": "d2",
+      "names": [
+        "Great Lakes Valley Conference",
+        "Great Lakes"
+      ]
+    },
+    "GNAC": {
+      "level": "d2",
+      "names": [
+        "Great Northwest Athletic Conference",
+        "Great Northwest"
+      ]
+    },
+    "GSC": {
+      "level": "d2",
+      "names": [
+        "Gulf South Conference",
+        "Gulf South"
+      ]
+    },
+    "HORIZON": {
+      "level": "d1",
+      "names": [
+        "Horizon League"
+      ],
+      "code_is_word": true
+    },
+    "IVY": {
+      "level": "d1",
+      "names": [
+        "Ivy League"
+      ],
+      "code_is_word": true
+    },
+    "LSC": {
+      "level": "d2",
+      "names": [
+        "Lone Star Conference",
+        "Lone Star"
+      ]
+    },
+    "MAAC": {
+      "level": "d1",
+      "names": [
+        "Metro Atlantic Athletic Conference",
+        "Metro Conference",
+        "Metro Atlantic",
+        "Metro"
+      ]
+    },
+    "MAC": {
+      "level": "d1",
+      "names": [
+        "Mid-American Conference",
+        "Mid-American"
+      ]
+    },
+    "MEC": {
+      "level": "d2",
+      "names": [
+        "Mountain East Conference",
+        "Mountain East"
+      ]
+    },
+    "MIAA": {
+      "level": "d2",
+      "names": [
+        "Mid-America Intercollegiate Athletics Association"
+      ]
+    },
+    "MVC": {
+      "level": "d1",
+      "names": [
+        "Missouri Valley Conference",
+        "Missouri Valley"
+      ]
+    },
+    "MW": {
+      "level": "d1",
+      "names": [
+        "Mountain West Conference",
+        "Mountain West"
+      ]
+    },
+    "NE10": {
+      "level": "d2",
+      "names": [
+        "Northeast-10 Conference",
+        "Northeast-10",
+        "Northeast10"
+      ]
+    },
+    "NEC": {
+      "level": "d1",
+      "names": [
+        "Northeast Conference"
+      ]
+    },
+    "NSIC": {
+      "level": "d2",
+      "names": [
+        "Northern Sun Intercollegiate Conference"
+      ]
+    },
+    "OVC": {
+      "level": "d1",
+      "names": [
+        "Ohio Valley Conference",
+        "Ohio Valley"
+      ]
+    },
+    "PAC12": {
+      "level": "d1",
+      "names": [
+        "Pac-12 Conference",
+        "Pac-12"
+      ]
+    },
+    "PACWEST": {
+      "level": "d2",
+      "names": [
+        "Pacific West Conference",
+        "Pacific West"
+      ]
+    },
+    "PATRIOT": {
+      "level": "d1",
+      "names": [
+        "Patriot League"
+      ],
+      "code_is_word": true
+    },
+    "PBC": {
+      "level": "d2",
+      "names": [
+        "Peach Belt Conference",
+        "Peach Belt"
+      ]
+    },
+    "PSAC": {
+      "level": "d2",
+      "names": [
+        "Pennsylvania State Athletic Conference",
+        "Pennsylvania State"
+      ]
+    },
+    "RMAC": {
+      "level": "d2",
+      "names": [
+        "Rocky Mountain Athletic Conference",
+        "Rocky Mountain"
+      ]
+    },
+    "SAC": {
+      "level": "d2",
+      "names": [
+        "South Atlantic Conference",
+        "South Atlantic"
+      ]
+    },
+    "SEC": {
+      "level": "d1",
+      "names": [
+        "Southeastern Conference"
+      ]
+    },
+    "SOCON": {
+      "level": "d1",
+      "names": [
+        "Southern Conference"
+      ]
+    },
+    "SOUTHLAND": {
+      "level": "d1",
+      "names": [
+        "Southland Conference",
+        "Southland"
+      ],
+      "code_is_word": true
+    },
+    "SSC": {
+      "level": "d2",
+      "names": [
+        "Sunshine State Conference",
+        "Sunshine State"
+      ]
+    },
+    "SUMMIT": {
+      "level": "d1",
+      "names": [
+        "The Summit League",
+        "Summit League"
+      ],
+      "code_is_word": true
+    },
+    "SUNBELT": {
+      "level": "d1",
+      "names": [
+        "Sun Belt Conference",
+        "Sun Belt"
+      ]
+    },
+    "SWAC": {
+      "level": "d1",
+      "names": [
+        "Southwestern Athletic Conference"
+      ]
+    },
+    "UAC": {
+      "level": "d1",
+      "names": [
+        "United Athletic Conference"
+      ]
+    },
+    "WAC": {
+      "level": "d1",
+      "names": [
+        "Western Athletic Conference"
+      ]
+    },
+    "WCC": {
+      "level": "d1",
+      "names": [
+        "West Coast Conference"
+      ]
+    }
+  },
+  "conferences": [
+    "A10",
+    "AAC",
+    "ACC",
+    "AE",
+    "ASUN",
+    "B1G",
+    "BIG12",
+    "BIGEAST",
+    "BIGSKY",
+    "BIGSOUTH",
+    "BIGWEST",
+    "CAA",
+    "CACC",
+    "CC",
+    "CCAA",
+    "CUSA",
+    "ECC",
+    "G-MAC",
+    "GAC",
+    "GLIAC",
+    "GLVC",
+    "GNAC",
+    "GSC",
+    "HORIZON",
+    "IVY",
+    "LSC",
+    "MAAC",
+    "MAC",
+    "MEC",
+    "MIAA",
+    "MVC",
+    "MW",
+    "NE10",
+    "NEC",
+    "NSIC",
+    "OVC",
+    "PAC12",
+    "PACWEST",
+    "PATRIOT",
+    "PBC",
+    "PSAC",
+    "RMAC",
+    "SAC",
+    "SEC",
+    "SOCON",
+    "SOUTHLAND",
+    "SSC",
+    "SUMMIT",
+    "SUNBELT",
+    "SWAC",
+    "UAC",
+    "WAC",
+    "WCC",
+    "independent",
+    "non_member"
+  ],
+  "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2026. Authored from official GAC/MIAA, LSC, GSC, GLVC, RMAC, SSC, NE10, CACC, ECC, PSAC, MEC, G-MAC, GLIAC (gliac.org), SAC (the thesac.com standings archive), Conference Carolinas (conferencecarolinas.com), Peach Belt (peachbeltconference.org), CCAA (goccaa.org), PacWest (thepacwest.com) and GNAC (the gnacsports.com standings archive) and NSIC (northernsun.org) records, and for NCAA Division I men's soccer 2022-2026 (25 of the conferences whose conference_profiles carry level d1, the Mid-American Conference for 2022 only) from each conference's own records pages and 2026 standings, each 2022 season also held against the conference's archived 2022 standings (standings.aspx?standings={id}, the id named in the source sentence), the Big East and CAA standings archives for divisions, and the researched pages the season matrix names for the WAC, the 2022 and 2023 Pac-12 and the movers (Wayback captures where the conference's own archive no longer serves the season), and for NCAA Division I women's soccer 2022-2026 (the 31 conferences the NCAA approved for automatic qualification in 2026, all of them d1 profiles, and for 2022-2025 the Western Athletic Conference, the UAC's predecessor, with the Pac-12 for 2022 and 2023 only; the Division I independents by their own schedules) from each conference's own live 2026 women's standings and archived 2022-2025 ones (standings.aspx?standings={id}, the id named in the source sentence), the Southeastern Conference's read from its standings API, and Wayback captures where the conference's own archive no longer serves the season (the Pac-12's 2022 and 2023 tables, the SEC's 2022 and 2023 pages for divisions); each window cites its source. standings_archives names, per conference code, the standings archive a conference with no per-season records pages keeps its member lists in (url_template with {id}, and the page id per season), so a source sentence can cite the page and check-membership --standings can read a captured copy of it back. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
+  "memberships": {
+    "east-central": {
+      "women": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC Women's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=68 and https://greatamericanconference.com/standings.aspx?standings=214 (accessed 2026-08-09); East Central is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "fort-hays-state": {
+      "men": [
+        {
+          "conference": "GAC",
+          "from_season": 2019,
+          "source": "Great American Conference, 2019 and 2025 GAC/MIAA Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=118 and https://greatamericanconference.com/standings.aspx?standings=213 (accessed 2026-08-09); Fort Hays State is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "harding": {
+      "men": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC/MIAA Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=67 and https://greatamericanconference.com/standings.aspx?standings=213 (accessed 2026-08-09); Harding is listed in both.",
+          "to_season": 2025
+        }
+      ],
+      "women": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC Women's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=68 and https://greatamericanconference.com/standings.aspx?standings=214 (accessed 2026-08-09); Harding is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "newman": {
+      "men": [
+        {
+          "conference": "GAC",
+          "from_season": 2019,
+          "source": "Great American Conference, 2019 and 2025 GAC/MIAA Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=118 and https://greatamericanconference.com/standings.aspx?standings=213 (accessed 2026-08-09); Newman is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "northeastern-state": {
+      "men": [
+        {
+          "conference": "GAC",
+          "from_season": 2019,
+          "source": "Great American Conference, 2019 and 2025 GAC/MIAA Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=118 and https://greatamericanconference.com/standings.aspx?standings=213 (accessed 2026-08-09); Northeastern State is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "northwestern-oklahoma-state": {
+      "women": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC Women's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=68 and https://greatamericanconference.com/standings.aspx?standings=214 (accessed 2026-08-09); Northwestern Oklahoma State is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "oklahoma-baptist": {
+      "women": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC Women's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=68 and https://greatamericanconference.com/standings.aspx?standings=214 (accessed 2026-08-09); Oklahoma Baptist is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "ouachita-baptist": {
+      "men": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC/MIAA Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=67 and https://greatamericanconference.com/standings.aspx?standings=213 (accessed 2026-08-09); Ouachita Baptist is listed in both.",
+          "to_season": 2025
+        }
+      ],
+      "women": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC Women's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=68 and https://greatamericanconference.com/standings.aspx?standings=214 (accessed 2026-08-09); Ouachita Baptist is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "rogers-state": {
+      "men": [
+        {
+          "conference": "GAC",
+          "from_season": 2019,
+          "source": "Great American Conference, 2019 and 2025 GAC/MIAA Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=118 and https://greatamericanconference.com/standings.aspx?standings=213 (accessed 2026-08-09); Rogers State is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "southern-nazarene": {
+      "men": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC/MIAA Men's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=67 and https://greatamericanconference.com/standings.aspx?standings=213 (accessed 2026-08-09); Southern Nazarene is listed in both.",
+          "to_season": 2025
+        }
+      ],
+      "women": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC Women's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=68 and https://greatamericanconference.com/standings.aspx?standings=214 (accessed 2026-08-09); Southern Nazarene is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    },
+    "southwestern-oklahoma-state": {
+      "women": [
+        {
+          "conference": "GAC",
+          "from_season": 2016,
+          "source": "Great American Conference, 2016 and 2025 GAC Women's Soccer Standings, https://greatamericanconference.com/standings.aspx?standings=68 and https://greatamericanconference.com/standings.aspx?standings=214 (accessed 2026-08-09); Southwestern Oklahoma State is listed in both.",
+          "to_season": 2025
+        }
+      ]
+    }
+  },
+  "seasons": {
+    "from": 2016,
+    "to": 2026
+  },
+  "standings_archives": {},
+  "version": 1
+}

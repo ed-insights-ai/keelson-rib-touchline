@@ -1,0 +1,74 @@
+{
+  "schema": "touchline.sample/1",
+  "description": "A sample data home: one conference, one season, cut from the real home by pipeline/scripts/cut_sample.py. Readers that see this file build only the season files it lists.",
+  "level": "d2",
+  "season": 2026,
+  "conference": "gac",
+  "genders": [
+    "men",
+    "women"
+  ],
+  "programmes": {
+    "men": [
+      "fort-hays-state",
+      "harding",
+      "newman",
+      "northeastern-state",
+      "ouachita-baptist",
+      "rogers-state",
+      "southern-nazarene"
+    ],
+    "women": [
+      "east-central",
+      "harding",
+      "northwestern-oklahoma-state",
+      "oklahoma-baptist",
+      "ouachita-baptist",
+      "southern-nazarene",
+      "southwestern-oklahoma-state"
+    ]
+  },
+  "cut_at": "2026-11-23T01:25:12+00:00",
+  "files": [
+    {
+      "path": "data/fixtures/2026-men-gac.json",
+      "bytes": 41899,
+      "sha256": "a4240e1d49972bc1688a88684571dc8ef67709bb1ae53fe9e13fcf802fcd5044"
+    },
+    {
+      "path": "data/rosters/2026-men-gac.json",
+      "bytes": 77387,
+      "sha256": "357d87cf2f1f3e79cc4b3b97b4d1741b24e89b6bcac0c4585e354ad35dfef36c"
+    },
+    {
+      "path": "data/stats/2026-men-gac.json",
+      "bytes": 125804,
+      "sha256": "f0683461aa066d5f6d56f2b9a931d4f374daffade056374a1d9674af0c831a5b"
+    },
+    {
+      "path": "data/matches/2026-men-gac.json",
+      "bytes": 3417290,
+      "sha256": "6c640fb1e3e470b1e956344b95635e2a2738fb0edf5ab7cbdbcd3175bcaaf98b"
+    },
+    {
+      "path": "data/fixtures/2026-women-gac.json",
+      "bytes": 41198,
+      "sha256": "b0a89dc7a5df88402e70a404cb04b8a4c0d0131f12e74636a14067675aab10e4"
+    },
+    {
+      "path": "data/rosters/2026-women-gac.json",
+      "bytes": 66741,
+      "sha256": "b1d790b40e9bb2538b58bbdc4341b44cc0f28c1d83ad490be565b6786e3f8121"
+    },
+    {
+      "path": "data/stats/2026-women-gac.json",
+      "bytes": 118024,
+      "sha256": "57a3aa1cdba8d43c88df9b14f5f8fc34a70154b78e2433289fb63dd499529f40"
+    },
+    {
+      "path": "data/matches/2026-women-gac.json",
+      "bytes": 3381814,
+      "sha256": "3cc5e2971413b192f052526e39d0bd6148ad0acc02f8bb0be2dfd1703125e2c9"
+    }
+  ]
+}

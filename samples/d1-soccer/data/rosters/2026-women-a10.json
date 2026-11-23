@@ -1,0 +1,3275 @@
+{
+  "schema": "touchline.rosters/1",
+  "season": 2026,
+  "gender": "women",
+  "collected_at": "2026-11-21T16:38:15+00:00",
+  "rosters": {
+    "davidson": {
+      "programme": "davidson",
+      "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Allie Moore",
+          "number": "00",
+          "position": "GK",
+          "height": "5'7\"",
+          "hometown": "North Berwick, Maine",
+          "class_year": "Junior",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/allie-moore/11785"
+        },
+        {
+          "name": "Grace Stair",
+          "number": "1",
+          "position": "GK",
+          "height": "5'9\"",
+          "hometown": "Alpharetta, Ga.",
+          "class_year": "Sophomore",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/grace-stair/11788"
+        },
+        {
+          "name": "Caitlin Burke",
+          "number": "2",
+          "position": "D",
+          "height": "5'9\"",
+          "hometown": "Arlington, Va.",
+          "class_year": "Sophomore",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/caitlin-burke/11772"
+        },
+        {
+          "name": "Annie Kleeman",
+          "number": "3",
+          "position": "F",
+          "height": "5'8\"",
+          "hometown": "Cincinnati, Ohio",
+          "class_year": "Freshman",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/annie-kleeman/11792"
+        },
+        {
+          "name": "Charlotte Hansen",
+          "number": "4",
+          "position": "F",
+          "height": "5'8\"",
+          "hometown": "Broomfield, Colo.",
+          "class_year": "Junior",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/charlotte-hansen/11775"
+        },
+        {
+          "name": "Annaliese Mann",
+          "number": "5",
+          "position": "D",
+          "height": "5'9\"",
+          "hometown": "Millersville, Pa.",
+          "class_year": "Senior",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/annaliese-mann/11781"
+        },
+        {
+          "name": "Sophie Lemus",
+          "number": "6",
+          "position": "MF",
+          "height": "5'6\"",
+          "hometown": "Bradenton, Fla.",
+          "class_year": "Junior",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/sophie-lemus/11779"
+        },
+        {
+          "name": "Sydney Ching",
+          "number": "7",
+          "position": "D",
+          "height": "5'6\"",
+          "hometown": "The Woodlands, Texas",
+          "class_year": "Freshman",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/sydney-ching/11795"
+        },
+        {
+          "name": "Piper Davy",
+          "number": "8",
+          "position": "MF",
+          "hometown": "Delaware, Ohio",
+          "class_year": "Freshman",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/piper-davy/11790"
+        },
+        {
+          "name": "Isabella Harry",
+          "number": "9",
+          "position": "F",
+          "height": "5'6\"",
+          "hometown": "Ocoee, Fla.",
+          "class_year": "Sophomore",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/isabella-harry/11776"
+        },
+        {
+          "name": "Madelyn Hayes",
+          "number": "10",
+          "position": "F",
+          "height": "5'6\"",
+          "hometown": "Port Crane, N.Y.",
+          "class_year": "Sophomore",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/madelyn-hayes/11777"
+        },
+        {
+          "name": "Brooke Roumy",
+          "number": "11",
+          "position": "D",
+          "height": "5'7\"",
+          "hometown": "Pipersville, Pa.",
+          "class_year": "Senior",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/brooke-roumy/11787"
+        },
+        {
+          "name": "Kiera Pohan",
+          "number": "12",
+          "position": "F",
+          "height": "5'7\"",
+          "hometown": "Morristown, N.J.",
+          "class_year": "Senior",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/kiera-pohan/11786"
+        },
+        {
+          "name": "Samantha McGee",
+          "number": "13",
+          "position": "D",
+          "height": "5'7\"",
+          "hometown": "Pearl River, N.Y.",
+          "class_year": "Junior",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/samantha-mcgee/11782"
+        },
+        {
+          "name": "Reese Montgomery",
+          "number": "14",
+          "position": "MF",
+          "height": "5'7\"",
+          "hometown": "Arlington, Va.",
+          "class_year": "Sophomore",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/reese-montgomery/11784"
+        },
+        {
+          "name": "Riley Nicholson",
+          "number": "15",
+          "position": "MF",
+          "hometown": "Ashburn, Va.",
+          "class_year": "Freshman",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/riley-nicholson/11793"
+        },
+        {
+          "name": "Kaitlyn Tansey",
+          "number": "16",
+          "position": "D",
+          "height": "5'6\"",
+          "hometown": "North Bellmore, N.Y.",
+          "class_year": "Freshman",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/kaitlyn-tansey/11794"
+        },
+        {
+          "name": "Sophia Whiddon",
+          "number": "17",
+          "position": "MF",
+          "height": "5'9\"",
+          "hometown": "Littleton, Colo.",
+          "class_year": "Junior",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/sophia-whiddon/11789"
+        },
+        {
+          "name": "Adriana Dunat",
+          "number": "18",
+          "position": "F",
+          "height": "5'6\"",
+          "hometown": "Lexington, S.C.",
+          "class_year": "Freshman",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/adriana-dunat/11791"
+        },
+        {
+          "name": "Lindsay Kinlaw",
+          "number": "20",
+          "position": "F",
+          "height": "5'7\"",
+          "hometown": "Raleigh, N.C.",
+          "class_year": "Sophomore",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/lindsay-kinlaw/11778"
+        },
+        {
+          "name": "Megan Mills",
+          "number": "21",
+          "position": "MF",
+          "height": "5'4\"",
+          "hometown": "San Clemente, Calif.",
+          "class_year": "Senior",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/megan-mills/11783"
+        },
+        {
+          "name": "Ella Barnes",
+          "number": "22",
+          "position": "MF/D",
+          "height": "5'8\"",
+          "hometown": "Cincinnati, Ohio",
+          "class_year": "Senior",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/ella-barnes/11769"
+        },
+        {
+          "name": "Ryan Lewis",
+          "number": "27",
+          "position": "D",
+          "height": "5'8\"",
+          "hometown": "Richmond, Va.",
+          "class_year": "Sophomore",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/ryan-lewis/11780"
+        },
+        {
+          "name": "Olivia Bestic",
+          "number": "28",
+          "position": "D",
+          "height": "5'6\"",
+          "hometown": "Ponte Vedra Beach, Fla.",
+          "class_year": "Senior",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/olivia-bestic/11770"
+        },
+        {
+          "name": "Ellori Crosby",
+          "number": "29",
+          "position": "F",
+          "height": "5'6\"",
+          "hometown": "Louisville, Colo.",
+          "class_year": "Senior",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/ellori-crosby/11773"
+        },
+        {
+          "name": "Isabelle Bordages",
+          "number": "32",
+          "position": "MF/D",
+          "height": "5'7\"",
+          "hometown": "Binghamton, N.Y",
+          "class_year": "Senior",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/isabelle-bordages/11771"
+        },
+        {
+          "name": "Charlie Windmann",
+          "number": "40",
+          "position": "GK",
+          "hometown": "Kansas City, Mo.",
+          "class_year": "Freshman",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/charlie-windmann/11796"
+        },
+        {
+          "name": "Jillian Fox",
+          "number": "41",
+          "position": "GK",
+          "height": "5'8\"",
+          "hometown": "Darien, Conn.",
+          "class_year": "Senior",
+          "source_url": "https://davidsonwildcats.com/sports/womens-soccer/roster/jillian-fox/11774"
+        }
+      ]
+    },
+    "dayton": {
+      "programme": "dayton",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Avery Strohecker",
+          "number": "0",
+          "position": "Goalkeeper",
+          "height": "5'8\"",
+          "hometown": "South Riding, Va.",
+          "class_year": "Junior",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/avery-strohecker/16132"
+        },
+        {
+          "name": "Kasey Cannistraro",
+          "number": "00",
+          "position": "Goalkeeper",
+          "height": "5'8\"",
+          "hometown": "Oakton, Va.",
+          "class_year": "Senior",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/kasey-cannistraro/16510"
+        },
+        {
+          "name": "Avery Vukmanic",
+          "number": "1",
+          "position": "Goalkeeper",
+          "height": "6'0\"",
+          "hometown": "Westerville, Ohio",
+          "class_year": "Junior",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/avery-vukmanic/16131"
+        },
+        {
+          "name": "Millie Cluxton",
+          "number": "2",
+          "position": "Midfield",
+          "height": "5'5\"",
+          "hometown": "Cincinnati, Ohio",
+          "class_year": "Junior",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/millie-cluxton/16133"
+        },
+        {
+          "name": "Claire Mikola",
+          "number": "3",
+          "position": "Defender",
+          "height": "5'6\"",
+          "hometown": "Powell, Ohio",
+          "class_year": "Sophomore",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/claire-mikola/16125"
+        },
+        {
+          "name": "Sophia Doumos",
+          "number": "4",
+          "position": "Defender",
+          "height": "5'8\"",
+          "hometown": "Canberra, Australia",
+          "class_year": "Junior",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/sophia-doumos/16511"
+        },
+        {
+          "name": "Bre Mendoza",
+          "number": "5",
+          "position": "Defender",
+          "height": "5'5\"",
+          "hometown": "Knoxville, Tenn.",
+          "class_year": "Junior",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/bre-mendoza/16124"
+        },
+        {
+          "name": "Campbell Wood",
+          "number": "7",
+          "position": "Midfield",
+          "height": "5'6\"",
+          "hometown": "Massillon, Ohio",
+          "class_year": "Freshman",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/campbell-wood/16515"
+        },
+        {
+          "name": "Caroline Schork",
+          "number": "8",
+          "position": "Defender",
+          "height": "5'5\"",
+          "hometown": "Medina, Ohio",
+          "class_year": "Sophomore",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/caroline-schork/16129"
+        },
+        {
+          "name": "Reese Gallagher",
+          "number": "9",
+          "position": "Forward",
+          "height": "5'9\"",
+          "hometown": "Copley, Ohio",
+          "class_year": "Freshman",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/reese-gallagher/16513"
+        },
+        {
+          "name": "Liv Grenda",
+          "number": "11",
+          "position": "Midfield",
+          "height": "5'8\"",
+          "hometown": "Perkasi, Pa.",
+          "class_year": "Junior",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/liv-grenda/16121"
+        },
+        {
+          "name": "Lauryn Contini",
+          "number": "12",
+          "position": "Midfield",
+          "height": "5'5\"",
+          "hometown": "New Philadelphia, Ohio",
+          "class_year": "Junior",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/lauryn-contini/16118"
+        },
+        {
+          "name": "Emery Newlin",
+          "number": "13",
+          "position": "Forward",
+          "height": "5'5\"",
+          "hometown": "Monrovia, Ind.",
+          "class_year": "Sophomore",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/emery-newlin/16126"
+        },
+        {
+          "name": "Eva Schreiber",
+          "number": "14",
+          "position": "Defender",
+          "height": "5'7\"",
+          "hometown": "Nashville, Tenn.",
+          "class_year": "Senior",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/eva-schreiber/16134"
+        },
+        {
+          "name": "Emery Aschenbrener",
+          "number": "15",
+          "position": "Defender",
+          "height": "5'8\"",
+          "hometown": "Bay Village, Ohio",
+          "class_year": "Sophomore",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/emery-aschenbrener/16115"
+        },
+        {
+          "name": "Kelly McCandless",
+          "number": "17",
+          "position": "Forward",
+          "height": "5'5\"",
+          "hometown": "Burton, Ohio",
+          "class_year": "Freshman",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/kelly-mccandless/16516"
+        },
+        {
+          "name": "Delaney Rollins",
+          "number": "18",
+          "position": "Midfield",
+          "height": "5'9\"",
+          "hometown": "Dublin, Ohio",
+          "class_year": "Freshman",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/delaney-rollins/16517"
+        },
+        {
+          "name": "Maddie Bowman",
+          "number": "19",
+          "position": "Forward",
+          "height": "5'5\"",
+          "hometown": "Saint Louis, Mo.",
+          "class_year": "Senior",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/maddie-bowman/16117"
+        },
+        {
+          "name": "Olivia Baca",
+          "number": "20",
+          "position": "Forward",
+          "height": "5'8\"",
+          "hometown": "Edwardsville, Ill.",
+          "class_year": "Senior",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/olivia-baca/16116"
+        },
+        {
+          "name": "Elise Canter",
+          "number": "21",
+          "position": "Midfielder",
+          "height": "5'9\"",
+          "hometown": "Beavercreek, Ohio",
+          "class_year": "Graduate Student",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/elise-canter/16512"
+        },
+        {
+          "name": "Ella Lamb",
+          "number": "22",
+          "position": "Midfield",
+          "height": "5'2\"",
+          "hometown": "Bartlett, Ill.",
+          "class_year": "Senior",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/ella-lamb/16123"
+        },
+        {
+          "name": "Ky Hau-Golden",
+          "number": "25",
+          "position": "Forward",
+          "height": "5'8\"",
+          "hometown": "North Olmsted, Ohio",
+          "class_year": "Sophomore",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/ky-hau-golden/16122"
+        },
+        {
+          "name": "Laney Smith",
+          "number": "26",
+          "position": "Forward",
+          "height": "5'6\"",
+          "hometown": "Fort Thomas, Ky.",
+          "class_year": "Junior",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/laney-smith/16130"
+        },
+        {
+          "name": "Mackenzie Russell",
+          "number": "27",
+          "position": "Defender",
+          "height": "5'10\"",
+          "hometown": "Rocky River, Ohio",
+          "class_year": "Junior",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/mackenzie-russell/16127"
+        },
+        {
+          "name": "Kamryn Hoffman",
+          "number": "28",
+          "position": "Defender",
+          "height": "5'9\"",
+          "hometown": "Springfield, Ill.",
+          "class_year": "Freshman",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/kamryn-hoffman/16514"
+        },
+        {
+          "name": "Lauren Fields",
+          "number": "33",
+          "position": "Defender",
+          "height": "5'6\"",
+          "hometown": "Cincinnati, Ohio",
+          "class_year": "Senior",
+          "source_url": "https://daytonflyers.com/sports/womens-soccer/roster/lauren-fields/16120"
+        }
+      ]
+    },
+    "duquesne": {
+      "programme": "duquesne",
+      "source_url": "https://goduquesne.com/sports/womens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Ali Hughes",
+          "number": "0",
+          "position": "GK",
+          "height": "5'8\"",
+          "hometown": "New Kensington, Pa.",
+          "class_year": "Senior",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/ali-hughes/13950"
+        },
+        {
+          "name": "Emma Fry",
+          "number": "00",
+          "position": "GK",
+          "height": "5'9\"",
+          "hometown": "Northampton, Pa.",
+          "class_year": "Sophomore",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/emma-fry/13949"
+        },
+        {
+          "name": "Emma Van Meter",
+          "number": "1",
+          "position": "GK",
+          "height": "5'8\"",
+          "hometown": "Pittsburgh, Pa.",
+          "class_year": "Graduate Student",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/emma-van-meter/13958"
+        },
+        {
+          "name": "Ashlyn Basinger",
+          "number": "2",
+          "position": "F",
+          "height": "5'3\"",
+          "hometown": "Waynesburg, Pa.",
+          "class_year": "Senior",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/ashlyn-basinger/13959"
+        },
+        {
+          "name": "Anna Bundy",
+          "number": "3",
+          "position": "M/F",
+          "height": "5'4\"",
+          "hometown": "Wexford, Pa.",
+          "class_year": "Senior",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/anna-bundy/13943"
+        },
+        {
+          "name": "Jayden Sharpless",
+          "number": "4",
+          "position": "M",
+          "height": "5'7\"",
+          "hometown": "Ingomar, Pa.",
+          "class_year": "Senior",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/jayden-sharpless/13957"
+        },
+        {
+          "name": "Lily De Jesus",
+          "number": "5",
+          "position": "D",
+          "height": "5'4\"",
+          "hometown": "Gibsonia, Pa.",
+          "class_year": "Freshman",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/lily-de-jesus/13960"
+        },
+        {
+          "name": "Kayla Leseck",
+          "number": "6",
+          "position": "M",
+          "height": "5'7\"",
+          "hometown": "Moon Township, Pa.",
+          "class_year": "Senior",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/kayla-leseck/13953"
+        },
+        {
+          "name": "Grace Ferency",
+          "number": "7",
+          "position": "F",
+          "height": "5'6\"",
+          "hometown": "Bethel Park, Pa.",
+          "class_year": "Sophomore",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/grace-ferency/13947"
+        },
+        {
+          "name": "Ella Zech",
+          "number": "8",
+          "position": "F/MF",
+          "height": "5'6\"",
+          "hometown": "Cincinnati, Ohio",
+          "class_year": "Freshman",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/ella-zech/13961"
+        },
+        {
+          "name": "Kaitlyn Killinger",
+          "number": "9",
+          "position": "F",
+          "height": "5'9\"",
+          "hometown": "Plum, Pa.",
+          "class_year": "Senior",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/kaitlyn-killinger/13951"
+        },
+        {
+          "name": "Julia Bursick",
+          "number": "10",
+          "position": "MF",
+          "height": "5'6\"",
+          "hometown": "North Huntingdon, Pa.",
+          "class_year": "Sophomore",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/julia-bursick/13944"
+        },
+        {
+          "name": "Reagan Basehore",
+          "number": "11",
+          "position": "D",
+          "height": "5'8\"",
+          "hometown": "Mechanicsburg, Pa.",
+          "class_year": "Senior",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/reagan-basehore/13942"
+        },
+        {
+          "name": "Addy Mills",
+          "number": "12",
+          "position": "D",
+          "height": "5'7\"",
+          "hometown": "Sellersville, Pa.",
+          "class_year": "Freshman",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/addy-mills/13963"
+        },
+        {
+          "name": "Emma Sanderow",
+          "number": "13",
+          "position": "F",
+          "height": "5'2\"",
+          "hometown": "Lewis Center, Ohio",
+          "class_year": "Freshman",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/emma-sanderow/13962"
+        },
+        {
+          "name": "Grace Fogarty",
+          "number": "15",
+          "position": "F",
+          "height": "5'7\"",
+          "hometown": "Chaska, Minn.",
+          "class_year": "Senior",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/grace-fogarty/13970"
+        },
+        {
+          "name": "Sadie Shapiro",
+          "number": "16",
+          "position": "F",
+          "height": "5'3\"",
+          "hometown": "Scotch Plains, N.J.",
+          "class_year": "Freshman",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/sadie-shapiro/13964"
+        },
+        {
+          "name": "Paige Kuisis",
+          "number": "18",
+          "position": "D/M",
+          "height": "5'3\"",
+          "hometown": "Pittsburgh, Pa.",
+          "class_year": "Senior",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/paige-kuisis/13952"
+        },
+        {
+          "name": "Brynn Ramsey",
+          "number": "19",
+          "position": "F",
+          "height": "5'4\"",
+          "hometown": "Mars, Pa.",
+          "class_year": "Sophomore",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/brynn-ramsey/13955"
+        },
+        {
+          "name": "Emerson Connelly",
+          "number": "20",
+          "position": "D",
+          "height": "5'6\"",
+          "hometown": "Beaver, Pa.",
+          "class_year": "Sophomore",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/emerson-connelly/13945"
+        },
+        {
+          "name": "Allison Bechtel",
+          "number": "21",
+          "position": "MF",
+          "height": "5'5\"",
+          "hometown": "Dillsburg, Pa.",
+          "class_year": "Freshman",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/allison-bechtel/13965"
+        },
+        {
+          "name": "Kiley Johnson",
+          "number": "22",
+          "position": "D",
+          "height": "5'9\"",
+          "hometown": "Langhorne, Pa.",
+          "class_year": "Senior",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/kiley-johnson/13966"
+        },
+        {
+          "name": "Claire Beasley",
+          "number": "23",
+          "position": "F/MF",
+          "height": "5'6\"",
+          "hometown": "Arlington, Va.",
+          "class_year": "Freshman",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/claire-beasley/13967"
+        },
+        {
+          "name": "Skylar Leseck",
+          "number": "24",
+          "position": "F",
+          "height": "5'7\"",
+          "hometown": "Moon Township, Pa.",
+          "class_year": "Senior",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/skylar-leseck/13954"
+        },
+        {
+          "name": "Carolyn Arcoleo",
+          "number": "25",
+          "position": "D",
+          "height": "5'5\"",
+          "hometown": "West Islip, N.Y.",
+          "class_year": "Freshman",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/carolyn-arcoleo/13968"
+        },
+        {
+          "name": "Zoe Fries",
+          "number": "27",
+          "position": "MF/F",
+          "height": "5'6\"",
+          "hometown": "Pittsburgh, Pa.",
+          "class_year": "Junior",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/zoe-fries/13948"
+        },
+        {
+          "name": "Taylor Coulter",
+          "number": "28",
+          "position": "MF/F",
+          "height": "5'6\"",
+          "hometown": "Downingtown, Pa.",
+          "class_year": "Junior",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/taylor-coulter/13946"
+        },
+        {
+          "name": "Molly Kinsella",
+          "number": "29",
+          "position": "MF",
+          "height": "5'7\"",
+          "hometown": "Arlington, Va.",
+          "class_year": "Freshman",
+          "source_url": "https://goduquesne.com/sports/womens-soccer/roster/molly-kinsella/13969"
+        }
+      ]
+    },
+    "fordham": {
+      "programme": "fordham",
+      "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Sophia Mays",
+          "number": "0",
+          "position": "Goalkeeper",
+          "height": "5'7\"",
+          "hometown": "Bethesda, Md.",
+          "class_year": "Senior",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/sophia-mays/15789"
+        },
+        {
+          "name": "Addison Green",
+          "number": "1",
+          "position": "Goalkeeper",
+          "height": "5'4\"",
+          "hometown": "Newmarket, Ontario",
+          "class_year": "Junior",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/addison-green/15785"
+        },
+        {
+          "name": "Claudia Papenfuss",
+          "number": "2",
+          "position": "Forward",
+          "height": "5'6\"",
+          "hometown": "Naples, Fla.",
+          "class_year": "Freshman",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/claudia-papenfuss/15976"
+        },
+        {
+          "name": "Abby McCauley",
+          "number": "4",
+          "position": "Forward",
+          "height": "5'8\"",
+          "hometown": "Natick, Mass.",
+          "class_year": "Freshman",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/abby-mccauley/15908"
+        },
+        {
+          "name": "Annie Maguire",
+          "number": "5",
+          "position": "Midfielder",
+          "height": "5'7\"",
+          "hometown": "Katonah, N.Y.",
+          "class_year": "Junior",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/annie-maguire/15788"
+        },
+        {
+          "name": "Renata Mercedes",
+          "number": "6",
+          "position": "Midfielder",
+          "height": "5'7\"",
+          "hometown": "Santo Domingo, D.R.",
+          "class_year": "Sophomore",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/renata-mercedes/15790"
+        },
+        {
+          "name": "Lina M\u00fcller",
+          "number": "7",
+          "position": "Forward",
+          "height": "5'3\"",
+          "hometown": "Schriesheim, Germany",
+          "class_year": "Graduate Student",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/lina-m-ller/15909"
+        },
+        {
+          "name": "Allison Gardner",
+          "number": "8",
+          "position": "Forward",
+          "height": "5'7\"",
+          "hometown": "Dunn Loring, Va.",
+          "class_year": "Junior",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/allison-gardner/15783"
+        },
+        {
+          "name": "Julia Acosta",
+          "number": "10",
+          "position": "Forward",
+          "height": "5'4\"",
+          "hometown": "Riverside, Conn.",
+          "class_year": "Junior",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/julia-acosta/15779"
+        },
+        {
+          "name": "Liv Johnsen",
+          "number": "11",
+          "position": "Midfielder/Forward",
+          "height": "5'7\"",
+          "hometown": "Croton-on-Hudson, N.Y.",
+          "class_year": "Sophomore",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/liv-johnsen/15913"
+        },
+        {
+          "name": "Salma Simonin",
+          "number": "12",
+          "position": "Midfielder",
+          "height": "5'6\"",
+          "hometown": "Manchester, England",
+          "class_year": "Senior",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/salma-simonin/15797"
+        },
+        {
+          "name": "Lena Johnsen",
+          "number": "13",
+          "position": "Midfielder",
+          "height": "5'5\"",
+          "hometown": "Croton-on-Hudson, N.Y.",
+          "class_year": "Senior",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/lena-johnsen/15787"
+        },
+        {
+          "name": "Lindsay Probst",
+          "number": "14",
+          "position": "Defender",
+          "height": "5'1\"",
+          "hometown": "Towaco, N.J.",
+          "class_year": "Junior",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/lindsay-probst/15793"
+        },
+        {
+          "name": "Sophia Banzon",
+          "number": "15",
+          "position": "Midfielder",
+          "height": "5'6\"",
+          "hometown": "Fort Mill, S.C.",
+          "class_year": "Freshman",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/sophia-banzon/15910"
+        },
+        {
+          "name": "Edit Mare",
+          "number": "16",
+          "position": "Defender",
+          "height": "5'5\"",
+          "hometown": "Helsinki, Finland",
+          "class_year": "Freshman",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/edit-mare/15911"
+        },
+        {
+          "name": "Rubie Deaville",
+          "number": "17",
+          "position": "Midfielder",
+          "height": "5'2\"",
+          "hometown": "Sandbach, England",
+          "class_year": "Sophomore",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/rubie-deaville/15912"
+        },
+        {
+          "name": "Sarah Quinn",
+          "number": "18",
+          "position": "Midfielder",
+          "height": "5'9\"",
+          "hometown": "Leicestershire, England",
+          "class_year": "Sophomore",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/sarah-quinn/15794"
+        },
+        {
+          "name": "Ava Giudice",
+          "number": "19",
+          "position": "Midfielder",
+          "height": "5'5\"",
+          "hometown": "Katonah, N.Y.",
+          "class_year": "Senior",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/ava-giudice/15784"
+        },
+        {
+          "name": "Mackenzie Reid",
+          "number": "20",
+          "position": "Defender",
+          "height": "5'7\"",
+          "hometown": "Monroe, Conn.",
+          "class_year": "Junior",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/mackenzie-reid/15795"
+        },
+        {
+          "name": "Kit Ovsievsky",
+          "number": "22",
+          "position": "Defender",
+          "height": "5'7\"",
+          "hometown": "Cary, N.C.",
+          "class_year": "Sophomore",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/kit-ovsievsky/15792"
+        },
+        {
+          "name": "Baylee Canet",
+          "number": "23",
+          "position": "Midfielder",
+          "height": "5'3\"",
+          "hometown": "Holbrook, N.Y.",
+          "class_year": "Junior",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/baylee-canet/15780"
+        },
+        {
+          "name": "Piper Hasbrook",
+          "number": "25",
+          "position": "Defender",
+          "height": "6'0\"",
+          "hometown": "Wilmette, Ill.",
+          "class_year": "Senior",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/piper-hasbrook/15786"
+        },
+        {
+          "name": "Lucy Rios",
+          "number": "27",
+          "position": "Defender",
+          "height": "5'8\"",
+          "hometown": "San Francisco, Calif.",
+          "class_year": "Sophomore",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/lucy-rios/15796"
+        },
+        {
+          "name": "Charli Andreen Wermelin",
+          "number": "28",
+          "position": "Goalkeeper",
+          "height": "6'2\"",
+          "hometown": "Stockholm, Sweden",
+          "class_year": "Freshman",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/charli-andreen-wermelin/15975"
+        },
+        {
+          "name": "Riley Carroll",
+          "number": "33",
+          "position": "Forward",
+          "height": "5'4\"",
+          "hometown": "Glastonbury, Conn.",
+          "class_year": "Senior",
+          "source_url": "https://fordhamsports.com/sports/womens-soccer/roster/riley-carroll/15781"
+        }
+      ]
+    },
+    "george-mason": {
+      "programme": "george-mason",
+      "source_url": "https://gomason.com/sports/womens-soccer/roster/2026",
+      "players": []
+    },
+    "george-washington": {
+      "programme": "george-washington",
+      "source_url": "https://gwsports.com/sports/womens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Charlie Balderrama",
+          "number": "0",
+          "position": "Goalkeeper",
+          "height": "5'8\"",
+          "hometown": "Leesburg, VA",
+          "class_year": "2nd Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/charlie-balderrama/10313"
+        },
+        {
+          "name": "Marley Gerber",
+          "number": "00",
+          "position": "Goalkeeper",
+          "height": "5'5\"",
+          "hometown": "Winter Park, FL",
+          "class_year": "3rd Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/marley-gerber/10329"
+        },
+        {
+          "name": "Jasmine Black",
+          "number": "1",
+          "position": "Goalkeeper",
+          "height": "5'8\"",
+          "hometown": "Sydney, Australia",
+          "class_year": "2nd Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/jasmine-black/10315"
+        },
+        {
+          "name": "Lucy Stenning",
+          "number": "2",
+          "position": "Forward",
+          "height": "5'6\"",
+          "hometown": "Dallas, TX",
+          "class_year": "2nd Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/lucy-stenning/10326"
+        },
+        {
+          "name": "Anna Cornejo",
+          "number": "3",
+          "position": "Forward",
+          "height": "5'5\"",
+          "hometown": "Cincinnati, OH",
+          "class_year": "2nd Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/anna-cornejo/10317"
+        },
+        {
+          "name": "Mckenna Wickman",
+          "number": "4",
+          "position": "Forward",
+          "height": "5'6\"",
+          "hometown": "Fort Lauderdale, FL",
+          "class_year": "1st Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/mckenna-wickman/10330"
+        },
+        {
+          "name": "Rose Vigran",
+          "number": "5",
+          "position": "Midfield",
+          "height": "5'8\"",
+          "hometown": "Cincinnati, OH",
+          "class_year": "4th Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/rose-vigran/10327"
+        },
+        {
+          "name": "Kolby Moss",
+          "number": "6",
+          "position": "Defense",
+          "height": "5'7\"",
+          "hometown": "Atlanta, GA",
+          "class_year": "1st Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/kolby-moss/10331"
+        },
+        {
+          "name": "Naomi Kim",
+          "number": "7",
+          "position": "Forward",
+          "height": "5'5\"",
+          "hometown": "Culver City, CA",
+          "class_year": "2nd Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/naomi-kim/10321"
+        },
+        {
+          "name": "Sophia Broz",
+          "number": "8",
+          "position": "Defense",
+          "height": "5'8\"",
+          "hometown": "Matthews, NC",
+          "class_year": "4th Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/sophia-broz/10316"
+        },
+        {
+          "name": "Halle Ostboe",
+          "number": "9",
+          "position": "Defense",
+          "height": "5'6\"",
+          "hometown": "Manhattan Beach, CA",
+          "class_year": "1st Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/halle-ostboe/10332"
+        },
+        {
+          "name": "Kalia Kau",
+          "number": "10",
+          "position": "Forward",
+          "height": "5'2\"",
+          "hometown": "Irvine, CA",
+          "class_year": "3rd Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/kalia-kau/10320"
+        },
+        {
+          "name": "Caroline Donmoyer",
+          "number": "11",
+          "position": "Midfield",
+          "height": "5'6\"",
+          "hometown": "Gaithersburg, MD",
+          "class_year": "2nd Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/caroline-donmoyer/10318"
+        },
+        {
+          "name": "Sophia Michel",
+          "number": "12",
+          "position": "Forward",
+          "height": "5'4\"",
+          "hometown": "Bowie, MD",
+          "class_year": "1st Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/sophia-michel/10333"
+        },
+        {
+          "name": "Kate McGrath",
+          "number": "14",
+          "position": "Forward",
+          "height": "5'10\"",
+          "hometown": "Coronado, CA",
+          "class_year": "4th Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/kate-mcgrath/10323"
+        },
+        {
+          "name": "Julia Bilal",
+          "number": "15",
+          "position": "Defense",
+          "height": "5'10\"",
+          "hometown": "Petaluma, CA",
+          "class_year": "3rd Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/julia-bilal/10314"
+        },
+        {
+          "name": "Alexa Meinen",
+          "number": "17",
+          "position": "Midfield",
+          "height": "5'4\"",
+          "hometown": "North Port, NY",
+          "class_year": "4th Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/alexa-meinen/10324"
+        },
+        {
+          "name": "Lenea Guerrero",
+          "number": "18",
+          "position": "Midfield",
+          "height": "5'6\"",
+          "hometown": "West Covina, CA",
+          "class_year": "Sophomore",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/lenea-guerrero/10374"
+        },
+        {
+          "name": "Ariana Gronauer",
+          "number": "19",
+          "position": "Midfield",
+          "height": "5'5\"",
+          "hometown": "Las Vegas, NV",
+          "class_year": "Fifth Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/ariana-gronauer/10373"
+        },
+        {
+          "name": "Charlotte Li",
+          "number": "24",
+          "position": "Defense",
+          "height": "5'7\"",
+          "hometown": "Golden Valley, MN",
+          "class_year": "4th Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/charlotte-li/10322"
+        },
+        {
+          "name": "Madison Dockery",
+          "number": "27",
+          "position": "Defense",
+          "height": "5'7\"",
+          "hometown": "Ashburn, VA",
+          "class_year": "1st Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/madison-dockery/10334"
+        },
+        {
+          "name": "Isabelle Ohlmann",
+          "number": "29",
+          "position": "Forward",
+          "height": "5'9\"",
+          "hometown": "Prior Lake, MN",
+          "class_year": "3rd Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/isabelle-ohlmann/10325"
+        },
+        {
+          "name": "Kaitlyn White",
+          "number": "30",
+          "position": "Midfield",
+          "height": "5'7\"",
+          "hometown": "Buford, GA",
+          "class_year": "3rd Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/kaitlyn-white/10328"
+        },
+        {
+          "name": "Sofia Finnerty",
+          "number": "31",
+          "position": "Defense",
+          "height": "5'5\"",
+          "hometown": "Ardsley, NY",
+          "class_year": "3rd Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/sofia-finnerty/10319"
+        },
+        {
+          "name": "Ella Provost-Heron",
+          "number": "33",
+          "position": "Forward",
+          "height": "5'4\"",
+          "hometown": "Miramar, FL",
+          "class_year": "1st Year",
+          "source_url": "https://gwsports.com/sports/womens-soccer/roster/ella-provostheron/10335"
+        }
+      ]
+    },
+    "la-salle": {
+      "programme": "la-salle",
+      "source_url": "https://goexplorers.com/sports/womens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Samantha Widnick",
+          "number": "0",
+          "height": "5'9\"",
+          "hometown": "Harrisburg, Pa.",
+          "position": "Goalkeeper",
+          "class_year": "Junior",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/samantha-widnick/13676"
+        },
+        {
+          "name": "Bethany Bowden",
+          "number": "1/99",
+          "height": "6'2\"",
+          "hometown": "West Chester, Pa.",
+          "position": "Goalkeeper",
+          "class_year": "Sophomore",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/bethany-bowden/13651"
+        },
+        {
+          "name": "Kennedy Erdman",
+          "number": "2",
+          "height": "5'5\"",
+          "hometown": "Cherry Hill, N.J.",
+          "position": "Defense/Forward",
+          "class_year": "Junior",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/kennedy-erdman/13695"
+        },
+        {
+          "name": "Ella Cadigan",
+          "number": "4",
+          "height": "5'3\"",
+          "hometown": "Westfield, N.J.",
+          "position": "Midfield",
+          "class_year": "Junior",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/ella-cadigan/13652"
+        },
+        {
+          "name": "Kayden Williams",
+          "number": "5",
+          "height": "5'6\"",
+          "hometown": "Harrisburg, Pa.",
+          "position": "Forward",
+          "class_year": "Sophomore",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/kayden-williams/13675"
+        },
+        {
+          "name": "Anna Corsanico",
+          "number": "6",
+          "height": "5'4\"",
+          "hometown": "Delran, N.J.",
+          "position": "Midfield/Defense",
+          "class_year": "Sophomore",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/anna-corsanico/13653"
+        },
+        {
+          "name": "Rylee Henson",
+          "number": "7",
+          "height": "5'8\"",
+          "hometown": "Greencastle, Pa.",
+          "position": "Defense",
+          "class_year": "Senior",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/rylee-henson/13662"
+        },
+        {
+          "name": "Loghan Myers",
+          "number": "8",
+          "height": "5'4\"",
+          "hometown": "Delran, N.J.",
+          "position": "Midfield",
+          "class_year": "Junior",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/loghan-myers/13671"
+        },
+        {
+          "name": "Alexis Garcia",
+          "number": "9",
+          "height": "5'4\"",
+          "hometown": "Toms River, N.J.",
+          "position": "Forward/Midfield",
+          "class_year": "Junior",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/alexis-garcia/13659"
+        },
+        {
+          "name": "Shiloh Moore",
+          "number": "10",
+          "height": "5'7\"",
+          "hometown": "Cinnaminson, N.J.",
+          "position": "Forward/Midfield",
+          "class_year": "Freshman",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/shiloh-moore/13699"
+        },
+        {
+          "name": "Sienna Mount",
+          "number": "11",
+          "height": "5'8\"",
+          "hometown": "Cherry Hill, N.J.",
+          "position": "Midfield/Defense",
+          "class_year": "Junior",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/sienna-mount/13670"
+        },
+        {
+          "name": "Bri Lewis",
+          "number": "12",
+          "height": "5'7\"",
+          "hometown": "Logan Township, N.J.",
+          "position": "Defense",
+          "class_year": "Junior",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/bri-lewis/13667"
+        },
+        {
+          "name": "Taylor Jourdanais",
+          "number": "13",
+          "height": "5'9\"",
+          "hometown": "Halfmoon, N.Y.",
+          "position": "Midfield/Defense",
+          "class_year": "Junior",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/taylor-jourdanais/13664"
+        },
+        {
+          "name": "Ireland Kay",
+          "number": "14",
+          "height": "5'5\"",
+          "hometown": "Stratford, N.J.",
+          "position": "Midfield",
+          "class_year": "Sophomore",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/ireland-kay/13665"
+        },
+        {
+          "name": "Abby Doherty",
+          "number": "16",
+          "height": "5'3\"",
+          "hometown": "Red Bank, N.J.",
+          "position": "Defense/Midfleld",
+          "class_year": "Senior",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/abby-doherty/13654"
+        },
+        {
+          "name": "Nora Eberman",
+          "number": "17",
+          "height": "5'7\"",
+          "hometown": "Seneca, N.J.",
+          "position": "Midfield/Defense",
+          "class_year": "Sophomore",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/nora-eberman/13656"
+        },
+        {
+          "name": "Justyce Hollenbach",
+          "number": "18",
+          "height": "5'5\"",
+          "hometown": "Harrisburg, Pa.",
+          "position": "Forward",
+          "class_year": "Graduate Student",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/justyce-hollenbach/13663"
+        },
+        {
+          "name": "Katerina Loncar",
+          "number": "19",
+          "height": "5'4\"",
+          "hometown": "Oak Ridge, N.J.",
+          "position": "Defense/Midfield",
+          "class_year": "Junior",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/katerina-loncar/13668"
+        },
+        {
+          "name": "Ella Frey",
+          "number": "20/00",
+          "height": "6'0\"",
+          "hometown": "Camp Hill, Pa.",
+          "position": "Midfield/Defense",
+          "class_year": "Sophomore",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/ella-frey/13658"
+        },
+        {
+          "name": "Nadia Guzman",
+          "number": "21",
+          "height": "5'4\"",
+          "hometown": "Baldwinsville, N.Y.",
+          "position": "Midfielder/Forward",
+          "class_year": "Sophomore",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/nadia-guzman/13661"
+        },
+        {
+          "name": "Ava DeFulvio",
+          "number": "22",
+          "height": "5'4\"",
+          "hometown": "Burlington Township, N.J.",
+          "position": "Forward/Midfield",
+          "class_year": "Freshman",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/ava-defulvio/13697"
+        },
+        {
+          "name": "Ava Tenaglia",
+          "number": "23",
+          "height": "5'4\"",
+          "hometown": "Linwood, N.J.",
+          "position": "Defense/Midfield",
+          "class_year": "Junior",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/ava-tenaglia/13674"
+        },
+        {
+          "name": "Kameron Rase",
+          "number": "24",
+          "height": "5'10\"",
+          "hometown": "Enola, Pa.",
+          "position": "Forward",
+          "class_year": "Junior",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/kameron-rase/13672"
+        },
+        {
+          "name": "Sophia Rolon",
+          "number": "25",
+          "height": "5'4\"",
+          "hometown": "Marlton, N.J.",
+          "position": "Forward/Midfield",
+          "class_year": "Junior",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/sophia-rolon/13673"
+        },
+        {
+          "name": "Camila Ca\u00f1adas Fraga",
+          "number": "26",
+          "height": "5'7\"",
+          "hometown": "Thurmont, Md.",
+          "position": "Midfield/Forward",
+          "class_year": "Freshman",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/camila-ca-adas-fraga/13696"
+        },
+        {
+          "name": "Halah Lebsack",
+          "number": "27",
+          "height": "5'6\"",
+          "hometown": "Rancho Palos Verdes, Calif.",
+          "position": "Midfield/Defense",
+          "class_year": "Sophomore",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/halah-lebsack/13666"
+        },
+        {
+          "name": "Ava Hutter",
+          "number": "28",
+          "height": "5'6\"",
+          "hometown": "Pittsburgh, Pa.",
+          "position": "Defense",
+          "class_year": "Freshman",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/ava-hutter/13698"
+        },
+        {
+          "name": "Abigail Lyon",
+          "number": "31/30",
+          "height": "5'6\"",
+          "hometown": "Egg Harbor Township, N.J.",
+          "position": "Goalkeeper",
+          "class_year": "Sophomore",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/abigail-lyon/13669"
+        },
+        {
+          "name": "Jaci Gismondi",
+          "number": "33",
+          "height": "5'6\"",
+          "hometown": "West Deptford, N.J.",
+          "position": "Defense",
+          "class_year": "Senior",
+          "source_url": "https://goexplorers.com/sports/womens-soccer/roster/jaci-gismondi/13660"
+        }
+      ]
+    },
+    "loyola-chicago": {
+      "programme": "loyola-chicago",
+      "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Sally Patton",
+          "number": "0",
+          "height": "5'10\"",
+          "hometown": "Columbus, Ohio",
+          "position": "GK",
+          "class_year": "Junior",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/sally-patton/3328"
+        },
+        {
+          "name": "Anna Bigenwald",
+          "number": "00",
+          "height": "5'8\"",
+          "hometown": "Indian Head Park, Ill.",
+          "position": "GK",
+          "class_year": "Freshman",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/anna-bigenwald/3343"
+        },
+        {
+          "name": "Allison Deardorff",
+          "number": "1",
+          "height": "6'0\"",
+          "hometown": "Itasca, Ill.",
+          "position": "GK",
+          "class_year": "Senior",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/allison-deardorff/3321"
+        },
+        {
+          "name": "Chloe Cline",
+          "number": "2",
+          "height": "5'6\"",
+          "hometown": "Menomonee Falls, Wis.",
+          "position": "MF",
+          "class_year": "Junior",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/chloe-cline/3336"
+        },
+        {
+          "name": "Addison  Schaffer",
+          "number": "3",
+          "height": "5'3\"",
+          "hometown": "Lake in the Hills, Ill.",
+          "position": "MF/F",
+          "class_year": "Freshman",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/addison-schaffer/3338"
+        },
+        {
+          "name": "Skyler Bierker",
+          "number": "4",
+          "height": "5'7\"",
+          "hometown": "Gibsonia, Pa.",
+          "position": "D",
+          "class_year": "Senior",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/skyler-bierker/3316"
+        },
+        {
+          "name": "Mary Fornelli",
+          "number": "6",
+          "height": "5'10\"",
+          "hometown": "Chicago, Ill.",
+          "position": "MF",
+          "class_year": "Sophomore",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/mary-fornelli/3323"
+        },
+        {
+          "name": "Riga Kallaba",
+          "number": "7",
+          "height": "5'2\"",
+          "hometown": "Chicago, Ill.",
+          "position": "MF",
+          "class_year": "Freshman",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/riga-kallaba/3326"
+        },
+        {
+          "name": "Ana Sofia Mrotzek",
+          "number": "8",
+          "height": "5'3\"",
+          "hometown": "Oak Park, Ill.",
+          "position": "MF",
+          "class_year": "Freshman",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/ana-sofia-mrotzek/3339"
+        },
+        {
+          "name": "Catherine Cline",
+          "number": "9",
+          "height": "6'0\"",
+          "hometown": "Indianapolis, Ind.",
+          "position": "D",
+          "class_year": "Junior",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/catherine-cline/3319"
+        },
+        {
+          "name": "Gabby Wojtarowicz",
+          "number": "10",
+          "height": "5'8\"",
+          "hometown": "Algonquin, Ill.",
+          "position": "MF",
+          "class_year": "Sophomore",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/gabby-wojtarowicz/3335"
+        },
+        {
+          "name": "Mia Lanni",
+          "number": "11",
+          "height": "5'5\"",
+          "hometown": "Commerce Township, Mich.",
+          "position": "F/MF",
+          "class_year": "Fifth Year",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/mia-lanni/3327"
+        },
+        {
+          "name": "Emily Rossi",
+          "number": "12",
+          "height": "6'1\"",
+          "hometown": "Glen Ellyn, Ill.",
+          "position": "F",
+          "class_year": "Senior",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/emily-rossi/3330"
+        },
+        {
+          "name": "Ansley Cryan",
+          "number": "14",
+          "height": "5'7\"",
+          "hometown": "Jacksonville, Fla.",
+          "position": "MF",
+          "class_year": "Senior",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/ansley-cryan/3320"
+        },
+        {
+          "name": "Roos van Roekel",
+          "number": "15",
+          "height": "6'0\"",
+          "hometown": "Barrington, Ill.",
+          "position": "D",
+          "class_year": "Junior",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/roos-van-roekel/3333"
+        },
+        {
+          "name": "Josslyn Weissman",
+          "number": "16",
+          "height": "5'4\"",
+          "hometown": "Minneapolis, Minn.",
+          "position": "MF",
+          "class_year": "Sophomore",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/josslyn-weissman/3334"
+        },
+        {
+          "name": "Annie Fitzgerald",
+          "number": "17",
+          "height": "5'7\"",
+          "hometown": "Downers Grove, Ill.",
+          "position": "MF/F",
+          "class_year": "Freshman",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/annie-fitzgerald/3342"
+        },
+        {
+          "name": "Jadyn Harris",
+          "number": "18",
+          "height": "5'2\"",
+          "hometown": "Twinsburg, Ohio",
+          "position": "F",
+          "class_year": "Senior",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/jadyn-harris/3324"
+        },
+        {
+          "name": "Ava Fleming",
+          "number": "19",
+          "height": "5'7\"",
+          "hometown": "Troy, Mich.",
+          "position": "F",
+          "class_year": "Sophomore",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/ava-fleming/3322"
+        },
+        {
+          "name": "Victoria Zeni",
+          "number": "20",
+          "height": "5'7\"",
+          "hometown": "Toronto, Ontario",
+          "position": "F",
+          "class_year": "Freshman",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/victoria-zeni/3340"
+        },
+        {
+          "name": "Maggie Schmidt",
+          "number": "21",
+          "height": "5'9\"",
+          "hometown": "Loves Park, Ill.",
+          "position": "MF",
+          "class_year": "Senior",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/maggie-schmidt/3331"
+        },
+        {
+          "name": "Zoe Hevey",
+          "number": "22",
+          "height": "5'4\"",
+          "hometown": "Pewaukee, Wis.",
+          "position": "F/MF",
+          "class_year": "Senior",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/zoe-hevey/3325"
+        },
+        {
+          "name": "Abby Sudkamp",
+          "number": "23",
+          "height": "5'7\"",
+          "hometown": "Mokena, Ill.",
+          "position": "D",
+          "class_year": "Sophomore",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/abby-sudkamp/3332"
+        },
+        {
+          "name": "Sarah Collins",
+          "number": "24",
+          "height": "5'3\"",
+          "hometown": "Rochester Hills, Mich.",
+          "position": "D",
+          "class_year": "Freshman",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/sarah-collins/3341"
+        },
+        {
+          "name": "Emily Roberts",
+          "number": "25",
+          "height": "5'1\"",
+          "hometown": "Wheaton, Ill.",
+          "position": "D",
+          "class_year": "Fifth Year",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/emily-roberts/3329"
+        },
+        {
+          "name": "Olivia Beam",
+          "number": "26",
+          "height": "5'7\"",
+          "hometown": "Eureka, Mo.",
+          "position": "D",
+          "class_year": "Fifth Year",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/olivia-beam/3315"
+        },
+        {
+          "name": "Lydia Case",
+          "number": "27",
+          "height": "5'3\"",
+          "hometown": "Sylvania, Ohio",
+          "position": "MF",
+          "class_year": "Junior",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/lydia-case/3318"
+        },
+        {
+          "name": "Zoey Bohmer",
+          "number": "28",
+          "height": "5'11\"",
+          "hometown": "Wheaton, Ill.",
+          "position": "GK",
+          "class_year": "Junior",
+          "source_url": "https://loyolaramblers.com/sports/womens-soccer/roster/zoey-bohmer/3317"
+        }
+      ]
+    },
+    "rhode-island": {
+      "programme": "rhode-island",
+      "source_url": "https://gorhody.com/sports/womens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Syrai Parker",
+          "number": "0/0",
+          "hometown": "Franklin Park, NJ",
+          "position": "GK",
+          "class_year": "Junior",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/syrai-parker/9870"
+        },
+        {
+          "name": "Riley Popp",
+          "number": "2",
+          "position": "F",
+          "height": "5'4\"",
+          "hometown": "St. Louis, Mo.",
+          "class_year": "Freshman",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/riley-popp/9871"
+        },
+        {
+          "name": "Cierra Penny",
+          "number": "3",
+          "height": "5'5\"",
+          "hometown": "Mount Laurel, N.J.",
+          "position": "M",
+          "class_year": "Graduate Student",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/cierra-penny/9861"
+        },
+        {
+          "name": "Kyra Samalonis",
+          "number": "4",
+          "height": "5'4\"",
+          "hometown": "Blackwood, N.J.",
+          "position": "M",
+          "class_year": "Junior",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/kyra-samalonis/9866"
+        },
+        {
+          "name": "Aida Name",
+          "number": "5",
+          "height": "5'2\"",
+          "hometown": "Belchertown, Mass.",
+          "position": "D",
+          "class_year": "Senior",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/aida-name/9857"
+        },
+        {
+          "name": "Lauren MacDonald",
+          "number": "6",
+          "height": "5'6\"",
+          "hometown": "Gibsonia, Pa.",
+          "position": "F",
+          "class_year": "Senior",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/lauren-macdonald/9855"
+        },
+        {
+          "name": "Audra Salvagni",
+          "number": "7",
+          "height": "5'3\"",
+          "hometown": "Baldwinsville, N.Y.",
+          "position": "D",
+          "class_year": "Sophomore",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/audra-salvagni/9865"
+        },
+        {
+          "name": "Jill Rosenfeld",
+          "number": "8",
+          "height": "5'5\"",
+          "hometown": "Morristown, N.J.",
+          "position": "D",
+          "class_year": "Senior",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/jill-rosenfeld/9864"
+        },
+        {
+          "name": "Kaia Rice",
+          "number": "9",
+          "height": "5'7\"",
+          "hometown": "Whitby, Ontario",
+          "position": "M",
+          "class_year": "Junior",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/kaia-rice/9863"
+        },
+        {
+          "name": "Molly Merkel",
+          "number": "11",
+          "height": "5'6\"",
+          "hometown": "Carol Stream, Ill.",
+          "position": "F",
+          "class_year": "Freshman",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/molly-merkel/9872"
+        },
+        {
+          "name": "Sophia Bertino",
+          "number": "12",
+          "height": "5'4\"",
+          "hometown": "Woodcliff Lake, N.J.",
+          "position": "M",
+          "class_year": "Freshman",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/sophia-bertino/9873"
+        },
+        {
+          "name": "Mckenna Davis",
+          "number": "13",
+          "height": "5'6\"",
+          "hometown": "Alexandria, Va.",
+          "position": "D",
+          "class_year": "Freshman",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/mckenna-davis/9874"
+        },
+        {
+          "name": "Courtney Poon",
+          "number": "14",
+          "position": "Midfielder",
+          "height": "5'4\"",
+          "hometown": "Toronto, Canada",
+          "class_year": "Senior",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/courtney-poon/9862"
+        },
+        {
+          "name": "Lily Camacho",
+          "number": "15",
+          "height": "5'5\"",
+          "hometown": "Scotch Plains, N.J.",
+          "position": "D",
+          "class_year": "Senior",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/lily-camacho/9851"
+        },
+        {
+          "name": "Gabby Orns",
+          "number": "16",
+          "height": "5'7\"",
+          "hometown": "Poolesville, Md.",
+          "position": "D",
+          "class_year": "Junior",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/gabby-orns/9860"
+        },
+        {
+          "name": "Nika Jacobs",
+          "number": "17",
+          "height": "5'2\"",
+          "hometown": "Redondo Beach, Calif.",
+          "position": "F",
+          "class_year": "Senior",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/nika-jacobs/9854"
+        },
+        {
+          "name": "Natalie White",
+          "number": "18",
+          "height": "5'8\"",
+          "hometown": "Carlsbad, Calif.",
+          "position": "D",
+          "class_year": "Sophomore",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/natalie-white/9868"
+        },
+        {
+          "name": "Dani Eden",
+          "number": "19",
+          "height": "5'11\"",
+          "hometown": "Philadelphia, Pa.",
+          "position": "GK",
+          "class_year": "Senior",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/dani-eden/9852"
+        },
+        {
+          "name": "Emily Morgan",
+          "number": "20",
+          "height": "5'6\"",
+          "hometown": "Robbinsville, N.J.",
+          "position": "F",
+          "class_year": "Freshman",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/emily-morgan/9875"
+        },
+        {
+          "name": "Lindsay Hines",
+          "number": "21",
+          "height": "5'6\"",
+          "hometown": "Allentown, N.J.",
+          "position": "M",
+          "class_year": "Junior",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/lindsay-hines/9853"
+        },
+        {
+          "name": "Callie Houtz",
+          "number": "22",
+          "height": "5'3\"",
+          "hometown": "Bristow, Va.",
+          "position": "F",
+          "class_year": "Sophomore",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/callie-houtz/9876"
+        },
+        {
+          "name": "Megan Steinbach",
+          "number": "23",
+          "position": "Forward",
+          "height": "5'0\"",
+          "hometown": "Doylestown, Pa.",
+          "class_year": "Senior",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/megan-steinbach/9867"
+        },
+        {
+          "name": "Claire O'Neill",
+          "number": "24",
+          "height": "5'7\"",
+          "hometown": "Southington, Conn.",
+          "position": "F",
+          "class_year": "Sophomore",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/claire-o-neill/9859"
+        },
+        {
+          "name": "Basie Shannon",
+          "number": "25",
+          "height": "5'10\"",
+          "hometown": "Northfield, Ill.",
+          "position": "M",
+          "class_year": "Junior",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/basie-shannon/9877"
+        },
+        {
+          "name": "Anna Mayer",
+          "number": "26",
+          "height": "5'10\"",
+          "hometown": "Frisco, Texas",
+          "position": "D",
+          "class_year": "Freshman",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/anna-mayer/9878"
+        },
+        {
+          "name": "Maeve Matthews",
+          "number": "27",
+          "height": "5'9\"",
+          "hometown": "Trumbull, Conn.",
+          "position": "D",
+          "class_year": "Junior",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/maeve-matthews/9856"
+        },
+        {
+          "name": "Addisen Nicholson",
+          "number": "29",
+          "height": "5'10\"",
+          "hometown": "Ellington, Conn.",
+          "position": "GK",
+          "class_year": "Sophomore",
+          "source_url": "https://gorhody.com/sports/womens-soccer/roster/addisen-nicholson/9858"
+        }
+      ]
+    },
+    "richmond": {
+      "programme": "richmond",
+      "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Isabel Seifert",
+          "number": "0",
+          "position": "GK",
+          "height": "5'7\"",
+          "hometown": "Charlotte, N.C.",
+          "class_year": "Sophomore",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/isabel-seifert/8379"
+        },
+        {
+          "name": "Veronica Rrapi",
+          "number": "1",
+          "position": "GK",
+          "height": "5'8\"",
+          "hometown": "Monroe, Conn.",
+          "class_year": "Junior",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/veronica-rrapi/8377"
+        },
+        {
+          "name": "Madeline Bordages",
+          "number": "3",
+          "position": "D",
+          "height": "5'7\"",
+          "hometown": "Binghamton, N.Y.",
+          "class_year": "Freshman",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/madeline-bordages/8383"
+        },
+        {
+          "name": "Andee Costabile",
+          "number": "4",
+          "position": "F",
+          "height": "5'7\"",
+          "hometown": "Bedminster, N.J.",
+          "class_year": "Sophomore",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/andee-costabile/8365"
+        },
+        {
+          "name": "Erika Schneider",
+          "number": "5",
+          "position": "D",
+          "height": "5'10\"",
+          "hometown": "Aldie, Va.",
+          "class_year": "Junior",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/erika-schneider/8378"
+        },
+        {
+          "name": "Kate Bui",
+          "number": "6",
+          "position": "D",
+          "height": "5'5\"",
+          "hometown": "Manhattan Beach, Calif.",
+          "class_year": "Freshman",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/kate-bui/8384"
+        },
+        {
+          "name": "Cameryn Sicard",
+          "number": "7",
+          "position": "D",
+          "hometown": "Charlotte, N.C.",
+          "class_year": "Senior",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/cameryn-sicard/8443"
+        },
+        {
+          "name": "Julia Nunes",
+          "number": "8",
+          "position": "M",
+          "height": "5'6\"",
+          "hometown": "Trumbull, Conn.",
+          "class_year": "Freshman",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/julia-nunes/8385"
+        },
+        {
+          "name": "Morgane Zinn",
+          "number": "9",
+          "position": "F",
+          "height": "5'8\"",
+          "hometown": "Montclair, N.J.",
+          "class_year": "Sophomore",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/morgane-zinn/8382"
+        },
+        {
+          "name": "Christina Stamoulacatos",
+          "number": "11",
+          "position": "M",
+          "height": "5'6\"",
+          "hometown": "Rochester, N.Y.",
+          "class_year": "Freshman",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/christina-stamoulacatos/8386"
+        },
+        {
+          "name": "Brooke Wilson",
+          "number": "12",
+          "position": "D/M",
+          "height": "5'8\"",
+          "hometown": "Cincinnati, Ohio",
+          "class_year": "Junior",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/brooke-wilson/8381"
+        },
+        {
+          "name": "Emma Newman",
+          "number": "13",
+          "position": "F",
+          "height": "5'8\"",
+          "hometown": "Mission Viejo, Calif.",
+          "class_year": "Sophomore",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/emma-newman/8375"
+        },
+        {
+          "name": "Camden Henard",
+          "number": "14",
+          "position": "M",
+          "height": "5'8\"",
+          "hometown": "Dallas, Texas",
+          "class_year": "Freshman",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/camden-henard/8387"
+        },
+        {
+          "name": "Ella Jantz",
+          "number": "15",
+          "position": "D",
+          "height": "5'10\"",
+          "hometown": "Hydes, Md.",
+          "class_year": "Freshman",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/ella-jantz/8388"
+        },
+        {
+          "name": "Avery Nam",
+          "number": "16",
+          "position": "M/F",
+          "height": "5'4\"",
+          "hometown": "Ann Arbor, Mich.",
+          "class_year": "Junior",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/avery-nam/8373"
+        },
+        {
+          "name": "Anna Nelson",
+          "number": "17",
+          "position": "F",
+          "height": "5'4\"",
+          "hometown": "Syracuse, N.Y.",
+          "class_year": "Sophomore",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/anna-nelson/8374"
+        },
+        {
+          "name": "Alden Marin",
+          "number": "18",
+          "position": "F",
+          "height": "5'8\"",
+          "hometown": "Arlington, Va.",
+          "class_year": "Freshman",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/alden-marin/8389"
+        },
+        {
+          "name": "Paige West",
+          "number": "19",
+          "position": "M/F",
+          "height": "5'2\"",
+          "hometown": "Rumson, N.J.",
+          "class_year": "Junior",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/paige-west/8380"
+        },
+        {
+          "name": "Sophia Jurado",
+          "number": "20",
+          "position": "F",
+          "height": "5'4\"",
+          "hometown": "Evansville, Ind.",
+          "class_year": "Junior",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/sophia-jurado/8369"
+        },
+        {
+          "name": "Gwen Howell",
+          "number": "21",
+          "position": "D",
+          "height": "5'5\"",
+          "hometown": "Mars, Pa.",
+          "class_year": "Senior",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/gwen-howell/8366"
+        },
+        {
+          "name": "Jess Moylan",
+          "number": "22",
+          "position": "M/F",
+          "height": "5'9\"",
+          "hometown": "Sellersville, Pa.",
+          "class_year": "Sophomore",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/jess-moylan/8372"
+        },
+        {
+          "name": "Logan Jackson",
+          "number": "23",
+          "position": "D/MF",
+          "height": "5'9\"",
+          "hometown": "Alexandria, Va.",
+          "class_year": "Junior",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/logan-jackson/8368"
+        },
+        {
+          "name": "Sydney Bortz",
+          "number": "24",
+          "position": "D",
+          "height": "5'7\"",
+          "hometown": "Terrace Park, Ohio",
+          "class_year": "Senior",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/sydney-bortz/8363"
+        },
+        {
+          "name": "Julia Lishia",
+          "number": "25",
+          "position": "D",
+          "height": "5'7\"",
+          "hometown": "Valencia, Pa.",
+          "class_year": "Sophomore",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/julia-lishia/8370"
+        },
+        {
+          "name": "Kira Fowler",
+          "number": "26",
+          "position": "F",
+          "height": "5'4\"",
+          "hometown": "Cherry Hill, N.J.",
+          "class_year": "Freshman",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/kira-fowler/8390"
+        },
+        {
+          "name": "Alex Reigle",
+          "number": "28",
+          "position": "F",
+          "height": "6'0\"",
+          "hometown": "Madison, N.J.",
+          "class_year": "Senior",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/alex-reigle/8376"
+        },
+        {
+          "name": "Ellie Bozzo",
+          "number": "29",
+          "position": "D",
+          "height": "5'5\"",
+          "hometown": "Basking Ridge, N.J.",
+          "class_year": "Junior",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/ellie-bozzo/8364"
+        },
+        {
+          "name": "Macray Marchione",
+          "number": "32",
+          "position": "M/F",
+          "height": "5'7\"",
+          "hometown": "Plano, Texas",
+          "class_year": "Sophomore",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/macray-marchione/8371"
+        },
+        {
+          "name": "Kingsley Hughes",
+          "number": "33",
+          "position": "F",
+          "height": "5'5\"",
+          "hometown": "Pennington, N.J.",
+          "class_year": "Junior",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/kingsley-hughes/8367"
+        },
+        {
+          "name": "Rowan Newell",
+          "number": "40",
+          "position": "GK",
+          "height": "5'10\"",
+          "hometown": "Purcellville, Va.",
+          "class_year": "Freshman",
+          "source_url": "https://richmondspiders.com/sports/womens-soccer/roster/rowan-newell/8391"
+        }
+      ]
+    },
+    "saint-josephs": {
+      "programme": "saint-josephs",
+      "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Lauren Lebo",
+          "number": "1",
+          "position": "Goalkeeper",
+          "height": "5'11\"",
+          "hometown": "Mechanicsburg, Pa.",
+          "class_year": "Freshman",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/lauren-lebo/10512"
+        },
+        {
+          "name": "Danielle Stuart",
+          "number": "2",
+          "position": "Defense",
+          "height": "5'7\"",
+          "hometown": "Sewell, NJ",
+          "class_year": "Graduate Student",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/danielle-stuart/10509"
+        },
+        {
+          "name": "Jayda Shehadi",
+          "number": "3",
+          "position": "Midfield",
+          "height": "5'7\"",
+          "hometown": "Mays Landing, N.J.",
+          "class_year": "Graduate Student",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/jayda-shehadi/10508"
+        },
+        {
+          "name": "Ashley Rhodes",
+          "number": "4",
+          "position": "Defense",
+          "height": "5'9\"",
+          "hometown": "Ocean City, NJ",
+          "class_year": "Junior",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/ashley-rhodes/10505"
+        },
+        {
+          "name": "Alivia  Colgan",
+          "number": "5",
+          "position": "Defense",
+          "height": "5'5\"",
+          "hometown": "Gettysburg, PA",
+          "class_year": "Senior",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/alivia-colgan/10493"
+        },
+        {
+          "name": "Valentina Nardone",
+          "number": "6",
+          "position": "Midfield/Forward",
+          "height": "5'5\"",
+          "hometown": "Bristow, Va.",
+          "class_year": "Sophomore",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/valentina-nardone/10502"
+        },
+        {
+          "name": "Olivia Mancini",
+          "number": "7",
+          "position": "Defense",
+          "height": "5'7\"",
+          "hometown": "Toronto, Canada",
+          "class_year": "Graduate Student",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/olivia-mancini/10500"
+        },
+        {
+          "name": "Nicole  Everard",
+          "number": "8",
+          "position": "Midfield",
+          "height": "5'7\"",
+          "hometown": "Lumberton, NJ",
+          "class_year": "Senior",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/nicole-everard/10496"
+        },
+        {
+          "name": "Chelsea Leal",
+          "number": "9",
+          "position": "Midfield/Forward",
+          "height": "5'5\"",
+          "hometown": "New York, N.Y.",
+          "class_year": "Sophomore",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/chelsea-leal/10499"
+        },
+        {
+          "name": "Juliette  Muro",
+          "number": "10",
+          "position": "Midfield",
+          "height": "5'4\"",
+          "hometown": "Madrid, Spain",
+          "class_year": "Senior",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/juliette-muro/10501"
+        },
+        {
+          "name": "Aubrey Beaugard",
+          "number": "11",
+          "position": "Defense",
+          "height": "5'7\"",
+          "hometown": "Trooper, PA",
+          "class_year": "Junior",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/aubrey-beaugard/10490"
+        },
+        {
+          "name": "Cam Goodwin",
+          "number": "12",
+          "position": "Defense",
+          "height": "5'8\"",
+          "hometown": "Olney, Md.",
+          "class_year": "Freshman",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/cam-goodwin/10511"
+        },
+        {
+          "name": "Kerri  Jackson",
+          "number": "13",
+          "position": "Forward",
+          "height": "5'3\"",
+          "hometown": "Pittsgrove, NJ",
+          "class_year": "Senior",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/kerri-jackson/10498"
+        },
+        {
+          "name": "Jailyn  Parrotte",
+          "number": "14",
+          "position": "Defense",
+          "height": "5'6\"",
+          "hometown": "Liverpool, NY",
+          "class_year": "Senior",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/jailyn-parrotte/10503"
+        },
+        {
+          "name": "Olivia Benzing",
+          "number": "15",
+          "position": "Midfield/Forward",
+          "height": "5'7\"",
+          "hometown": "Columbia, MD",
+          "class_year": "Junior",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/olivia-benzing/10491"
+        },
+        {
+          "name": "Mia Savage",
+          "number": "16",
+          "position": "Defense",
+          "height": "5'4\"",
+          "hometown": "Sykesville, Md.",
+          "class_year": "Freshman",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/mia-savage/10513"
+        },
+        {
+          "name": "Leah  Buch",
+          "number": "17",
+          "position": "Defense",
+          "height": "5'6\"",
+          "hometown": "Brownstown, PA",
+          "class_year": "Senior",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/leah-buch/10492"
+        },
+        {
+          "name": "Erin Seabrook",
+          "number": "18",
+          "position": "Defense",
+          "height": "5'8\"",
+          "hometown": "Maple Glen, Pa.",
+          "class_year": "Sophomore",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/erin-seabrook/10507"
+        },
+        {
+          "name": "Taryn Kozak",
+          "number": "19",
+          "position": "Forward",
+          "height": "5'3\"",
+          "hometown": "Shaker Heights, Ohio",
+          "class_year": "Freshman",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/taryn-kozak/10566"
+        },
+        {
+          "name": "Alana Peev",
+          "number": "20",
+          "position": "Defense",
+          "height": "5'7\"",
+          "hometown": "Chalfont, Pa.",
+          "class_year": "Freshman",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/alana-peev/10514"
+        },
+        {
+          "name": "Kayla D'Ottaviano",
+          "number": "21",
+          "position": "Midfield",
+          "height": "5'5\"",
+          "hometown": "Washington Township, NJ",
+          "class_year": "Junior",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/kayla-d-ottaviano/10495"
+        },
+        {
+          "name": "Lina Wilks",
+          "number": "22",
+          "position": "Midfield/Forward",
+          "height": "5'5\"",
+          "hometown": "Bridgeton, N.J.",
+          "class_year": "Sophomore",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/lina-wilks/10510"
+        },
+        {
+          "name": "Maddie Anderson",
+          "number": "24",
+          "position": "Defense",
+          "height": "5'10\"",
+          "hometown": "Perkasie, PA",
+          "class_year": "Graduate Student",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/maddie-anderson/10489"
+        },
+        {
+          "name": "Gracie Salais",
+          "number": "25",
+          "position": "Midfield",
+          "height": "5'2\"",
+          "hometown": "Parkton, MD",
+          "class_year": "Junior",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/gracie-salais/10506"
+        },
+        {
+          "name": "Lila Conroy",
+          "number": "28",
+          "position": "Midfield",
+          "height": "5'4\"",
+          "hometown": "Carlsbad, Calif.",
+          "class_year": "Sophomore",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/lila-conroy/10494"
+        },
+        {
+          "name": "Payton Salais",
+          "number": "32",
+          "position": "Midfield",
+          "height": "5'3\"",
+          "hometown": "Parkton, Md.",
+          "class_year": "Freshman",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/payton-salais/10515"
+        },
+        {
+          "name": "Sarah Fisher",
+          "number": "34",
+          "position": "Forward",
+          "height": "5'5\"",
+          "hometown": "Pennsburg, PA",
+          "class_year": "Junior",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/sarah-fisher/10497"
+        },
+        {
+          "name": "Peyton Radwanski",
+          "number": "55",
+          "position": "Goalkeeper",
+          "height": "5'7\"",
+          "hometown": "Brighton, MI",
+          "class_year": "Redshirt Sophomore",
+          "source_url": "https://sjuhawks.com/sports/womens-soccer/roster/peyton-radwanski/10504"
+        }
+      ]
+    },
+    "saint-louis": {
+      "programme": "saint-louis",
+      "source_url": "https://slubillikens.com/sports/womens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Pepper Escher",
+          "number": "0",
+          "position": "Goalkeeper",
+          "height": "5'9\"",
+          "hometown": "Brewster, Mass.",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/pepper-escher/13467"
+        },
+        {
+          "name": "Nimu Karani",
+          "number": "00",
+          "position": "Goalkeeper",
+          "height": "5'7\"",
+          "hometown": "Overland Park, Kan.",
+          "class_year": "Junior",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/nimu-karani/13455"
+        },
+        {
+          "name": "Emma Parker",
+          "number": "1",
+          "position": "Goalkeeper",
+          "height": "6'1\"",
+          "hometown": "Eureka, Mo.",
+          "class_year": "Junior",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/emma-parker/13458"
+        },
+        {
+          "name": "Lucie Schwartz",
+          "number": "2",
+          "position": "Midfielder",
+          "height": "5'7\"",
+          "hometown": "St. Louis, Mo.",
+          "class_year": "Senior",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/lucie-schwartz/13462"
+        },
+        {
+          "name": "Adee Broesder",
+          "number": "3",
+          "position": "Forward",
+          "height": "5'7\"",
+          "hometown": "Lee's Summit, Mo.",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/adee-broesder/13450"
+        },
+        {
+          "name": "Ava Rademeyer",
+          "number": "4",
+          "position": "Midfielder/Defender",
+          "height": "5'8\"",
+          "hometown": "Wentzville, Mo.",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/ava-rademeyer/13460"
+        },
+        {
+          "name": "Hope Kim",
+          "number": "5",
+          "position": "Forward",
+          "height": "5'8\"",
+          "hometown": "Overland Park, Kan.",
+          "class_year": "Junior",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/hope-kim/13456"
+        },
+        {
+          "name": "Addison Stanciak",
+          "number": "7",
+          "position": "Forward",
+          "height": "5'6\"",
+          "hometown": "Gurnee, Ill.",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/addison-stanciak/13465"
+        },
+        {
+          "name": "Ashley Miller",
+          "number": "8",
+          "position": "Midfielder",
+          "height": "5'8\"",
+          "hometown": "O'Fallon, Mo.",
+          "class_year": "Junior",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/ashley-miller/13457"
+        },
+        {
+          "name": "Audrey Smith",
+          "number": "9",
+          "position": "Forward",
+          "height": "5'5\"",
+          "hometown": "St. Peters, Mo.",
+          "class_year": "Junior",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/audrey-smith/13464"
+        },
+        {
+          "name": "Jeanette Fieldsend",
+          "number": "10",
+          "position": "Midfielder",
+          "height": "5'2\"",
+          "hometown": "Indian Trail, N.C.",
+          "class_year": "Senior",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/jeanette-fieldsend/13468"
+        },
+        {
+          "name": "Nina Preusser",
+          "number": "11",
+          "position": "Midfielder",
+          "height": "5'9\"",
+          "hometown": "St. Louis, Mo.",
+          "class_year": "Senior",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/nina-preusser/13459"
+        },
+        {
+          "name": "Emma Naftanel",
+          "number": "12",
+          "position": "Forward/Midfielder",
+          "height": "5'5\"",
+          "hometown": "Colorado Springs, Colo.",
+          "class_year": "Freshman",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/emma-naftanel/13568"
+        },
+        {
+          "name": "Hana Allen",
+          "number": "14",
+          "position": "Defender",
+          "height": "5'7\"",
+          "hometown": "Glen Ellyn, Ill.",
+          "class_year": "Freshman",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/hana-allen/13564"
+        },
+        {
+          "name": "Leah Simpson",
+          "number": "15",
+          "position": "Forward",
+          "height": "5'5\"",
+          "hometown": "Carrollton, Texas",
+          "class_year": "Freshman",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/leah-simpson/13569"
+        },
+        {
+          "name": "Keira Bartholet",
+          "number": "16",
+          "position": "Forward",
+          "height": "5'10\"",
+          "hometown": "Webster Groves, Mo.",
+          "class_year": "Freshman",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/keira-bartholet/13565"
+        },
+        {
+          "name": "Caroline Chier",
+          "number": "17",
+          "position": "Midfielder/Forward",
+          "height": "5'5\"",
+          "hometown": "Webster Groves, Mo.",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/caroline-chier/13451"
+        },
+        {
+          "name": "Gianna Harris",
+          "number": "18",
+          "position": "Forward",
+          "height": "5'5\"",
+          "hometown": "New Orleans, La.",
+          "class_year": "Freshman",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/gianna-harris/13566"
+        },
+        {
+          "name": "Avery Rasmussen",
+          "number": "19",
+          "position": "Defender",
+          "height": "5'4\"",
+          "hometown": "Shawnee, Kan.",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/avery-rasmussen/13582"
+        },
+        {
+          "name": "Lauren Zangara",
+          "number": "20",
+          "position": "Defender",
+          "height": "5'8\"",
+          "hometown": "St. Louis, Mo.",
+          "class_year": "Freshman",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/lauren-zangara/13570"
+        },
+        {
+          "name": "Camille Welker",
+          "number": "21",
+          "position": "Defender",
+          "height": "5'7\"",
+          "hometown": "St. Louis, Mo.",
+          "class_year": "Graduate Student",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/camille-welker/13466"
+        },
+        {
+          "name": "Lucy Marsh",
+          "number": "22",
+          "position": "Defender",
+          "height": "5'9\"",
+          "hometown": "Webster Groves, Mo.",
+          "class_year": "Freshman",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/lucy-marsh/13567"
+        },
+        {
+          "name": "Caroline Fowlkes",
+          "number": "23",
+          "position": "Defender",
+          "height": "5'4\"",
+          "hometown": "The Woodlands, Texas",
+          "class_year": "Senior",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/caroline-fowlkes/13469"
+        },
+        {
+          "name": "Ava Scorfina",
+          "number": "24",
+          "position": "Defender",
+          "height": "5'9\"",
+          "hometown": "St. Charles, Mo.",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/ava-scorfina/13463"
+        },
+        {
+          "name": "Blakely Hockett",
+          "number": "25",
+          "position": "Defender",
+          "height": "5'10\"",
+          "hometown": "Edwardsville, Ill.",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/womens-soccer/roster/blakely-hockett/13454"
+        }
+      ]
+    },
+    "st-bonaventure": {
+      "programme": "st-bonaventure",
+      "source_url": "https://gobonnies.com/sports/womens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Juliana Castellano",
+          "number": "1",
+          "position": "Goalkeeper",
+          "height": "6'1\"",
+          "hometown": "Staten Island, N.Y.",
+          "class_year": "Senior",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/juliana-castellano/7015"
+        },
+        {
+          "name": "Hannah Smith",
+          "number": "2",
+          "position": "Midfield/Forward",
+          "height": "5'7\"",
+          "hometown": "Utica, N.Y.",
+          "class_year": "Junior",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/hannah-smith/7022"
+        },
+        {
+          "name": "Aubri Antczak",
+          "number": "4",
+          "position": "Defense",
+          "height": "5'3\"",
+          "hometown": "Sarasota, Fla.",
+          "class_year": "Freshman",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/aubri-antczak/7070"
+        },
+        {
+          "name": "Abigail Wysong",
+          "number": "5",
+          "position": "Defense",
+          "height": "5'7\"",
+          "hometown": "Bel Air South, MD",
+          "class_year": "Sophomore",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/abigail-wysong/7023"
+        },
+        {
+          "name": "Emily Neenan",
+          "number": "6",
+          "position": "Midfield",
+          "height": "5'7\"",
+          "hometown": "Victor, N.Y.",
+          "class_year": "Graduate Student",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/emily-neenan/7071"
+        },
+        {
+          "name": "Alexis Olson",
+          "number": "7",
+          "position": "Forward / Midfield",
+          "height": "5'11\"",
+          "hometown": "Churchville, N.Y.",
+          "class_year": "Freshman",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/alexis-olson/7072"
+        },
+        {
+          "name": "Jada Lloyd",
+          "number": "8",
+          "position": "Midfield / Defense",
+          "height": "5'9\"",
+          "hometown": "Eden, MD",
+          "class_year": "Freshman",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/jada-lloyd/7027"
+        },
+        {
+          "name": "Ava Dimperio",
+          "number": "9",
+          "position": "Forward / Midfield",
+          "height": "5'3\"",
+          "hometown": "Rochester, N.Y.",
+          "class_year": "Freshman",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/ava-dimperio/7073"
+        },
+        {
+          "name": "Eduarda Silva",
+          "number": "10",
+          "position": "Midfield",
+          "height": "5'8\"",
+          "hometown": "Braga, Portugal",
+          "class_year": "Graduate Student",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/eduarda-silva/7025"
+        },
+        {
+          "name": "Toni Domingos",
+          "number": "11",
+          "position": "Forward",
+          "height": "5'2\"",
+          "hometown": "Bridgeport, Conn.",
+          "class_year": "Graduate Student",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/toni-domingos/7026"
+        },
+        {
+          "name": "Audrey Cadman",
+          "number": "12",
+          "position": "Forward / Midfield",
+          "height": "5'9\"",
+          "hometown": "Tolland, Conn.",
+          "class_year": "Redshirt Junior",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/audrey-cadman/7074"
+        },
+        {
+          "name": "Sadie Richardson",
+          "number": "13",
+          "position": "Forward",
+          "height": "5'7\"",
+          "hometown": "Missoula, Mont.",
+          "class_year": "Freshman",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/sadie-richardson/7075"
+        },
+        {
+          "name": "Ava Reybitz",
+          "number": "14",
+          "position": "Forward",
+          "height": "5'6\"",
+          "hometown": "Bethlehem, Pa.",
+          "class_year": "Sophomore",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/ava-reybitz/7076"
+        },
+        {
+          "name": "Hannah Lindenberger",
+          "number": "15",
+          "position": "Midfield",
+          "height": "5'9\"",
+          "hometown": "Fairview, Pa.",
+          "class_year": "Junior",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/hannah-lindenberger/7019"
+        },
+        {
+          "name": "Moran Moscovici",
+          "number": "16",
+          "position": "Midfield",
+          "height": "5'0\"",
+          "hometown": "Tel Aviv, Israel",
+          "class_year": "Freshman",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/moran-moscovici/7077"
+        },
+        {
+          "name": "Nayelle Heredia",
+          "number": "17",
+          "position": "Forward",
+          "height": "5'6\"",
+          "hometown": "Plainville, Conn.",
+          "class_year": "Senior",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/nayelle-heredia/7016"
+        },
+        {
+          "name": "Liana Tata",
+          "number": "18",
+          "position": "Midfield / Defense",
+          "height": "5'5\"",
+          "hometown": "Rochester, N.Y.",
+          "class_year": "Freshman",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/liana-tata/7078"
+        },
+        {
+          "name": "Naomi Sharma Tobar",
+          "number": "19",
+          "position": "Defense",
+          "height": "5'4\"",
+          "hometown": "Brampton, Ontario",
+          "class_year": "Senior",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/naomi-sharma-tobar/7021"
+        },
+        {
+          "name": "Aoife Murphy",
+          "number": "20",
+          "position": "Forward",
+          "height": "5'8\"",
+          "hometown": "Reading, Burkshire, UK",
+          "class_year": "Freshman",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/aoife-murphy/7079"
+        },
+        {
+          "name": "Chloe Koh",
+          "number": "21",
+          "position": "Midfield",
+          "height": "5'2\"",
+          "hometown": "Singapore, Singapore",
+          "class_year": "Freshman",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/chloe-koh/7080"
+        },
+        {
+          "name": "Jolie Bull",
+          "number": "22",
+          "position": "Midfield",
+          "height": "5'6\"",
+          "hometown": "Baltimore, MD",
+          "class_year": "Sophomore",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/jolie-bull/7014"
+        },
+        {
+          "name": "Deanna Romero",
+          "number": "23",
+          "position": "Forward",
+          "height": "5'6\"",
+          "hometown": "Port Saint Lucie, Fla.",
+          "class_year": "Freshman",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/deanna-romero/7028"
+        },
+        {
+          "name": "Addison Brown",
+          "number": "24",
+          "position": "Defense",
+          "height": "5'10\"",
+          "hometown": "Staten Island, N.Y.",
+          "class_year": "Sophomore",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/addison-brown/7013"
+        },
+        {
+          "name": "Kaitlyn Jamison",
+          "number": "25",
+          "position": "Midfield / Forward",
+          "height": "5'7\"",
+          "hometown": "Yorba Linda, Calif.",
+          "class_year": "Sophomore",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/kaitlyn-jamison/7017"
+        },
+        {
+          "name": "Holland Burkhalter",
+          "number": "28",
+          "position": "Goalkeeper",
+          "height": "5'8\"",
+          "hometown": "Spanish Fort, Ala.",
+          "class_year": "Freshman",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/holland-burkhalter/7081"
+        },
+        {
+          "name": "Caitlyn Kellogg",
+          "number": "31",
+          "position": "Forward",
+          "height": "5'7\"",
+          "hometown": "Allegany, N.Y.",
+          "class_year": "Sophomore",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/caitlyn-kellogg/7018"
+        },
+        {
+          "name": "Callie Turpin",
+          "number": "35",
+          "position": "Goalkeeper",
+          "height": "5'8\"",
+          "hometown": "Victoria, British Columbia",
+          "class_year": "Freshman",
+          "source_url": "https://gobonnies.com/sports/womens-soccer/roster/callie-turpin/7082"
+        }
+      ]
+    },
+    "vcu": {
+      "programme": "vcu",
+      "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Mia Pongratz",
+          "number": "0",
+          "position": "Goalkeeper",
+          "height": "5'9\"",
+          "hometown": "Hanover, Mass.",
+          "class_year": "Senior",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/mia-pongratz/7018"
+        },
+        {
+          "name": "Ameerah Maamry",
+          "number": "1",
+          "position": "Goalkeeper",
+          "height": "5'7\"",
+          "hometown": "Louisville, Ky.",
+          "class_year": "Sophomore",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/ameerah-maamry/7015"
+        },
+        {
+          "name": "Keira McCloskey",
+          "number": "2",
+          "position": "Midfielder",
+          "height": "5'3\"",
+          "hometown": "Vienna, Va.",
+          "class_year": "Junior",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/keira-mccloskey/7017"
+        },
+        {
+          "name": "Estella Gajarsky-Prado",
+          "number": "3",
+          "position": "Midfielder",
+          "height": "5'5\"",
+          "hometown": "Richmond, Va.",
+          "class_year": "Redshirt Junior",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/estella-gajarsky-prado/7023"
+        },
+        {
+          "name": "Maddie Ellis",
+          "number": "4",
+          "position": "Defender",
+          "height": "5'4\"",
+          "hometown": "Coral Springs, Fla.",
+          "class_year": "Freshman",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/maddie-ellis/7025"
+        },
+        {
+          "name": "Ava Lozada",
+          "number": "5",
+          "position": "Defender",
+          "height": "5'7\"",
+          "hometown": "Richmond, Va.",
+          "class_year": "Sophomore",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/ava-lozada/7027"
+        },
+        {
+          "name": "Kate Weyer",
+          "number": "6",
+          "position": "Defender",
+          "height": "5'7\"",
+          "hometown": "Doylestown, Pa.",
+          "class_year": "Junior",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/kate-weyer/7022"
+        },
+        {
+          "name": "Jensyn Lins",
+          "number": "7",
+          "position": "Forward",
+          "height": "5'6\"",
+          "hometown": "Bellevue, Wash.",
+          "class_year": "Redshirt Senior",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/jensyn-lins/7014"
+        },
+        {
+          "name": "Luciana Gonz\u00e1lez",
+          "number": "8",
+          "position": "Midfielder",
+          "height": "5'5\"",
+          "hometown": "Heredia, Costa Rica",
+          "class_year": "Sophomore",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/luciana-gonz-lez/7026"
+        },
+        {
+          "name": "Brianna Lawrence",
+          "number": "9",
+          "position": "Defender/Midfielder",
+          "height": "5'6\"",
+          "hometown": "Centreville, Va.",
+          "class_year": "Senior",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/brianna-lawrence/7013"
+        },
+        {
+          "name": "Tatum Scialdone",
+          "number": "10",
+          "position": "Midfielder",
+          "height": "5'2\"",
+          "hometown": "Yorba Linda, Calif.",
+          "class_year": "Sophomore",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/tatum-scialdone/7019"
+        },
+        {
+          "name": "Ishpreen Marwah",
+          "number": "11",
+          "position": "Defender",
+          "height": "4'11\"",
+          "hometown": "Tampa, Fla.",
+          "class_year": "Senior",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/ishpreen-marwah/7016"
+        },
+        {
+          "name": "Cierra Collins",
+          "number": "12",
+          "position": "Defender",
+          "height": "5'3\"",
+          "hometown": "Louisville, Ky.",
+          "class_year": "Graduate Student",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/cierra-collins/7024"
+        },
+        {
+          "name": "Isabelle Franklin",
+          "number": "13",
+          "position": "Forward",
+          "height": "5'7\"",
+          "hometown": "Fort Meade, Md.",
+          "class_year": "Sophomore",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/isabelle-franklin/7010"
+        },
+        {
+          "name": "Jazmin Jackson",
+          "number": "14",
+          "position": "Forward",
+          "height": "5'5\"",
+          "hometown": "Woodbridge, Va.",
+          "class_year": "Senior",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/jazmin-jackson/7012"
+        },
+        {
+          "name": "Mina Stevens",
+          "number": "15",
+          "position": "Midfielder",
+          "height": "5'2\"",
+          "hometown": "White Marsh, Md.",
+          "class_year": "Sophomore",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/mina-stevens/7020"
+        },
+        {
+          "name": "Taleah James",
+          "number": "16",
+          "position": "Defender",
+          "height": "5'2\"",
+          "hometown": "Williamsburg, Va.",
+          "class_year": "Freshman",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/taleah-james/7028"
+        },
+        {
+          "name": "Sarah Drooger",
+          "number": "17",
+          "position": "Midfielder",
+          "height": "5'4\"",
+          "hometown": "Harrisonburg, Va.",
+          "class_year": "Junior",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/sarah-drooger/7009"
+        },
+        {
+          "name": "Jess Gotshall",
+          "number": "18",
+          "position": "Midfielder/Forward",
+          "height": "5'6\"",
+          "hometown": "Odenton, Md.",
+          "class_year": "Sophomore",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/jess-gotshall/7011"
+        },
+        {
+          "name": "Jayla Walton",
+          "number": "19",
+          "position": "Forward",
+          "height": "5'4\"",
+          "hometown": "Roseland, N.J.",
+          "class_year": "Freshman",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/jayla-walton/7029"
+        },
+        {
+          "name": "Bo Price",
+          "number": "20",
+          "position": "Defender",
+          "height": "5'5\"",
+          "hometown": "Liverpool, England",
+          "class_year": "Sophomore",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/bo-price/7030"
+        },
+        {
+          "name": "Reese Paciorek",
+          "number": "21",
+          "position": "Defender/Midfielder",
+          "height": "5'6\"",
+          "hometown": "Clarksburg, Md.",
+          "class_year": "Freshman",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/reese-paciorek/7031"
+        },
+        {
+          "name": "Vivian Vendt",
+          "number": "22",
+          "position": "Midfielder",
+          "height": "5'6\"",
+          "hometown": "Bethesda, Md.",
+          "class_year": "Senior",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/vivian-vendt/7021"
+        },
+        {
+          "name": "Kaylee Risher",
+          "number": "23",
+          "position": "Defender/Forward",
+          "height": "5'5\"",
+          "hometown": "Myrtle Beach, S.C.",
+          "class_year": "Senior",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/kaylee-risher/7709"
+        },
+        {
+          "name": "Alexis Cox",
+          "number": "25",
+          "position": "Forward",
+          "height": "5'5\"",
+          "hometown": "Alexandria, Va.",
+          "class_year": "Freshman",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/alexis-cox/7032"
+        },
+        {
+          "name": "Cameryn Nunn",
+          "number": "27",
+          "position": "Goalkeeper",
+          "height": "5'9\"",
+          "hometown": "Corona, Calif.",
+          "class_year": "Redshirt Junior",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/cameryn-nunn/7033"
+        },
+        {
+          "name": "Shiori Shintaku",
+          "number": "29",
+          "position": "Midfielder",
+          "height": "5'2\"",
+          "hometown": "Osaka, Japan",
+          "class_year": "Junior",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/shiori-shintaku/7034"
+        },
+        {
+          "name": "Monique McEnhimer",
+          "number": "30",
+          "position": "Forward",
+          "height": "5'4\"",
+          "hometown": "Richmond, Va.",
+          "class_year": "Freshman",
+          "source_url": "https://vcuathletics.com/sports/womens-soccer/roster/monique-mcenhimer/7035"
+        }
+      ]
+    }
+  },
+  "missing": [
+    "george-mason"
+  ]
+}

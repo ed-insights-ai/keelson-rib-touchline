@@ -1,0 +1,679 @@
+{
+  "conference_profiles": {
+    "A10": {
+      "level": "d1",
+      "names": [
+        "Atlantic 10 Conference",
+        "Atlantic 10",
+        "A-10"
+      ]
+    },
+    "AAC": {
+      "level": "d1",
+      "names": [
+        "American Athletic Conference",
+        "American Conference"
+      ]
+    },
+    "ACC": {
+      "level": "d1",
+      "names": [
+        "Atlantic Coast Conference"
+      ]
+    },
+    "AE": {
+      "level": "d1",
+      "names": [
+        "America East Conference",
+        "America East"
+      ]
+    },
+    "ASUN": {
+      "level": "d1",
+      "names": [
+        "Atlantic Sun Conference",
+        "Atlantic Sun"
+      ]
+    },
+    "B1G": {
+      "level": "d1",
+      "names": [
+        "Big Ten Conference",
+        "Big Ten"
+      ]
+    },
+    "BIG12": {
+      "level": "d1",
+      "names": [
+        "Big 12 Conference",
+        "Big 12"
+      ]
+    },
+    "BIGEAST": {
+      "level": "d1",
+      "names": [
+        "Big East Conference",
+        "Big East"
+      ]
+    },
+    "BIGSKY": {
+      "level": "d1",
+      "names": [
+        "Big Sky Conference",
+        "Big Sky"
+      ]
+    },
+    "BIGSOUTH": {
+      "level": "d1",
+      "names": [
+        "Big South Conference",
+        "Big South"
+      ]
+    },
+    "BIGWEST": {
+      "level": "d1",
+      "names": [
+        "The Big West",
+        "Big West"
+      ]
+    },
+    "CAA": {
+      "level": "d1",
+      "names": [
+        "Coastal Athletic Association"
+      ]
+    },
+    "CACC": {
+      "level": "d2",
+      "names": [
+        "Central Atlantic Collegiate Conference",
+        "Central Atlantic"
+      ]
+    },
+    "CC": {
+      "level": "d2",
+      "names": [
+        "Conference Carolinas"
+      ]
+    },
+    "CCAA": {
+      "level": "d2",
+      "names": [
+        "California Collegiate Athletic Association",
+        "California Collegiate"
+      ]
+    },
+    "CUSA": {
+      "level": "d1",
+      "names": [
+        "Conference USA",
+        "C-USA"
+      ]
+    },
+    "ECC": {
+      "level": "d2",
+      "names": [
+        "East Coast Conference",
+        "East Coast"
+      ]
+    },
+    "G-MAC": {
+      "level": "d2",
+      "names": [
+        "Great Midwest Athletic Conference",
+        "Great Midwest"
+      ]
+    },
+    "GAC": {
+      "level": "d2",
+      "names": [
+        "Great American Conference",
+        "Great American"
+      ]
+    },
+    "GLIAC": {
+      "level": "d2",
+      "names": [
+        "Great Lakes Intercollegiate Athletic Conference",
+        "Great Lakes"
+      ]
+    },
+    "GLVC": {
+      "level": "d2",
+      "names": [
+        "Great Lakes Valley Conference",
+        "Great Lakes"
+      ]
+    },
+    "GNAC": {
+      "level": "d2",
+      "names": [
+        "Great Northwest Athletic Conference",
+        "Great Northwest"
+      ]
+    },
+    "GSC": {
+      "level": "d2",
+      "names": [
+        "Gulf South Conference",
+        "Gulf South"
+      ]
+    },
+    "HORIZON": {
+      "level": "d1",
+      "names": [
+        "Horizon League"
+      ],
+      "code_is_word": true
+    },
+    "IVY": {
+      "level": "d1",
+      "names": [
+        "Ivy League"
+      ],
+      "code_is_word": true
+    },
+    "LSC": {
+      "level": "d2",
+      "names": [
+        "Lone Star Conference",
+        "Lone Star"
+      ]
+    },
+    "MAAC": {
+      "level": "d1",
+      "names": [
+        "Metro Atlantic Athletic Conference",
+        "Metro Conference",
+        "Metro Atlantic",
+        "Metro"
+      ]
+    },
+    "MAC": {
+      "level": "d1",
+      "names": [
+        "Mid-American Conference",
+        "Mid-American"
+      ]
+    },
+    "MEC": {
+      "level": "d2",
+      "names": [
+        "Mountain East Conference",
+        "Mountain East"
+      ]
+    },
+    "MIAA": {
+      "level": "d2",
+      "names": [
+        "Mid-America Intercollegiate Athletics Association"
+      ]
+    },
+    "MVC": {
+      "level": "d1",
+      "names": [
+        "Missouri Valley Conference",
+        "Missouri Valley"
+      ]
+    },
+    "MW": {
+      "level": "d1",
+      "names": [
+        "Mountain West Conference",
+        "Mountain West"
+      ]
+    },
+    "NE10": {
+      "level": "d2",
+      "names": [
+        "Northeast-10 Conference",
+        "Northeast-10",
+        "Northeast10"
+      ]
+    },
+    "NEC": {
+      "level": "d1",
+      "names": [
+        "Northeast Conference"
+      ]
+    },
+    "NSIC": {
+      "level": "d2",
+      "names": [
+        "Northern Sun Intercollegiate Conference"
+      ]
+    },
+    "OVC": {
+      "level": "d1",
+      "names": [
+        "Ohio Valley Conference",
+        "Ohio Valley"
+      ]
+    },
+    "PAC12": {
+      "level": "d1",
+      "names": [
+        "Pac-12 Conference",
+        "Pac-12"
+      ]
+    },
+    "PACWEST": {
+      "level": "d2",
+      "names": [
+        "Pacific West Conference",
+        "Pacific West"
+      ]
+    },
+    "PATRIOT": {
+      "level": "d1",
+      "names": [
+        "Patriot League"
+      ],
+      "code_is_word": true
+    },
+    "PBC": {
+      "level": "d2",
+      "names": [
+        "Peach Belt Conference",
+        "Peach Belt"
+      ]
+    },
+    "PSAC": {
+      "level": "d2",
+      "names": [
+        "Pennsylvania State Athletic Conference",
+        "Pennsylvania State"
+      ]
+    },
+    "RMAC": {
+      "level": "d2",
+      "names": [
+        "Rocky Mountain Athletic Conference",
+        "Rocky Mountain"
+      ]
+    },
+    "SAC": {
+      "level": "d2",
+      "names": [
+        "South Atlantic Conference",
+        "South Atlantic"
+      ]
+    },
+    "SEC": {
+      "level": "d1",
+      "names": [
+        "Southeastern Conference"
+      ]
+    },
+    "SOCON": {
+      "level": "d1",
+      "names": [
+        "Southern Conference"
+      ]
+    },
+    "SOUTHLAND": {
+      "level": "d1",
+      "names": [
+        "Southland Conference",
+        "Southland"
+      ],
+      "code_is_word": true
+    },
+    "SSC": {
+      "level": "d2",
+      "names": [
+        "Sunshine State Conference",
+        "Sunshine State"
+      ]
+    },
+    "SUMMIT": {
+      "level": "d1",
+      "names": [
+        "The Summit League",
+        "Summit League"
+      ],
+      "code_is_word": true
+    },
+    "SUNBELT": {
+      "level": "d1",
+      "names": [
+        "Sun Belt Conference",
+        "Sun Belt"
+      ]
+    },
+    "SWAC": {
+      "level": "d1",
+      "names": [
+        "Southwestern Athletic Conference"
+      ]
+    },
+    "UAC": {
+      "level": "d1",
+      "names": [
+        "United Athletic Conference"
+      ]
+    },
+    "WAC": {
+      "level": "d1",
+      "names": [
+        "Western Athletic Conference"
+      ]
+    },
+    "WCC": {
+      "level": "d1",
+      "names": [
+        "West Coast Conference"
+      ]
+    }
+  },
+  "conferences": [
+    "A10",
+    "AAC",
+    "ACC",
+    "AE",
+    "ASUN",
+    "B1G",
+    "BIG12",
+    "BIGEAST",
+    "BIGSKY",
+    "BIGSOUTH",
+    "BIGWEST",
+    "CAA",
+    "CACC",
+    "CC",
+    "CCAA",
+    "CUSA",
+    "ECC",
+    "G-MAC",
+    "GAC",
+    "GLIAC",
+    "GLVC",
+    "GNAC",
+    "GSC",
+    "HORIZON",
+    "IVY",
+    "LSC",
+    "MAAC",
+    "MAC",
+    "MEC",
+    "MIAA",
+    "MVC",
+    "MW",
+    "NE10",
+    "NEC",
+    "NSIC",
+    "OVC",
+    "PAC12",
+    "PACWEST",
+    "PATRIOT",
+    "PBC",
+    "PSAC",
+    "RMAC",
+    "SAC",
+    "SEC",
+    "SOCON",
+    "SOUTHLAND",
+    "SSC",
+    "SUMMIT",
+    "SUNBELT",
+    "SWAC",
+    "UAC",
+    "WAC",
+    "WCC",
+    "independent",
+    "non_member"
+  ],
+  "description": "Season-aware conference-membership windows per programme (institution_slug x gender), 2016-2026. Authored from official GAC/MIAA, LSC, GSC, GLVC, RMAC, SSC, NE10, CACC, ECC, PSAC, MEC, G-MAC, GLIAC (gliac.org), SAC (the thesac.com standings archive), Conference Carolinas (conferencecarolinas.com), Peach Belt (peachbeltconference.org), CCAA (goccaa.org), PacWest (thepacwest.com) and GNAC (the gnacsports.com standings archive) and NSIC (northernsun.org) records, and for NCAA Division I men's soccer 2022-2026 (25 of the conferences whose conference_profiles carry level d1, the Mid-American Conference for 2022 only) from each conference's own records pages and 2026 standings, each 2022 season also held against the conference's archived 2022 standings (standings.aspx?standings={id}, the id named in the source sentence), the Big East and CAA standings archives for divisions, and the researched pages the season matrix names for the WAC, the 2022 and 2023 Pac-12 and the movers (Wayback captures where the conference's own archive no longer serves the season), and for NCAA Division I women's soccer 2022-2026 (the 31 conferences the NCAA approved for automatic qualification in 2026, all of them d1 profiles, and for 2022-2025 the Western Athletic Conference, the UAC's predecessor, with the Pac-12 for 2022 and 2023 only; the Division I independents by their own schedules) from each conference's own live 2026 women's standings and archived 2022-2025 ones (standings.aspx?standings={id}, the id named in the source sentence), the Southeastern Conference's read from its standings API, and Wayback captures where the conference's own archive no longer serves the season (the Pac-12's 2022 and 2023 tables, the SEC's 2022 and 2023 pages for divisions); each window cites its source. standings_archives names, per conference code, the standings archive a conference with no per-season records pages keeps its member lists in (url_template with {id}, and the page id per season), so a source sentence can cite the page and check-membership --standings can read a captured copy of it back. Sibling in role to the generated canon.json identity map - identity and membership are separate axes (tl-ath plan gate, 2026-08-08).",
+  "memberships": {
+    "davidson": {
+      "men": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, men's soccer 2022-2026 (accessed 2026-11-15; the 2022 season 2026-11-20), listed under the label Davidson. 2022: Listed among 14 teams on the Atlantic 10 Conference 2022 men's soccer conference records page and in its archived 2022 standings (https://atlantic10.com/standings.aspx?standings=141) (capture 2026-11-20) (https://atlantic10.com/stats.aspx?path=msoc&year=2022&conf=true); 2023: Listed among 14 teams on the Atlantic 10 Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 14 teams on the Atlantic 10 Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 13 teams on the Atlantic 10 Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 13 teams in the Atlantic 10 Conference 2026 men's soccer standings (census capture 2026-11-15) (https://atlantic10.com/standings.aspx?path=msoc). 2022 is the first season of the Division I depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ],
+      "women": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, women's soccer 2022-2026 (accessed 2026-11-20), listed under the label Davidson. 2022: Listed among 15 teams in the Atlantic 10 Conference 2022 women's soccer standings (heading \"2022 Women's Soccer Standings\", archive id 140, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=140); 2023: Listed among 15 teams in the Atlantic 10 Conference 2023 women's soccer standings (heading \"2023 Women's Soccer Standings\", archive id 150, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=150); 2024: Listed among 15 teams in the Atlantic 10 Conference 2024 women's soccer standings (heading \"2024 Women's Soccer Standings\", archive id 163, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=163); 2025: Listed among 14 teams in the Atlantic 10 Conference 2025 women's soccer standings (heading \"2025 Women's Soccer Standings\", archive id 172, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=172); 2026: Listed among 14 teams in the Atlantic 10 Conference 2026 women's soccer standings (capture 2026-11-20, archive id 182) (https://atlantic10.com/standings.aspx?path=wsoc). The Atlantic 10 Conference tables of the window's seasons print one table with no divisions. 2022 is the first season of the Division I women's depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "dayton": {
+      "men": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, men's soccer 2022-2026 (accessed 2026-11-15; the 2022 season 2026-11-20), listed under the label Dayton. 2022: Listed among 14 teams on the Atlantic 10 Conference 2022 men's soccer conference records page and in its archived 2022 standings (https://atlantic10.com/standings.aspx?standings=141) (capture 2026-11-20) (https://atlantic10.com/stats.aspx?path=msoc&year=2022&conf=true); 2023: Listed among 14 teams on the Atlantic 10 Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 14 teams on the Atlantic 10 Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 13 teams on the Atlantic 10 Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 13 teams in the Atlantic 10 Conference 2026 men's soccer standings (census capture 2026-11-15) (https://atlantic10.com/standings.aspx?path=msoc). 2022 is the first season of the Division I depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ],
+      "women": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, women's soccer 2022-2026 (accessed 2026-11-20), listed under the label Dayton. 2022: Listed among 15 teams in the Atlantic 10 Conference 2022 women's soccer standings (heading \"2022 Women's Soccer Standings\", archive id 140, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=140); 2023: Listed among 15 teams in the Atlantic 10 Conference 2023 women's soccer standings (heading \"2023 Women's Soccer Standings\", archive id 150, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=150); 2024: Listed among 15 teams in the Atlantic 10 Conference 2024 women's soccer standings (heading \"2024 Women's Soccer Standings\", archive id 163, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=163); 2025: Listed among 14 teams in the Atlantic 10 Conference 2025 women's soccer standings (heading \"2025 Women's Soccer Standings\", archive id 172, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=172); 2026: Listed among 14 teams in the Atlantic 10 Conference 2026 women's soccer standings (capture 2026-11-20, archive id 182) (https://atlantic10.com/standings.aspx?path=wsoc). The Atlantic 10 Conference tables of the window's seasons print one table with no divisions. 2022 is the first season of the Division I women's depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "duquesne": {
+      "men": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, men's soccer 2022-2026 (accessed 2026-11-15; the 2022 season 2026-11-20), listed under the label Duquesne. 2022: Listed among 14 teams on the Atlantic 10 Conference 2022 men's soccer conference records page and in its archived 2022 standings (https://atlantic10.com/standings.aspx?standings=141) (capture 2026-11-20) (https://atlantic10.com/stats.aspx?path=msoc&year=2022&conf=true); 2023: Listed among 14 teams on the Atlantic 10 Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 14 teams on the Atlantic 10 Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 13 teams on the Atlantic 10 Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 13 teams in the Atlantic 10 Conference 2026 men's soccer standings (census capture 2026-11-15) (https://atlantic10.com/standings.aspx?path=msoc). 2022 is the first season of the Division I depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ],
+      "women": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, women's soccer 2022-2026 (accessed 2026-11-20), listed under the label Duquesne. 2022: Listed among 15 teams in the Atlantic 10 Conference 2022 women's soccer standings (heading \"2022 Women's Soccer Standings\", archive id 140, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=140); 2023: Listed among 15 teams in the Atlantic 10 Conference 2023 women's soccer standings (heading \"2023 Women's Soccer Standings\", archive id 150, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=150); 2024: Listed among 15 teams in the Atlantic 10 Conference 2024 women's soccer standings (heading \"2024 Women's Soccer Standings\", archive id 163, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=163); 2025: Listed among 14 teams in the Atlantic 10 Conference 2025 women's soccer standings (heading \"2025 Women's Soccer Standings\", archive id 172, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=172); 2026: Listed among 14 teams in the Atlantic 10 Conference 2026 women's soccer standings (capture 2026-11-20, archive id 182) (https://atlantic10.com/standings.aspx?path=wsoc). The Atlantic 10 Conference tables of the window's seasons print one table with no divisions. 2022 is the first season of the Division I women's depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "fordham": {
+      "men": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, men's soccer 2022-2026 (accessed 2026-11-15; the 2022 season 2026-11-20), listed under the label Fordham. 2022: Listed among 14 teams on the Atlantic 10 Conference 2022 men's soccer conference records page and in its archived 2022 standings (https://atlantic10.com/standings.aspx?standings=141) (capture 2026-11-20) (https://atlantic10.com/stats.aspx?path=msoc&year=2022&conf=true); 2023: Listed among 14 teams on the Atlantic 10 Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 14 teams on the Atlantic 10 Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 13 teams on the Atlantic 10 Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 13 teams in the Atlantic 10 Conference 2026 men's soccer standings (census capture 2026-11-15) (https://atlantic10.com/standings.aspx?path=msoc). 2022 is the first season of the Division I depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ],
+      "women": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, women's soccer 2022-2026 (accessed 2026-11-20), listed under the label Fordham. 2022: Listed among 15 teams in the Atlantic 10 Conference 2022 women's soccer standings (heading \"2022 Women's Soccer Standings\", archive id 140, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=140); 2023: Listed among 15 teams in the Atlantic 10 Conference 2023 women's soccer standings (heading \"2023 Women's Soccer Standings\", archive id 150, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=150); 2024: Listed among 15 teams in the Atlantic 10 Conference 2024 women's soccer standings (heading \"2024 Women's Soccer Standings\", archive id 163, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=163); 2025: Listed among 14 teams in the Atlantic 10 Conference 2025 women's soccer standings (heading \"2025 Women's Soccer Standings\", archive id 172, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=172); 2026: Listed among 14 teams in the Atlantic 10 Conference 2026 women's soccer standings (capture 2026-11-20, archive id 182) (https://atlantic10.com/standings.aspx?path=wsoc). The Atlantic 10 Conference tables of the window's seasons print one table with no divisions. 2022 is the first season of the Division I women's depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "george-mason": {
+      "men": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, men's soccer 2022-2026 (accessed 2026-11-15; the 2022 season 2026-11-20), listed under the label George Mason. 2022: Listed among 14 teams on the Atlantic 10 Conference 2022 men's soccer conference records page and in its archived 2022 standings (https://atlantic10.com/standings.aspx?standings=141) (capture 2026-11-20) (https://atlantic10.com/stats.aspx?path=msoc&year=2022&conf=true); 2023: Listed among 14 teams on the Atlantic 10 Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 14 teams on the Atlantic 10 Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 13 teams on the Atlantic 10 Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 13 teams in the Atlantic 10 Conference 2026 men's soccer standings (census capture 2026-11-15) (https://atlantic10.com/standings.aspx?path=msoc). 2022 is the first season of the Division I depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ],
+      "women": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, women's soccer 2022-2026 (accessed 2026-11-20), listed under the label George Mason. 2022: Listed among 15 teams in the Atlantic 10 Conference 2022 women's soccer standings (heading \"2022 Women's Soccer Standings\", archive id 140, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=140); 2023: Listed among 15 teams in the Atlantic 10 Conference 2023 women's soccer standings (heading \"2023 Women's Soccer Standings\", archive id 150, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=150); 2024: Listed among 15 teams in the Atlantic 10 Conference 2024 women's soccer standings (heading \"2024 Women's Soccer Standings\", archive id 163, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=163); 2025: Listed among 14 teams in the Atlantic 10 Conference 2025 women's soccer standings (heading \"2025 Women's Soccer Standings\", archive id 172, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=172); 2026: Listed among 14 teams in the Atlantic 10 Conference 2026 women's soccer standings (capture 2026-11-20, archive id 182) (https://atlantic10.com/standings.aspx?path=wsoc). The Atlantic 10 Conference tables of the window's seasons print one table with no divisions. 2022 is the first season of the Division I women's depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "george-washington": {
+      "men": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, men's soccer 2022-2026 (accessed 2026-11-15; the 2022 season 2026-11-20), listed under the label George Washington. 2022: Listed among 14 teams on the Atlantic 10 Conference 2022 men's soccer conference records page and in its archived 2022 standings (https://atlantic10.com/standings.aspx?standings=141) (capture 2026-11-20) (https://atlantic10.com/stats.aspx?path=msoc&year=2022&conf=true); 2023: Listed among 14 teams on the Atlantic 10 Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 14 teams on the Atlantic 10 Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 13 teams on the Atlantic 10 Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 13 teams in the Atlantic 10 Conference 2026 men's soccer standings (census capture 2026-11-15) (https://atlantic10.com/standings.aspx?path=msoc). 2022 is the first season of the Division I depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ],
+      "women": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, women's soccer 2022-2026 (accessed 2026-11-20), listed under the label George Washington. 2022: Listed among 15 teams in the Atlantic 10 Conference 2022 women's soccer standings (heading \"2022 Women's Soccer Standings\", archive id 140, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=140); 2023: Listed among 15 teams in the Atlantic 10 Conference 2023 women's soccer standings (heading \"2023 Women's Soccer Standings\", archive id 150, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=150); 2024: Listed among 15 teams in the Atlantic 10 Conference 2024 women's soccer standings (heading \"2024 Women's Soccer Standings\", archive id 163, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=163); 2025: Listed among 14 teams in the Atlantic 10 Conference 2025 women's soccer standings (heading \"2025 Women's Soccer Standings\", archive id 172, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=172); 2026: Listed among 14 teams in the Atlantic 10 Conference 2026 women's soccer standings (capture 2026-11-20, archive id 182) (https://atlantic10.com/standings.aspx?path=wsoc). The Atlantic 10 Conference tables of the window's seasons print one table with no divisions. 2022 is the first season of the Division I women's depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "la-salle": {
+      "men": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, men's soccer 2022-2026 (accessed 2026-11-15; the 2022 season 2026-11-20), listed under the label La Salle. 2022: Listed among 14 teams on the Atlantic 10 Conference 2022 men's soccer conference records page and in its archived 2022 standings (https://atlantic10.com/standings.aspx?standings=141) (capture 2026-11-20) (https://atlantic10.com/stats.aspx?path=msoc&year=2022&conf=true); 2023: Listed among 14 teams on the Atlantic 10 Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 14 teams on the Atlantic 10 Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 13 teams on the Atlantic 10 Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 13 teams in the Atlantic 10 Conference 2026 men's soccer standings (census capture 2026-11-15) (https://atlantic10.com/standings.aspx?path=msoc). 2022 is the first season of the Division I depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ],
+      "women": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, women's soccer 2022-2026 (accessed 2026-11-20), listed under the label La Salle. 2022: Listed among 15 teams in the Atlantic 10 Conference 2022 women's soccer standings (heading \"2022 Women's Soccer Standings\", archive id 140, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=140); 2023: Listed among 15 teams in the Atlantic 10 Conference 2023 women's soccer standings (heading \"2023 Women's Soccer Standings\", archive id 150, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=150); 2024: Listed among 15 teams in the Atlantic 10 Conference 2024 women's soccer standings (heading \"2024 Women's Soccer Standings\", archive id 163, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=163); 2025: Listed among 14 teams in the Atlantic 10 Conference 2025 women's soccer standings (heading \"2025 Women's Soccer Standings\", archive id 172, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=172); 2026: Listed among 14 teams in the Atlantic 10 Conference 2026 women's soccer standings (capture 2026-11-20, archive id 182) (https://atlantic10.com/standings.aspx?path=wsoc). The Atlantic 10 Conference tables of the window's seasons print one table with no divisions. 2022 is the first season of the Division I women's depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "loyola-chicago": {
+      "men": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, men's soccer 2022-2026 (accessed 2026-11-15; the 2022 season 2026-11-20), listed under the label Loyola Chicago. 2022: Listed among 14 teams on the Atlantic 10 Conference 2022 men's soccer conference records page and in its archived 2022 standings (https://atlantic10.com/standings.aspx?standings=141) (capture 2026-11-20) (https://atlantic10.com/stats.aspx?path=msoc&year=2022&conf=true); 2023: Listed among 14 teams on the Atlantic 10 Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 14 teams on the Atlantic 10 Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 13 teams on the Atlantic 10 Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 13 teams in the Atlantic 10 Conference 2026 men's soccer standings (census capture 2026-11-15) (https://atlantic10.com/standings.aspx?path=msoc). 2022 is the first season of the Division I depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ],
+      "women": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, women's soccer 2022-2026 (accessed 2026-11-20), listed under the label Loyola Chicago. 2022: Listed among 15 teams in the Atlantic 10 Conference 2022 women's soccer standings (heading \"2022 Women's Soccer Standings\", archive id 140, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=140); 2023: Listed among 15 teams in the Atlantic 10 Conference 2023 women's soccer standings (heading \"2023 Women's Soccer Standings\", archive id 150, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=150); 2024: Listed among 15 teams in the Atlantic 10 Conference 2024 women's soccer standings (heading \"2024 Women's Soccer Standings\", archive id 163, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=163); 2025: Listed among 14 teams in the Atlantic 10 Conference 2025 women's soccer standings (heading \"2025 Women's Soccer Standings\", archive id 172, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=172); 2026: Listed among 14 teams in the Atlantic 10 Conference 2026 women's soccer standings (capture 2026-11-20, archive id 182) (https://atlantic10.com/standings.aspx?path=wsoc). The Atlantic 10 Conference tables of the window's seasons print one table with no divisions. 2022 is the first season of the Division I women's depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "rhode-island": {
+      "men": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, men's soccer 2022-2026 (accessed 2026-11-15; the 2022 season 2026-11-20), listed under the label Rhode Island. 2022: Listed among 14 teams on the Atlantic 10 Conference 2022 men's soccer conference records page and in its archived 2022 standings (https://atlantic10.com/standings.aspx?standings=141) (capture 2026-11-20) (https://atlantic10.com/stats.aspx?path=msoc&year=2022&conf=true); 2023: Listed among 14 teams on the Atlantic 10 Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 14 teams on the Atlantic 10 Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 13 teams on the Atlantic 10 Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 13 teams in the Atlantic 10 Conference 2026 men's soccer standings (census capture 2026-11-15) (https://atlantic10.com/standings.aspx?path=msoc). 2022 is the first season of the Division I depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ],
+      "women": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, women's soccer 2022-2026 (accessed 2026-11-20), listed under the label Rhode Island. 2022: Listed among 15 teams in the Atlantic 10 Conference 2022 women's soccer standings (heading \"2022 Women's Soccer Standings\", archive id 140, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=140); 2023: Listed among 15 teams in the Atlantic 10 Conference 2023 women's soccer standings (heading \"2023 Women's Soccer Standings\", archive id 150, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=150); 2024: Listed among 15 teams in the Atlantic 10 Conference 2024 women's soccer standings (heading \"2024 Women's Soccer Standings\", archive id 163, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=163); 2025: Listed among 14 teams in the Atlantic 10 Conference 2025 women's soccer standings (heading \"2025 Women's Soccer Standings\", archive id 172, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=172); 2026: Listed among 14 teams in the Atlantic 10 Conference 2026 women's soccer standings (capture 2026-11-20, archive id 182) (https://atlantic10.com/standings.aspx?path=wsoc). The Atlantic 10 Conference tables of the window's seasons print one table with no divisions. 2022 is the first season of the Division I women's depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "richmond": {
+      "women": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, women's soccer 2022-2026 (accessed 2026-11-20), listed under the label Richmond. 2022: Listed among 15 teams in the Atlantic 10 Conference 2022 women's soccer standings (heading \"2022 Women's Soccer Standings\", archive id 140, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=140); 2023: Listed among 15 teams in the Atlantic 10 Conference 2023 women's soccer standings (heading \"2023 Women's Soccer Standings\", archive id 150, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=150); 2024: Listed among 15 teams in the Atlantic 10 Conference 2024 women's soccer standings (heading \"2024 Women's Soccer Standings\", archive id 163, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=163); 2025: Listed among 14 teams in the Atlantic 10 Conference 2025 women's soccer standings (heading \"2025 Women's Soccer Standings\", archive id 172, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=172); 2026: Listed among 14 teams in the Atlantic 10 Conference 2026 women's soccer standings (capture 2026-11-20, archive id 182) (https://atlantic10.com/standings.aspx?path=wsoc). The Atlantic 10 Conference tables of the window's seasons print one table with no divisions. 2022 is the first season of the Division I women's depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "saint-josephs": {
+      "men": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, men's soccer 2022-2026 (accessed 2026-11-15; the 2022 season 2026-11-20), listed under the label Saint Joseph's. 2022: Listed among 14 teams on the Atlantic 10 Conference 2022 men's soccer conference records page and in its archived 2022 standings (https://atlantic10.com/standings.aspx?standings=141) (capture 2026-11-20) (https://atlantic10.com/stats.aspx?path=msoc&year=2022&conf=true); 2023: Listed among 14 teams on the Atlantic 10 Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 14 teams on the Atlantic 10 Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 13 teams on the Atlantic 10 Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 13 teams in the Atlantic 10 Conference 2026 men's soccer standings (census capture 2026-11-15) (https://atlantic10.com/standings.aspx?path=msoc). 2022 is the first season of the Division I depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ],
+      "women": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, women's soccer 2022-2026 (accessed 2026-11-20), listed under the label Saint Joseph's. 2022: Listed among 15 teams in the Atlantic 10 Conference 2022 women's soccer standings (heading \"2022 Women's Soccer Standings\", archive id 140, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=140); 2023: Listed among 15 teams in the Atlantic 10 Conference 2023 women's soccer standings (heading \"2023 Women's Soccer Standings\", archive id 150, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=150); 2024: Listed among 15 teams in the Atlantic 10 Conference 2024 women's soccer standings (heading \"2024 Women's Soccer Standings\", archive id 163, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=163); 2025: Listed among 14 teams in the Atlantic 10 Conference 2025 women's soccer standings (heading \"2025 Women's Soccer Standings\", archive id 172, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=172); 2026: Listed among 14 teams in the Atlantic 10 Conference 2026 women's soccer standings (capture 2026-11-20, archive id 182) (https://atlantic10.com/standings.aspx?path=wsoc). The Atlantic 10 Conference tables of the window's seasons print one table with no divisions. 2022 is the first season of the Division I women's depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "saint-louis": {
+      "men": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, men's soccer 2022-2026 (accessed 2026-11-15; the 2022 season 2026-11-20), listed under the label Saint Louis. 2022: Listed among 14 teams on the Atlantic 10 Conference 2022 men's soccer conference records page and in its archived 2022 standings (https://atlantic10.com/standings.aspx?standings=141) (capture 2026-11-20) (https://atlantic10.com/stats.aspx?path=msoc&year=2022&conf=true); 2023: Listed among 14 teams on the Atlantic 10 Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 14 teams on the Atlantic 10 Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 13 teams on the Atlantic 10 Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 13 teams in the Atlantic 10 Conference 2026 men's soccer standings (census capture 2026-11-15) (https://atlantic10.com/standings.aspx?path=msoc). 2022 is the first season of the Division I depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ],
+      "women": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, women's soccer 2022-2026 (accessed 2026-11-20), listed under the label Saint Louis. 2022: Listed among 15 teams in the Atlantic 10 Conference 2022 women's soccer standings (heading \"2022 Women's Soccer Standings\", archive id 140, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=140); 2023: Listed among 15 teams in the Atlantic 10 Conference 2023 women's soccer standings (heading \"2023 Women's Soccer Standings\", archive id 150, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=150); 2024: Listed among 15 teams in the Atlantic 10 Conference 2024 women's soccer standings (heading \"2024 Women's Soccer Standings\", archive id 163, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=163); 2025: Listed among 14 teams in the Atlantic 10 Conference 2025 women's soccer standings (heading \"2025 Women's Soccer Standings\", archive id 172, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=172); 2026: Listed among 14 teams in the Atlantic 10 Conference 2026 women's soccer standings (capture 2026-11-20, archive id 182) (https://atlantic10.com/standings.aspx?path=wsoc). The Atlantic 10 Conference tables of the window's seasons print one table with no divisions. 2022 is the first season of the Division I women's depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "st-bonaventure": {
+      "men": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, men's soccer 2022-2026 (accessed 2026-11-15; the 2022 season 2026-11-20), listed under the label St. Bonaventure. 2022: Listed among 14 teams on the Atlantic 10 Conference 2022 men's soccer conference records page and in its archived 2022 standings (https://atlantic10.com/standings.aspx?standings=141) (capture 2026-11-20) (https://atlantic10.com/stats.aspx?path=msoc&year=2022&conf=true); 2023: Listed among 14 teams on the Atlantic 10 Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 14 teams on the Atlantic 10 Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 13 teams on the Atlantic 10 Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 13 teams in the Atlantic 10 Conference 2026 men's soccer standings (census capture 2026-11-15) (https://atlantic10.com/standings.aspx?path=msoc). 2022 is the first season of the Division I depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ],
+      "women": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, women's soccer 2022-2026 (accessed 2026-11-20), listed under the label St. Bonaventure. 2022: Listed among 15 teams in the Atlantic 10 Conference 2022 women's soccer standings (heading \"2022 Women's Soccer Standings\", archive id 140, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=140); 2023: Listed among 15 teams in the Atlantic 10 Conference 2023 women's soccer standings (heading \"2023 Women's Soccer Standings\", archive id 150, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=150); 2024: Listed among 15 teams in the Atlantic 10 Conference 2024 women's soccer standings (heading \"2024 Women's Soccer Standings\", archive id 163, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=163); 2025: Listed among 14 teams in the Atlantic 10 Conference 2025 women's soccer standings (heading \"2025 Women's Soccer Standings\", archive id 172, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=172); 2026: Listed among 14 teams in the Atlantic 10 Conference 2026 women's soccer standings (capture 2026-11-20, archive id 182) (https://atlantic10.com/standings.aspx?path=wsoc). The Atlantic 10 Conference tables of the window's seasons print one table with no divisions. 2022 is the first season of the Division I women's depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    },
+    "vcu": {
+      "men": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, men's soccer 2022-2026 (accessed 2026-11-15; the 2022 season 2026-11-20), listed under the label VCU. 2022: Listed among 14 teams on the Atlantic 10 Conference 2022 men's soccer conference records page and in its archived 2022 standings (https://atlantic10.com/standings.aspx?standings=141) (capture 2026-11-20) (https://atlantic10.com/stats.aspx?path=msoc&year=2022&conf=true); 2023: Listed among 14 teams on the Atlantic 10 Conference 2023 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2023&conf=true); 2024: Listed among 14 teams on the Atlantic 10 Conference 2024 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2024&conf=true); 2025: Listed among 13 teams on the Atlantic 10 Conference 2025 men's soccer conference records page (census capture 2026-11-15) (https://atlantic10.com/stats.aspx?path=msoc&year=2025&conf=true); 2026: Listed among 13 teams in the Atlantic 10 Conference 2026 men's soccer standings (census capture 2026-11-15) (https://atlantic10.com/standings.aspx?path=msoc). 2022 is the first season of the Division I depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ],
+      "women": [
+        {
+          "conference": "A10",
+          "from_season": 2022,
+          "to_season": 2026,
+          "source": "Atlantic 10 Conference, women's soccer 2022-2026 (accessed 2026-11-20), listed under the label VCU. 2022: Listed among 15 teams in the Atlantic 10 Conference 2022 women's soccer standings (heading \"2022 Women's Soccer Standings\", archive id 140, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=140); 2023: Listed among 15 teams in the Atlantic 10 Conference 2023 women's soccer standings (heading \"2023 Women's Soccer Standings\", archive id 150, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=150); 2024: Listed among 15 teams in the Atlantic 10 Conference 2024 women's soccer standings (heading \"2024 Women's Soccer Standings\", archive id 163, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=163); 2025: Listed among 14 teams in the Atlantic 10 Conference 2025 women's soccer standings (heading \"2025 Women's Soccer Standings\", archive id 172, capture 2026-11-20) (https://atlantic10.com/standings.aspx?standings=172); 2026: Listed among 14 teams in the Atlantic 10 Conference 2026 women's soccer standings (capture 2026-11-20, archive id 182) (https://atlantic10.com/standings.aspx?path=wsoc). The Atlantic 10 Conference tables of the window's seasons print one table with no divisions. 2022 is the first season of the Division I women's depth authored here (2022-2026), so the window's first year is the depth's edge, not an arrival."
+        }
+      ]
+    }
+  },
+  "seasons": {
+    "from": 2016,
+    "to": 2026
+  },
+  "standings_archives": {},
+  "version": 1
+}
