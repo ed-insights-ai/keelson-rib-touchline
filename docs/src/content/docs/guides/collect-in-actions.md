@@ -160,7 +160,11 @@ fork could name the runner's label in its own copy of a workflow, so
 workflows** must be **Require approval for all external contributors**, and
 no such run is approved without reading its workflow changes. It needs no AWS
 or GitHub App credentials: the job receives only its work home, and a hosted
-job lands the result.
+job lands the result. The work home and the result travel as artifacts, which
+any signed-in GitHub user can download while the repo is public, so both are
+encrypted under the `TOUCHLINE_ARTIFACT_KEY` secret
+(`.github/scripts/presto-artifact.sh`); without the secret the hand-over
+fails rather than store them in the clear.
 
 **The AWS runner** (`infra/bootstrap/runner.tf`) is one small EC2 instance
 with one fixed address. The hosted job starts it just before the presto job is
@@ -176,6 +180,9 @@ terraform apply tfplan
 # Tell the workflow which instance to start.
 gh variable set TOUCHLINE_PRESTO_RUNNER_INSTANCE -R ed-insights-ai/keelson-rib-touchline \
   --body "$(terraform output -raw presto_runner_instance_id)"
+
+# The key the presto artifacts are encrypted under. It opens nothing else.
+openssl rand -hex 32 | gh secret set TOUCHLINE_ARTIFACT_KEY -R ed-insights-ai/keelson-rib-touchline
 
 # About three minutes after the apply, register the runner. The token lasts
 # an hour and is used once.

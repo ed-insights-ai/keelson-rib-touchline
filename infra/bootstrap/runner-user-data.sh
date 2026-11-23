@@ -41,10 +41,31 @@ sudo -u runner ./config.sh --unattended --replace \
   --url "https://github.com/${repo}" --token "$token" \
   --name touchline-presto-aws --labels presto --work _work
 ./svc.sh install runner
+# After every job the runner calls the cleanup below; it reads the hook from
+# its .env file when the service starts.
+grep -q ACTIONS_RUNNER_HOOK_JOB_COMPLETED .env 2>/dev/null ||
+  echo 'ACTIONS_RUNNER_HOOK_JOB_COMPLETED=/usr/local/bin/touchline-job-cleanup' >> .env
+chown runner:runner .env
 ./svc.sh start
 echo "registered"
 EOF
 chmod 755 /usr/local/bin/touchline-register-runner
+
+# After every job, clear the job's checkout, so no code or work home outlives
+# the job that used it. The runner empties its own temporary folder, where
+# the work home is unpacked, at the start of the next job. Never fails a job.
+cat > /usr/local/bin/touchline-job-cleanup <<'EOF'
+#!/bin/bash
+work=/opt/actions-runner/_work
+for dir in "$work"/*/; do
+  case "$(basename "$dir")" in
+    _*) ;;
+    *) find "$dir" -mindepth 1 -delete 2>/dev/null ;;
+  esac
+done
+exit 0
+EOF
+chmod 755 /usr/local/bin/touchline-job-cleanup
 
 # Idle stop: the workflow starts this machine just before the presto job is
 # queued, and the machine stops itself once no job has run for a while. A
