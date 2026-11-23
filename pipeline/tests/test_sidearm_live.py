@@ -5001,3 +5001,321 @@ def test_the_non_match_markers_keep_their_word_boundaries() -> None:
     assert not _own_root_link("", page)
     assert not _own_root_link("#", page)
     assert not _own_root_link("/sports/mens-soccer/schedule", page)
+
+
+def _nuxt_schedule_page(
+    schedule: dict[str, object],
+    past: list[dict[str, object]],
+    *,
+    title: str,
+) -> str:
+    """A minimal Nuxt schedule page: one schedule object in the store and
+    the sport's ``pastSchedules`` list beside it."""
+    values: list[object] = []
+
+    def encode(value: object) -> int:
+        index = len(values)
+        values.append(None)
+        if isinstance(value, dict):
+            values[index] = {key: encode(item) for key, item in value.items()}
+        elif isinstance(value, list):
+            values[index] = [encode(item) for item in value]
+        else:
+            values[index] = value
+        return index
+
+    key = f"schedules-womens-soccer,{schedule['season']}"
+    encode(
+        {
+            "pinia": {
+                "schedule": {
+                    "schedules": {key: schedule},
+                    "pastSchedules": {"16": past},
+                }
+            }
+        }
+    )
+    return (
+        f"<html><head><title>{title}</title></head><body>"
+        '<script type="application/json" id="__NUXT_DATA__">'
+        f"{json.dumps(values)}</script></body></html>"
+    )
+
+
+def _sibling(schedule_id: int, *, current: bool) -> dict[str, object]:
+    return {
+        "scheduleId": schedule_id,
+        "seasonTitle": "2026",
+        "isCurrent": current,
+        "globalSportNameSlug": "womens-soccer",
+        "seasonId": 263,
+    }
+
+
+def _nuxt_game(game_id: int, date: str) -> dict[str, object]:
+    return {
+        "id": game_id,
+        "date": date,
+        "location_indicator": "H",
+        "opponent": {"title": "Beta"},
+        "result": None,
+    }
+
+
+_MARYLAND_SIBLINGS = [
+    _sibling(889, current=False),
+    _sibling(925, current=False),
+    _sibling(926, current=True),
+]
+_SPRING_PAGE = _nuxt_schedule_page(
+    {
+        "id": 889,
+        "title": "2026 Women's Soccer Spring Schedule",
+        "season": 2026,
+        "games": [_nuxt_game(20074, "2026-03-01T14:00:00")],
+    },
+    _MARYLAND_SIBLINGS,
+    title="2026 Women's Soccer Schedule - Example",
+)
+_FALL_PAGE = _nuxt_schedule_page(
+    {
+        "id": 926,
+        "title": "2026 Women's Soccer Schedule",
+        "season": 2026,
+        "games": [_nuxt_game(21001, "2026-08-16T12:00:00")],
+    },
+    _MARYLAND_SIBLINGS,
+    title="2026 Women's Soccer Schedule - Example",
+)
+
+
+def _served(url: str, text: str) -> MagicMock:
+    response = MagicMock()
+    response.status_code = 200
+    response.url = url
+    response.text = text
+    return response
+
+
+def test_a_season_url_serving_its_spring_slate_reads_the_current_fall_schedule() -> (
+    None
+):
+    """Measured 2026-11-23 on umterps.com women's soccer: season "2026"
+    files three schedules, and ``/schedule/2026`` serves the first, the
+    five-date spring slate (889), while the 18-game fall season (926) is
+    the site's current schedule, served only at the canonical
+    ``/schedule``.  The collector must read 926, not the spring games."""
+    from src.sidearm_live import fetch_published_page_conditional
+
+    season_url = "https://example.test/sports/womens-soccer/schedule/2026"
+    canonical = "https://example.test/sports/womens-soccer/schedule"
+    session = MagicMock()
+    session.get.side_effect = [
+        _served(season_url, _SPRING_PAGE),
+        _served(canonical, _FALL_PAGE),
+    ]
+
+    fetched = fetch_published_page_conditional(session, season_url, 2026, "schedule")
+
+    assert session.get.call_args_list[1].args[0] == canonical
+    assert fetched.page is not None
+    assert fetched.page.final_url == canonical
+    assert fetched.page.requested_url == season_url
+    assert fetched.page.html == _FALL_PAGE
+
+
+def test_a_spring_slate_with_no_current_sibling_is_a_named_gap() -> None:
+    """Once the fall season is no longer current, no URL the skin serves
+    addresses it: the spring slate is refused rather than collected."""
+    from src.sidearm_live import fetch_published_page_conditional
+
+    past = [_sibling(889, current=False), _sibling(926, current=False)]
+    page = _nuxt_schedule_page(
+        {
+            "id": 889,
+            "title": "2026 Women's Soccer Spring Schedule",
+            "season": 2026,
+            "games": [_nuxt_game(20074, "2026-03-01T14:00:00")],
+        },
+        past,
+        title="2026 Women's Soccer Schedule - Example",
+    )
+    url = "https://example.test/sports/womens-soccer/schedule/2026"
+    session = MagicMock()
+    session.get.return_value = _served(url, page)
+
+    with pytest.raises(LiveCollectionError) as refused:
+        fetch_published_page_conditional(session, url, 2026, "schedule")
+
+    assert "one of the 2 schedules the site files under season 2026 (889, 926)" in str(
+        refused.value
+    )
+    assert session.get.call_count == 1
+
+
+def test_a_fall_schedule_beside_a_sibling_stands() -> None:
+    """A season URL that serves a fall-dated schedule is read as served,
+    whatever else the season files."""
+    from src.sidearm_live import PublishedPage, season_schedule_redirect
+
+    url = "https://example.test/sports/womens-soccer/schedule/2026"
+    assert season_schedule_redirect(PublishedPage(url, url, _FALL_PAGE), 2026) is None
+
+
+def test_a_canonical_page_that_is_not_the_current_schedule_is_refused() -> None:
+    """The redirect target must serve the schedule the season page marked
+    current; another one (the site moved on) is refused."""
+    from src.sidearm_live import fetch_published_page_conditional
+
+    season_url = "https://example.test/sports/womens-soccer/schedule/2026"
+    canonical = "https://example.test/sports/womens-soccer/schedule"
+    session = MagicMock()
+    session.get.side_effect = [
+        _served(season_url, _SPRING_PAGE),
+        _served(canonical, _SPRING_PAGE),
+    ]
+
+    with pytest.raises(LiveCollectionError, match="current schedule"):
+        fetch_published_page_conditional(session, season_url, 2026, "schedule")
+
+
+def _archived(tmp_path, html: str, *, requested: str, final: str):
+    from src.page_state import PageState, content_signature
+
+    path = tmp_path / "schedule.html"
+    path.write_text(html, encoding="utf-8")
+    return PageState(
+        etag='"v1"',
+        last_modified=None,
+        signature=content_signature(html),
+        requested_url=requested,
+        final_url=final,
+        outcome_state="complete",
+        outcome_count=1,
+        outcome_reason=None,
+        parsed={"fixtures": [], "skips": []},
+        html_path=path,
+    )
+
+
+def test_an_archived_spring_slate_is_fetched_again_not_vouched_for_by_a_304(
+    tmp_path,
+) -> None:
+    """A data home that archived Maryland's spring slate before the
+    redirect existed must not keep it on a 304: the archived page is one
+    the redirect no longer stands on, so no validators ride the request
+    and the canonical fall schedule is read."""
+    from src.sidearm_live import fetch_published_page_conditional
+
+    season_url = "https://example.test/sports/womens-soccer/schedule/2026"
+    canonical = "https://example.test/sports/womens-soccer/schedule"
+    state = _archived(tmp_path, _SPRING_PAGE, requested=season_url, final=season_url)
+    session = MagicMock()
+    session.get.side_effect = [
+        _served(season_url, _SPRING_PAGE),
+        _served(canonical, _FALL_PAGE),
+    ]
+
+    fetched = fetch_published_page_conditional(
+        session, season_url, 2026, "schedule", state=state, want_validators=True
+    )
+
+    assert session.get.call_args_list[0].kwargs.get("headers") is None
+    assert not fetched.unchanged
+    assert fetched.page is not None and fetched.page.html == _FALL_PAGE
+
+
+def test_canonical_schedule_validators_are_not_sent_to_the_season_url(
+    tmp_path,
+) -> None:
+    """Validators stored from the canonical ``/schedule`` vouch for that
+    page, not the season URL's spring slate, so they stay home; an
+    unchanged fall page is still recognised by its content."""
+    from src.sidearm_live import fetch_published_page_conditional
+
+    season_url = "https://example.test/sports/womens-soccer/schedule/2026"
+    canonical = "https://example.test/sports/womens-soccer/schedule"
+    state = _archived(tmp_path, _FALL_PAGE, requested=season_url, final=canonical)
+    session = MagicMock()
+    session.get.side_effect = [
+        _served(season_url, _SPRING_PAGE),
+        _served(canonical, _FALL_PAGE),
+    ]
+
+    fetched = fetch_published_page_conditional(
+        session, season_url, 2026, "schedule", state=state, want_validators=True
+    )
+
+    assert session.get.call_args_list[0].kwargs.get("headers") is None
+    assert fetched.unchanged
+
+
+def test_a_canonical_page_serving_another_current_schedule_is_refused() -> None:
+    """The canonical page must serve the schedule the SEASON page marked
+    current (926), even when it marks a different one current itself."""
+    from src.sidearm_live import fetch_published_page_conditional
+
+    moved = [_sibling(889, current=False), _sibling(999, current=True)]
+    canonical_page = _nuxt_schedule_page(
+        {
+            "id": 999,
+            "title": "2026 Women's Soccer Schedule",
+            "season": 2026,
+            "games": [_nuxt_game(22001, "2026-08-20T19:00:00")],
+        },
+        moved,
+        title="2026 Women's Soccer Schedule - Example",
+    )
+    season_url = "https://example.test/sports/womens-soccer/schedule/2026"
+    canonical = "https://example.test/sports/womens-soccer/schedule"
+    session = MagicMock()
+    session.get.side_effect = [
+        _served(season_url, _SPRING_PAGE),
+        _served(canonical, canonical_page),
+    ]
+
+    with pytest.raises(LiveCollectionError, match=r"current schedule \(926\)"):
+        fetch_published_page_conditional(session, season_url, 2026, "schedule")
+
+
+def test_a_season_completed_the_next_spring_stands_beside_a_sibling() -> None:
+    """The COVID 2020 season was played in spring 2021: its games are not
+    a spring slate of 2020, so it stands whatever else the season files."""
+    from src.sidearm_live import PublishedPage, season_schedule_redirect
+
+    past = [
+        {**_sibling(513, current=False), "seasonTitle": "2020"},
+        {**_sibling(514, current=False), "seasonTitle": "2020"},
+    ]
+    page = _nuxt_schedule_page(
+        {
+            "id": 513,
+            "title": "2020 Women's Soccer Schedule",
+            "season": 2020,
+            "games": [_nuxt_game(9001, "2021-03-05T15:00:00")],
+        },
+        past,
+        title="2020 Women's Soccer Schedule - Example",
+    )
+    url = "https://example.test/sports/womens-soccer/schedule/2020"
+    assert season_schedule_redirect(PublishedPage(url, url, page), 2020) is None
+
+
+def test_the_served_current_schedule_stands_even_with_spring_dates() -> None:
+    """A season page serving the very schedule the site marks current is
+    the season's own, spring-only or not."""
+    from src.sidearm_live import PublishedPage, season_schedule_redirect
+
+    past = [_sibling(889, current=True), _sibling(926, current=False)]
+    page = _nuxt_schedule_page(
+        {
+            "id": 889,
+            "title": "2026 Women's Soccer Schedule",
+            "season": 2026,
+            "games": [_nuxt_game(20074, "2026-03-01T14:00:00")],
+        },
+        past,
+        title="2026 Women's Soccer Schedule - Example",
+    )
+    url = "https://example.test/sports/womens-soccer/schedule/2026"
+    assert season_schedule_redirect(PublishedPage(url, url, page), 2026) is None

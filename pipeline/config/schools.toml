@@ -20262,17 +20262,20 @@ city_source  = "https://vucommodores.com/website-api/schedule-events?filter[sche
 gazetteer_geoid = "4752006"
 identity_accessed = "2026-11-20"
 
-# The probe read sidearm with every layer absent and no season proved:
-# the schedule page is a SideArm Nuxt skin that renders its rows in the
-# browser (served title "@season @sport Schedule"). Authored enabled so
-# the collect names the gap.
+# The site's sport path is /sports/soccer (its own navigation links
+# sports/soccer/schedule and roster). The first authoring used
+# /sports/womens-soccer, which the Nuxt skin answers 200 with an empty
+# shell (served title "@season @sport Schedule", no schedule in the
+# store), so every layer read absent. Corrected 2026-11-23 after a hosted
+# runner collected 2026 at /sports/soccer: 22 fixtures, 29 players, 33
+# stat lines, 20 of 20 box scores; /schedule/2022 reads 20 fixtures.
 [[schools]]
 name         = "Oklahoma"
 abbreviation = "OU"
 conference   = "SEC"
 mascot       = "Sooners"
 gender       = "women"
-base_url     = "https://soonersports.com/sports/womens-soccer"
+base_url     = "https://soonersports.com/sports/soccer"
 years        = [2022, 2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"

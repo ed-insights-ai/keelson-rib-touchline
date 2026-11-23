@@ -343,6 +343,35 @@ def _is_json_document(text: str) -> bool:
     return isinstance(value, (dict, list))
 
 
+def _canonical_schedule(url: str) -> bool:
+    """Whether ``url`` is a sport's canonical, yearless schedule page."""
+    return urlparse(url).path.rstrip("/").endswith("/schedule")
+
+
+def _validators_apply(
+    state: PageState, requested_url: str, year: int, kind: str
+) -> bool:
+    """Whether the archived page's validators may ride this request.
+
+    A 304 vouches for the URL it was asked of, so validators stored from
+    the canonical ``/schedule`` (read after the season URL served a spring
+    slate) are not sent to the season URL: its 304 would vouch for the
+    spring page and reuse the archived fall parse unchecked.  Nor are an archived schedule's own when it is a page
+    ``season_schedule_redirect`` would no longer stand on (a spring slate
+    archived before the redirect existed): the full fetch must run so the
+    canonical schedule is read.
+    """
+    if kind != LAYER_SCHEDULE:
+        return True
+    if state.final_url != requested_url and _canonical_schedule(state.final_url):
+        return False
+    try:
+        archived = PublishedPage(requested_url, state.final_url, state.read_html())
+        return season_schedule_redirect(archived, year) is None
+    except (LiveCollectionError, OSError):
+        return False
+
+
 def fetch_published_page_conditional(
     session: requests.Session,
     requested_url: str,
@@ -368,7 +397,7 @@ def fetch_published_page_conditional(
     the SideArm proof.
     """
     headers: dict[str, str] = {}
-    if state is not None:
+    if state is not None and _validators_apply(state, requested_url, year, kind):
         if state.etag:
             headers["If-None-Match"] = state.etag
         if state.last_modified:
@@ -385,6 +414,24 @@ def fetch_published_page_conditional(
         ) from exc
     assert_served_body(response, year=year, kind=kind, url=requested_url)
     page = PublishedPage(requested_url, response.url, response.text)
+    if kind == LAYER_SCHEDULE:
+        canonical = season_schedule_redirect(page, year)
+        if canonical is not None:
+            current_url = canonical.url
+            # The season URL served a sibling schedule (a spring slate) of
+            # the season; the season's own is the site's current schedule,
+            # which only the canonical page serves.
+            try:
+                response = session.get(current_url, timeout=30)
+                response.raise_for_status()
+            except requests.RequestException as exc:
+                raise LiveCollectionError(
+                    f"[{year}] failed to fetch {kind} page {current_url}: {exc}",
+                    status=http_status(exc),
+                ) from exc
+            assert_served_body(response, year=year, kind=kind, url=current_url)
+            page = PublishedPage(requested_url, response.url, response.text)
+            assert_season_schedule_served(page, year, canonical.schedule_id)
     etag: str | None = None
     last_modified: str | None = None
     signature: str | None = None
@@ -573,6 +620,131 @@ def _nuxt_schedule_objects(html: str) -> list[dict[str, object]]:
         for value in schedules.values()
         if isinstance(value, dict) and isinstance(value.get("games"), list)
     ]
+
+
+def _nuxt_season_siblings(html: str, year: int) -> list[dict[str, object]]:
+    """Every schedule the Nuxt page's ``pastSchedules`` files under ``year``.
+
+    The store lists the sport's schedules by season (``seasonTitle``), each
+    with its ``scheduleId`` and an ``isCurrent`` flag.  A season may hold
+    more than one: measured 2026-11-23 on umterps.com women's soccer, season
+    "2026" holds 889 ("2026 Women's Soccer Spring Schedule", five March and
+    April dates), 925 (no games) and 926 ("2026 Women's Soccer Schedule",
+    the 18-game fall season, current).
+    """
+    if "pastSchedules" not in html:
+        return []
+    past = _nuxt_store(html, "schedule").get("pastSchedules")
+    if not isinstance(past, dict):
+        return []
+    return [
+        entry
+        for entries in past.values()
+        if isinstance(entries, list)
+        for entry in entries
+        if isinstance(entry, dict) and str(entry.get("seasonTitle") or "") == str(year)
+    ]
+
+
+def _spring_slate(games: object, year: int) -> bool:
+    """Whether every game is dated January to July of ``year`` (and there
+    is at least one): a spring slate, never a fall season.  A season played
+    entirely in the next spring (COVID 2020, played in 2021) is not one."""
+    dates = [
+        str(game.get("date") or "") if isinstance(game, dict) else ""
+        for game in (games if isinstance(games, list) else [])
+    ]
+    if not dates:
+        return False
+    for date in dates:
+        match = re.match(rf"{year}-(\d{{2}})-", date)
+        if match is None or int(match.group(1)) >= 8:
+            return False
+    return True
+
+
+@dataclass(frozen=True)
+class CanonicalSchedule:
+    """Where to read a season's own schedule, and which one it must be."""
+
+    url: str
+    schedule_id: str
+
+
+def season_schedule_redirect(
+    page: PublishedPage, year: int
+) -> CanonicalSchedule | None:
+    """The canonical schedule to read when the season URL served a sibling.
+
+    The Nuxt skin serves ``/schedule/{year}`` by the season's title and
+    takes the FIRST schedule filed under it (the site's own
+    ``getPastScheduleByTitle`` filters by ``seasonTitle`` and keeps
+    ``[0]``).  When a season holds a spring slate beside the fall season,
+    the season URL therefore serves the spring games (umterps.com
+    ``/sports/womens-soccer/schedule/2026``, 2026-11-23: schedule 889, five
+    spring dates, while the 18-game fall season is 926).  No season URL
+    addresses the others, but the canonical ``/schedule`` page serves the
+    sport's current schedule.
+
+    So the served schedule stands when the season files only it, when it
+    is the one the site marks current, or when it is not a spring slate
+    (any game outside January to July of ``year``: a fall season, or one
+    completed the next spring).  A spring slate or an empty schedule beside
+    exactly one current sibling answers the canonical URL and that
+    sibling's id, which the canonical page must then serve.  An empty one
+    with no current sibling stands (an honest empty season); a spring slate
+    with none is refused, a named gap rather than a spring slate collected
+    as the season.
+    """
+    siblings = _nuxt_season_siblings(page.html, year)
+    if len(siblings) < 2:
+        return None
+    served = _nuxt_schedule_objects(page.html)
+    served_ids = {str(schedule.get("id")) for schedule in served}
+    current_ids = {
+        str(entry.get("scheduleId"))
+        for entry in siblings
+        if entry.get("isCurrent") is True
+    }
+    if served_ids and served_ids == current_ids:
+        return None
+    games = [schedule.get("games") for schedule in served]
+    spring = any(_spring_slate(listed, year) for listed in games)
+    if not spring and any(listed for listed in games):
+        return None
+    others = current_ids - served_ids
+    if len(others) == 1:
+        path = urlparse(page.final_url).path.rstrip("/")
+        base = re.sub(rf"/schedule/{year}(?:-\d{{2}})?$", "/schedule", path)
+        if base != path:
+            return CanonicalSchedule(urljoin(page.final_url, base), others.pop())
+    if not spring:
+        return None
+    listed_ids = ", ".join(str(entry.get("scheduleId")) for entry in siblings)
+    titles = "; ".join(str(schedule.get("title") or "") for schedule in served)
+    raise LiveCollectionError(
+        f"[{year}] {page.final_url} serves {titles or 'a schedule'}, a spring "
+        f"slate, one of the {len(siblings)} schedules the site files under season "
+        f"{year} ({listed_ids}); its season URL cannot address the others"
+    )
+
+
+def assert_season_schedule_served(
+    page: PublishedPage, year: int, schedule_id: str
+) -> None:
+    """Refuse a canonical schedule page that is not the schedule the season
+    page marked current (``schedule_id``), or that does not name ``year``."""
+    served = _nuxt_schedule_objects(page.html)
+    ids = {str(schedule.get("id")) for schedule in served}
+    titled = all(
+        re.search(rf"\b{year}\b", str(schedule.get("title") or ""))
+        for schedule in served
+    )
+    if not served or ids != {schedule_id} or not titled:
+        raise LiveCollectionError(
+            f"[{year}] {page.final_url} does not serve the season's current "
+            f"schedule ({schedule_id})"
+        )
 
 
 #: SideArm's global code for the soccer programme of each gender, the
