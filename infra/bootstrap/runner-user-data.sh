@@ -97,9 +97,12 @@ sudo -u runner ./config.sh --unattended --replace \
   --name touchline-presto-aws --labels presto --work _work
 ./svc.sh install runner
 # After every job the runner calls the cleanup below; it reads the hook from
-# its .env file when the service starts.
-grep -q ACTIONS_RUNNER_HOOK_JOB_COMPLETED .env 2>/dev/null ||
-  echo 'ACTIONS_RUNNER_HOOK_JOB_COMPLETED=/usr/local/bin/touchline-job-cleanup' >> .env
+# its .env file when the service starts. The runner refuses a hook whose
+# name does not end in .sh, and fails the job, so the name matters. The line
+# is rewritten, not only added, so registering again corrects an old one.
+touch .env
+sed -i '/^ACTIONS_RUNNER_HOOK_JOB_COMPLETED=/d' .env
+echo 'ACTIONS_RUNNER_HOOK_JOB_COMPLETED=/usr/local/bin/touchline-job-cleanup.sh' >> .env
 chown runner:runner .env
 ./svc.sh start
 echo "registered"
@@ -109,7 +112,7 @@ chmod 755 /usr/local/bin/touchline-register-runner
 # After every job, clear the job's checkout, so no code or work home outlives
 # the job that used it. The runner empties its own temporary folder, where
 # the work home is unpacked, at the start of the next job. Never fails a job.
-cat > /usr/local/bin/touchline-job-cleanup <<'EOF'
+cat > /usr/local/bin/touchline-job-cleanup.sh <<'EOF'
 #!/bin/bash
 work=/opt/actions-runner/_work
 for dir in "$work"/*/; do
@@ -120,6 +123,6 @@ for dir in "$work"/*/; do
 done
 exit 0
 EOF
-chmod 755 /usr/local/bin/touchline-job-cleanup
+chmod 755 /usr/local/bin/touchline-job-cleanup.sh
 
 echo "setup complete"
