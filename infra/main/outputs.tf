@@ -12,11 +12,11 @@ output "snapshot_scopes" {
 }
 
 output "signing_key_arn" {
-  value = aws_kms_key.signing.arn
+  value = data.aws_kms_key.signing.arn
 }
 
 output "signing_key_alias" {
-  value = aws_kms_alias.signing.name
+  value = "alias/touchline-snapshot-signing"
 }
 
 output "signing_public_key_pem" {

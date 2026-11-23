@@ -7,8 +7,8 @@ OIDC. No long-lived AWS keys exist anywhere.
 
 | Stack | Applied by | Holds |
 | --- | --- | --- |
-| [`bootstrap/`](bootstrap/) | Daniel, once, with his signed-in AWS CLI ([RUNBOOK.md](RUNBOOK.md)) | Terraform state bucket, GitHub's OIDC provider, the `touchline-infra-deploy` role, the boundary for publish roles, the monthly budget and its alerts |
-| [`main/`](main/) | The [Infra workflow](../.github/workflows/infra.yml) on merge to `main`, via `touchline-infra-deploy` | `touchline-data-<account>` bucket, the snapshot signing key, `touchline-site-<account>` bucket and its CloudFront distribution, the `touchline-publish` and `touchline-publish-site` roles |
+| [`bootstrap/`](bootstrap/) | Daniel, once, with his signed-in AWS CLI ([RUNBOOK.md](RUNBOOK.md)) | Terraform state bucket, account-wide S3 Block Public Access, GitHub's OIDC provider, the snapshot signing key, the `touchline-infra-deploy` role, the boundary for publish roles, the monthly budget and its alerts |
+| [`main/`](main/) | The [Infra workflow](../.github/workflows/infra.yml) on merge to `main`, via `touchline-infra-deploy` | `touchline-data-<account>` bucket, `touchline-site-<account>` bucket and its CloudFront distribution, the `touchline-publish` and `touchline-publish-site` roles |
 
 The GitHub App that pushes season files to the data homes is set up by hand:
 [GITHUB_APP.md](GITHUB_APP.md).
@@ -26,10 +26,14 @@ The GitHub App that pushes season files to the data homes is set up by hand:
 - Both publish roles are capped by the `touchline-publish-boundary` policy, so
   a change to `main/` cannot widen them past it.
 - **`touchline-infra-deploy`** (jobs in the `infra` environment, on `main`):
-  manage the two buckets' configuration (not their objects), CloudFront, KMS
-  keys tagged `project=touchline`, and `touchline-publish*` roles that carry
-  the boundary. It cannot sign, attach managed policies, or touch itself, the
-  budget or the bootstrap state.
+  manage the two buckets' configuration, CloudFront, and `touchline-publish*`
+  roles that carry the boundary. An explicit deny keeps it out of both
+  buckets' objects, even through a bucket policy it writes. It can only read
+  the signing key's public half: no grants, key policy changes, new keys or
+  signing. It cannot attach managed policies, or touch itself, the budget,
+  account-wide Block Public Access or the bootstrap state.
+- **The signing key** lives in the bootstrap stack, so only Daniel's signed-in
+  CLI can change, disable or delete it.
 - Every trust policy matches the OIDC subject
   `repo:ed-insights-ai/keelson-rib-touchline:environment:<env>:ref:refs/heads/main`,
   so a pull request, another branch or another repo cannot assume them.

@@ -38,12 +38,6 @@ variable "genders" {
   default = ["men", "women"]
 }
 
-variable "signing_key_spec" {
-  description = "KMS key spec for snapshot signing. Must match the algorithm the desk's sign.ts verifies."
-  type        = string
-  default     = "ECC_NIST_P256"
-}
-
 variable "delta_retention_days" {
   type    = number
   default = 45

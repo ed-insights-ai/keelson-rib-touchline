@@ -2,12 +2,13 @@
 # The infra deploy role: GitHub Actions in the rib's `infra` environment, on
 # main only, runs Terraform for infra/main with it.
 #
-# It can manage the data and site buckets' configuration, the site's
-# CloudFront distribution and its policies, KMS keys tagged
-# project=touchline, and roles named touchline-publish*, and every role it
-# creates must carry the touchline-publish-boundary permissions boundary. It
-# cannot change itself, the OIDC provider, the budget or the bootstrap state,
-# so a change to this file needs Daniel's signed-in CLI again.
+# It can manage the data and site buckets' configuration (never their
+# objects), the site's CloudFront distribution and its policies, and roles
+# named touchline-publish*, each of which must carry the
+# touchline-publish-boundary permissions boundary. It can read the signing
+# key's metadata and public key, nothing more. It cannot change itself, the
+# OIDC provider, the signing key, the budget or the bootstrap state, so a
+# change to any of those needs Daniel's signed-in CLI again.
 #
 # The daily publish job does not use this role. It uses touchline-publish,
 # made by infra/main, which can only write data and sign.
@@ -17,7 +18,6 @@ locals {
   data_bucket     = "touchline-data-${local.account_id}"
   data_bucket_arn = "arn:aws:s3:::${local.data_bucket}"
   site_bucket_arn = "arn:aws:s3:::touchline-site-${local.account_id}"
-  kms_key_arns    = "arn:aws:kms:${var.region}:${local.account_id}:key/*"
   publish_role    = "arn:aws:iam::${local.account_id}:role/touchline-publish*"
   boundary_arn    = "arn:aws:iam::${local.account_id}:policy/touchline-publish-boundary"
 
@@ -98,38 +98,12 @@ data "aws_iam_policy_document" "infra_deploy" {
     resources = ["*"]
   }
 
+  # Look up the signing key and export its public key. No admin, grant,
+  # policy or signing actions.
   statement {
-    sid       = "KmsCreateTagged"
-    actions   = ["kms:CreateKey", "kms:TagResource"]
-    resources = ["*"]
-    condition {
-      test     = "StringEquals"
-      variable = "aws:RequestTag/project"
-      values   = ["touchline"]
-    }
-  }
-
-  statement {
-    sid       = "KmsManageTagged"
-    actions   = ["kms:*"]
-    resources = [local.kms_key_arns]
-    condition {
-      test     = "StringEquals"
-      variable = "aws:ResourceTag/project"
-      values   = ["touchline"]
-    }
-  }
-
-  statement {
-    sid       = "KmsAliases"
-    actions   = ["kms:CreateAlias", "kms:DeleteAlias", "kms:UpdateAlias"]
-    resources = ["arn:aws:kms:${var.region}:${local.account_id}:alias/touchline-*"]
-  }
-
-  statement {
-    sid       = "KmsList"
-    actions   = ["kms:ListAliases", "kms:ListKeys"]
-    resources = ["*"]
+    sid       = "KmsRead"
+    actions   = ["kms:DescribeKey", "kms:GetPublicKey"]
+    resources = [aws_kms_key.signing.arn]
   }
 
   # Publish roles: created only with the boundary attached.
@@ -165,13 +139,27 @@ data "aws_iam_policy_document" "infra_deploy" {
     resources = [local.publish_role]
   }
 
-  # The infra role may not sign snapshots, drop the boundary, or attach
-  # managed policies (AdministratorAccess) to anything.
+  # s3:* above includes PutBucketPolicy, so without this the role could write
+  # a bucket policy granting itself the archive. An explicit deny here wins
+  # over any bucket-policy allow.
+  statement {
+    sid       = "DenyBucketObjects"
+    effect    = "Deny"
+    actions   = ["s3:*"]
+    resources = ["${local.data_bucket_arn}/*", "${local.site_bucket_arn}/*"]
+  }
+
+  # The infra role may not sign, grant or re-policy KMS keys, drop the
+  # boundary, or attach managed policies (AdministratorAccess) to anything.
   statement {
     sid    = "DenyEscalation"
     effect = "Deny"
     actions = [
       "kms:Sign",
+      "kms:CreateGrant",
+      "kms:PutKeyPolicy",
+      "kms:CreateKey",
+      "s3:PutAccountPublicAccessBlock",
       "iam:DeleteRolePermissionsBoundary",
       "iam:AttachRolePolicy",
       "iam:CreatePolicy",
@@ -190,7 +178,7 @@ resource "aws_iam_role_policy" "infra_deploy" {
 # ---------------------------------------------------------------------------
 # The ceiling for every touchline-publish* role: read and write data objects
 # (no deletes), sync the site bucket and invalidate its distribution, sign
-# with Touchline keys. Inline policies infra/main writes on those roles can
+# with the snapshot key. Inline policies infra/main writes on those roles can
 # only narrow this, never widen it; each role gets only its own part.
 # ---------------------------------------------------------------------------
 
@@ -228,12 +216,7 @@ data "aws_iam_policy_document" "publish_boundary" {
   statement {
     sid       = "Sign"
     actions   = ["kms:Sign", "kms:GetPublicKey", "kms:DescribeKey"]
-    resources = [local.kms_key_arns]
-    condition {
-      test     = "StringEquals"
-      variable = "aws:ResourceTag/project"
-      values   = ["touchline"]
-    }
+    resources = [aws_kms_key.signing.arn]
   }
 }
 

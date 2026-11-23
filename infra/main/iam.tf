@@ -68,7 +68,7 @@ data "aws_iam_policy_document" "publish" {
   statement {
     sid       = "Sign"
     actions   = ["kms:Sign", "kms:GetPublicKey", "kms:DescribeKey"]
-    resources = [aws_kms_key.signing.arn]
+    resources = [data.aws_kms_key.signing.arn]
   }
 }
 

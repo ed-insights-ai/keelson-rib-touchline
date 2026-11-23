@@ -24,7 +24,9 @@ permissions:
   contents: read
 
 concurrency:
-  group: infra
+  # Per ref: main applies queue behind each other, and a pull request run can
+  # never take the pending slot of a main apply.
+  group: infra-${{ github.ref }}
   cancel-in-progress: false
 
 env:

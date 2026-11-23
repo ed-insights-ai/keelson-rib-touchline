@@ -90,6 +90,17 @@ resource "aws_s3_bucket_policy" "state" {
   })
 }
 
+# Account-wide Block Public Access, a backstop under the per-bucket blocks:
+# even if a bucket's own block were removed, nothing in the account could be
+# made public. The infra role cannot change this.
+resource "aws_s3_account_public_access_block" "account" {
+  count                   = var.block_account_public_access ? 1 : 0
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
 # ---------------------------------------------------------------------------
 # GitHub Actions OIDC provider. AWS validates GitHub's certificate itself, so
 # no thumbprint is pinned.

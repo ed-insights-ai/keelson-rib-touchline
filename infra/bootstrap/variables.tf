@@ -44,3 +44,15 @@ variable "budget_second_alert_usd" {
   type        = number
   default     = 10
 }
+
+variable "signing_key_spec" {
+  description = "KMS key spec for snapshot signing. Must match the algorithm the desk's sign.ts verifies. Changing it replaces the key."
+  type        = string
+  default     = "ECC_NIST_P256"
+}
+
+variable "block_account_public_access" {
+  description = "Turn on S3 Block Public Access for the whole account. Set false only if this account already serves something public straight from S3."
+  type        = bool
+  default     = true
+}

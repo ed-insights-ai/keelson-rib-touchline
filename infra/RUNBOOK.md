@@ -32,24 +32,37 @@ echo $AWS_ACCOUNT_ID
 
 Check the account id is the one you mean to use.
 
-## 2. Check for an existing GitHub OIDC provider
+## 2. Check what the account already has
 
 ```bash
 aws iam list-open-id-connect-providers
+aws s3api list-buckets --query 'Buckets[].Name'
 ```
 
-If the list includes `token.actions.githubusercontent.com`, add
-`-var="create_oidc_provider=false"` to both `terraform` commands in step 4
-(an account can hold only one).
+- If the first list includes `token.actions.githubusercontent.com`, the
+  account already has GitHub's OIDC provider (an account can hold only one).
+- If the account serves anything public straight from S3 (a website bucket,
+  public downloads), account-wide Block Public Access would break it. A fresh
+  Touchline account has nothing like that.
 
-## 3. Check out the branch
+## 3. Check out the branch and write your settings
 
 ```bash
 cd ~/source/edinsights/keelson-rib-touchline
 git fetch origin infra/aws-foundation
 git switch infra/aws-foundation
 cd infra/bootstrap
+
+cat > terraform.tfvars <<'TFVARS'
+budget_email = "YOUR_EMAIL"
+# create_oidc_provider        = false   # uncomment if step 2 found the provider
+# block_account_public_access = false   # uncomment if step 2 found public S3 use
+TFVARS
 ```
+
+`terraform.tfvars` is loaded automatically by every command below and is
+gitignored, so your email stays off GitHub. Keep the file: any later
+bootstrap change needs it.
 
 ## 4. First apply, with local state
 
@@ -58,14 +71,16 @@ This stack creates the state bucket, so the first run keeps state locally.
 ```bash
 printf 'terraform {\n  backend "local" {}\n}\n' > backend_override.tf
 terraform init
-terraform plan  -var="budget_email=YOUR_EMAIL" -out=tfplan
+terraform plan -out=tfplan
 terraform apply tfplan
 ```
 
-The plan should add **12** resources (11 with `create_oidc_provider=false`)
-and change or destroy nothing: the state bucket and its six settings, the OIDC
-provider, the budget, the `touchline-infra-deploy` role and its policy, and
-the `touchline-publish-boundary` policy.
+The plan should add **15** resources and change or destroy nothing: the state
+bucket and its six settings, account-wide Block Public Access, the OIDC
+provider, the snapshot signing key and its alias, the budget, the
+`touchline-infra-deploy` role and its policy, and the
+`touchline-publish-boundary` policy. Each line you uncommented in
+`terraform.tfvars` removes one.
 
 ## 5. Move the state into the bucket
 
@@ -73,7 +88,7 @@ the `touchline-publish-boundary` policy.
 rm backend_override.tf tfplan
 terraform init -migrate-state -backend-config="bucket=touchline-tfstate-$AWS_ACCOUNT_ID"
 # answer "yes" to copy the state
-terraform plan -var="budget_email=YOUR_EMAIL"    # must say: No changes.
+terraform plan       # must say: No changes.
 rm -f terraform.tfstate terraform.tfstate.backup
 ```
 
@@ -142,6 +157,9 @@ workflow) pick up from here.
 
 ## If something goes wrong
 
+- **The signing key** is permanent: it has `prevent_destroy`, and only this
+  bootstrap stack can change it. Changing `signing_key_spec` later means a new
+  key and re-signing, so settle the algorithm with the desk's `sign.ts` first.
 - **Step 4 fails part way:** fix the cause and run `terraform apply` again; it
   continues from the local state. Do not delete `terraform.tfstate`.
 - **Bucket name taken:** names include the account id, so this means the
