@@ -53,6 +53,9 @@ jobs:
       - uses: actions/checkout@v4
         if: steps.configured.outputs.ok == 'true'
         with:
+          # Current main, not the event's commit: a re-run of an older run
+          # must not roll the shared copy back.
+          ref: main
           path: rib
       - name: Token for touchline-contracts
         if: steps.configured.outputs.ok == 'true'
@@ -81,18 +84,19 @@ jobs:
         if: steps.configured.outputs.ok == 'true' && steps.token.outcome == 'success'
         run: |
           set -euo pipefail
+          src=$(git -C rib rev-parse HEAD)
           rsync -a --delete rib/contracts/ contracts-repo/contracts/
           rsync -a --delete rib/samples/ contracts-repo/samples/
           cd contracts-repo
           python3 -I scripts/check.py
           git add -A contracts samples
           if git diff --cached --quiet; then
-            echo "touchline-contracts already matches ${GITHUB_SHA::7}"
+            echo "touchline-contracts already matches ${src::7}"
             exit 0
           fi
           git -c user.name="touchline-publisher[bot]" \
               -c user.email="touchline-publisher[bot]@users.noreply.github.com" \
-              commit -q -m "Sync from keelson-rib-touchline ${GITHUB_SHA::7}" \
-              -m "https://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"
+              commit -q -m "Sync from keelson-rib-touchline ${src::7}" \
+              -m "https://github.com/${GITHUB_REPOSITORY}/commit/${src}"
           git push -q origin HEAD:main
-          echo "touchline-contracts updated from ${GITHUB_SHA::7}"
+          echo "touchline-contracts updated from ${src::7}"
