@@ -22,6 +22,13 @@ has a women's companion, cut from GAC women 2026 in the D2 home and trimmed
 to a couple of rows; the contract is the union of the fixture and its
 companion (`Contract.companions` in `pipeline/src/contracts.py`).
 
+## Where readers get them
+
+This folder and `samples/` are copied to the private
+`ed-insights-ai/touchline-contracts` repo on every merge to main
+(`.github/workflows/publish-contracts.yml`). The site and the desk read that
+copy; change the fixtures here, never there.
+
 ## The rule
 
 A writer may not emit a shape its fixture does not carry. On this side

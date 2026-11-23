@@ -50,9 +50,13 @@ has a `data/sample.json` (a full home has none, so every configured conference
 stays required there):
 
 ```bash
-TOUCHLINE_DATA_DIR=<this repo>/samples/d2-soccer bun run build
-TOUCHLINE_NCAA_DIVISION=d1 TOUCHLINE_DATA_DIR=<this repo>/samples/d1-soccer bun run build
+TOUCHLINE_DATA_DIR=../touchline-contracts/samples/d2-soccer bun run build
+TOUCHLINE_NCAA_DIVISION=d1 TOUCHLINE_DATA_DIR=../touchline-contracts/samples/d1-soccer bun run build
 ```
 
-These homes move to the public `touchline-contracts` repo, beside the contract
-fixtures in `contracts/`, once that repo exists.
+## Published copy
+
+This folder and `contracts/` are copied to the private
+`ed-insights-ai/touchline-contracts` repo on every merge to main
+(`.github/workflows/publish-contracts.yml`). Readers clone that repo; this one
+stays the source, so re-cut here and never edit the copy.
