@@ -108,11 +108,29 @@ def _figures(record=RECORD, players=(PLAYER, KEEPER), programmes=True) -> dict:
     }
 
 
-def _desk(team_rows=(TEAM_ROW,), player_rows=PLAYER_ROWS) -> dict:
+def _desk(team_rows=(TEAM_ROW,), player_rows=PLAYER_ROWS, extra_rows=()) -> dict:
     return {
-        "schema": "touchline.desk-figures/1",
-        "rows": [*map(dict, team_rows), *map(dict, player_rows)],
+        "schema": "touchline.desk-figures/2",
+        "rows": [
+            *map(dict, team_rows),
+            *map(dict, player_rows),
+            *map(dict, extra_rows),
+        ],
     }
+
+
+EXTRA = {
+    "kind": "extra",
+    "division": "d2",
+    "gender": "men",
+    "season": 2026,
+    "team": "rogers-state",
+    "goals_for": 2,
+    "goals_against": 1,
+    "date": "2026-08-20",
+    "opponent": "newman",
+    "why": "not on its own schedule",
+}
 
 
 def _run(tmp_path: Path, desk: dict, *figures: dict) -> int:
@@ -182,3 +200,17 @@ def test_a_document_of_the_wrong_schema_is_refused(tmp_path: Path, which: str) -
     (desk if which == "desk" else figures)["schema"] = "something/1"
     with pytest.raises(SystemExit):
         _run(tmp_path, desk, figures)
+
+
+def test_games_beyond_the_team_page_are_reported_not_gated(
+    tmp_path: Path, capsys
+) -> None:
+    unlisted = {**EXTRA, "team": "someone-else"}
+    assert _run(tmp_path, _desk(extra_rows=(EXTRA, unlisted)), _figures()) == 0
+    out = capsys.readouterr().out
+    assert "Every program's record, goals and games agree." in out
+    assert "1 game(s) the desk counts that the team pages leave out" in out
+    assert (
+        "Rogers State (rogers-state) 2026-08-20 v newman 2-1: not on its own schedule"
+        in out
+    )
