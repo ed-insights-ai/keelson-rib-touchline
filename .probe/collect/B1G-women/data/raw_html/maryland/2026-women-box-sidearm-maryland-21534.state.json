@@ -1,0 +1,1287 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://umterps.com/sports/womens-soccer/stats/2026/old-dominion/boxscore/21534",
+  "final_url": "https://umterps.com/sports/womens-soccer/stats/2026/old-dominion/boxscore/21534",
+  "etag": null,
+  "last_modified": null,
+  "signature": "b81cb83f1aad5b8ff90ed0687c9bf11800783b93faeb8f12ccfc33df101e2203",
+  "fingerprint": "d8f1bf8ea31d661e9e4cc184c57ac1763f9e976cc6d1ab5b208085e64bb8693c",
+  "fetched_at": "2026-11-23T10:25:48+00:00",
+  "verified_at": "2026-11-23T10:25:48+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://umterps.com/sports/womens-soccer/stats/2026/old-dominion/boxscore/21534",
+    "teams": [
+      {
+        "name": "Old Dominion",
+        "abbr": "ODU",
+        "score": 2,
+        "periods": [
+          1,
+          1
+        ],
+        "winner": true,
+        "shots": 6,
+        "saves": 2,
+        "corners": 5,
+        "fouls": 10,
+        "offsides": 0,
+        "sog": 5,
+        "players": [
+          {
+            "name": "Emily Earles",
+            "position": "GK",
+            "number": "1",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Grace Hillis",
+            "position": "DEF",
+            "number": "3",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 57
+          },
+          {
+            "name": "Sydney Somers",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 54
+          },
+          {
+            "name": "Dylan McEntarfer",
+            "position": "DEF",
+            "number": "5",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 90
+          },
+          {
+            "name": "Katie Lutz",
+            "position": "MID",
+            "number": "7",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 76
+          },
+          {
+            "name": "Riley Mullen",
+            "position": "MID",
+            "number": "8",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 42
+          },
+          {
+            "name": "Ally Richardson",
+            "number": "9",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 59
+          },
+          {
+            "name": "Ashlynn Kulha",
+            "position": "DEF",
+            "number": "14",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Laura Klebek",
+            "position": "MID",
+            "number": "16",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 66
+          },
+          {
+            "name": "Hannah Morgan",
+            "position": "FWD",
+            "number": "19",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 33
+          },
+          {
+            "name": "Madison Telmer",
+            "position": "MID",
+            "number": "26",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Libby Holmes",
+            "position": "DEF",
+            "number": "6",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 47
+          },
+          {
+            "name": "Brooke Edwards",
+            "position": "FWD",
+            "number": "11",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 48
+          },
+          {
+            "name": "Ashley Economopoulos",
+            "position": "FWD",
+            "number": "18",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 36
+          },
+          {
+            "name": "Reese Kulha",
+            "position": "FWD",
+            "number": "24",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 51
+          },
+          {
+            "name": "Emerson Kline",
+            "position": "FWD",
+            "number": "25",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 31
+          },
+          {
+            "name": "Alaina Subong",
+            "position": "DEF",
+            "number": "29",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 6
+          },
+          {
+            "name": "Molly Flammia",
+            "position": "MID",
+            "number": "33",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 24
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Emily Earles",
+            "position": "GK",
+            "number": "1",
+            "minutes": 90,
+            "goals_against": 0,
+            "saves": 2
+          }
+        ]
+      },
+      {
+        "name": "Maryland",
+        "abbr": "UMD",
+        "score": 0,
+        "periods": [
+          0,
+          0
+        ],
+        "shots": 11,
+        "saves": 3,
+        "corners": 5,
+        "fouls": 4,
+        "offsides": 0,
+        "sog": 2,
+        "players": [
+          {
+            "name": "Faith Luckey",
+            "player_id": "16139",
+            "position": "GK",
+            "number": "7",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Mia Mitchell",
+            "player_id": "16141",
+            "number": "5",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 79
+          },
+          {
+            "name": "Ary Oliver",
+            "player_id": "16145",
+            "position": "MID",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 59
+          },
+          {
+            "name": "Ella Petry",
+            "player_id": "16150",
+            "position": "MID",
+            "number": "13",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 60
+          },
+          {
+            "name": "McKinley Heaven",
+            "player_id": "16137",
+            "position": "FWD",
+            "number": "15",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 69
+          },
+          {
+            "name": "Lillian Bane",
+            "player_id": "16147",
+            "position": "MID",
+            "number": "21",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 35
+          },
+          {
+            "name": "Lisa McIntyre",
+            "player_id": "16108",
+            "number": "22",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 52
+          },
+          {
+            "name": "Kamryn Cole",
+            "player_id": "16155",
+            "position": "MID",
+            "number": "24",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 66
+          },
+          {
+            "name": "Ella Bulava",
+            "player_id": "16114",
+            "number": "28",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 84
+          },
+          {
+            "name": "Taryn Raibon",
+            "player_id": "16126",
+            "position": "DEF",
+            "number": "32",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 15
+          },
+          {
+            "name": "Dani Gichner",
+            "player_id": "16135",
+            "number": "99",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 72
+          },
+          {
+            "name": "Ava Paolini",
+            "player_id": "16144",
+            "position": "DEF",
+            "number": "2",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 63
+          },
+          {
+            "name": "Peyton Bernard",
+            "player_id": "16129",
+            "position": "FWD",
+            "number": "3",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 41
+          },
+          {
+            "name": "Paige Foye",
+            "player_id": "16149",
+            "position": "DEF",
+            "number": "4",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 29
+          },
+          {
+            "name": "Emily Lenhard",
+            "player_id": "16122",
+            "position": "MID",
+            "number": "8",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 46
+          },
+          {
+            "name": "Jolie Farmer",
+            "player_id": "16146",
+            "position": "FWD",
+            "number": "9",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 34
+          },
+          {
+            "name": "Greyson Tischer",
+            "player_id": "16152",
+            "position": "MID",
+            "number": "17",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 6
+          },
+          {
+            "name": "Gemma Davitian",
+            "player_id": "16100",
+            "position": "FWD",
+            "number": "20",
+            "started": false,
+            "shots": 3,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 13
+          },
+          {
+            "name": "Morgan Shannon",
+            "player_id": "16154",
+            "position": "DEF",
+            "number": "23",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 18
+          },
+          {
+            "name": "Abigail Stager",
+            "player_id": "16148",
+            "position": "FWD",
+            "number": "25",
+            "started": false,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 52
+          },
+          {
+            "name": "Sam Winer",
+            "player_id": "16143",
+            "position": "DEF",
+            "number": "29",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 7
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Faith Luckey",
+            "player_id": "16139",
+            "position": "GK",
+            "number": "7",
+            "minutes": 90,
+            "goals_against": 2,
+            "saves": 3
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "19:14",
+        "team": 0,
+        "scorer": "Madison Telmer",
+        "season_total": 2,
+        "assist": "Riley Mullen",
+        "description": "GOAL by ODU Telmer, Madison Assist by Mullen, Riley."
+      },
+      {
+        "time": "50:58",
+        "team": 0,
+        "scorer": "Hannah Morgan",
+        "season_total": 3,
+        "assist": "Katie Lutz , Dylan McEntarfer",
+        "description": "GOAL by ODU Morgan, Hannah Assist by Lutz, Katie and McEntarfer, Dylan."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Ella Petry",
+        "number": "13",
+        "time": "14:45",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Emerson Kline",
+        "number": "25",
+        "time": "39:25",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Laura Klebek",
+        "number": "16",
+        "time": "54:49",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Dani Gichner",
+        "number": "99",
+        "time": "70:19",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Ella Bulava",
+        "number": "28",
+        "time": "70:54",
+        "team": 1
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Luckey, Faith at goalie for Maryland",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Earles, Emily at goalie for Old Dominion",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Foul on McEntarfer, Dylan.",
+        "clock": "00:49",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [02:22].",
+        "clock": "02:22",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [06:57].",
+        "clock": "06:57",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [08:57].",
+        "clock": "08:57",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by ODU Morgan, Hannah, out left.",
+        "clock": "09:28",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on McEntarfer, Dylan.",
+        "clock": "10:35",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Kulha, Ashlynn.",
+        "clock": "11:47",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [13:52].",
+        "clock": "13:52",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on UMD Petry, Ella.",
+        "clock": "14:45",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Paolini, Ava for Raibon, Taryn.",
+        "clock": "14:58",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Bane, Lillian.",
+        "clock": "15:22",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [16:36].",
+        "clock": "16:36",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by ODU Telmer, Madison Assist by Mullen, Riley.",
+        "clock": "19:14",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          1,
+          0
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Foul on Oliver, Ary.",
+        "clock": "21:12",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Petry, Ella, out top left.",
+        "clock": "23:47",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Lutz, Katie.",
+        "clock": "25:11",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Lenhard, Emily for Bane, Lillian.",
+        "clock": "27:30",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Stager, Abigail for McIntyre, Lisa.",
+        "clock": "27:30",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Bernard, Peyton for Cole, Kamryn.",
+        "clock": "27:30",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "ODU substitution: Economopoulos, Ashley for Somers, Sydney.",
+        "clock": "27:30",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Stager, Abigail, out right.",
+        "clock": "28:43",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "ODU substitution: Kulha, Reese for Hillis, Grace.",
+        "clock": "30:27",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "ODU substitution: Holmes, Libby for Morgan, Hannah.",
+        "clock": "30:27",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Petry, Ella, out top.",
+        "clock": "30:42",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Gichner, Dani.",
+        "clock": "32:00",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "ODU substitution: Kline, Emerson for Richardson, Ally.",
+        "clock": "32:48",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Davitian, Gemma for Bernard, Peyton.",
+        "clock": "33:07",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Davitian, Gemma, out top right.",
+        "clock": "33:57",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Bernard, Peyton for Davitian, Gemma.",
+        "clock": "34:32",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "ODU substitution: Edwards, Brooke for Mullen, Riley.",
+        "clock": "34:32",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Stager, Abigail.",
+        "clock": "36:06",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Holmes, Libby.",
+        "clock": "37:29",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Tischer, Greyson for Oliver, Ary.",
+        "clock": "38:01",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Davitian, Gemma for Petry, Ella.",
+        "clock": "39:14",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "ODU substitution: Flammia, Molly for Klebek, Laura.",
+        "clock": "39:14",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Kline, Emerson.",
+        "clock": "39:18",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on ODU Kline, Emerson.",
+        "clock": "39:25",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Davitian, Gemma, bottom center, saved by Earles, Emily.",
+        "clock": "39:37",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by ODU Kulha, Reese, bottom left, saved by Luckey, Faith.",
+        "clock": "40:38",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Davitian, Gemma.",
+        "clock": "41:25",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Heaven, Mckinley, bottom left, saved by Earles, Emily.",
+        "clock": "41:45",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [42:02].",
+        "clock": "42:02",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Kline, Emerson.",
+        "clock": "43:45",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Lenhard, Emily.",
+        "clock": "44:24",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "1",
+        "text": "ODU substitution: Hillis, Grace for Edwards, Brooke.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "ODU substitution: Somers, Sydney for Economopoulos, Ashley.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "ODU substitution: Morgan, Hannah for Holmes, Libby.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "ODU substitution: Klebek, Laura for Kline, Emerson.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "ODU substitution: Mullen, Riley for Flammia, Molly.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "ODU substitution: Richardson, Ally for Kulha, Reese.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR ODU: , #1 Earles, Emily, #9 Richardson, Ally, #4 Somers, Sydney, #5 McEntarfer, Dylan, #7 Lutz, Katie, #3 Hillis, Grace, #16 Klebek, Laura, #14 Kulha, Ashlynn, #8 Mullen, Riley, #19 Morgan, Hannah, #26 Telmer, Madison.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR UMD: , #7 Luckey, Faith, #5 Mitchell, Mia, #6 Oliver, Ary, #13 Petry, Ella, #15 Heaven, Mckinley, #8 Lenhard, Emily, #24 Cole, Kamryn, #22 McIntyre, Lisa, #28 Bulava, Ella, #2 Paolini, Ava, #99 Gichner, Dani.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Oliver, Ary for Tischer, Greyson.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Petry, Ella for Davitian, Gemma.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Cole, Kamryn for Stager, Abigail.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: McIntyre, Lisa for Bernard, Peyton.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Farmer, Jolie for Lenhard, Emily.",
+        "clock": "48:45",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by ODU Morgan, Hannah Assist by Lutz, Katie and McEntarfer, Dylan.",
+        "clock": "50:58",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          2,
+          0
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Foul on Klebek, Laura.",
+        "clock": "54:46",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on ODU Klebek, Laura.",
+        "clock": "54:49",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Stager, Abigail for Heaven, Mckinley.",
+        "clock": "55:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [58:03].",
+        "clock": "58:03",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Foye, Paige for Mitchell, Mia.",
+        "clock": "60:57",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "ODU substitution: Hillis, Grace for Kulha, Reese.",
+        "clock": "63:43",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "ODU substitution: Somers, Sydney for Economopoulos, Ashley.",
+        "clock": "63:43",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "ODU substitution: Mullen, Riley for Edwards, Brooke.",
+        "clock": "63:43",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "ODU substitution: Richardson, Ally for Kline, Emerson.",
+        "clock": "63:43",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "ODU substitution: Klebek, Laura for Flammia, Molly.",
+        "clock": "63:43",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "ODU substitution: Morgan, Hannah for Holmes, Libby.",
+        "clock": "63:43",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by ODU Mullen, Riley, bottom left, saved by Luckey, Faith.",
+        "clock": "63:54",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Bernard, Peyton for Oliver, Ary.",
+        "clock": "64:33",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Lenhard, Emily for Petry, Ella.",
+        "clock": "64:33",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Shannon, Morgan for Bulava, Ella.",
+        "clock": "64:33",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "ODU substitution: Kulha, Reese for Morgan, Hannah.",
+        "clock": "65:34",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Heaven, Mckinley for McIntyre, Lisa.",
+        "clock": "69:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [69:03].",
+        "clock": "69:03",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Bulava, Ella for Paolini, Ava.",
+        "clock": "70:16",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "ODU substitution: Edwards, Brooke for Mullen, Riley.",
+        "clock": "70:19",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on UMD Gichner, Dani.",
+        "clock": "70:19",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Bulava, Ella.",
+        "clock": "70:19",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on UMD Bulava, Ella.",
+        "clock": "70:54",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Mitchell, Mia for Gichner, Dani.",
+        "clock": "71:39",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UMD Heaven, Mckinley, out top.",
+        "clock": "72:10",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "ODU substitution: Holmes, Libby for Lutz, Katie.",
+        "clock": "75:06",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Edwards, Brooke.",
+        "clock": "76:44",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [77:21].",
+        "clock": "77:21",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [77:58].",
+        "clock": "77:58",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Paolini, Ava for Cole, Kamryn.",
+        "clock": "82:13",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Winer, Sam for Heaven, Mckinley.",
+        "clock": "82:13",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Bane, Lillian for Shannon, Morgan.",
+        "clock": "82:13",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Davitian, Gemma for Farmer, Jolie.",
+        "clock": "82:34",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "ODU substitution: Subong, Alaina for Kulha, Reese.",
+        "clock": "83:20",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by ODU Subong, Alaina, bottom center, saved by Luckey, Faith.",
+        "clock": "84:38",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UMD Stager, Abigail, out right.",
+        "clock": "88:52",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "type": "period"
+      }
+    ],
+    "stadium": "Ludwig Field",
+    "attendance": 1001,
+    "kickoff": "07:00",
+    "officials": [
+      "Referee: Matt Stein",
+      "Asst. Referee: Jason Blight",
+      "Asst. Referee: Mike Rytina",
+      "Alt. Official: Malik Oudghiri"
+    ],
+    "home_index": 1
+  }
+}

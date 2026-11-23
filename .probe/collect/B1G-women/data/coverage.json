@@ -1,0 +1,49 @@
+{
+  "cells": {
+    "2026/women/maryland/matches": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-11-23T10:25:39+00:00",
+      "count": 18,
+      "gender": "women",
+      "layer": "matches",
+      "programme": "maryland",
+      "season": 2026,
+      "state": "complete"
+    },
+    "2026/women/maryland/roster": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-11-23T10:25:39+00:00",
+      "count": 28,
+      "gender": "women",
+      "layer": "roster",
+      "programme": "maryland",
+      "season": 2026,
+      "source_url": "https://umterps.com/sports/womens-soccer/roster/2026",
+      "state": "complete"
+    },
+    "2026/women/maryland/schedule": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-11-23T10:25:39+00:00",
+      "count": 18,
+      "gender": "women",
+      "layer": "schedule",
+      "programme": "maryland",
+      "season": 2026,
+      "source_url": "https://umterps.com/sports/womens-soccer/schedule",
+      "state": "complete"
+    },
+    "2026/women/maryland/stats": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-11-23T10:25:39+00:00",
+      "count": 27,
+      "gender": "women",
+      "layer": "stats",
+      "programme": "maryland",
+      "season": 2026,
+      "source_url": "https://umterps.com/sports/womens-soccer/stats/2026",
+      "state": "complete"
+    }
+  },
+  "schema": "touchline.coverage/1",
+  "updated_at": "2026-11-23T10:26:01+00:00"
+}

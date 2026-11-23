@@ -1,0 +1,1288 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://umterps.com/sports/womens-soccer/stats/2026/-12-ucla/boxscore/21540",
+  "final_url": "https://umterps.com/sports/womens-soccer/stats/2026/-12-ucla/boxscore/21540",
+  "etag": null,
+  "last_modified": null,
+  "signature": "dd39cf4ded0a472d456b0135da3b70a211b98e4e035ac79c30cace272a93378a",
+  "fingerprint": "d8f1bf8ea31d661e9e4cc184c57ac1763f9e976cc6d1ab5b208085e64bb8693c",
+  "fetched_at": "2026-11-23T10:25:54+00:00",
+  "verified_at": "2026-11-23T10:25:54+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://umterps.com/sports/womens-soccer/stats/2026/-12-ucla/boxscore/21540",
+    "teams": [
+      {
+        "name": "UCLA",
+        "abbr": "UCL",
+        "score": 2,
+        "periods": [
+          0,
+          2
+        ],
+        "winner": true,
+        "shots": 21,
+        "saves": 4,
+        "corners": 6,
+        "fouls": 7,
+        "offsides": 0,
+        "sog": 8,
+        "players": [
+          {
+            "name": "Daphne Nakfoor",
+            "position": "GK",
+            "number": "1",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Samantha Sanchez",
+            "position": "FWD",
+            "number": "4",
+            "started": true,
+            "shots": 3,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 64
+          },
+          {
+            "name": "Asa Yamazaki",
+            "position": "MID",
+            "number": "5",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Grace Shank",
+            "position": "MID",
+            "number": "6",
+            "started": true,
+            "shots": 5,
+            "sog": 2,
+            "goals": 0,
+            "assists": 2,
+            "minutes": 87
+          },
+          {
+            "name": "Paloma Daubert",
+            "position": "DEF",
+            "number": "7",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Cate Sarinopoulos",
+            "position": "MID",
+            "number": "14",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 43
+          },
+          {
+            "name": "Leena Powell",
+            "position": "FWD",
+            "number": "16",
+            "started": true,
+            "shots": 4,
+            "sog": 2,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 89
+          },
+          {
+            "name": "Oruha Hayashi",
+            "position": "FWD",
+            "number": "19",
+            "started": true,
+            "shots": 5,
+            "sog": 2,
+            "goals": 2,
+            "assists": 0,
+            "minutes": 78
+          },
+          {
+            "name": "Kara Croone",
+            "position": "FWD",
+            "number": "23",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 63
+          },
+          {
+            "name": "Payten Cooper",
+            "position": "FWD",
+            "number": "24",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 67
+          },
+          {
+            "name": "Anna Wilson",
+            "position": "DEF",
+            "number": "28",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 81
+          },
+          {
+            "name": "Ava Priest",
+            "position": "MID",
+            "number": "2",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 15
+          },
+          {
+            "name": "Laila Edris",
+            "position": "MID",
+            "number": "3",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 34
+          },
+          {
+            "name": "Olivia Woodson",
+            "position": "FWD",
+            "number": "22",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 39
+          },
+          {
+            "name": "Fiona McGeough",
+            "position": "MID",
+            "number": "26",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 13
+          },
+          {
+            "name": "Molly Hale",
+            "position": "DEF",
+            "number": "27",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 46
+          },
+          {
+            "name": "Bela Araujo",
+            "position": "DEF",
+            "number": "33",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 1
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Daphne Nakfoor",
+            "position": "GK",
+            "number": "1",
+            "minutes": 90,
+            "goals_against": 0,
+            "saves": 4
+          }
+        ]
+      },
+      {
+        "name": "Maryland",
+        "abbr": "UMD",
+        "score": 0,
+        "periods": [
+          0,
+          0
+        ],
+        "shots": 9,
+        "saves": 6,
+        "corners": 1,
+        "fouls": 7,
+        "offsides": 4,
+        "sog": 4,
+        "players": [
+          {
+            "name": "Faith Luckey",
+            "player_id": "16139",
+            "position": "GK",
+            "number": "7",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Peyton Bernard",
+            "player_id": "16129",
+            "position": "FWD",
+            "number": "3",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 51
+          },
+          {
+            "name": "Paige Foye",
+            "player_id": "16149",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 70
+          },
+          {
+            "name": "Ary Oliver",
+            "player_id": "16145",
+            "position": "MID",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 51
+          },
+          {
+            "name": "Jolie Farmer",
+            "player_id": "16146",
+            "position": "FWD",
+            "number": "9",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 68
+          },
+          {
+            "name": "McKinley Heaven",
+            "player_id": "16137",
+            "position": "FWD",
+            "number": "15",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 80
+          },
+          {
+            "name": "Lisa McIntyre",
+            "player_id": "16108",
+            "number": "22",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 71
+          },
+          {
+            "name": "Kamryn Cole",
+            "player_id": "16155",
+            "position": "MID",
+            "number": "24",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 71
+          },
+          {
+            "name": "Ella Bulava",
+            "player_id": "16114",
+            "number": "28",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Taryn Raibon",
+            "player_id": "16126",
+            "position": "DEF",
+            "number": "32",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 62
+          },
+          {
+            "name": "Dani Gichner",
+            "player_id": "16135",
+            "number": "99",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Ava Paolini",
+            "player_id": "16144",
+            "position": "DEF",
+            "number": "2",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 19
+          },
+          {
+            "name": "Mia Mitchell",
+            "player_id": "16141",
+            "number": "5",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 29
+          },
+          {
+            "name": "Emily Lenhard",
+            "player_id": "16122",
+            "position": "MID",
+            "number": "8",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 5
+          },
+          {
+            "name": "Ella Petry",
+            "player_id": "16150",
+            "position": "MID",
+            "number": "13",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 10
+          },
+          {
+            "name": "Gemma Davitian",
+            "player_id": "16100",
+            "position": "FWD",
+            "number": "20",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 19
+          },
+          {
+            "name": "Lillian Bane",
+            "player_id": "16147",
+            "position": "MID",
+            "number": "21",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 36
+          },
+          {
+            "name": "Abigail Stager",
+            "player_id": "16148",
+            "position": "FWD",
+            "number": "25",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 36
+          },
+          {
+            "name": "Ellie Egeland",
+            "player_id": "16133",
+            "position": "MID",
+            "number": "47",
+            "started": false,
+            "shots": 3,
+            "sog": 2,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 22
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Faith Luckey",
+            "player_id": "16139",
+            "position": "GK",
+            "number": "7",
+            "minutes": 90,
+            "goals_against": 2,
+            "saves": 6
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "74:22",
+        "team": 0,
+        "scorer": "Oruha Hayashi",
+        "season_total": 4,
+        "assist": "Anna Wilson , Grace Shank",
+        "description": "GOAL by UCL Hayashi, Oruha Assist by Wilson, Anna and Shank, Grace."
+      },
+      {
+        "time": "86:02",
+        "team": 0,
+        "scorer": "Oruha Hayashi",
+        "season_total": 4,
+        "assist": "Grace Shank , Molly Hale",
+        "description": "GOAL by UCL Hayashi, Oruha Assist by Shank, Grace and Hale, Molly."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Paige Foye",
+        "number": "4",
+        "time": "40:32",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Dani Gichner",
+        "number": "99",
+        "time": "49:02",
+        "team": 1
+      },
+      {
+        "type": "red",
+        "player": "Paige Foye",
+        "number": "4",
+        "time": "69:39",
+        "team": 1
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Luckey, Faith at goalie for Maryland",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Nakfoor, Daphne at goalie for UCLA",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Bulava, Ella.",
+        "clock": "03:16",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [03:55].",
+        "clock": "03:55",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Maryland.",
+        "clock": "05:14",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Maryland.",
+        "clock": "07:13",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Powell, Leena.",
+        "clock": "08:04",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Cooper, Payten.",
+        "clock": "15:08",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [16:14].",
+        "clock": "16:14",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UCL Sanchez, Samantha, out top.",
+        "clock": "16:46",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UCL Sanchez, Samantha, bottom center, saved by Luckey, Faith.",
+        "clock": "17:54",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Sarinopoulos, Cate.",
+        "clock": "19:40",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Gichner, Dani, out left.",
+        "clock": "20:17",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Bernard, Peyton.",
+        "clock": "24:23",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [24:29].",
+        "clock": "24:29",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Maryland.",
+        "clock": "25:05",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UCL Cooper, Payten.",
+        "clock": "27:10",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UCL Shank, Grace, out top.",
+        "clock": "30:31",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Stager, Abigail for Bernard, Peyton.",
+        "clock": "31:39",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Bane, Lillian for Oliver, Ary.",
+        "clock": "31:39",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Egeland, Ellie for Farmer, Jolie.",
+        "clock": "31:39",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UCL substitution: Woodson, Olivia for Sarinopoulos, Cate.",
+        "clock": "31:39",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UCL substitution: Hale, Molly for Croone, Kara.",
+        "clock": "31:39",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UCL substitution: McGeough, Fiona for Hayashi, Oruha.",
+        "clock": "32:18",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UCL substitution: Priest, Ava for Cooper, Payten.",
+        "clock": "32:51",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Paolini, Ava for Heaven, Mckinley.",
+        "clock": "34:03",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Davitian, Gemma for McIntyre, Lisa.",
+        "clock": "34:03",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Petry, Ella for Raibon, Taryn.",
+        "clock": "34:03",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UCL Powell, Leena, bottom center, saved by Luckey, Faith.",
+        "clock": "34:58",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "UCL substitution: Edris, Laila for Wilson, Anna.",
+        "clock": "35:45",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Cole, Kamryn.",
+        "clock": "36:06",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Hale, Molly.",
+        "clock": "36:32",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Cole, Kamryn.",
+        "clock": "37:22",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Petry, Ella, top, saved by Nakfoor, Daphne.",
+        "clock": "38:40",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Lenhard, Emily for Cole, Kamryn.",
+        "clock": "39:10",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on UMD Foye, Paige.",
+        "clock": "40:32",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UCL Sanchez, Samantha, out top.",
+        "clock": "40:44",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [42:19].",
+        "clock": "42:19",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Priest, Ava.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR UCL: , #1 Nakfoor, Daphne, #4 Sanchez, Samantha, #5 Yamazaki, Asa, #6 Shank, Grace, #7 Daubert, Paloma, #19 Hayashi, Oruha, #16 Powell, Leena, #23 Croone, Kara, #27 Hale, Molly, #24 Cooper, Payten, #28 Wilson, Anna.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR UMD: , #7 Luckey, Faith, #3 Bernard, Peyton, #4 Foye, Paige, #6 Oliver, Ary, #9 Farmer, Jolie, #15 Heaven, Mckinley, #22 McIntyre, Lisa, #24 Cole, Kamryn, #28 Bulava, Ella, #32 Raibon, Taryn, #99 Gichner, Dani.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Bernard, Peyton for Stager, Abigail.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Oliver, Ary for Bane, Lillian.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Farmer, Jolie for Egeland, Ellie.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Heaven, Mckinley for Paolini, Ava.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: McIntyre, Lisa for Davitian, Gemma.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Cole, Kamryn for Lenhard, Emily.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Raibon, Taryn for Petry, Ella.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UCL substitution: Hayashi, Oruha for Woodson, Olivia.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UCL substitution: Croone, Kara for McGeough, Fiona.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UCL substitution: Cooper, Payten for Priest, Ava.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UCL substitution: Wilson, Anna for Edris, Laila.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UCL Hale, Molly.",
+        "clock": "46:27",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on UMD Gichner, Dani.",
+        "clock": "49:02",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Farmer, Jolie.",
+        "clock": "49:24",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UCL Hayashi, Oruha, out left.",
+        "clock": "49:57",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [50:10].",
+        "clock": "50:10",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [51:17].",
+        "clock": "51:17",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Bernard, Peyton.",
+        "clock": "52:00",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UCL Powell, Leena.",
+        "clock": "54:30",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Cole, Kamryn.",
+        "clock": "55:21",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UCL Hayashi, Oruha, out top left.",
+        "clock": "55:58",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UCL Shank, Grace, top woodwork.",
+        "clock": "57:36",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Maryland.",
+        "clock": "59:19",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UCL Hayashi, Oruha.",
+        "clock": "59:46",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Mitchell, Mia for Bernard, Peyton.",
+        "clock": "60:41",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Davitian, Gemma for Raibon, Taryn.",
+        "clock": "60:41",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Cole, Kamryn.",
+        "clock": "61:34",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Bane, Lillian for Oliver, Ary.",
+        "clock": "63:10",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UCL substitution: Edris, Laila for Sanchez, Samantha.",
+        "clock": "63:10",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UCL substitution: Woodson, Olivia for Hale, Molly.",
+        "clock": "63:10",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UCL substitution: Sarinopoulos, Cate for Cooper, Payten.",
+        "clock": "65:58",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Stager, Abigail for McIntyre, Lisa.",
+        "clock": "66:40",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UMD Farmer, Jolie, out right.",
+        "clock": "67:23",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UCL Shank, Grace, top woodwork.",
+        "clock": "68:19",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Shank, Grace.",
+        "clock": "69:01",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UMD Farmer, Jolie, bottom center, saved by Nakfoor, Daphne.",
+        "clock": "69:26",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Red card on UMD Foye, Paige.",
+        "clock": "69:39",
+        "team": 1,
+        "type": "red"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Raibon, Taryn for Davitian, Gemma.",
+        "clock": "69:39",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UMD Heaven, Mckinley, out left.",
+        "clock": "73:34",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Powell, Leena.",
+        "clock": "73:51",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by UCL Hayashi, Oruha Assist by Wilson, Anna and Shank, Grace.",
+        "clock": "74:22",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          1,
+          0
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Shot by UCL Powell, Leena, bottom left, saved by Luckey, Faith.",
+        "clock": "75:51",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: McIntyre, Lisa for Cole, Kamryn.",
+        "clock": "75:59",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UCL substitution: Cooper, Payten for Croone, Kara.",
+        "clock": "75:59",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UCL substitution: Hale, Molly for Sarinopoulos, Cate.",
+        "clock": "75:59",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UCL Shank, Grace, bottom center, saved by Luckey, Faith.",
+        "clock": "78:33",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Paolini, Ava for Farmer, Jolie.",
+        "clock": "80:14",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Egeland, Ellie for Raibon, Taryn.",
+        "clock": "80:14",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UCL Edris, Laila, bottom center, saved by Luckey, Faith.",
+        "clock": "81:22",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UCL Powell, Leena.",
+        "clock": "81:53",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [81:58].",
+        "clock": "81:58",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UCL Wilson, Anna, out top.",
+        "clock": "82:12",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UCL Shank, Grace, bottom center, saved by Luckey, Faith.",
+        "clock": "84:23",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UMD Egeland, Ellie, top, saved by Nakfoor, Daphne.",
+        "clock": "84:49",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by UCL Hayashi, Oruha Assist by Shank, Grace and Hale, Molly.",
+        "clock": "86:02",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          2,
+          0
+        ]
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Bernard, Peyton for Bane, Lillian.",
+        "clock": "86:02",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UCL substitution: Priest, Ava for Shank, Grace.",
+        "clock": "86:02",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UMD Egeland, Ellie, bottom left, saved by Nakfoor, Daphne.",
+        "clock": "87:34",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UMD Egeland, Ellie.",
+        "clock": "88:25",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "UCL substitution: Sarinopoulos, Cate for Edris, Laila.",
+        "clock": "88:33",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UCL substitution: Araujo, Bela for Powell, Leena.",
+        "clock": "88:33",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UCL substitution: McGeough, Fiona for Cooper, Payten.",
+        "clock": "88:33",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "type": "period"
+      }
+    ],
+    "stadium": "Ludwig Field",
+    "attendance": 1208,
+    "kickoff": "12:00",
+    "officials": [
+      "Referee: Cedric Cook",
+      "Asst. Referee: Jeffrey Gontarek",
+      "Asst. Referee: Jordan Gray",
+      "Alt. Official: Scarlet Agrawal"
+    ],
+    "home_index": 1
+  }
+}

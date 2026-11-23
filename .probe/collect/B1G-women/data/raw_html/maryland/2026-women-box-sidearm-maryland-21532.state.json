@@ -1,0 +1,1281 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://umterps.com/sports/womens-soccer/stats/2026/virginia-tech/boxscore/21532",
+  "final_url": "https://umterps.com/sports/womens-soccer/stats/2026/virginia-tech/boxscore/21532",
+  "etag": null,
+  "last_modified": null,
+  "signature": "961e74d5d0261dd6ff5d8bff9e6f536ac1a287de1a8fe954ecaf24604feabee0",
+  "fingerprint": "d8f1bf8ea31d661e9e4cc184c57ac1763f9e976cc6d1ab5b208085e64bb8693c",
+  "fetched_at": "2026-11-23T10:25:46+00:00",
+  "verified_at": "2026-11-23T10:25:46+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://umterps.com/sports/womens-soccer/stats/2026/virginia-tech/boxscore/21532",
+    "teams": [
+      {
+        "name": "Maryland",
+        "abbr": "UMD",
+        "score": 2,
+        "periods": [
+          0,
+          2
+        ],
+        "shots": 8,
+        "saves": 6,
+        "corners": 3,
+        "fouls": 10,
+        "offsides": 0,
+        "sog": 2,
+        "players": [
+          {
+            "name": "Meredith Fisher",
+            "player_id": "16118",
+            "position": "GK",
+            "number": "1",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Ary Oliver",
+            "player_id": "16145",
+            "position": "MID",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 56
+          },
+          {
+            "name": "Emily Lenhard",
+            "player_id": "16122",
+            "position": "MID",
+            "number": "8",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 85
+          },
+          {
+            "name": "Jolie Farmer",
+            "player_id": "16146",
+            "position": "FWD",
+            "number": "9",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 1,
+            "minutes": 87
+          },
+          {
+            "name": "McKinley Heaven",
+            "player_id": "16137",
+            "position": "FWD",
+            "number": "15",
+            "started": true,
+            "shots": 4,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 78
+          },
+          {
+            "name": "Lillian Bane",
+            "player_id": "16147",
+            "position": "MID",
+            "number": "21",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 57
+          },
+          {
+            "name": "Abigail Stager",
+            "player_id": "16148",
+            "position": "FWD",
+            "number": "25",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 82
+          },
+          {
+            "name": "Ella Bulava",
+            "player_id": "16114",
+            "number": "28",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 44
+          },
+          {
+            "name": "Sam Winer",
+            "player_id": "16143",
+            "position": "DEF",
+            "number": "29",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Taryn Raibon",
+            "player_id": "16126",
+            "position": "DEF",
+            "number": "32",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 62
+          },
+          {
+            "name": "Dani Gichner",
+            "player_id": "16135",
+            "number": "99",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Faith Luckey",
+            "player_id": "16139",
+            "position": "GK",
+            "number": "7",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Ava Paolini",
+            "player_id": "16144",
+            "position": "DEF",
+            "number": "2",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 60
+          },
+          {
+            "name": "Paige Foye",
+            "player_id": "16149",
+            "position": "DEF",
+            "number": "4",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Mia Mitchell",
+            "player_id": "16141",
+            "number": "5",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Ella Petry",
+            "player_id": "16150",
+            "position": "MID",
+            "number": "13",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 37
+          },
+          {
+            "name": "Greyson Tischer",
+            "player_id": "16152",
+            "position": "MID",
+            "number": "17",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 7
+          },
+          {
+            "name": "Morgan Shannon",
+            "player_id": "16154",
+            "position": "DEF",
+            "number": "23",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 18
+          },
+          {
+            "name": "Kamryn Cole",
+            "player_id": "16155",
+            "position": "MID",
+            "number": "24",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 47
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Meredith Fisher",
+            "player_id": "16118",
+            "position": "GK",
+            "number": "1",
+            "minutes": 45,
+            "goals_against": 2,
+            "saves": 2
+          },
+          {
+            "name": "Faith Luckey",
+            "player_id": "16139",
+            "position": "GK",
+            "number": "7",
+            "minutes": 45,
+            "goals_against": 0,
+            "saves": 4
+          }
+        ]
+      },
+      {
+        "name": "Virginia Tech",
+        "abbr": "Hokies",
+        "score": 2,
+        "periods": [
+          2,
+          0
+        ],
+        "shots": 25,
+        "saves": 0,
+        "corners": 6,
+        "fouls": 8,
+        "offsides": 0,
+        "sog": 8,
+        "players": [
+          {
+            "name": "Julianna Trujillo",
+            "position": "GK",
+            "number": "00",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Anna Weir",
+            "position": "FWD",
+            "number": "3",
+            "started": true,
+            "shots": 4,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 78
+          },
+          {
+            "name": "Peyton May",
+            "position": "MID",
+            "number": "4",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Hannah Pachan",
+            "position": "MID",
+            "number": "5",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 72
+          },
+          {
+            "name": "Madi Boutot",
+            "position": "DEF",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Ellie Robertson",
+            "position": "DEF",
+            "number": "7",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Eliana Salama",
+            "position": "FWD",
+            "number": "9",
+            "started": true,
+            "shots": 13,
+            "sog": 5,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 74
+          },
+          {
+            "name": "Lilli Lubic",
+            "position": "MID",
+            "number": "15",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 67
+          },
+          {
+            "name": "Johannah Bradley",
+            "position": "MID",
+            "number": "22",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 75
+          },
+          {
+            "name": "Celine Kampmann",
+            "position": "DEF",
+            "number": "24",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Julia Tepes",
+            "position": "DEF",
+            "number": "28",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Gabby Ciocca",
+            "position": "MID",
+            "number": "8",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 33
+          },
+          {
+            "name": "Letizia Rossi",
+            "position": "MID",
+            "number": "10",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 12
+          },
+          {
+            "name": "Lily Pantaleo",
+            "position": "FWD",
+            "number": "12",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 15
+          },
+          {
+            "name": "Anna Garrow",
+            "position": "FWD",
+            "number": "16",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 16
+          },
+          {
+            "name": "Riley Karpinski",
+            "position": "FWD",
+            "number": "17",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 8
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Julianna Trujillo",
+            "position": "GK",
+            "number": "00",
+            "minutes": 90,
+            "goals_against": 2,
+            "saves": 0
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "28:59",
+        "team": 1,
+        "scorer": "Peyton May",
+        "season_total": 1,
+        "assist": "Hannah Pachan",
+        "description": "GOAL by Hokies May, Peyton Assist by Pachan, Hannah."
+      },
+      {
+        "time": "37:47",
+        "team": 1,
+        "scorer": "Riley Karpinski",
+        "season_total": 2,
+        "assist": "Lily Pantaleo",
+        "description": "GOAL by Hokies Karpinski, Riley Assist by Pantaleo, Lily."
+      },
+      {
+        "time": "64:58",
+        "team": 0,
+        "scorer": "Jolie Farmer",
+        "season_total": 4,
+        "description": "GOAL by UMD Farmer, Jolie."
+      },
+      {
+        "time": "70:51",
+        "team": 0,
+        "scorer": "Ella Petry",
+        "season_total": 1,
+        "assist": "Jolie Farmer",
+        "description": "GOAL by UMD Petry, Ella Assist by Farmer, Jolie."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Ellie Robertson",
+        "number": "7",
+        "time": "04:24",
+        "team": 1
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Trujillo, Julianna at goalie for Virginia Tech",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Fisher, Meredith at goalie for Maryland",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Gichner, Dani.",
+        "clock": "02:43",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Farmer, Jolie.",
+        "clock": "03:43",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on Hokies Robertson, Ellie.",
+        "clock": "04:24",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Bane, Lillian.",
+        "clock": "12:45",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by Hokies Weir, Anna, out top right.",
+        "clock": "13:49",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Bane, Lillian.",
+        "clock": "15:31",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by Hokies Lubic, Lilli, out right.",
+        "clock": "17:55",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by Hokies Salama, Eliana, bottom left, saved by Fisher, Meredith.",
+        "clock": "21:11",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [21:23].",
+        "clock": "21:23",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by Hokies Weir, Anna, top, saved by Fisher, Meredith.",
+        "clock": "22:28",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [22:37].",
+        "clock": "22:37",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Stager, Abigail.",
+        "clock": "24:24",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [25:09].",
+        "clock": "25:09",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by Hokies May, Peyton, out top left.",
+        "clock": "25:35",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Petry, Ella for Bane, Lillian.",
+        "clock": "26:06",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Paolini, Ava for Bulava, Ella.",
+        "clock": "26:06",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Stager, Abigail.",
+        "clock": "26:17",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Lenhard, Emily.",
+        "clock": "27:08",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [27:13].",
+        "clock": "27:13",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by Hokies Weir, Anna.",
+        "clock": "28:14",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [28:23].",
+        "clock": "28:23",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by Hokies May, Peyton Assist by Pachan, Hannah.",
+        "clock": "28:59",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Hokies substitution: Ciocca, Gabby for Salama, Eliana.",
+        "clock": "28:59",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Hokies substitution: Garrow, Anna for Lubic, Lilli.",
+        "clock": "28:59",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Cole, Kamryn for Oliver, Ary.",
+        "clock": "28:59",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Pachan, Hannah.",
+        "clock": "29:56",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Ciocca, Gabby.",
+        "clock": "31:04",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [31:48].",
+        "clock": "31:48",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by Hokies Kampmann, Celine, out left.",
+        "clock": "32:18",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Hokies substitution: Rossi, Letizia for Weir, Anna.",
+        "clock": "32:42",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Tepes, Julia.",
+        "clock": "32:51",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [33:44].",
+        "clock": "33:44",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Heaven, Mckinley.",
+        "clock": "34:48",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [35:03].",
+        "clock": "35:03",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Hokies substitution: Pantaleo, Lily for Pachan, Hannah.",
+        "clock": "36:20",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Hokies substitution: Karpinski, Riley for Bradley, Johannah.",
+        "clock": "36:20",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Heaven, Mckinley.",
+        "clock": "36:46",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by Hokies Karpinski, Riley Assist by Pantaleo, Lily.",
+        "clock": "37:47",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          2
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Foul on May, Peyton.",
+        "clock": "38:09",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Shannon, Morgan for Stager, Abigail.",
+        "clock": "40:57",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR UMD: , #32 Raibon, Taryn, #24 Cole, Kamryn, #8 Lenhard, Emily, #9 Farmer, Jolie, #15 Heaven, Mckinley, #4 Foye, Paige, #5 Mitchell, Mia, #2 Paolini, Ava, #6 Oliver, Ary, #7 Luckey, Faith, #25 Stager, Abigail.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR Hokies: , #00 Trujillo, Julianna, #3 Weir, Anna, #4 May, Peyton, #5 Pachan, Hannah, #6 Boutot, Madi, #7 Robertson, Ellie, #9 Salama, Eliana, #15 Lubic, Lilli, #22 Bradley, Johannah, #24 Kampmann, Celine, #28 Tepes, Julia.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "Hokies substitution: Weir, Anna for Rossi, Letizia.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Hokies substitution: Pachan, Hannah for Pantaleo, Lily.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Hokies substitution: Salama, Eliana for Ciocca, Gabby.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Hokies substitution: Lubic, Lilli for Garrow, Anna.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Hokies substitution: Bradley, Johannah for Karpinski, Riley.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Foye, Paige for Petry, Ella.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Mitchell, Mia for Shannon, Morgan.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Oliver, Ary for Winer, Sam.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Luckey, Faith for Raibon, Taryn.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Stager, Abigail for Gichner, Dani.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Raibon, Taryn for Fisher, Meredith.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Boutot, Madi.",
+        "clock": "48:09",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UMD Heaven, Mckinley, out right.",
+        "clock": "49:25",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by Hokies Bradley, Johannah, out top right.",
+        "clock": "52:40",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by Hokies Salama, Eliana, out right.",
+        "clock": "54:52",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by Hokies Salama, Eliana, out left.",
+        "clock": "56:12",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by Hokies Salama, Eliana, bottom center, saved by Luckey, Faith.",
+        "clock": "57:15",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Bane, Lillian for Lenhard, Emily.",
+        "clock": "59:53",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Petry, Ella for Heaven, Mckinley.",
+        "clock": "59:53",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Bradley, Johannah.",
+        "clock": "59:57",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Hokies substitution: Ciocca, Gabby for Pachan, Hannah.",
+        "clock": "61:01",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Bulava, Ella for Raibon, Taryn.",
+        "clock": "61:05",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Bulava, Ella.",
+        "clock": "62:04",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by Hokies Salama, Eliana, out top.",
+        "clock": "64:12",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UMD Stager, Abigail.",
+        "clock": "64:58",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by UMD Farmer, Jolie.",
+        "clock": "64:58",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          1,
+          2
+        ]
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Lenhard, Emily for Oliver, Ary.",
+        "clock": "64:58",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Cole, Kamryn.",
+        "clock": "67:35",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by Hokies Salama, Eliana.",
+        "clock": "68:21",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by Hokies Salama, Eliana, bottom left, saved by Luckey, Faith.",
+        "clock": "70:09",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by UMD Petry, Ella Assist by Farmer, Jolie.",
+        "clock": "70:51",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          2,
+          2
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Hokies substitution: Pachan, Hannah for Lubic, Lilli.",
+        "clock": "71:17",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Heaven, Mckinley for Stager, Abigail.",
+        "clock": "71:17",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by Hokies Robertson, Ellie, top woodwork.",
+        "clock": "71:53",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by Hokies Salama, Eliana.",
+        "clock": "72:06",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by Hokies Bradley, Johannah.",
+        "clock": "72:11",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by Hokies Salama, Eliana.",
+        "clock": "72:18",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on May, Peyton.",
+        "clock": "74:05",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Hokies substitution: Pantaleo, Lily for Bradley, Johannah.",
+        "clock": "75:31",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Tischer, Greyson for Cole, Kamryn.",
+        "clock": "75:31",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Shannon, Morgan for Petry, Ella.",
+        "clock": "75:31",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Stager, Abigail for Paolini, Ava.",
+        "clock": "75:31",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Hokies substitution: Lubic, Lilli for Ciocca, Gabby.",
+        "clock": "78:52",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Paolini, Ava for Bulava, Ella.",
+        "clock": "78:52",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Weir, Anna.",
+        "clock": "80:59",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Hokies substitution: Bradley, Johannah for Pantaleo, Lily.",
+        "clock": "82:25",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Oliver, Ary for Tischer, Greyson.",
+        "clock": "82:25",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UMD Heaven, Mckinley, out right.",
+        "clock": "84:56",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by Hokies Salama, Eliana, bottom center, saved by Luckey, Faith.",
+        "clock": "85:26",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Petry, Ella for Farmer, Jolie.",
+        "clock": "86:07",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by Hokies Salama, Eliana.",
+        "clock": "86:41",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [86:45].",
+        "clock": "86:45",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UMD Heaven, Mckinley, out left.",
+        "clock": "88:06",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by Hokies Salama, Eliana, out left.",
+        "clock": "88:49",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by Hokies Weir, Anna.",
+        "clock": "89:27",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Oliver, Ary.",
+        "clock": "89:56",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by Hokies Salama, Eliana, top, saved by Luckey, Faith.",
+        "clock": "90:00",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "type": "period"
+      }
+    ],
+    "stadium": "Thompson Field",
+    "attendance": 634,
+    "kickoff": "06:00",
+    "officials": [
+      "Referee: Brad Church",
+      "Asst. Referee: Anthony Wolford",
+      "Asst. Referee: Amelia Graytock",
+      "Alt. Official: Dustin Marks"
+    ],
+    "home_index": 1
+  }
+}

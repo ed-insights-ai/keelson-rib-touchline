@@ -1,0 +1,1469 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://soonersports.com/sports/soccer/stats/2026/oklahoma-state/boxscore/15800",
+  "final_url": "https://soonersports.com/sports/soccer/stats/2026/oklahoma-state/boxscore/15800",
+  "etag": null,
+  "last_modified": null,
+  "signature": "4e016fb4e0d400504383507fd31e08b29465f4a1e84cd8882dd11d72b61f96a0",
+  "fingerprint": "d8f1bf8ea31d661e9e4cc184c57ac1763f9e976cc6d1ab5b208085e64bb8693c",
+  "fetched_at": "2026-11-23T10:25:44+00:00",
+  "verified_at": "2026-11-23T10:25:44+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://soonersports.com/sports/soccer/stats/2026/oklahoma-state/boxscore/15800",
+    "teams": [
+      {
+        "name": "Oklahoma",
+        "abbr": "OU",
+        "score": 2,
+        "periods": [
+          1,
+          1
+        ],
+        "winner": true,
+        "shots": 13,
+        "saves": 0,
+        "corners": 8,
+        "fouls": 13,
+        "offsides": 2,
+        "sog": 5,
+        "players": [
+          {
+            "name": "Callie Sullivan",
+            "player_id": "20056",
+            "position": "GK",
+            "number": "34",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Paige Califf",
+            "player_id": "20058",
+            "position": "MID",
+            "number": "2",
+            "started": true,
+            "shots": 3,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Lexi Dendis",
+            "player_id": "20046",
+            "position": "FWD",
+            "number": "3",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 90
+          },
+          {
+            "name": "Sophie Morrin",
+            "player_id": "20053",
+            "position": "MID",
+            "number": "4",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 51
+          },
+          {
+            "name": "Narissa Fults",
+            "player_id": "20059",
+            "position": "FWD",
+            "number": "5",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 59
+          },
+          {
+            "name": "Kayla Keefer",
+            "player_id": "20049",
+            "position": "FWD",
+            "number": "6",
+            "started": true,
+            "shots": 5,
+            "sog": 2,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 70
+          },
+          {
+            "name": "Ally Laccinole",
+            "player_id": "20050",
+            "position": "DEF",
+            "number": "9",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Drue Legan",
+            "player_id": "20051",
+            "position": "DEF",
+            "number": "11",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 36
+          },
+          {
+            "name": "Kate McCallister",
+            "player_id": "20248",
+            "position": "MID",
+            "number": "17",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 68
+          },
+          {
+            "name": "Kendall Campbell",
+            "player_id": "20250",
+            "position": "DEF",
+            "number": "21",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 72
+          },
+          {
+            "name": "Elle Canty",
+            "player_id": "20043",
+            "position": "MID",
+            "number": "33",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 57
+          },
+          {
+            "name": "Fernanda Dantas",
+            "player_id": "20244",
+            "position": "DEF",
+            "number": "7",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 15
+          },
+          {
+            "name": "Avery Brand",
+            "player_id": "20245",
+            "position": "MID",
+            "number": "10",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 17
+          },
+          {
+            "name": "Kennedy Kaiser",
+            "player_id": "20246",
+            "position": "FWD",
+            "number": "12",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 28
+          },
+          {
+            "name": "Ariana Ellison",
+            "player_id": "20247",
+            "position": "DEF",
+            "number": "16",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Brenna Hallam",
+            "player_id": "20251",
+            "position": "FWD",
+            "number": "22",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 23
+          },
+          {
+            "name": "Sadie Sterbenz",
+            "player_id": "20060",
+            "position": "DEF",
+            "number": "23",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 27
+          },
+          {
+            "name": "Claire Curran",
+            "player_id": "20044",
+            "position": "FWD",
+            "number": "30",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 36
+          },
+          {
+            "name": "Emily Davey",
+            "player_id": "20045",
+            "position": "FWD",
+            "number": "36",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 26
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Callie Sullivan",
+            "player_id": "20056",
+            "position": "GK",
+            "number": "34",
+            "minutes": 90,
+            "goals_against": 0,
+            "saves": 0
+          }
+        ]
+      },
+      {
+        "name": "Oklahoma St.",
+        "abbr": "OSU",
+        "score": 0,
+        "periods": [
+          0,
+          0
+        ],
+        "shots": 5,
+        "saves": 3,
+        "corners": 4,
+        "fouls": 12,
+        "offsides": 1,
+        "sog": 0,
+        "players": [
+          {
+            "name": "Logan Marks",
+            "position": "GK",
+            "number": "0",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Victoria Madison",
+            "position": "DEF",
+            "number": "2",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 70
+          },
+          {
+            "name": "Emmy Hedden",
+            "position": "MID",
+            "number": "4",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 86
+          },
+          {
+            "name": "Katelyn Hoppers",
+            "position": "DEF",
+            "number": "8",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 81
+          },
+          {
+            "name": "Laudan Wilson",
+            "position": "MID",
+            "number": "11",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 73
+          },
+          {
+            "name": "Sonora de Fini",
+            "position": "FWD",
+            "number": "12",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 69
+          },
+          {
+            "name": "Gracie Bindbeutel",
+            "position": "FWD",
+            "number": "14",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 56
+          },
+          {
+            "name": "Bella Pierotti",
+            "number": "16",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 61
+          },
+          {
+            "name": "Keaton Mitchell",
+            "position": "MID",
+            "number": "17",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 76
+          },
+          {
+            "name": "Addy Lang",
+            "position": "MID",
+            "number": "24",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 84
+          },
+          {
+            "name": "Brenna Rowlett",
+            "position": "DEF",
+            "number": "34",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 80
+          },
+          {
+            "name": "Ellie Geoffroy",
+            "position": "DEF",
+            "number": "3",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 36
+          },
+          {
+            "name": "Sherline King",
+            "position": "FWD",
+            "number": "7",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 33
+          },
+          {
+            "name": "Raquelle Mitchell",
+            "position": "FWD",
+            "number": "9",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 16
+          },
+          {
+            "name": "Emma Jensen",
+            "position": "MID",
+            "number": "10",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 24
+          },
+          {
+            "name": "Sophie Wilson",
+            "position": "DEF",
+            "number": "15",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 13
+          },
+          {
+            "name": "Aubrey Wagner",
+            "number": "23",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 19
+          },
+          {
+            "name": "Jada Moorman",
+            "position": "FWD",
+            "number": "31",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 23
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Logan Marks",
+            "position": "GK",
+            "number": "0",
+            "minutes": 90,
+            "goals_against": 2,
+            "saves": 3
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "29:10",
+        "team": 0,
+        "scorer": "Kate McCallister",
+        "season_total": 2,
+        "assist": "Elle Canty",
+        "description": "GOAL by OU McCallister, Kate Assist by Canty, Elle."
+      },
+      {
+        "time": "69:40",
+        "team": 0,
+        "scorer": "Kennedy Kaiser",
+        "season_total": 2,
+        "assist": "Kayla Keefer , Lexi Dendis",
+        "description": "GOAL by OU Kaiser, Kennedy Assist by Keefer, Kayla and Dendis, Lexi."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Raquelle Mitchell",
+        "number": "9",
+        "time": "36:34",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Kayla Keefer",
+        "number": "6",
+        "time": "36:45",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Kennedy Kaiser",
+        "number": "12",
+        "time": "83:49",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Sherline King",
+        "number": "7",
+        "time": "84:06",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Brenna Hallam",
+        "number": "22",
+        "time": "89:37",
+        "team": 0
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Marks, Logan at goalie for Oklahoma St.",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Sullivan, Callie at goalie for Oklahoma",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OU Keefer, Kayla.",
+        "clock": "03:58",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Hedden, Emmy.",
+        "clock": "04:09",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OU Califf, Paige, blocked.",
+        "clock": "05:24",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OU Canty, Elle, out top.",
+        "clock": "07:37",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OSU Mitchell, Keaton, blocked.",
+        "clock": "08:48",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Rowlett, Brenna.",
+        "clock": "10:42",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [14:07].",
+        "clock": "14:07",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OSU De Fini, Sonora, out top.",
+        "clock": "15:43",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Keefer, Kayla.",
+        "clock": "17:37",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [20:26].",
+        "clock": "20:26",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Campbell, Kendall.",
+        "clock": "21:19",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "OU substitution: Ellison, Ariana for Legan, Drue.",
+        "clock": "22:18",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OU Keefer, Kayla, bottom center, saved by Marks, Logan.",
+        "clock": "24:03",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OU McCallister, Kate, out top right.",
+        "clock": "25:20",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Lang, Addy.",
+        "clock": "28:29",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by OU McCallister, Kate Assist by Canty, Elle.",
+        "clock": "29:10",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          1,
+          0
+        ]
+      },
+      {
+        "period": "1",
+        "text": "OSU substitution: King, Sherline for Bindbeutel, Gracie.",
+        "clock": "29:10",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [31:44].",
+        "clock": "31:44",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "OSU substitution: Jensen, Emma for Pierotti, Bella.",
+        "clock": "32:54",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OU substitution: Kaiser, Kennedy for Morrin, Sophie.",
+        "clock": "32:54",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OU substitution: Curran, Claire for Fults, Narissa.",
+        "clock": "32:54",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OU substitution: Davey, Emily for Campbell, Kendall.",
+        "clock": "32:54",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OU substitution: Sterbenz, Sadie for Canty, Elle.",
+        "clock": "32:54",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OSU substitution: Moorman, Jada for Wilson, Laudan.",
+        "clock": "34:10",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OSU substitution: Mitchell, Raquelle for De Fini, Sonora.",
+        "clock": "34:10",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OU Keefer, Kayla, bottom center, saved by Marks, Logan.",
+        "clock": "34:39",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [34:51].",
+        "clock": "34:51",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Kaiser, Kennedy.",
+        "clock": "35:36",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on OSU Mitchell, Raquelle.",
+        "clock": "36:34",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on OU Keefer, Kayla.",
+        "clock": "36:45",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "OSU substitution: Wagner, Aubrey for Madison, Victoria.",
+        "clock": "36:45",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OSU substitution: Geoffroy, Ellie for Mitchell, Keaton.",
+        "clock": "36:45",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OU substitution: Hallam, Brenna for Keefer, Kayla.",
+        "clock": "36:45",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Oklahoma St..",
+        "clock": "38:34",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Jensen, Emma.",
+        "clock": "38:58",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Oklahoma.",
+        "clock": "39:28",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Moorman, Jada.",
+        "clock": "40:10",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "OU substitution: Brand, Avery for McCallister, Kate.",
+        "clock": "40:42",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Curran, Claire.",
+        "clock": "41:57",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Oklahoma.",
+        "clock": "44:21",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR OU: , #34 Sullivan, Callie, #2 Califf, Paige, #3 Dendis, Lexi, #12 Kaiser, Kennedy, #30 Curran, Claire, #22 Hallam, Brenna, #9 Laccinole, Ally, #16 Ellison, Ariana, #10 Brand, Avery, #36 Davey, Emily, #23 Sterbenz, Sadie.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR OSU: , #0 Marks, Logan, #23 Wagner, Aubrey, #4 Hedden, Emmy, #8 Hoppers, Katelyn, #31 Moorman, Jada, #9 Mitchell, Raquelle, #7 King, Sherline, #10 Jensen, Emma, #3 Geoffroy, Ellie, #24 Lang, Addy, #34 Rowlett, Brenna.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: Madison, Victoria for Wagner, Aubrey.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: Wilson, Laudan for Moorman, Jada.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [45:37].",
+        "clock": "45:37",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [48:38].",
+        "clock": "48:38",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: De Fini, Sonora for Mitchell, Raquelle.",
+        "clock": "50:18",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: Bindbeutel, Gracie for King, Sherline.",
+        "clock": "50:18",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: Pierotti, Bella for Jensen, Emma.",
+        "clock": "50:18",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: Mitchell, Keaton for Geoffroy, Ellie.",
+        "clock": "50:18",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Morrin, Sophie for Kaiser, Kennedy.",
+        "clock": "50:18",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Fults, Narissa for Curran, Claire.",
+        "clock": "50:18",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Keefer, Kayla for Hallam, Brenna.",
+        "clock": "50:18",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Legan, Drue for Ellison, Ariana.",
+        "clock": "50:18",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: McCallister, Kate for Brand, Avery.",
+        "clock": "50:18",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Campbell, Kendall for Davey, Emily.",
+        "clock": "50:18",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Canty, Elle for Sterbenz, Sadie.",
+        "clock": "50:18",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Pierotti, Bella.",
+        "clock": "50:52",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OU Fults, Narissa, bottom center, saved by Marks, Logan.",
+        "clock": "51:06",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Canty, Elle.",
+        "clock": "53:07",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OSU De Fini, Sonora.",
+        "clock": "56:10",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on De Fini, Sonora.",
+        "clock": "56:26",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OU Califf, Paige.",
+        "clock": "59:34",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [59:44].",
+        "clock": "59:44",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Morrin, Sophie.",
+        "clock": "60:25",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: Moorman, Jada for Bindbeutel, Gracie.",
+        "clock": "60:33",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: Wagner, Aubrey for Pierotti, Bella.",
+        "clock": "60:33",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Curran, Claire for Morrin, Sophie.",
+        "clock": "60:33",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Dantas, Fernanda for Canty, Elle.",
+        "clock": "60:33",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [63:07].",
+        "clock": "63:07",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Ellison, Ariana for Legan, Drue.",
+        "clock": "63:12",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Mitchell, Keaton.",
+        "clock": "63:58",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OU Califf, Paige.",
+        "clock": "64:49",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [65:30].",
+        "clock": "65:30",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Wagner, Aubrey.",
+        "clock": "66:28",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: Geoffroy, Ellie for Madison, Victoria.",
+        "clock": "67:42",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: Jensen, Emma for Hedden, Emmy.",
+        "clock": "67:42",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: Wilson, Sophie for Lang, Addy.",
+        "clock": "67:42",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Kaiser, Kennedy for Fults, Narissa.",
+        "clock": "67:42",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: King, Sherline for De Fini, Sonora.",
+        "clock": "68:49",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Morrin, Sophie for Curran, Claire.",
+        "clock": "68:49",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Canty, Elle for Dantas, Fernanda.",
+        "clock": "68:49",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by OU Kaiser, Kennedy Assist by Keefer, Kayla and Dendis, Lexi.",
+        "clock": "69:40",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          2,
+          0
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Shot by OU Keefer, Kayla, out top.",
+        "clock": "71:12",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: Pierotti, Bella for Hoppers, Katelyn.",
+        "clock": "71:41",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: Madison, Victoria for Wagner, Aubrey.",
+        "clock": "71:41",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: Hedden, Emmy for Rowlett, Brenna.",
+        "clock": "71:41",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Davey, Emily for McCallister, Kate.",
+        "clock": "71:41",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Hedden, Emmy.",
+        "clock": "72:01",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Laccinole, Ally.",
+        "clock": "72:37",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: Bindbeutel, Gracie for Jensen, Emma.",
+        "clock": "73:21",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: Lang, Addy for King, Sherline.",
+        "clock": "73:21",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: De Fini, Sonora for Moorman, Jada.",
+        "clock": "73:21",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Fults, Narissa for Keefer, Kayla.",
+        "clock": "73:21",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Laccinole, Ally.",
+        "clock": "75:04",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Morrin, Sophie.",
+        "clock": "75:31",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [76:26].",
+        "clock": "76:26",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Hallam, Brenna for Morrin, Sophie.",
+        "clock": "76:34",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: McCallister, Kate for Kaiser, Kennedy.",
+        "clock": "76:34",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OSU Lang, Addy.",
+        "clock": "76:43",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [76:46].",
+        "clock": "76:46",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OSU Wilson, Laudan.",
+        "clock": "78:15",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Curran, Claire for Hallam, Brenna.",
+        "clock": "79:06",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Keefer, Kayla for Davey, Emily.",
+        "clock": "79:06",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [79:50].",
+        "clock": "79:50",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: Hoppers, Katelyn for Madison, Victoria.",
+        "clock": "80:18",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: Rowlett, Brenna for Wilson, Sophie.",
+        "clock": "80:18",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Sterbenz, Sadie for Ellison, Ariana.",
+        "clock": "80:18",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OU Keefer, Kayla, out top.",
+        "clock": "81:02",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Sterbenz, Sadie.",
+        "clock": "82:56",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: King, Sherline for Wilson, Laudan.",
+        "clock": "82:56",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Dantas, Fernanda for McCallister, Kate.",
+        "clock": "82:56",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Brand, Avery for Fults, Narissa.",
+        "clock": "82:56",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Kaiser, Kennedy for Canty, Elle.",
+        "clock": "82:56",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Mitchell, Keaton.",
+        "clock": "82:56",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Kaiser, Kennedy.",
+        "clock": "83:49",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on OU Kaiser, Kennedy.",
+        "clock": "83:49",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Hallam, Brenna for Kaiser, Kennedy.",
+        "clock": "83:50",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on OSU King, Sherline.",
+        "clock": "84:06",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Brand, Avery.",
+        "clock": "86:37",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Califf, Paige.",
+        "clock": "86:59",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on OU Hallam, Brenna.",
+        "clock": "89:37",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "OSU substitution: Madison, Victoria for Rowlett, Brenna.",
+        "clock": "89:51",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "type": "period"
+      }
+    ],
+    "stadium": "Neal Patterson Stadium",
+    "attendance": 1637,
+    "kickoff": "07:00",
+    "officials": [
+      "Referee: Melvin Rivas",
+      "Asst. Referee: Eric Guzman",
+      "Asst. Referee: Brandon Queri",
+      "Alt. Official: Brook Weiss"
+    ],
+    "home_index": 1
+  }
+}

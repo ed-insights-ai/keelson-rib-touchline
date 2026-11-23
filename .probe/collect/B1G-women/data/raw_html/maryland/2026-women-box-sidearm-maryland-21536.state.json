@@ -1,0 +1,985 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://umterps.com/sports/womens-soccer/stats/2026/-11-washington/boxscore/21536",
+  "final_url": "https://umterps.com/sports/womens-soccer/stats/2026/-11-washington/boxscore/21536",
+  "etag": null,
+  "last_modified": null,
+  "signature": "9d85df2db4f1a6bf3edfb82ee7ec45c524123ff2d0aff9b765696f11bd78f4e7",
+  "fingerprint": "d8f1bf8ea31d661e9e4cc184c57ac1763f9e976cc6d1ab5b208085e64bb8693c",
+  "fetched_at": "2026-11-23T10:25:50+00:00",
+  "verified_at": "2026-11-23T10:25:50+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://umterps.com/sports/womens-soccer/stats/2026/-11-washington/boxscore/21536",
+    "teams": [
+      {
+        "name": "Maryland",
+        "abbr": "UMD",
+        "score": 0,
+        "periods": [
+          0,
+          0
+        ],
+        "shots": 2,
+        "saves": 6,
+        "corners": 2,
+        "fouls": 8,
+        "offsides": 0,
+        "sog": 0,
+        "players": [
+          {
+            "name": "Faith Luckey",
+            "player_id": "16139",
+            "position": "GK",
+            "number": "7",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Ava Paolini",
+            "player_id": "16144",
+            "position": "DEF",
+            "number": "2",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 65
+          },
+          {
+            "name": "Peyton Bernard",
+            "player_id": "16129",
+            "position": "FWD",
+            "number": "3",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 52
+          },
+          {
+            "name": "Mia Mitchell",
+            "player_id": "16141",
+            "number": "5",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 74
+          },
+          {
+            "name": "Ary Oliver",
+            "player_id": "16145",
+            "position": "MID",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "McKinley Heaven",
+            "player_id": "16137",
+            "position": "FWD",
+            "number": "15",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 86
+          },
+          {
+            "name": "Lisa McIntyre",
+            "player_id": "16108",
+            "number": "22",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 66
+          },
+          {
+            "name": "Kamryn Cole",
+            "player_id": "16155",
+            "position": "MID",
+            "number": "24",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 66
+          },
+          {
+            "name": "Abigail Stager",
+            "player_id": "16148",
+            "position": "FWD",
+            "number": "25",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 74
+          },
+          {
+            "name": "Ella Bulava",
+            "player_id": "16114",
+            "number": "28",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 81
+          },
+          {
+            "name": "Dani Gichner",
+            "player_id": "16135",
+            "number": "99",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Paige Foye",
+            "player_id": "16149",
+            "position": "DEF",
+            "number": "4",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 25
+          },
+          {
+            "name": "Emily Lenhard",
+            "player_id": "16122",
+            "position": "MID",
+            "number": "8",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 8
+          },
+          {
+            "name": "Ella Petry",
+            "player_id": "16150",
+            "position": "MID",
+            "number": "13",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 30
+          },
+          {
+            "name": "Greyson Tischer",
+            "player_id": "16152",
+            "position": "MID",
+            "number": "17",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 16
+          },
+          {
+            "name": "Gemma Davitian",
+            "player_id": "16100",
+            "position": "FWD",
+            "number": "20",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 4
+          },
+          {
+            "name": "Lillian Bane",
+            "player_id": "16147",
+            "position": "MID",
+            "number": "21",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 48
+          },
+          {
+            "name": "Morgan Shannon",
+            "player_id": "16154",
+            "position": "DEF",
+            "number": "23",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 25
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Faith Luckey",
+            "player_id": "16139",
+            "position": "GK",
+            "number": "7",
+            "minutes": 90,
+            "goals_against": 2,
+            "saves": 5
+          }
+        ]
+      },
+      {
+        "name": "Washington",
+        "abbr": "UW",
+        "score": 2,
+        "periods": [
+          1,
+          1
+        ],
+        "winner": true,
+        "shots": 14,
+        "saves": 0,
+        "corners": 2,
+        "fouls": 7,
+        "offsides": 0,
+        "sog": 8,
+        "players": [
+          {
+            "name": "Tanner Ijams",
+            "position": "GK",
+            "number": "1",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Anna Menti",
+            "position": "DEF",
+            "number": "2",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 36
+          },
+          {
+            "name": "Enora Matt\u00e9",
+            "position": "DEF",
+            "number": "3",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Maya Loudd",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Ryan Boehm",
+            "position": "FWD",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 35
+          },
+          {
+            "name": "Angelica Chou",
+            "position": "FWD",
+            "number": "7",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 68
+          },
+          {
+            "name": "Andrea Leyva",
+            "position": "FWD",
+            "number": "10",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 78
+          },
+          {
+            "name": "Maylen Montoya",
+            "position": "DEF",
+            "number": "12",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Samiah Shell",
+            "position": "FWD",
+            "number": "13",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Jadyn Holdenried",
+            "position": "MID",
+            "number": "17",
+            "started": true,
+            "shots": 6,
+            "sog": 3,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 89
+          },
+          {
+            "name": "Lucy Newlin",
+            "position": "MID",
+            "number": "23",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Ava Morton",
+            "position": "DEF",
+            "number": "8",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 54
+          },
+          {
+            "name": "Mary Camp Newton",
+            "position": "FWD",
+            "number": "11",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 18
+          },
+          {
+            "name": "Elle Durham",
+            "position": "DEF",
+            "number": "14",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 4
+          },
+          {
+            "name": "Vanessa Aguilar",
+            "position": "MID",
+            "number": "18",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 1
+          },
+          {
+            "name": "Mackenzie Stearns",
+            "position": "MID",
+            "number": "22",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 12
+          },
+          {
+            "name": "Avery Nguyen",
+            "position": "FWD",
+            "number": "30",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 55
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Tanner Ijams",
+            "position": "GK",
+            "number": "1",
+            "minutes": 90,
+            "goals_against": 0,
+            "saves": 0
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "22:01",
+        "team": 1,
+        "scorer": "Maylen Montoya",
+        "season_total": 2,
+        "description": "GOAL by UW Montoya, Maylen."
+      },
+      {
+        "time": "55:41",
+        "team": 1,
+        "scorer": "Angelica Chou",
+        "season_total": 2,
+        "description": "GOAL by UW Chou, Angelica."
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Ijams, Tanner at goalie for Washington",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Luckey, Faith at goalie for Maryland",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Shell, Samiah.",
+        "clock": "01:27",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Boehm, Ryan.",
+        "clock": "02:06",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [03:33].",
+        "clock": "03:33",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UW Holdenried, Jadyn, bottom center, Team save.",
+        "clock": "04:13",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UW Holdenried, Jadyn.",
+        "clock": "04:23",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Bernard, Peyton.",
+        "clock": "12:46",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Newlin, Lucy.",
+        "clock": "14:15",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UW Loudd, Maya, out right.",
+        "clock": "15:24",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by UW Montoya, Maylen.",
+        "clock": "22:01",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "UW substitution: Nguyen, Avery for Boehm, Ryan.",
+        "clock": "22:01",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [22:40].",
+        "clock": "22:40",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Cole, Kamryn.",
+        "clock": "24:04",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UW Holdenried, Jadyn, out top.",
+        "clock": "25:00",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Bane, Lillian for Bernard, Peyton.",
+        "clock": "26:14",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD McIntyre, Lisa, out top left.",
+        "clock": "27:14",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Oliver, Ary.",
+        "clock": "29:28",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on McIntyre, Lisa.",
+        "clock": "33:00",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Petry, Ella for McIntyre, Lisa.",
+        "clock": "34:12",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UW substitution: Morton, Ava for Menti, Anna.",
+        "clock": "35:39",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Foye, Paige for Paolini, Ava.",
+        "clock": "35:39",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UW substitution: Newton, Mary Camp for Chou, Angelica.",
+        "clock": "36:34",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Lenhard, Emily for Cole, Kamryn.",
+        "clock": "36:34",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UW Nguyen, Avery, bottom right, saved by Luckey, Faith.",
+        "clock": "37:24",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UW Holdenried, Jadyn.",
+        "clock": "37:46",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Davitian, Gemma for Heaven, Mckinley.",
+        "clock": "40:18",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UW Holdenried, Jadyn, bottom right, saved by Luckey, Faith.",
+        "clock": "42:31",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR UMD: , #7 Luckey, Faith, #2 Paolini, Ava, #3 Bernard, Peyton, #5 Mitchell, Mia, #6 Oliver, Ary, #15 Heaven, Mckinley, #22 McIntyre, Lisa, #24 Cole, Kamryn, #25 Stager, Abigail, #28 Bulava, Ella, #99 Gichner, Dani.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR UW: , #1 Ijams, Tanner, #8 Morton, Ava, #3 Matt\u00e9, Enora, #4 Loudd, Maya, #6 Boehm, Ryan, #7 Chou, Angelica, #10 Leyva, Andrea, #12 Montoya, Maylen, #13 Shell, Samiah, #17 Holdenried, Jadyn, #23 Newlin, Lucy.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "UW substitution: Boehm, Ryan for Nguyen, Avery.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UW substitution: Chou, Angelica for Newton, Mary Camp.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Paolini, Ava for Foye, Paige.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Bernard, Peyton for Bane, Lillian.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Heaven, Mckinley for Davitian, Gemma.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: McIntyre, Lisa for Petry, Ella.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Cole, Kamryn for Lenhard, Emily.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UW Leyva, Andrea.",
+        "clock": "45:44",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UW Holdenried, Jadyn, bottom center, saved by Luckey, Faith.",
+        "clock": "48:05",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UW Leyva, Andrea, bottom center, saved by Luckey, Faith.",
+        "clock": "52:54",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by UW Chou, Angelica.",
+        "clock": "55:41",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          2
+        ]
+      },
+      {
+        "period": "2",
+        "text": "UW substitution: Nguyen, Avery for Boehm, Ryan.",
+        "clock": "56:42",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Stager, Abigail.",
+        "clock": "56:54",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Bulava, Ella.",
+        "clock": "57:23",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Bane, Lillian for Stager, Abigail.",
+        "clock": "59:23",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UW Loudd, Maya, bottom left, saved by Luckey, Faith.",
+        "clock": "60:51",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Bulava, Ella.",
+        "clock": "62:35",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Shannon, Morgan for Bulava, Ella.",
+        "clock": "64:05",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Petry, Ella for Bernard, Peyton.",
+        "clock": "69:23",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Leyva, Andrea.",
+        "clock": "70:31",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "UW substitution: Stearns, MacKenzie for Leyva, Andrea.",
+        "clock": "73:41",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Bulava, Ella for Paolini, Ava.",
+        "clock": "73:41",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Tischer, Greyson for Mitchell, Mia.",
+        "clock": "73:41",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Foye, Paige for Cole, Kamryn.",
+        "clock": "73:41",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [74:39].",
+        "clock": "74:39",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "UW substitution: Newton, Mary Camp for Chou, Angelica.",
+        "clock": "75:46",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Stager, Abigail for McIntyre, Lisa.",
+        "clock": "75:46",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UMD Bane, Lillian, out left.",
+        "clock": "75:52",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Petry, Ella.",
+        "clock": "77:20",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Newlin, Lucy.",
+        "clock": "83:39",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [84:40].",
+        "clock": "84:40",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "UW substitution: Leyva, Andrea for Newton, Mary Camp.",
+        "clock": "85:23",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UW substitution: Durham, Elle for Stearns, MacKenzie.",
+        "clock": "85:23",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UW Shell, Samiah, out left.",
+        "clock": "88:43",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "UW substitution: Aguilar, Vanessa for Holdenried, Jadyn.",
+        "clock": "88:45",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "type": "period"
+      }
+    ],
+    "stadium": "Husky Soccer Stadium",
+    "attendance": 1160,
+    "kickoff": "07:00",
+    "officials": [
+      "Referee: Daniel Radford",
+      "Asst. Referee: Matthew Morgan",
+      "Asst. Referee: Allen Johnson",
+      "Alt. Official: Chris Turner"
+    ],
+    "home_index": 1
+  }
+}

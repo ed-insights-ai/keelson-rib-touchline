@@ -1,0 +1,1240 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://umterps.com/sports/womens-soccer/stats/2026/-5-michigan-state/boxscore/21546",
+  "final_url": "https://umterps.com/sports/womens-soccer/stats/2026/-5-michigan-state/boxscore/21546",
+  "etag": null,
+  "last_modified": null,
+  "signature": "a8fd2a8cd85e38c917d8d8a6cb12f8dc97f44a6fd83ef46516c04e4ef6a2d53c",
+  "fingerprint": "d8f1bf8ea31d661e9e4cc184c57ac1763f9e976cc6d1ab5b208085e64bb8693c",
+  "fetched_at": "2026-11-23T10:26:00+00:00",
+  "verified_at": "2026-11-23T10:26:00+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://umterps.com/sports/womens-soccer/stats/2026/-5-michigan-state/boxscore/21546",
+    "teams": [
+      {
+        "name": "Maryland",
+        "abbr": "UMD",
+        "score": 0,
+        "periods": [
+          0,
+          0
+        ],
+        "shots": 4,
+        "saves": 10,
+        "corners": 2,
+        "fouls": 16,
+        "offsides": 0,
+        "sog": 1,
+        "players": [
+          {
+            "name": "Faith Luckey",
+            "player_id": "16139",
+            "position": "GK",
+            "number": "7",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 72
+          },
+          {
+            "name": "Peyton Bernard",
+            "player_id": "16129",
+            "position": "FWD",
+            "number": "3",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 61
+          },
+          {
+            "name": "Paige Foye",
+            "player_id": "16149",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Mia Mitchell",
+            "player_id": "16141",
+            "number": "5",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Jolie Farmer",
+            "player_id": "16146",
+            "position": "FWD",
+            "number": "9",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 60
+          },
+          {
+            "name": "McKinley Heaven",
+            "player_id": "16137",
+            "position": "FWD",
+            "number": "15",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 75
+          },
+          {
+            "name": "Lillian Bane",
+            "player_id": "16147",
+            "position": "MID",
+            "number": "21",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 65
+          },
+          {
+            "name": "Lisa McIntyre",
+            "player_id": "16108",
+            "number": "22",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 69
+          },
+          {
+            "name": "Morgan Shannon",
+            "player_id": "16154",
+            "position": "DEF",
+            "number": "23",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 78
+          },
+          {
+            "name": "Kamryn Cole",
+            "player_id": "16155",
+            "position": "MID",
+            "number": "24",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Ella Bulava",
+            "player_id": "16114",
+            "number": "28",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 84
+          },
+          {
+            "name": "Meredith Fisher",
+            "player_id": "16118",
+            "position": "GK",
+            "number": "1",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 18
+          },
+          {
+            "name": "Ary Oliver",
+            "player_id": "16145",
+            "position": "MID",
+            "number": "6",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 34
+          },
+          {
+            "name": "Emily Lenhard",
+            "player_id": "16122",
+            "position": "MID",
+            "number": "8",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 9
+          },
+          {
+            "name": "Ella Petry",
+            "player_id": "16150",
+            "position": "MID",
+            "number": "13",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 29
+          },
+          {
+            "name": "Daryn Barnes",
+            "player_id": "16151",
+            "position": "FWD",
+            "number": "16",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 15
+          },
+          {
+            "name": "Abigail Stager",
+            "player_id": "16148",
+            "position": "FWD",
+            "number": "25",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 36
+          },
+          {
+            "name": "Ellie Egeland",
+            "player_id": "16133",
+            "position": "MID",
+            "number": "47",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 15
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Meredith Fisher",
+            "player_id": "16118",
+            "position": "GK",
+            "number": "1",
+            "minutes": 18,
+            "goals_against": 0,
+            "saves": 1
+          },
+          {
+            "name": "Faith Luckey",
+            "player_id": "16139",
+            "position": "GK",
+            "number": "7",
+            "minutes": 72,
+            "goals_against": 1,
+            "saves": 8
+          }
+        ]
+      },
+      {
+        "name": "Michigan State",
+        "abbr": "MSU",
+        "score": 1,
+        "periods": [
+          0,
+          1
+        ],
+        "winner": true,
+        "shots": 20,
+        "saves": 1,
+        "corners": 3,
+        "fouls": 8,
+        "offsides": 0,
+        "sog": 11,
+        "players": [
+          {
+            "name": "Noelle Henning",
+            "position": "GK",
+            "number": "0",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Kayla Briggs",
+            "position": "MID",
+            "number": "9",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 73
+          },
+          {
+            "name": "Faith George",
+            "position": "DEF",
+            "number": "14",
+            "started": true,
+            "shots": 2,
+            "sog": 2,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 40
+          },
+          {
+            "name": "Julia Belli",
+            "position": "DEF",
+            "number": "15",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 78
+          },
+          {
+            "name": "Kaleigh McPherson",
+            "position": "MID",
+            "number": "16",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 59
+          },
+          {
+            "name": "Shelby Vaughn",
+            "position": "FWD",
+            "number": "20",
+            "started": true,
+            "shots": 3,
+            "sog": 2,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 79
+          },
+          {
+            "name": "Ella Janz",
+            "position": "MID",
+            "number": "22",
+            "started": true,
+            "shots": 3,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 73
+          },
+          {
+            "name": "Bella Najera",
+            "position": "MID",
+            "number": "23",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 81
+          },
+          {
+            "name": "Kennedy Bell",
+            "position": "FWD",
+            "number": "24",
+            "started": true,
+            "shots": 4,
+            "sog": 1,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 81
+          },
+          {
+            "name": "Renee Watson",
+            "position": "DEF",
+            "number": "28",
+            "started": true,
+            "shots": 3,
+            "sog": 3,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Ava Lutke",
+            "position": "DEF",
+            "number": "31",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 54
+          },
+          {
+            "name": "Jasmine Boggs",
+            "position": "DEF",
+            "number": "2",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 15
+          },
+          {
+            "name": "Sophia Piotrowski",
+            "position": "MID",
+            "number": "4",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 31
+          },
+          {
+            "name": "Grace Jackson",
+            "position": "MID",
+            "number": "8",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 1
+          },
+          {
+            "name": "Mackenzie Kruer",
+            "position": "DEF",
+            "number": "12",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 17
+          },
+          {
+            "name": "Lj Pearcy",
+            "position": "MID",
+            "number": "13",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 42
+          },
+          {
+            "name": "Eden Bretzer",
+            "position": "DEF",
+            "number": "21",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 20
+          },
+          {
+            "name": "Mimi Hallier",
+            "position": "DEF",
+            "number": "26",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 21
+          },
+          {
+            "name": "Addison Baldus",
+            "position": "DEF",
+            "number": "29",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Noelle Henning",
+            "position": "GK",
+            "number": "0",
+            "minutes": 90,
+            "goals_against": 0,
+            "saves": 1
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "50:33",
+        "team": 1,
+        "scorer": "Renee Watson",
+        "season_total": 3,
+        "assist": "Kennedy Bell",
+        "description": "GOAL by MSU Watson, Renee Assist by Bell, Kennedy."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Morgan Shannon",
+        "number": "23",
+        "time": "20:15",
+        "team": 0
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Henning, Noelle at goalie for Michigan State",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Luckey, Faith at goalie for Maryland",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MSU George, Faith, bottom center, Team save.",
+        "clock": "00:56",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MSU George, Faith, bottom center, saved by Luckey, Faith.",
+        "clock": "05:08",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Briggs, Kayla.",
+        "clock": "05:59",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on McPherson, Kaleigh.",
+        "clock": "08:44",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Briggs, Kayla.",
+        "clock": "09:12",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MSU Bell, Kennedy, out left.",
+        "clock": "10:15",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Heaven, Mckinley.",
+        "clock": "12:35",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [13:12].",
+        "clock": "13:12",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MSU Watson, Renee, bottom center, saved by Luckey, Faith.",
+        "clock": "13:37",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [13:47].",
+        "clock": "13:47",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Janz, Ella.",
+        "clock": "16:00",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "MSU substitution: Hallier, Mimi for George, Faith.",
+        "clock": "18:09",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on UMD Shannon, Morgan.",
+        "clock": "20:15",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MSU Bell, Kennedy.",
+        "clock": "20:27",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MSU Bell, Kennedy, out left.",
+        "clock": "20:33",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Cole, Kamryn.",
+        "clock": "21:29",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MSU Watson, Renee, bottom center, saved by Luckey, Faith.",
+        "clock": "24:38",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Shannon, Morgan.",
+        "clock": "27:11",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MSU Vaughn, Shelby.",
+        "clock": "27:56",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Stager, Abigail for Farmer, Jolie.",
+        "clock": "28:20",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Oliver, Ary for Bane, Lillian.",
+        "clock": "28:20",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MSU Vaughn, Shelby, bottom center, saved by Luckey, Faith.",
+        "clock": "29:06",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MSU Janz, Ella, out top.",
+        "clock": "30:37",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "MSU substitution: Baldus, Addison for Hallier, Mimi.",
+        "clock": "30:50",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Bernard, Peyton.",
+        "clock": "32:04",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MSU Bell, Kennedy, bottom center, saved by Luckey, Faith.",
+        "clock": "32:24",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "MSU substitution: Pearcy, LJ for Janz, Ella.",
+        "clock": "32:49",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Stager, Abigail.",
+        "clock": "33:47",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Baldus, Addison.",
+        "clock": "34:21",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Vaughn, Shelby.",
+        "clock": "34:50",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Bernard, Peyton.",
+        "clock": "35:19",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Petry, Ella for Bernard, Peyton.",
+        "clock": "35:51",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MSU Pearcy, LJ.",
+        "clock": "37:04",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Barnes, Daryn for Heaven, Mckinley.",
+        "clock": "37:55",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Egeland, Ellie for McIntyre, Lisa.",
+        "clock": "37:55",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "MSU substitution: Piotrowski, Sophia for McPherson, Kaleigh.",
+        "clock": "39:36",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MSU Belli, Julia.",
+        "clock": "41:18",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Stager, Abigail.",
+        "clock": "42:42",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR UMD: , #7 Luckey, Faith, #21 Bane, Lillian, #4 Foye, Paige, #5 Mitchell, Mia, #9 Farmer, Jolie, #15 Heaven, Mckinley, #22 McIntyre, Lisa, #3 Bernard, Peyton, #23 Shannon, Morgan, #24 Cole, Kamryn, #28 Bulava, Ella.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR MSU: , #0 Henning, Noelle, #9 Briggs, Kayla, #29 Baldus, Addison, #15 Belli, Julia, #16 McPherson, Kaleigh, #20 Vaughn, Shelby, #14 George, Faith, #23 Najera, Bella, #24 Bell, Kennedy, #28 Watson, Renee, #22 Janz, Ella.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "MSU substitution: McPherson, Kaleigh for Piotrowski, Sophia.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MSU substitution: George, Faith for Pearcy, LJ.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MSU substitution: Janz, Ella for Lutke, Ava.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Bane, Lillian for Petry, Ella.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Farmer, Jolie for Stager, Abigail.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Heaven, Mckinley for Barnes, Daryn.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: McIntyre, Lisa for Oliver, Ary.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Bernard, Peyton for Egeland, Ellie.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [46:40].",
+        "clock": "46:40",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by MSU Watson, Renee Assist by Bell, Kennedy.",
+        "clock": "50:33",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          1
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Foul on Heaven, Mckinley.",
+        "clock": "51:38",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Cole, Kamryn.",
+        "clock": "52:32",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Farmer, Jolie.",
+        "clock": "54:23",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by MSU Vaughn, Shelby, bottom center, saved by Luckey, Faith.",
+        "clock": "55:04",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by MSU Janz, Ella, out left.",
+        "clock": "55:11",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Shannon, Morgan.",
+        "clock": "57:54",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "MSU substitution: Pearcy, LJ for Briggs, Kayla.",
+        "clock": "58:31",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UMD Bernard, Peyton, top right, saved by Henning, Noelle.",
+        "clock": "58:57",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [61:37].",
+        "clock": "61:37",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Foye, Paige.",
+        "clock": "62:20",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "MSU substitution: Kruer, Mackenzie for Belli, Julia.",
+        "clock": "63:11",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MSU substitution: Piotrowski, Sophia for McPherson, Kaleigh.",
+        "clock": "63:11",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Heaven, Mckinley.",
+        "clock": "65:18",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "MSU substitution: Hallier, Mimi for George, Faith.",
+        "clock": "65:51",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by MSU Janz, Ella, bottom center, saved by Luckey, Faith.",
+        "clock": "67:45",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "MSU substitution: Bretzer, Eden for Vaughn, Shelby.",
+        "clock": "69:23",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Stager, Abigail for Farmer, Jolie.",
+        "clock": "69:23",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Petry, Ella for Bernard, Peyton.",
+        "clock": "69:23",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by MSU Najera, Bella, bottom left, saved by Luckey, Faith.",
+        "clock": "69:40",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Cole, Kamryn.",
+        "clock": "70:53",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Fisher, Meredith for Luckey, Faith.",
+        "clock": "71:05",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Oliver, Ary for Shannon, Morgan.",
+        "clock": "71:17",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by MSU Najera, Bella.",
+        "clock": "72:36",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Pearcy, LJ.",
+        "clock": "73:25",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "MSU substitution: Boggs, Jasmine for Hallier, Mimi.",
+        "clock": "74:42",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MSU substitution: Belli, Julia for Baldus, Addison.",
+        "clock": "75:03",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MSU substitution: Briggs, Kayla for Janz, Ella.",
+        "clock": "75:03",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Egeland, Ellie for Heaven, Mckinley.",
+        "clock": "75:03",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Barnes, Daryn for McIntyre, Lisa.",
+        "clock": "75:03",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Egeland, Ellie.",
+        "clock": "75:06",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "MSU substitution: Vaughn, Shelby for Najera, Bella.",
+        "clock": "80:14",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MSU substitution: Janz, Ella for Bell, Kennedy.",
+        "clock": "80:14",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MSU substitution: Lutke, Ava for Kruer, Mackenzie.",
+        "clock": "80:42",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Lenhard, Emily for Bane, Lillian.",
+        "clock": "80:42",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by MSU Briggs, Kayla, bottom center, saved by Fisher, Meredith.",
+        "clock": "81:22",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Shannon, Morgan for Egeland, Ellie.",
+        "clock": "83:21",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Heaven, Mckinley for Barnes, Daryn.",
+        "clock": "83:21",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Farmer, Jolie for Bulava, Ella.",
+        "clock": "83:21",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Farmer, Jolie.",
+        "clock": "83:45",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [85:28].",
+        "clock": "85:28",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Petry, Ella.",
+        "clock": "86:05",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UMD Shannon, Morgan.",
+        "clock": "87:11",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "MSU substitution: Jackson, Grace for Pearcy, LJ.",
+        "clock": "88:24",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Bretzer, Eden.",
+        "clock": "89:07",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Heaven, Mckinley.",
+        "clock": "89:46",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "type": "period"
+      }
+    ],
+    "stadium": "DeMartin Stadium",
+    "attendance": 1418,
+    "kickoff": "01:00",
+    "officials": [
+      "Referee: Christopher Koloffon",
+      "Asst. Referee: Jason Cross",
+      "Asst. Referee: Maxwell Unger",
+      "Alt. Official: Jared Wilson-Santos"
+    ],
+    "home_index": 1
+  }
+}

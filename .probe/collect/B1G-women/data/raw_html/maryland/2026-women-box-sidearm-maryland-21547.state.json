@@ -1,0 +1,1516 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://umterps.com/sports/womens-soccer/stats/2026/rutgers/boxscore/21547",
+  "final_url": "https://umterps.com/sports/womens-soccer/stats/2026/rutgers/boxscore/21547",
+  "etag": null,
+  "last_modified": null,
+  "signature": "d6441eefbc05b353e04424ec1adaaace04e5c426304daaaad2a8f109ac09a2e0",
+  "fingerprint": "d8f1bf8ea31d661e9e4cc184c57ac1763f9e976cc6d1ab5b208085e64bb8693c",
+  "fetched_at": "2026-11-23T10:26:01+00:00",
+  "verified_at": "2026-11-23T10:26:01+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://umterps.com/sports/womens-soccer/stats/2026/rutgers/boxscore/21547",
+    "teams": [
+      {
+        "name": "Maryland",
+        "abbr": "UMD",
+        "score": 3,
+        "periods": [
+          2,
+          1
+        ],
+        "winner": true,
+        "shots": 11,
+        "saves": 16,
+        "corners": 1,
+        "fouls": 13,
+        "offsides": 1,
+        "sog": 4,
+        "players": [
+          {
+            "name": "Faith Luckey",
+            "player_id": "16139",
+            "position": "GK",
+            "number": "7",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 79
+          },
+          {
+            "name": "Peyton Bernard",
+            "player_id": "16129",
+            "position": "FWD",
+            "number": "3",
+            "started": true,
+            "shots": 3,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 72
+          },
+          {
+            "name": "Paige Foye",
+            "player_id": "16149",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Mia Mitchell",
+            "player_id": "16141",
+            "number": "5",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Ary Oliver",
+            "player_id": "16145",
+            "position": "MID",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 68
+          },
+          {
+            "name": "Jolie Farmer",
+            "player_id": "16146",
+            "position": "FWD",
+            "number": "9",
+            "started": true,
+            "shots": 4,
+            "sog": 2,
+            "goals": 2,
+            "assists": 0,
+            "minutes": 72
+          },
+          {
+            "name": "McKinley Heaven",
+            "player_id": "16137",
+            "position": "FWD",
+            "number": "15",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 73
+          },
+          {
+            "name": "Lisa McIntyre",
+            "player_id": "16108",
+            "number": "22",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 79
+          },
+          {
+            "name": "Morgan Shannon",
+            "player_id": "16154",
+            "position": "DEF",
+            "number": "23",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 82
+          },
+          {
+            "name": "Kamryn Cole",
+            "player_id": "16155",
+            "position": "MID",
+            "number": "24",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 75
+          },
+          {
+            "name": "Ella Bulava",
+            "player_id": "16114",
+            "number": "28",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 79
+          },
+          {
+            "name": "Meredith Fisher",
+            "player_id": "16118",
+            "position": "GK",
+            "number": "1",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 11
+          },
+          {
+            "name": "Ava Paolini",
+            "player_id": "16144",
+            "position": "DEF",
+            "number": "2",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 19
+          },
+          {
+            "name": "Emily Lenhard",
+            "player_id": "16122",
+            "position": "MID",
+            "number": "8",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 7
+          },
+          {
+            "name": "Ella Petry",
+            "player_id": "16150",
+            "position": "MID",
+            "number": "13",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 28
+          },
+          {
+            "name": "Daryn Barnes",
+            "player_id": "16151",
+            "position": "FWD",
+            "number": "16",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 7
+          },
+          {
+            "name": "Lillian Bane",
+            "player_id": "16147",
+            "position": "MID",
+            "number": "21",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 30
+          },
+          {
+            "name": "Abigail Stager",
+            "player_id": "16148",
+            "position": "FWD",
+            "number": "25",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 22
+          },
+          {
+            "name": "Ellie Egeland",
+            "player_id": "16133",
+            "position": "MID",
+            "number": "47",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 7
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Meredith Fisher",
+            "player_id": "16118",
+            "position": "GK",
+            "number": "1",
+            "minutes": 11,
+            "goals_against": 1,
+            "saves": 3
+          },
+          {
+            "name": "Faith Luckey",
+            "player_id": "16139",
+            "position": "GK",
+            "number": "7",
+            "minutes": 79,
+            "goals_against": 1,
+            "saves": 13
+          }
+        ]
+      },
+      {
+        "name": "Rutgers",
+        "abbr": "RUT",
+        "score": 2,
+        "periods": [
+          0,
+          2
+        ],
+        "shots": 33,
+        "saves": 1,
+        "corners": 1,
+        "fouls": 14,
+        "offsides": 3,
+        "sog": 18,
+        "players": [
+          {
+            "name": "Olivia Bodmer",
+            "position": "GK",
+            "number": "0",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Julia Joseph",
+            "position": "DEF",
+            "number": "2",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 85
+          },
+          {
+            "name": "Lilia Calvert",
+            "position": "FWD",
+            "number": "3",
+            "started": true,
+            "shots": 3,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 71
+          },
+          {
+            "name": "Sophia Stiles",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Reilly McGlinn",
+            "position": "FWD",
+            "number": "6",
+            "started": true,
+            "shots": 4,
+            "sog": 4,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 71
+          },
+          {
+            "name": "Tommi Valente",
+            "position": "MID",
+            "number": "9",
+            "started": true,
+            "shots": 4,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 82
+          },
+          {
+            "name": "Ashley Baran",
+            "position": "FWD",
+            "number": "17",
+            "started": true,
+            "shots": 8,
+            "sog": 5,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 71
+          },
+          {
+            "name": "Amanda Thornton",
+            "position": "FWD",
+            "number": "22",
+            "started": true,
+            "shots": 5,
+            "sog": 4,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 68
+          },
+          {
+            "name": "Morgan Hippeli",
+            "position": "MID",
+            "number": "25",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 80
+          },
+          {
+            "name": "Lindsey Hailey",
+            "position": "DEF",
+            "number": "31",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Patricia Tsokos",
+            "position": "DEF",
+            "number": "77",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 85
+          },
+          {
+            "name": "Bea Tinoco",
+            "position": "FWD",
+            "number": "5",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 5
+          },
+          {
+            "name": "Olivia Russomanno",
+            "position": "FWD",
+            "number": "12",
+            "started": false,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 11
+          },
+          {
+            "name": "Audrey Cain",
+            "position": "DEF",
+            "number": "13",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 11
+          },
+          {
+            "name": "Jayme Malanda",
+            "position": "DEF",
+            "number": "16",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 10
+          },
+          {
+            "name": "Marian Dunne",
+            "position": "FWD",
+            "number": "20",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 16
+          },
+          {
+            "name": "Sarah Martinez",
+            "position": "MID",
+            "number": "21",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 8
+          },
+          {
+            "name": "Madelyn O'neill",
+            "position": "DEF",
+            "number": "24",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 5
+          },
+          {
+            "name": "Emma Johns",
+            "position": "FWD",
+            "number": "92",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 22
+          },
+          {
+            "name": "Dina Bojkovic",
+            "position": "FWD",
+            "number": "99",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 19
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Olivia Bodmer",
+            "position": "GK",
+            "number": "0",
+            "minutes": 90,
+            "goals_against": 3,
+            "saves": 1
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "07:06",
+        "team": 0,
+        "scorer": "Jolie Farmer",
+        "season_total": 6,
+        "description": "GOAL by UMD Farmer, Jolie."
+      },
+      {
+        "time": "38:43",
+        "team": 0,
+        "scorer": "Mia Mitchell",
+        "season_total": 0,
+        "description": "UMD Mia Mitchell PENALTY KICK GOAL."
+      },
+      {
+        "time": "51:47",
+        "team": 0,
+        "scorer": "Jolie Farmer",
+        "season_total": 6,
+        "description": "GOAL by UMD Farmer, Jolie."
+      },
+      {
+        "time": "56:25",
+        "team": 1,
+        "scorer": "Lilia Calvert",
+        "season_total": 5,
+        "description": "RUT Lilia Calvert PENALTY KICK GOAL."
+      },
+      {
+        "time": "81:49",
+        "team": 1,
+        "scorer": "Reilly McGlinn",
+        "season_total": 4,
+        "assist": "Julia Joseph",
+        "description": "GOAL by RUT McGlinn, Reilly Assist by Joseph, Julia."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Ary Oliver",
+        "number": "6",
+        "time": "17:36",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Lisa McIntyre",
+        "number": "22",
+        "time": "64:14",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Lindsey Hailey",
+        "number": "31",
+        "time": "75:02",
+        "team": 1
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Bodmer, Olivia at goalie for Rutgers",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Luckey, Faith at goalie for Maryland",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Heaven, Mckinley.",
+        "clock": "02:04",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD McIntyre, Lisa, out left.",
+        "clock": "03:35",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by RUT Valente, Tommi, bottom center, saved by Luckey, Faith.",
+        "clock": "04:25",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by RUT Valente, Tommi, out left.",
+        "clock": "04:57",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by RUT Baran, Ashley, bottom right, saved by Luckey, Faith.",
+        "clock": "05:51",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by UMD Farmer, Jolie.",
+        "clock": "07:06",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          1,
+          0
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Bernard, Peyton, bottom left, saved by Bodmer, Olivia.",
+        "clock": "08:55",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by RUT Calvert, Lilia.",
+        "clock": "10:42",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Hippeli, Morgan.",
+        "clock": "12:28",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Heaven, Mckinley, out right.",
+        "clock": "13:52",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Hippeli, Morgan.",
+        "clock": "14:26",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Farmer, Jolie, out right.",
+        "clock": "15:00",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on McIntyre, Lisa.",
+        "clock": "15:17",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by RUT Baran, Ashley, out left.",
+        "clock": "16:28",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on UMD Oliver, Ary.",
+        "clock": "17:36",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Valente, Tommi.",
+        "clock": "17:36",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by RUT Tsokos, Patricia, bottom center, saved by Luckey, Faith.",
+        "clock": "17:36",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by RUT Baran, Ashley, out right.",
+        "clock": "20:33",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by RUT Joseph, Julia, out top.",
+        "clock": "22:51",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Stiles, Sophia.",
+        "clock": "24:25",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Heaven, Mckinley.",
+        "clock": "25:03",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by RUT McGlinn, Reilly, bottom center, saved by Luckey, Faith.",
+        "clock": "26:00",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Bernard, Peyton.",
+        "clock": "26:56",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by RUT McGlinn, Reilly, bottom center, saved by Luckey, Faith.",
+        "clock": "27:28",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by RUT Thornton, Amanda, bottom center, saved by Luckey, Faith.",
+        "clock": "28:47",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [29:47].",
+        "clock": "29:47",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UMD Farmer, Jolie.",
+        "clock": "30:27",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by RUT Valente, Tommi.",
+        "clock": "31:44",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by RUT Thornton, Amanda, bottom right, saved by Luckey, Faith.",
+        "clock": "31:57",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "RUT substitution: Bojkovic, Dina for McGlinn, Reilly.",
+        "clock": "33:31",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "RUT substitution: Russomanno, Olivia for Baran, Ashley.",
+        "clock": "33:31",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "RUT substitution: Johns, Emma for Thornton, Amanda.",
+        "clock": "33:31",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Bane, Lillian for Oliver, Ary.",
+        "clock": "33:31",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Petry, Ella for Heaven, Mckinley.",
+        "clock": "33:31",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Stager, Abigail for McIntyre, Lisa.",
+        "clock": "33:31",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by RUT Joseph, Julia.",
+        "clock": "33:55",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Rutgers.",
+        "clock": "34:14",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Johns, Emma.",
+        "clock": "34:47",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by RUT Russomanno, Olivia, out left.",
+        "clock": "36:00",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "RUT substitution: Malanda, Jayme for Calvert, Lilia.",
+        "clock": "36:22",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "RUT substitution: Dunne, Marian for Valente, Tommi.",
+        "clock": "36:22",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "RUT substitution: Martinez, Sarah for Hippeli, Morgan.",
+        "clock": "36:22",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Rutgers.",
+        "clock": "36:53",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Egeland, Ellie for Bernard, Peyton.",
+        "clock": "38:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Lenhard, Emily for Farmer, Jolie.",
+        "clock": "38:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD substitution: Barnes, Daryn for Cole, Kamryn.",
+        "clock": "38:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UMD Mia Mitchell PENALTY KICK GOAL.",
+        "clock": "38:43",
+        "team": 0,
+        "type": "penalty",
+        "score": [
+          2,
+          0
+        ]
+      },
+      {
+        "period": "1",
+        "text": "RUT substitution: O'Neill, Madelyn for Joseph, Julia.",
+        "clock": "39:11",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "RUT substitution: Tinoco, Bea for Tsokos, Patricia.",
+        "clock": "39:11",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [39:13].",
+        "clock": "39:13",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by RUT Dunne, Marian.",
+        "clock": "42:13",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by RUT Russomanno, Olivia, bottom center, saved by Luckey, Faith.",
+        "clock": "42:22",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by RUT Johns, Emma, bottom right, saved by Luckey, Faith.",
+        "clock": "44:14",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR UMD: , #7 Luckey, Faith, #3 Bernard, Peyton, #4 Foye, Paige, #5 Mitchell, Mia, #6 Oliver, Ary, #9 Farmer, Jolie, #15 Heaven, Mckinley, #22 McIntyre, Lisa, #23 Shannon, Morgan, #24 Cole, Kamryn, #28 Bulava, Ella.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR RUT: , #0 Bodmer, Olivia, #2 Joseph, Julia, #3 Calvert, Lilia, #4 Stiles, Sophia, #6 McGlinn, Reilly, #9 Valente, Tommi, #17 Baran, Ashley, #22 Thornton, Amanda, #25 Hippeli, Morgan, #31 Hailey, Lindsey, #77 Tsokos, Patricia.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "RUT substitution: Joseph, Julia for O'Neill, Madelyn.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "RUT substitution: Calvert, Lilia for Malanda, Jayme.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "RUT substitution: McGlinn, Reilly for Bojkovic, Dina.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "RUT substitution: Valente, Tommi for Dunne, Marian.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "RUT substitution: Baran, Ashley for Russomanno, Olivia.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "RUT substitution: Thornton, Amanda for Johns, Emma.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "RUT substitution: Hippeli, Morgan for Martinez, Sarah.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "RUT substitution: Tsokos, Patricia for Tinoco, Bea.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Bernard, Peyton for Egeland, Ellie.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Oliver, Ary for Bane, Lillian.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Farmer, Jolie for Lenhard, Emily.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Heaven, Mckinley for Petry, Ella.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: McIntyre, Lisa for Stager, Abigail.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Cole, Kamryn for Barnes, Daryn.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Thornton, Amanda.",
+        "clock": "46:32",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Shannon, Morgan.",
+        "clock": "48:03",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Maryland.",
+        "clock": "49:11",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Shot by RUT Calvert, Lilia, out top.",
+        "clock": "49:41",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by RUT Baran, Ashley, bottom center, saved by Luckey, Faith.",
+        "clock": "51:22",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by UMD Farmer, Jolie.",
+        "clock": "51:47",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          3,
+          0
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Foul on Heaven, Mckinley.",
+        "clock": "53:53",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by RUT Baran, Ashley, bottom left, saved by Luckey, Faith.",
+        "clock": "54:25",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UMD Bernard, Peyton, out top.",
+        "clock": "56:21",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Mitchell, Mia",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "RUT Lilia Calvert PENALTY KICK GOAL.",
+        "clock": "56:25",
+        "team": 1,
+        "type": "penalty",
+        "score": [
+          3,
+          1
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Foul on Heaven, Mckinley.",
+        "clock": "60:01",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "RUT substitution: Johns, Emma for Thornton, Amanda.",
+        "clock": "61:27",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by RUT Hailey, Lindsey, out top.",
+        "clock": "63:41",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on UMD McIntyre, Lisa.",
+        "clock": "64:14",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Calvert, Lilia.",
+        "clock": "64:32",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Cole, Kamryn.",
+        "clock": "64:32",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "RUT substitution: Dunne, Marian for Calvert, Lilia.",
+        "clock": "64:32",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "RUT substitution: Cain, Audrey for McGlinn, Reilly.",
+        "clock": "64:32",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "RUT substitution: Bojkovic, Dina for Baran, Ashley.",
+        "clock": "64:32",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Dunne, Marian.",
+        "clock": "64:32",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Dunne, Marian.",
+        "clock": "68:37",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Rutgers.",
+        "clock": "70:35",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "RUT substitution: Malanda, Jayme for Hippeli, Morgan.",
+        "clock": "70:35",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Bane, Lillian for Shannon, Morgan.",
+        "clock": "70:35",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Paolini, Ava for Cole, Kamryn.",
+        "clock": "70:35",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on McIntyre, Lisa.",
+        "clock": "70:44",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "RUT substitution: Thornton, Amanda for Dunne, Marian.",
+        "clock": "72:58",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "RUT substitution: Baran, Ashley for Bojkovic, Dina.",
+        "clock": "72:58",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "RUT substitution: McGlinn, Reilly for Johns, Emma.",
+        "clock": "72:58",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "RUT substitution: Hippeli, Morgan for Malanda, Jayme.",
+        "clock": "72:58",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Petry, Ella for Bernard, Peyton.",
+        "clock": "72:58",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Farmer, Jolie.",
+        "clock": "74:42",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on RUT Hailey, Lindsey.",
+        "clock": "75:02",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Baran, Ashley.",
+        "clock": "75:16",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "RUT substitution: Calvert, Lilia for Cain, Audrey.",
+        "clock": "75:58",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by RUT Baran, Ashley, bottom left, saved by Luckey, Faith.",
+        "clock": "76:25",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by RUT Thornton, Amanda, bottom center, saved by Luckey, Faith.",
+        "clock": "76:32",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by RUT Baran, Ashley, out top right.",
+        "clock": "77:03",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Fisher, Meredith for Luckey, Faith.",
+        "clock": "78:42",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Shannon, Morgan for Oliver, Ary.",
+        "clock": "78:42",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Cole, Kamryn for Farmer, Jolie.",
+        "clock": "78:42",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Stager, Abigail for Bulava, Ella.",
+        "clock": "78:42",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by RUT Thornton, Amanda, bottom center, saved by Fisher, Meredith.",
+        "clock": "78:42",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by RUT Thornton, Amanda.",
+        "clock": "78:42",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Stager, Abigail.",
+        "clock": "78:42",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by RUT McGlinn, Reilly Assist by Joseph, Julia.",
+        "clock": "81:49",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          3,
+          2
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Foul on Stiles, Sophia.",
+        "clock": "82:09",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "UMD substitution: Bernard, Peyton for Heaven, Mckinley.",
+        "clock": "83:29",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by RUT Valente, Tommi.",
+        "clock": "83:29",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by RUT McGlinn, Reilly, bottom center, saved by Fisher, Meredith.",
+        "clock": "84:34",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by RUT Hippeli, Morgan, out top right.",
+        "clock": "87:00",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Hippeli, Morgan.",
+        "clock": "87:21",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by RUT Baran, Ashley, bottom left, saved by Fisher, Meredith.",
+        "clock": "88:40",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "type": "period"
+      }
+    ],
+    "stadium": "Yurcak Field",
+    "attendance": 503,
+    "kickoff": "07:00",
+    "officials": [
+      "Referee: Nathaniel Hirschman",
+      "Asst. Referee: Colby Johnson",
+      "Asst. Referee: Matthew Kue",
+      "Alt. Official: Keith Fisher"
+    ],
+    "home_index": 1
+  }
+}

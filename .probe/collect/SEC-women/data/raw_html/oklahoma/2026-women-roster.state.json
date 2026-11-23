@@ -1,0 +1,281 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://soonersports.com/sports/soccer/roster/2026",
+  "final_url": "https://soonersports.com/sports/soccer/roster/2026",
+  "etag": "W/\"pA6LBak4Lp\"",
+  "last_modified": "Mon, 23 Nov 2026 10:25:40 GMT",
+  "signature": "f9b00f5ca77cc9643be45c241bd9082e48afce11dc65d07f5b23542570047a8b",
+  "fingerprint": "d8f1bf8ea31d661e9e4cc184c57ac1763f9e976cc6d1ab5b208085e64bb8693c",
+  "fetched_at": "2026-11-23T10:25:41+00:00",
+  "verified_at": "2026-11-23T10:25:41+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 29,
+    "reason": null
+  },
+  "parsed": {
+    "players": [
+      {
+        "name": "Kenzie Clouse",
+        "number": "1",
+        "position": "GK",
+        "height": "5'8\"",
+        "hometown": "Norman, Okla.",
+        "class_year": "Freshman",
+        "source_url": "https://soonersports.com/sports/soccer/roster/kenzie-clouse/20057"
+      },
+      {
+        "name": "Paige Califf",
+        "number": "2",
+        "position": "M",
+        "height": "5'8\"",
+        "hometown": "Orange, Calif.",
+        "class_year": "Fifth Year",
+        "source_url": "https://soonersports.com/sports/soccer/roster/paige-califf/20058"
+      },
+      {
+        "name": "Lexi Dendis",
+        "number": "3",
+        "position": "M/D",
+        "height": "5'4\"",
+        "hometown": "Flemington, N.J.",
+        "class_year": "Junior",
+        "source_url": "https://soonersports.com/sports/soccer/roster/lexi-dendis/20046"
+      },
+      {
+        "name": "Sophie Morrin",
+        "number": "4",
+        "position": "M",
+        "height": "5'5\"",
+        "hometown": "Cheshire, England",
+        "class_year": "Senior",
+        "source_url": "https://soonersports.com/sports/soccer/roster/sophie-morrin/20053"
+      },
+      {
+        "name": "Narissa Fults",
+        "number": "5",
+        "position": "F",
+        "height": "5'9\"",
+        "hometown": "Norman, Okla.",
+        "class_year": "Junior",
+        "source_url": "https://soonersports.com/sports/soccer/roster/narissa-fults/20059"
+      },
+      {
+        "name": "Kayla Keefer",
+        "number": "6",
+        "position": "F",
+        "height": "5'6\"",
+        "hometown": "Bloomsburg, Pa.",
+        "class_year": "Junior",
+        "source_url": "https://soonersports.com/sports/soccer/roster/kayla-keefer/20049"
+      },
+      {
+        "name": "Fernanda Dantas",
+        "number": "7",
+        "position": "D",
+        "height": "5'5\"",
+        "hometown": "Salvador, Brazil",
+        "class_year": "Junior",
+        "source_url": "https://soonersports.com/sports/soccer/roster/fernanda-dantas/20244"
+      },
+      {
+        "name": "Isabella Martinez",
+        "number": "8",
+        "position": "M",
+        "height": "5'4\"",
+        "hometown": "Keller, Texas",
+        "class_year": "Sophomore",
+        "source_url": "https://soonersports.com/sports/soccer/roster/isabella-martinez/20052"
+      },
+      {
+        "name": "Ally Laccinole",
+        "number": "9",
+        "position": "D",
+        "height": "5'10\"",
+        "hometown": "Woodinville, Wash.",
+        "class_year": "Sophomore",
+        "source_url": "https://soonersports.com/sports/soccer/roster/ally-laccinole/20050"
+      },
+      {
+        "name": "Avery Brand",
+        "number": "10",
+        "position": "M",
+        "height": "5'9\"",
+        "hometown": "Parker, Colo.",
+        "class_year": "Freshman",
+        "source_url": "https://soonersports.com/sports/soccer/roster/avery-brand/20245"
+      },
+      {
+        "name": "Drue Legan",
+        "number": "11",
+        "position": "D",
+        "height": "6'0\"",
+        "hometown": "Jenks, Okla.",
+        "class_year": "Sophomore",
+        "source_url": "https://soonersports.com/sports/soccer/roster/drue-legan/20051"
+      },
+      {
+        "name": "Kennedy Kaiser",
+        "number": "12",
+        "position": "F",
+        "height": "5'3\"",
+        "hometown": "McAllen, Texas",
+        "class_year": "Freshman",
+        "source_url": "https://soonersports.com/sports/soccer/roster/kennedy-kaiser/20246"
+      },
+      {
+        "name": "Kiki Smith",
+        "number": "14",
+        "position": "D",
+        "height": "5'9\"",
+        "hometown": "Ahwatukee, Ariz.",
+        "class_year": "Fifth Year",
+        "source_url": "https://soonersports.com/sports/soccer/roster/kiki-smith/20055"
+      },
+      {
+        "name": "Aly Guthrie",
+        "number": "15",
+        "position": "M",
+        "height": "5'8\"",
+        "hometown": "Plano, Texas",
+        "class_year": "Sophomore",
+        "source_url": "https://soonersports.com/sports/soccer/roster/aly-guthrie/20047"
+      },
+      {
+        "name": "Ariana Ellison",
+        "number": "16",
+        "position": "D",
+        "height": "5'3\"",
+        "hometown": "Sammamish, Wash.",
+        "class_year": "Junior",
+        "source_url": "https://soonersports.com/sports/soccer/roster/ariana-ellison/20247"
+      },
+      {
+        "name": "Kate McCallister",
+        "number": "17",
+        "position": "M",
+        "height": "5'6\"",
+        "hometown": "Rowlett, Texas",
+        "class_year": "Freshman",
+        "source_url": "https://soonersports.com/sports/soccer/roster/kate-mccallister/20248"
+      },
+      {
+        "name": "Landrey Turner",
+        "number": "20",
+        "position": "D",
+        "height": "5'4\"",
+        "hometown": "Broken Arrow, Okla.",
+        "class_year": "Freshman",
+        "source_url": "https://soonersports.com/sports/soccer/roster/landrey-turner/20249"
+      },
+      {
+        "name": "Kendall Campbell",
+        "number": "21",
+        "position": "D",
+        "height": "5'6\"",
+        "hometown": "Palmdale, Calif.",
+        "class_year": "Fifth Year",
+        "source_url": "https://soonersports.com/sports/soccer/roster/kendall-campbell/20250"
+      },
+      {
+        "name": "Brenna Hallam",
+        "number": "22",
+        "position": "F",
+        "height": "5'10\"",
+        "hometown": "Colorado Springs, Colo.",
+        "class_year": "Freshman",
+        "source_url": "https://soonersports.com/sports/soccer/roster/brenna-hallam/20251"
+      },
+      {
+        "name": "Sadie Sterbenz",
+        "number": "23",
+        "position": "D",
+        "height": "5'6\"",
+        "hometown": "Clarendon Hills, Ill.",
+        "class_year": "Senior",
+        "source_url": "https://soonersports.com/sports/soccer/roster/sadie-sterbenz/20060"
+      },
+      {
+        "name": "Natalie Hoefer",
+        "number": "24",
+        "position": "D",
+        "height": "5'7\"",
+        "hometown": "Owasso, Okla.",
+        "class_year": "Sophomore",
+        "source_url": "https://soonersports.com/sports/soccer/roster/natalie-hoefer/20048"
+      },
+      {
+        "name": "Olivia Wright",
+        "number": "26",
+        "position": "M",
+        "height": "5'8\"",
+        "hometown": "Edmond, Okla.",
+        "class_year": "Freshman",
+        "source_url": "https://soonersports.com/sports/soccer/roster/olivia-wright/20061"
+      },
+      {
+        "name": "Claire Curran",
+        "number": "30",
+        "position": "F",
+        "height": "5'4\"",
+        "hometown": "San Diego, Calif.",
+        "class_year": "Senior",
+        "source_url": "https://soonersports.com/sports/soccer/roster/claire-curran/20044"
+      },
+      {
+        "name": "Halley Jae Coffey",
+        "number": "32",
+        "position": "F",
+        "height": "5'2\"",
+        "hometown": "Norman, Okla.",
+        "class_year": "Freshman",
+        "source_url": "https://soonersports.com/sports/soccer/roster/halley-jae-coffey/20062"
+      },
+      {
+        "name": "Elle Canty",
+        "number": "33",
+        "position": "M",
+        "height": "5'7\"",
+        "hometown": "Norman, Okla.",
+        "class_year": "Sophomore",
+        "source_url": "https://soonersports.com/sports/soccer/roster/elle-canty/20043"
+      },
+      {
+        "name": "Callie Sullivan",
+        "number": "34",
+        "position": "GK",
+        "height": "6'0\"",
+        "hometown": "Norman, Okla.",
+        "class_year": "Sophomore",
+        "source_url": "https://soonersports.com/sports/soccer/roster/callie-sullivan/20056"
+      },
+      {
+        "name": "Emily Davey",
+        "number": "36",
+        "position": "F",
+        "height": "5'8\"",
+        "hometown": "Trabuco Canyon, Calif.",
+        "class_year": "Sophomore",
+        "source_url": "https://soonersports.com/sports/soccer/roster/emily-davey/20045"
+      },
+      {
+        "name": "Addison Tauscher",
+        "number": "77",
+        "position": "GK",
+        "height": "5'9\"",
+        "hometown": "Lenexa, Kan.",
+        "class_year": "Junior",
+        "source_url": "https://soonersports.com/sports/soccer/roster/addison-tauscher/20063"
+      },
+      {
+        "name": "Mojisola Ayodele",
+        "number": "99",
+        "position": "GK",
+        "height": "5'9\"",
+        "hometown": "Princeton, N.J.",
+        "class_year": "Fifth Year",
+        "source_url": "https://soonersports.com/sports/soccer/roster/mojisola-ayodele/20252"
+      }
+    ]
+  }
+}

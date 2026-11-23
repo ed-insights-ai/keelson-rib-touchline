@@ -1,0 +1,1239 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://soonersports.com/sports/soccer/stats/2026/texas/boxscore/15818",
+  "final_url": "https://soonersports.com/sports/soccer/stats/2026/texas/boxscore/15818",
+  "etag": null,
+  "last_modified": null,
+  "signature": "4d35baa4ec8c9aafb2e6453f73b6b9251c67d719011469cff11a94c776713919",
+  "fingerprint": "d8f1bf8ea31d661e9e4cc184c57ac1763f9e976cc6d1ab5b208085e64bb8693c",
+  "fetched_at": "2026-11-23T10:25:53+00:00",
+  "verified_at": "2026-11-23T10:25:53+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://soonersports.com/sports/soccer/stats/2026/texas/boxscore/15818",
+    "teams": [
+      {
+        "name": "Oklahoma",
+        "abbr": "OKL",
+        "score": 1,
+        "periods": [
+          1,
+          0
+        ],
+        "shots": 13,
+        "saves": 5,
+        "corners": 4,
+        "fouls": 7,
+        "offsides": 5,
+        "sog": 6,
+        "players": [
+          {
+            "name": "Callie Sullivan",
+            "player_id": "20056",
+            "position": "GK",
+            "number": "34",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Paige Califf",
+            "player_id": "20058",
+            "position": "MID",
+            "number": "2",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 87
+          },
+          {
+            "name": "Sophie Morrin",
+            "player_id": "20053",
+            "position": "MID",
+            "number": "4",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 54
+          },
+          {
+            "name": "Narissa Fults",
+            "player_id": "20059",
+            "position": "FWD",
+            "number": "5",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 73
+          },
+          {
+            "name": "Kayla Keefer",
+            "player_id": "20049",
+            "position": "FWD",
+            "number": "6",
+            "started": true,
+            "shots": 5,
+            "sog": 4,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 81
+          },
+          {
+            "name": "Ally Laccinole",
+            "player_id": "20050",
+            "position": "DEF",
+            "number": "9",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Ariana Ellison",
+            "player_id": "20247",
+            "position": "DEF",
+            "number": "16",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 88
+          },
+          {
+            "name": "Kate McCallister",
+            "player_id": "20248",
+            "position": "MID",
+            "number": "17",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 85
+          },
+          {
+            "name": "Kendall Campbell",
+            "player_id": "20250",
+            "position": "DEF",
+            "number": "21",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Sadie Sterbenz",
+            "player_id": "20060",
+            "position": "DEF",
+            "number": "23",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 83
+          },
+          {
+            "name": "Elle Canty",
+            "player_id": "20043",
+            "position": "MID",
+            "number": "33",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 86
+          },
+          {
+            "name": "Fernanda Dantas",
+            "player_id": "20244",
+            "position": "DEF",
+            "number": "7",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 11
+          },
+          {
+            "name": "Kennedy Kaiser",
+            "player_id": "20246",
+            "position": "FWD",
+            "number": "12",
+            "started": false,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 30
+          },
+          {
+            "name": "Brenna Hallam",
+            "player_id": "20251",
+            "position": "FWD",
+            "number": "22",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 4
+          },
+          {
+            "name": "Claire Curran",
+            "player_id": "20044",
+            "position": "FWD",
+            "number": "30",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 20
+          },
+          {
+            "name": "Emily Davey",
+            "player_id": "20045",
+            "position": "FWD",
+            "number": "36",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 40
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Callie Sullivan",
+            "player_id": "20056",
+            "position": "GK",
+            "number": "34",
+            "minutes": 90,
+            "goals_against": 2,
+            "saves": 5
+          }
+        ]
+      },
+      {
+        "name": "Texas",
+        "abbr": "TEX",
+        "score": 2,
+        "periods": [
+          0,
+          2
+        ],
+        "winner": true,
+        "shots": 20,
+        "saves": 5,
+        "corners": 7,
+        "fouls": 11,
+        "offsides": 0,
+        "sog": 7,
+        "players": [
+          {
+            "name": "Bayliss Flynn",
+            "position": "GK",
+            "number": "0",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Ava McDonald",
+            "position": "FWD",
+            "number": "1",
+            "started": true,
+            "shots": 3,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Audrey Bryant",
+            "position": "FWD",
+            "number": "7",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 73
+          },
+          {
+            "name": "Sadie Hoch",
+            "position": "MID",
+            "number": "9",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Mya Brandon",
+            "position": "DEF",
+            "number": "11",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Ashlyn Anderson",
+            "position": "FWD",
+            "number": "13",
+            "started": true,
+            "shots": 3,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 65
+          },
+          {
+            "name": "Alicia Riggins",
+            "position": "FWD",
+            "number": "15",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Emj Witt",
+            "position": "DEF",
+            "number": "23",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Hannah Tate",
+            "position": "MID",
+            "number": "27",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Amalia Villarreal",
+            "position": "MID",
+            "number": "44",
+            "started": true,
+            "shots": 9,
+            "sog": 4,
+            "goals": 2,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Caroline Swann",
+            "position": "MID",
+            "number": "52",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 61
+          },
+          {
+            "name": "Ava Cashman",
+            "position": "MID",
+            "number": "5",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 29
+          },
+          {
+            "name": "Vivian Geesbreght",
+            "position": "DEF",
+            "number": "20",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 9
+          },
+          {
+            "name": "Addie Brink",
+            "position": "MID",
+            "number": "34",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 33
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Bayliss Flynn",
+            "position": "GK",
+            "number": "0",
+            "minutes": 90,
+            "goals_against": 1,
+            "saves": 5
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "28:30",
+        "team": 0,
+        "scorer": "Kate McCallister",
+        "season_total": 4,
+        "description": "GOAL by OKL McCallister, Kate."
+      },
+      {
+        "time": "67:55",
+        "team": 1,
+        "scorer": "Amalia Villarreal",
+        "season_total": 5,
+        "description": "TEX Amalia Villarreal PENALTY KICK GOAL."
+      },
+      {
+        "time": "81:56",
+        "team": 1,
+        "scorer": "Amalia Villarreal",
+        "season_total": 5,
+        "description": "GOAL by TEX Villarreal, Amalia."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Kayla Keefer",
+        "number": "6",
+        "time": "66:50",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Elle Canty",
+        "number": "33",
+        "time": "67:55",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Audrey Bryant",
+        "number": "7",
+        "time": "74:36",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Emily Davey",
+        "number": "36",
+        "time": "78:22",
+        "team": 0
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Flynn, Bayliss at goalie for Texas",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Sullivan, Callie at goalie for Oklahoma",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Morrin, Sophie.",
+        "clock": "04:33",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by TEX Bryant, Audrey, bottom center, saved by Sullivan, Callie.",
+        "clock": "04:57",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Canty, Elle.",
+        "clock": "05:25",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Swann, Caroline.",
+        "clock": "05:55",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OKL Laccinole, Ally, out right.",
+        "clock": "06:30",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [06:47].",
+        "clock": "06:47",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OKL Keefer, Kayla, out top.",
+        "clock": "07:43",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Oklahoma.",
+        "clock": "09:32",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Shot by TEX McDonald, Ava, out left.",
+        "clock": "10:38",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by TEX Hoch, Sadie.",
+        "clock": "12:56",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [13:02].",
+        "clock": "13:02",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OKL Keefer, Kayla, bottom left, saved by Flynn, Bayliss.",
+        "clock": "14:23",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OKL Keefer, Kayla, bottom left, saved by Flynn, Bayliss.",
+        "clock": "18:33",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OKL Canty, Elle.",
+        "clock": "19:33",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Anderson, Ashlyn.",
+        "clock": "22:38",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Brandon, Mya.",
+        "clock": "23:47",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "OKL substitution: Davey, Emily for Morrin, Sophie.",
+        "clock": "24:27",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by TEX Anderson, Ashlyn.",
+        "clock": "26:03",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Fults, Narissa.",
+        "clock": "26:17",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by TEX Brandon, Mya, out top.",
+        "clock": "26:48",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "TEX substitution: Brink, Addie for Bryant, Audrey.",
+        "clock": "27:35",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Bryant, Audrey.",
+        "clock": "27:39",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by TEX Villarreal, Amalia, out left.",
+        "clock": "27:45",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by OKL McCallister, Kate.",
+        "clock": "28:30",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          1,
+          0
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [30:09].",
+        "clock": "30:09",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "TEX substitution: Cashman, Ava for Swann, Caroline.",
+        "clock": "31:03",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Keefer, Kayla.",
+        "clock": "31:49",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [32:15].",
+        "clock": "32:15",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OKL Fults, Narissa, bottom left, saved by Flynn, Bayliss.",
+        "clock": "34:08",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "TEX substitution: Geesbreght, Vivian for Anderson, Ashlyn.",
+        "clock": "35:41",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OKL substitution: Kaiser, Kennedy for Fults, Narissa.",
+        "clock": "35:41",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Oklahoma.",
+        "clock": "37:25",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Shot by TEX Villarreal, Amalia.",
+        "clock": "38:27",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [38:30].",
+        "clock": "38:30",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by TEX Cashman, Ava.",
+        "clock": "39:05",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Geesbreght, Vivian.",
+        "clock": "39:17",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Oklahoma.",
+        "clock": "39:49",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "OKL substitution: Curran, Claire for Keefer, Kayla.",
+        "clock": "40:43",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OKL substitution: Hallam, Brenna for Canty, Elle.",
+        "clock": "40:43",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Oklahoma.",
+        "clock": "41:11",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR OKL: , #34 Sullivan, Callie, #2 Califf, Paige, #4 Morrin, Sophie, #5 Fults, Narissa, #6 Keefer, Kayla, #9 Laccinole, Ally, #16 Ellison, Ariana, #17 McCallister, Kate, #21 Campbell, Kendall, #23 Sterbenz, Sadie, #33 Canty, Elle.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR TEX: , #0 Flynn, Bayliss, #1 McDonald, Ava, #13 Anderson, Ashlyn, #9 Hoch, Sadie, #11 Brandon, Mya, #7 Bryant, Audrey, #15 Riggins, Alicia, #23 Witt, EmJ, #27 Tate, Hannah, #44 Villarreal, Amalia, #52 Swann, Caroline.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "TEX substitution: Anderson, Ashlyn for Brink, Addie.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "TEX substitution: Bryant, Audrey for Geesbreght, Vivian.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "TEX substitution: Swann, Caroline for Cashman, Ava.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Morrin, Sophie for Davey, Emily.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Fults, Narissa for Kaiser, Kennedy.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Keefer, Kayla for Curran, Claire.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Canty, Elle for Hallam, Brenna.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by TEX Villarreal, Amalia, bottom center, saved by Sullivan, Callie.",
+        "clock": "48:13",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [49:33].",
+        "clock": "49:33",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [50:12].",
+        "clock": "50:12",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Hoch, Sadie.",
+        "clock": "52:42",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Swann, Caroline.",
+        "clock": "53:31",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Morrin, Sophie.",
+        "clock": "54:41",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Oklahoma.",
+        "clock": "55:07",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Tate, Hannah.",
+        "clock": "57:11",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by TEX Anderson, Ashlyn.",
+        "clock": "59:33",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [59:45].",
+        "clock": "59:45",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OKL Keefer, Kayla, bottom left, saved by Flynn, Bayliss.",
+        "clock": "63:05",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [63:15].",
+        "clock": "63:15",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Morrin, Sophie.",
+        "clock": "64:00",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by TEX Anderson, Ashlyn, bottom right, saved by Sullivan, Callie.",
+        "clock": "65:44",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Davey, Emily for Morrin, Sophie.",
+        "clock": "65:53",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Kaiser, Kennedy for Fults, Narissa.",
+        "clock": "65:53",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Curran, Claire for Ellison, Ariana.",
+        "clock": "65:53",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OKL Keefer, Kayla, bottom center, saved by Flynn, Bayliss.",
+        "clock": "66:27",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Keefer, Kayla.",
+        "clock": "66:50",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on OKL Keefer, Kayla.",
+        "clock": "66:50",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Shot by TEX Villarreal, Amalia.",
+        "clock": "67:43",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on OKL Canty, Elle.",
+        "clock": "67:55",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "TEX Amalia Villarreal PENALTY KICK GOAL.",
+        "clock": "67:55",
+        "team": 1,
+        "type": "penalty",
+        "score": [
+          1,
+          1
+        ]
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Ellison, Ariana for Curran, Claire.",
+        "clock": "67:55",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by TEX Villarreal, Amalia, out top.",
+        "clock": "68:56",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Bryant, Audrey.",
+        "clock": "69:35",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [70:18].",
+        "clock": "70:18",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "TEX substitution: Brink, Addie for Anderson, Ashlyn.",
+        "clock": "73:33",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "TEX substitution: Cashman, Ava for Swann, Caroline.",
+        "clock": "73:33",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Morrin, Sophie for Keefer, Kayla.",
+        "clock": "73:33",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Fults, Narissa for McCallister, Kate.",
+        "clock": "73:33",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on TEX Bryant, Audrey.",
+        "clock": "74:36",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OKL Davey, Emily.",
+        "clock": "74:36",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OKL Kaiser, Kennedy, out right.",
+        "clock": "74:45",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by TEX Villarreal, Amalia, bottom center, saved by Sullivan, Callie.",
+        "clock": "77:26",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on OKL Davey, Emily.",
+        "clock": "78:22",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Keefer, Kayla for Califf, Paige.",
+        "clock": "78:22",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Dantas, Fernanda for Davey, Emily.",
+        "clock": "78:22",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: McCallister, Kate for Kaiser, Kennedy.",
+        "clock": "78:22",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by TEX Witt, EmJ, bottom center, saved by Sullivan, Callie.",
+        "clock": "78:32",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Califf, Paige for Morrin, Sophie.",
+        "clock": "81:36",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by TEX Villarreal, Amalia.",
+        "clock": "81:56",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by TEX Villarreal, Amalia.",
+        "clock": "81:56",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          1,
+          2
+        ]
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Kaiser, Kennedy for Curran, Claire.",
+        "clock": "81:56",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Davey, Emily for Sterbenz, Sadie.",
+        "clock": "82:58",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Witt, EmJ.",
+        "clock": "83:39",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Hoch, Sadie.",
+        "clock": "84:19",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OKL Kaiser, Kennedy.",
+        "clock": "85:40",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by TEX McDonald, Ava, out right.",
+        "clock": "86:50",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [88:48].",
+        "clock": "88:48",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OKL Fults, Narissa.",
+        "clock": "89:05",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by TEX McDonald, Ava, out top.",
+        "clock": "89:54",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "type": "period"
+      }
+    ],
+    "stadium": "Mike A. Myers Stadium",
+    "attendance": 1014,
+    "kickoff": "02:00",
+    "officials": [
+      "Referee: Lila Remache",
+      "Asst. Referee: Xiana Pang-Abas",
+      "Asst. Referee: Bryan Parra",
+      "Alt. Official: Joshua Villarreal"
+    ],
+    "home_index": 1
+  }
+}
