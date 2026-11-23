@@ -1,0 +1,6 @@
+# Marker file: identifies this directory as a Touchline data home.
+# The touchline rib validates this file before running workflows here.
+kind: touchline-data
+version: 1
+# The NCAA level this home holds. A collect of a conference at another level is refused.
+level: d1

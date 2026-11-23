@@ -1,0 +1,2763 @@
+{
+  "schema": "touchline.fixtures/2",
+  "season": 2026,
+  "gender": "men",
+  "conference": "A10",
+  "collected_at": "2026-11-20T13:15:12+00:00",
+  "membership_extrapolated": false,
+  "conference_game_source": "published:schedule-page",
+  "programmes": [
+    {
+      "slug": "davidson",
+      "name": "Davidson",
+      "conference": "A10",
+      "abbr": "DAV"
+    },
+    {
+      "slug": "dayton",
+      "name": "Dayton",
+      "conference": "A10",
+      "abbr": "UD"
+    },
+    {
+      "slug": "duquesne",
+      "name": "Duquesne",
+      "conference": "A10",
+      "abbr": "DUQ"
+    },
+    {
+      "slug": "fordham",
+      "name": "Fordham",
+      "conference": "A10",
+      "abbr": "FOR"
+    },
+    {
+      "slug": "george-mason",
+      "name": "George Mason",
+      "conference": "A10",
+      "abbr": "GMU"
+    },
+    {
+      "slug": "george-washington",
+      "name": "George Washington",
+      "conference": "A10",
+      "abbr": "GW"
+    },
+    {
+      "slug": "la-salle",
+      "name": "La Salle",
+      "conference": "A10",
+      "abbr": "LAS"
+    },
+    {
+      "slug": "loyola-chicago",
+      "name": "Loyola Chicago",
+      "conference": "A10",
+      "abbr": "LUC"
+    },
+    {
+      "slug": "rhode-island",
+      "name": "Rhode Island",
+      "conference": "A10",
+      "abbr": "URI"
+    },
+    {
+      "slug": "saint-josephs",
+      "name": "Saint Joseph's",
+      "conference": "A10",
+      "abbr": "SJU"
+    },
+    {
+      "slug": "saint-louis",
+      "name": "Saint Louis",
+      "conference": "A10",
+      "abbr": "SLU"
+    },
+    {
+      "slug": "st-bonaventure",
+      "name": "St. Bonaventure",
+      "conference": "A10",
+      "abbr": "SBU"
+    },
+    {
+      "slug": "vcu",
+      "name": "VCU",
+      "conference": "A10",
+      "abbr": "VCU"
+    }
+  ],
+  "fixtures": [
+    {
+      "id": "sidearm:george-washington:15627",
+      "date": "2026-08-06",
+      "home": "george-washington",
+      "away": "montgomery",
+      "status": "scheduled",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "time": "11:30",
+      "venue": "GW Soccer Field"
+    },
+    {
+      "id": "sidearm:dayton:17743",
+      "date": "2026-08-07",
+      "home": "dayton",
+      "away": "iu-indy",
+      "status": "cancelled",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "Baujan Field"
+    },
+    {
+      "id": "sidearm:vcu:9277",
+      "date": "2026-08-07",
+      "home": "vcu",
+      "away": "virginia-tech",
+      "status": "scheduled",
+      "source_url": "https://vcuathletics.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "time": "11:00",
+      "venue": "Richmond, Va. / VCU Athletic Village"
+    },
+    {
+      "id": "sidearm:la-salle:12751",
+      "date": "2026-08-08",
+      "home": "saint-peters",
+      "away": "la-salle",
+      "status": "scheduled",
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "17:00",
+      "venue": "Jersey City, NJ"
+    },
+    {
+      "id": "sidearm:loyola-chicago:7186",
+      "date": "2026-08-08",
+      "home": "michigan-state",
+      "away": "loyola-chicago",
+      "status": "scheduled",
+      "source_url": "https://loyolaramblers.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "time": "16:00",
+      "venue": "East Lansing, Mich."
+    },
+    {
+      "id": "sidearm:saint-louis:18698",
+      "date": "2026-08-08",
+      "home": "depaul",
+      "away": "saint-louis",
+      "status": "scheduled",
+      "source_url": "https://slubillikens.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "15:00",
+      "venue": "Chicago, Ill."
+    },
+    {
+      "id": "sidearm:george-washington:15628",
+      "date": "2026-08-09",
+      "home": "george-washington",
+      "away": "loyola-maryland",
+      "status": "scheduled",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "time": "11:00",
+      "venue": "GW Soccer Field"
+    },
+    {
+      "id": "sidearm:davidson:10312",
+      "date": "2026-08-11",
+      "home": "virginia",
+      "away": "davidson",
+      "status": "scheduled",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "venue": "Charlottesville, VA"
+    },
+    {
+      "id": "sidearm:la-salle:12752",
+      "date": "2026-08-11",
+      "home": "la-salle",
+      "away": "mount-st-marys",
+      "status": "scheduled",
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "McCarthy Stadium"
+    },
+    {
+      "id": "sidearm:loyola-chicago:7187",
+      "date": "2026-08-11",
+      "home": "loyola-chicago",
+      "away": "indian-hills",
+      "status": "scheduled",
+      "source_url": "https://loyolaramblers.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "time": "17:00",
+      "venue": "Loyola Soccer Park"
+    },
+    {
+      "id": "sidearm:vcu:9278",
+      "date": "2026-08-11",
+      "home": "vcu",
+      "away": "william-mary",
+      "status": "scheduled",
+      "source_url": "https://vcuathletics.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "time": "11:00",
+      "venue": "Richmond, Va. / VCU Athletic Village"
+    },
+    {
+      "id": "sidearm:dayton:17744",
+      "date": "2026-08-13",
+      "home": "dayton",
+      "away": "robert-morris",
+      "status": "scheduled",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "17:00",
+      "venue": "Baujan Field"
+    },
+    {
+      "id": "sidearm:george-washington:15629",
+      "date": "2026-08-13",
+      "home": "vmi",
+      "away": "george-washington",
+      "status": "scheduled",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "time": "15:00",
+      "venue": "Lexington, VA"
+    },
+    {
+      "id": "sidearm:davidson:10313",
+      "date": "2026-08-15",
+      "home": "davidson",
+      "away": "unc-asheville",
+      "status": "scheduled",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "time": "14:00",
+      "venue": "Alumni Soccer Stadium"
+    },
+    {
+      "id": "sidearm:la-salle:12753",
+      "date": "2026-08-15",
+      "home": "navy",
+      "away": "la-salle",
+      "status": "scheduled",
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "16:00",
+      "venue": "Annapolis, Md."
+    },
+    {
+      "id": "sidearm:loyola-chicago:7188",
+      "date": "2026-08-15",
+      "home": "indiana",
+      "away": "loyola-chicago",
+      "status": "scheduled",
+      "source_url": "https://loyolaramblers.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "time": "18:30",
+      "venue": "Bloomington, Ind."
+    },
+    {
+      "id": "sidearm:saint-josephs:20124",
+      "date": "2026-08-15",
+      "home": "saint-josephs",
+      "away": "drexel",
+      "status": "scheduled",
+      "source_url": "https://sjuhawks.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Sean Sweeney Field"
+    },
+    {
+      "id": "sidearm:saint-louis:18699",
+      "date": "2026-08-15",
+      "home": "saint-louis",
+      "away": "northern-illinois",
+      "status": "scheduled",
+      "source_url": "https://slubillikens.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "St. Louis, Mo. (Hermann Stadium)",
+      "match_type": "exhibition"
+    },
+    {
+      "id": "sidearm:vcu:9279",
+      "date": "2026-08-15",
+      "home": "vcu",
+      "away": "mount-st-marys",
+      "status": "scheduled",
+      "source_url": "https://vcuathletics.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "time": "12:00",
+      "venue": "Richmond, Va. / VCU Athletic Village"
+    },
+    {
+      "id": "sidearm:davidson:10314",
+      "date": "2026-08-20",
+      "home": "charleston-south-carolina",
+      "away": "davidson",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/mens-soccer/schedule/2026",
+      "time": "17:00",
+      "venue": "Charleston, SC",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:dayton:17748",
+      "date": "2026-08-20",
+      "home": "akron",
+      "away": "dayton",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "FirstEnergy Stadium",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:duquesne:22994",
+      "date": "2026-08-20",
+      "home": "duquesne",
+      "away": "lafayette",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goduquesne.com/sports/mens-soccer/schedule/2026",
+      "time": "15:00",
+      "venue": "Rooney Field",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:fordham:21089",
+      "date": "2026-08-20",
+      "home": "gonzaga",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "22:00",
+      "venue": "Spokane, WA",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:george-mason:14218",
+      "date": "2026-08-20",
+      "home": "vermont",
+      "away": "george-mason",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gomason.com/sports/mens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Burlington, VT",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:george-washington:15630",
+      "date": "2026-08-20",
+      "home": "george-washington",
+      "away": "old-dominion",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/mens-soccer/schedule/2026",
+      "time": "12:00",
+      "venue": "GW Soccer Field",
+      "home_score": 1,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:loyola-chicago:7190",
+      "date": "2026-08-20",
+      "home": "green-bay",
+      "away": "loyola-chicago",
+      "status": "final",
+      "source_url": "https://loyolaramblers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "Green Bay, Wis.",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:rhode-island:11964",
+      "date": "2026-08-20",
+      "home": "stonehill",
+      "away": "rhode-island",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "16:00",
+      "venue": "North Easton, MA",
+      "home_score": 3,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:saint-louis:18700",
+      "date": "2026-08-20",
+      "home": "saint-louis",
+      "away": "seattle-u",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "St. Louis, Mo. (Hermann Stadium)",
+      "home_score": 4,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:st-bonaventure:8627",
+      "date": "2026-08-20",
+      "home": "niagara",
+      "away": "st-bonaventure",
+      "status": "final",
+      "source_url": "https://gobonnies.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Niagara Falls, N.Y.",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:vcu:9280",
+      "date": "2026-08-20",
+      "home": "unc-greensboro",
+      "away": "vcu",
+      "status": "final",
+      "source_url": "https://vcuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Greensboro, N.C. / UNCG Soccer Stadium",
+      "home_score": 4,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:la-salle:12754",
+      "date": "2026-08-21",
+      "home": "lehigh",
+      "away": "la-salle",
+      "status": "final",
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "20:00",
+      "venue": "Bethlehem, PA",
+      "home_score": 1,
+      "away_score": 4
+    },
+    {
+      "id": "sidearm:dayton:17745",
+      "date": "2026-08-23",
+      "home": "dayton",
+      "away": "western-michigan",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:duquesne:22995",
+      "date": "2026-08-23",
+      "home": "duquesne",
+      "away": "bowling-green",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goduquesne.com/sports/mens-soccer/schedule/2026",
+      "time": "17:00",
+      "venue": "Rooney Field",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:fordham:21090",
+      "date": "2026-08-23",
+      "home": "santa-clara",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "22:00",
+      "venue": "Santa Clara, CA",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:george-washington:15631",
+      "date": "2026-08-23",
+      "home": "binghamton",
+      "away": "george-washington",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/mens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Vestal, NY",
+      "home_score": 0,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:loyola-chicago:7191",
+      "date": "2026-08-23",
+      "home": "loyola-chicago",
+      "away": "northern-illinois",
+      "status": "final",
+      "source_url": "https://loyolaramblers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "13:00",
+      "venue": "Loyola Soccer Park",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:saint-josephs:20125",
+      "date": "2026-08-23",
+      "home": "saint-josephs",
+      "away": "njit",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "14:00",
+      "venue": "Sean Sweeney Field",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:vcu:9281",
+      "date": "2026-08-23",
+      "home": "wake-forest",
+      "away": "vcu",
+      "status": "final",
+      "source_url": "https://vcuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Winston-Salem, N.C. / Spry Stadium",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:la-salle:12755",
+      "date": "2026-08-24",
+      "home": "la-salle",
+      "away": "fdu",
+      "status": "final",
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "McCarthy Stadium",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:saint-louis:18701",
+      "date": "2026-08-24",
+      "home": "saint-louis",
+      "away": "smu",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "St. Louis, Mo. (Hermann Stadium)",
+      "home_score": 0,
+      "away_score": 4
+    },
+    {
+      "id": "sidearm:st-bonaventure:8628",
+      "date": "2026-08-24",
+      "home": "west-virginia",
+      "away": "st-bonaventure",
+      "status": "final",
+      "source_url": "https://gobonnies.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "Morgantown, W.V.",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:rhode-island:11967",
+      "date": "2026-08-25",
+      "home": "rhode-island",
+      "away": "bryant",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "URI Soccer Complex",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:duquesne:22996",
+      "date": "2026-08-27",
+      "home": "duquesne",
+      "away": "mount-st-marys",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goduquesne.com/sports/mens-soccer/schedule/2026",
+      "time": "16:00",
+      "venue": "Rooney Field",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:george-mason:14210",
+      "date": "2026-08-27",
+      "home": "george-mason",
+      "away": "william-mary",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gomason.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "George Mason Stadium",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:loyola-chicago:7189",
+      "date": "2026-08-27",
+      "home": "loyola-chicago",
+      "away": "milwaukee",
+      "status": "final",
+      "source_url": "https://loyolaramblers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Loyola Soccer Park",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:davidson:10315",
+      "date": "2026-08-28",
+      "home": "gardner-webb",
+      "away": "davidson",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Boiling Springs, NC",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:dayton:17746",
+      "date": "2026-08-28",
+      "home": "dayton",
+      "away": "detroit-mercy",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field",
+      "home_score": 5,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:fordham:21091",
+      "date": "2026-08-28",
+      "home": "bucknell",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Lewisburg, PA",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:george-washington:15632",
+      "date": "2026-08-28",
+      "home": "navy",
+      "away": "george-washington",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Annapolis, MD",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:saint-josephs:20126",
+      "date": "2026-08-28",
+      "home": "temple",
+      "away": "saint-josephs",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "Philadelphia, Pa.",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:saint-louis:18702",
+      "date": "2026-08-28",
+      "home": "notre-dame",
+      "away": "saint-louis",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:30",
+      "venue": "South Bend, Ind.",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:vcu:9282",
+      "date": "2026-08-28",
+      "home": "north-carolina",
+      "away": "vcu",
+      "status": "final",
+      "source_url": "https://vcuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:30",
+      "venue": "Chapel Hill, N.C. / Dorrance Field",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:la-salle:12861",
+      "date": "2026-08-29",
+      "home": "la-salle",
+      "away": "keystone",
+      "status": "final",
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "McCarthy Stadium",
+      "home_score": 9,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:rhode-island:11965",
+      "date": "2026-08-29",
+      "home": "rhode-island",
+      "away": "holy-cross",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "URI Soccer Complex",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:duquesne:22997",
+      "date": "2026-08-30",
+      "home": "robert-morris",
+      "away": "duquesne",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goduquesne.com/sports/mens-soccer/schedule/2026",
+      "time": "16:00",
+      "venue": "Moon Township, Pa.",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:loyola-chicago:7192",
+      "date": "2026-08-30",
+      "home": "loyola-chicago",
+      "away": "depaul",
+      "status": "final",
+      "source_url": "https://loyolaramblers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "Loyola Soccer Park",
+      "home_score": 3,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:st-bonaventure:8629",
+      "date": "2026-08-30",
+      "home": "st-bonaventure",
+      "away": "le-moyne",
+      "status": "final",
+      "source_url": "https://gobonnies.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "17:00",
+      "venue": "Tom 80' and Michelle Marra Athletics Field Complex",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:dayton:17747",
+      "date": "2026-08-31",
+      "home": "dayton",
+      "away": "purdue-fort-wayne",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:george-washington:15633",
+      "date": "2026-08-31",
+      "home": "umbc",
+      "away": "george-washington",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Baltimore, MD",
+      "home_score": 0,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:saint-josephs:20127",
+      "date": "2026-08-31",
+      "home": "mount-st-marys",
+      "away": "saint-josephs",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Emmitsburg, Md.",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:davidson:10316",
+      "date": "2026-09-01",
+      "home": "davidson",
+      "away": "unc-greensboro",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Alumni Soccer Stadium",
+      "home_score": 2,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:fordham:21092",
+      "date": "2026-09-01",
+      "home": "villanova",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "16:00",
+      "venue": "Villanova, PA",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:george-mason:14211",
+      "date": "2026-09-01",
+      "home": "george-mason",
+      "away": "marshall",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gomason.com/sports/mens-soccer/schedule/2026",
+      "time": "19:15",
+      "venue": "George Mason Stadium",
+      "home_score": 3,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:la-salle:12757",
+      "date": "2026-09-01",
+      "home": "lafayette",
+      "away": "la-salle",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Easton, PA",
+      "home_score": 0,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:rhode-island:11966",
+      "date": "2026-09-02",
+      "home": "rhode-island",
+      "away": "merrimack",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "URI Soccer Complex",
+      "home_score": 1,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:saint-louis:18703",
+      "date": "2026-09-02",
+      "home": "saint-louis",
+      "away": "green-bay",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "St. Louis, Mo. (Hermann Stadium)",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:vcu:9283",
+      "date": "2026-09-02",
+      "home": "high-point",
+      "away": "vcu",
+      "status": "final",
+      "source_url": "https://vcuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "High Point, N.C. / Vert Stadium",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:davidson:10317",
+      "date": "2026-09-04",
+      "home": "davidson",
+      "away": "furman",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/mens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Alumni Soccer Stadium",
+      "home_score": 2,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:loyola-chicago:7194",
+      "date": "2026-09-04",
+      "home": "loyola-chicago",
+      "away": "santa-clara",
+      "status": "final",
+      "source_url": "https://loyolaramblers.com/sports/mens-soccer/schedule/2026",
+      "neutral": true,
+      "conference_game": false,
+      "time": "14:00",
+      "venue": "Omaha, Neb.",
+      "home_score": 3,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:st-bonaventure:8630",
+      "date": "2026-09-04",
+      "home": "st-bonaventure",
+      "away": "robert-morris",
+      "status": "final",
+      "source_url": "https://gobonnies.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "Tom 80' and Michelle Marra Athletics Field Complex",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:dayton:17749",
+      "date": "2026-09-05",
+      "home": "dayton",
+      "away": "unc-greensboro",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:duquesne:22998",
+      "date": "2026-09-05",
+      "home": "detroit-mercy",
+      "away": "duquesne",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goduquesne.com/sports/mens-soccer/schedule/2026",
+      "time": "16:00",
+      "venue": "Detroit, Mich.",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:fordham:21093",
+      "date": "2026-09-05",
+      "home": "lafayette",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "16:00",
+      "venue": "Easton, PA",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:la-salle:12758",
+      "date": "2026-09-06",
+      "home": "monmouth",
+      "away": "la-salle",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "West Long Branch, NJ",
+      "home_score": 2,
+      "away_score": 4,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:saint-louis:18704",
+      "date": "2026-09-06",
+      "home": "siue",
+      "away": "saint-louis",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "Edwardsville, Ill.",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:vcu:9284",
+      "date": "2026-09-06",
+      "home": "marshall",
+      "away": "vcu",
+      "status": "final",
+      "source_url": "https://vcuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:15",
+      "venue": "Huntington, W.Va. / Hoops Family Field",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:george-mason:14219",
+      "date": "2026-09-07",
+      "home": "west-virginia",
+      "away": "george-mason",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gomason.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Morgantown, WV",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:loyola-chicago:7193",
+      "date": "2026-09-07",
+      "home": "loyola-chicago",
+      "away": "gonzaga",
+      "status": "final",
+      "source_url": "https://loyolaramblers.com/sports/mens-soccer/schedule/2026",
+      "neutral": true,
+      "conference_game": false,
+      "time": "14:00",
+      "venue": "Omaha, Neb.",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:rhode-island:11968",
+      "date": "2026-09-07",
+      "home": "providence",
+      "away": "rhode-island",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Providence, RI",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:saint-josephs:20128",
+      "date": "2026-09-08",
+      "home": "rider",
+      "away": "saint-josephs",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Lawrenceville, N.J.",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:st-bonaventure:8631",
+      "date": "2026-09-08",
+      "home": "boston-college",
+      "away": "st-bonaventure",
+      "status": "final",
+      "source_url": "https://gobonnies.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "16:30",
+      "venue": "Chestnut Hill, Mass.",
+      "home_score": 2,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:fordham:21094",
+      "date": "2026-09-09",
+      "home": "fordham",
+      "away": "columbia",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Bronx, N.Y. Moglia Stadium at Jack Coffey Field",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:george-washington:15634",
+      "date": "2026-09-09",
+      "home": "george-washington",
+      "away": "drexel",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/mens-soccer/schedule/2026",
+      "time": "14:00",
+      "venue": "GW Soccer Field",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:loyola-chicago:7195",
+      "date": "2026-09-10",
+      "home": "loyola-chicago",
+      "away": "siue",
+      "status": "final",
+      "source_url": "https://loyolaramblers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:30",
+      "venue": "Loyola Soccer Park",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:davidson:10318",
+      "date": "2026-09-11",
+      "home": "davidson",
+      "away": "george-mason",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://davidsonwildcats.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Alumni Soccer Stadium",
+      "home_score": 3,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:vcu:9285",
+      "date": "2026-09-11",
+      "home": "vcu",
+      "away": "ucf",
+      "status": "final",
+      "source_url": "https://vcuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "15:00",
+      "venue": "Richmond, Va. / VCU Athletic Village",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:dayton:17750",
+      "date": "2026-09-12",
+      "home": "dayton",
+      "away": "butler",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field",
+      "home_score": 3,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:la-salle:12759",
+      "date": "2026-09-12",
+      "home": "la-salle",
+      "away": "rider",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "McCarthy Stadium",
+      "home_score": 2,
+      "away_score": 3,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:rhode-island:11969",
+      "date": "2026-09-12",
+      "home": "central-connecticut",
+      "away": "rhode-island",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "New Britain, Conn.",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:saint-josephs:20129",
+      "date": "2026-09-12",
+      "home": "saint-josephs",
+      "away": "liu",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "14:00",
+      "venue": "Sean Sweeney Field",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:saint-louis:18705",
+      "date": "2026-09-12",
+      "home": "saint-louis",
+      "away": "akron",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "St. Louis, Mo. (Hermann Stadium)",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:fordham:21095",
+      "date": "2026-09-13",
+      "home": "st-johns",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Queens, NY",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:george-washington:15770",
+      "date": "2026-09-13",
+      "home": "villanova",
+      "away": "george-washington",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/mens-soccer/schedule/2026",
+      "time": "15:00",
+      "venue": "Villanova, PA",
+      "home_score": 2,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:loyola-chicago:7196",
+      "date": "2026-09-13",
+      "home": "uic",
+      "away": "loyola-chicago",
+      "status": "final",
+      "source_url": "https://loyolaramblers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Chicago, Ill. / Flames Field",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:vcu:9286",
+      "date": "2026-09-14",
+      "home": "vcu",
+      "away": "old-dominion",
+      "status": "final",
+      "source_url": "https://vcuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "15:00",
+      "venue": "Richmond, Va. / VCU Athletic Village",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:davidson:10319",
+      "date": "2026-09-15",
+      "home": "davidson",
+      "away": "high-point",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Alumni Soccer Stadium",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:george-mason:14221",
+      "date": "2026-09-15",
+      "home": "bucknell",
+      "away": "george-mason",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gomason.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Lewisburg, PA",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:la-salle:12760",
+      "date": "2026-09-15",
+      "home": "drexel",
+      "away": "la-salle",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Philadelphia, PA",
+      "home_score": 3,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:rhode-island:11970",
+      "date": "2026-09-15",
+      "home": "brown",
+      "away": "rhode-island",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Providence, RI",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:saint-josephs:20130",
+      "date": "2026-09-15",
+      "home": "saint-josephs",
+      "away": "iona",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "Sean Sweeney Field",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:st-bonaventure:8632",
+      "date": "2026-09-15",
+      "home": "canisius",
+      "away": "st-bonaventure",
+      "status": "final",
+      "source_url": "https://gobonnies.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "Buffalo, N.Y.",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:dayton:17751",
+      "date": "2026-09-19",
+      "home": "dayton",
+      "away": "saint-louis",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:fordham:21096",
+      "date": "2026-09-19",
+      "home": "fordham",
+      "away": "loyola-chicago",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "14:00",
+      "venue": "Bronx, N.Y. Moglia Stadium at Jack Coffey Field",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:george-mason:14222",
+      "date": "2026-09-19",
+      "home": "saint-josephs",
+      "away": "george-mason",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://gomason.com/sports/mens-soccer/schedule/2026",
+      "time": "14:00",
+      "venue": "Philadelphia, PA",
+      "home_score": 2,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:la-salle:12761",
+      "date": "2026-09-19",
+      "home": "george-washington",
+      "away": "la-salle",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "time": "14:00",
+      "venue": "Washington, DC",
+      "home_score": 2,
+      "away_score": 3,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:rhode-island:11971",
+      "date": "2026-09-19",
+      "home": "duquesne",
+      "away": "rhode-island",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Pittsburgh, PA",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:st-bonaventure:8633",
+      "date": "2026-09-19",
+      "home": "st-bonaventure",
+      "away": "vcu",
+      "status": "final",
+      "source_url": "https://gobonnies.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "time": "14:00",
+      "venue": "Tom 80' and Michelle Marra Athletics Field Complex",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:davidson:10320",
+      "date": "2026-09-22",
+      "home": "davidson",
+      "away": "elon",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Alumni Soccer Stadium",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:dayton:17752",
+      "date": "2026-09-22",
+      "home": "dayton",
+      "away": "northern-kentucky",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:duquesne:23000",
+      "date": "2026-09-22",
+      "home": "west-virginia",
+      "away": "duquesne",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goduquesne.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Morgantown, W.Va.",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:george-washington:15636",
+      "date": "2026-09-22",
+      "home": "delaware",
+      "away": "george-washington",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/mens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Newark, DE",
+      "home_score": 6,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:rhode-island:11972",
+      "date": "2026-09-22",
+      "home": "stony-brook",
+      "away": "rhode-island",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "Stony Brook, NY",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:saint-josephs:20132",
+      "date": "2026-09-22",
+      "home": "bucknell",
+      "away": "saint-josephs",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Lewisburg, Pa.",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:st-bonaventure:8634",
+      "date": "2026-09-22",
+      "home": "st-bonaventure",
+      "away": "cleveland-state",
+      "status": "final",
+      "source_url": "https://gobonnies.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "Tom 80' and Michelle Marra Athletics Field Complex",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:george-mason:14212",
+      "date": "2026-09-25",
+      "home": "george-mason",
+      "away": "ohio-state",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gomason.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "George Mason Stadium",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:davidson:10321",
+      "date": "2026-09-26",
+      "home": "davidson",
+      "away": "st-bonaventure",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://davidsonwildcats.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Alumni Soccer Stadium",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:dayton:17753",
+      "date": "2026-09-26",
+      "home": "la-salle",
+      "away": "dayton",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "McCarthy Stadium",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:fordham:21097",
+      "date": "2026-09-26",
+      "home": "vcu",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "15:00",
+      "venue": "Richmond, VA",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:george-washington:15637",
+      "date": "2026-09-26",
+      "home": "loyola-chicago",
+      "away": "george-washington",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://gwsports.com/sports/mens-soccer/schedule/2026",
+      "time": "20:00",
+      "venue": "Chicago, IL",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:saint-louis:18707",
+      "date": "2026-09-26",
+      "home": "saint-louis",
+      "away": "duquesne",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:30",
+      "venue": "St. Louis, Mo. (Hermann Stadium)",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:dayton:17754",
+      "date": "2026-09-29",
+      "home": "dayton",
+      "away": "bluffton",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field",
+      "home_score": 6,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:loyola-chicago:7199",
+      "date": "2026-09-29",
+      "home": "wake-forest",
+      "away": "loyola-chicago",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://loyolaramblers.com/sports/mens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Winston-Salem, N.C.",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:rhode-island:11973",
+      "date": "2026-09-29",
+      "home": "rhode-island",
+      "away": "saint-josephs",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "URI Soccer Complex",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:saint-louis:18708",
+      "date": "2026-09-29",
+      "home": "saint-louis",
+      "away": "drake",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "St. Louis, Mo. (Hermann Stadium)",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:davidson:10323",
+      "date": "2026-10-03",
+      "home": "loyola-chicago",
+      "away": "davidson",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://davidsonwildcats.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Chicago, IL",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:dayton:17755",
+      "date": "2026-10-03",
+      "home": "dayton",
+      "away": "vcu",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field",
+      "home_score": 3,
+      "away_score": 4
+    },
+    {
+      "id": "sidearm:duquesne:23002",
+      "date": "2026-10-03",
+      "home": "george-mason",
+      "away": "duquesne",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goduquesne.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Fairfax, Va.",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:fordham:21098",
+      "date": "2026-10-03",
+      "home": "st-bonaventure",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "16:00",
+      "venue": "St. Bonaventure, N.Y.",
+      "home_score": 2,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:la-salle:12869",
+      "date": "2026-10-03",
+      "home": "delaware",
+      "away": "la-salle",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Newark, DE",
+      "home_score": 2,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:rhode-island:11974",
+      "date": "2026-10-03",
+      "home": "george-washington",
+      "away": "rhode-island",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "14:00",
+      "venue": "Washington, D.C",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:saint-louis:18709",
+      "date": "2026-10-03",
+      "home": "saint-louis",
+      "away": "saint-josephs",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "St. Louis, Mo. (Hermann Stadium)",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:st-bonaventure:8637",
+      "date": "2026-10-06",
+      "home": "binghamton",
+      "away": "st-bonaventure",
+      "status": "final",
+      "source_url": "https://gobonnies.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "Vestal, N.Y.",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:fordham:21099",
+      "date": "2026-10-07",
+      "home": "fordham",
+      "away": "saint-louis",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Bronx, N.Y. Moglia Stadium at Jack Coffey Field",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:george-mason:14214",
+      "date": "2026-10-07",
+      "home": "george-mason",
+      "away": "loyola-chicago",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://gomason.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "George Mason Stadium",
+      "home_score": 4,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:george-washington:15639",
+      "date": "2026-10-07",
+      "home": "vcu",
+      "away": "george-washington",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://gwsports.com/sports/mens-soccer/schedule/2026",
+      "time": "14:00",
+      "venue": "Richmond, VA",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:la-salle:12763",
+      "date": "2026-10-07",
+      "home": "saint-josephs",
+      "away": "la-salle",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Philadelphia, PA",
+      "home_score": 2,
+      "away_score": 2,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:rhode-island:11975",
+      "date": "2026-10-07",
+      "home": "rhode-island",
+      "away": "davidson",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "URI Soccer Complex",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:dayton:17756",
+      "date": "2026-10-10",
+      "home": "duquesne",
+      "away": "dayton",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Rooney Field",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:la-salle:12764",
+      "date": "2026-10-10",
+      "home": "la-salle",
+      "away": "saint-louis",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "McCarthy Stadium",
+      "home_score": 2,
+      "away_score": 3,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:loyola-chicago:7202",
+      "date": "2026-10-10",
+      "home": "vcu",
+      "away": "loyola-chicago",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://loyolaramblers.com/sports/mens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Richmond, Va.",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:saint-josephs:20136",
+      "date": "2026-10-10",
+      "home": "saint-josephs",
+      "away": "st-bonaventure",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "time": "14:00",
+      "venue": "Sean Sweeney Field",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:davidson:10325",
+      "date": "2026-10-11",
+      "home": "davidson",
+      "away": "johnson-and-wales",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/mens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Alumni Soccer Stadium",
+      "home_score": 7,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:fordham:21100",
+      "date": "2026-10-11",
+      "home": "fordham",
+      "away": "rhode-island",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "17:00",
+      "venue": "Bronx, N.Y. Moglia Stadium at Jack Coffey Field",
+      "home_score": 3,
+      "away_score": 4
+    },
+    {
+      "id": "sidearm:george-mason:14208",
+      "date": "2026-10-11",
+      "home": "george-mason",
+      "away": "stony-brook",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gomason.com/sports/mens-soccer/schedule/2026",
+      "time": "17:00",
+      "venue": "George Mason Stadium",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:duquesne:23004",
+      "date": "2026-10-13",
+      "home": "pitt",
+      "away": "duquesne",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goduquesne.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Pittsburgh, Pa.",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:george-washington:15640",
+      "date": "2026-10-13",
+      "home": "high-point",
+      "away": "george-washington",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/mens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "High Point, NC",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:la-salle:12765",
+      "date": "2026-10-13",
+      "home": "la-salle",
+      "away": "njit",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "McCarthy Stadium",
+      "home_score": 3,
+      "away_score": 3,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:davidson:10326",
+      "date": "2026-10-17",
+      "home": "duquesne",
+      "away": "davidson",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://davidsonwildcats.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Pittsburgh, PA",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:dayton:17757",
+      "date": "2026-10-17",
+      "home": "dayton",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:george-mason:14215",
+      "date": "2026-10-17",
+      "home": "george-mason",
+      "away": "george-washington",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://gomason.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "George Mason Stadium",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:la-salle:12766",
+      "date": "2026-10-17",
+      "home": "rhode-island",
+      "away": "la-salle",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Kingston, RI",
+      "home_score": 5,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:loyola-chicago:7203",
+      "date": "2026-10-17",
+      "home": "loyola-chicago",
+      "away": "st-bonaventure",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://loyolaramblers.com/sports/mens-soccer/schedule/2026",
+      "time": "14:00",
+      "venue": "Loyola Soccer Park",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:saint-josephs:20137",
+      "date": "2026-10-17",
+      "home": "saint-josephs",
+      "away": "northeastern",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "14:00",
+      "venue": "Sean Sweeney Field",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:saint-louis:18712",
+      "date": "2026-10-17",
+      "home": "saint-louis",
+      "away": "vcu",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "St. Louis, Mo. (Hermann Stadium)",
+      "home_score": 4,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:george-washington:15642",
+      "date": "2026-10-20",
+      "home": "george-washington",
+      "away": "saint-josephs",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://gwsports.com/sports/mens-soccer/schedule/2026",
+      "time": "14:00",
+      "venue": "GW Soccer Field",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:saint-louis:18713",
+      "date": "2026-10-20",
+      "home": "saint-louis",
+      "away": "north-florida",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "St. Louis, Mo. (Hermann Stadium)",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:dayton:17758",
+      "date": "2026-10-21",
+      "home": "rhode-island",
+      "away": "dayton",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "URI Soccer Complex",
+      "home_score": 2,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:duquesne:23006",
+      "date": "2026-10-21",
+      "home": "st-bonaventure",
+      "away": "duquesne",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goduquesne.com/sports/mens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Olean, N.Y.",
+      "home_score": 0,
+      "away_score": 4
+    },
+    {
+      "id": "sidearm:fordham:21102",
+      "date": "2026-10-21",
+      "home": "davidson",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Davidson, NC",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:la-salle:12767",
+      "date": "2026-10-21",
+      "home": "la-salle",
+      "away": "george-mason",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "McCarthy Stadium",
+      "home_score": 0,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:davidson:10328",
+      "date": "2026-10-24",
+      "home": "saint-josephs",
+      "away": "davidson",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://davidsonwildcats.com/sports/mens-soccer/schedule/2026",
+      "time": "14:00",
+      "venue": "Philadelphia, PA",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:dayton:17759",
+      "date": "2026-10-24",
+      "home": "dayton",
+      "away": "george-washington",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:duquesne:23007",
+      "date": "2026-10-24",
+      "home": "duquesne",
+      "away": "vcu",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goduquesne.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Rooney Field",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:la-salle:12768",
+      "date": "2026-10-24",
+      "home": "st-bonaventure",
+      "away": "la-salle",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "St. Bonaventure, N.Y.",
+      "home_score": 0,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:saint-louis:18714",
+      "date": "2026-10-24",
+      "home": "saint-louis",
+      "away": "loyola-chicago",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "St. Louis, Mo. (Hermann Stadium)",
+      "home_score": 4,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:rhode-island:11979",
+      "date": "2026-10-25",
+      "home": "george-mason",
+      "away": "rhode-island",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "16:00",
+      "venue": "Fairfax, VA",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:davidson:10329",
+      "date": "2026-10-27",
+      "home": "presbyterian",
+      "away": "davidson",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Clinton, SC",
+      "home_score": 1,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:saint-josephs:20140",
+      "date": "2026-10-27",
+      "home": "saint-josephs",
+      "away": "villanova",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Sean Sweeney Field",
+      "home_score": 2,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:duquesne:23008",
+      "date": "2026-10-28",
+      "home": "penn-state",
+      "away": "duquesne",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goduquesne.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "University Park, Pa.",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:rhode-island:11980",
+      "date": "2026-10-30",
+      "home": "rhode-island",
+      "away": "um-fort-kent",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "URI Soccer Complex",
+      "home_score": 6,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:dayton:17761",
+      "date": "2026-10-31",
+      "home": "loyola-chicago",
+      "away": "dayton",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "20:00",
+      "venue": "Chicago, Ill.",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:fordham:21103",
+      "date": "2026-10-31",
+      "home": "fordham",
+      "away": "saint-josephs",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "17:00",
+      "venue": "Bronx, N.Y. Moglia Stadium at Jack Coffey Field",
+      "home_score": 5,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:george-mason:14224",
+      "date": "2026-10-31",
+      "home": "vcu",
+      "away": "george-mason",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://gomason.com/sports/mens-soccer/schedule/2026",
+      "time": "14:00",
+      "venue": "Richmond, VA",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:george-washington:15644",
+      "date": "2026-10-31",
+      "home": "george-washington",
+      "away": "st-bonaventure",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://gwsports.com/sports/mens-soccer/schedule/2026",
+      "time": "14:00",
+      "venue": "GW Soccer Field",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:la-salle:12769",
+      "date": "2026-10-31",
+      "home": "la-salle",
+      "away": "duquesne",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "time": "17:00",
+      "venue": "McCarthy Stadium",
+      "home_score": 3,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:saint-louis:18715",
+      "date": "2026-10-31",
+      "home": "davidson",
+      "away": "saint-louis",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "Davidson, N.C.",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:dayton:17762",
+      "date": "2026-11-06",
+      "home": "saint-louis",
+      "away": "dayton",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "Atlantic 10 Championship",
+        "round_published": "Quarterfinal"
+      },
+      "time": "14:00",
+      "venue": "Hermann Stadium",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:fordham:21383",
+      "date": "2026-11-06",
+      "home": "george-mason",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "Atlantic 10 Championship"
+      },
+      "time": "15:00",
+      "venue": "Fairfax, VA",
+      "home_score": 0,
+      "away_score": 1,
+      "neutral": true
+    },
+    {
+      "id": "sidearm:la-salle:12770",
+      "date": "2026-11-06",
+      "home": "duquesne",
+      "away": "la-salle",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goexplorers.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Pittsburgh, PA",
+      "home_score": 1,
+      "away_score": 0,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "Atlantic 10 Tournament"
+      }
+    },
+    {
+      "id": "sidearm:rhode-island:12207",
+      "date": "2026-11-06",
+      "home": "rhode-island",
+      "away": "davidson",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "Atlantic 10 Tournament",
+        "round_published": "A10 Championship Quarterfinals"
+      },
+      "time": "11:00",
+      "venue": "URI Soccer Complex",
+      "home_score": 2,
+      "away_score": 2,
+      "result_published": "T, 2-2 Davidson advanced on PKs"
+    },
+    {
+      "id": "sidearm:davidson:11452",
+      "date": "2026-11-07",
+      "home": "rhode-island",
+      "away": "davidson",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/mens-soccer/schedule/2026",
+      "time": "11:00",
+      "venue": "Kingston, RI",
+      "home_score": 2,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:fordham:21385",
+      "date": "2026-11-10",
+      "home": "duquesne",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "Atlantic 10 Championship"
+      },
+      "time": "13:00",
+      "venue": "Pittsburgh, PA",
+      "home_score": 2,
+      "away_score": 5
+    },
+    {
+      "id": "sidearm:saint-louis:18951",
+      "date": "2026-11-10",
+      "home": "saint-louis",
+      "away": "davidson",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "Atlantic 10 Conference Tournament",
+        "round_published": "Semifinal"
+      },
+      "time": "16:00",
+      "venue": "St. Louis, Mo. (Hermann Stadium)",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:fordham:21386",
+      "date": "2026-11-14",
+      "home": "saint-louis",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "Atlantic 10 Championship",
+        "round_published": "Final"
+      },
+      "time": "17:00",
+      "venue": "Saint Louis, MO",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:saint-louis:18954",
+      "date": "2026-11-19",
+      "home": "missouri-state",
+      "away": "saint-louis",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "ncaa",
+        "source": "NCAA Championship",
+        "round_published": "First Round"
+      },
+      "time": "18:30",
+      "venue": "Springfield, Mo.",
+      "home_score": 1,
+      "away_score": 0
+    }
+  ]
+}
