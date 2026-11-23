@@ -1,0 +1,155 @@
+[
+ {
+  "url": "https://gocrimson.com/sports/womens-soccer/schedule/2026",
+  "file": "4e5db3524021",
+  "status": 200,
+  "final": "https://gocrimson.com/sports/womens-soccer/schedule/2026",
+  "len": 1403856,
+  "history": [],
+  "ctype": "text/html; charset=utf-8"
+ },
+ {
+  "url": "https://gocrimson.com/sports/womens-soccer/schedule",
+  "file": "df3bc66ba8d9",
+  "status": 200,
+  "final": "https://gocrimson.com/sports/womens-soccer/schedule",
+  "len": 1403832,
+  "history": [],
+  "ctype": "text/html; charset=utf-8"
+ },
+ {
+  "url": "https://gocrimson.com/sports/womens-soccer/roster/2026",
+  "file": "51b97fbe7261",
+  "status": 200,
+  "final": "https://gocrimson.com/sports/womens-soccer/roster/2026",
+  "len": 1625357,
+  "history": [],
+  "ctype": "text/html; charset=utf-8"
+ },
+ {
+  "url": "https://gocrimson.com/sports/womens-soccer/stats/2026",
+  "file": "92eb7f83ac27",
+  "status": 200,
+  "final": "https://gocrimson.com/sports/womens-soccer/stats/2026",
+  "len": 1511528,
+  "history": [],
+  "ctype": "text/html; charset=utf-8"
+ },
+ {
+  "url": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+  "file": "b8912ba17986",
+  "status": 200,
+  "final": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+  "len": 1412651,
+  "history": [],
+  "ctype": "text/html; charset=utf-8"
+ },
+ {
+  "url": "https://gocrimson.com/sports/womens-soccer/schedule/2024",
+  "file": "80a128ebe793",
+  "status": 200,
+  "final": "https://gocrimson.com/sports/womens-soccer/schedule/2024",
+  "len": 1415711,
+  "history": [],
+  "ctype": "text/html; charset=utf-8"
+ },
+ {
+  "url": "https://soonersports.com/sports/womens-soccer/schedule/2026",
+  "file": "78b283867935",
+  "status": 200,
+  "final": "https://soonersports.com/sports/womens-soccer/schedule/2026",
+  "len": 526045,
+  "history": [],
+  "ctype": "text/html;charset=utf-8"
+ },
+ {
+  "url": "https://soonersports.com/sports/womens-soccer/schedule",
+  "file": "3ba89faa34c2",
+  "status": 200,
+  "final": "https://soonersports.com/sports/womens-soccer/schedule",
+  "len": 526019,
+  "history": [],
+  "ctype": "text/html;charset=utf-8"
+ },
+ {
+  "url": "https://soonersports.com/sports/womens-soccer/roster/2026",
+  "file": "6b4524eaab50",
+  "status": 200,
+  "final": "https://soonersports.com/sports/womens-soccer/roster/2026",
+  "len": 578558,
+  "history": [],
+  "ctype": "text/html;charset=utf-8"
+ },
+ {
+  "url": "https://soonersports.com/sports/womens-soccer/stats/2026",
+  "file": "2b96c3a27ded",
+  "status": 200,
+  "final": "https://soonersports.com/sports/womens-soccer/stats/2026",
+  "len": 508644,
+  "history": [],
+  "ctype": "text/html;charset=utf-8"
+ },
+ {
+  "url": "https://umterps.com/sports/womens-soccer/schedule/2026",
+  "file": "8e9c667ea259",
+  "status": 200,
+  "final": "https://umterps.com/sports/womens-soccer/schedule/2026",
+  "len": 1127387,
+  "history": [],
+  "ctype": "text/html;charset=utf-8"
+ },
+ {
+  "url": "https://umterps.com/sports/womens-soccer/schedule",
+  "file": "9f1f804adbcf",
+  "status": 200,
+  "final": "https://umterps.com/sports/womens-soccer/schedule",
+  "len": 1411674,
+  "history": [],
+  "ctype": "text/html;charset=utf-8"
+ },
+ {
+  "url": "https://umterps.com/sports/womens-soccer/schedule/2025",
+  "file": "d191d771421e",
+  "status": 200,
+  "final": "https://umterps.com/sports/womens-soccer/schedule/2025",
+  "len": 1420203,
+  "history": [],
+  "ctype": "text/html;charset=utf-8"
+ },
+ {
+  "url": "https://arkansasrazorbacks.com/sport/w-soccer/",
+  "file": "c0239b1147b6",
+  "status": 200,
+  "final": "https://arkansasrazorbacks.com/sport/w-soccer/",
+  "len": 107266,
+  "history": [],
+  "ctype": "text/html; charset=UTF-8"
+ },
+ {
+  "url": "https://arkansasrazorbacks.com/sport/w-soccer/schedule/",
+  "file": "4a9113fb14d4",
+  "status": 200,
+  "final": "https://arkansasrazorbacks.com/sport/w-soccer/schedule/",
+  "len": 154968,
+  "history": [],
+  "ctype": "text/html; charset=UTF-8"
+ },
+ {
+  "url": "https://arkansasrazorbacks.com/sport/w-soccer/roster/",
+  "file": "f2a4417df2b4",
+  "status": 200,
+  "final": "https://arkansasrazorbacks.com/sport/w-soccer/roster/",
+  "len": 144930,
+  "history": [],
+  "ctype": "text/html; charset=UTF-8"
+ },
+ {
+  "url": "https://arkansasrazorbacks.com/sport/w-soccer/stats/",
+  "file": "dbedc0fb30df",
+  "status": 200,
+  "final": "https://arkansasrazorbacks.com/sport/w-soccer/stats/",
+  "len": 95503,
+  "history": [],
+  "ctype": "text/html; charset=UTF-8"
+ }
+]
