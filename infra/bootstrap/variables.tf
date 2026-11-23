@@ -38,3 +38,9 @@ variable "budget_limit_usd" {
   type        = number
   default     = 5
 }
+
+variable "budget_second_alert_usd" {
+  description = "Absolute monthly spend, in US dollars, for the second alert."
+  type        = number
+  default     = 10
+}

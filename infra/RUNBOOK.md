@@ -110,8 +110,10 @@ required reviewer, so each apply waits for your click.
 
 ## 8. Merge the pull request
 
-Merging runs the Infra workflow, which applies `infra/main` (the data bucket,
-the signing key, the publish role). Watch it:
+Merging runs the Infra workflow, which applies `infra/main`: the data bucket,
+the signing key, the site bucket and CloudFront distribution, and the two
+publish roles. The distribution takes 5 to 10 minutes to deploy, so the run
+takes about that long. Watch it:
 
 ```bash
 gh run watch -R ed-insights-ai/keelson-rib-touchline \
@@ -126,8 +128,14 @@ To re-run later without a change: `gh workflow run infra.yml --ref main`.
 aws s3api get-bucket-lifecycle-configuration --bucket touchline-data-$AWS_ACCOUNT_ID --query 'Rules[].ID'
 aws kms get-public-key --key-id alias/touchline-snapshot-signing --query 'SigningAlgorithms'
 aws iam get-role --role-name touchline-publish --query 'Role.PermissionsBoundary'
+aws iam get-role --role-name touchline-publish-site --query 'Role.PermissionsBoundary'
 aws budgets describe-budgets --account-id $AWS_ACCOUNT_ID --query 'Budgets[].BudgetName'
+aws cloudfront list-distributions --query 'DistributionList.Items[].{id:Id,domain:DomainName,status:Status}'
+curl -sI https://$(aws cloudfront list-distributions --query 'DistributionList.Items[0].DomainName' --output text)/ | head -1
 ```
+
+The last line prints a 404 until the publish workflow uploads the site; that
+is expected, and shows CloudFront is serving the site's error page path.
 
 Then tell Claude it is done. The next steps (the GitHub App, then the publish
 workflow) pick up from here.

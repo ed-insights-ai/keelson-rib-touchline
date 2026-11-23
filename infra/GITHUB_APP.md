@@ -1,11 +1,11 @@
 # GitHub App setup
 
-One GitHub App replaces personal tokens for every push the pipeline makes: the
-season files into `d1-soccer` and `d2-soccer` (and `d3-soccer` when it
-exists), and the built site onto `gh-pages` of `touchline-ui` (renamed
-`touchline-web` at cutover; the install follows the rename). Daniel does this
-by hand, about 10 minutes, after the bootstrap runbook. Its tokens last an
-hour and are minted per job, so nothing expires on a calendar.
+One GitHub App replaces personal tokens for the pushes the pipeline makes to
+GitHub: the season files into `d1-soccer` and `d2-soccer` (and `d3-soccer`
+when it exists). The site no longer needs it, since it deploys to S3 and
+CloudFront through the `touchline-publish-site` role. Daniel does this by
+hand, about 10 minutes, after the bootstrap runbook. Its tokens last an hour
+and are minted per job, so nothing expires on a calendar.
 
 ## 1. Create the App
 
@@ -24,10 +24,10 @@ Open <https://github.com/organizations/ed-insights-ai/settings/apps/new> and set
 Click **Create GitHub App**. On the next page note the **App ID**, then under
 **Private keys** click **Generate a private key**. A `.pem` file downloads.
 
-## 2. Install it on three repos only
+## 2. Install it on the data homes only
 
 On the App's page, **Install App**, `ed-insights-ai`, **Only select
-repositories**: `d1-soccer`, `d2-soccer`, `touchline-ui`. Install.
+repositories**: `d1-soccer`, `d2-soccer`. Install.
 
 ## 3. Store the id and key in the rib's production environment
 
@@ -39,33 +39,12 @@ gh secret   set TOUCHLINE_APP_PRIVATE_KEY --env production -R $R < ~/Downloads/t
 
 Then move the `.pem` into your password manager and delete it from Downloads.
 
-## 4. Keep the App off the site's main branch
+## 4. Block force-pushes and deletion on the data homes
 
-App permissions cannot be limited to one branch, so a ruleset does it: the
-App may push `gh-pages`, but `main` of `touchline-ui` takes changes only
-through pull requests. On the data homes the App pushes to `main` directly, so
-the ruleset there only blocks force-pushes and deletion.
+The App pushes to `main` of each data home directly, so the ruleset only
+stops history from being rewritten or the branch deleted.
 
 ```bash
-gh api -X POST repos/ed-insights-ai/touchline-ui/rulesets --input - <<'JSON'
-{
-  "name": "protect main",
-  "target": "branch",
-  "enforcement": "active",
-  "conditions": {"ref_name": {"include": ["~DEFAULT_BRANCH"], "exclude": []}},
-  "rules": [
-    {"type": "deletion"},
-    {"type": "non_fast_forward"},
-    {"type": "pull_request", "parameters": {
-      "required_approving_review_count": 0,
-      "dismiss_stale_reviews_on_push": false,
-      "require_code_owner_review": false,
-      "require_last_push_approval": false,
-      "required_review_thread_resolution": false}}
-  ]
-}
-JSON
-
 for repo in d1-soccer d2-soccer; do
   gh api -X POST repos/ed-insights-ai/$repo/rulesets --input - <<'JSON'
 {
@@ -79,8 +58,8 @@ JSON
 done
 ```
 
-Rulesets on the private data homes need the org on Team, like the
-environments in the runbook.
+Rulesets on private repos need the org on Team, like the environments in the
+runbook.
 
 ## How the workflows use it
 

@@ -9,7 +9,7 @@ locals {
   publish_subject = "repo:${local.repo}:environment:${var.publish_environment}:ref:refs/heads/main"
 
   writable_prefixes = concat(
-    ["raw/*", "news/*", "site/*", "latest.json"],
+    ["raw/*", "news/*", "bundles/*", "latest.json"],
     [for s in local.scopes : "snapshots/base/${s}/*"],
     [for s in local.scopes : "snapshots/delta/${s}/*"],
   )

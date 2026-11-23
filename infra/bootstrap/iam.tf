@@ -2,7 +2,8 @@
 # The infra deploy role: GitHub Actions in the rib's `infra` environment, on
 # main only, runs Terraform for infra/main with it.
 #
-# It can manage the Touchline data bucket's configuration, KMS keys tagged
+# It can manage the data and site buckets' configuration, the site's
+# CloudFront distribution and its policies, KMS keys tagged
 # project=touchline, and roles named touchline-publish*, and every role it
 # creates must carry the touchline-publish-boundary permissions boundary. It
 # cannot change itself, the OIDC provider, the budget or the bootstrap state,
@@ -15,6 +16,7 @@
 locals {
   data_bucket     = "touchline-data-${local.account_id}"
   data_bucket_arn = "arn:aws:s3:::${local.data_bucket}"
+  site_bucket_arn = "arn:aws:s3:::touchline-site-${local.account_id}"
   kms_key_arns    = "arn:aws:kms:${var.region}:${local.account_id}:key/*"
   publish_role    = "arn:aws:iam::${local.account_id}:role/touchline-publish*"
   boundary_arn    = "arn:aws:iam::${local.account_id}:policy/touchline-publish-boundary"
@@ -77,7 +79,23 @@ data "aws_iam_policy_document" "infra_deploy" {
   statement {
     sid       = "DataBucketConfig"
     actions   = ["s3:*"]
-    resources = [local.data_bucket_arn]
+    resources = [local.data_bucket_arn, local.site_bucket_arn]
+  }
+
+  # The site's distribution, origin access control, function and cache and
+  # header policies. Most CloudFront policy types take no resource ARN, so
+  # this is account-wide; the account holds nothing else on CloudFront.
+  statement {
+    sid       = "CloudFront"
+    actions   = ["cloudfront:*"]
+    resources = ["*"]
+  }
+
+  # Read-only, for the optional custom-domain certificate.
+  statement {
+    sid       = "AcmRead"
+    actions   = ["acm:DescribeCertificate", "acm:ListCertificates"]
+    resources = ["*"]
   }
 
   statement {
@@ -170,9 +188,10 @@ resource "aws_iam_role_policy" "infra_deploy" {
 }
 
 # ---------------------------------------------------------------------------
-# The ceiling for every touchline-publish* role: read and write data objects,
-# sign with Touchline keys. No deletes. Inline policies infra/main writes on
-# those roles can only narrow this, never widen it.
+# The ceiling for every touchline-publish* role: read and write data objects
+# (no deletes), sync the site bucket and invalidate its distribution, sign
+# with Touchline keys. Inline policies infra/main writes on those roles can
+# only narrow this, never widen it; each role gets only its own part.
 # ---------------------------------------------------------------------------
 
 data "aws_iam_policy_document" "publish_boundary" {
@@ -186,6 +205,24 @@ data "aws_iam_policy_document" "publish_boundary" {
     sid       = "DataObjects"
     actions   = ["s3:GetObject", "s3:PutObject", "s3:AbortMultipartUpload"]
     resources = ["${local.data_bucket_arn}/*"]
+  }
+
+  statement {
+    sid       = "SiteList"
+    actions   = ["s3:ListBucket"]
+    resources = [local.site_bucket_arn]
+  }
+
+  statement {
+    sid       = "SiteObjects"
+    actions   = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject", "s3:AbortMultipartUpload"]
+    resources = ["${local.site_bucket_arn}/*"]
+  }
+
+  statement {
+    sid       = "SiteInvalidate"
+    actions   = ["cloudfront:CreateInvalidation", "cloudfront:GetInvalidation"]
+    resources = ["arn:aws:cloudfront::${local.account_id}:distribution/*"]
   }
 
   statement {

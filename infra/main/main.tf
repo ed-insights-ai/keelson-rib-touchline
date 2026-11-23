@@ -20,7 +20,9 @@ locals {
 #                                    never expires, replaced ones are kept
 #                                    noncurrent_retention_days (a week of bases)
 #   snapshots/delta/<scope>/<id>...  signed daily deltas, expire after delta_retention_days
-#   site/<build id>/...              current-season site bundles, expire after 30 days
+#   bundles/<build id>/...           current-season data bundles the site build reads,
+#                                    expire after 30 days (the built site itself is
+#                                    in the separate site bucket, site.tf)
 #   news/...                         journals, kept
 #   latest.json                      pointer the desk reads; moved by conditional write
 # ---------------------------------------------------------------------------
@@ -104,13 +106,13 @@ resource "aws_s3_bucket_lifecycle_configuration" "data" {
   }
 
   rule {
-    id     = "expire-site-bundles"
+    id     = "expire-data-bundles"
     status = "Enabled"
     filter {
-      prefix = "site/"
+      prefix = "bundles/"
     }
     expiration {
-      days = var.site_bundle_retention_days
+      days = var.bundle_retention_days
     }
   }
 }

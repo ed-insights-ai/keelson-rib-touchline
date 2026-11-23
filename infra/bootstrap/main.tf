@@ -102,7 +102,8 @@ resource "aws_iam_openid_connect_provider" "github" {
 }
 
 # ---------------------------------------------------------------------------
-# Monthly cost budget. The first two AWS budgets are free.
+# Monthly cost budget, alerts at $4 actual, $5 forecast and $10 actual.
+# One budget with three alerts; the first two AWS budgets are free.
 # ---------------------------------------------------------------------------
 
 resource "aws_budgets_budget" "monthly" {
@@ -125,6 +126,15 @@ resource "aws_budgets_budget" "monthly" {
     threshold                  = 100
     threshold_type             = "PERCENTAGE"
     notification_type          = "FORECASTED"
+    subscriber_email_addresses = [var.budget_email]
+  }
+
+  # A second, louder alert at an absolute $10 actual.
+  notification {
+    comparison_operator        = "GREATER_THAN"
+    threshold                  = var.budget_second_alert_usd
+    threshold_type             = "ABSOLUTE_VALUE"
+    notification_type          = "ACTUAL"
     subscriber_email_addresses = [var.budget_email]
   }
 }
