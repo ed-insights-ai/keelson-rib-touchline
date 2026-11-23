@@ -136,7 +136,11 @@ Real runs need, on the rib's `production` environment:
 | `AWS_ACCOUNT_ID` | variable | Daniel (infra/RUNBOOK.md) | the OIDC role `touchline-publish` trusts only `production` on `main` |
 | `TOUCHLINE_APP_ID`, `TOUCHLINE_APP_PRIVATE_KEY` | variable, secret | Daniel ([GitHub App](https://github.com/ed-insights-ai/keelson-rib-touchline/blob/main/infra/GITHUB_APP.md)) | the App must be installed on `d1-soccer` and `d2-soccer`; it creates and pushes `shadow` |
 
-and two repository variables that switch the schedule on:
+A `ready` job checks these first and mints a test App token. If anything is
+missing or wrong, a scheduled run ends green with a warning and collects
+nothing, so it costs a few seconds; a manual run fails with the reason.
+
+Two repository variables switch the schedule on:
 
 | Variable | Effect |
 | --- | --- |
