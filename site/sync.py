@@ -58,6 +58,9 @@ IMMUTABLE = "public, max-age=31536000, immutable"
 # Everything else: CloudFront's pages policy (max 3600) keeps it this long,
 # and so does a browser, so a daily deploy shows within minutes.
 PAGES = "public, max-age=300"
+# Each build's freshness.js carries the footer's "Data collected" date for
+# every page of that build; it must never lag the pages that read it.
+NO_CACHE = "no-cache"
 
 
 def content_type(path: Path) -> str:
@@ -69,7 +72,11 @@ def content_type(path: Path) -> str:
 
 
 def cache_control(key: str) -> str:
-    return IMMUTABLE if "_astro/" in key else PAGES
+    if "_astro/" in key:
+        return IMMUTABLE
+    if key.rsplit("/", 1)[-1] == "freshness.js":
+        return NO_CACHE
+    return PAGES
 
 
 def md5(path: Path) -> str:
