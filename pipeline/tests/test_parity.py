@@ -726,3 +726,103 @@ def test_an_unwritable_output_is_exit_2(
         json.loads(capsys.readouterr().out.strip().splitlines()[-1])["verdict"]
         == "error"
     )
+
+
+# -- review round two --------------------------------------------------------
+
+
+def test_a_live_game_that_vanished_disagrees(homes: tuple[Path, Path]) -> None:
+    e, a = homes
+    game = final_fixture(e)
+    doc = load(e, FIX)
+    next(f for f in doc["fixtures"] if f["id"] == game["id"])["status"] = "live"
+    save(e, FIX, doc)
+    doc = load(a, FIX)
+    doc["fixtures"] = [f for f in doc["fixtures"] if f["id"] != game["id"]]
+    save(a, FIX, doc)
+    stamp(e, at(game["date"], 2))
+    stamp(a, at(game["date"], 20))
+    [f] = only(run(e, a), "fixtures")
+    assert (f.cls, f.kind) == ("disagreement", "removed")
+    assert "played game vanished" in f.reason
+
+
+def test_a_recent_box_score_that_lost_a_player_line_disagrees(
+    homes: tuple[Path, Path],
+) -> None:
+    e, a = homes
+    game = final_fixture(e)
+    m = load(a, MAT)
+    m["matches"][game["id"]]["teams"][0]["players"].pop()
+    save(a, MAT, m)
+    stamp(e, at(game["date"], 2))
+    stamp(a, at(game["date"], 20))
+    [f] = only(run(e, a), "matches")
+    assert f.cls == "disagreement"
+    assert "lost teams[0].players" in f.reason
+
+
+def test_a_recent_box_score_that_gained_a_field_is_timing(
+    homes: tuple[Path, Path],
+) -> None:
+    e, a = homes
+    game = final_fixture(e)
+    m = load(a, MAT)
+    m["matches"][game["id"]]["attendance"] = 1234
+    save(a, MAT, m)
+    stamp(e, at(game["date"], 2))
+    stamp(a, at(game["date"], 20))
+    [f] = only(run(e, a), "matches")
+    assert f.cls == "timing", f.reason
+
+
+def test_a_cell_that_lost_its_count_disagrees(homes: tuple[Path, Path]) -> None:
+    e, a = homes
+    game = final_fixture(e)
+    key = f"2026/men/{game['home']}/matches"
+    for home in (e, a):
+        doc = load(home, COV)
+        cell = doc["cells"][key]
+        cell["confirmed_at"] = at(game["date"], 2 if home == e else 20).isoformat()
+        if home == a:
+            cell["count"] = None
+        save(home, COV, doc)
+    [f] = only(run(e, a), "coverage")
+    assert f.cls == "disagreement"
+    assert "lost its count" in f.reason
+
+
+def test_true_is_not_one(homes: tuple[Path, Path]) -> None:
+    e, a = homes
+    doc = load(a, FIX)
+    row = next(f for f in doc["fixtures"] if f["conference_game"] is True)
+    row["conference_game"] = 1
+    save(a, FIX, doc)
+    [f] = run(e, a).disagreements
+    assert f.fields == [{"path": "conference_game", "expected": True, "actual": 1}]
+
+
+def test_a_counter_that_became_a_boolean_is_not_growth() -> None:
+    assert parity.Comparison._regressed({"goals": 0}, {"goals": True}) is not None
+    assert parity.Comparison._regressed({"goals": 1}, {"goals": True}) is not None
+    assert parity.Comparison._regressed({"goals": 1}, {"goals": 2}) is None
+
+
+def test_only_a_new_count_may_appear_with_a_game() -> None:
+    assert parity.Comparison._regressed({}, {"red": 1}) is None
+    assert parity.Comparison._regressed({}, {"number": "9"}) is not None
+    assert parity.Comparison._regressed({}, {"red": -1}) is not None
+
+
+def test_a_marker_without_a_level_is_the_legacy_d2(homes: tuple[Path, Path]) -> None:
+    e, a = homes
+    marker = a / "touchline-data.yaml"
+    marker.write_text(
+        "\n".join(
+            ln for ln in marker.read_text().splitlines() if not ln.startswith("level:")
+        )
+        + "\n"
+    )
+    result = run(e, a)
+    assert result.verdict == "pass", result.errors
+    assert result.level == "d2"

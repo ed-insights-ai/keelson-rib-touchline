@@ -76,6 +76,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from src.paths import UNDECLARED_HOME_LEVEL, marker_level
+
 SCHEMA = "touchline.parity/1"
 
 MATCH = "match"
@@ -317,10 +319,20 @@ def open_tree(spec: str) -> Tree:
     raise ParityError(f"{spec}: neither a directory nor PATH@REF")
 
 
-def _level(tree: Tree) -> str | None:
+def _level(tree: Tree) -> str:
+    """The home's level by the pipeline's own marker rule (src/paths.py):
+    a marker with no ``level`` line is the d2 every pre-level home is."""
     text = tree.read("touchline-data.yaml").decode("utf-8", "replace")
-    m = re.search(r"^level:\s*(\S+)", text, re.MULTILINE)
-    return m.group(1).strip("'\"") if m else None
+    kind = re.search(r"^\s*kind:\s*(\S+)\s*$", text, re.MULTILINE)
+    if kind is None or kind.group(1) != "touchline-data":
+        raise ParityError(
+            f"{tree.label}: touchline-data.yaml is not a Touchline marker"
+        )
+    try:
+        level = marker_level(text)
+    except ValueError as exc:
+        raise ParityError(f"{tree.label}: touchline-data.yaml {exc}") from exc
+    return level or UNDECLARED_HOME_LEVEL
 
 
 # ---------------------------------------------------------------------------
@@ -557,6 +569,42 @@ def deep_diff(a: Any, b: Any, path: str = "") -> Iterator[tuple[str, Any, Any]]:
     elif type(a) is not type(b) or a != b:
         # bool is an int subclass; 1 and True are different facts here.
         yield path, a, b
+
+
+def same(a: Any, b: Any) -> bool:
+    """Equal as JSON facts: ``==`` with types held, so ``true`` is not ``1``
+    and ``1`` is not ``1.0``."""
+    if type(a) is not type(b):
+        return False
+    if isinstance(a, dict):
+        return a.keys() == b.keys() and all(same(v, b[k]) for k, v in a.items())
+    if isinstance(a, list):
+        return len(a) == len(b) and all(same(x, y) for x, y in zip(a, b, strict=True))
+    return a == b
+
+
+def _lost(early: Any, late: Any, path: str = "") -> str | None:
+    """The first place the later value holds less than the earlier one did:
+    a key whose value vanished or became null, or a list that got shorter."""
+    if isinstance(early, dict):
+        if not isinstance(late, dict):
+            return path or "<root>"
+        for k, v in early.items():
+            sub = f"{path}.{k}" if path else str(k)
+            if v is not None and late.get(k) is None:
+                return sub
+            hit = _lost(v, late.get(k), sub)
+            if hit:
+                return hit
+        return None
+    if isinstance(early, list):
+        if not isinstance(late, list) or len(late) < len(early):
+            return path or "<root>"
+        for i, (x, y) in enumerate(zip(early, late, strict=False)):
+            hit = _lost(x, y, f"{path}[{i}]")
+            if hit:
+                return hit
+    return None
 
 
 def _short(value: Any) -> Any:
@@ -935,7 +983,7 @@ class Comparison:
         """File-level facts outside the record lists, compared exactly."""
         a_rest = {k: v for k, v in de.items() if k not in skip}
         b_rest = {k: v for k, v in da.items() if k not in skip}
-        if a_rest == b_rest:
+        if same(a_rest, b_rest):
             self.result.add(layer, MATCH)
             return
         fields, more = _fields(a_rest, b_rest)
@@ -962,7 +1010,7 @@ class Comparison:
         aa = _keyed(da.get("fixtures") or [], "id")
         for key in sorted(set(ea) | set(aa)):
             x, y = ea.get(key), aa.get(key)
-            if x == y:
+            if same(x, y):
                 self.result.add("fixtures", MATCH)
                 continue
             row = y if x is None else x
@@ -1013,7 +1061,7 @@ class Comparison:
         early, late = (x, y) if w.actual_is_later else (y, x)
         if late is None:
             assert early is not None
-            if early.get("status") == "final":
+            if early.get("status") in ("live", "final"):
                 return (
                     DISAGREEMENT,
                     f"a played game vanished from the later collection ({when})",
@@ -1037,7 +1085,7 @@ class Comparison:
                     f"the later collection lost the {score} the earlier one had ({when})",
                 )
         for ident in ("home", "away"):
-            if early.get(ident) != late.get(ident):
+            if not same(early.get(ident), late.get(ident)):
                 return (
                     DISAGREEMENT,
                     f"the two sides name different teams for one fixture id ({when})",
@@ -1076,14 +1124,14 @@ class Comparison:
         gone_e, gone_a = de.get("missing") or {}, da.get("missing") or {}
         for key in sorted(set(me) | set(ma) | set(gone_e) | set(gone_a)):
             x, y = me.get(key), ma.get(key)
-            if x is not None and x == y:
+            if x is not None and same(x, y):
                 self.result.add("matches", MATCH)
                 continue
             if x is None and y is None:
                 # A gap on both sides, or on one side with no box score on
                 # the other.
                 if key in gone_e and key in gone_a:
-                    if gone_e[key] == gone_a[key]:
+                    if same(gone_e[key], gone_a[key]):
                         self.result.add("matches", MATCH)
                     else:
                         self.result.find(
@@ -1187,6 +1235,12 @@ class Comparison:
             )
         if early is None:
             return TIMING, f"box score posted after the earlier collection ({when})"
+        lost = _lost(early, late)
+        if lost:
+            return (
+                DISAGREEMENT,
+                f"the later box score lost {lost}, which the earlier one had ({when})",
+            )
         return (
             TIMING,
             f"box score revised by the host within {w.lag.days} days of the game ({when})",
@@ -1201,7 +1255,7 @@ class Comparison:
         re_, ra = de.get("rosters") or {}, da.get("rosters") or {}
         for slug in sorted(set(re_) | set(ra)):
             x, y = re_.get(slug), ra.get(slug)
-            if x == y:
+            if same(x, y):
                 self.result.add("rosters", MATCH)
                 continue
             kind = "added" if x is None else "removed" if y is None else "changed"
@@ -1247,7 +1301,7 @@ class Comparison:
         te, ta = de.get("teams") or {}, da.get("teams") or {}
         for slug in sorted(set(te) | set(ta)):
             x, y = te.get(slug), ta.get(slug)
-            if x == y:
+            if same(x, y):
                 self.result.add("stats", MATCH)
                 continue
             kind = "added" if x is None else "removed" if y is None else "changed"
@@ -1310,7 +1364,7 @@ class Comparison:
         for k in set(early) | set(late):
             if k in ("players", "keepers"):
                 continue
-            if early.get(k) != late.get(k):
+            if not same(early.get(k), late.get(k)):
                 return DISAGREEMENT, f"team field {k!r} differs ({when})"
         for group in ("players", "keepers"):
             pe, pl = early.get(group) or {}, late.get(group) or {}
@@ -1332,20 +1386,23 @@ class Comparison:
     def _regressed(early: dict, late: dict) -> str | None:
         for k in set(early) | set(late):
             a, b = early.get(k), late.get(k)
-            if a == b:
+            if same(a, b):
                 continue
-            numeric = (
-                isinstance(a, (int, float))
-                and isinstance(b, (int, float))
-                and not isinstance(a, bool)
-            )
-            if numeric and k in RATIO_STATS:
+            a_num = isinstance(a, (int, float)) and not isinstance(a, bool)
+            b_num = isinstance(b, (int, float)) and not isinstance(b, bool)
+            if a_num and b_num and k in RATIO_STATS:
                 continue
-            if numeric and isinstance(a, int) and isinstance(b, int):
+            if isinstance(a, int) and isinstance(b, int) and a_num and b_num:
                 if b < a:
                     return f"{k} went down, {a} then {b}"
                 continue
-            if a is None and k not in RATIO_STATS:
+            if (
+                a is None
+                and k not in RATIO_STATS
+                and isinstance(b, int)
+                and b_num
+                and b >= 0
+            ):
                 continue  # a count first printed once the player recorded one
             return f"{k} changed, {_short(a)!r} then {_short(b)!r}"
         return None
@@ -1391,7 +1448,7 @@ class Comparison:
                 raise ParityError(
                     f"{path} ({label}): {field_name} {doc.get(field_name)!r}, this check reads {want!r}"
                 )
-        if de == da:
+        if same(de, da):
             self.result.add("reference", MATCH)
             return
         changed: list[str] = []
@@ -1401,9 +1458,9 @@ class Comparison:
                 changed.extend(
                     f"{key}.{k}"
                     for k in sorted(set(x) | set(y))
-                    if x.get(k) != y.get(k)
+                    if not same(x.get(k), y.get(k))
                 )
-            elif x != y:
+            elif not same(x, y):
                 changed.append(key)
         fields = [
             {"path": k, "expected": _short(_dig(de, k)), "actual": _short(_dig(da, k))}
@@ -1468,7 +1525,7 @@ class Comparison:
             )
             same_stamp = x and y and x.get("confirmed_at") == y.get("confirmed_at")
             if same_stamp and not vouched and not self.compare_inherited:
-                if xs != ys:
+                if not same(xs, ys):
                     r.find(
                         Finding(
                             "coverage",
@@ -1490,7 +1547,7 @@ class Comparison:
                         }
                     )
                 continue
-            if xs == ys:
+            if same(xs, ys):
                 r.add("coverage", MATCH)
                 continue
             w = Window(
@@ -1551,11 +1608,20 @@ class Comparison:
             )
         for k in set(early) | set(late):
             if k not in ("count", "reason", "state", "skips"):
-                if early.get(k) != late.get(k):
+                if not same(early.get(k), late.get(k)):
                     return DISAGREEMENT, f"cell field {k!r} differs ({when})"
+
+        def is_count(v: Any) -> bool:
+            return isinstance(v, int) and not isinstance(v, bool)
+
+        if is_count(early.get("count")) and not is_count(late.get("count")):
+            return (
+                DISAGREEMENT,
+                f"the later cell lost its count, {early['count']} then {late.get('count')!r} ({when})",
+            )
         if (
-            isinstance(early.get("count"), int)
-            and isinstance(late.get("count"), int)
+            is_count(early.get("count"))
+            and is_count(late.get("count"))
             and late["count"] < early["count"]
         ):
             if x.get("layer") != "schedule":
