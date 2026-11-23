@@ -120,11 +120,13 @@ def _cut_into(home: Path, conference: str, season: int, out: Path) -> dict:
             files.append(
                 {
                     "path": f"data/{layer}/{src.name}",
-                    "bytes": src.stat().st_size,
-                    "sha256": _sha256(src),
+                    "bytes": dst.stat().st_size,
+                    "sha256": _sha256(dst),
                 }
             )
-        fixtures = _load(data / "fixtures" / f"{key}.json")
+        # Read the staged copy, so the manifest and the trimmed references
+        # describe exactly the files the sample holds.
+        fixtures = _load(out / "data" / "fixtures" / f"{key}.json")
         members[gender] = {p["slug"] for p in fixtures.get("programmes", [])}
         named |= members[gender]
         for row in fixtures.get("fixtures", []):
