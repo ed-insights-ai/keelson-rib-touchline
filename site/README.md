@@ -19,11 +19,12 @@ runs the whole step:
 
 ## Run it
 
-Actions → Publish site → Run workflow on `main`. `source` is `samples` (the
-sample homes) or `data` (the private homes; needs the publisher App installed
-on d1-soccer and d2-soccer, see `infra/GITHUB_APP.md`). The repo variable
-`SITE_SOURCE` sets the default for runs that do not say. Pull requests that
-touch the site build and test the sample site and deploy nothing.
+Actions → Publish site → Run workflow on `main`, or merge a change under
+`site/`. `source` is `data` (the private homes, read with the publisher App,
+see `infra/GITHUB_APP.md`; the default) or `samples` (the sample homes). The
+repo variable `SITE_SOURCE` overrides the default for runs that do not say.
+Pull requests that touch the site build and test the sample site and deploy
+nothing.
 
 ## Change what the site runs
 

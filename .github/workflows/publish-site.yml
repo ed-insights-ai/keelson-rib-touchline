@@ -8,13 +8,13 @@ name: Publish site
 # yet.
 #
 # Source of the data:
-#   samples  the sample homes under samples/ (the default until the publisher
-#            App is installed on the data repos; the site then shows GAC and A10)
-#   data     the private d1-soccer and d2-soccer homes at their main, read with
+#   samples  the sample homes under samples/ (the site then shows GAC and A10;
+#            always what pull requests build)
+#   data     the default on main: the private d1-soccer and d2-soccer homes at their main, read with
 #            the touchline-publisher App (infra/GITHUB_APP.md); journals come
 #            from touchline-ui main, where the Mac commits them
 # A run takes the `source` input unless it is `default`, else the repo
-# variable SITE_SOURCE, else samples.
+# variable SITE_SOURCE, else data.
 #
 # Snapshot seam: the snapshot job (DuckDB plus KMS signing, a later change)
 # goes between `bundle` and `site`. It reads the same homes at the commits the
@@ -29,7 +29,7 @@ on:
   workflow_dispatch:
     inputs:
       source:
-        description: "default (the SITE_SOURCE variable, else samples), samples or data"
+        description: "default (the SITE_SOURCE variable, else data), samples or data"
         type: choice
         options: [default, samples, data]
         default: default
@@ -46,7 +46,7 @@ on:
         type: boolean
         default: false
   # A merge that changes the site's code (the pin, the scripts, this file)
-  # deploys it, from SITE_SOURCE (samples until that variable says data).
+  # deploys it, from SITE_SOURCE (data unless that variable says samples).
   push:
     branches: [main]
     paths:
@@ -72,7 +72,7 @@ concurrency:
 
 env:
   # Pull requests always build the samples, whatever the default.
-  SOURCE: ${{ github.event_name == 'pull_request' && 'samples' || (inputs.source != '' && inputs.source != 'default') && inputs.source || vars.SITE_SOURCE || 'samples' }}
+  SOURCE: ${{ github.event_name == 'pull_request' && 'samples' || (inputs.source != '' && inputs.source != 'default') && inputs.source || vars.SITE_SOURCE || 'data' }}
   # Division order: the root division first (infra/main site_root_division).
   SITE_DIVISIONS: d2 d1
   AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID || '822013580129' }}
@@ -87,7 +87,7 @@ jobs:
     name: Check contracts and cut the bundle
     runs-on: ubuntu-latest
     # The App's secrets live in production; samples need no environment.
-    environment: ${{ github.event_name != 'pull_request' && ((inputs.source != '' && inputs.source != 'default') && inputs.source || vars.SITE_SOURCE || 'samples') == 'data' && 'production' || '' }}
+    environment: ${{ github.event_name != 'pull_request' && ((inputs.source != '' && inputs.source != 'default') && inputs.source || vars.SITE_SOURCE || 'data') == 'data' && 'production' || '' }}
     outputs:
       sources: ${{ steps.cut.outputs.sources }}
     steps:
