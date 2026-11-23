@@ -497,7 +497,8 @@ jobs:
         env:
           BUCKET: ${{ env.DATA_BUCKET }}
           RELEASE: ${{ github.workspace }}/release
+        shell: bash
         run: |
-          set -eu
+          set -euo pipefail
           sh rib/snapshot/release.sh | tee released.txt
           { echo "### Released ($SOURCE)"; sed 's/^/- /' released.txt; } >> "$GITHUB_STEP_SUMMARY"

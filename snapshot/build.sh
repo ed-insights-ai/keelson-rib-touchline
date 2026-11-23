@@ -129,7 +129,12 @@ for scope in $scopes; do
       fetch_object "$prefix/$base" "$out/$base" || fail "$scope: the manifest names $base, which is not there"
     fi
     aws s3api list-objects-v2 --bucket "$BUCKET" --prefix "$prefix/" \
-      --query 'Contents[].Key' --output json | jq -r '.[]?' >"$WORK/keys.txt"
+      --query 'Contents[].Key' --output json >"$WORK/list.json" ||
+      fail "$scope: could not list s3://$BUCKET/$prefix/"
+    # An empty folder lists as null; anything but null or a key list is a failure.
+    jq -e '. == null or type == "array"' "$WORK/list.json" >/dev/null ||
+      fail "$scope: the listing of s3://$BUCKET/$prefix/ was not a key list"
+    jq -r '.[]?' "$WORK/list.json" >"$WORK/keys.txt"
   else
     [ -f "$out/latest.json" ] && etag=local
     find "$out" -type f >"$WORK/keys.txt"
