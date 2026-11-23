@@ -16,6 +16,18 @@ variable "github_repo" {
   default     = "keelson-rib-touchline"
 }
 
+variable "github_owner_id" {
+  description = "Numeric GitHub ID of the owner, part of the immutable OIDC subject."
+  type        = number
+  default     = 210274923
+}
+
+variable "github_repo_id" {
+  description = "Numeric GitHub ID of the repository, part of the immutable OIDC subject."
+  type        = number
+  default     = 1328075011
+}
+
 variable "infra_environment" {
   description = "GitHub Actions environment whose jobs may run Terraform for the main stack."
   type        = string

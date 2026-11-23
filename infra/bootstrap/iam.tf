@@ -23,7 +23,7 @@ locals {
   # Requires the repo's OIDC subject template to include repo, context and ref
   # (RUNBOOK.md step 6). The default template has no ref for environment jobs,
   # so without that step this match fails closed.
-  infra_subject = "repo:${local.repo}:environment:${var.infra_environment}:ref:refs/heads/main"
+  infra_subject = "repo:${local.oidc_repo}:environment:${var.infra_environment}:ref:refs/heads/main"
 }
 
 data "aws_iam_policy_document" "infra_trust" {

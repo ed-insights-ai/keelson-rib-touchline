@@ -11,7 +11,7 @@
 
 locals {
   # Needs the repo's OIDC subject template (repo, context, ref). See RUNBOOK.md.
-  publish_subject = "repo:${local.repo}:environment:${var.publish_environment}:ref:refs/heads/main"
+  publish_subject = "repo:${local.oidc_repo}:environment:${var.publish_environment}:ref:refs/heads/main"
 }
 
 data "aws_iam_policy_document" "publish_trust" {

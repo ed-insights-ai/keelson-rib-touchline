@@ -4,6 +4,7 @@ locals {
   account_id   = data.aws_caller_identity.current.account_id
   state_bucket = "touchline-tfstate-${local.account_id}"
   repo         = "${var.github_owner}/${var.github_repo}"
+  oidc_repo    = "${var.github_owner}@${var.github_owner_id}/${var.github_repo}@${var.github_repo_id}"
   oidc_host    = "token.actions.githubusercontent.com"
   oidc_arn     = "arn:aws:iam::${local.account_id}:oidc-provider/${local.oidc_host}"
 }

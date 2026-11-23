@@ -35,8 +35,8 @@ The GitHub App that pushes season files to the data homes is set up by hand:
   account-wide Block Public Access or the bootstrap state.
 - **The signing key** lives in the bootstrap stack, so only Daniel's signed-in
   CLI can change, disable or delete it.
-- Every trust policy matches the OIDC subject
-  `repo:ed-insights-ai/keelson-rib-touchline:environment:<env>:ref:refs/heads/main`,
+- Every trust policy matches the immutable OIDC subject
+  `repo:ed-insights-ai@210274923/keelson-rib-touchline@1328075011:environment:<env>:ref:refs/heads/main`,
   so a pull request, another branch or another repo cannot assume them.
 
 ## Divisions and scopes
