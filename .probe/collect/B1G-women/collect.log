@@ -1,9 +1,0 @@
-membership reference synced: the data home copy at /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/B1G-women/data/reference/membership.json was absent, mirrored from the packaged source of record at /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/data/reference/membership.json
-programmes reference synced: the data home copy at /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/B1G-women/data/reference/programmes.json was absent, mirrored from the packaged source of record at /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/data/reference/programmes.json
-identity: owner side 365 lines: page 365; opponent side 325 lines: key 325 (key by reason: no_roster 325)
-wrote /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/B1G-women/data/fixtures/2026-women-b1g.json, /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/B1G-women/data/rosters/2026-women-b1g.json, /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/B1G-women/data/stats/2026-women-b1g.json, /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/B1G-women/data/matches/2026-women-b1g.json and /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/B1G-women/data/coverage.json
-schedule: 1/1 programmes, 18 fixtures (18 played, 0 upcoming)
-conference flags PUBLISHED by each programme's official schedule page
-roster: 1/1 programmes, 28 players
-stats: 1/1 programmes, 27 player season lines
-matches: 18 of 18 played fixtures carry a collected box score
