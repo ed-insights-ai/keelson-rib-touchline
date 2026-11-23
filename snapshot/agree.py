@@ -81,14 +81,9 @@ def compare(teams: dict, players: dict, figures: list[dict]):
                 key = (d, g, s, slug)
                 where = f"{d} {g} {s} {p['name']} ({slug})"
                 n_teams += 1
-                desk = teams.get(key)
+                # A program with no counted results has no row in the desk: zero.
+                desk = teams.get(key) or {b: 0 for _, b in TEAM_FIELDS}
                 site = p["record"]
-                if desk is None:
-                    if site["played"]:
-                        team_diffs.append(
-                            f"{where}: the site shows {site['played']} games, the desk none"
-                        )
-                    continue
                 for a, b in TEAM_FIELDS:
                     if num(site[a]) != num(desk[b]):
                         team_diffs.append(
@@ -96,7 +91,7 @@ def compare(teams: dict, players: dict, figures: list[dict]):
                         )
                 roster = players.get(key, {})
                 for line in p.get("players", []):
-                    if line.get("gp") is None:
+                    if line.get("gp") is None and not line.get("keeper"):
                         continue  # on the roster with no stats line: the page prints no figures
                     n_lines += 1
                     who = f"{where} {line['name']}"
@@ -124,6 +119,10 @@ def compare(teams: dict, players: dict, figures: list[dict]):
                                     f"{who} keeper {a}: site {keeper[a]}, desk {row[b]}"
                                 )
                     n_line_diffs += len(player_diffs) > before
+        if n_teams == 0:
+            # figures.ts skips a conference it cannot load; a build with none
+            # compared nothing, which must not read as agreement.
+            team_diffs.append(f"{d} {g} {s}: the site's figures list no programs")
         rows.append(f"| {d} | {g} | {s} | {n_teams} | {n_lines} | {n_line_diffs} |")
     return team_diffs, player_diffs, rows
 

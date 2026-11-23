@@ -410,13 +410,17 @@ jobs:
           { echo "### Snapshot ($SOURCE)"; echo; cat work/summary.md; } >> "$GITHUB_STEP_SUMMARY"
       # The site and the desk must show the same numbers: touchline-ui at the
       # site's pin prints each build's figures from the bundle, and
-      # snapshot/agree.sh holds them to the `all` index just published.
+      # snapshot/agree.sh holds them to the `all` index just published. Its
+      # setup may fail without failing the job (the site still deploys); the
+      # comparison then fails and the release job moves nothing.
       - name: Pinned touchline-ui
         if: steps.access.outputs.ok == 'true'
+        continue-on-error: true
         id: ui
         run: echo "sha=$(tr -d '[:space:]' < rib/site/touchline-ui.sha)" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         if: steps.access.outputs.ok == 'true'
+        continue-on-error: true
         with:
           repository: ed-insights-ai/touchline-ui
           ref: ${{ steps.ui.outputs.sha }}
@@ -424,14 +428,17 @@ jobs:
           persist-credentials: false
       - uses: oven-sh/setup-bun@v2
         if: steps.access.outputs.ok == 'true'
+        continue-on-error: true
         with:
           bun-version: 1.3.13
       - name: Install touchline-ui
         if: steps.access.outputs.ok == 'true'
+        continue-on-error: true
         working-directory: ui
         run: bun install --frozen-lockfile
       - uses: actions/download-artifact@v4
         if: steps.access.outputs.ok == 'true'
+        continue-on-error: true
         with:
           name: site-bundle
           path: bundle
