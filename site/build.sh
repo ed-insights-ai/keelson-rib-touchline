@@ -41,11 +41,14 @@ for div in $divisions; do
     echo "no bundle for $div at $home" >&2
     exit 1
   fi
+  # The UI defaults to one season; build the one the bundle was cut for.
+  season=$(python3 -c 'import json,sys; print(int(json.load(open(sys.argv[1]))["season"]))' "$home/data/bundle.json")
+  export TOUCHLINE_SEASON="$season"
   for gender in $genders; do
     seg=""
     [ "$div" = "$root" ] || seg="/$div"
     [ "$gender" = men ] || seg="$seg/$gender"
-    echo "→ build $div $gender at ${seg:-/}"
+    echo "→ build $div $gender $season at ${seg:-/}"
     env TOUCHLINE_NCAA_DIVISION="$div" TOUCHLINE_GENDER="$gender" \
       TOUCHLINE_DATA_DIR="$home" \
       TOUCHLINE_GENDERS="$published_genders" TOUCHLINE_NCAA_DIVISIONS="$published_divisions" \
