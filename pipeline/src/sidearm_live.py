@@ -343,6 +343,35 @@ def _is_json_document(text: str) -> bool:
     return isinstance(value, (dict, list))
 
 
+def _canonical_schedule(url: str) -> bool:
+    """Whether ``url`` is a sport's canonical, yearless schedule page."""
+    return urlparse(url).path.rstrip("/").endswith("/schedule")
+
+
+def _validators_apply(
+    state: PageState, requested_url: str, year: int, kind: str
+) -> bool:
+    """Whether the archived page's validators may ride this request.
+
+    A 304 vouches for the URL it was asked of, so validators stored from
+    the canonical ``/schedule`` (read after the season URL served a spring
+    slate) are not sent to the season URL: its 304 would vouch for the
+    spring page and reuse the archived fall parse unchecked.  Nor are an archived schedule's own when it is a page
+    ``season_schedule_redirect`` would no longer stand on (a spring slate
+    archived before the redirect existed): the full fetch must run so the
+    canonical schedule is read.
+    """
+    if kind != LAYER_SCHEDULE:
+        return True
+    if state.final_url != requested_url and _canonical_schedule(state.final_url):
+        return False
+    try:
+        archived = PublishedPage(requested_url, state.final_url, state.read_html())
+        return season_schedule_redirect(archived, year) is None
+    except (LiveCollectionError, OSError):
+        return False
+
+
 def fetch_published_page_conditional(
     session: requests.Session,
     requested_url: str,
@@ -368,7 +397,7 @@ def fetch_published_page_conditional(
     the SideArm proof.
     """
     headers: dict[str, str] = {}
-    if state is not None:
+    if state is not None and _validators_apply(state, requested_url, year, kind):
         if state.etag:
             headers["If-None-Match"] = state.etag
         if state.last_modified:
@@ -602,6 +631,8 @@ def _nuxt_season_siblings(html: str, year: int) -> list[dict[str, object]]:
     April dates), 925 (no games) and 926 ("2026 Women's Soccer Schedule",
     the 18-game fall season, current).
     """
+    if "pastSchedules" not in html:
+        return []
     past = _nuxt_store(html, "schedule").get("pastSchedules")
     if not isinstance(past, dict):
         return []

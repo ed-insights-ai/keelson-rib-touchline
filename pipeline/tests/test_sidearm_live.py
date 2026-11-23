@@ -5177,3 +5177,74 @@ def test_a_canonical_page_that_is_not_the_current_schedule_is_refused() -> None:
 
     with pytest.raises(LiveCollectionError, match="current schedule"):
         fetch_published_page_conditional(session, season_url, 2026, "schedule")
+
+
+def _archived(tmp_path, html: str, *, requested: str, final: str):
+    from src.page_state import PageState, content_signature
+
+    path = tmp_path / "schedule.html"
+    path.write_text(html, encoding="utf-8")
+    return PageState(
+        etag='"v1"',
+        last_modified=None,
+        signature=content_signature(html),
+        requested_url=requested,
+        final_url=final,
+        outcome_state="complete",
+        outcome_count=1,
+        outcome_reason=None,
+        parsed={"fixtures": [], "skips": []},
+        html_path=path,
+    )
+
+
+def test_an_archived_spring_slate_is_fetched_again_not_vouched_for_by_a_304(
+    tmp_path,
+) -> None:
+    """A data home that archived Maryland's spring slate before the
+    redirect existed must not keep it on a 304: the archived page is one
+    the redirect no longer stands on, so no validators ride the request
+    and the canonical fall schedule is read."""
+    from src.sidearm_live import fetch_published_page_conditional
+
+    season_url = "https://example.test/sports/womens-soccer/schedule/2026"
+    canonical = "https://example.test/sports/womens-soccer/schedule"
+    state = _archived(tmp_path, _SPRING_PAGE, requested=season_url, final=season_url)
+    session = MagicMock()
+    session.get.side_effect = [
+        _served(season_url, _SPRING_PAGE),
+        _served(canonical, _FALL_PAGE),
+    ]
+
+    fetched = fetch_published_page_conditional(
+        session, season_url, 2026, "schedule", state=state, want_validators=True
+    )
+
+    assert session.get.call_args_list[0].kwargs.get("headers") is None
+    assert not fetched.unchanged
+    assert fetched.page is not None and fetched.page.html == _FALL_PAGE
+
+
+def test_canonical_schedule_validators_are_not_sent_to_the_season_url(
+    tmp_path,
+) -> None:
+    """Validators stored from the canonical ``/schedule`` vouch for that
+    page, not the season URL's spring slate, so they stay home; an
+    unchanged fall page is still recognised by its content."""
+    from src.sidearm_live import fetch_published_page_conditional
+
+    season_url = "https://example.test/sports/womens-soccer/schedule/2026"
+    canonical = "https://example.test/sports/womens-soccer/schedule"
+    state = _archived(tmp_path, _FALL_PAGE, requested=season_url, final=canonical)
+    session = MagicMock()
+    session.get.side_effect = [
+        _served(season_url, _SPRING_PAGE),
+        _served(canonical, _FALL_PAGE),
+    ]
+
+    fetched = fetch_published_page_conditional(
+        session, season_url, 2026, "schedule", state=state, want_validators=True
+    )
+
+    assert session.get.call_args_list[0].kwargs.get("headers") is None
+    assert fetched.unchanged
