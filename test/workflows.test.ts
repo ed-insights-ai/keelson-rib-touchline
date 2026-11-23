@@ -231,6 +231,25 @@ describe("bin/resolve-membership.ts", () => {
   });
 });
 
+describe("one list of levels", () => {
+  test("resolve-membership.ts levels prints CONFERENCE_LEVELS", async () => {
+    const r = await run(["bun", resolver, "levels"]);
+    expect(r.code).toBe(0);
+    expect(r.stdout.trim()).toBe(CONFERENCE_LEVELS.join(" "));
+  });
+
+  test("the infra divisions list is the same list", async () => {
+    // infra/main/variables.tf keys the snapshot scopes and the site builds by
+    // division; the direct collect keys its data homes by the levels above.
+    // One list in two languages: they move together or this fails.
+    const tf = await Bun.file(join(pkg, "infra", "main", "variables.tf")).text();
+    const block = tf.match(/variable "divisions" \{[\s\S]*?default\s*=\s*\[([^\]]*)\]/);
+    expect(block).not.toBeNull();
+    const divisions = [...(block?.[1] ?? "").matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+    expect(divisions).toEqual([...CONFERENCE_LEVELS]);
+  });
+});
+
 describe("conference levels", () => {
   const file: MembershipFile = {
     conferences: ["UPPER", "LOWER", "independent", "non_member"],

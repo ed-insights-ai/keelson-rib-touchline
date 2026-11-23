@@ -1,0 +1,658 @@
+name: Collect
+
+# The daily collect, run straight through the Python collector: no Keelson
+# server and no model call (pipeline/scripts/collect_direct.py; guide:
+# docs/guides/collect-in-actions.md). Until cutover it writes only to the
+# `shadow` branch of each data home (d1-soccer, d2-soccer, d3-soccer once it
+# exists) and to the data bucket's raw/ prefix, never to main: the Mac's
+# cadence stays production through the season, and the parity check compares
+# shadow with main.
+#
+# Jobs:
+#   plan           resolve every season unit from membership, one data home
+#                  per level of the one levels list (src/levels.ts), and route
+#                  each unit: `presto` when any member is on PrestoSports
+#                  (it refuses GitHub-hosted runners), else `hosted`.
+#   shadow-hosted  per division: collect the hosted units, land them on
+#                  shadow, sync raw HTML, and hand the presto units' work home
+#                  to the next job.
+#   presto-collect per division, on the self-hosted runner labelled `presto`.
+#                  Gets no secrets: only the work home artifact. Runs only when
+#                  the TOUCHLINE_PRESTO_RUNNER variable is `true`; otherwise
+#                  the presto units are recorded as skipped and the rest lands.
+#   presto-land    lands the presto job's result (hosted runner, production).
+#   dry-run        pull requests that touch this workflow or the driver, or a
+#                  manual run with mode=dry-run: collects the sample homes'
+#                  conferences (samples/) live into throwaway copies. No
+#                  secrets, no bucket, no push.
+#
+# Schedule: a scheduled run collects only while today (UTC) is on or before
+# the TOUCHLINE_COLLECT_UNTIL variable (YYYY-MM-DD); unset, it does nothing.
+# Each run uploads a counts-and-results record per division and job
+# (collect-record-<division>-<job>) for the parity check.
+
+on:
+  schedule:
+    # After the Mac's 06:30 local cadence, so shadow and main describe the
+    # same morning.
+    - cron: "17 14 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: shadow (collect and land on shadow) or dry-run (sample homes, writes nothing)
+        type: choice
+        options: [shadow, dry-run]
+        default: shadow
+      divisions:
+        description: Divisions to collect, comma-separated (default every level)
+        type: string
+        default: ""
+      conferences:
+        description: Pin to these conferences, comma-separated (default all)
+        type: string
+        default: ""
+      genders:
+        description: Genders, comma-separated
+        type: string
+        default: men,women
+      accept_loss:
+        description: Conferences whose dropped programmes should land (a real loss), comma-separated
+        type: string
+        default: ""
+      refetch:
+        description: Ignore stored validators and box scores (collect-board --refetch)
+        type: boolean
+        default: false
+  pull_request:
+    paths:
+      - .github/workflows/collect.yml
+      - pipeline/scripts/collect_direct.py
+
+permissions:
+  contents: read
+
+env:
+  BUN_VERSION: 1.3.13
+
+jobs:
+  plan:
+    name: Plan the units
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      mode: ${{ steps.mode.outputs.mode }}
+      divisions: ${{ steps.plan.outputs.divisions }}
+      homes: ${{ steps.plan.outputs.homes }}
+      presto: ${{ steps.plan.outputs.presto }}
+      season: ${{ steps.plan.outputs.season }}
+    steps:
+      - name: Choose the mode
+        id: mode
+        env:
+          EVENT: ${{ github.event_name }}
+          INPUT_MODE: ${{ inputs.mode }}
+          UNTIL: ${{ vars.TOUCHLINE_COLLECT_UNTIL }}
+        run: |
+          case "$EVENT" in
+            pull_request) mode=dry-run ;;
+            workflow_dispatch) mode="$INPUT_MODE" ;;
+            schedule)
+              today=$(date -u +%Y-%m-%d)
+              if [ -z "$UNTIL" ]; then
+                mode=off
+                echo "Scheduled collect is off: the TOUCHLINE_COLLECT_UNTIL variable is not set." >> "$GITHUB_STEP_SUMMARY"
+              elif [ "$today" \> "$UNTIL" ]; then
+                mode=off
+                echo "Scheduled collect is off: today ($today) is after TOUCHLINE_COLLECT_UNTIL ($UNTIL)." >> "$GITHUB_STEP_SUMMARY"
+              else
+                mode=shadow
+              fi ;;
+            *) mode=off ;;
+          esac
+          case "$mode" in shadow|dry-run|off) ;; *) echo "::error::unknown mode $mode"; exit 1 ;; esac
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+          echo "mode: $mode"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: steps.mode.outputs.mode != 'off'
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        if: steps.mode.outputs.mode != 'off'
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+        if: steps.mode.outputs.mode != 'off'
+      - name: Build the environments
+        if: steps.mode.outputs.mode != 'off'
+        run: |
+          bun install --frozen-lockfile --ignore-scripts
+          uv sync --project pipeline --frozen --no-dev
+      - name: Resolve the units
+        id: plan
+        if: steps.mode.outputs.mode != 'off'
+        env:
+          MODE: ${{ steps.mode.outputs.mode }}
+          IN_DIVISIONS: ${{ inputs.divisions }}
+          IN_CONFERENCES: ${{ inputs.conferences }}
+          IN_GENDERS: ${{ inputs.genders || 'men,women' }}
+          PRESTO_RUNNER: ${{ vars.TOUCHLINE_PRESTO_RUNNER }}
+        working-directory: pipeline
+        run: |
+          set -euo pipefail
+          if [ "$MODE" = dry-run ]; then
+            # The sample homes' own level and conference, from their manifests.
+            divisions=$(jq -r '.level' ../samples/*/data/sample.json | sort -u | paste -sd, -)
+            conferences=$(jq -r '.conference' ../samples/*/data/sample.json | sort -u | paste -sd, -)
+            season=$(jq -r '.season' ../samples/*/data/sample.json | sort -u | head -1)
+            uv run --frozen --no-dev collect-direct plan --out "$RUNNER_TEMP/plan.json" \
+              --season "$season" --divisions "$divisions" --conferences "$conferences" --genders men,women
+          else
+            uv run --frozen --no-dev collect-direct plan --out "$RUNNER_TEMP/plan.json" \
+              --divisions "$IN_DIVISIONS" --conferences "$IN_CONFERENCES" --genders "$IN_GENDERS"
+          fi
+          # Divisions with any unit get a job; presto only when a runner is set up.
+          echo "divisions=$(jq -c '[.divisions | to_entries[] | select(.value.units | length > 0) | .key]' "$RUNNER_TEMP/plan.json")" >> "$GITHUB_OUTPUT"
+          echo "homes=$(jq -c '[.divisions | to_entries[] | select(.value.units | length > 0) | "\(.key)-soccer"]' "$RUNNER_TEMP/plan.json")" >> "$GITHUB_OUTPUT"
+          if [ "$MODE" = shadow ] && [ "$PRESTO_RUNNER" = true ]; then
+            echo "presto=$(jq -c '[.divisions | to_entries[] | select(.value.jobs | index("presto")) | .key]' "$RUNNER_TEMP/plan.json")" >> "$GITHUB_OUTPUT"
+          else
+            echo "presto=[]" >> "$GITHUB_OUTPUT"
+          fi
+          echo "season=$(jq -r .season "$RUNNER_TEMP/plan.json")" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Plan ($MODE, season $(jq -r .season "$RUNNER_TEMP/plan.json"))"
+            echo
+            echo "| Division | Hosted units | Presto units | Notes |"
+            echo "| --- | ---: | ---: | --- |"
+            jq -r '.divisions | to_entries[] | "| \(.key) | \([.value.units[] | select(.job == "hosted")] | length) | \([.value.units[] | select(.job == "presto")] | length) | \(.value.notes | join("; ")) |"' "$RUNNER_TEMP/plan.json"
+            echo
+            if [ "$MODE" = shadow ] && [ "$PRESTO_RUNNER" != true ]; then
+              echo "PrestoSports units are skipped: TOUCHLINE_PRESTO_RUNNER is not \`true\` (no self-hosted runner set up)."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        if: steps.mode.outputs.mode != 'off'
+        with:
+          name: collect-plan
+          path: ${{ runner.temp }}/plan.json
+          retention-days: 7
+
+  dry-run:
+    name: Dry run on the sample homes
+    needs: plan
+    if: needs.plan.outputs.mode == 'dry-run'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+      - name: Build the pipeline environment
+        run: uv sync --project pipeline --frozen --no-dev
+      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          name: collect-plan
+          path: ${{ runner.temp }}/plan
+      - name: Collect the sample conferences into copies of the sample homes
+        id: collect
+        env:
+          SEASON: ${{ needs.plan.outputs.season }}
+          REFETCH: ${{ inputs.refetch && '--refetch' || '' }}
+        working-directory: pipeline
+        run: |
+          set -uo pipefail
+          out="$RUNNER_TEMP/collect-dry-run"
+          mkdir -p "$out"
+          rc=0
+          for sample in ../samples/*/; do
+            name=$(basename "$sample")
+            level=$(jq -r .level "$sample/data/sample.json")
+            uv run --frozen --no-dev collect-direct slim --source "$sample" --dest "$out/$name" --season "$SEASON" || { rc=2; continue; }
+            r=0
+            # shellcheck disable=SC2086 # REFETCH is one flag or empty.
+            uv run --frozen --no-dev collect-direct collect --plan "$RUNNER_TEMP/plan/plan.json" \
+              --home "$out/$name" --division "$level" --job hosted \
+              --skip-presto "the dry run uses a hosted runner, which PrestoSports refuses" \
+              --record "$out/$name.collect-record.json" $REFETCH || r=$?
+            [ "$r" -gt "$rc" ] && rc=$r
+            echo "### Contracts: $name" >> "$GITHUB_STEP_SUMMARY"
+            if uv run --frozen --no-dev check-contracts "$out/$name" > "$RUNNER_TEMP/contracts-$name.json"; then
+              echo "ok: $(jq -r '.headline // empty' "$RUNNER_TEMP/contracts-$name.json" | tail -1)" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "check-contracts did not pass on $name; see the log." >> "$GITHUB_STEP_SUMMARY"
+              grep -E '^(DRIFT|MISSING) ' "$RUNNER_TEMP/contracts-$name.json" | head -40 || true
+              rc=1
+            fi
+          done
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+      - name: Parity against the samples
+        # The parity tool lands in its own PR; once it exists, the dry run's
+        # output is checked against the sample it started from.
+        working-directory: pipeline
+        run: |
+          set -uo pipefail
+          if [ ! -f scripts/check_parity.py ]; then
+            echo "check-parity is not in this checkout yet; skipped." | tee -a "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          out="$RUNNER_TEMP/collect-dry-run"
+          for sample in ../samples/*/; do
+            name=$(basename "$sample")
+            uv run --frozen --no-dev check-parity "$sample" "$out/$name" \
+              --record "$out/$name.collect-record.json" \
+              --json "$out/$name.parity.json" --report "$out/$name.parity.md" || p=$?
+            # A report, not a gate: the samples were cut days ago, so a live
+            # collect today differs from them by design.
+            echo "parity $name: exit ${p:-0}" | tee -a "$GITHUB_STEP_SUMMARY"
+            p=0
+            cat "$out/$name.parity.md" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+          done
+      - name: Keep the dry run's homes and records
+        if: always()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: collect-dry-run
+          path: |
+            ${{ runner.temp }}/collect-dry-run
+            !${{ runner.temp }}/collect-dry-run/*/data/raw_html
+          retention-days: 7
+          if-no-files-found: ignore
+      - name: Pass only when every unit collected
+        env:
+          RC: ${{ steps.collect.outputs.rc }}
+        run: |
+          if [ "${RC:-2}" != 0 ]; then
+            echo "::error::a unit failed, lost data or broke the contracts (exit ${RC:-unknown}); see the summary"
+            exit 1
+          fi
+
+  ready:
+    name: Check the production setup
+    needs: plan
+    if: needs.plan.outputs.mode == 'shadow' && needs.plan.outputs.divisions != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: production
+    outputs:
+      ready: ${{ steps.verdict.outputs.ready }}
+    steps:
+      - name: Check the variables and the key
+        id: vars
+        env:
+          ACCOUNT: ${{ vars.AWS_ACCOUNT_ID }}
+          APP_ID: ${{ vars.TOUCHLINE_APP_ID }}
+          KEY_SET: ${{ secrets.TOUCHLINE_APP_PRIVATE_KEY != '' }}
+        run: |
+          missing=""
+          case "$ACCOUNT" in [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]) ;; *) missing="$missing AWS_ACCOUNT_ID" ;; esac
+          case "$APP_ID" in ''|*[!0-9]*) missing="$missing TOUCHLINE_APP_ID" ;; esac
+          [ "$KEY_SET" = true ] || missing="$missing TOUCHLINE_APP_PRIVATE_KEY"
+          echo "missing=$missing" >> "$GITHUB_OUTPUT"
+      - name: Mint a token for the data homes
+        # Proves the App id, the key and the installation in one call.
+        id: app
+        if: steps.vars.outputs.missing == ''
+        continue-on-error: true
+        uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
+        with:
+          app-id: ${{ vars.TOUCHLINE_APP_ID }}
+          private-key: ${{ secrets.TOUCHLINE_APP_PRIVATE_KEY }}
+          owner: ed-insights-ai
+          repositories: ${{ join(fromJSON(needs.plan.outputs.homes), ',') }}
+      - name: Verdict
+        id: verdict
+        env:
+          EVENT: ${{ github.event_name }}
+          MISSING: ${{ steps.vars.outputs.missing }}
+          MINTED: ${{ steps.app.outcome }}
+        run: |
+          if [ -z "$MISSING" ] && [ "$MINTED" = success ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "ready=false" >> "$GITHUB_OUTPUT"
+          if [ -n "$MISSING" ]; then
+            why="the production environment lacks$MISSING (infra/RUNBOOK.md, infra/GITHUB_APP.md)"
+          else
+            why="the GitHub App could not mint a token for the data homes: check TOUCHLINE_APP_ID, the key, and that the App is installed on them"
+          fi
+          echo "Collect skipped: $why." >> "$GITHUB_STEP_SUMMARY"
+          # A scheduled run skips quietly until the setup is done; a run
+          # someone started by hand says so in red.
+          if [ "$EVENT" = schedule ]; then
+            echo "::warning::Collect skipped: $why."
+          else
+            echo "::error::Collect cannot run: $why."
+            exit 1
+          fi
+
+  shadow-hosted:
+    name: Collect ${{ matrix.division }} (hosted)
+    needs: [plan, ready]
+    if: needs.ready.outputs.ready == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    environment: production
+    permissions:
+      contents: read
+      id-token: write
+    strategy:
+      fail-fast: false
+      matrix:
+        division: ${{ fromJSON(needs.plan.outputs.divisions) }}
+    concurrency:
+      group: collect-shadow-${{ matrix.division }}
+      cancel-in-progress: false
+    env:
+      DIVISION: ${{ matrix.division }}
+      SEASON: ${{ needs.plan.outputs.season }}
+      HOME_REPO: ${{ matrix.division }}-soccer
+      BUCKET: touchline-data-${{ vars.AWS_ACCOUNT_ID }}
+      PRESTO_ON: ${{ contains(fromJSON(needs.plan.outputs.presto), matrix.division) }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+      - name: Build the pipeline environment
+        run: uv sync --project pipeline --frozen --no-dev
+      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          name: collect-plan
+          path: ${{ runner.temp }}/plan
+      - uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
+        id: app
+        with:
+          app-id: ${{ vars.TOUCHLINE_APP_ID }}
+          private-key: ${{ secrets.TOUCHLINE_APP_PRIVATE_KEY }}
+          owner: ed-insights-ai
+          repositories: ${{ env.HOME_REPO }}
+      - name: Check out the data home's main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ed-insights-ai/${{ env.HOME_REPO }}
+          token: ${{ steps.app.outputs.token }}
+          path: home
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Authorize git with the App token
+        env:
+          TOKEN: ${{ steps.app.outputs.token }}
+        run: bash .github/scripts/git-auth.sh home "$TOKEN"
+      - name: Switch to shadow (created from main on the first run)
+        id: shadow
+        working-directory: home
+        run: |
+          set -euo pipefail
+          main_sha=$(git rev-parse HEAD)
+          echo "main_sha=$main_sha" >> "$GITHUB_OUTPUT"
+          if git ls-remote --exit-code --heads origin shadow >/dev/null; then
+            git fetch -q --depth 1 origin shadow
+            git checkout -q -B shadow FETCH_HEAD
+            echo "shadow at $(git rev-parse --short HEAD), main at ${main_sha:0:12}"
+          else
+            git checkout -q -b shadow
+            # Published now, whatever the collect brings, so shadow is its own
+            # lineage from the first run and the presto landing finds it.
+            git push -q origin HEAD:refs/heads/shadow
+            echo "shadow did not exist: started it from main at ${main_sha:0:12}" | tee -a "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+        with:
+          role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/touchline-publish
+          aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+          role-session-name: collect-${{ matrix.division }}-${{ github.run_id }}
+      - name: Make the work home and restore its fetch cache
+        working-directory: pipeline
+        run: |
+          set -euo pipefail
+          uv run --frozen --no-dev collect-direct slim --source ../home --dest "$RUNNER_TEMP/work" --season "$SEASON"
+          uv run --frozen --no-dev collect-direct slugs --plan "$RUNNER_TEMP/plan/plan.json" \
+            --division "$DIVISION" --job hosted > "$RUNNER_TEMP/slugs.txt"
+          bash ../.github/scripts/raw-sync.sh down "$RUNNER_TEMP/work" "$RUNNER_TEMP/slugs.txt"
+      - name: Collect the hosted units
+        id: collect
+        working-directory: pipeline
+        env:
+          ACCEPT_LOSS: ${{ inputs.accept_loss }}
+          REFETCH: ${{ inputs.refetch && '--refetch' || '' }}
+        run: |
+          set -uo pipefail
+          skip=""
+          [ "$PRESTO_ON" = true ] || skip="no PrestoSports runner set up (TOUCHLINE_PRESTO_RUNNER is not true)"
+          # shellcheck disable=SC2086 # REFETCH is one flag or empty.
+          uv run --frozen --no-dev collect-direct collect --plan "$RUNNER_TEMP/plan/plan.json" \
+            --home "$RUNNER_TEMP/work" --division "$DIVISION" --job hosted \
+            --record "$RUNNER_TEMP/collect-record.json" \
+            --accept-loss "$ACCEPT_LOSS" --skip-presto "$skip" $REFETCH || rc=$?
+          echo "rc=${rc:-0}" >> "$GITHUB_OUTPUT"
+      - name: Check the contracts
+        id: contracts
+        working-directory: pipeline
+        run: |
+          set -uo pipefail
+          if uv run --frozen --no-dev check-contracts "$RUNNER_TEMP/work" > "$RUNNER_TEMP/contracts.json"; then
+            echo "contracts ($DIVISION): ok" >> "$GITHUB_STEP_SUMMARY"
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            # The cadence's rule: drift still lands, and the run ends red.
+            echo "contracts ($DIVISION): DRIFT or not run; the log lists it. The landing still goes ahead." >> "$GITHUB_STEP_SUMMARY"
+            grep -E '^(DRIFT|MISSING) ' "$RUNNER_TEMP/contracts.json" | head -40 || tail -20 "$RUNNER_TEMP/contracts.json"
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          fi
+      # A division's collect can outlast the hour an App token and the OIDC
+      # session last, so both are taken again before anything is written.
+      - uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
+        id: app-land
+        with:
+          app-id: ${{ vars.TOUCHLINE_APP_ID }}
+          private-key: ${{ secrets.TOUCHLINE_APP_PRIVATE_KEY }}
+          owner: ed-insights-ai
+          repositories: ${{ env.HOME_REPO }}
+      - name: Authorize git with a fresh token
+        env:
+          TOKEN: ${{ steps.app-land.outputs.token }}
+        run: bash .github/scripts/git-auth.sh home "$TOKEN"
+      - uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+        with:
+          role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/touchline-publish
+          aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+          role-session-name: collect-${{ matrix.division }}-${{ github.run_id }}-land
+      - name: Land on shadow
+        working-directory: pipeline
+        env:
+          MAIN_SHA: ${{ steps.shadow.outputs.main_sha }}
+        run: |
+          uv run --frozen --no-dev collect-direct land --work "$RUNNER_TEMP/work" --target ../home \
+            --record "$RUNNER_TEMP/collect-record.json" --push --branch shadow --main-sha "$MAIN_SHA"
+      - name: Archive the raw pages
+        # After the landing, so a bucket hiccup never holds back the board.
+        if: always() && steps.collect.outcome == 'success'
+        run: bash .github/scripts/raw-sync.sh up "$RUNNER_TEMP/work"
+      - name: Hand the presto units' work home to the presto runner
+        if: env.PRESTO_ON == 'true'
+        working-directory: pipeline
+        run: |
+          set -euo pipefail
+          # Made from shadow after the hosted units landed, so the presto
+          # units read today's sibling files.
+          uv run --frozen --no-dev collect-direct slim --source ../home --dest "$RUNNER_TEMP/presto-home" --season "$SEASON"
+          uv run --frozen --no-dev collect-direct slugs --plan "$RUNNER_TEMP/plan/plan.json" \
+            --division "$DIVISION" --job presto > "$RUNNER_TEMP/presto-slugs.txt"
+          bash ../.github/scripts/raw-sync.sh down "$RUNNER_TEMP/presto-home" "$RUNNER_TEMP/presto-slugs.txt"
+          cp "$RUNNER_TEMP/plan/plan.json" "$RUNNER_TEMP/presto-home.plan.json"
+          tar -C "$RUNNER_TEMP" -czf "$RUNNER_TEMP/presto-home.tgz" presto-home presto-home.plan.json
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        if: env.PRESTO_ON == 'true'
+        with:
+          name: presto-home-${{ matrix.division }}
+          path: ${{ runner.temp }}/presto-home.tgz
+          retention-days: 1
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        if: always()
+        with:
+          name: collect-record-${{ matrix.division }}-hosted
+          path: ${{ runner.temp }}/collect-record.json
+          retention-days: 90
+          if-no-files-found: ignore
+      - name: Fail when a unit failed, lost data or broke the contracts
+        env:
+          RC: ${{ steps.collect.outputs.rc }}
+          CONTRACTS: ${{ steps.contracts.outputs.ok }}
+        run: |
+          if [ "${RC:-2}" != 0 ]; then
+            echo "::error::a unit failed or would have lost data (exit ${RC:-unknown}); it was not landed. See the summary."
+            exit 1
+          fi
+          if [ "$CONTRACTS" != true ]; then
+            echo "::error::check-contracts found drift or did not run on the collected files (they landed). See the summary."
+            exit 1
+          fi
+
+  presto-collect:
+    name: Collect ${{ matrix.division }} (presto runner)
+    needs: [plan, ready, shadow-hosted]
+    # Waits for the hosted landing (so its work home reads today's siblings),
+    # but runs whether or not a hosted unit failed.
+    if: always() && needs.ready.outputs.ready == 'true' && needs.plan.outputs.presto != '[]'
+    runs-on: [self-hosted, presto]
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        division: ${{ fromJSON(needs.plan.outputs.presto) }}
+    concurrency:
+      # A runner that was off leaves this job queued; the next day's run
+      # replaces it rather than stacking a backlog.
+      group: collect-presto-${{ matrix.division }}
+      cancel-in-progress: true
+    env:
+      DIVISION: ${{ matrix.division }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+      - name: Build the pipeline environment
+        run: uv sync --project pipeline --frozen --no-dev
+      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          name: presto-home-${{ matrix.division }}
+          path: ${{ runner.temp }}/in
+      - name: Collect the presto units
+        id: collect
+        working-directory: pipeline
+        env:
+          ACCEPT_LOSS: ${{ inputs.accept_loss }}
+          REFETCH: ${{ inputs.refetch && '--refetch' || '' }}
+        run: |
+          set -uo pipefail
+          tar -C "$RUNNER_TEMP" -xzf "$RUNNER_TEMP/in/presto-home.tgz"
+          # shellcheck disable=SC2086 # REFETCH is one flag or empty.
+          uv run --frozen --no-dev collect-direct collect --plan "$RUNNER_TEMP/presto-home.plan.json" \
+            --home "$RUNNER_TEMP/presto-home" --division "$DIVISION" --job presto \
+            --record "$RUNNER_TEMP/presto-home.collect-record.json" \
+            --accept-loss "$ACCEPT_LOSS" $REFETCH || rc=$?
+          echo "rc=${rc:-0}" >> "$GITHUB_OUTPUT"
+          tar -C "$RUNNER_TEMP" -czf "$RUNNER_TEMP/presto-result.tgz" presto-home presto-home.collect-record.json
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: presto-result-${{ matrix.division }}
+          path: ${{ runner.temp }}/presto-result.tgz
+          retention-days: 1
+      - name: Fail when a unit failed or lost data
+        env:
+          RC: ${{ steps.collect.outputs.rc }}
+        run: |
+          if [ "${RC:-2}" != 0 ]; then
+            echo "::error::a unit failed or would have lost data (exit ${RC:-unknown}); it will not be landed."
+            exit 1
+          fi
+
+  presto-land:
+    name: Land ${{ matrix.division }} (presto)
+    needs: [plan, presto-collect]
+    # The collect job uploads its result before it reports a failed unit, so
+    # its changed units land either way.
+    if: always() && needs.plan.outputs.mode == 'shadow' && needs.plan.outputs.presto != '[]' && (needs.presto-collect.result == 'success' || needs.presto-collect.result == 'failure')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: production
+    permissions:
+      contents: read
+      id-token: write
+    strategy:
+      fail-fast: false
+      matrix:
+        division: ${{ fromJSON(needs.plan.outputs.presto) }}
+    concurrency:
+      group: collect-shadow-${{ matrix.division }}
+      cancel-in-progress: false
+    env:
+      DIVISION: ${{ matrix.division }}
+      SEASON: ${{ needs.plan.outputs.season }}
+      HOME_REPO: ${{ matrix.division }}-soccer
+      BUCKET: touchline-data-${{ vars.AWS_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+      - name: Build the pipeline environment
+        run: uv sync --project pipeline --frozen --no-dev
+      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          name: presto-result-${{ matrix.division }}
+          path: ${{ runner.temp }}/in
+      - name: Unpack the presto job's result
+        run: tar -C "$RUNNER_TEMP" -xzf "$RUNNER_TEMP/in/presto-result.tgz"
+      - uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
+        id: app
+        with:
+          app-id: ${{ vars.TOUCHLINE_APP_ID }}
+          private-key: ${{ secrets.TOUCHLINE_APP_PRIVATE_KEY }}
+          owner: ed-insights-ai
+          repositories: ${{ env.HOME_REPO }}
+      - name: Check out the data home's main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ed-insights-ai/${{ env.HOME_REPO }}
+          token: ${{ steps.app.outputs.token }}
+          path: home
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Authorize git with the App token
+        env:
+          TOKEN: ${{ steps.app.outputs.token }}
+        run: bash .github/scripts/git-auth.sh home "$TOKEN"
+      - name: Switch to shadow
+        id: shadow
+        working-directory: home
+        run: |
+          set -euo pipefail
+          echo "main_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          git fetch -q --depth 1 origin shadow
+          git checkout -q -B shadow FETCH_HEAD
+      - uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+        with:
+          role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/touchline-publish
+          aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+          role-session-name: collect-presto-${{ matrix.division }}-${{ github.run_id }}
+      - name: Land on shadow
+        working-directory: pipeline
+        env:
+          MAIN_SHA: ${{ steps.shadow.outputs.main_sha }}
+        run: |
+          uv run --frozen --no-dev collect-direct land --work "$RUNNER_TEMP/presto-home" --target ../home \
+            --record "$RUNNER_TEMP/presto-home.collect-record.json" --push --branch shadow --main-sha "$MAIN_SHA"
+      - name: Archive the raw pages
+        if: always()
+        run: bash .github/scripts/raw-sync.sh up "$RUNNER_TEMP/presto-home"
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        if: always()
+        with:
+          name: collect-record-${{ matrix.division }}-presto
+          path: ${{ runner.temp }}/presto-home.collect-record.json
+          retention-days: 90
+          if-no-files-found: ignore
