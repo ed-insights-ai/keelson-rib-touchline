@@ -102,7 +102,7 @@
               "assists": 0,
               "minutes": 90,
               "player_ref": {
-                "id": "maryville-mo:nelsonpacheco:01",
+                "id": "maryville-mo:nemurospirupat:01",
                 "source": "key"
               }
             },
@@ -169,7 +169,7 @@
               "goals": 0,
               "assists": 0,
               "player_ref": {
-                "id": "maryville-mo:georgefrancisv:5",
+                "id": "maryville-mo:gamizfasomodv:5",
                 "source": "key"
               }
             },
@@ -555,7 +555,7 @@
               "goals_against": 2,
               "saves": 3,
               "player_ref": {
-                "id": "maryville-mo:joeyschrand:29",
+                "id": "maryville-mo:javissisat:29",
                 "source": "key"
               }
             }
@@ -815,7 +815,7 @@
               "assists": 0,
               "minutes": 110,
               "player_ref": {
-                "id": "young-harris:stathispaplomatos:1",
+                "id": "young-harris:savempamat:1",
                 "source": "key"
               }
             },
@@ -844,7 +844,7 @@
               "goals_against": 5,
               "saves": 0,
               "player_ref": {
-                "id": "young-harris:stathispaplomatos:1",
+                "id": "young-harris:savempamat:1",
                 "source": "key"
               }
             }
