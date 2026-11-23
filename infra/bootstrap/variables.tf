@@ -74,3 +74,27 @@ variable "publish_environment" {
   type        = string
   default     = "production"
 }
+
+variable "presto_runner" {
+  description = "Keep the PrestoSports runner (runner.tf). Set false out of season: the instance, its network and its address are destroyed and cost nothing."
+  type        = bool
+  default     = true
+}
+
+variable "runner_instance_type" {
+  description = "Instance type of the PrestoSports runner. 2 GB of memory is enough for the runner and one collect."
+  type        = string
+  default     = "t3a.small"
+}
+
+variable "runner_fixed_address" {
+  description = "Give the PrestoSports runner one fixed public address (about $3.65 a month). False saves that, and the runner then gets a different AWS address every time it starts."
+  type        = bool
+  default     = true
+}
+
+variable "runner_idle_minutes" {
+  description = "Minutes with no job running before the PrestoSports runner stops itself."
+  type        = number
+  default     = 15
+}

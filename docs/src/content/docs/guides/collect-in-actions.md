@@ -140,32 +140,89 @@ A `ready` job checks these first and mints a test App token. If anything is
 missing or wrong, a scheduled run ends green with a warning and collects
 nothing, so it costs a few seconds; a manual run fails with the reason.
 
-Three repository variables steer it:
+Four repository variables steer it:
 
 | Variable | Effect |
 | --- | --- |
 | `TOUCHLINE_COLLECT_UNTIL` | `YYYY-MM-DD`. The schedule (14:17 UTC daily) collects through this date. Unset, scheduled runs do nothing. `2026-12-15` ends with the season. |
 | `TOUCHLINE_COLLECT_TARGET` | `main` makes this workflow production: real runs land on each data home's `main`, with commits `collect(actions): {CONF} {gender} {season}`. Unset or anything else, they land on `shadow`. Before setting it, stop the Mac's cadence for the same units (it may keep the PrestoSports conferences until a presto runner exists). To roll back, unset it and revert the commits on `main`. |
 | `TOUCHLINE_PRESTO_RUNNER` | `true` once a self-hosted runner labelled `presto` is registered. Otherwise the presto units are recorded `skipped` and everything else still lands. |
+| `TOUCHLINE_PRESTO_RUNNER_INSTANCE` | The instance id of the AWS presto runner. Set, a small hosted job starts that instance once every division's hosted job is done. Unset, the runner is taken to be a machine that is always on. |
 
 ### The PrestoSports runner
 
-An always-on machine at home (or the Mac), registered to this private repo
-only, never to a public one:
+PrestoSports answers GitHub-hosted runners with HTTP 405, and serves AWS
+addresses: schedule pages read from AWS CloudShell on 2026-11-23 came back
+whole. So the presto job runs on a self-hosted runner labelled `presto`,
+registered to this repo only. While the repo is public, a pull request from a
+fork could name the runner's label in its own copy of a workflow, so
+**Settings → Actions → General → Approval for running fork pull request
+workflows** must be **Require approval for all external contributors**, and
+no such run is approved without reading its workflow changes. It needs no AWS
+or GitHub App credentials: the job receives only its work home, and a hosted
+job lands the result. The work home and the result travel as artifacts, which
+any signed-in GitHub user can download while the repo is public, so both are
+encrypted under the `TOUCHLINE_ARTIFACT_KEY` secret
+(`.github/scripts/presto-artifact.sh`); without the secret the hand-over
+fails rather than store them in the clear.
+
+**The AWS runner** (`infra/bootstrap/runner.tf`) is one small EC2 instance
+with one fixed address. A hosted job starts it just before the presto job is
+queued, and it stops itself after 15 minutes with no job, so it runs about an
+hour a day. Daniel sets it up once a season, from his signed-in CLIs:
+
+```bash
+cd ~/source/edinsights/keelson-rib-touchline/infra/bootstrap
+terraform init -backend-config="bucket=touchline-tfstate-$(aws sts get-caller-identity --query Account --output text)"
+terraform plan -out=tfplan      # adds the runner and one boundary statement
+terraform apply tfplan
+
+# Tell the workflow which instance to start.
+gh variable set TOUCHLINE_PRESTO_RUNNER_INSTANCE -R ed-insights-ai/keelson-rib-touchline \
+  --body "$(terraform output -raw presto_runner_instance_id)"
+
+# The key the presto artifacts are encrypted under. It opens nothing else.
+openssl rand -hex 32 | gh secret set TOUCHLINE_ARTIFACT_KEY -R ed-insights-ai/keelson-rib-touchline
+
+# About three minutes after the apply, register the runner. The token lasts
+# an hour and is used once.
+aws ssm send-command --region us-east-1 --document-name AWS-RunShellScript \
+  --instance-ids "$(terraform output -raw presto_runner_instance_id)" \
+  --parameters "commands=['/usr/local/bin/touchline-register-runner $(gh api -X POST repos/ed-insights-ai/keelson-rib-touchline/actions/runners/registration-token --jq .token)']" \
+  --query Command.CommandId --output text
+
+# A minute later this prints: touchline-presto-aws online
+gh api repos/ed-insights-ai/keelson-rib-touchline/actions/runners --jq '.runners[] | "\(.name) \(.status)"'
+
+gh variable set TOUCHLINE_PRESTO_RUNNER -R ed-insights-ai/keelson-rib-touchline --body true
+```
+
+A new instance that is not registered within an hour stops itself; start it
+again with `aws ec2 start-instances --instance-ids {id}`. Its setup log is
+`/var/log/touchline-runner-setup.log`, read through Systems Manager; no
+inbound port is open.
+
+After the season, set `presto_runner = false` in `terraform.tfvars` and apply:
+the instance, its network and its address are destroyed and cost nothing.
+GitHub forgets a runner it has not seen for 14 days, so the next season starts
+with these same steps. To rebuild the machine on purpose, run
+`terraform apply -replace='aws_instance.runner[0]'` and register again.
+
+**A machine at home** works the same way and needs no instance variable:
 
 1. **Settings → Actions → Runners → New self-hosted runner** on
    `keelson-rib-touchline`; follow the commands it shows, and at
    `config.sh` add `--labels presto`.
 2. Install it as a service (`./svc.sh install && ./svc.sh start`) so it comes
-   back after a restart.
-3. It needs `git`, `tar` and network access to the schools' sites; the job
-   installs `uv` itself. It needs no AWS or GitHub App credentials: the presto
-   job receives only its work home, and a hosted job lands the result.
-4. Set `TOUCHLINE_PRESTO_RUNNER` to `true`.
+   back after a restart. It needs `git`, `tar` and network access to the
+   schools' sites; the job installs `uv` itself.
+3. Set `TOUCHLINE_PRESTO_RUNNER` to `true`.
 
-If the machine is off, the presto job waits in the queue; the hosted units
-have already landed, and the next day's run replaces the waiting job rather
-than stacking a backlog. Those 14 units are then a day stale.
+Keep one presto runner, not both: the schools' sites should see the collector
+from one address. If the runner is off or cannot be started, the presto job
+waits in the queue; the hosted units have already landed, and the next day's
+run replaces the waiting job rather than stacking a backlog. Those 14 units
+are then a day stale.
 
 ## Minutes
 

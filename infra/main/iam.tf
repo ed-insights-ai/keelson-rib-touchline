@@ -49,6 +49,21 @@ data "aws_iam_policy_document" "publish" {
     actions   = ["kms:Sign", "kms:GetPublicKey", "kms:DescribeKey"]
     resources = [data.aws_kms_key.signing.arn]
   }
+
+  # The Collect workflow starts the PrestoSports runner before it queues the
+  # presto job (infra/bootstrap/runner.tf). Start only, and only the instance
+  # carrying the runner's tag; the boundary holds the same line.
+  statement {
+    sid       = "StartPrestoRunner"
+    actions   = ["ec2:StartInstances"]
+    resources = ["arn:aws:ec2:*:${local.account_id}:instance/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:ResourceTag/touchline-role"
+      values   = ["presto-runner"]
+    }
+  }
 }
 
 resource "aws_iam_role_policy" "publish" {
