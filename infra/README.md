@@ -51,7 +51,8 @@ Data bucket lifecycle, per kind:
 | --- | --- |
 | `raw/` | forever (re-parse, never re-scrape) |
 | `snapshots/<source>/<scope>/deltas/` | 45 days |
-| `snapshots/<source>/<scope>/base/`, `manifests/`, `latest.json` | forever (see below) |
+| `snapshots/<source>/<scope>/base/` tagged `pending` or `superseded` | 14 days (see below) |
+| `snapshots/<source>/<scope>/base/` tagged `current` or untagged, `manifests/`, `latest.json` | forever |
 | `bundles/` | 30 days |
 | `news/` | forever |
 | any overwritten version | 7 days |
@@ -66,11 +67,16 @@ by conditional write, after the site smoke check passes
 ([snapshot/README.md](../snapshot/README.md)). Deltas age out; a desk whose
 snapshot is older than the oldest delta takes the full base.
 
-Bases are kept, because an age rule could expire the base a `latest.json`
-still names (a folder not published for a long time, such as `samples`).
-They add up to a few GB a season (cents a month); pruning superseded bases
-safely, for example by tagging each base the release replaces and expiring
-tagged objects, is a follow-up before next season.
+A base is pruned by its `touchline-base` tag, never by age alone, because an
+age rule could expire the base a `latest.json` still names (a folder not
+published for a long time, such as `samples`). `snapshot/build.sh` uploads
+each base as `pending`. Before `snapshot/release.sh` moves `latest.json`, it
+tags the new base `current`. Once the move succeeds, it tags the base it
+replaced `superseded`. Pending bases (from runs that never released) and
+superseded ones expire after `base_retention_days` (14). Lifecycle ages count
+from upload, so a base superseded long after it was written goes at the next
+daily pass. Bases uploaded before tagging began carry no tag and are kept
+until a release supersedes them.
 
 ## The site
 

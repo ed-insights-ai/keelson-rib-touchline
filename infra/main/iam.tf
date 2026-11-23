@@ -35,6 +35,15 @@ data "aws_iam_policy_document" "publish" {
     resources = [for p in local.writable_prefixes : "${aws_s3_bucket.data.arn}/${p}"]
   }
 
+  # Snapshot bases carry a touchline-base tag (pending, current, superseded)
+  # that the lifecycle prunes by; build.sh sets it on upload and release.sh
+  # moves it.
+  statement {
+    sid       = "TagBases"
+    actions   = ["s3:PutObjectTagging", "s3:GetObjectTagging"]
+    resources = [for f in local.snapshot_folders : "${aws_s3_bucket.data.arn}/${f}/base/*"]
+  }
+
   statement {
     sid       = "Sign"
     actions   = ["kms:Sign", "kms:GetPublicKey", "kms:DescribeKey"]
