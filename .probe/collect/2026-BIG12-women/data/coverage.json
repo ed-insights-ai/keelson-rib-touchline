@@ -1,0 +1,28 @@
+{
+  "cells": {
+    "2026/women/arizona-state/schedule": {
+      "collector": "wmt-live",
+      "confirmed_at": "2026-11-23T10:54:58+00:00",
+      "count": 20,
+      "gender": "women",
+      "layer": "schedule",
+      "programme": "arizona-state",
+      "season": 2026,
+      "skips": [
+        "date before the 2026 season skipped: 2026-02-28, Cochise College",
+        "date before the 2026 season skipped: 2026-03-09, AFC Fylde Women",
+        "date before the 2026 season skipped: 2026-03-11, Wrexham AFC Women",
+        "date before the 2026 season skipped: 2026-03-19, Phoenix Rising MLS Next",
+        "date before the 2026 season skipped: 2026-03-28, Arizona",
+        "date before the 2026 season skipped: 2026-04-10, Embry-Riddle",
+        "date before the 2026 season skipped: 2026-04-12, Northern Ariz.",
+        "date before the 2026 season skipped: 2026-04-18, Arizona State Alumni",
+        "round placeholder skipped: 2026-11-09, Big 12 Tournament"
+      ],
+      "source_url": "https://thesundevils.com/sports/soccer/schedule/season/2026",
+      "state": "complete"
+    }
+  },
+  "schema": "touchline.coverage/1",
+  "updated_at": "2026-11-23T10:54:59+00:00"
+}

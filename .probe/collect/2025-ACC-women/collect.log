@@ -1,0 +1,6 @@
+membership reference synced: the data home copy at /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/2025-ACC-women/data/reference/membership.json was absent, mirrored from the packaged source of record at /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/data/reference/membership.json
+programmes reference synced: the data home copy at /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/2025-ACC-women/data/reference/programmes.json was absent, mirrored from the packaged source of record at /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/data/reference/programmes.json
+pacing: waiting 5.0s before asking wmt.games
+wrote /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/2025-ACC-women/data/fixtures/2025-women-acc.json and /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/2025-ACC-women/data/coverage.json
+schedule: 1/1 programmes, 26 fixtures (25 played, 1 upcoming)
+conference flags PUBLISHED by each programme's official schedule page
