@@ -557,6 +557,7 @@ def collect_unit(
     timeout: float,
     extra: Sequence[str] = (),
     runner=run_collect_board,
+    label: str = "shadow",
 ) -> UnitResult:
     key = unit.key
     started = time.monotonic()
@@ -588,7 +589,7 @@ def collect_unit(
             )
         elif has_signal(home, season, unit.gender, key):
             commit_all(
-                home, f"collect(shadow): {unit.conference} {unit.gender} {season}"
+                home, f"collect({label}): {unit.conference} {unit.gender} {season}"
             )
             result.result = RESULT_CHANGED
             result.collected_at = collected_at
@@ -854,6 +855,7 @@ def cmd_collect(args: argparse.Namespace) -> int:
                 accept_loss=unit.conference.upper() in accept,
                 timeout=args.unit_timeout,
                 extra=extra,
+                label=args.label,
             )
         finally:
             _endgroup()
@@ -960,6 +962,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="record the plan's presto units as skipped, with this reason",
     )
     p.add_argument("--unit-timeout", type=float, default=DEFAULT_UNIT_TIMEOUT)
+    p.add_argument(
+        "--label",
+        default="shadow",
+        help="names the pipeline in each unit's commit subject: collect(LABEL): ...",
+    )
     p.set_defaults(func=cmd_collect)
 
     p = sub.add_parser("land", help="replay a work home's unit commits onto a checkout")

@@ -140,11 +140,12 @@ A `ready` job checks these first and mints a test App token. If anything is
 missing or wrong, a scheduled run ends green with a warning and collects
 nothing, so it costs a few seconds; a manual run fails with the reason.
 
-Two repository variables switch the schedule on:
+Three repository variables steer it:
 
 | Variable | Effect |
 | --- | --- |
 | `TOUCHLINE_COLLECT_UNTIL` | `YYYY-MM-DD`. The schedule (14:17 UTC daily) collects through this date. Unset, scheduled runs do nothing. `2026-12-15` ends with the season. |
+| `TOUCHLINE_COLLECT_TARGET` | `main` makes this workflow production: real runs land on each data home's `main`, with commits `collect(actions): {CONF} {gender} {season}`. Unset or anything else, they land on `shadow`. Before setting it, stop the Mac's cadence for the same units (it may keep the PrestoSports conferences until a presto runner exists). To roll back, unset it and revert the commits on `main`. |
 | `TOUCHLINE_PRESTO_RUNNER` | `true` once a self-hosted runner labelled `presto` is registered. Otherwise the presto units are recorded `skipped` and everything else still lands. |
 
 ### The PrestoSports runner

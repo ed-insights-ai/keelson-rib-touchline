@@ -394,3 +394,20 @@ def test_replaying_cells_already_landed_leaves_the_manifest_alone(
     before = (home / cd.COVERAGE).read_text()
     assert cd.replay(work, home) == []
     assert (home / cd.COVERAGE).read_text() == before
+
+
+def test_the_label_names_the_pipeline_in_the_commit(work: Path) -> None:
+    writes = {"fixtures": board("t1", ["a", "b"], extra="new score")}
+    cd.collect_unit(
+        work,
+        unit(),
+        SEASON,
+        accept_loss=False,
+        timeout=60,
+        runner=fake_runner(writes),
+        label="actions",
+    )
+    assert (
+        git(work, "log", "-1", "--format=%s").strip()
+        == f"collect(actions): GAC men {SEASON}"
+    )

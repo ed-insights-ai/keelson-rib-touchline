@@ -73,6 +73,11 @@ permissions:
 
 env:
   BUN_VERSION: 1.3.13
+  # Where real runs land. `shadow` until cutover; the repository variable
+  # TOUCHLINE_COLLECT_TARGET=main makes this workflow production, writing each
+  # data home's main. Any other value means shadow.
+  TARGET_BRANCH: ${{ vars.TOUCHLINE_COLLECT_TARGET == 'main' && 'main' || 'shadow' }}
+  COLLECT_LABEL: ${{ vars.TOUCHLINE_COLLECT_TARGET == 'main' && 'actions' || 'shadow' }}
 
 jobs:
   plan:
@@ -380,14 +385,16 @@ jobs:
         env:
           TOKEN: ${{ steps.app.outputs.token }}
         run: bash .github/scripts/git-auth.sh home "$TOKEN"
-      - name: Switch to shadow (created from main on the first run)
+      - name: Switch to the target branch (shadow is created from main on the first run)
         id: shadow
         working-directory: home
         run: |
           set -euo pipefail
           main_sha=$(git rev-parse HEAD)
           echo "main_sha=$main_sha" >> "$GITHUB_OUTPUT"
-          if git ls-remote --exit-code --heads origin shadow >/dev/null; then
+          if [ "$TARGET_BRANCH" = main ]; then
+            echo "target: main at ${main_sha:0:12} (TOUCHLINE_COLLECT_TARGET=main)" | tee -a "$GITHUB_STEP_SUMMARY"
+          elif git ls-remote --exit-code --heads origin shadow >/dev/null; then
             git fetch -q --depth 1 origin shadow
             git checkout -q -B shadow FETCH_HEAD
             echo "shadow at $(git rev-parse --short HEAD), main at ${main_sha:0:12}"
@@ -425,7 +432,7 @@ jobs:
           uv run --frozen --no-dev collect-direct collect --plan "$RUNNER_TEMP/plan/plan.json" \
             --home "$RUNNER_TEMP/work" --division "$DIVISION" --job hosted \
             --record "$RUNNER_TEMP/collect-record.json" \
-            --accept-loss "$ACCEPT_LOSS" --skip-presto "$skip" $REFETCH || rc=$?
+            --label "$COLLECT_LABEL" --accept-loss "$ACCEPT_LOSS" --skip-presto "$skip" $REFETCH || rc=$?
           echo "rc=${rc:-0}" >> "$GITHUB_OUTPUT"
       - name: Check the contracts
         id: contracts
@@ -459,13 +466,13 @@ jobs:
           role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/touchline-publish
           aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
           role-session-name: collect-${{ matrix.division }}-${{ github.run_id }}-land
-      - name: Land on shadow
+      - name: Land on the target branch
         working-directory: pipeline
         env:
           MAIN_SHA: ${{ steps.shadow.outputs.main_sha }}
         run: |
           uv run --frozen --no-dev collect-direct land --work "$RUNNER_TEMP/work" --target ../home \
-            --record "$RUNNER_TEMP/collect-record.json" --push --branch shadow --main-sha "$MAIN_SHA"
+            --record "$RUNNER_TEMP/collect-record.json" --push --branch "$TARGET_BRANCH" --main-sha "$MAIN_SHA"
       - name: Archive the raw pages
         # After the landing, so a bucket hiccup never holds back the board.
         if: always() && steps.collect.outcome == 'success'
@@ -553,7 +560,7 @@ jobs:
           uv run --frozen --no-dev collect-direct collect --plan "$RUNNER_TEMP/presto-home.plan.json" \
             --home "$RUNNER_TEMP/presto-home" --division "$DIVISION" --job presto \
             --record "$RUNNER_TEMP/presto-home.collect-record.json" \
-            --accept-loss "$ACCEPT_LOSS" $REFETCH || rc=$?
+            --label "$COLLECT_LABEL" --accept-loss "$ACCEPT_LOSS" $REFETCH || rc=$?
           echo "rc=${rc:-0}" >> "$GITHUB_OUTPUT"
           tar -C "$RUNNER_TEMP" -czf "$RUNNER_TEMP/presto-result.tgz" presto-home presto-home.collect-record.json
       - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
@@ -626,26 +633,28 @@ jobs:
         env:
           TOKEN: ${{ steps.app.outputs.token }}
         run: bash .github/scripts/git-auth.sh home "$TOKEN"
-      - name: Switch to shadow
+      - name: Switch to the target branch
         id: shadow
         working-directory: home
         run: |
           set -euo pipefail
           echo "main_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-          git fetch -q --depth 1 origin shadow
-          git checkout -q -B shadow FETCH_HEAD
+          if [ "$TARGET_BRANCH" != main ]; then
+            git fetch -q --depth 1 origin shadow
+            git checkout -q -B shadow FETCH_HEAD
+          fi
       - uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
         with:
           role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/touchline-publish
           aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
           role-session-name: collect-presto-${{ matrix.division }}-${{ github.run_id }}
-      - name: Land on shadow
+      - name: Land on the target branch
         working-directory: pipeline
         env:
           MAIN_SHA: ${{ steps.shadow.outputs.main_sha }}
         run: |
           uv run --frozen --no-dev collect-direct land --work "$RUNNER_TEMP/presto-home" --target ../home \
-            --record "$RUNNER_TEMP/presto-home.collect-record.json" --push --branch shadow --main-sha "$MAIN_SHA"
+            --record "$RUNNER_TEMP/presto-home.collect-record.json" --push --branch "$TARGET_BRANCH" --main-sha "$MAIN_SHA"
       - name: Archive the raw pages
         if: always()
         run: bash .github/scripts/raw-sync.sh up "$RUNNER_TEMP/presto-home"
