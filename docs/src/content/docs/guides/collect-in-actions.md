@@ -187,7 +187,7 @@ gh variable set TOUCHLINE_PRESTO_RUNNER -R ed-insights-ai/keelson-rib-touchline 
 ```
 
 A new instance that is not registered within an hour stops itself; start it
-again with `aws ec2 start-instances --instance-ids <id>`. Its setup log is
+again with `aws ec2 start-instances --instance-ids {id}`. Its setup log is
 `/var/log/touchline-runner-setup.log`, read through Systems Manager; no
 inbound port is open.
 
