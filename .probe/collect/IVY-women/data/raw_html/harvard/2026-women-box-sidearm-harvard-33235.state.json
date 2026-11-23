@@ -1,0 +1,1508 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/no-6-university-of-alabama/boxscore/33235",
+  "final_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/no-6-university-of-alabama/boxscore/33235",
+  "etag": null,
+  "last_modified": null,
+  "signature": "2170bd1bca28503817c873e03ef5a5ad94d5f53755e7c71e923b470520a01bba",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:16:03+00:00",
+  "verified_at": "2026-11-23T10:16:03+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/no-6-university-of-alabama/boxscore/33235",
+    "teams": [
+      {
+        "name": "Harvard",
+        "abbr": "HAR",
+        "score": 6,
+        "periods": [
+          2,
+          4
+        ],
+        "winner": true,
+        "shots": 22,
+        "sog": 10,
+        "saves": 6,
+        "corners": 6,
+        "fouls": 5,
+        "players": [
+          {
+            "name": "Danicka Miller",
+            "player_id": "31864",
+            "position": "DEF",
+            "number": "3",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 68
+          },
+          {
+            "name": "\u00d3l\u00f6f Kristinsd\u00f3ttir",
+            "player_id": "31859",
+            "position": "FWD",
+            "number": "9",
+            "started": true,
+            "shots": 4,
+            "sog": 3,
+            "goals": 1,
+            "assists": 3,
+            "minutes": 57
+          },
+          {
+            "name": "Brooke Huleatt",
+            "player_id": "33039",
+            "position": "FWD",
+            "number": "10",
+            "started": true,
+            "shots": 6,
+            "sog": 3,
+            "goals": 2,
+            "assists": 0,
+            "minutes": 81
+          },
+          {
+            "name": "Lou Ruffien",
+            "player_id": "33042",
+            "number": "12",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 65
+          },
+          {
+            "name": "Susie Long",
+            "player_id": "31862",
+            "number": "13",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 27
+          },
+          {
+            "name": "\u00cdrena H\u00e9\u00f0insd\u00f3ttir Gonzalez",
+            "player_id": "31857",
+            "position": "MID",
+            "number": "14",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Jasmine Leshnick",
+            "player_id": "31860",
+            "position": "FWD",
+            "number": "16",
+            "started": true,
+            "shots": 3,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 83
+          },
+          {
+            "name": "Amy K\u00f6nig",
+            "player_id": "31858",
+            "position": "DEF",
+            "number": "18",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 49
+          },
+          {
+            "name": "Anna Rayhill",
+            "player_id": "31866",
+            "position": "FWD",
+            "number": "19",
+            "started": true,
+            "shots": 5,
+            "sog": 2,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Anya Van Den Einde",
+            "player_id": "31870",
+            "position": "MID",
+            "number": "20",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Nicole Bidun",
+            "player_id": "33044",
+            "position": "GK",
+            "number": "30",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Olivia Busby",
+            "player_id": "33038",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Elsa Santos L\u00f3pez",
+            "player_id": "31868",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 63
+          },
+          {
+            "name": "Sarah Lloyd",
+            "player_id": "31861",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 63
+          },
+          {
+            "name": "Molly Vana",
+            "player_id": "33043",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 41
+          },
+          {
+            "name": "Lauren Muniz",
+            "player_id": "31865",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 10
+          },
+          {
+            "name": "Kennedy Belfon",
+            "player_id": "31852",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 14
+          },
+          {
+            "name": "Hannah Eftekhari",
+            "player_id": "31854",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 9
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Olivia Busby",
+            "player_id": "33038",
+            "position": "GK",
+            "number": "1",
+            "minutes": 45,
+            "goals_against": 2,
+            "saves": 2
+          },
+          {
+            "name": "Nicole Bidun",
+            "player_id": "33044",
+            "position": "GK",
+            "number": "30",
+            "minutes": 45,
+            "goals_against": 2,
+            "saves": 4
+          }
+        ]
+      },
+      {
+        "name": "Alabama",
+        "abbr": "ALA",
+        "score": 4,
+        "periods": [
+          2,
+          2
+        ],
+        "shots": 21,
+        "sog": 10,
+        "saves": 4,
+        "corners": 9,
+        "fouls": 6,
+        "players": [
+          {
+            "name": "Madi Munguia",
+            "position": "GK",
+            "number": "0",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Avery Brown",
+            "position": "DEF",
+            "number": "3",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Maison Smith",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 83
+          },
+          {
+            "name": "Kiley Kukan",
+            "number": "6",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 67
+          },
+          {
+            "name": "Larkin Thomason",
+            "position": "FWD",
+            "number": "7",
+            "started": true,
+            "shots": 3,
+            "sog": 2,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 58
+          },
+          {
+            "name": "Ashley Roni",
+            "position": "FWD",
+            "number": "9",
+            "started": true,
+            "shots": 4,
+            "sog": 3,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 61
+          },
+          {
+            "name": "Zamorah Malinoski",
+            "position": "MID",
+            "number": "10",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 57
+          },
+          {
+            "name": "Melina Rebimbas",
+            "number": "13",
+            "started": true,
+            "shots": 4,
+            "sog": 2,
+            "goals": 1,
+            "assists": 1,
+            "minutes": 33
+          },
+          {
+            "name": "Leah Klurman",
+            "position": "DEF",
+            "number": "18",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Kierson McDonald",
+            "position": "DEF",
+            "number": "19",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 50
+          },
+          {
+            "name": "Paige Thompson",
+            "position": "MID",
+            "number": "30",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 79
+          },
+          {
+            "name": "Presley Williams",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 14
+          },
+          {
+            "name": "Soph Martelli",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 10
+          },
+          {
+            "name": "Olivia Belcher",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 41
+          },
+          {
+            "name": "Cali Brewer",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 37
+          },
+          {
+            "name": "Kennedy Garcia",
+            "started": false,
+            "shots": 2,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 29
+          },
+          {
+            "name": "Ivy Williams",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 27
+          },
+          {
+            "name": "Alexa Barker",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 7
+          },
+          {
+            "name": "Reece Ward",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 9
+          },
+          {
+            "name": "Jurnee Vrobel",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 4
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Madi Munguia",
+            "position": "GK",
+            "number": "0",
+            "minutes": 90,
+            "goals_against": 6,
+            "saves": 3
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "18:25",
+        "team": 1,
+        "scorer": "Ashley Roni",
+        "season_total": 6,
+        "assist": "Melina Rebimbas",
+        "description": "GOAL by ALA Roni, Ashley Assist by Rebimbas, Melina."
+      },
+      {
+        "time": "23:09",
+        "team": 1,
+        "scorer": "Kennedy Garcia",
+        "season_total": 2,
+        "description": "GOAL by ALA Garcia, Kennedy."
+      },
+      {
+        "time": "23:28",
+        "team": 0,
+        "scorer": "Anna Rayhill",
+        "season_total": 1,
+        "assist": "\u00d3l\u00f6f Kristinsd\u00f3ttir",
+        "description": "GOAL by HAR Rayhill, Anna Assist by Kristinsd\u00f3ttir, \u00d3l\u00f6f."
+      },
+      {
+        "time": "38:46",
+        "team": 0,
+        "scorer": "Lauren Muniz",
+        "season_total": 1,
+        "assist": "Kennedy Belfon",
+        "description": "GOAL by HAR Muniz, Lauren Assist by Belfon, Kennedy."
+      },
+      {
+        "time": "51:41",
+        "team": 1,
+        "scorer": "Larkin Thomason",
+        "season_total": 6,
+        "description": "ALA Larkin Thomason PENALTY KICK GOAL."
+      },
+      {
+        "time": "52:58",
+        "team": 0,
+        "scorer": "Brooke Huleatt",
+        "season_total": 4,
+        "assist": "\u00d3l\u00f6f Kristinsd\u00f3ttir",
+        "description": "GOAL by HAR Huleatt, Brooke Assist by Kristinsd\u00f3ttir, \u00d3l\u00f6f."
+      },
+      {
+        "time": "55:24",
+        "team": 0,
+        "scorer": "\u00d3l\u00f6f Kristinsd\u00f3ttir",
+        "season_total": 3,
+        "description": "HAR \u00d3l\u00f6f Kristinsd\u00f3ttir PENALTY KICK GOAL."
+      },
+      {
+        "time": "82:54",
+        "team": 0,
+        "scorer": "Brooke Huleatt",
+        "season_total": 4,
+        "description": "GOAL by HAR Huleatt, Brooke."
+      },
+      {
+        "time": "83:35",
+        "team": 1,
+        "scorer": "Melina Rebimbas",
+        "season_total": 1,
+        "description": "GOAL by ALA Rebimbas, Melina."
+      },
+      {
+        "time": "86:25",
+        "team": 0,
+        "scorer": "Jasmine Leshnick",
+        "season_total": 3,
+        "assist": "\u00d3l\u00f6f Kristinsd\u00f3ttir",
+        "description": "GOAL by HAR Leshnick, Jasmine Assist by Kristinsd\u00f3ttir, \u00d3l\u00f6f."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "\u00cdrena H\u00e9\u00f0insd\u00f3ttir Gonzalez",
+        "number": "14",
+        "time": "15:47",
+        "team": 0
+      },
+      {
+        "type": "red",
+        "player": "Reece Ward",
+        "number": "20",
+        "time": "35:44",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Leah Klurman",
+        "number": "18",
+        "time": "55:24",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Lou Ruffien",
+        "number": "12",
+        "time": "70:43",
+        "team": 0
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Munguia, Madi at goalie for Alabama",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Bidun, Nicole at goalie for Harvard",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Alabama.",
+        "clock": "00:20",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "01:55",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [03:02].",
+        "clock": "03:02",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by ALA Smith, Maison.",
+        "clock": "03:33",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by ALA Rebimbas, Melina, bottom center, saved by Bidun, Nicole.",
+        "clock": "04:40",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [06:35].",
+        "clock": "06:35",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by ALA Roni, Ashley, bottom center, saved by Bidun, Nicole.",
+        "clock": "07:19",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Rayhill, Anna.",
+        "clock": "07:52",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [07:56].",
+        "clock": "07:56",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by ALA Thomason, Larkin, top, saved by Bidun, Nicole.",
+        "clock": "10:14",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [10:24].",
+        "clock": "10:24",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by ALA Klurman, Leah.",
+        "clock": "10:44",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [10:49].",
+        "clock": "10:49",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [12:04].",
+        "clock": "12:04",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Rayhill, Anna, bottom center, Team save.",
+        "clock": "13:08",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [13:17].",
+        "clock": "13:17",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Ruffien, Lou.",
+        "clock": "13:52",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [14:40].",
+        "clock": "14:40",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by ALA Brown, Avery, out left.",
+        "clock": "15:21",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on HAR H\u00e9\u00f0insd\u00f3ttir Gonzalez, \u00cdrena.",
+        "clock": "15:47",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Shot by ALA Rebimbas, Melina, out left.",
+        "clock": "15:51",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by ALA Rebimbas, Melina, right woodwork.",
+        "clock": "16:40",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [16:51].",
+        "clock": "16:51",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by ALA Roni, Ashley Assist by Rebimbas, Melina.",
+        "clock": "18:25",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Shot by ALA Thomason, Larkin, out top.",
+        "clock": "21:04",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "ALA substitution: Garcia, Kennedy for Thomason, Larkin.",
+        "clock": "21:14",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by ALA Roni, Ashley, out top right.",
+        "clock": "21:49",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Rayhill, Anna, out top left.",
+        "clock": "22:22",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by ALA Garcia, Kennedy.",
+        "clock": "23:09",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          2
+        ]
+      },
+      {
+        "period": "1",
+        "text": "ALA substitution: Belcher, Olivia for Malinoski, Zamorah.",
+        "clock": "23:09",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "ALA substitution: Williams, Presley for Rebimbas, Melina.",
+        "clock": "23:09",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Kristinsd\u00f3ttir, \u00d3l\u00f6f, bottom center, saved by Munguia, Madi.",
+        "clock": "23:28",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by HAR Rayhill, Anna Assist by Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "23:28",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          1,
+          2
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Foul on Ruffien, Lou.",
+        "clock": "23:35",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by ALA Williams, Presley.",
+        "clock": "24:38",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Rayhill, Anna, left woodwork.",
+        "clock": "26:32",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "26:39",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [26:39].",
+        "clock": "26:39",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "ALA substitution: Ward, Reece for McDonald, Kierson.",
+        "clock": "26:39",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Santos Lopez, Elsa for Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "26:39",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Vana, Molly for Long, Susie.",
+        "clock": "26:39",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Lloyd, Sarah for K\u00f6nig, Amy.",
+        "clock": "26:39",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "ALA substitution: Williams, Ivy for Garcia, Kennedy.",
+        "clock": "28:28",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "ALA substitution: Martelli, Soph for Roni, Ashley.",
+        "clock": "30:27",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Belfon, Kennedy for Ruffien, Lou.",
+        "clock": "30:27",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by ALA Thompson, Paige, bottom center, saved by Bidun, Nicole.",
+        "clock": "31:28",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [34:20].",
+        "clock": "34:20",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Red card on ALA Ward, Reece.",
+        "clock": "35:44",
+        "team": 1,
+        "type": "red"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Eftekhari, Hannah for Huleatt, Brooke.",
+        "clock": "35:44",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Harvard.",
+        "clock": "35:59",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Vana, Molly.",
+        "clock": "36:47",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "ALA substitution: Barker, Alexa for Williams, Presley.",
+        "clock": "38:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Muniz, Lauren for Leshnick, Jasmine.",
+        "clock": "38:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by HAR Muniz, Lauren Assist by Belfon, Kennedy.",
+        "clock": "38:46",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          2,
+          2
+        ]
+      },
+      {
+        "period": "1",
+        "text": "ALA substitution: Brewer, Cali for Kukan, Kiley.",
+        "clock": "38:47",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Belfon, Kennedy, out top right.",
+        "clock": "40:23",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "ALA substitution: Vrobel, Jurnee for Martelli, Soph.",
+        "clock": "40:34",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Muniz, Lauren.",
+        "clock": "41:52",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR HAR: , #30 Bidun, Nicole, #3 Miller, Danicka, #7 Santos Lopez, Elsa, #16 Leshnick, Jasmine, #12 Ruffien, Lou, #9 Kristinsd\u00f3ttir, \u00d3l\u00f6f, #14 H\u00e9\u00f0insd\u00f3ttir Gonzalez, \u00cdrena, #10 Huleatt, Brooke, #11 Lloyd, Sarah, #19 Rayhill, Anna, #20 Van Den Einde, Anya.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR ALA: , #0 Munguia, Madi, #3 Brown, Avery, #4 Smith, Maison, #9 Roni, Ashley, #10 Malinoski, Zamorah, #7 Thomason, Larkin, #8 Belcher, Olivia, #19 McDonald, Kierson, #18 Klurman, Leah, #20 Ward, Reece, #30 Thompson, Paige.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "ALA substitution: Roni, Ashley for Brewer, Cali.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "ALA substitution: Malinoski, Zamorah for Williams, Ivy.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "ALA substitution: Thomason, Larkin for Vrobel, Jurnee.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "ALA substitution: McDonald, Kierson for Barker, Alexa.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "ALA substitution: Rebimbas, Melina for Klurman, Leah.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Leshnick, Jasmine for Eftekhari, Hannah.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Ruffien, Lou for Belfon, Kennedy.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Kristinsd\u00f3ttir, \u00d3l\u00f6f for Vana, Molly.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Huleatt, Brooke for Muniz, Lauren.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "ALA substitution: Klurman, Leah for Rebimbas, Melina.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Busby, Olivia for Bidun, Nicole.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Huleatt, Brooke.",
+        "clock": "48:42",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Leshnick, Jasmine, top woodwork.",
+        "clock": "49:11",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Harvard.",
+        "clock": "49:14",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Lloyd, Sarah",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "ALA Larkin Thomason PENALTY KICK GOAL.",
+        "clock": "51:41",
+        "team": 1,
+        "type": "penalty",
+        "score": [
+          2,
+          3
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Foul on Brown, Avery",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "HAR \u00d3l\u00f6f Kristinsd\u00f3ttir PENALTY KICK MISS, saved by Munguia, Madi.",
+        "clock": "52:54",
+        "team": 0,
+        "type": "penalty"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by HAR Huleatt, Brooke Assist by Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "52:58",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          3,
+          3
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Shot by ALA Roni, Ashley, bottom right, saved by Busby, Olivia.",
+        "clock": "53:24",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Smith, Maison",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "HAR \u00d3l\u00f6f Kristinsd\u00f3ttir PENALTY KICK GOAL.",
+        "clock": "55:24",
+        "team": 0,
+        "type": "penalty",
+        "score": [
+          4,
+          3
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on ALA Klurman, Leah.",
+        "clock": "55:24",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "ALA substitution: Brewer, Cali for Belcher, Olivia.",
+        "clock": "55:37",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "ALA substitution: Kukan, Kiley for Roni, Ashley.",
+        "clock": "55:40",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by ALA Kukan, Kiley, bottom right, saved by Busby, Olivia.",
+        "clock": "56:17",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [58:39].",
+        "clock": "58:39",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Huleatt, Brooke.",
+        "clock": "59:26",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [59:31].",
+        "clock": "59:31",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Santos Lopez, Elsa, out right.",
+        "clock": "60:11",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by ALA Kukan, Kiley.",
+        "clock": "62:19",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [62:25].",
+        "clock": "62:25",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Vana, Molly for Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "63:44",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "ALA substitution: Belcher, Olivia for Thomason, Larkin.",
+        "clock": "67:26",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "ALA substitution: Garcia, Kennedy for McDonald, Kierson.",
+        "clock": "67:26",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: K\u00f6nig, Amy for Miller, Danicka.",
+        "clock": "67:26",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "ALA substitution: Roni, Ashley for Malinoski, Zamorah.",
+        "clock": "70:36",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on HAR Ruffien, Lou.",
+        "clock": "70:43",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Thompson, Paige.",
+        "clock": "73:11",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Leshnick, Jasmine, out top.",
+        "clock": "73:47",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Belcher, Olivia.",
+        "clock": "75:40",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "ALA substitution: Thomason, Larkin for Belcher, Olivia.",
+        "clock": "76:23",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Huleatt, Brooke, bottom center, saved by Munguia, Madi.",
+        "clock": "77:45",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "ALA substitution: Williams, Ivy for Thompson, Paige.",
+        "clock": "78:15",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Kristinsd\u00f3ttir, \u00d3l\u00f6f for Ruffien, Lou.",
+        "clock": "78:21",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Kukan, Kiley.",
+        "clock": "78:39",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "ALA substitution: Rebimbas, Melina for Kukan, Kiley.",
+        "clock": "80:10",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Muniz, Lauren for Vana, Molly.",
+        "clock": "80:10",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Huleatt, Brooke, out left.",
+        "clock": "81:01",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by HAR Huleatt, Brooke.",
+        "clock": "82:54",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          5,
+          3
+        ]
+      },
+      {
+        "period": "2",
+        "text": "ALA substitution: Malinoski, Zamorah for Smith, Maison.",
+        "clock": "82:54",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by ALA Rebimbas, Melina.",
+        "clock": "83:35",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          5,
+          4
+        ]
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Vana, Molly for Muniz, Lauren.",
+        "clock": "83:35",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by HAR Leshnick, Jasmine Assist by Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "86:25",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          6,
+          4
+        ]
+      },
+      {
+        "period": "2",
+        "text": "ALA substitution: Kukan, Kiley for Brewer, Cali.",
+        "clock": "86:25",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by ALA Malinoski, Zamorah.",
+        "clock": "87:12",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by ALA Garcia, Kennedy.",
+        "clock": "87:15",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [87:20].",
+        "clock": "87:20",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Thomason, Larkin.",
+        "clock": "87:54",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "team": 1,
+        "type": "period"
+      }
+    ],
+    "stadium": "Alabama Soccer Complex",
+    "attendance": 663,
+    "kickoff": "01:00",
+    "officials": [
+      "Referee: Rhiannon Daugs",
+      "Asst. Referee: Austin Holt",
+      "Asst. Referee: Esmerelda Figueroa",
+      "Alt. Official: Brent Heidorn"
+    ],
+    "home_index": 1
+  }
+}

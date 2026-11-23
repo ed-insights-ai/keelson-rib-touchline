@@ -1,0 +1,1185 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/yale/boxscore/33217",
+  "final_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/yale/boxscore/33217",
+  "etag": null,
+  "last_modified": null,
+  "signature": "230b3c5158fbb63ea9d30447b829b1168f5f9a3649a72374c1beb2a944682674",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:16:07+00:00",
+  "verified_at": "2026-11-23T10:16:07+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/yale/boxscore/33217",
+    "teams": [
+      {
+        "name": "Harvard",
+        "abbr": "HARV",
+        "score": 2,
+        "periods": [
+          0,
+          2
+        ],
+        "shots": 12,
+        "sog": 6,
+        "saves": 2,
+        "corners": 5,
+        "fouls": 14,
+        "players": [
+          {
+            "name": "Alexander Castel",
+            "player_id": "32567",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Maxwell Mobray",
+            "player_id": "32577",
+            "position": "DEF",
+            "number": "5",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Nayan Das",
+            "player_id": "32569",
+            "position": "DEF",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 74
+          },
+          {
+            "name": "Phoenix Wooten",
+            "player_id": "32587",
+            "position": "MID",
+            "number": "8",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 73
+          },
+          {
+            "name": "Ben Kelly",
+            "player_id": "32572",
+            "position": "FWD",
+            "number": "10",
+            "started": true,
+            "shots": 3,
+            "sog": 3,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 78
+          },
+          {
+            "name": "Andreas Savva",
+            "player_id": "32581",
+            "position": "FWD",
+            "number": "11",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 45
+          },
+          {
+            "name": "Andreas Engle",
+            "player_id": "32591",
+            "position": "FWD",
+            "number": "12",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Tim Langenbahn",
+            "player_id": "32573",
+            "position": "DEF",
+            "number": "13",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 68
+          },
+          {
+            "name": "Xavier Tanyi",
+            "player_id": "32583",
+            "position": "FWD",
+            "number": "14",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 23
+          },
+          {
+            "name": "Shane Lonergan",
+            "player_id": "32575",
+            "position": "MID",
+            "number": "20",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 23
+          },
+          {
+            "name": "Jason Broome",
+            "player_id": "32566",
+            "position": "GK",
+            "number": "99",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Mikey Cortellessa",
+            "player_id": "32568",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 17
+          },
+          {
+            "name": "Dylan Tellado",
+            "player_id": "32584",
+            "started": false,
+            "shots": 2,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 67
+          },
+          {
+            "name": "Lucas Benuce Sarvas",
+            "player_id": "32565",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 12
+          },
+          {
+            "name": "Adam Poliakov",
+            "player_id": "32579",
+            "started": false,
+            "shots": 3,
+            "sog": 1,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 67
+          },
+          {
+            "name": "Christo Velikin",
+            "player_id": "32585",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 4
+          },
+          {
+            "name": "Gil de Souza",
+            "player_id": "32589",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 57
+          },
+          {
+            "name": "Alejandro Palacio",
+            "player_id": "32578",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 67
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Jason Broome",
+            "player_id": "32566",
+            "position": "GK",
+            "number": "99",
+            "minutes": 90,
+            "goals_against": 3,
+            "saves": 2
+          }
+        ]
+      },
+      {
+        "name": "Yale",
+        "abbr": "YALE",
+        "score": 3,
+        "periods": [
+          1,
+          2
+        ],
+        "winner": true,
+        "shots": 12,
+        "sog": 5,
+        "saves": 4,
+        "corners": 4,
+        "fouls": 11,
+        "players": [
+          {
+            "name": "Joshua Linebaugh",
+            "position": "GK",
+            "number": "0",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Owen Bull",
+            "position": "DEF",
+            "number": "2",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Nick Miller",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 37
+          },
+          {
+            "name": "Sven Meacham",
+            "position": "DEF",
+            "number": "5",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 1,
+            "assists": 1,
+            "minutes": 90
+          },
+          {
+            "name": "Teague McCammon",
+            "position": "MID",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Dijon Fosu",
+            "position": "MID",
+            "number": "7",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 77
+          },
+          {
+            "name": "Angelo Zhu",
+            "position": "MID",
+            "number": "10",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 66
+          },
+          {
+            "name": "Nathan Harmon",
+            "number": "12",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 90
+          },
+          {
+            "name": "Andrew Myerson",
+            "position": "DEF",
+            "number": "20",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Daniel Grumann",
+            "position": "DEF",
+            "number": "26",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 90
+          },
+          {
+            "name": "Ryder Mills",
+            "position": "FWD",
+            "number": "30",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 76
+          },
+          {
+            "name": "Billy Altirs",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 8
+          },
+          {
+            "name": "Sebi Roy",
+            "started": false,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 14
+          },
+          {
+            "name": "Salif Leintu",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 23
+          },
+          {
+            "name": "David Pousseu",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 32
+          },
+          {
+            "name": "Simon Adjakple",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 14
+          },
+          {
+            "name": "David Leidl",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 1,
+            "minutes": 13
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Joshua Linebaugh",
+            "position": "GK",
+            "number": "0",
+            "minutes": 90,
+            "goals_against": 2,
+            "saves": 4
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "22:59",
+        "team": 1,
+        "scorer": "Sven Meacham",
+        "season_total": 1,
+        "assist": "Daniel Grumann , Nick Miller",
+        "description": "GOAL by YALE Meacham, Sven Assist by Grumann, Daniel and Miller, Nick."
+      },
+      {
+        "time": "75:07",
+        "team": 0,
+        "scorer": "Ben Kelly",
+        "season_total": 2,
+        "assist": "Adam Poliakov",
+        "description": "GOAL by HARV Kelly, Ben Assist by Poliakov, Adam."
+      },
+      {
+        "time": "79:29",
+        "team": 1,
+        "scorer": "Owen Bull",
+        "season_total": 1,
+        "assist": "Nathan Harmon , David Leidl",
+        "description": "GOAL by YALE Bull, Owen Assist by Harmon, Nathan and Leidl, David."
+      },
+      {
+        "time": "82:56",
+        "team": 0,
+        "scorer": "Dylan Tellado",
+        "season_total": 4,
+        "assist": "Andreas Savva",
+        "description": "GOAL by HARV Tellado, Dylan Assist by Savva, Andreas."
+      },
+      {
+        "time": "83:58",
+        "team": 1,
+        "scorer": "David Leidl",
+        "season_total": 2,
+        "assist": "Sven Meacham",
+        "description": "GOAL by YALE Leidl, David Assist by Meacham, Sven."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Nathan Harmon",
+        "number": "12",
+        "time": "75:52",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Sebi Roy",
+        "number": "9",
+        "time": "88:59",
+        "team": 1
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Linebaugh, Joshua at goalie for Yale",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Broome, Jason at goalie for Harvard",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Yale.",
+        "clock": "01:05",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Wooten, Phoenix.",
+        "clock": "02:13",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by YALE Mills, Ryder.",
+        "clock": "03:47",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [03:56].",
+        "clock": "03:56",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Harmon, Nathan.",
+        "clock": "04:31",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [06:26].",
+        "clock": "06:26",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Bull, Owen.",
+        "clock": "07:45",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Mobray, Maxwell.",
+        "clock": "09:54",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Bull, Owen.",
+        "clock": "10:45",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Yale.",
+        "clock": "11:45",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Bull, Owen.",
+        "clock": "12:17",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by YALE Harmon, Nathan.",
+        "clock": "13:59",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Zhu, Angelo.",
+        "clock": "15:26",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Langenbahn, Tim.",
+        "clock": "16:59",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Fosu, Dijon.",
+        "clock": "18:02",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Savva, Andreas.",
+        "clock": "19:24",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by YALE Miller, Nick.",
+        "clock": "22:25",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by YALE Meacham, Sven Assist by Grumann, Daniel and Miller, Nick.",
+        "clock": "22:59",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "YALE substitution: Pousseu, David for Miller, Nick.",
+        "clock": "22:59",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Poliakov, Adam for Savva, Andreas.",
+        "clock": "22:59",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Palacio, Alejandro for Tanyi, Xavier.",
+        "clock": "22:59",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Tellado, Dylan for Lonergan, Shane.",
+        "clock": "22:59",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Poliakov, Adam.",
+        "clock": "23:22",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Engle, Andreas, bottom center, saved by Linebaugh, Joshua.",
+        "clock": "26:50",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [28:17].",
+        "clock": "28:17",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Kelly, Ben.",
+        "clock": "29:42",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: de Souza, Gil for Das, Nayan.",
+        "clock": "32:42",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Benuce Sarvas, Lucas for Kelly, Ben.",
+        "clock": "32:42",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Meacham, Sven.",
+        "clock": "35:01",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Fosu, Dijon.",
+        "clock": "38:00",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "YALE substitution: Leintu, Salif for Mills, Ryder.",
+        "clock": "38:25",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Castel, Alexander.",
+        "clock": "39:01",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [39:29].",
+        "clock": "39:29",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Poliakov, Adam.",
+        "clock": "40:03",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Langenbahn, Tim.",
+        "clock": "40:45",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [41:41].",
+        "clock": "41:41",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by YALE Fosu, Dijon, bottom left, saved by Broome, Jason.",
+        "clock": "42:31",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on de Souza, Gil.",
+        "clock": "43:21",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Meacham, Sven.",
+        "clock": "44:05",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR HARV: , #99 Broome, Jason, #4 Castel, Alexander, #5 Mobray, Maxwell, #24 de Souza, Gil, #6 Das, Nayan, #2 Cortellessa, Mikey, #17 Poliakov, Adam, #10 Kelly, Ben, #13 Langenbahn, Tim, #27 Palacio, Alejandro, #7 Tellado, Dylan.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR YALE: , #0 Linebaugh, Joshua, #2 Bull, Owen, #30 Mills, Ryder, #5 Meacham, Sven, #6 McCammon, Teague, #7 Fosu, Dijon, #10 Zhu, Angelo, #12 Harmon, Nathan, #20 Myerson, Andrew, #26 Grumann, Daniel, #11 Leintu, Salif.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "YALE substitution: Mills, Ryder for Pousseu, David.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Das, Nayan for Wooten, Phoenix.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Cortellessa, Mikey for Benuce Sarvas, Lucas.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Kelly, Ben for Engle, Andreas.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Leintu, Salif.",
+        "clock": "45:17",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Poliakov, Adam.",
+        "clock": "46:15",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Yale.",
+        "clock": "47:40",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Shot by YALE Zhu, Angelo, out left.",
+        "clock": "50:00",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Langenbahn, Tim.",
+        "clock": "51:38",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [52:25].",
+        "clock": "52:25",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Castel, Alexander.",
+        "clock": "53:00",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Kelly, Ben, bottom right, saved by Linebaugh, Joshua.",
+        "clock": "53:05",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by YALE Meacham, Sven, out top.",
+        "clock": "54:52",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Tellado, Dylan.",
+        "clock": "55:43",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Poliakov, Adam, bottom center, saved by Linebaugh, Joshua.",
+        "clock": "56:58",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [61:05].",
+        "clock": "61:05",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "YALE substitution: Adjakple, Simon for Leintu, Salif.",
+        "clock": "61:54",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Wooten, Phoenix for Cortellessa, Mikey.",
+        "clock": "61:54",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by YALE Adjakple, Simon, out left.",
+        "clock": "62:23",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "YALE substitution: Pousseu, David for Zhu, Angelo.",
+        "clock": "65:17",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Savva, Andreas for Langenbahn, Tim.",
+        "clock": "67:15",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Kelly, Ben, bottom center, saved by Linebaugh, Joshua.",
+        "clock": "69:09",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Yale.",
+        "clock": "69:49",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [70:54].",
+        "clock": "70:54",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Tellado, Dylan.",
+        "clock": "71:56",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Yale.",
+        "clock": "74:26",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by HARV Kelly, Ben Assist by Poliakov, Adam.",
+        "clock": "75:07",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          1,
+          1
+        ]
+      },
+      {
+        "period": "2",
+        "text": "YALE substitution: Roy, Sebi for Pousseu, David.",
+        "clock": "75:07",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "YALE substitution: Miller, Nick for Adjakple, Simon.",
+        "clock": "75:07",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on YALE Harmon, Nathan.",
+        "clock": "75:52",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV de Souza, Gil, out top left.",
+        "clock": "76:08",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "YALE substitution: Leidl, David for Fosu, Dijon.",
+        "clock": "76:31",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by YALE Roy, Sebi, bottom center, saved by Broome, Jason.",
+        "clock": "77:45",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Poliakov, Adam.",
+        "clock": "78:24",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by YALE Bull, Owen Assist by Harmon, Nathan and Leidl, David.",
+        "clock": "79:29",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          1,
+          2
+        ]
+      },
+      {
+        "period": "2",
+        "text": "YALE substitution: Altirs, Billy for Mills, Ryder.",
+        "clock": "81:42",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by HARV Tellado, Dylan Assist by Savva, Andreas.",
+        "clock": "82:56",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          2,
+          2
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [83:05].",
+        "clock": "83:05",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by YALE Leidl, David Assist by Meacham, Sven.",
+        "clock": "83:58",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          2,
+          3
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Foul on Kelly, Ben.",
+        "clock": "85:02",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Velikin, Christo for Das, Nayan.",
+        "clock": "85:55",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by YALE Roy, Sebi.",
+        "clock": "86:04",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Roy, Sebi.",
+        "clock": "86:15",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Poliakov, Adam.",
+        "clock": "87:03",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Wooten, Phoenix.",
+        "clock": "88:56",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on YALE Roy, Sebi.",
+        "clock": "88:59",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "team": 1,
+        "type": "period"
+      }
+    ],
+    "stadium": "Reese Stadium",
+    "attendance": 518,
+    "kickoff": "07:00",
+    "officials": [
+      "Referee: Andrew Laplante",
+      "Asst. Referee: PJ Zipser",
+      "Asst. Referee: Stephen Gruenberg",
+      "Alt. Official: Jason Klumb"
+    ],
+    "home_index": 1
+  }
+}

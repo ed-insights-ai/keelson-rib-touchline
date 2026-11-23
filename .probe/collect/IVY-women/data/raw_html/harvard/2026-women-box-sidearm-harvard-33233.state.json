@@ -1,0 +1,1248 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/syracuse-university/boxscore/33233",
+  "final_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/syracuse-university/boxscore/33233",
+  "etag": null,
+  "last_modified": null,
+  "signature": "7fefc65d1fe1423e1589546bafb6714c10349f66ff9466c0531ef4f5ad549df9",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:16:01+00:00",
+  "verified_at": "2026-11-23T10:16:01+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/syracuse-university/boxscore/33233",
+    "teams": [
+      {
+        "name": "Harvard",
+        "abbr": "HAR",
+        "score": 0,
+        "periods": [
+          0,
+          0
+        ],
+        "shots": 18,
+        "sog": 5,
+        "saves": 6,
+        "corners": 9,
+        "fouls": 6,
+        "players": [
+          {
+            "name": "Danicka Miller",
+            "player_id": "31864",
+            "position": "DEF",
+            "number": "3",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Brooke Huleatt",
+            "player_id": "33039",
+            "position": "FWD",
+            "number": "10",
+            "started": true,
+            "shots": 6,
+            "sog": 3,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 69
+          },
+          {
+            "name": "Lou Ruffien",
+            "player_id": "33042",
+            "number": "12",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 71
+          },
+          {
+            "name": "Susie Long",
+            "player_id": "31862",
+            "number": "13",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 72
+          },
+          {
+            "name": "\u00cdrena H\u00e9\u00f0insd\u00f3ttir Gonzalez",
+            "player_id": "31857",
+            "position": "MID",
+            "number": "14",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Jasmine Leshnick",
+            "player_id": "31860",
+            "position": "FWD",
+            "number": "16",
+            "started": true,
+            "shots": 3,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Amy K\u00f6nig",
+            "player_id": "31858",
+            "position": "DEF",
+            "number": "18",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 66
+          },
+          {
+            "name": "Anna Rayhill",
+            "player_id": "31866",
+            "position": "FWD",
+            "number": "19",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 75
+          },
+          {
+            "name": "Anya Van Den Einde",
+            "player_id": "31870",
+            "position": "MID",
+            "number": "20",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 53
+          },
+          {
+            "name": "Molly Vana",
+            "player_id": "33043",
+            "position": "FWD",
+            "number": "21",
+            "started": true,
+            "shots": 3,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 66
+          },
+          {
+            "name": "Nicole Bidun",
+            "player_id": "33044",
+            "position": "GK",
+            "number": "30",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Olivia Busby",
+            "player_id": "33038",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Erin Gordon",
+            "player_id": "31856",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 42
+          },
+          {
+            "name": "Elsa Santos L\u00f3pez",
+            "player_id": "31868",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 37
+          },
+          {
+            "name": "\u00d3l\u00f6f Kristinsd\u00f3ttir",
+            "player_id": "31859",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 32
+          },
+          {
+            "name": "Sarah Lloyd",
+            "player_id": "31861",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 15
+          },
+          {
+            "name": "Kennedy Belfon",
+            "player_id": "31852",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 21
+          },
+          {
+            "name": "Hannah Eftekhari",
+            "player_id": "31854",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 11
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Olivia Busby",
+            "player_id": "33038",
+            "position": "GK",
+            "number": "1",
+            "minutes": 45,
+            "goals_against": 0,
+            "saves": 4
+          },
+          {
+            "name": "Nicole Bidun",
+            "player_id": "33044",
+            "position": "GK",
+            "number": "30",
+            "minutes": 45,
+            "goals_against": 0,
+            "saves": 2
+          }
+        ]
+      },
+      {
+        "name": "Syracuse",
+        "abbr": "SYR",
+        "score": 0,
+        "periods": [
+          0,
+          0
+        ],
+        "shots": 16,
+        "sog": 6,
+        "saves": 5,
+        "corners": 6,
+        "fouls": 6,
+        "players": [
+          {
+            "name": "Maya Naimoli",
+            "position": "GK",
+            "number": "0",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Julia Arbelaez",
+            "position": "MID",
+            "number": "2",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 72
+          },
+          {
+            "name": "Jasmine Nixon",
+            "position": "DEF",
+            "number": "3",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Chlo\u00e9 Joseph",
+            "position": "DEF",
+            "number": "8",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Gabby Wisbeck",
+            "position": "MID",
+            "number": "10",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 73
+          },
+          {
+            "name": "Moo Galbus",
+            "position": "FWD",
+            "number": "11",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 56
+          },
+          {
+            "name": "Abby Incorvaia",
+            "position": "MID",
+            "number": "17",
+            "started": true,
+            "shots": 3,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 84
+          },
+          {
+            "name": "Anna Croyle",
+            "position": "MID",
+            "number": "19",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 86
+          },
+          {
+            "name": "Vickie Jones",
+            "position": "MID",
+            "number": "21",
+            "started": true,
+            "shots": 3,
+            "sog": 2,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Kendall Mesh",
+            "position": "DEF",
+            "number": "22",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 27
+          },
+          {
+            "name": "Bree Bridges",
+            "position": "DEF",
+            "number": "33",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Farrah Stephens-Martin",
+            "started": false,
+            "shots": 3,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 34
+          },
+          {
+            "name": "Lauren Christy",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 18
+          },
+          {
+            "name": "Natalie Magnotta",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 63
+          },
+          {
+            "name": "Olivia Bozzo",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 4
+          },
+          {
+            "name": "Ali Howard",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 17
+          },
+          {
+            "name": "Sarah Weisberg",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 6
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Maya Naimoli",
+            "position": "GK",
+            "number": "0",
+            "minutes": 90,
+            "goals_against": 0,
+            "saves": 5
+          }
+        ]
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Gabby Wisbeck",
+        "number": "10",
+        "time": "34:39",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Erin Gordon",
+        "number": "4",
+        "time": "60:29",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Susie Long",
+        "number": "13",
+        "time": "86:27",
+        "team": 0
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Naimoli, Maya at goalie for Syracuse",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Bidun, Nicole at goalie for Harvard",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Huleatt, Brooke.",
+        "clock": "01:17",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Vana, Molly, bottom center, saved by Naimoli, Maya.",
+        "clock": "02:27",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [03:20].",
+        "clock": "03:20",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by SYR Jones, Vickie, out left.",
+        "clock": "03:53",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [08:40].",
+        "clock": "08:40",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by SYR Jones, Vickie, bottom center, saved by Bidun, Nicole.",
+        "clock": "09:17",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by SYR Arbelaez, Julia, bottom center, saved by Bidun, Nicole.",
+        "clock": "11:25",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Syracuse.",
+        "clock": "12:47",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Huleatt, Brooke.",
+        "clock": "16:25",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Vana, Molly, out left.",
+        "clock": "20:43",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Rayhill, Anna, out top left.",
+        "clock": "21:59",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "SYR substitution: Bozzo, Olivia for Croyle, Anna.",
+        "clock": "22:29",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [23:00].",
+        "clock": "23:00",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "SYR substitution: Stephens-Martin, Farrah for Arbelaez, Julia.",
+        "clock": "26:53",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "SYR substitution: Magnotta, Natalie for Galbus, Moo.",
+        "clock": "26:53",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "SYR substitution: Christy, Lauren for Bozzo, Olivia.",
+        "clock": "26:53",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "SYR substitution: Croyle, Anna for Mesh, Kendall.",
+        "clock": "26:53",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Rayhill, Anna.",
+        "clock": "27:24",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [28:27].",
+        "clock": "28:27",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR K\u00f6nig, Amy, top woodwork.",
+        "clock": "29:16",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Vana, Molly, out top.",
+        "clock": "29:23",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Incorvaia, Abby.",
+        "clock": "30:30",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Huleatt, Brooke, bottom center, saved by Naimoli, Maya.",
+        "clock": "31:02",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Kristinsd\u00f3ttir, \u00d3l\u00f6f for Huleatt, Brooke.",
+        "clock": "32:15",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Santos Lopez, Elsa for Van Den Einde, Anya.",
+        "clock": "32:15",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Belfon, Kennedy for Vana, Molly.",
+        "clock": "32:15",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [32:18].",
+        "clock": "32:18",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Leshnick, Jasmine, out top right.",
+        "clock": "32:44",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Ruffien, Lou.",
+        "clock": "33:57",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on SYR Wisbeck, Gabby.",
+        "clock": "34:39",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [34:39].",
+        "clock": "34:39",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "SYR substitution: Howard, Ali for Wisbeck, Gabby.",
+        "clock": "36:42",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Lloyd, Sarah for Ruffien, Lou.",
+        "clock": "36:42",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Eftekhari, Hannah for Rayhill, Anna.",
+        "clock": "36:42",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "SYR substitution: Weisberg, Sarah for Incorvaia, Abby.",
+        "clock": "38:18",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by SYR Stephens-Martin, Farrah.",
+        "clock": "43:41",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [43:53].",
+        "clock": "43:53",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Weisberg, Sarah.",
+        "clock": "44:27",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by SYR Croyle, Anna, out left.",
+        "clock": "44:57",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR HAR: , #1 Busby, Olivia, #3 Miller, Danicka, #21 Vana, Molly, #19 Rayhill, Anna, #10 Huleatt, Brooke, #14 H\u00e9\u00f0insd\u00f3ttir Gonzalez, \u00cdrena, #16 Leshnick, Jasmine, #18 K\u00f6nig, Amy, #4 Gordon, Erin, #7 Santos Lopez, Elsa, #12 Ruffien, Lou.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR SYR: , #0 Naimoli, Maya, #2 Arbelaez, Julia, #3 Nixon, Jasmine, #8 Joseph, Chlo\u00e9, #17 Incorvaia, Abby, #14 Magnotta, Natalie, #10 Wisbeck, Gabby, #11 Galbus, Moo, #21 Jones, Vickie, #19 Croyle, Anna, #33 Bridges, Bree.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "SYR substitution: Arbelaez, Julia for Stephens-Martin, Farrah.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "SYR substitution: Incorvaia, Abby for Howard, Ali.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "SYR substitution: Wisbeck, Gabby for Weisberg, Sarah.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "SYR substitution: Galbus, Moo for Christy, Lauren.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Busby, Olivia for Bidun, Nicole.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Vana, Molly for Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Rayhill, Anna for Lloyd, Sarah.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Huleatt, Brooke for Long, Susie.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Gordon, Erin for Eftekhari, Hannah.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Ruffien, Lou for Belfon, Kennedy.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Incorvaia, Abby.",
+        "clock": "45:35",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Arbelaez, Julia.",
+        "clock": "49:51",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [50:05].",
+        "clock": "50:05",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by SYR Incorvaia, Abby, out top.",
+        "clock": "50:49",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Huleatt, Brooke, bottom left, saved by Naimoli, Maya.",
+        "clock": "53:32",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Leshnick, Jasmine, out right.",
+        "clock": "56:09",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Ruffien, Lou.",
+        "clock": "57:27",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by SYR Galbus, Moo, bottom left, saved by Busby, Olivia.",
+        "clock": "59:57",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on HAR Gordon, Erin.",
+        "clock": "60:29",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Shot by SYR Wisbeck, Gabby, bottom center, saved by Busby, Olivia.",
+        "clock": "60:29",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by SYR Incorvaia, Abby.",
+        "clock": "60:29",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Long, Susie for Gordon, Erin.",
+        "clock": "62:39",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Huleatt, Brooke, bottom center, saved by Naimoli, Maya.",
+        "clock": "63:25",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [63:39].",
+        "clock": "63:39",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR K\u00f6nig, Amy, out top right.",
+        "clock": "64:59",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "SYR substitution: Stephens-Martin, Farrah for Wisbeck, Gabby.",
+        "clock": "65:18",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "SYR substitution: Howard, Ali for Galbus, Moo.",
+        "clock": "65:18",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Gordon, Erin for K\u00f6nig, Amy.",
+        "clock": "65:20",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Leshnick, Jasmine.",
+        "clock": "68:22",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [68:29].",
+        "clock": "68:29",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Kristinsd\u00f3ttir, \u00d3l\u00f6f for Vana, Molly.",
+        "clock": "69:57",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Van Den Einde, Anya for Huleatt, Brooke.",
+        "clock": "69:57",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Belfon, Kennedy for Santos Lopez, Elsa.",
+        "clock": "69:57",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Croyle, Anna.",
+        "clock": "70:03",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [70:48].",
+        "clock": "70:48",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Lloyd, Sarah for Rayhill, Anna.",
+        "clock": "71:50",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Howard, Ali.",
+        "clock": "72:52",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Belfon, Kennedy, out top left.",
+        "clock": "74:33",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "SYR substitution: Wisbeck, Gabby for Howard, Ali.",
+        "clock": "74:45",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by SYR Incorvaia, Abby, bottom right, saved by Busby, Olivia.",
+        "clock": "78:05",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Vana, Molly for Ruffien, Lou.",
+        "clock": "78:17",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "SYR substitution: Galbus, Moo for Stephens-Martin, Farrah.",
+        "clock": "78:17",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [78:17].",
+        "clock": "78:17",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by SYR Nixon, Jasmine, out top.",
+        "clock": "78:18",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Rayhill, Anna for Lloyd, Sarah.",
+        "clock": "78:28",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Huleatt, Brooke for Belfon, Kennedy.",
+        "clock": "78:28",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Huleatt, Brooke.",
+        "clock": "82:39",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Rayhill, Anna, bottom right, saved by Naimoli, Maya.",
+        "clock": "84:07",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Huleatt, Brooke.",
+        "clock": "84:33",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [84:36].",
+        "clock": "84:36",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [85:12].",
+        "clock": "85:12",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on HAR Long, Susie.",
+        "clock": "86:27",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "SYR substitution: Stephens-Martin, Farrah for Galbus, Moo.",
+        "clock": "86:27",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Eftekhari, Hannah for Vana, Molly.",
+        "clock": "86:27",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Leshnick, Jasmine.",
+        "clock": "87:16",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by SYR Stephens-Martin, Farrah, out left.",
+        "clock": "87:45",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Gordon, Erin",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "SYR Vickie Jones PENALTY KICK MISS, saved by Busby, Olivia.",
+        "clock": "88:25",
+        "team": 1,
+        "type": "penalty"
+      },
+      {
+        "period": "2",
+        "text": "Shot by SYR Stephens-Martin, Farrah, out left.",
+        "clock": "88:58",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [89:08].",
+        "clock": "89:08",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by SYR Bridges, Bree, out left.",
+        "clock": "89:10",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by SYR Wisbeck, Gabby, out left.",
+        "clock": "89:53",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "team": 1,
+        "type": "period"
+      }
+    ],
+    "stadium": "SU Soccer Stadium",
+    "attendance": 419,
+    "kickoff": "01:00",
+    "officials": [
+      "Referee: Melinda Homa",
+      "Asst. Referee: Jennifer Dumaine",
+      "Asst. Referee: Mindy Malia",
+      "Alt. Official: Stephanie Serrano"
+    ],
+    "home_index": 1
+  }
+}

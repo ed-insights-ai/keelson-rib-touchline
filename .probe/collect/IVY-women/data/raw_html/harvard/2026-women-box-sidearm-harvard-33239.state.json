@@ -1,0 +1,1285 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/princeton-university/boxscore/33239",
+  "final_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/princeton-university/boxscore/33239",
+  "etag": null,
+  "last_modified": null,
+  "signature": "8adc3c8e674f6dbf59bce3c4bceb54047a3a76b66bea47e7e9bbfcde41bde22a",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:16:07+00:00",
+  "verified_at": "2026-11-23T10:16:07+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/princeton-university/boxscore/33239",
+    "teams": [
+      {
+        "name": "Harvard",
+        "abbr": "HARV",
+        "score": 4,
+        "periods": [
+          2,
+          2
+        ],
+        "winner": true,
+        "shots": 14,
+        "sog": 6,
+        "saves": 7,
+        "corners": 7,
+        "fouls": 5,
+        "players": [
+          {
+            "name": "Danicka Miller",
+            "player_id": "31864",
+            "position": "DEF",
+            "number": "3",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Elsa Santos L\u00f3pez",
+            "player_id": "31868",
+            "position": "MID",
+            "number": "7",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "\u00d3l\u00f6f Kristinsd\u00f3ttir",
+            "player_id": "31859",
+            "position": "FWD",
+            "number": "9",
+            "started": true,
+            "shots": 4,
+            "sog": 2,
+            "goals": 2,
+            "assists": 0,
+            "minutes": 57
+          },
+          {
+            "name": "Brooke Huleatt",
+            "player_id": "33039",
+            "position": "FWD",
+            "number": "10",
+            "started": true,
+            "shots": 5,
+            "sog": 3,
+            "goals": 1,
+            "assists": 2,
+            "minutes": 81
+          },
+          {
+            "name": "Lou Ruffien",
+            "player_id": "33042",
+            "position": "MID",
+            "number": "12",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 47
+          },
+          {
+            "name": "Camila Reinaldo",
+            "player_id": "33041",
+            "position": "MID",
+            "number": "15",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 59
+          },
+          {
+            "name": "Jasmine Leshnick",
+            "player_id": "31860",
+            "position": "DEF",
+            "number": "16",
+            "started": true,
+            "shots": 4,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 80
+          },
+          {
+            "name": "Amy K\u00f6nig",
+            "player_id": "31858",
+            "position": "DEF",
+            "number": "18",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 90
+          },
+          {
+            "name": "Anna Rayhill",
+            "player_id": "31866",
+            "position": "FWD",
+            "number": "19",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Anya Van Den Einde",
+            "player_id": "31870",
+            "position": "DEF",
+            "number": "20",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Nicole Bidun",
+            "player_id": "33044",
+            "position": "GK",
+            "number": "30",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Olivia Busby",
+            "player_id": "33038",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Susie Long",
+            "player_id": "31862",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Molly Vana",
+            "player_id": "33043",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Lauren Muniz",
+            "player_id": "31865",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 27
+          },
+          {
+            "name": "Kennedy Belfon",
+            "player_id": "31852",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 9
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Olivia Busby",
+            "player_id": "33038",
+            "position": "GK",
+            "number": "1",
+            "minutes": 45,
+            "goals_against": 1,
+            "saves": 4
+          },
+          {
+            "name": "Nicole Bidun",
+            "player_id": "33044",
+            "position": "GK",
+            "number": "30",
+            "minutes": 45,
+            "goals_against": 2,
+            "saves": 1
+          }
+        ]
+      },
+      {
+        "name": "Princeton",
+        "abbr": "PRIN",
+        "score": 3,
+        "periods": [
+          2,
+          1
+        ],
+        "shots": 18,
+        "sog": 10,
+        "saves": 2,
+        "corners": 8,
+        "fouls": 7,
+        "players": [
+          {
+            "name": "Cecilia Cerone",
+            "position": "GK",
+            "number": "1",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Anna Chau",
+            "position": "DEF",
+            "number": "2",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 78
+          },
+          {
+            "name": "Gianna Camporeale",
+            "position": "FWD",
+            "number": "3",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 61
+          },
+          {
+            "name": "Zoe Markesini",
+            "position": "DEF",
+            "number": "6",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Dylan Jovanovic",
+            "position": "FWD",
+            "number": "10",
+            "started": true,
+            "shots": 3,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Maddie Recupero",
+            "position": "MID",
+            "number": "11",
+            "started": true,
+            "shots": 4,
+            "sog": 2,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 85
+          },
+          {
+            "name": "Lewa White",
+            "position": "MID",
+            "number": "12",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 34
+          },
+          {
+            "name": "Aubrey Crisostomo",
+            "position": "DEF",
+            "number": "20",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 22
+          },
+          {
+            "name": "Julia Johnson",
+            "position": "DEF",
+            "number": "21",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Alexandra Barry",
+            "position": "FWD",
+            "number": "27",
+            "started": true,
+            "shots": 4,
+            "sog": 3,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 55
+          },
+          {
+            "name": "Kayla Wong",
+            "position": "MID",
+            "number": "28",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Sydney Romano",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Blane McElroy",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 5
+          },
+          {
+            "name": "Mariana Gomez",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Sarah Houston",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 35
+          },
+          {
+            "name": "Nina Cantor",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 3,
+            "minutes": 51
+          },
+          {
+            "name": "Esm\u00e9 Rudell",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 23
+          },
+          {
+            "name": "Stella Monberg",
+            "started": false,
+            "shots": 3,
+            "sog": 2,
+            "goals": 2,
+            "assists": 0,
+            "minutes": 46
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Sydney Romano",
+            "position": "GK",
+            "number": "0",
+            "minutes": 45,
+            "goals_against": 2,
+            "saves": 0
+          },
+          {
+            "name": "Cecilia Cerone",
+            "position": "GK",
+            "number": "1",
+            "minutes": 45,
+            "goals_against": 2,
+            "saves": 2
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "21:05",
+        "team": 0,
+        "scorer": "Brooke Huleatt",
+        "season_total": 7,
+        "assist": "Lou Ruffien , Camila Reinaldo",
+        "description": "GOAL by HARV Huleatt, Brooke Assist by Ruffien, Lou and Reinaldo, Camila."
+      },
+      {
+        "time": "26:40",
+        "team": 0,
+        "scorer": "\u00d3l\u00f6f Kristinsd\u00f3ttir",
+        "season_total": 8,
+        "assist": "Brooke Huleatt , Amy K\u00f6nig",
+        "description": "GOAL by HARV Kristinsd\u00f3ttir, \u00d3l\u00f6f Assist by Huleatt, Brooke and K\u00f6nig, Amy."
+      },
+      {
+        "time": "30:18",
+        "team": 1,
+        "scorer": "Maddie Recupero",
+        "season_total": 3,
+        "assist": "Nina Cantor",
+        "description": "GOAL by PRIN Recupero, Maddie Assist by Cantor, Nina."
+      },
+      {
+        "time": "36:17",
+        "team": 1,
+        "scorer": "Stella Monberg",
+        "season_total": 3,
+        "assist": "Nina Cantor",
+        "description": "GOAL by PRIN Monberg, Stella Assist by Cantor, Nina."
+      },
+      {
+        "time": "62:06",
+        "team": 0,
+        "scorer": "\u00d3l\u00f6f Kristinsd\u00f3ttir",
+        "season_total": 8,
+        "assist": "Brooke Huleatt",
+        "description": "GOAL by HARV Kristinsd\u00f3ttir, \u00d3l\u00f6f Assist by Huleatt, Brooke."
+      },
+      {
+        "time": "74:33",
+        "team": 0,
+        "scorer": "Jasmine Leshnick",
+        "season_total": 4,
+        "description": "GOAL by HARV Leshnick, Jasmine."
+      },
+      {
+        "time": "75:19",
+        "team": 1,
+        "scorer": "Stella Monberg",
+        "season_total": 3,
+        "assist": "Nina Cantor",
+        "description": "GOAL by PRIN Monberg, Stella Assist by Cantor, Nina."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Blane McElroy",
+        "number": "4",
+        "time": "42:00",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Mariana Gomez",
+        "number": "5",
+        "time": "58:31",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Jasmine Leshnick",
+        "number": "16",
+        "time": "81:28",
+        "team": 0
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Cerone, Cecilia at goalie for Princeton",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Bidun, Nicole at goalie for Harvard",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Chau, Anna.",
+        "clock": "00:55",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Leshnick, Jasmine, out top.",
+        "clock": "01:25",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Huleatt, Brooke, bottom left, saved by Cerone, Cecilia.",
+        "clock": "01:53",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [01:59].",
+        "clock": "01:59",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by PRIN Camporeale, Gianna.",
+        "clock": "06:37",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [07:31].",
+        "clock": "07:31",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by PRIN Johnson, Julia, bottom left, saved by Bidun, Nicole.",
+        "clock": "07:53",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [07:57].",
+        "clock": "07:57",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [08:36].",
+        "clock": "08:36",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Harvard.",
+        "clock": "11:14",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [12:17].",
+        "clock": "12:17",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Huleatt, Brooke, bottom center, saved by Cerone, Cecilia.",
+        "clock": "14:57",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Rayhill, Anna.",
+        "clock": "17:43",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Princeton.",
+        "clock": "19:49",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by HARV Huleatt, Brooke Assist by Ruffien, Lou and Reinaldo, Camila.",
+        "clock": "21:05",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          1,
+          0
+        ]
+      },
+      {
+        "period": "1",
+        "text": "PRIN substitution: Houston, Sarah for White, Lewa.",
+        "clock": "21:05",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "PRIN substitution: Gomez, Mariana for Crisostomo, Aubrey.",
+        "clock": "21:05",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Huleatt, Brooke, right woodwork.",
+        "clock": "22:32",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [22:42].",
+        "clock": "22:42",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Leshnick, Jasmine, out top.",
+        "clock": "23:26",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "PRIN substitution: Monberg, Stella for Barry, Alexandra.",
+        "clock": "23:39",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by HARV Kristinsd\u00f3ttir, \u00d3l\u00f6f Assist by Huleatt, Brooke and K\u00f6nig, Amy.",
+        "clock": "26:40",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          2,
+          0
+        ]
+      },
+      {
+        "period": "1",
+        "text": "PRIN substitution: Cantor, Nina for Camporeale, Gianna.",
+        "clock": "26:40",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Vana, Molly for Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "26:40",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Muniz, Lauren for Ruffien, Lou.",
+        "clock": "27:35",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by PRIN Jovanovic, Dylan.",
+        "clock": "28:15",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Jovanovic, Dylan.",
+        "clock": "29:36",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by PRIN Recupero, Maddie Assist by Cantor, Nina.",
+        "clock": "30:18",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          2,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [31:20].",
+        "clock": "31:20",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [33:06].",
+        "clock": "33:06",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [33:40].",
+        "clock": "33:40",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by PRIN Monberg, Stella Assist by Cantor, Nina.",
+        "clock": "36:17",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          2,
+          2
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Shot by PRIN Recupero, Maddie, out left.",
+        "clock": "38:31",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "PRIN substitution: McElroy, Blane for Recupero, Maddie.",
+        "clock": "39:16",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on PRIN McElroy, Blane.",
+        "clock": "42:00",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Harvard.",
+        "clock": "43:56",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [44:43].",
+        "clock": "44:43",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Van Den Einde, Anya, out top.",
+        "clock": "44:59",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR HARV: , #1 Busby, Olivia, #3 Miller, Danicka, #7 Santos Lopez, Elsa, #12 Ruffien, Lou, #10 Huleatt, Brooke, #13 Long, Susie, #9 Kristinsd\u00f3ttir, \u00d3l\u00f6f, #16 Leshnick, Jasmine, #18 K\u00f6nig, Amy, #19 Rayhill, Anna, #20 Van Den Einde, Anya.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR PRIN: , #0 Romano, Sydney, #2 Chau, Anna, #14 Cantor, Nina, #6 Markesini, Zoe, #10 Jovanovic, Dylan, #11 Recupero, Maddie, #27 Barry, Alexandra, #5 Gomez, Mariana, #21 Johnson, Julia, #3 Camporeale, Gianna, #28 Wong, Kayla.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "PRIN substitution: Romano, Sydney for Cerone, Cecilia.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "PRIN substitution: Recupero, Maddie for McElroy, Blane.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "PRIN substitution: Barry, Alexandra for Houston, Sarah.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "PRIN substitution: Camporeale, Gianna for Monberg, Stella.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Busby, Olivia for Bidun, Nicole.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Ruffien, Lou for Vana, Molly.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Long, Susie for Muniz, Lauren.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Kristinsd\u00f3ttir, \u00d3l\u00f6f for Reinaldo, Camila.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PRIN Barry, Alexandra, out top.",
+        "clock": "46:21",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PRIN Barry, Alexandra, bottom left, saved by Busby, Olivia.",
+        "clock": "47:38",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "49:52",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Leshnick, Jasmine.",
+        "clock": "49:55",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PRIN Recupero, Maddie, bottom center, saved by Busby, Olivia.",
+        "clock": "54:34",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "55:41",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PRIN Cantor, Nina, out top right.",
+        "clock": "56:18",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Johnson, Julia.",
+        "clock": "56:49",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on PRIN Gomez, Mariana.",
+        "clock": "58:31",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [58:44].",
+        "clock": "58:44",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Reinaldo, Camila for Ruffien, Lou.",
+        "clock": "59:06",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Muniz, Lauren for Leshnick, Jasmine.",
+        "clock": "59:06",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PRIN Barry, Alexandra, bottom center, Team save.",
+        "clock": "60:39",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PRIN Barry, Alexandra, bottom center, Team save.",
+        "clock": "60:47",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [61:02].",
+        "clock": "61:02",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Huleatt, Brooke.",
+        "clock": "61:51",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by HARV Kristinsd\u00f3ttir, \u00d3l\u00f6f Assist by Huleatt, Brooke.",
+        "clock": "62:06",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          3,
+          2
+        ]
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Vana, Molly for Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "62:32",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Belfon, Kennedy for Huleatt, Brooke.",
+        "clock": "62:47",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Miller, Danicka.",
+        "clock": "63:41",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "PRIN substitution: Monberg, Stella for Barry, Alexandra.",
+        "clock": "64:13",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Gomez, Mariana.",
+        "clock": "64:35",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [64:59].",
+        "clock": "64:59",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "PRIN substitution: Rudell, Esm\u00e9 for Gomez, Mariana.",
+        "clock": "66:02",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "PRIN substitution: Houston, Sarah for Camporeale, Gianna.",
+        "clock": "66:02",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Princeton.",
+        "clock": "69:14",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Leshnick, Jasmine for Muniz, Lauren.",
+        "clock": "69:51",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PRIN Jovanovic, Dylan, bottom center, saved by Busby, Olivia.",
+        "clock": "70:20",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Leshnick, Jasmine.",
+        "clock": "70:30",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Huleatt, Brooke for Belfon, Kennedy.",
+        "clock": "71:51",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PRIN Jovanovic, Dylan.",
+        "clock": "72:32",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [72:37].",
+        "clock": "72:37",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Ruffien, Lou for Reinaldo, Camila.",
+        "clock": "73:12",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Johnson, Julia.",
+        "clock": "74:03",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by HARV Leshnick, Jasmine.",
+        "clock": "74:33",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          4,
+          2
+        ]
+      },
+      {
+        "period": "2",
+        "text": "GOAL by PRIN Monberg, Stella Assist by Cantor, Nina.",
+        "clock": "75:19",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          4,
+          3
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Shot by PRIN Recupero, Maddie, out top.",
+        "clock": "76:06",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "PRIN substitution: White, Lewa for Chau, Anna.",
+        "clock": "77:50",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "PRIN substitution: Camporeale, Gianna for Cantor, Nina.",
+        "clock": "77:50",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Kristinsd\u00f3ttir, \u00d3l\u00f6f for Ruffien, Lou.",
+        "clock": "77:50",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "PRIN substitution: Barry, Alexandra for Houston, Sarah.",
+        "clock": "78:45",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Van Den Einde, Anya.",
+        "clock": "79:56",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on HARV Leshnick, Jasmine.",
+        "clock": "81:28",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PRIN Monberg, Stella, out top.",
+        "clock": "83:28",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PRIN Markesini, Zoe, bottom center, saved by Busby, Olivia.",
+        "clock": "85:50",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Monberg, Stella.",
+        "clock": "87:43",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Kristinsd\u00f3ttir, \u00d3l\u00f6f, out right.",
+        "clock": "88:21",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [89:38].",
+        "clock": "89:38",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "team": 1,
+        "type": "period"
+      }
+    ],
+    "stadium": "Roberts Stadium",
+    "attendance": 338,
+    "kickoff": "01:00",
+    "officials": [
+      "Referee: Balvir Cabrera Garcia",
+      "Asst. Referee: Jeremy Roseman",
+      "Asst. Referee: Anthony Procopio Jr.",
+      "Alt. Official: Mike Palermo"
+    ],
+    "home_index": 1
+  }
+}

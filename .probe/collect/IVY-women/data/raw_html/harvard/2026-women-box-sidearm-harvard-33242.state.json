@@ -1,0 +1,1145 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/yale-university/boxscore/33242",
+  "final_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/yale-university/boxscore/33242",
+  "etag": null,
+  "last_modified": null,
+  "signature": "78c1a2851433d3d12fc5e7a8e19e3fefa889abf3894d3078a6dae2d9c9b02577",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:16:09+00:00",
+  "verified_at": "2026-11-23T10:16:09+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/yale-university/boxscore/33242",
+    "teams": [
+      {
+        "name": "Yale",
+        "abbr": "YAL",
+        "score": 0,
+        "periods": [
+          0,
+          0
+        ],
+        "shots": 7,
+        "sog": 1,
+        "saves": 9,
+        "corners": 2,
+        "fouls": 10,
+        "players": [
+          {
+            "name": "Kyla Holmes",
+            "position": "GK",
+            "number": "00",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Hope McMillin",
+            "position": "MID",
+            "number": "3",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Andie Miller",
+            "position": "DEF",
+            "number": "5",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Eloise Stone",
+            "position": "DEF",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Alex Chang",
+            "position": "DEF",
+            "number": "7",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Cindy Yang",
+            "position": "MID",
+            "number": "10",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 81
+          },
+          {
+            "name": "Anita Thorvaldsdottir",
+            "position": "FWD",
+            "number": "15",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Karoline Hernes",
+            "position": "MID",
+            "number": "17",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Abigail Solomon",
+            "position": "FWD",
+            "number": "19",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 81
+          },
+          {
+            "name": "Alicia So",
+            "position": "DEF",
+            "number": "21",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Kyleigh Carr",
+            "position": "FWD",
+            "number": "22",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Selma Larbi",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 9
+          },
+          {
+            "name": "Phebe Ryan",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 9
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Kyla Holmes",
+            "position": "GK",
+            "number": "00",
+            "minutes": 90,
+            "goals_against": 3,
+            "saves": 9
+          }
+        ]
+      },
+      {
+        "name": "Harvard",
+        "abbr": "HAR",
+        "score": 3,
+        "periods": [
+          2,
+          1
+        ],
+        "winner": true,
+        "shots": 24,
+        "sog": 12,
+        "saves": 1,
+        "corners": 4,
+        "fouls": 8,
+        "players": [
+          {
+            "name": "Olivia Busby",
+            "player_id": "33038",
+            "position": "GK",
+            "number": "1",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Phoebe Chadwick",
+            "player_id": "31853",
+            "position": "DEF",
+            "number": "5",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 72
+          },
+          {
+            "name": "Elsa Santos L\u00f3pez",
+            "player_id": "31868",
+            "position": "MID",
+            "number": "7",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 84
+          },
+          {
+            "name": "\u00d3l\u00f6f Kristinsd\u00f3ttir",
+            "player_id": "31859",
+            "position": "FWD",
+            "number": "9",
+            "started": true,
+            "shots": 3,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 64
+          },
+          {
+            "name": "Brooke Huleatt",
+            "player_id": "33039",
+            "position": "FWD",
+            "number": "10",
+            "started": true,
+            "shots": 7,
+            "sog": 2,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 64
+          },
+          {
+            "name": "\u00cdrena H\u00e9\u00f0insd\u00f3ttir Gonzalez",
+            "player_id": "31857",
+            "position": "MID",
+            "number": "14",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Camila Reinaldo",
+            "player_id": "33041",
+            "position": "MID",
+            "number": "15",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 73
+          },
+          {
+            "name": "Jasmine Leshnick",
+            "player_id": "31860",
+            "position": "FWD",
+            "number": "16",
+            "started": true,
+            "shots": 6,
+            "sog": 3,
+            "goals": 1,
+            "assists": 1,
+            "minutes": 82
+          },
+          {
+            "name": "Amy K\u00f6nig",
+            "player_id": "31858",
+            "position": "DEF",
+            "number": "18",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Anna Rayhill",
+            "player_id": "31866",
+            "position": "FWD",
+            "number": "19",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 90
+          },
+          {
+            "name": "Anya Van Den Einde",
+            "player_id": "31870",
+            "position": "MID",
+            "number": "20",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Danicka Miller",
+            "player_id": "31864",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 6
+          },
+          {
+            "name": "Claire Kessenger",
+            "player_id": "33040",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 17
+          },
+          {
+            "name": "Susie Long",
+            "player_id": "31862",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 19
+          },
+          {
+            "name": "Molly Vana",
+            "player_id": "33043",
+            "started": false,
+            "shots": 5,
+            "sog": 4,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 26
+          },
+          {
+            "name": "Lauren Muniz",
+            "player_id": "31865",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 13
+          },
+          {
+            "name": "Kennedy Belfon",
+            "player_id": "31852",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 8
+          },
+          {
+            "name": "Nicole Bidun",
+            "player_id": "33044",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Hannah Eftekhari",
+            "player_id": "31854",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 12
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Olivia Busby",
+            "player_id": "33038",
+            "position": "GK",
+            "number": "1",
+            "minutes": 45,
+            "goals_against": 0,
+            "saves": 0
+          },
+          {
+            "name": "Nicole Bidun",
+            "player_id": "33044",
+            "position": "GK",
+            "number": "30",
+            "minutes": 45,
+            "goals_against": 0,
+            "saves": 1
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "10:03",
+        "team": 1,
+        "scorer": "Brooke Huleatt",
+        "season_total": 10,
+        "assist": "Jasmine Leshnick",
+        "description": "GOAL by HAR Huleatt, Brooke Assist by Leshnick, Jasmine."
+      },
+      {
+        "time": "35:04",
+        "team": 1,
+        "scorer": "Jasmine Leshnick",
+        "season_total": 5,
+        "assist": "Anna Rayhill",
+        "description": "GOAL by HAR Leshnick, Jasmine Assist by Rayhill, Anna."
+      },
+      {
+        "time": "65:25",
+        "team": 1,
+        "scorer": "\u00d3l\u00f6f Kristinsd\u00f3ttir",
+        "season_total": 10,
+        "description": "GOAL by HAR Kristinsd\u00f3ttir, \u00d3l\u00f6f."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Alicia So",
+        "number": "21",
+        "time": "27:03",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "\u00cdrena H\u00e9\u00f0insd\u00f3ttir Gonzalez",
+        "number": "14",
+        "time": "82:47",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Hope McMillin",
+        "number": "3",
+        "time": "83:45",
+        "team": 0
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Busby, Olivia at goalie for Harvard",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Holmes, Kyla at goalie for Yale",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Kristinsd\u00f3ttir, \u00d3l\u00f6f, out left.",
+        "clock": "02:21",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Yang, Cindy.",
+        "clock": "03:35",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Leshnick, Jasmine, bottom center, saved by Holmes, Kyla.",
+        "clock": "04:10",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Huleatt, Brooke, out left.",
+        "clock": "04:28",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Yale.",
+        "clock": "05:56",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Huleatt, Brooke.",
+        "clock": "08:16",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by HAR Huleatt, Brooke Assist by Leshnick, Jasmine.",
+        "clock": "10:03",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Foul on So, Alicia.",
+        "clock": "11:56",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [12:57].",
+        "clock": "12:57",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by YAL McMillin, Hope, right woodwork.",
+        "clock": "16:04",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Huleatt, Brooke, out left.",
+        "clock": "17:18",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [17:26].",
+        "clock": "17:26",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Leshnick, Jasmine, out left.",
+        "clock": "17:58",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Reinaldo, Camila, bottom left, saved by Holmes, Kyla.",
+        "clock": "18:51",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [19:02].",
+        "clock": "19:02",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Harvard.",
+        "clock": "20:02",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on H\u00e9\u00f0insd\u00f3ttir Gonzalez, \u00cdrena.",
+        "clock": "20:11",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Santos Lopez, Elsa.",
+        "clock": "20:38",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Yale.",
+        "clock": "23:47",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Thorvaldsdottir, Anita.",
+        "clock": "24:31",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Leshnick, Jasmine, out right.",
+        "clock": "25:28",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on YAL So, Alicia.",
+        "clock": "27:03",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Van Den Einde, Anya, bottom center, saved by Holmes, Kyla.",
+        "clock": "27:41",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Yale.",
+        "clock": "28:03",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Van Den Einde, Anya.",
+        "clock": "28:46",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Thorvaldsdottir, Anita.",
+        "clock": "29:20",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Vana, Molly for Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "30:52",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Vana, Molly.",
+        "clock": "32:26",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Huleatt, Brooke, bottom center, saved by Holmes, Kyla.",
+        "clock": "33:51",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by HAR Leshnick, Jasmine Assist by Rayhill, Anna.",
+        "clock": "35:04",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          2
+        ]
+      },
+      {
+        "period": "1",
+        "text": "YAL substitution: Ryan, Phebe for Yang, Cindy.",
+        "clock": "35:57",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "YAL substitution: Larbi, Selma for Solomon, Abigail.",
+        "clock": "35:57",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Belfon, Kennedy for Huleatt, Brooke.",
+        "clock": "37:52",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Vana, Molly, bottom center, saved by Holmes, Kyla.",
+        "clock": "38:26",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Muniz, Lauren for Reinaldo, Camila.",
+        "clock": "39:16",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR H\u00e9\u00f0insd\u00f3ttir Gonzalez, \u00cdrena, out left.",
+        "clock": "42:02",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by YAL Ryan, Phebe, out right.",
+        "clock": "42:39",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Vana, Molly.",
+        "clock": "44:35",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR YAL: , #00 Holmes, Kyla, #3 McMillin, Hope, #5 Miller, Andie, #6 Stone, Eloise, #7 Chang, Alex, #10 Yang, Cindy, #15 Thorvaldsdottir, Anita, #17 Hernes, Karoline, #19 Solomon, Abigail, #21 So, Alicia, #22 Carr, Kyleigh.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR HAR: , #30 Bidun, Nicole, #10 Huleatt, Brooke, #7 Santos Lopez, Elsa, #15 Reinaldo, Camila, #9 Kristinsd\u00f3ttir, \u00d3l\u00f6f, #14 H\u00e9\u00f0insd\u00f3ttir Gonzalez, \u00cdrena, #6 Kessenger, Claire, #16 Leshnick, Jasmine, #18 K\u00f6nig, Amy, #19 Rayhill, Anna, #20 Van Den Einde, Anya.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Bidun, Nicole for Busby, Olivia.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Huleatt, Brooke for Chadwick, Phoebe.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Reinaldo, Camila for Vana, Molly.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Kristinsd\u00f3ttir, \u00d3l\u00f6f for Belfon, Kennedy.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Kessenger, Claire for Muniz, Lauren.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "YAL substitution: Yang, Cindy for Ryan, Phebe.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "YAL substitution: Solomon, Abigail for Larbi, Selma.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Leshnick, Jasmine, bottom center, saved by Holmes, Kyla.",
+        "clock": "46:00",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [48:04].",
+        "clock": "48:04",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "49:46",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Miller, Andie.",
+        "clock": "51:54",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [53:09].",
+        "clock": "53:09",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "54:03",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Harvard.",
+        "clock": "58:45",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Solomon, Abigail.",
+        "clock": "59:43",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Harvard.",
+        "clock": "60:34",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Chadwick, Phoebe for Kessenger, Claire.",
+        "clock": "61:35",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Hernes, Karoline.",
+        "clock": "63:23",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Huleatt, Brooke.",
+        "clock": "64:20",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by HAR Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "65:25",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          3
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Foul on Hernes, Karoline.",
+        "clock": "65:44",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Huleatt, Brooke, out top.",
+        "clock": "66:35",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Harvard.",
+        "clock": "67:23",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Yale.",
+        "clock": "67:57",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Leshnick, Jasmine, out right.",
+        "clock": "70:29",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Long, Susie for Huleatt, Brooke.",
+        "clock": "70:47",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Santos Lopez, Elsa.",
+        "clock": "72:41",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Thorvaldsdottir, Anita.",
+        "clock": "73:28",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by YAL Hernes, Karoline.",
+        "clock": "76:27",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [76:32].",
+        "clock": "76:32",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Eftekhari, Hannah for Reinaldo, Camila.",
+        "clock": "77:47",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by YAL Solomon, Abigail, out right.",
+        "clock": "77:47",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by YAL Hernes, Karoline, out top.",
+        "clock": "77:47",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Vana, Molly for Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "77:57",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Vana, Molly, out right.",
+        "clock": "81:39",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Muniz, Lauren for Leshnick, Jasmine.",
+        "clock": "81:47",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on HAR H\u00e9\u00f0insd\u00f3ttir Gonzalez, \u00cdrena.",
+        "clock": "82:47",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Shot by YAL Yang, Cindy, out top.",
+        "clock": "82:55",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Thorvaldsdottir, Anita.",
+        "clock": "83:27",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on YAL McMillin, Hope.",
+        "clock": "83:45",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Miller, Danicka for Santos Lopez, Elsa.",
+        "clock": "83:45",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Vana, Molly, bottom center, saved by Holmes, Kyla.",
+        "clock": "86:51",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Vana, Molly.",
+        "clock": "87:26",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by YAL McMillin, Hope, bottom center, saved by Bidun, Nicole.",
+        "clock": "88:31",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Vana, Molly, bottom center, saved by Holmes, Kyla.",
+        "clock": "89:03",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Belfon, Kennedy for Chadwick, Phoebe.",
+        "clock": "89:11",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Vana, Molly, bottom right, saved by Holmes, Kyla.",
+        "clock": "89:43",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "team": 1,
+        "type": "period"
+      }
+    ],
+    "stadium": "Jordan Field",
+    "attendance": 153,
+    "kickoff": "01:00",
+    "home_index": 1
+  }
+}

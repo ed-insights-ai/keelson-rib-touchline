@@ -1,0 +1,49 @@
+{
+  "cells": {
+    "2026/women/harvard/matches": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-11-23T10:15:52+00:00",
+      "count": 16,
+      "gender": "women",
+      "layer": "matches",
+      "programme": "harvard",
+      "season": 2026,
+      "state": "complete"
+    },
+    "2026/women/harvard/roster": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-11-23T10:15:52+00:00",
+      "count": 24,
+      "gender": "women",
+      "layer": "roster",
+      "programme": "harvard",
+      "season": 2026,
+      "source_url": "https://gocrimson.com/sports/womens-soccer/roster/2026",
+      "state": "complete"
+    },
+    "2026/women/harvard/schedule": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-11-23T10:15:52+00:00",
+      "count": 16,
+      "gender": "women",
+      "layer": "schedule",
+      "programme": "harvard",
+      "season": 2026,
+      "source_url": "https://gocrimson.com/sports/womens-soccer/schedule/2026",
+      "state": "complete"
+    },
+    "2026/women/harvard/stats": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-11-23T10:15:52+00:00",
+      "count": 26,
+      "gender": "women",
+      "layer": "stats",
+      "programme": "harvard",
+      "season": 2026,
+      "source_url": "https://gocrimson.com/sports/womens-soccer/stats/2026",
+      "state": "complete"
+    }
+  },
+  "schema": "touchline.coverage/1",
+  "updated_at": "2026-11-23T10:16:12+00:00"
+}

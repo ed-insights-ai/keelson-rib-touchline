@@ -1,0 +1,1119 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/boston-university/boxscore/33234",
+  "final_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/boston-university/boxscore/33234",
+  "etag": null,
+  "last_modified": null,
+  "signature": "04bb6aae650cfd268ca99b98c1104981b7a8cf14355ffa3a9185ac189ffa76c1",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:16:02+00:00",
+  "verified_at": "2026-11-23T10:16:02+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/boston-university/boxscore/33234",
+    "teams": [
+      {
+        "name": "Harvard",
+        "abbr": "HARV",
+        "score": 2,
+        "periods": [
+          2,
+          0
+        ],
+        "winner": true,
+        "shots": 8,
+        "sog": 6,
+        "saves": 1,
+        "corners": 6,
+        "fouls": 5,
+        "players": [
+          {
+            "name": "Olivia Busby",
+            "player_id": "33038",
+            "position": "GK",
+            "number": "1",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Danicka Miller",
+            "player_id": "31864",
+            "position": "DEF",
+            "number": "3",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Erin Gordon",
+            "player_id": "31856",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 8
+          },
+          {
+            "name": "Elsa Santos L\u00f3pez",
+            "player_id": "31868",
+            "position": "MID",
+            "number": "7",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 53
+          },
+          {
+            "name": "\u00d3l\u00f6f Kristinsd\u00f3ttir",
+            "player_id": "31859",
+            "position": "FWD",
+            "number": "9",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 51
+          },
+          {
+            "name": "Brooke Huleatt",
+            "player_id": "33039",
+            "position": "FWD",
+            "number": "10",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 60
+          },
+          {
+            "name": "Susie Long",
+            "player_id": "31862",
+            "number": "13",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "\u00cdrena H\u00e9\u00f0insd\u00f3ttir Gonzalez",
+            "player_id": "31857",
+            "position": "MID",
+            "number": "14",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 31
+          },
+          {
+            "name": "Jasmine Leshnick",
+            "player_id": "31860",
+            "position": "FWD",
+            "number": "16",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 80
+          },
+          {
+            "name": "Anna Rayhill",
+            "player_id": "31866",
+            "position": "FWD",
+            "number": "19",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 79
+          },
+          {
+            "name": "Kennedy Belfon",
+            "player_id": "31852",
+            "position": "FWD",
+            "number": "23",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 47
+          },
+          {
+            "name": "Phoebe Chadwick",
+            "player_id": "31853",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 37
+          },
+          {
+            "name": "Sarah Lloyd",
+            "player_id": "31861",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 56
+          },
+          {
+            "name": "Lou Ruffien",
+            "player_id": "33042",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 44
+          },
+          {
+            "name": "Anya Van Den Einde",
+            "player_id": "31870",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 59
+          },
+          {
+            "name": "Molly Vana",
+            "player_id": "33043",
+            "started": false,
+            "shots": 3,
+            "sog": 2,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 39
+          },
+          {
+            "name": "Lauren Muniz",
+            "player_id": "31865",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 10
+          },
+          {
+            "name": "Nicole Bidun",
+            "player_id": "33044",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Hannah Eftekhari",
+            "player_id": "31854",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 21
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Olivia Busby",
+            "player_id": "33038",
+            "position": "GK",
+            "number": "1",
+            "minutes": 45,
+            "goals_against": 0,
+            "saves": 0
+          },
+          {
+            "name": "Nicole Bidun",
+            "player_id": "33044",
+            "position": "GK",
+            "number": "30",
+            "minutes": 45,
+            "goals_against": 1,
+            "saves": 1
+          }
+        ]
+      },
+      {
+        "name": "Boston U.",
+        "abbr": "BU",
+        "score": 1,
+        "periods": [
+          0,
+          1
+        ],
+        "shots": 11,
+        "sog": 2,
+        "saves": 4,
+        "corners": 10,
+        "fouls": 8,
+        "players": [
+          {
+            "name": "Jill Humphreys",
+            "position": "GK",
+            "number": "1",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Ciara Kennedy",
+            "position": "MID",
+            "number": "5",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Samantha Aronson",
+            "number": "6",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Georgia Prouty",
+            "number": "7",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 72
+          },
+          {
+            "name": "Nina Tzouganatos",
+            "number": "11",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Jaiden Schultz",
+            "position": "FWD",
+            "number": "12",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 59
+          },
+          {
+            "name": "Helene Tyburczy",
+            "position": "DEF",
+            "number": "21",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 90
+          },
+          {
+            "name": "Samantha Ryan",
+            "position": "MID",
+            "number": "22",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Averie Hoff",
+            "position": "DEF",
+            "number": "26",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Olivia Avellar",
+            "position": "FWD",
+            "number": "30",
+            "started": true,
+            "shots": 2,
+            "sog": 2,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 51
+          },
+          {
+            "name": "Maddie Green",
+            "position": "DEF",
+            "number": "33",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Juliana Osterman",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 11
+          },
+          {
+            "name": "Ava Maguire",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 38
+          },
+          {
+            "name": "Alli Powderly",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Kat Slott",
+            "started": false,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 39
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Jill Humphreys",
+            "position": "GK",
+            "number": "1",
+            "minutes": 90,
+            "goals_against": 2,
+            "saves": 4
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "18:37",
+        "team": 0,
+        "scorer": "\u00d3l\u00f6f Kristinsd\u00f3ttir",
+        "season_total": 2,
+        "description": "HARV \u00d3l\u00f6f Kristinsd\u00f3ttir PENALTY KICK GOAL."
+      },
+      {
+        "time": "43:54",
+        "team": 0,
+        "scorer": "Molly Vana",
+        "season_total": 1,
+        "description": "HARV Molly Vana PENALTY KICK GOAL."
+      },
+      {
+        "time": "82:05",
+        "team": 1,
+        "scorer": "Olivia Avellar",
+        "season_total": 2,
+        "assist": "Helene Tyburczy",
+        "description": "GOAL by BU Avellar, Olivia Assist by Tyburczy, Helene."
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Humphreys, Jill at goalie for Boston U.",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Busby, Olivia at goalie for Harvard",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Huleatt, Brooke, bottom left, saved by Humphreys, Jill.",
+        "clock": "01:57",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by BU Schultz, Jaiden, out left.",
+        "clock": "02:36",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Boston U..",
+        "clock": "05:11",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Schultz, Jaiden.",
+        "clock": "07:53",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Chadwick, Phoebe for Gordon, Erin.",
+        "clock": "07:59",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Ryan, Samantha.",
+        "clock": "09:06",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Harvard.",
+        "clock": "10:03",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Aronson, Samantha.",
+        "clock": "12:05",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Belfon, Kennedy.",
+        "clock": "13:03",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by BU Schultz, Jaiden.",
+        "clock": "14:21",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [17:59].",
+        "clock": "17:59",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "HARV \u00d3l\u00f6f Kristinsd\u00f3ttir PENALTY KICK GOAL.",
+        "clock": "18:37",
+        "team": 0,
+        "type": "penalty",
+        "score": [
+          1,
+          0
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [20:10].",
+        "clock": "20:10",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [21:28].",
+        "clock": "21:28",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [22:32].",
+        "clock": "22:32",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Leshnick, Jasmine, bottom center, saved by Humphreys, Jill.",
+        "clock": "25:21",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [25:28].",
+        "clock": "25:28",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "BU substitution: Slott, Kat for Prouty, Georgia.",
+        "clock": "26:39",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "BU substitution: Maguire, Ava for Avellar, Olivia.",
+        "clock": "26:39",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Ruffien, Lou for Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "26:39",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Vana, Molly for Huleatt, Brooke.",
+        "clock": "26:39",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Schultz, Jaiden.",
+        "clock": "27:46",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Van Den Einde, Anya for H\u00e9\u00f0insd\u00f3ttir Gonzalez, \u00cdrena.",
+        "clock": "30:16",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [32:02].",
+        "clock": "32:02",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "BU substitution: Osterman, Juliana for Schultz, Jaiden.",
+        "clock": "33:01",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Lloyd, Sarah for Rayhill, Anna.",
+        "clock": "33:01",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Muniz, Lauren for Leshnick, Jasmine.",
+        "clock": "34:03",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Eftekhari, Hannah for Belfon, Kennedy.",
+        "clock": "34:03",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [36:18].",
+        "clock": "36:18",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by BU Tzouganatos, Nina, out top.",
+        "clock": "37:45",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Boston U..",
+        "clock": "38:25",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Shot by BU Slott, Kat.",
+        "clock": "38:45",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by BU Tyburczy, Helene, out left.",
+        "clock": "39:13",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Green, Maddie",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "HARV Molly Vana PENALTY KICK GOAL.",
+        "clock": "43:54",
+        "team": 0,
+        "type": "penalty",
+        "score": [
+          2,
+          0
+        ]
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR HARV: , #1 Busby, Olivia, #3 Miller, Danicka, #5 Chadwick, Phoebe, #7 Santos Lopez, Elsa, #12 Ruffien, Lou, #21 Vana, Molly, #13 Long, Susie, #20 Van Den Einde, Anya, #22 Muniz, Lauren, #11 Lloyd, Sarah, #47 Eftekhari, Hannah.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR BU: , #1 Humphreys, Jill, #5 Kennedy, Ciara, #6 Aronson, Samantha, #27 Slott, Kat, #11 Tzouganatos, Nina, #10 Osterman, Juliana, #21 Tyburczy, Helene, #22 Ryan, Samantha, #26 Hoff, Averie, #19 Maguire, Ava, #33 Green, Maddie.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "BU substitution: Powderly, Alli for Osterman, Juliana.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "BU substitution: Schultz, Jaiden for Maguire, Ava.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "BU substitution: Prouty, Georgia for Green, Maddie.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Rayhill, Anna for Chadwick, Phoebe.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Bidun, Nicole for Busby, Olivia.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Leshnick, Jasmine for Santos Lopez, Elsa.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Huleatt, Brooke for Vana, Molly.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Long, Susie for Eftekhari, Hannah.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Kristinsd\u00f3ttir, \u00d3l\u00f6f for Muniz, Lauren.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Harvard.",
+        "clock": "45:51",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [47:59].",
+        "clock": "47:59",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by BU Kennedy, Ciara, out right.",
+        "clock": "49:35",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [51:37].",
+        "clock": "51:37",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by BU Slott, Kat, out left.",
+        "clock": "54:55",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Kennedy, Ciara.",
+        "clock": "56:18",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [56:57].",
+        "clock": "56:57",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [57:30].",
+        "clock": "57:30",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by BU Prouty, Georgia, out top left.",
+        "clock": "59:40",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Rayhill, Anna, bottom left, saved by Humphreys, Jill.",
+        "clock": "60:26",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [60:48].",
+        "clock": "60:48",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "61:35",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Vana, Molly for Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "62:20",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Leshnick, Jasmine, out top right.",
+        "clock": "65:10",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "BU substitution: Avellar, Olivia for Slott, Kat.",
+        "clock": "65:31",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Boston U..",
+        "clock": "66:07",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Harvard.",
+        "clock": "69:08",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "BU substitution: Maguire, Ava for Schultz, Jaiden.",
+        "clock": "70:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Belfon, Kennedy for Huleatt, Brooke.",
+        "clock": "70:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Eftekhari, Hannah for Ruffien, Lou.",
+        "clock": "70:36",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Vana, Molly, bottom center, saved by Humphreys, Jill.",
+        "clock": "71:40",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [72:00].",
+        "clock": "72:00",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Van Den Einde, Anya.",
+        "clock": "74:41",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by BU Avellar, Olivia, top, saved by Bidun, Nicole.",
+        "clock": "75:23",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Tyburczy, Helene.",
+        "clock": "77:10",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [78:13].",
+        "clock": "78:13",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Foul on H\u00e9\u00f0insd\u00f3ttir Gonzalez, \u00cdrena.",
+        "clock": "80:15",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Kristinsd\u00f3ttir, \u00d3l\u00f6f for Eftekhari, Hannah.",
+        "clock": "81:06",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Huleatt, Brooke for Vana, Molly.",
+        "clock": "81:06",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Santos Lopez, Elsa for Belfon, Kennedy.",
+        "clock": "81:06",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by BU Avellar, Olivia Assist by Tyburczy, Helene.",
+        "clock": "82:05",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          2,
+          1
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Shot by BU Aronson, Samantha, top woodwork.",
+        "clock": "85:35",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [85:53].",
+        "clock": "85:53",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "86:31",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Boston U..",
+        "clock": "86:59",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Vana, Molly for Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "87:31",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Vana, Molly.",
+        "clock": "87:36",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [87:42].",
+        "clock": "87:42",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "team": 1,
+        "type": "period"
+      }
+    ],
+    "stadium": "Nickerson Field",
+    "attendance": 302,
+    "kickoff": "06:00",
+    "officials": [
+      "Referee: Johnathan Luk",
+      "Asst. Referee: Stephanie MacFarland",
+      "Asst. Referee: Yves Jeanty",
+      "Alt. Official: Adie Hughes"
+    ],
+    "home_index": 1
+  }
+}

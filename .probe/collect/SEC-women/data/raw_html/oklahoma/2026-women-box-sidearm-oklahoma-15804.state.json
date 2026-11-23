@@ -1,0 +1,1518 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://soonersports.com/sports/soccer/stats/2026/north-texas/boxscore/15804",
+  "final_url": "https://soonersports.com/sports/soccer/stats/2026/north-texas/boxscore/15804",
+  "etag": null,
+  "last_modified": null,
+  "signature": "2455d5a08cb693e457111280e1a2825c9b2f4d5644e72c7e201eb6b2534bae4a",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:16:06+00:00",
+  "verified_at": "2026-11-23T10:16:06+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://soonersports.com/sports/soccer/stats/2026/north-texas/boxscore/15804",
+    "teams": [
+      {
+        "name": "Oklahoma",
+        "abbr": "UOK",
+        "score": 6,
+        "periods": [
+          2,
+          4
+        ],
+        "winner": true,
+        "shots": 16,
+        "saves": 3,
+        "corners": 6,
+        "fouls": 14,
+        "offsides": 0,
+        "sog": 14,
+        "players": [
+          {
+            "name": "Callie Sullivan",
+            "player_id": "20056",
+            "position": "GK",
+            "number": "34",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 78
+          },
+          {
+            "name": "Paige Califf",
+            "player_id": "20058",
+            "position": "MID",
+            "number": "2",
+            "started": true,
+            "shots": 2,
+            "sog": 2,
+            "goals": 1,
+            "assists": 1,
+            "minutes": 68
+          },
+          {
+            "name": "Lexi Dendis",
+            "player_id": "20046",
+            "position": "FWD",
+            "number": "3",
+            "started": true,
+            "shots": 2,
+            "sog": 2,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 63
+          },
+          {
+            "name": "Sophie Morrin",
+            "player_id": "20053",
+            "position": "MID",
+            "number": "4",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 59
+          },
+          {
+            "name": "Narissa Fults",
+            "player_id": "20059",
+            "position": "FWD",
+            "number": "5",
+            "started": true,
+            "shots": 2,
+            "sog": 2,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 53
+          },
+          {
+            "name": "Kayla Keefer",
+            "player_id": "20049",
+            "position": "FWD",
+            "number": "6",
+            "started": true,
+            "shots": 6,
+            "sog": 4,
+            "goals": 2,
+            "assists": 1,
+            "minutes": 59
+          },
+          {
+            "name": "Ally Laccinole",
+            "player_id": "20050",
+            "position": "DEF",
+            "number": "9",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 72
+          },
+          {
+            "name": "Kate McCallister",
+            "player_id": "20248",
+            "position": "MID",
+            "number": "17",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 53
+          },
+          {
+            "name": "Kendall Campbell",
+            "player_id": "20250",
+            "position": "DEF",
+            "number": "21",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 55
+          },
+          {
+            "name": "Sadie Sterbenz",
+            "player_id": "20060",
+            "position": "DEF",
+            "number": "23",
+            "started": true,
+            "shots": 2,
+            "sog": 2,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 57
+          },
+          {
+            "name": "Elle Canty",
+            "player_id": "20043",
+            "position": "MID",
+            "number": "33",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 49
+          },
+          {
+            "name": "Addison Tauscher",
+            "player_id": "20063",
+            "position": "GK",
+            "number": "77",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 12
+          },
+          {
+            "name": "Fernanda Dantas",
+            "player_id": "20244",
+            "position": "DEF",
+            "number": "7",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 28
+          },
+          {
+            "name": "Isabella Martinez",
+            "player_id": "20052",
+            "position": "MID",
+            "number": "8",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 12
+          },
+          {
+            "name": "Avery Brand",
+            "player_id": "20245",
+            "position": "MID",
+            "number": "10",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 27
+          },
+          {
+            "name": "Drue Legan",
+            "player_id": "20051",
+            "position": "DEF",
+            "number": "11",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 48
+          },
+          {
+            "name": "Kennedy Kaiser",
+            "player_id": "20246",
+            "position": "FWD",
+            "number": "12",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 25
+          },
+          {
+            "name": "Kiki Smith",
+            "player_id": "20055",
+            "position": "DEF",
+            "number": "14",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 18
+          },
+          {
+            "name": "Aly Guthrie",
+            "player_id": "20047",
+            "position": "MID",
+            "number": "15",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 12
+          },
+          {
+            "name": "Ariana Ellison",
+            "player_id": "20247",
+            "position": "DEF",
+            "number": "16",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 32
+          },
+          {
+            "name": "Brenna Hallam",
+            "player_id": "20251",
+            "position": "FWD",
+            "number": "22",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 31
+          },
+          {
+            "name": "Natalie Hoefer",
+            "player_id": "20048",
+            "position": "DEF",
+            "number": "24",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 8
+          },
+          {
+            "name": "Claire Curran",
+            "player_id": "20044",
+            "position": "FWD",
+            "number": "30",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 33
+          },
+          {
+            "name": "Emily Davey",
+            "player_id": "20045",
+            "position": "FWD",
+            "number": "36",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 38
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Callie Sullivan",
+            "player_id": "20056",
+            "position": "GK",
+            "number": "34",
+            "minutes": 78,
+            "goals_against": 2,
+            "saves": 3
+          },
+          {
+            "name": "Addison Tauscher",
+            "player_id": "20063",
+            "position": "GK",
+            "number": "77",
+            "minutes": 12,
+            "goals_against": 0,
+            "saves": 0
+          }
+        ]
+      },
+      {
+        "name": "North Texas",
+        "abbr": "UNT",
+        "score": 2,
+        "periods": [
+          2,
+          0
+        ],
+        "shots": 13,
+        "saves": 8,
+        "corners": 4,
+        "fouls": 12,
+        "offsides": 0,
+        "sog": 5,
+        "players": [
+          {
+            "name": "Sarah Margaret Seabrook",
+            "position": "GK",
+            "number": "00",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Beya Rosales",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 55
+          },
+          {
+            "name": "Hannah Phillips",
+            "position": "DEF",
+            "number": "5",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Lillian Vandiver",
+            "position": "DEF",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Claire Niedermeier",
+            "position": "FWD",
+            "number": "9",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 78
+          },
+          {
+            "name": "Emma King",
+            "position": "MID",
+            "number": "12",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 67
+          },
+          {
+            "name": "Lily Cunningham",
+            "position": "DEF",
+            "number": "17",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Emma Thurston",
+            "position": "MID",
+            "number": "20",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 62
+          },
+          {
+            "name": "Rydlii Rives",
+            "position": "MID",
+            "number": "21",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 83
+          },
+          {
+            "name": "Mia Bernard",
+            "position": "MID",
+            "number": "24",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 85
+          },
+          {
+            "name": "Ella Bushko",
+            "position": "DEF",
+            "number": "30",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 43
+          },
+          {
+            "name": "Payton Annis",
+            "position": "FWD",
+            "number": "2",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 12
+          },
+          {
+            "name": "Kelby Dansby",
+            "position": "DEF",
+            "number": "7",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 35
+          },
+          {
+            "name": "Alexis Miller",
+            "position": "FWD",
+            "number": "13",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 5
+          },
+          {
+            "name": "Mya Mitchell",
+            "position": "FWD",
+            "number": "14",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 28
+          },
+          {
+            "name": "Clara Carter",
+            "position": "DEF",
+            "number": "19",
+            "started": false,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 23
+          },
+          {
+            "name": "Georgia Guenther",
+            "position": "DEF",
+            "number": "27",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 7
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Sarah Margaret Seabrook",
+            "position": "GK",
+            "number": "00",
+            "minutes": 90,
+            "goals_against": 6,
+            "saves": 7
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "03:48",
+        "team": 0,
+        "scorer": "Sadie Sterbenz",
+        "season_total": 1,
+        "assist": "Paige Califf",
+        "description": "GOAL by UOK Sterbenz, Sadie Assist by Califf, Paige."
+      },
+      {
+        "time": "18:12",
+        "team": 1,
+        "scorer": "Rydlii Rives",
+        "season_total": 2,
+        "description": "GOAL by UNT Rives, Rydlii."
+      },
+      {
+        "time": "33:02",
+        "team": 1,
+        "scorer": "Claire Niedermeier",
+        "season_total": 5,
+        "description": "GOAL by UNT Niedermeier, Claire."
+      },
+      {
+        "time": "34:42",
+        "team": 0,
+        "scorer": "Kayla Keefer",
+        "season_total": 11,
+        "assist": "Claire Curran",
+        "description": "GOAL by UOK Keefer, Kayla Assist by Curran, Claire."
+      },
+      {
+        "time": "57:14",
+        "team": 0,
+        "scorer": "Kayla Keefer",
+        "season_total": 11,
+        "description": "GOAL by UOK Keefer, Kayla."
+      },
+      {
+        "time": "62:28",
+        "team": 0,
+        "scorer": "Kennedy Kaiser",
+        "season_total": 5,
+        "assist": "Kayla Keefer",
+        "description": "GOAL by UOK Kaiser, Kennedy Assist by Keefer, Kayla."
+      },
+      {
+        "time": "67:31",
+        "team": 0,
+        "scorer": "Paige Califf",
+        "season_total": 0,
+        "description": "UOK Paige Califf PENALTY KICK GOAL."
+      },
+      {
+        "time": "86:17",
+        "team": 0,
+        "scorer": "Isabella Martinez",
+        "season_total": 2,
+        "assist": "Brenna Hallam",
+        "description": "GOAL by UOK Martinez, Isabella Assist by Hallam, Brenna."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Ella Bushko",
+        "number": "30",
+        "time": "07:49",
+        "team": 1
+      },
+      {
+        "type": "red",
+        "player": "Ella Bushko",
+        "number": "30",
+        "time": "42:40",
+        "team": 1
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Seabrook, Sarah Margaret at goalie for North Texas",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Sullivan, Callie at goalie for Oklahoma",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Foul on King, Emma.",
+        "clock": "01:08",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UNT Rosales, Beya, bottom center, saved by Sullivan, Callie.",
+        "clock": "02:41",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on King, Emma.",
+        "clock": "03:00",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by UOK Sterbenz, Sadie Assist by Califf, Paige.",
+        "clock": "03:48",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          1,
+          0
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Foul on King, Emma.",
+        "clock": "07:33",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on UNT Bushko, Ella.",
+        "clock": "07:49",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Fults, Narissa.",
+        "clock": "09:27",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UNT King, Emma.",
+        "clock": "10:51",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UOK Keefer, Kayla, bottom right, saved by Seabrook, Sarah Margaret.",
+        "clock": "13:21",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by UNT Rives, Rydlii.",
+        "clock": "18:12",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          1,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Foul on McCallister, Kate.",
+        "clock": "19:26",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Cunningham, Lily.",
+        "clock": "20:09",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UOK Sterbenz, Sadie, bottom left, saved by Seabrook, Sarah Margaret.",
+        "clock": "20:58",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [21:07].",
+        "clock": "21:07",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UNT Thurston, Emma, bottom right, saved by Sullivan, Callie.",
+        "clock": "22:30",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Niedermeier, Claire.",
+        "clock": "22:54",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Niedermeier, Claire.",
+        "clock": "24:24",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "UOK substitution: Davey, Emily for Morrin, Sophie.",
+        "clock": "26:10",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UOK substitution: Legan, Drue for Campbell, Kendall.",
+        "clock": "26:10",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UOK Fults, Narissa, bottom center, saved by Seabrook, Sarah Margaret.",
+        "clock": "27:35",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "UOK substitution: Kaiser, Kennedy for Fults, Narissa.",
+        "clock": "28:08",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Legan, Drue.",
+        "clock": "29:14",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [31:02].",
+        "clock": "31:02",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "UOK substitution: Curran, Claire for Canty, Elle.",
+        "clock": "31:09",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Curran, Claire.",
+        "clock": "32:12",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UNT Bernard, Mia.",
+        "clock": "33:00",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by UNT Niedermeier, Claire.",
+        "clock": "33:02",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          1,
+          2
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Foul on Sullivan, Callie",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "UNT Claire Niedermeier PENALTY KICK GOAL.",
+        "clock": "33:02",
+        "team": 1,
+        "type": "penalty"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by UOK Keefer, Kayla Assist by Curran, Claire.",
+        "clock": "34:42",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          2,
+          2
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Shot by UOK Keefer, Kayla, out top.",
+        "clock": "35:59",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "UOK substitution: Hallam, Brenna for Keefer, Kayla.",
+        "clock": "36:20",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on McCallister, Kate.",
+        "clock": "36:45",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UNT Cunningham, Lily, bottom center, saved by Sullivan, Callie.",
+        "clock": "37:32",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UNT Bernard, Mia.",
+        "clock": "37:49",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UNT King, Emma.",
+        "clock": "37:57",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Dendis, Lexi.",
+        "clock": "38:22",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UNT Cunningham, Lily, out left.",
+        "clock": "39:16",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "UOK substitution: Brand, Avery for McCallister, Kate.",
+        "clock": "39:34",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UOK substitution: Ellison, Ariana for Sterbenz, Sadie.",
+        "clock": "39:34",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Hallam, Brenna.",
+        "clock": "40:31",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "UNT substitution: Dansby, Kelby for Rosales, Beya.",
+        "clock": "41:32",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Red card on UNT Bushko, Ella.",
+        "clock": "42:40",
+        "team": 1,
+        "type": "red"
+      },
+      {
+        "period": "1",
+        "text": "UNT substitution: unknown player for Bushko, Ella.",
+        "clock": "42:40",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UNT substitution: Annis, Payton for Niedermeier, Claire.",
+        "clock": "42:40",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UOK Califf, Paige, bottom center, saved by Seabrook, Sarah Margaret.",
+        "clock": "42:47",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "UNT substitution: Guenther, Georgia for Rives, Rydlii.",
+        "clock": "44:51",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR UOK: , #34 Sullivan, Callie, #2 Califf, Paige, #3 Dendis, Lexi, #23 Sterbenz, Sadie, #33 Canty, Elle, #21 Campbell, Kendall, #9 Laccinole, Ally, #5 Fults, Narissa, #11 Legan, Drue, #6 Keefer, Kayla, #17 McCallister, Kate.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR UNT: , #00 Seabrook, Sarah Margaret, #4 Rosales, Beya, #5 Phillips, Hannah, #6 Vandiver, Lillian, #9 Niedermeier, Claire, #12 King, Emma, #17 Cunningham, Lily, #20 Thurston, Emma, #21 Rives, Rydlii, #24 Bernard, Mia.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "UNT substitution: Rosales, Beya for Dansby, Kelby.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UNT substitution: Niedermeier, Claire for Annis, Payton.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UNT substitution: Rives, Rydlii for Guenther, Georgia.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Sterbenz, Sadie for Davey, Emily.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Canty, Elle for Kaiser, Kennedy.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Campbell, Kendall for Hallam, Brenna.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Fults, Narissa for Brand, Avery.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Keefer, Kayla for Ellison, Ariana.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: McCallister, Kate for Curran, Claire.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Canty, Elle.",
+        "clock": "46:20",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Thurston, Emma.",
+        "clock": "49:47",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UOK Dendis, Lexi, top, saved by Seabrook, Sarah Margaret.",
+        "clock": "50:14",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [50:22].",
+        "clock": "50:22",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UOK Dendis, Lexi, bottom center, saved by Seabrook, Sarah Margaret.",
+        "clock": "51:06",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [54:20].",
+        "clock": "54:20",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UOK Fults, Narissa, bottom center, Team save.",
+        "clock": "55:04",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UOK Keefer, Kayla, right woodwork.",
+        "clock": "57:14",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by UOK Keefer, Kayla.",
+        "clock": "57:14",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          3,
+          2
+        ]
+      },
+      {
+        "period": "2",
+        "text": "UNT substitution: Annis, Payton for Rosales, Beya.",
+        "clock": "57:14",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UNT substitution: Dansby, Kelby for Niedermeier, Claire.",
+        "clock": "57:14",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Morrin, Sophie for Campbell, Kendall.",
+        "clock": "57:14",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Davey, Emily for McCallister, Kate.",
+        "clock": "57:14",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UNT Thurston, Emma, out right.",
+        "clock": "59:09",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on King, Emma.",
+        "clock": "59:38",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "UNT substitution: Guenther, Georgia for Thurston, Emma.",
+        "clock": "61:47",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UNT substitution: Mitchell, Mya for Rives, Rydlii.",
+        "clock": "61:47",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Curran, Claire for Sterbenz, Sadie.",
+        "clock": "61:47",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Dantas, Fernanda for Canty, Elle.",
+        "clock": "61:47",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UNT substitution: Miller, Alexis for Bernard, Mia.",
+        "clock": "62:14",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Kaiser, Kennedy for Fults, Narissa.",
+        "clock": "62:14",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by UOK Kaiser, Kennedy Assist by Keefer, Kayla.",
+        "clock": "62:28",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          4,
+          2
+        ]
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Ellison, Ariana for Dendis, Lexi.",
+        "clock": "62:28",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Campbell, Kendall for Legan, Drue.",
+        "clock": "64:03",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UOK Keefer, Kayla, top right, saved by Seabrook, Sarah Margaret.",
+        "clock": "66:17",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [66:25].",
+        "clock": "66:25",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "UNT substitution: Carter, Clara for King, Emma.",
+        "clock": "66:49",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Hallam, Brenna for Keefer, Kayla.",
+        "clock": "66:49",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Guenther, Georgia",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "UOK Paige Califf PENALTY KICK GOAL.",
+        "clock": "67:31",
+        "team": 0,
+        "type": "penalty",
+        "score": [
+          5,
+          2
+        ]
+      },
+      {
+        "period": "2",
+        "text": "UNT substitution: Bernard, Mia for Annis, Payton.",
+        "clock": "67:31",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UNT substitution: Niedermeier, Claire for Guenther, Georgia.",
+        "clock": "67:31",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UNT substitution: Rives, Rydlii for Miller, Alexis.",
+        "clock": "67:31",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Brand, Avery for Califf, Paige.",
+        "clock": "67:31",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Smith, Kiki for Laccinole, Ally.",
+        "clock": "71:52",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Fults, Narissa for Kaiser, Kennedy.",
+        "clock": "71:52",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [72:43].",
+        "clock": "72:43",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Curran, Claire.",
+        "clock": "73:30",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Hallam, Brenna.",
+        "clock": "76:21",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Tauscher, Addison for Sullivan, Callie.",
+        "clock": "77:58",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Guthrie, Aly for Fults, Narissa.",
+        "clock": "77:58",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Martinez, Isabella for Davey, Emily.",
+        "clock": "77:58",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Ellison, Ariana.",
+        "clock": "78:50",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UNT Carter, Clara.",
+        "clock": "79:22",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [79:37].",
+        "clock": "79:37",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UNT Carter, Clara, out top.",
+        "clock": "79:56",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Legan, Drue for Campbell, Kendall.",
+        "clock": "79:59",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Mitchell, Mya.",
+        "clock": "80:55",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "UOK substitution: Hoefer, Natalie for Curran, Claire.",
+        "clock": "81:42",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Dantas, Fernanda.",
+        "clock": "83:34",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Dansby, Kelby.",
+        "clock": "84:14",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Niedermeier, Claire.",
+        "clock": "85:11",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by UOK Martinez, Isabella Assist by Hallam, Brenna.",
+        "clock": "86:17",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          6,
+          2
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Foul on Smith, Kiki.",
+        "clock": "87:00",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [87:49].",
+        "clock": "87:49",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [88:24].",
+        "clock": "88:24",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [89:02].",
+        "clock": "89:02",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "type": "period"
+      }
+    ],
+    "stadium": "Norma Knobel Hunt Stadium",
+    "attendance": 680,
+    "kickoff": "07:00",
+    "officials": [
+      "Referee: Kylie Rhodes",
+      "Asst. Referee: Aaron Donahoe",
+      "Asst. Referee: Jarrod Tackel",
+      "Alt. Official: Ken Mizuno"
+    ],
+    "home_index": 1
+  }
+}

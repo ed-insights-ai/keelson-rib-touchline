@@ -1,0 +1,1103 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/brown-university/boxscore/33243",
+  "final_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/brown-university/boxscore/33243",
+  "etag": null,
+  "last_modified": null,
+  "signature": "e8342d9a6860d0723ad37e11e2456675b9455083b79ab7bdb6ffc4388787d27c",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:16:10+00:00",
+  "verified_at": "2026-11-23T10:16:10+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/brown-university/boxscore/33243",
+    "teams": [
+      {
+        "name": "Harvard",
+        "abbr": "HARV",
+        "score": 0,
+        "periods": [
+          0,
+          0
+        ],
+        "shots": 5,
+        "sog": 2,
+        "saves": 5,
+        "corners": 6,
+        "fouls": 10,
+        "players": [
+          {
+            "name": "Olivia Busby",
+            "player_id": "33038",
+            "position": "GK",
+            "number": "1",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Phoebe Chadwick",
+            "player_id": "31853",
+            "position": "DEF",
+            "number": "5",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 64
+          },
+          {
+            "name": "Elsa Santos L\u00f3pez",
+            "player_id": "31868",
+            "position": "MID",
+            "number": "7",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 65
+          },
+          {
+            "name": "\u00d3l\u00f6f Kristinsd\u00f3ttir",
+            "player_id": "31859",
+            "position": "FWD",
+            "number": "9",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 86
+          },
+          {
+            "name": "Brooke Huleatt",
+            "player_id": "33039",
+            "position": "FWD",
+            "number": "10",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Susie Long",
+            "player_id": "31862",
+            "number": "13",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 58
+          },
+          {
+            "name": "\u00cdrena H\u00e9\u00f0insd\u00f3ttir Gonzalez",
+            "player_id": "31857",
+            "position": "MID",
+            "number": "14",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 89
+          },
+          {
+            "name": "Camila Reinaldo",
+            "player_id": "33041",
+            "position": "MID",
+            "number": "15",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 64
+          },
+          {
+            "name": "Jasmine Leshnick",
+            "player_id": "31860",
+            "position": "FWD",
+            "number": "16",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Amy K\u00f6nig",
+            "player_id": "31858",
+            "position": "DEF",
+            "number": "18",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Anna Rayhill",
+            "player_id": "31866",
+            "position": "FWD",
+            "number": "19",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 87
+          },
+          {
+            "name": "Claire Kessenger",
+            "player_id": "33040",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Lou Ruffien",
+            "player_id": "33042",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 39
+          },
+          {
+            "name": "Molly Vana",
+            "player_id": "33043",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 30
+          },
+          {
+            "name": "Lauren Muniz",
+            "player_id": "31865",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 3
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Olivia Busby",
+            "player_id": "33038",
+            "position": "GK",
+            "number": "1",
+            "minutes": 90,
+            "goals_against": 1,
+            "saves": 4
+          }
+        ]
+      },
+      {
+        "name": "Brown",
+        "abbr": "BRWN",
+        "score": 1,
+        "periods": [
+          1,
+          0
+        ],
+        "winner": true,
+        "shots": 15,
+        "sog": 6,
+        "saves": 2,
+        "corners": 5,
+        "fouls": 11,
+        "players": [
+          {
+            "name": "Audrey Lam",
+            "position": "MID",
+            "number": "3",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Nadja Meite",
+            "position": "FWD",
+            "number": "6",
+            "started": true,
+            "shots": 2,
+            "sog": 2,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 70
+          },
+          {
+            "name": "Joy Okonye",
+            "position": "MID",
+            "number": "10",
+            "started": true,
+            "shots": 6,
+            "sog": 2,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 90
+          },
+          {
+            "name": "Claire Silverman",
+            "position": "FWD",
+            "number": "11",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Kyra Treanor",
+            "position": "DEF",
+            "number": "12",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Addison Etter",
+            "position": "GK",
+            "number": "13",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Georgia Steinbach",
+            "position": "MID",
+            "number": "17",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 90
+          },
+          {
+            "name": "Anya Tansil",
+            "position": "FWD",
+            "number": "18",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 73
+          },
+          {
+            "name": "Chesney Robinson",
+            "position": "DEF",
+            "number": "19",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Brooke Birtwistle",
+            "position": "MID",
+            "number": "22",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Angelina Vargas",
+            "position": "FWD",
+            "number": "40",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 68
+          },
+          {
+            "name": "Maja Cenanovic",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 20
+          },
+          {
+            "name": "Jael-Marie Guy",
+            "started": false,
+            "shots": 2,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 22
+          },
+          {
+            "name": "Naomi Nnewihe",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 10
+          },
+          {
+            "name": "Taylor Green",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 7
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Addison Etter",
+            "position": "GK",
+            "number": "13",
+            "minutes": 90,
+            "goals_against": 0,
+            "saves": 2
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "43:06",
+        "team": 1,
+        "scorer": "Jael-Marie Guy",
+        "season_total": 4,
+        "assist": "Georgia Steinbach , Joy Okonye",
+        "description": "GOAL by BRWN Guy, Jael-Marie Assist by Steinbach, Georgia and Okonye, Joy."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Susie Long",
+        "number": "13",
+        "time": "73:32",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Kyra Treanor",
+        "number": "12",
+        "time": "89:15",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "\u00cdrena H\u00e9\u00f0insd\u00f3ttir Gonzalez",
+        "number": "14",
+        "time": "89:29",
+        "team": 0
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Etter, Addison at goalie for Brown",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Busby, Olivia at goalie for Harvard",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Santos Lopez, Elsa.",
+        "clock": "04:07",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Vargas, Angelina.",
+        "clock": "05:03",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Reinaldo, Camila.",
+        "clock": "05:52",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Treanor, Kyra.",
+        "clock": "07:43",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on K\u00f6nig, Amy.",
+        "clock": "09:59",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Brown.",
+        "clock": "11:09",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Long, Susie.",
+        "clock": "12:28",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Harvard.",
+        "clock": "18:02",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Shot by BRWN Steinbach, Georgia.",
+        "clock": "19:31",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [20:09].",
+        "clock": "20:09",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [23:22].",
+        "clock": "23:22",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Brown.",
+        "clock": "24:03",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Tansil, Anya.",
+        "clock": "26:17",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Silverman, Claire.",
+        "clock": "27:52",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by BRWN Vargas, Angelina.",
+        "clock": "30:33",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "BRWN substitution: Guy, Jael-Marie for Meite, Nadja.",
+        "clock": "31:12",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "BRWN substitution: Cenanovic, Maja for Vargas, Angelina.",
+        "clock": "31:12",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Ruffien, Lou for Reinaldo, Camila.",
+        "clock": "31:12",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by BRWN Okonye, Joy, out right.",
+        "clock": "31:38",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by BRWN Guy, Jael-Marie.",
+        "clock": "33:46",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "BRWN substitution: Nnewihe, Naomi for Tansil, Anya.",
+        "clock": "34:26",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by BRWN Okonye, Joy, bottom center, saved by Busby, Olivia.",
+        "clock": "35:46",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by BRWN Okonye, Joy, bottom left, Team save.",
+        "clock": "36:08",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [36:22].",
+        "clock": "36:22",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by BRWN Steinbach, Georgia, bottom center, saved by Busby, Olivia.",
+        "clock": "36:38",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Huleatt, Brooke.",
+        "clock": "37:32",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [37:37].",
+        "clock": "37:37",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Ruffien, Lou, bottom center, saved by Etter, Addison.",
+        "clock": "38:22",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Vana, Molly for Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "40:45",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by BRWN Guy, Jael-Marie Assist by Steinbach, Georgia and Okonye, Joy.",
+        "clock": "43:06",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR HARV: , #1 Busby, Olivia, #5 Chadwick, Phoebe, #7 Santos Lopez, Elsa, #9 Kristinsd\u00f3ttir, \u00d3l\u00f6f, #10 Huleatt, Brooke, #15 Reinaldo, Camila, #14 H\u00e9\u00f0insd\u00f3ttir Gonzalez, \u00cdrena, #6 Kessenger, Claire, #16 Leshnick, Jasmine, #18 K\u00f6nig, Amy, #19 Rayhill, Anna.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR BRWN: , #13 Etter, Addison, #3 Lam, Audrey, #6 Meite, Nadja, #10 Okonye, Joy, #11 Silverman, Claire, #12 Treanor, Kyra, #17 Steinbach, Georgia, #18 Tansil, Anya, #19 Robinson, Chesney, #22 Birtwistle, Brooke, #40 Vargas, Angelina.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Meite, Nadja for Guy, Jael-Marie.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Tansil, Anya for Nnewihe, Naomi.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Vargas, Angelina for Cenanovic, Maja.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Kristinsd\u00f3ttir, \u00d3l\u00f6f for Vana, Molly.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Reinaldo, Camila for Long, Susie.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Kessenger, Claire for Ruffien, Lou.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Brown.",
+        "clock": "45:40",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Shot by BRWN Okonye, Joy, out top.",
+        "clock": "46:07",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by BRWN Meite, Nadja, bottom left, saved by Busby, Olivia.",
+        "clock": "49:14",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Santos Lopez, Elsa.",
+        "clock": "52:17",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by BRWN Silverman, Claire.",
+        "clock": "53:12",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Santos Lopez, Elsa.",
+        "clock": "54:15",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Steinbach, Georgia.",
+        "clock": "55:38",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [56:04].",
+        "clock": "56:04",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by BRWN Lam, Audrey, out left.",
+        "clock": "56:36",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [57:17].",
+        "clock": "57:17",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Brown.",
+        "clock": "59:06",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Kessenger, Claire.",
+        "clock": "60:18",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Huleatt, Brooke.",
+        "clock": "61:39",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Tansil, Anya.",
+        "clock": "62:03",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Ruffien, Lou for Chadwick, Phoebe.",
+        "clock": "63:23",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Long, Susie for Santos Lopez, Elsa.",
+        "clock": "63:23",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Vana, Molly for Reinaldo, Camila.",
+        "clock": "63:23",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Cenanovic, Maja for Meite, Nadja.",
+        "clock": "63:54",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Guy, Jael-Marie for Tansil, Anya.",
+        "clock": "63:54",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Green, Taylor for Vargas, Angelina.",
+        "clock": "63:54",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [64:57].",
+        "clock": "64:57",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Leshnick, Jasmine, bottom right, saved by Etter, Addison.",
+        "clock": "65:58",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [66:04].",
+        "clock": "66:04",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Kristinsd\u00f3ttir, \u00d3l\u00f6f, out left.",
+        "clock": "66:27",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Green, Taylor.",
+        "clock": "69:54",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Meite, Nadja for Cenanovic, Maja.",
+        "clock": "70:49",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Tansil, Anya for Green, Taylor.",
+        "clock": "70:49",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Vargas, Angelina for Guy, Jael-Marie.",
+        "clock": "72:36",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on HARV Long, Susie.",
+        "clock": "73:32",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Tansil, Anya.",
+        "clock": "74:23",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [74:46].",
+        "clock": "74:46",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by BRWN Okonye, Joy, out left.",
+        "clock": "75:49",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Reinaldo, Camila for Long, Susie.",
+        "clock": "76:35",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Steinbach, Georgia.",
+        "clock": "76:49",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "77:44",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Vargas, Angelina.",
+        "clock": "78:18",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [80:58].",
+        "clock": "80:58",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Muniz, Lauren for Rayhill, Anna.",
+        "clock": "81:36",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by BRWN Meite, Nadja, top, saved by Busby, Olivia.",
+        "clock": "82:37",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by BRWN Okonye, Joy, out left.",
+        "clock": "83:02",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Rayhill, Anna for Muniz, Lauren.",
+        "clock": "84:04",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Reinaldo, Camila.",
+        "clock": "85:49",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Brown.",
+        "clock": "86:35",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [86:59].",
+        "clock": "86:59",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Brown.",
+        "clock": "87:43",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Treanor, Kyra.",
+        "clock": "89:13",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on BRWN Treanor, Kyra.",
+        "clock": "89:15",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Foul on H\u00e9\u00f0insd\u00f3ttir Gonzalez, \u00cdrena.",
+        "clock": "89:16",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on HARV H\u00e9\u00f0insd\u00f3ttir Gonzalez, \u00cdrena.",
+        "clock": "89:29",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Santos Lopez, Elsa for H\u00e9\u00f0insd\u00f3ttir Gonzalez, \u00cdrena.",
+        "clock": "89:29",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "team": 1,
+        "type": "period"
+      }
+    ],
+    "stadium": "Stevenson-Pincince Field",
+    "attendance": 525,
+    "kickoff": "07:00",
+    "officials": [
+      "Referee: Leah Hayes",
+      "Asst. Referee: Evan Pacheco",
+      "Asst. Referee: Reindole Bantul",
+      "Alt. Official: Bartley Pickron"
+    ],
+    "home_index": 1
+  }
+}

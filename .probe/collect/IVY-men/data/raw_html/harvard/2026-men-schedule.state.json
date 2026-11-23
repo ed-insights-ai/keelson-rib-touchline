@@ -1,0 +1,279 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+  "final_url": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+  "etag": null,
+  "last_modified": "Mon, 23 Nov 2026 10:11:51 GMT",
+  "signature": "a1e3f9cb4254dc0daa86b29225cb36d4ca888066ea570edf1c20d37d39261b39",
+  "fingerprint": "0d2f36b17a137168895b186d68573176e9abdf65122e0f18535a925f42c5371b",
+  "fetched_at": "2026-11-23T10:15:54+00:00",
+  "verified_at": "2026-11-23T10:15:54+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 16,
+    "reason": null
+  },
+  "parsed": {
+    "fixtures": [
+      {
+        "id": "sidearm:harvard:33207",
+        "date": "2026-08-28",
+        "home": "harvard",
+        "away": "umass",
+        "status": "final",
+        "conference_game": false,
+        "source_url": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+        "time": "18:00",
+        "venue": "Cambridge, MA",
+        "home_score": 4,
+        "away_score": 1,
+        "stage": {
+          "phase": "regular"
+        }
+      },
+      {
+        "id": "sidearm:harvard:33208",
+        "date": "2026-08-31",
+        "home": "notre-dame",
+        "away": "harvard",
+        "status": "final",
+        "conference_game": false,
+        "source_url": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+        "time": "19:30",
+        "venue": "South Bend, Ind.",
+        "home_score": 3,
+        "away_score": 1,
+        "stage": {
+          "phase": "regular"
+        }
+      },
+      {
+        "id": "sidearm:harvard:33209",
+        "date": "2026-09-04",
+        "home": "harvard",
+        "away": "providence",
+        "status": "final",
+        "conference_game": false,
+        "source_url": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+        "time": "18:00",
+        "venue": "Cambridge, MA",
+        "home_score": 1,
+        "away_score": 3,
+        "stage": {
+          "phase": "regular"
+        }
+      },
+      {
+        "id": "sidearm:harvard:33210",
+        "date": "2026-09-12",
+        "home": "harvard",
+        "away": "uconn",
+        "status": "final",
+        "conference_game": false,
+        "source_url": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+        "time": "13:00",
+        "venue": "Cambridge, MA",
+        "home_score": 2,
+        "away_score": 2,
+        "stage": {
+          "phase": "regular"
+        }
+      },
+      {
+        "id": "sidearm:harvard:33211",
+        "date": "2026-09-15",
+        "home": "new-hampshire",
+        "away": "harvard",
+        "status": "final",
+        "conference_game": false,
+        "source_url": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+        "time": "18:00",
+        "venue": "Durham, NH",
+        "home_score": 2,
+        "away_score": 0,
+        "stage": {
+          "phase": "regular"
+        }
+      },
+      {
+        "id": "sidearm:harvard:33212",
+        "date": "2026-09-22",
+        "home": "boston-university",
+        "away": "harvard",
+        "status": "final",
+        "conference_game": false,
+        "source_url": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+        "time": "19:00",
+        "venue": "Boston, MA",
+        "home_score": 2,
+        "away_score": 1,
+        "stage": {
+          "phase": "regular"
+        }
+      },
+      {
+        "id": "sidearm:harvard:33213",
+        "date": "2026-09-26",
+        "home": "cornell",
+        "away": "harvard",
+        "status": "final",
+        "conference_game": true,
+        "source_url": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+        "time": "16:00",
+        "venue": "Ithaca, NY",
+        "home_score": 4,
+        "away_score": 1,
+        "stage": {
+          "phase": "regular"
+        }
+      },
+      {
+        "id": "sidearm:harvard:33215",
+        "date": "2026-10-03",
+        "home": "harvard",
+        "away": "columbia",
+        "status": "final",
+        "conference_game": true,
+        "source_url": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+        "time": "16:00",
+        "venue": "Cambridge, MA",
+        "home_score": 1,
+        "away_score": 0,
+        "stage": {
+          "phase": "regular"
+        }
+      },
+      {
+        "id": "sidearm:harvard:33214",
+        "date": "2026-10-06",
+        "home": "northeastern",
+        "away": "harvard",
+        "status": "final",
+        "conference_game": false,
+        "source_url": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+        "time": "18:00",
+        "venue": "Boston, MA",
+        "home_score": 0,
+        "away_score": 0,
+        "stage": {
+          "phase": "regular"
+        }
+      },
+      {
+        "id": "sidearm:harvard:33216",
+        "date": "2026-10-10",
+        "home": "brown",
+        "away": "harvard",
+        "status": "final",
+        "conference_game": true,
+        "source_url": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+        "time": "19:00",
+        "venue": "Providence, RI",
+        "home_score": 1,
+        "away_score": 2,
+        "stage": {
+          "phase": "regular"
+        }
+      },
+      {
+        "id": "sidearm:harvard:33217",
+        "date": "2026-10-17",
+        "home": "yale",
+        "away": "harvard",
+        "status": "final",
+        "conference_game": true,
+        "source_url": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+        "time": "18:00",
+        "venue": "New Haven, CT",
+        "home_score": 3,
+        "away_score": 2,
+        "stage": {
+          "phase": "regular"
+        }
+      },
+      {
+        "id": "sidearm:harvard:33218",
+        "date": "2026-10-21",
+        "home": "harvard",
+        "away": "stonehill",
+        "status": "final",
+        "conference_game": false,
+        "source_url": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+        "time": "19:00",
+        "venue": "Cambridge, MA",
+        "home_score": 4,
+        "away_score": 1,
+        "stage": {
+          "phase": "regular"
+        }
+      },
+      {
+        "id": "sidearm:harvard:33219",
+        "date": "2026-10-24",
+        "home": "harvard",
+        "away": "penn",
+        "status": "final",
+        "conference_game": true,
+        "source_url": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+        "time": "13:00",
+        "venue": "Cambridge, MA",
+        "home_score": 3,
+        "away_score": 3,
+        "stage": {
+          "phase": "regular"
+        }
+      },
+      {
+        "id": "sidearm:harvard:33220",
+        "date": "2026-10-31",
+        "home": "princeton",
+        "away": "harvard",
+        "status": "final",
+        "conference_game": true,
+        "source_url": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+        "time": "17:00",
+        "venue": "Princeton, NJ",
+        "home_score": 2,
+        "away_score": 0,
+        "stage": {
+          "phase": "regular"
+        }
+      },
+      {
+        "id": "sidearm:harvard:33221",
+        "date": "2026-11-07",
+        "home": "harvard",
+        "away": "dartmouth",
+        "status": "final",
+        "conference_game": true,
+        "source_url": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+        "time": "13:00",
+        "venue": "Cambridge, MA",
+        "home_score": 3,
+        "away_score": 3,
+        "stage": {
+          "phase": "regular"
+        }
+      },
+      {
+        "id": "sidearm:harvard:33222",
+        "date": "2026-11-12",
+        "home": "cornell",
+        "away": "harvard",
+        "status": "final",
+        "conference_game": false,
+        "source_url": "https://gocrimson.com/sports/mens-soccer/schedule/2026",
+        "time": "15:30",
+        "venue": "Ithaca, NY",
+        "home_score": 2,
+        "away_score": 1,
+        "stage": {
+          "phase": "postseason",
+          "competition": "conference",
+          "source": "Ivy League Tournament"
+        }
+      }
+    ],
+    "skips": []
+  }
+}

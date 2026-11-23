@@ -1,0 +1,1018 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/columbia/boxscore/33215",
+  "final_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/columbia/boxscore/33215",
+  "etag": null,
+  "last_modified": null,
+  "signature": "b56f8fe47f3324ef6c2a5c6a94a21976313970037283d35b9beb77c0c46458b7",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:16:04+00:00",
+  "verified_at": "2026-11-23T10:16:04+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/columbia/boxscore/33215",
+    "teams": [
+      {
+        "name": "Columbia",
+        "abbr": "COL",
+        "score": 0,
+        "periods": [
+          0,
+          0
+        ],
+        "shots": 10,
+        "sog": 3,
+        "saves": 3,
+        "corners": 2,
+        "fouls": 7,
+        "players": [
+          {
+            "name": "Aris Taki",
+            "position": "GK",
+            "number": "1",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Joe McDaid",
+            "position": "DEF",
+            "number": "2",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Jackson ten Oever",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 62
+          },
+          {
+            "name": "Amir Yahalom",
+            "position": "MID",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 80
+          },
+          {
+            "name": "Luke Zielinski",
+            "position": "MID",
+            "number": "8",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Henning Myrvang",
+            "position": "FWD",
+            "number": "9",
+            "started": true,
+            "shots": 3,
+            "sog": 2,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 79
+          },
+          {
+            "name": "Fadel Kone",
+            "position": "FWD",
+            "number": "14",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 67
+          },
+          {
+            "name": "Stepan Kapranov",
+            "position": "MID",
+            "number": "18",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 60
+          },
+          {
+            "name": "Sage Kinner",
+            "position": "DEF",
+            "number": "22",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Peter Chang",
+            "position": "MID",
+            "number": "25",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 37
+          },
+          {
+            "name": "Andrew Hilton II",
+            "position": "DEF",
+            "number": "27",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 63
+          },
+          {
+            "name": "Will Case",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 55
+          },
+          {
+            "name": "Andres Garcia",
+            "started": false,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 30
+          },
+          {
+            "name": "Jack McDaid",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 64
+          },
+          {
+            "name": "Ben Milstein",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 10
+          },
+          {
+            "name": "Joshua Sosa",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Oli Sacks",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 17
+          },
+          {
+            "name": "Rafa Romo",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 6
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Aris Taki",
+            "position": "GK",
+            "number": "1",
+            "minutes": 90,
+            "goals_against": 1,
+            "saves": 3
+          }
+        ]
+      },
+      {
+        "name": "Harvard",
+        "abbr": "HAR",
+        "score": 1,
+        "periods": [
+          1,
+          0
+        ],
+        "winner": true,
+        "shots": 8,
+        "sog": 4,
+        "saves": 3,
+        "corners": 1,
+        "fouls": 7,
+        "players": [
+          {
+            "name": "Alexander Castel",
+            "player_id": "32567",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Maxwell Mobray",
+            "player_id": "32577",
+            "position": "DEF",
+            "number": "5",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 74
+          },
+          {
+            "name": "Nayan Das",
+            "player_id": "32569",
+            "position": "DEF",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 71
+          },
+          {
+            "name": "Phoenix Wooten",
+            "player_id": "32587",
+            "position": "MID",
+            "number": "8",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 73
+          },
+          {
+            "name": "Ben Kelly",
+            "player_id": "32572",
+            "position": "FWD",
+            "number": "10",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 82
+          },
+          {
+            "name": "Andreas Savva",
+            "player_id": "32581",
+            "position": "FWD",
+            "number": "11",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 62
+          },
+          {
+            "name": "Andreas Engle",
+            "player_id": "32591",
+            "position": "FWD",
+            "number": "12",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 63
+          },
+          {
+            "name": "Tim Langenbahn",
+            "player_id": "32573",
+            "position": "DEF",
+            "number": "13",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Xavier Tanyi",
+            "player_id": "32583",
+            "position": "FWD",
+            "number": "14",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 39
+          },
+          {
+            "name": "Shane Lonergan",
+            "player_id": "32575",
+            "position": "MID",
+            "number": "20",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 44
+          },
+          {
+            "name": "Jason Broome",
+            "player_id": "32566",
+            "position": "GK",
+            "number": "99",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Dylan Tellado",
+            "player_id": "32584",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 36
+          },
+          {
+            "name": "Drew Lobley",
+            "player_id": "32574",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 27
+          },
+          {
+            "name": "Adam Poliakov",
+            "player_id": "32579",
+            "started": false,
+            "shots": 2,
+            "sog": 2,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 46
+          },
+          {
+            "name": "Gil de Souza",
+            "player_id": "32589",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 62
+          },
+          {
+            "name": "Kiko Elliott",
+            "player_id": "32590",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 17
+          },
+          {
+            "name": "Alejandro Palacio",
+            "player_id": "32578",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 24
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Jason Broome",
+            "player_id": "32566",
+            "position": "GK",
+            "number": "99",
+            "minutes": 90,
+            "goals_against": 0,
+            "saves": 3
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "37:09",
+        "team": 1,
+        "scorer": "Dylan Tellado",
+        "season_total": 3,
+        "description": "GOAL by HAR Tellado, Dylan."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Adam Poliakov",
+        "number": "17",
+        "time": "64:48",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Maxwell Mobray",
+        "number": "5",
+        "time": "72:47",
+        "team": 1
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Broome, Jason at goalie for Harvard",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Taki, Aris at goalie for Columbia",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Myrvang, Henning.",
+        "clock": "07:57",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [15:12].",
+        "clock": "15:12",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Kelly, Ben.",
+        "clock": "15:44",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Columbia.",
+        "clock": "22:47",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Tanyi, Xavier, right woodwork.",
+        "clock": "23:35",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Tanyi, Xavier.",
+        "clock": "24:03",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "COL substitution: Garcia, Andres for Zielinski, Luke.",
+        "clock": "25:26",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "COL substitution: McDaid, Jack for Kapranov, Stepan.",
+        "clock": "25:26",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "COL substitution: Sosa, Joshua for Chang, Peter.",
+        "clock": "25:26",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Tellado, Dylan for Wooten, Phoenix.",
+        "clock": "27:52",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Elliott, Keean for Savva, Andreas.",
+        "clock": "27:52",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: de Souza, Gil for Tanyi, Xavier.",
+        "clock": "27:52",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Poliakov, Adam for Lonergan, Shane.",
+        "clock": "27:52",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Poliakov, Adam.",
+        "clock": "29:03",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by COL Garcia, Andres.",
+        "clock": "30:11",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Engle, Andreas, out top.",
+        "clock": "31:30",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "COL substitution: Milstein, Ben for Yahalom, Amir.",
+        "clock": "34:35",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "COL substitution: Case, Will for Hilton II, Andrew.",
+        "clock": "34:35",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by COL Sosa, Joshua, bottom center, saved by Broome, Jason.",
+        "clock": "34:59",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Palacio, Alejandro for Kelly, Ben.",
+        "clock": "36:21",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Lobley, Drew for Engle, Andreas.",
+        "clock": "36:21",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by HAR Tellado, Dylan.",
+        "clock": "37:09",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Foul on Poliakov, Adam.",
+        "clock": "41:03",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by COL Myrvang, Henning, bottom center, saved by Broome, Jason.",
+        "clock": "42:48",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by COL McDaid, Joe, out right.",
+        "clock": "43:38",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Tellado, Dylan.",
+        "clock": "44:25",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR COL: , #1 Taki, Aris, #2 McDaid, Joe, #4 ten Oever, Jackson, #18 Kapranov, Stepan, #6 Yahalom, Amir, #9 Myrvang, Henning, #17 Sacks, Oli, #10 McDaid, Jack, #22 Kinner, Sage, #15 Sosa, Joshua, #5 Case, Will.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR HAR: , #99 Broome, Jason, #4 Castel, Alexander, #5 Mobray, Maxwell, #11 Savva, Andreas, #7 Tellado, Dylan, #8 Wooten, Phoenix, #10 Kelly, Ben, #16 Lobley, Drew, #13 Langenbahn, Tim, #24 de Souza, Gil, #17 Poliakov, Adam.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Savva, Andreas for Das, Nayan.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Wooten, Phoenix for Palacio, Alejandro.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Kelly, Ben for Elliott, Keean.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "COL substitution: Kapranov, Stepan for Milstein, Ben.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "COL substitution: Yahalom, Amir for Garcia, Andres.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "COL substitution: Sacks, Oli for Kone, Fadel.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COL Kapranov, Stepan, out left.",
+        "clock": "47:06",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on McDaid, Jack.",
+        "clock": "48:39",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Columbia.",
+        "clock": "51:02",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Poliakov, Adam, bottom center, saved by Taki, Aris.",
+        "clock": "53:16",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Columbia.",
+        "clock": "53:34",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Poliakov, Adam, bottom center, saved by Taki, Aris.",
+        "clock": "59:15",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COL Myrvang, Henning, out top right.",
+        "clock": "60:56",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "COL substitution: Hilton II, Andrew for ten Oever, Jackson.",
+        "clock": "61:22",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "COL substitution: Kone, Fadel for Sacks, Oli.",
+        "clock": "61:22",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Columbia.",
+        "clock": "62:02",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Kinner, Sage.",
+        "clock": "62:35",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Engle, Andreas for Tellado, Dylan.",
+        "clock": "63:47",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Das, Nayan for Lobley, Drew.",
+        "clock": "63:47",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on HAR Poliakov, Adam.",
+        "clock": "64:48",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COL Myrvang, Henning, top, saved by Broome, Jason.",
+        "clock": "65:35",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Castel, Alexander.",
+        "clock": "66:03",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Columbia.",
+        "clock": "67:50",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Myrvang, Henning.",
+        "clock": "68:48",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "COL substitution: Zielinski, Luke for Sosa, Joshua.",
+        "clock": "70:09",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Kone, Fadel.",
+        "clock": "70:46",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on HAR Mobray, Maxwell.",
+        "clock": "72:47",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Palacio, Alejandro for Mobray, Maxwell.",
+        "clock": "73:47",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Lonergan, Shane for Poliakov, Adam.",
+        "clock": "73:47",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR de Souza, Gil, bottom left, saved by Taki, Aris.",
+        "clock": "76:51",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Tanyi, Xavier for Savva, Andreas.",
+        "clock": "78:07",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Myrvang, Henning.",
+        "clock": "78:07",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "COL substitution: Chang, Peter for Kapranov, Stepan.",
+        "clock": "78:07",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "COL substitution: Garcia, Andres for Myrvang, Henning.",
+        "clock": "78:07",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Columbia.",
+        "clock": "80:31",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COL Chang, Peter, out top right.",
+        "clock": "81:29",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "COL substitution: Romo, Rafa for Kone, Fadel.",
+        "clock": "83:46",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COL Zielinski, Luke.",
+        "clock": "84:37",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [85:33].",
+        "clock": "85:33",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [86:17].",
+        "clock": "86:17",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Foul on McDaid, Jack.",
+        "clock": "86:37",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Tanyi, Xavier.",
+        "clock": "87:07",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COL Garcia, Andres, out top left.",
+        "clock": "87:56",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "team": 1,
+        "type": "period"
+      }
+    ],
+    "stadium": "Jordan Field",
+    "attendance": 365,
+    "kickoff": "04:00",
+    "home_index": 1
+  }
+}

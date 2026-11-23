@@ -1,0 +1,1252 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/cornell/boxscore/33222",
+  "final_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/cornell/boxscore/33222",
+  "etag": null,
+  "last_modified": null,
+  "signature": "d9deb6c11b14622ac6898b513a22412bdc9247de1e7edbcd6a3fb32908bcf65e",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:16:12+00:00",
+  "verified_at": "2026-11-23T10:16:12+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/cornell/boxscore/33222",
+    "teams": [
+      {
+        "name": "Harvard",
+        "abbr": "HAR",
+        "score": 1,
+        "periods": [
+          0,
+          1
+        ],
+        "shots": 7,
+        "sog": 2,
+        "saves": 8,
+        "corners": 1,
+        "fouls": 10,
+        "players": [
+          {
+            "name": "Mikey Cortellessa",
+            "player_id": "32568",
+            "position": "DEF",
+            "number": "2",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Maxwell Mobray",
+            "player_id": "32577",
+            "position": "DEF",
+            "number": "5",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Nayan Das",
+            "player_id": "32569",
+            "position": "DEF",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 7
+          },
+          {
+            "name": "Dylan Tellado",
+            "player_id": "32584",
+            "position": "FWD",
+            "number": "7",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 71
+          },
+          {
+            "name": "Phoenix Wooten",
+            "player_id": "32587",
+            "position": "MID",
+            "number": "8",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Andreas Savva",
+            "player_id": "32581",
+            "position": "FWD",
+            "number": "11",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 67
+          },
+          {
+            "name": "Tim Langenbahn",
+            "player_id": "32573",
+            "position": "DEF",
+            "number": "13",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Adam Poliakov",
+            "player_id": "32579",
+            "position": "FWD",
+            "number": "17",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 80
+          },
+          {
+            "name": "Gil de Souza",
+            "player_id": "32589",
+            "position": "MID",
+            "number": "24",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 80
+          },
+          {
+            "name": "Alejandro Palacio",
+            "player_id": "32578",
+            "position": "DEF",
+            "number": "27",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Jason Broome",
+            "player_id": "32566",
+            "position": "GK",
+            "number": "99",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Xavier Tanyi",
+            "player_id": "32583",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 10
+          },
+          {
+            "name": "Lucas Benuce Sarvas",
+            "player_id": "32565",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 83
+          },
+          {
+            "name": "Drew Lobley",
+            "player_id": "32574",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 6
+          },
+          {
+            "name": "Christo Velikin",
+            "player_id": "32585",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 13
+          },
+          {
+            "name": "Shane Lonergan",
+            "player_id": "32575",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 23
+          },
+          {
+            "name": "Kiko Elliott",
+            "player_id": "32590",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 10
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Jason Broome",
+            "player_id": "32566",
+            "position": "GK",
+            "number": "99",
+            "minutes": 90,
+            "goals_against": 2,
+            "saves": 8
+          }
+        ]
+      },
+      {
+        "name": "Cornell",
+        "abbr": "COR",
+        "score": 2,
+        "periods": [
+          0,
+          2
+        ],
+        "winner": true,
+        "shots": 26,
+        "sog": 10,
+        "saves": 1,
+        "corners": 10,
+        "fouls": 9,
+        "players": [
+          {
+            "name": "Aidan Martin",
+            "position": "DEF",
+            "number": "3",
+            "started": true,
+            "shots": 3,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 81
+          },
+          {
+            "name": "Lennon Harrington",
+            "number": "4",
+            "started": true,
+            "shots": 5,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Justin Melly",
+            "position": "DEF",
+            "number": "5",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Adam Schaban",
+            "position": "FWD",
+            "number": "10",
+            "started": true,
+            "shots": 3,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 79
+          },
+          {
+            "name": "Liam May",
+            "position": "FWD",
+            "number": "11",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Blake Donahue",
+            "position": "FWD",
+            "number": "13",
+            "started": true,
+            "shots": 4,
+            "sog": 2,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 47
+          },
+          {
+            "name": "Griffin Eck",
+            "position": "DEF",
+            "number": "14",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Andrew Miles",
+            "position": "FWD",
+            "number": "18",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 52
+          },
+          {
+            "name": "Reuben Clarson",
+            "position": "GK",
+            "number": "20",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Ashton Wray",
+            "position": "MID",
+            "number": "21",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 59
+          },
+          {
+            "name": "Connor Miller",
+            "position": "MID",
+            "number": "35",
+            "started": true,
+            "shots": 2,
+            "sog": 2,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Sergio Zapata",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 31
+          },
+          {
+            "name": "Calvin Momanyi",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 25
+          },
+          {
+            "name": "Nate Hovan",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 2,
+            "minutes": 27
+          },
+          {
+            "name": "Kasper Wollstein",
+            "started": false,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 38
+          },
+          {
+            "name": "Nikko Perez",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 11
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Reuben Clarson",
+            "position": "GK",
+            "number": "20",
+            "minutes": 90,
+            "goals_against": 1,
+            "saves": 1
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "58:59",
+        "team": 0,
+        "scorer": "Adam Poliakov",
+        "season_total": 4,
+        "description": "Right-footed PK by 17 deflecting off GK and in; PK came following VAR"
+      },
+      {
+        "time": "80:59",
+        "team": 1,
+        "scorer": "Blake Donahue",
+        "season_total": 3,
+        "assist": "Nate Hovan",
+        "description": "Sliding righ-footed shot by 13 off service by 17 from left flank"
+      },
+      {
+        "time": "87:00",
+        "team": 1,
+        "scorer": "Griffin Eck",
+        "season_total": 1,
+        "assist": "Nate Hovan",
+        "description": "Right-footed shot by 14 following punch-out by Harvard GK off corner kick by 17"
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Adam Poliakov",
+        "number": "17",
+        "time": "09:43",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Gil de Souza",
+        "number": "24",
+        "time": "28:07",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Maxwell Mobray",
+        "number": "5",
+        "time": "42:05",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Connor Miller",
+        "number": "35",
+        "time": "53:48",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Andreas Savva",
+        "number": "11",
+        "time": "72:43",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Griffin Eck",
+        "number": "14",
+        "time": "78:10",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Lennon Harrington",
+        "number": "4",
+        "time": "89:40",
+        "team": 1
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Clarson, Reuben at goalie for Cornell",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Broome, Jason at goalie for Harvard",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Langenbahn, Tim.",
+        "clock": "02:29",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by COR Schaban, Adam, bottom center, saved by Broome, Jason.",
+        "clock": "05:13",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Benuce Sarvas, Lucas for Das, Nayan.",
+        "clock": "06:05",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on HAR Poliakov, Adam.",
+        "clock": "09:43",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Langenbahn, Tim.",
+        "clock": "11:15",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Cornell.",
+        "clock": "11:55",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Tellado, Dylan.",
+        "clock": "16:24",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by COR May, Liam, out top.",
+        "clock": "17:08",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [18:47].",
+        "clock": "18:47",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by COR Donahue, Blake, top woodwork.",
+        "clock": "19:20",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Savva, Andreas.",
+        "clock": "20:55",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Cornell.",
+        "clock": "21:56",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Shot by COR Donahue, Blake, out top left.",
+        "clock": "23:13",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "COR substitution: Wollstein, Kasper for Donahue, Blake.",
+        "clock": "26:07",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "COR substitution: Hovan, Nate for Miles, Andrew.",
+        "clock": "26:07",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on HAR de Souza, Gil.",
+        "clock": "28:07",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Martin, Aidan.",
+        "clock": "28:34",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by COR Harrington, Lennon.",
+        "clock": "30:24",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by COR Martin, Aidan, out right.",
+        "clock": "30:32",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Wray, Ashton.",
+        "clock": "31:53",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by COR Martin, Aidan, top right, saved by Broome, Jason.",
+        "clock": "32:42",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [32:48].",
+        "clock": "32:48",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Wollstein, Kasper.",
+        "clock": "33:21",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "COR substitution: Zapata, Sergio for Schaban, Adam.",
+        "clock": "33:41",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "COR substitution: Perez, Nikko for Wray, Ashton.",
+        "clock": "33:41",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Tanyi, Xavier for Tellado, Dylan.",
+        "clock": "34:47",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Velikin, Christo for Savva, Andreas.",
+        "clock": "34:47",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Lonergan, Shane for Poliakov, Adam.",
+        "clock": "34:47",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Elliott, Keean for de Souza, Gil.",
+        "clock": "34:47",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Palacio, Alejandro.",
+        "clock": "36:26",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Wollstein, Kasper.",
+        "clock": "39:51",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Mobray, Maxwell.",
+        "clock": "42:05",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on HAR Mobray, Maxwell.",
+        "clock": "42:05",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Shot by COR Miller, Connor, bottom left, saved by Broome, Jason.",
+        "clock": "42:52",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Langenbahn, Tim.",
+        "clock": "44:14",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR HAR: , #99 Broome, Jason, #2 Cortellessa, Mikey, #5 Mobray, Maxwell, #15 Benuce Sarvas, Lucas, #11 Savva, Andreas, #8 Wooten, Phoenix, #7 Tellado, Dylan, #13 Langenbahn, Tim, #24 de Souza, Gil, #17 Poliakov, Adam, #27 Palacio, Alejandro.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR COR: , #20 Clarson, Reuben, #3 Martin, Aidan, #4 Harrington, Lennon, #5 Melly, Justin, #10 Schaban, Adam, #11 May, Liam, #21 Wray, Ashton, #14 Eck, Griffin, #18 Miles, Andrew, #15 Momanyi, Calvin, #35 Miller, Connor.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "COR substitution: Schaban, Adam for Zapata, Sergio.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "COR substitution: Wray, Ashton for Wollstein, Kasper.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "COR substitution: Miles, Andrew for Hovan, Nate.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "COR substitution: Momanyi, Calvin for Perez, Nikko.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Savva, Andreas for Tanyi, Xavier.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Tellado, Dylan for Velikin, Christo.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: de Souza, Gil for Lonergan, Shane.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Poliakov, Adam for Elliott, Keean.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Schaban, Adam.",
+        "clock": "46:33",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COR May, Liam.",
+        "clock": "47:52",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COR Harrington, Lennon.",
+        "clock": "49:42",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [50:00].",
+        "clock": "50:00",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COR Schaban, Adam.",
+        "clock": "50:35",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COR Miles, Andrew, bottom left, saved by Broome, Jason.",
+        "clock": "50:40",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Benuce Sarvas, Lucas.",
+        "clock": "51:29",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on COR Miller, Connor.",
+        "clock": "53:48",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COR Harrington, Lennon.",
+        "clock": "56:16",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Eck, Griffin",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "HAR Adam Poliakov PENALTY KICK GOAL.",
+        "clock": "58:59",
+        "team": 0,
+        "type": "penalty",
+        "score": [
+          1,
+          0
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Shot by COR Harrington, Lennon, bottom center, saved by Broome, Jason.",
+        "clock": "61:27",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COR Miles, Andrew.",
+        "clock": "63:13",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COR Harrington, Lennon.",
+        "clock": "63:18",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Palacio, Alejandro.",
+        "clock": "63:31",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [64:16].",
+        "clock": "64:16",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Poliakov, Adam, out left.",
+        "clock": "64:49",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [65:58].",
+        "clock": "65:58",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COR Schaban, Adam, blocked.",
+        "clock": "66:23",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [66:28].",
+        "clock": "66:28",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COR Martin, Aidan, out right.",
+        "clock": "66:54",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "COR substitution: Zapata, Sergio for Wray, Ashton.",
+        "clock": "69:18",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "COR substitution: Donahue, Blake for Miles, Andrew.",
+        "clock": "69:18",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "COR substitution: Wollstein, Kasper for Momanyi, Calvin.",
+        "clock": "69:18",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Tellado, Dylan.",
+        "clock": "71:25",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [71:28].",
+        "clock": "71:28",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on HAR Savva, Andreas.",
+        "clock": "72:43",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COR Melly, Justin.",
+        "clock": "72:57",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Donahue, Blake.",
+        "clock": "73:33",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Wooten, Phoenix.",
+        "clock": "74:52",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Donahue, Blake.",
+        "clock": "75:22",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Lonergan, Shane for Savva, Andreas.",
+        "clock": "76:12",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on May, Liam.",
+        "clock": "76:55",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Tellado, Dylan, out top.",
+        "clock": "77:28",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on COR Eck, Griffin.",
+        "clock": "78:10",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "COR substitution: Hovan, Nate for Martin, Aidan.",
+        "clock": "80:29",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Lobley, Drew for Tellado, Dylan.",
+        "clock": "80:29",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by COR Donahue, Blake Assist by Hovan, Nate.",
+        "clock": "80:59",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          1,
+          1
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Benuce Sarvas, Lucas, out top.",
+        "clock": "81:30",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COR Miller, Connor, bottom center, saved by Broome, Jason.",
+        "clock": "84:03",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COR Donahue, Blake, bottom right, saved by Broome, Jason.",
+        "clock": "84:30",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [84:35].",
+        "clock": "84:35",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COR Wollstein, Kasper.",
+        "clock": "85:07",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [85:10].",
+        "clock": "85:10",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COR Zapata, Sergio, top, saved by Broome, Jason.",
+        "clock": "85:30",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [86:33].",
+        "clock": "86:33",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by COR Eck, Griffin Assist by Hovan, Nate.",
+        "clock": "87:00",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          1,
+          2
+        ]
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Velikin, Christo for Lobley, Drew.",
+        "clock": "87:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by COR Wollstein, Kasper, out right.",
+        "clock": "88:00",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [88:04].",
+        "clock": "88:04",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on COR Harrington, Lennon.",
+        "clock": "89:40",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Velikin, Christo, blocked.",
+        "clock": "89:40",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Mobray, Maxwell, top, saved by Clarson, Reuben.",
+        "clock": "89:40",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "team": 1,
+        "type": "period"
+      }
+    ],
+    "stadium": "Berman Field",
+    "attendance": 414,
+    "kickoff": "03:30",
+    "officials": [
+      "Referee: Kyle Johnston",
+      "Asst. Referee: Kyle O'Grady",
+      "Asst. Referee: Judson Ames",
+      "Alt. Official: Jeffrey Trubia"
+    ],
+    "home_index": 1
+  }
+}

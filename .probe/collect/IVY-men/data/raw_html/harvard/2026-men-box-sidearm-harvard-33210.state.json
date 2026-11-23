@@ -1,0 +1,1336 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/connecticut/boxscore/33210",
+  "final_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/connecticut/boxscore/33210",
+  "etag": null,
+  "last_modified": null,
+  "signature": "9ce08529086270af79274ca29a0bcfeb0f7fbf893a30c52b3467e8818003a97f",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:16:00+00:00",
+  "verified_at": "2026-11-23T10:16:00+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/connecticut/boxscore/33210",
+    "teams": [
+      {
+        "name": "UConn",
+        "abbr": "CONN",
+        "score": 2,
+        "periods": [
+          0,
+          2
+        ],
+        "shots": 13,
+        "sog": 6,
+        "saves": 4,
+        "corners": 2,
+        "fouls": 13,
+        "players": [
+          {
+            "name": "Brayden Strait",
+            "position": "DEF",
+            "number": "2",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Abel Ador",
+            "position": "DEF",
+            "number": "6",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Elijah Langford",
+            "number": "9",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 43
+          },
+          {
+            "name": "Aidan Sheppela",
+            "position": "MID",
+            "number": "11",
+            "started": true,
+            "shots": 2,
+            "sog": 2,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 78
+          },
+          {
+            "name": "Evan Pickering",
+            "position": "FWD",
+            "number": "12",
+            "started": true,
+            "shots": 3,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 66
+          },
+          {
+            "name": "Kyle Durham",
+            "position": "GK",
+            "number": "13",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Yotaro Furutani",
+            "position": "MID",
+            "number": "15",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 69
+          },
+          {
+            "name": "Johan Hamel",
+            "position": "DEF",
+            "number": "22",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Preston Alessio",
+            "position": "MID",
+            "number": "23",
+            "started": true,
+            "shots": 3,
+            "sog": 1,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 90
+          },
+          {
+            "name": "Owen Bland",
+            "position": "DEF",
+            "number": "24",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 62
+          },
+          {
+            "name": "Sebastian Francis",
+            "position": "DEF",
+            "number": "26",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Max Gummesson",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 21
+          },
+          {
+            "name": "Grant Emerhi",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 20
+          },
+          {
+            "name": "Alfonso Arredondo",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 24
+          },
+          {
+            "name": "Lucas DePinho",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 28
+          },
+          {
+            "name": "Mateo DePinho",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 5
+          },
+          {
+            "name": "Justin Hubbard",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 34
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Kyle Durham",
+            "position": "GK",
+            "number": "13",
+            "minutes": 90,
+            "goals_against": 2,
+            "saves": 4
+          }
+        ]
+      },
+      {
+        "name": "Harvard",
+        "abbr": "HARV",
+        "score": 2,
+        "periods": [
+          1,
+          1
+        ],
+        "shots": 14,
+        "sog": 6,
+        "saves": 4,
+        "corners": 8,
+        "fouls": 16,
+        "players": [
+          {
+            "name": "Alexander Castel",
+            "player_id": "32567",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Nayan Das",
+            "player_id": "32569",
+            "position": "DEF",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Dylan Tellado",
+            "player_id": "32584",
+            "position": "FWD",
+            "number": "7",
+            "started": true,
+            "shots": 2,
+            "sog": 2,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 62
+          },
+          {
+            "name": "Phoenix Wooten",
+            "player_id": "32587",
+            "position": "MID",
+            "number": "8",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 73
+          },
+          {
+            "name": "Ben Kelly",
+            "player_id": "32572",
+            "position": "FWD",
+            "number": "10",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 55
+          },
+          {
+            "name": "Andreas Savva",
+            "player_id": "32581",
+            "position": "FWD",
+            "number": "11",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 49
+          },
+          {
+            "name": "Andreas Engle",
+            "player_id": "32591",
+            "position": "FWD",
+            "number": "12",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 73
+          },
+          {
+            "name": "Tim Langenbahn",
+            "player_id": "32573",
+            "position": "DEF",
+            "number": "13",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Adam Poliakov",
+            "player_id": "32579",
+            "position": "FWD",
+            "number": "17",
+            "started": true,
+            "shots": 6,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 79
+          },
+          {
+            "name": "Alejandro Palacio",
+            "player_id": "32578",
+            "position": "DEF",
+            "number": "27",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 62
+          },
+          {
+            "name": "Jason Broome",
+            "player_id": "32566",
+            "position": "GK",
+            "number": "99",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Xavier Tanyi",
+            "player_id": "32583",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 41
+          },
+          {
+            "name": "Lucas Benuce Sarvas",
+            "player_id": "32565",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 28
+          },
+          {
+            "name": "Drew Lobley",
+            "player_id": "32574",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 28
+          },
+          {
+            "name": "Shane Lonergan",
+            "player_id": "32575",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 17
+          },
+          {
+            "name": "Gil de Souza",
+            "player_id": "32589",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 35
+          },
+          {
+            "name": "Sophian Lovato",
+            "player_id": "32576",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 28
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Jason Broome",
+            "player_id": "32566",
+            "position": "GK",
+            "number": "99",
+            "minutes": 90,
+            "goals_against": 2,
+            "saves": 4
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "09:37",
+        "team": 1,
+        "scorer": "Dylan Tellado",
+        "season_total": 2,
+        "assist": "Ben Kelly",
+        "description": "GOAL by HARV Tellado, Dylan Assist by Kelly, Ben."
+      },
+      {
+        "time": "56:57",
+        "team": 0,
+        "scorer": "Aidan Sheppela",
+        "season_total": 2,
+        "description": "GOAL by CONN Sheppela, Aidan."
+      },
+      {
+        "time": "74:46",
+        "team": 0,
+        "scorer": "Evan Pickering",
+        "season_total": 4,
+        "assist": "Preston Alessio",
+        "description": "GOAL by CONN Pickering, Evan Assist by Alessio, Preston."
+      },
+      {
+        "time": "80:29",
+        "team": 1,
+        "scorer": "Phoenix Wooten",
+        "season_total": 1,
+        "assist": "Alejandro Palacio",
+        "description": "GOAL by HARV Wooten, Phoenix Assist by Palacio, Alejandro."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Tim Langenbahn",
+        "number": "13",
+        "time": "23:32",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Sophian Lovato",
+        "number": "28",
+        "time": "41:18",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Gil de Souza",
+        "number": "24",
+        "time": "43:07",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Xavier Tanyi",
+        "number": "14",
+        "time": "54:20",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Abel Ador",
+        "number": "6",
+        "time": "68:24",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Andreas Savva",
+        "number": "11",
+        "time": "74:56",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Elijah Langford",
+        "number": "9",
+        "time": "76:08",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "0",
+        "number": "0",
+        "time": "82:50",
+        "team": 0
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Broome, Jason at goalie for Harvard",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Durham, Kyle at goalie for UConn",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Palacio, Alejandro.",
+        "clock": "00:15",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Poliakov, Adam, out top.",
+        "clock": "01:27",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Poliakov, Adam.",
+        "clock": "02:40",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by CONN Pickering, Evan.",
+        "clock": "04:02",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by CONN Furutani, Yotaro.",
+        "clock": "04:06",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by CONN Langford, Elijah, bottom right, saved by Broome, Jason.",
+        "clock": "04:31",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [05:22].",
+        "clock": "05:22",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [05:54].",
+        "clock": "05:54",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Tellado, Dylan, bottom center, saved by Durham, Kyle.",
+        "clock": "06:05",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Poliakov, Adam, bottom right, saved by Durham, Kyle.",
+        "clock": "07:18",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Savva, Andreas.",
+        "clock": "08:30",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Ador, Abel.",
+        "clock": "08:55",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by HARV Tellado, Dylan Assist by Kelly, Ben.",
+        "clock": "09:37",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Foul on Das, Nayan.",
+        "clock": "11:53",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Palacio, Alejandro.",
+        "clock": "16:16",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [17:29].",
+        "clock": "17:29",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Castel, Alexander.",
+        "clock": "18:09",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Langenbahn, Tim, out right.",
+        "clock": "18:13",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Harvard.",
+        "clock": "19:43",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Langenbahn, Tim.",
+        "clock": "20:31",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by CONN Alessio, Preston, bottom center, saved by Broome, Jason.",
+        "clock": "21:45",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Wooten, Phoenix.",
+        "clock": "21:53",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on HARV Langenbahn, Tim.",
+        "clock": "23:32",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Shot by CONN Ador, Abel, out left.",
+        "clock": "23:36",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Savva, Andreas, out top.",
+        "clock": "23:36",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Tanyi, Xavier for Savva, Andreas.",
+        "clock": "27:12",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: de Souza, Gil for Kelly, Ben.",
+        "clock": "27:12",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Das, Nayan.",
+        "clock": "27:33",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Furutani, Yotaro.",
+        "clock": "32:20",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Hamel, Johan.",
+        "clock": "33:13",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Lovato, Sophian for Tellado, Dylan.",
+        "clock": "33:39",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Lobley, Drew for Wooten, Phoenix.",
+        "clock": "33:39",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Benuce Sarvas, Lucas for Poliakov, Adam.",
+        "clock": "33:39",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Lonergan, Shane for Palacio, Alejandro.",
+        "clock": "33:39",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "CONN substitution: Hubbard, Justin for Langford, Elijah.",
+        "clock": "34:22",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "CONN substitution: Emerhi, Grant for Sheppela, Aidan.",
+        "clock": "37:38",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [38:51].",
+        "clock": "38:51",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Harvard.",
+        "clock": "40:32",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Das, Nayan.",
+        "clock": "41:02",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on HARV Lovato, Sophian.",
+        "clock": "41:18",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on HARV de Souza, Gil.",
+        "clock": "43:07",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Tanyi, Xavier.",
+        "clock": "44:49",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR CONN: , #13 Durham, Kyle, #2 Strait, Brayden, #6 Ador, Abel, #29 Hubbard, Justin, #11 Sheppela, Aidan, #18 Arredondo, Alfonso, #15 Furutani, Yotaro, #22 Hamel, Johan, #23 Alessio, Preston, #24 Bland, Owen, #26 Francis, Sebastian.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR HARV: , #99 Broome, Jason, #4 Castel, Alexander, #6 Das, Nayan, #28 Lovato, Sophian, #16 Lobley, Drew, #8 Wooten, Phoenix, #14 Tanyi, Xavier, #17 Poliakov, Adam, #13 Langenbahn, Tim, #15 Benuce Sarvas, Lucas, #10 Kelly, Ben.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Wooten, Phoenix for de Souza, Gil.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Poliakov, Adam for Engle, Andreas.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Kelly, Ben for Lonergan, Shane.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "CONN substitution: Sheppela, Aidan for Emerhi, Grant.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "CONN substitution: Arredondo, Alfonso for Pickering, Evan.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by CONN Alessio, Preston, out top.",
+        "clock": "46:51",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [48:01].",
+        "clock": "48:01",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Harvard.",
+        "clock": "48:32",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Ador, Abel.",
+        "clock": "49:11",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [50:39].",
+        "clock": "50:39",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by CONN Arredondo, Alfonso, out top.",
+        "clock": "51:33",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Offside against UConn.",
+        "clock": "52:12",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Lobley, Drew.",
+        "clock": "53:39",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on HARV Tanyi, Xavier.",
+        "clock": "54:20",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Shot by CONN Bland, Owen, bottom left, saved by Broome, Jason.",
+        "clock": "55:37",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [55:46].",
+        "clock": "55:46",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by CONN Sheppela, Aidan.",
+        "clock": "56:57",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          1,
+          1
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Foul on Hamel, Johan.",
+        "clock": "58:44",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Poliakov, Adam.",
+        "clock": "59:24",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Lovato, Sophian.",
+        "clock": "60:37",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Tellado, Dylan for Lovato, Sophian.",
+        "clock": "61:06",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Engle, Andreas for Lobley, Drew.",
+        "clock": "61:06",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Palacio, Alejandro for Benuce Sarvas, Lucas.",
+        "clock": "61:06",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "CONN substitution: DePinho, Lucas for Bland, Owen.",
+        "clock": "61:06",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Das, Nayan.",
+        "clock": "61:06",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [62:44].",
+        "clock": "62:44",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Poliakov, Adam.",
+        "clock": "63:16",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Arredondo, Alfonso.",
+        "clock": "63:58",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Engle, Andreas, bottom center, saved by Durham, Kyle.",
+        "clock": "64:33",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Poliakov, Adam, out top right.",
+        "clock": "65:08",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on CONN Ador, Abel.",
+        "clock": "68:24",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "CONN substitution: Gummesson, Max for Hubbard, Justin.",
+        "clock": "68:24",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "CONN substitution: Langford, Elijah for Arredondo, Alfonso.",
+        "clock": "68:24",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "CONN substitution: Pickering, Evan for Furutani, Yotaro.",
+        "clock": "68:24",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Savva, Andreas for Tanyi, Xavier.",
+        "clock": "68:44",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Harvard.",
+        "clock": "68:46",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Shot by CONN Sheppela, Aidan, bottom center, saved by Broome, Jason.",
+        "clock": "69:47",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by CONN Pickering, Evan, out top left.",
+        "clock": "70:27",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Poliakov, Adam, out left.",
+        "clock": "71:03",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: de Souza, Gil for Kelly, Ben.",
+        "clock": "71:19",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Engle, Andreas.",
+        "clock": "71:39",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Langford, Elijah.",
+        "clock": "72:31",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by CONN Alessio, Preston, right woodwork.",
+        "clock": "74:42",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by CONN Pickering, Evan Assist by Alessio, Preston.",
+        "clock": "74:46",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          2,
+          1
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on HARV Savva, Andreas.",
+        "clock": "74:56",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Langford, Elijah.",
+        "clock": "74:56",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on CONN Langford, Elijah.",
+        "clock": "76:08",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "CONN substitution: Emerhi, Grant for Langford, Elijah.",
+        "clock": "76:08",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Engle, Andreas.",
+        "clock": "78:24",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Francis, Sebastian.",
+        "clock": "79:19",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [79:48].",
+        "clock": "79:48",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by HARV Wooten, Phoenix Assist by Palacio, Alejandro.",
+        "clock": "80:29",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          2,
+          2
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Foul on Alessio, Preston.",
+        "clock": "80:43",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Ador, Abel.",
+        "clock": "82:48",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on CONN TEAM.",
+        "clock": "82:50",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Lonergan, Shane for Wooten, Phoenix.",
+        "clock": "83:51",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "CONN substitution: DePinho, Mateo for Sheppela, Aidan.",
+        "clock": "85:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Harvard.",
+        "clock": "86:18",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Gummesson, Max.",
+        "clock": "87:14",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Savva, Andreas, bottom right, saved by Durham, Kyle.",
+        "clock": "87:28",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [87:35].",
+        "clock": "87:35",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Poliakov, Adam.",
+        "clock": "87:56",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "team": 1,
+        "type": "period"
+      }
+    ],
+    "stadium": "Jordan Field",
+    "attendance": 900,
+    "kickoff": "01:00",
+    "officials": [
+      "Referee: Philip Benson",
+      "Asst. Referee: Jordan Cavaco",
+      "Asst. Referee: Ryan Shea",
+      "Alt. Official: Ernesto Rodriguez"
+    ],
+    "home_index": 1
+  }
+}

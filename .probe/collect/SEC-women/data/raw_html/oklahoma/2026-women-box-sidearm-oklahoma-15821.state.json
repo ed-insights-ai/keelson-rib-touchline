@@ -1,0 +1,1560 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://soonersports.com/sports/soccer/stats/2026/ole-miss/boxscore/15821",
+  "final_url": "https://soonersports.com/sports/soccer/stats/2026/ole-miss/boxscore/15821",
+  "etag": null,
+  "last_modified": null,
+  "signature": "5f66708a903fbbe004464397feb3b8490e7b33adae8fd16aa780428cfd7a949b",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:16:17+00:00",
+  "verified_at": "2026-11-23T10:16:17+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://soonersports.com/sports/soccer/stats/2026/ole-miss/boxscore/15821",
+    "teams": [
+      {
+        "name": "Oklahoma",
+        "abbr": "OU",
+        "score": 6,
+        "periods": [
+          3,
+          3
+        ],
+        "winner": true,
+        "shots": 16,
+        "saves": 0,
+        "corners": 7,
+        "fouls": 14,
+        "offsides": 3,
+        "sog": 11,
+        "players": [
+          {
+            "name": "Callie Sullivan",
+            "player_id": "20056",
+            "position": "GK",
+            "number": "34",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 80
+          },
+          {
+            "name": "Paige Califf",
+            "player_id": "20058",
+            "position": "MID",
+            "number": "2",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 71
+          },
+          {
+            "name": "Narissa Fults",
+            "player_id": "20059",
+            "position": "FWD",
+            "number": "5",
+            "started": true,
+            "shots": 2,
+            "sog": 2,
+            "goals": 2,
+            "assists": 1,
+            "minutes": 64
+          },
+          {
+            "name": "Kayla Keefer",
+            "player_id": "20049",
+            "position": "FWD",
+            "number": "6",
+            "started": true,
+            "shots": 6,
+            "sog": 5,
+            "goals": 3,
+            "assists": 1,
+            "minutes": 36
+          },
+          {
+            "name": "Ally Laccinole",
+            "player_id": "20050",
+            "position": "DEF",
+            "number": "9",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 80
+          },
+          {
+            "name": "Ariana Ellison",
+            "player_id": "20247",
+            "position": "DEF",
+            "number": "16",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 54
+          },
+          {
+            "name": "Kate McCallister",
+            "player_id": "20248",
+            "position": "MID",
+            "number": "17",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 76
+          },
+          {
+            "name": "Kendall Campbell",
+            "player_id": "20250",
+            "position": "DEF",
+            "number": "21",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 82
+          },
+          {
+            "name": "Sadie Sterbenz",
+            "player_id": "20060",
+            "position": "DEF",
+            "number": "23",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 71
+          },
+          {
+            "name": "Claire Curran",
+            "player_id": "20044",
+            "position": "FWD",
+            "number": "30",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 31
+          },
+          {
+            "name": "Elle Canty",
+            "player_id": "20043",
+            "position": "MID",
+            "number": "33",
+            "started": true,
+            "shots": 2,
+            "sog": 2,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 65
+          },
+          {
+            "name": "Addison Tauscher",
+            "player_id": "20063",
+            "position": "GK",
+            "number": "77",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 10
+          },
+          {
+            "name": "Sophie Morrin",
+            "player_id": "20053",
+            "position": "MID",
+            "number": "4",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 34
+          },
+          {
+            "name": "Fernanda Dantas",
+            "player_id": "20244",
+            "position": "DEF",
+            "number": "7",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 6
+          },
+          {
+            "name": "Isabella Martinez",
+            "player_id": "20052",
+            "position": "MID",
+            "number": "8",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 17
+          },
+          {
+            "name": "Avery Brand",
+            "player_id": "20245",
+            "position": "MID",
+            "number": "10",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 25
+          },
+          {
+            "name": "Drue Legan",
+            "player_id": "20051",
+            "position": "DEF",
+            "number": "11",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 18
+          },
+          {
+            "name": "Kennedy Kaiser",
+            "player_id": "20246",
+            "position": "FWD",
+            "number": "12",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 26
+          },
+          {
+            "name": "Kiki Smith",
+            "player_id": "20055",
+            "position": "DEF",
+            "number": "14",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 44
+          },
+          {
+            "name": "Aly Guthrie",
+            "player_id": "20047",
+            "position": "MID",
+            "number": "15",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 13
+          },
+          {
+            "name": "Brenna Hallam",
+            "player_id": "20251",
+            "position": "FWD",
+            "number": "22",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 33
+          },
+          {
+            "name": "Natalie Hoefer",
+            "player_id": "20048",
+            "position": "DEF",
+            "number": "24",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 5
+          },
+          {
+            "name": "Emily Davey",
+            "player_id": "20045",
+            "position": "FWD",
+            "number": "36",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 49
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Callie Sullivan",
+            "player_id": "20056",
+            "position": "GK",
+            "number": "34",
+            "minutes": 80,
+            "goals_against": 1,
+            "saves": 0
+          },
+          {
+            "name": "Addison Tauscher",
+            "player_id": "20063",
+            "position": "GK",
+            "number": "77",
+            "minutes": 10,
+            "goals_against": 0,
+            "saves": 0
+          }
+        ]
+      },
+      {
+        "name": "Ole Miss",
+        "abbr": "MISS",
+        "score": 1,
+        "periods": [
+          0,
+          1
+        ],
+        "shots": 8,
+        "saves": 5,
+        "corners": 2,
+        "fouls": 7,
+        "offsides": 0,
+        "sog": 1,
+        "players": [
+          {
+            "name": "Taylor Prigge",
+            "position": "GK",
+            "number": "1",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Evie Ewing",
+            "position": "FWD",
+            "number": "5",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 52
+          },
+          {
+            "name": "Sarah Granno",
+            "position": "FWD",
+            "number": "7",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 57
+          },
+          {
+            "name": "Alena Watts",
+            "position": "DEF",
+            "number": "8",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 65
+          },
+          {
+            "name": "Maizy Kluksdal",
+            "position": "MID",
+            "number": "9",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 68
+          },
+          {
+            "name": "Peyton Dyess",
+            "position": "DEF",
+            "number": "16",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 76
+          },
+          {
+            "name": "Ava Ghoreishi",
+            "position": "FWD",
+            "number": "17",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 62
+          },
+          {
+            "name": "Becca Skinner",
+            "position": "FWD",
+            "number": "23",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 52
+          },
+          {
+            "name": "Camdyn Hurt",
+            "position": "DEF",
+            "number": "24",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 66
+          },
+          {
+            "name": "Allison Kolski",
+            "position": "DEF",
+            "number": "26",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Jenna Studer",
+            "position": "DEF",
+            "number": "33",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Bella Leonard",
+            "position": "MID",
+            "number": "11",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 41
+          },
+          {
+            "name": "Georgia Skelton",
+            "position": "DEF",
+            "number": "12",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 10
+          },
+          {
+            "name": "Katie Ramsden",
+            "position": "FWD",
+            "number": "13",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 38
+          },
+          {
+            "name": "Addy Judson",
+            "position": "DEF",
+            "number": "14",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 7
+          },
+          {
+            "name": "Tate Blincoe",
+            "position": "DEF",
+            "number": "15",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 22
+          },
+          {
+            "name": "Isabella Pontieri",
+            "position": "MID",
+            "number": "18",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 28
+          },
+          {
+            "name": "Marieke ten Brink",
+            "position": "DEF",
+            "number": "20",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 1
+          },
+          {
+            "name": "Teaghan Irvin",
+            "position": "FWD",
+            "number": "21",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 28
+          },
+          {
+            "name": "Isabelle Wright",
+            "position": "FWD",
+            "number": "28",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 33
+          },
+          {
+            "name": "Cassidy Kuehne",
+            "position": "MID",
+            "number": "32",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 14
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Taylor Prigge",
+            "position": "GK",
+            "number": "1",
+            "minutes": 90,
+            "goals_against": 6,
+            "saves": 5
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "07:00",
+        "team": 0,
+        "scorer": "Kayla Keefer",
+        "season_total": 18,
+        "description": "OU Kayla Keefer PENALTY KICK GOAL."
+      },
+      {
+        "time": "14:07",
+        "team": 0,
+        "scorer": "Narissa Fults",
+        "season_total": 7,
+        "assist": "Kayla Keefer",
+        "description": "GOAL by OU Fults, Narissa Assist by Keefer, Kayla."
+      },
+      {
+        "time": "21:50",
+        "team": 0,
+        "scorer": "Narissa Fults",
+        "season_total": 7,
+        "description": "GOAL by OU Fults, Narissa."
+      },
+      {
+        "time": "48:02",
+        "team": 0,
+        "scorer": "Kayla Keefer",
+        "season_total": 18,
+        "description": "GOAL by OU Keefer, Kayla."
+      },
+      {
+        "time": "49:48",
+        "team": 0,
+        "scorer": "Elle Canty",
+        "season_total": 3,
+        "description": "GOAL by OU Canty, Elle."
+      },
+      {
+        "time": "50:16",
+        "team": 0,
+        "scorer": "Kayla Keefer",
+        "season_total": 18,
+        "assist": "Narissa Fults",
+        "description": "GOAL by OU Keefer, Kayla Assist by Fults, Narissa."
+      },
+      {
+        "time": "54:59",
+        "team": 1,
+        "scorer": "Maizy Kluksdal",
+        "season_total": 1,
+        "assist": "Peyton Dyess",
+        "description": "GOAL by MISS Kluksdal, Maizy Assist by Dyess, Peyton."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Emily Davey",
+        "number": "36",
+        "time": "25:12",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Claire Curran",
+        "number": "30",
+        "time": "51:41",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Sophie Morrin",
+        "number": "4",
+        "time": "77:02",
+        "team": 0
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Prigge, Taylor at goalie for Ole Miss",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Sullivan, Callie at goalie for Oklahoma",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Oklahoma.",
+        "clock": "00:21",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [01:34].",
+        "clock": "01:34",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [02:02].",
+        "clock": "02:02",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MISS Kluksdal, Maizy.",
+        "clock": "02:15",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OU Curran, Claire, out top left.",
+        "clock": "03:19",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Ewing, Evie.",
+        "clock": "05:47",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [06:12].",
+        "clock": "06:12",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Kolski, Allison",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "OU Kayla Keefer PENALTY KICK GOAL.",
+        "clock": "07:00",
+        "team": 0,
+        "type": "penalty",
+        "score": [
+          1,
+          0
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Foul on Curran, Claire.",
+        "clock": "08:17",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Ghoreishi, Ava.",
+        "clock": "09:57",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Keefer, Kayla.",
+        "clock": "10:23",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Oklahoma.",
+        "clock": "11:14",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Ellison, Ariana.",
+        "clock": "12:32",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OU Keefer, Kayla, bottom center, saved by Prigge, Taylor.",
+        "clock": "14:07",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by OU Fults, Narissa Assist by Keefer, Kayla.",
+        "clock": "14:07",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          2,
+          0
+        ]
+      },
+      {
+        "period": "1",
+        "text": "OU substitution: Davey, Emily for Curran, Claire.",
+        "clock": "14:07",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MISS Ewing, Evie.",
+        "clock": "16:01",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Davey, Emily.",
+        "clock": "17:39",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OU Keefer, Kayla.",
+        "clock": "21:50",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by OU Fults, Narissa.",
+        "clock": "21:50",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          3,
+          0
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Foul on McCallister, Kate.",
+        "clock": "22:01",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Fults, Narissa.",
+        "clock": "23:48",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on OU Davey, Emily.",
+        "clock": "25:12",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "MISS substitution: Ramsden, Katie for Ewing, Evie.",
+        "clock": "25:46",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "MISS substitution: Wright, Isabelle for Granno, Sarah.",
+        "clock": "25:46",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OU substitution: Smith, Kiki for Califf, Paige.",
+        "clock": "25:46",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OU substitution: Morrin, Sophie for Ellison, Ariana.",
+        "clock": "25:46",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "MISS substitution: Leonard, Bella for Hurt, Camdyn.",
+        "clock": "27:23",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Keefer, Kayla.",
+        "clock": "28:19",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "OU substitution: Kaiser, Kennedy for Fults, Narissa.",
+        "clock": "29:56",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OU substitution: Hallam, Brenna for Keefer, Kayla.",
+        "clock": "29:56",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OU McCallister, Kate, bottom center, saved by Prigge, Taylor.",
+        "clock": "31:14",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Leonard, Bella.",
+        "clock": "31:33",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "MISS substitution: Pontieri, Isabella for Skinner, Becca.",
+        "clock": "32:45",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "MISS substitution: Irvin, Teaghan for Ghoreishi, Ava.",
+        "clock": "33:29",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OU substitution: Brand, Avery for Canty, Elle.",
+        "clock": "33:29",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OU Brand, Avery, out top.",
+        "clock": "35:56",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "MISS substitution: Blincoe, Tate for Kluksdal, Maizy.",
+        "clock": "36:08",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OU substitution: Legan, Drue for Campbell, Kendall.",
+        "clock": "36:52",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MISS Pontieri, Isabella.",
+        "clock": "37:59",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MISS Watts, Alena.",
+        "clock": "38:07",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "OU substitution: Dantas, Fernanda for Sterbenz, Sadie.",
+        "clock": "38:32",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MISS Leonard, Bella, out top.",
+        "clock": "39:38",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Legan, Drue.",
+        "clock": "40:11",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MISS Watts, Alena, out right.",
+        "clock": "41:28",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "OU substitution: Guthrie, Aly for Davey, Emily.",
+        "clock": "41:40",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OU substitution: Martinez, Isabella for Kaiser, Kennedy.",
+        "clock": "41:46",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Irvin, Teaghan.",
+        "clock": "43:43",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OU Laccinole, Ally.",
+        "clock": "44:19",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "MISS substitution: Ten Brink, Marieke for Leonard, Bella.",
+        "clock": "44:25",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OU Morrin, Sophie, bottom left, saved by Prigge, Taylor.",
+        "clock": "44:25",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OU Guthrie, Aly, out right.",
+        "clock": "44:25",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR OU: , #34 Sullivan, Callie, #2 Califf, Paige, #5 Fults, Narissa, #6 Keefer, Kayla, #9 Laccinole, Ally, #16 Ellison, Ariana, #17 McCallister, Kate, #21 Campbell, Kendall, #23 Sterbenz, Sadie, #30 Curran, Claire, #33 Canty, Elle.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR MISS: , #1 Prigge, Taylor, #23 Skinner, Becca, #9 Kluksdal, Maizy, #8 Watts, Alena, #5 Ewing, Evie, #16 Dyess, Peyton, #17 Ghoreishi, Ava, #24 Hurt, Camdyn, #7 Granno, Sarah, #26 Kolski, Allison, #33 Studer, Jenna.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "MISS substitution: Skinner, Becca for Ramsden, Katie.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MISS substitution: Kluksdal, Maizy for Wright, Isabelle.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MISS substitution: Ewing, Evie for Blincoe, Tate.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MISS substitution: Ghoreishi, Ava for Irvin, Teaghan.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MISS substitution: Hurt, Camdyn for Pontieri, Isabella.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MISS substitution: Granno, Sarah for Ten Brink, Marieke.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Califf, Paige for Smith, Kiki.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Fults, Narissa for Martinez, Isabella.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Keefer, Kayla for Hallam, Brenna.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Ellison, Ariana for Morrin, Sophie.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Campbell, Kendall for Legan, Drue.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Sterbenz, Sadie for Dantas, Fernanda.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Curran, Claire for Guthrie, Aly.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Canty, Elle for Brand, Avery.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by OU Keefer, Kayla.",
+        "clock": "48:02",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          4,
+          0
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Shot by OU Keefer, Kayla, bottom right, saved by Prigge, Taylor.",
+        "clock": "48:59",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [49:09].",
+        "clock": "49:09",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by OU Canty, Elle.",
+        "clock": "49:48",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          5,
+          0
+        ]
+      },
+      {
+        "period": "2",
+        "text": "GOAL by OU Keefer, Kayla Assist by Fults, Narissa.",
+        "clock": "50:16",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          6,
+          0
+        ]
+      },
+      {
+        "period": "2",
+        "text": "MISS substitution: Leonard, Bella for Watts, Alena.",
+        "clock": "50:48",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Kaiser, Kennedy for Keefer, Kayla.",
+        "clock": "50:48",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on OU Curran, Claire.",
+        "clock": "51:41",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Davey, Emily for Curran, Claire.",
+        "clock": "53:19",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Ellison, Ariana.",
+        "clock": "54:10",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by MISS Kluksdal, Maizy Assist by Dyess, Peyton.",
+        "clock": "54:59",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          6,
+          1
+        ]
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Smith, Kiki for Sterbenz, Sadie.",
+        "clock": "59:33",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on McCallister, Kate.",
+        "clock": "60:08",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Smith, Kiki.",
+        "clock": "61:49",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Ellison, Ariana.",
+        "clock": "63:16",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "MISS substitution: Pontieri, Isabella for Skinner, Becca.",
+        "clock": "63:43",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Morrin, Sophie for Fults, Narissa.",
+        "clock": "64:23",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Hallam, Brenna for Kaiser, Kennedy.",
+        "clock": "64:23",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [67:03].",
+        "clock": "67:03",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Davey, Emily.",
+        "clock": "68:03",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Granno, Sarah.",
+        "clock": "69:31",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "MISS substitution: Ramsden, Katie for Ewing, Evie.",
+        "clock": "70:20",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MISS substitution: Irvin, Teaghan for Ghoreishi, Ava.",
+        "clock": "72:08",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Sterbenz, Sadie for Ellison, Ariana.",
+        "clock": "72:08",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [72:43].",
+        "clock": "72:43",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Oklahoma.",
+        "clock": "73:28",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OU Canty, Elle, bottom left, saved by Prigge, Taylor.",
+        "clock": "74:19",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "MISS substitution: Kuehne, Cassidy for Kluksdal, Maizy.",
+        "clock": "75:25",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MISS substitution: Wright, Isabelle for Leonard, Bella.",
+        "clock": "75:25",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MISS substitution: Blincoe, Tate for Dyess, Peyton.",
+        "clock": "75:25",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MISS substitution: Watts, Alena for Granno, Sarah.",
+        "clock": "75:25",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Brand, Avery for Davey, Emily.",
+        "clock": "75:25",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Fults, Narissa for Canty, Elle.",
+        "clock": "75:25",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Martinez, Isabella for McCallister, Kate.",
+        "clock": "75:37",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [76:03].",
+        "clock": "76:03",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on OU Morrin, Sophie.",
+        "clock": "77:02",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Ramsden, Katie.",
+        "clock": "78:07",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "MISS substitution: Skelton, Georgia for Pontieri, Isabella.",
+        "clock": "79:38",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Tauscher, Addison for Sullivan, Callie.",
+        "clock": "79:38",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Legan, Drue for Morrin, Sophie.",
+        "clock": "79:38",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Guthrie, Aly for Laccinole, Ally.",
+        "clock": "79:38",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by MISS Irvin, Teaghan, out top.",
+        "clock": "79:45",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "MISS substitution: Judson, Addy for Hurt, Camdyn.",
+        "clock": "82:40",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Curran, Claire for Hallam, Brenna.",
+        "clock": "82:40",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OU substitution: Hoefer, Natalie for Smith, Kiki.",
+        "clock": "84:22",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Legan, Drue.",
+        "clock": "85:04",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [86:37].",
+        "clock": "86:37",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [89:04].",
+        "clock": "89:04",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "type": "period"
+      }
+    ],
+    "stadium": "Ole Miss Soccer Stadium",
+    "attendance": 326,
+    "kickoff": "03:00",
+    "officials": [
+      "Referee: Jesus Hernandez-Balbas",
+      "Asst. Referee: Mark Herrington",
+      "Asst. Referee: Barbara Jo Agnew Brillard",
+      "Alt. Official: John White"
+    ],
+    "home_index": 1
+  }
+}

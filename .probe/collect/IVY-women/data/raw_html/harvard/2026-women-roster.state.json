@@ -1,0 +1,236 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://gocrimson.com/sports/womens-soccer/roster/2026",
+  "final_url": "https://gocrimson.com/sports/womens-soccer/roster/2026",
+  "etag": null,
+  "last_modified": "Mon, 23 Nov 2026 10:11:47 GMT",
+  "signature": "a04fd5ae6634072e68d2018fe69568fcd281f6647f68c02541bb7ce377de7852",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:15:54+00:00",
+  "verified_at": "2026-11-23T10:15:54+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 24,
+    "reason": null
+  },
+  "parsed": {
+    "players": [
+      {
+        "name": "Fio Eddy",
+        "number": "0",
+        "position": "Goalkeeper",
+        "height": "5'10\"",
+        "hometown": "Cambridge, Mass.",
+        "class_year": "First-Year",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/fio-eddy/33045"
+      },
+      {
+        "name": "Sophie Fleishman",
+        "number": "00",
+        "position": "Goalkeeper",
+        "height": "5'7\"",
+        "hometown": "Newton, Mass.",
+        "class_year": "Sophomore",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/sophie-fleishman/31855"
+      },
+      {
+        "name": "Olivia Busby",
+        "number": "1",
+        "position": "Goalkeeper",
+        "height": "5'7\"",
+        "hometown": "Markham, Ontario",
+        "class_year": "First-Year",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/olivia-busby/33038"
+      },
+      {
+        "name": "Danicka Miller",
+        "number": "3",
+        "position": "Defender",
+        "height": "5'7\"",
+        "hometown": "Arlington, Va.",
+        "class_year": "Sophomore",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/danicka-miller/31864"
+      },
+      {
+        "name": "Erin Gordon",
+        "number": "4",
+        "position": "Defender",
+        "height": "5'5\"",
+        "hometown": "Sydney, Australia",
+        "class_year": "Junior",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/erin-gordon/31856"
+      },
+      {
+        "name": "Phoebe Chadwick",
+        "number": "5",
+        "position": "Defender",
+        "height": "5'7\"",
+        "hometown": "Stoke-on-Trent, England",
+        "class_year": "Sophomore",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/phoebe-chadwick/31853"
+      },
+      {
+        "name": "Claire Kessenger",
+        "number": "6",
+        "position": "Defender",
+        "height": "5'7\"",
+        "hometown": "Barcelona, Spain",
+        "class_year": "First-Year",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/claire-kessenger/33040"
+      },
+      {
+        "name": "Elsa Santos L\u00f3pez",
+        "number": "7",
+        "position": "Midfielder",
+        "height": "5'7\"",
+        "hometown": "Valdemoro, Spain",
+        "class_year": "Sophomore",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/elsa-santos-l-pez/31868"
+      },
+      {
+        "name": "\u00d3l\u00f6f Kristinsd\u00f3ttir",
+        "number": "9",
+        "position": "Forward",
+        "height": "5'8\"",
+        "hometown": "Reykjav\u00edk, Iceland",
+        "class_year": "Senior",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/-l-f-kristinsd-ttir/31859"
+      },
+      {
+        "name": "Brooke Huleatt",
+        "number": "10",
+        "position": "Forward",
+        "height": "5'7\"",
+        "hometown": "Rifton, N.Y.",
+        "class_year": "First-Year",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/brooke-huleatt/33039"
+      },
+      {
+        "name": "Sarah Lloyd",
+        "number": "11",
+        "position": "Forward",
+        "height": "5'8\"",
+        "hometown": "Denver, Colo.",
+        "class_year": "Junior",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/sarah-lloyd/31861"
+      },
+      {
+        "name": "Lou Ruffien",
+        "number": "12",
+        "position": "Midfielder/Forward",
+        "height": "5'8\"",
+        "hometown": "Edina, Minn.",
+        "class_year": "First-Year",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/lou-ruffien/33042"
+      },
+      {
+        "name": "Susie Long",
+        "number": "13",
+        "position": "Midfielder/Defender",
+        "height": "5'5\"",
+        "hometown": "Sacramento, Calif.",
+        "class_year": "Senior",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/susie-long/31862"
+      },
+      {
+        "name": "\u00cdrena  H\u00e9\u00f0insd\u00f3ttir Gonzalez",
+        "number": "14",
+        "position": "Midfielder",
+        "height": "5'8\"",
+        "hometown": "K\u00f3pavogur, Iceland",
+        "class_year": "Senior",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/-rena-h-insd-ttir-gonzalez/31857"
+      },
+      {
+        "name": "Camila Reinaldo",
+        "number": "15",
+        "position": "Midfielder",
+        "height": "5'8\"",
+        "hometown": "Barcelona, Spain",
+        "class_year": "First-Year",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/camila-reinaldo/33041"
+      },
+      {
+        "name": "Jasmine Leshnick",
+        "number": "16",
+        "position": "Defender",
+        "height": "5'9\"",
+        "hometown": "San Francisco, Calif.",
+        "class_year": "Senior",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/jasmine-leshnick/31860"
+      },
+      {
+        "name": "Amy K\u00f6nig",
+        "number": "18",
+        "position": "Defender",
+        "height": "5'9\"",
+        "hometown": "Berlin, Germany",
+        "class_year": "Senior",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/amy-k-nig/31858"
+      },
+      {
+        "name": "Anna Rayhill",
+        "number": "19",
+        "position": "Forward",
+        "height": "5'7\"",
+        "hometown": "New Hartford, N.Y.",
+        "class_year": "Senior",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/anna-rayhill/31866"
+      },
+      {
+        "name": "Anya Van Den Einde",
+        "number": "20",
+        "position": "Midfielder",
+        "height": "5'7\"",
+        "hometown": "San Diego, Calif.",
+        "class_year": "Senior",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/anya-van-den-einde/31870"
+      },
+      {
+        "name": "Molly Vana",
+        "number": "21",
+        "position": "Forward",
+        "height": "5'10\"",
+        "hometown": "Boxford, Mass.",
+        "class_year": "First-Year",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/molly-vana/33043"
+      },
+      {
+        "name": "Lauren Muniz",
+        "number": "22",
+        "position": "Forward",
+        "height": "5'9\"",
+        "hometown": "Broomfield, Colo.",
+        "class_year": "Junior",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/lauren-muniz/31865"
+      },
+      {
+        "name": "Kennedy Belfon",
+        "number": "23",
+        "position": "Forward",
+        "height": "5'4\"",
+        "hometown": "Whitby, Ontario",
+        "class_year": "Sophomore",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/kennedy-belfon/31852"
+      },
+      {
+        "name": "Nicole Bidun",
+        "number": "30",
+        "position": "Goalkeeper",
+        "height": "5'11\"",
+        "hometown": "Manhattan, N.Y.",
+        "class_year": "Sophomore",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/nicole-bidun/33044"
+      },
+      {
+        "name": "Hannah Eftekhari",
+        "number": "47",
+        "position": "Midfielder",
+        "height": "5'7\"",
+        "hometown": "San Diego, Calif.",
+        "class_year": "Sophomore",
+        "source_url": "https://gocrimson.com/sports/womens-soccer/roster/hannah-eftekhari/31854"
+      }
+    ]
+  }
+}

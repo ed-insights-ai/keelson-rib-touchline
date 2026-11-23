@@ -1,0 +1,1138 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/princeton/boxscore/33220",
+  "final_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/princeton/boxscore/33220",
+  "etag": null,
+  "last_modified": null,
+  "signature": "438ee5c10098be9c0c36d15d853d3558adafa14a22feeaf99abc989fc1e6cf48",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:16:10+00:00",
+  "verified_at": "2026-11-23T10:16:10+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/princeton/boxscore/33220",
+    "teams": [
+      {
+        "name": "Harvard",
+        "abbr": "HAR",
+        "score": 0,
+        "periods": [
+          0,
+          0
+        ],
+        "shots": 8,
+        "sog": 4,
+        "saves": 4,
+        "corners": 1,
+        "fouls": 8,
+        "players": [
+          {
+            "name": "Mikey Cortellessa",
+            "player_id": "32568",
+            "position": "DEF",
+            "number": "2",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 63
+          },
+          {
+            "name": "Alexander Castel",
+            "player_id": "32567",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Nayan Das",
+            "player_id": "32569",
+            "position": "DEF",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 77
+          },
+          {
+            "name": "Dylan Tellado",
+            "player_id": "32584",
+            "position": "FWD",
+            "number": "7",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 74
+          },
+          {
+            "name": "Phoenix Wooten",
+            "player_id": "32587",
+            "position": "MID",
+            "number": "8",
+            "started": true,
+            "shots": 2,
+            "sog": 2,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Ben Kelly",
+            "player_id": "32572",
+            "position": "FWD",
+            "number": "10",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 80
+          },
+          {
+            "name": "Andreas Savva",
+            "player_id": "32581",
+            "position": "FWD",
+            "number": "11",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 51
+          },
+          {
+            "name": "Tim Langenbahn",
+            "player_id": "32573",
+            "position": "DEF",
+            "number": "13",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Adam Poliakov",
+            "player_id": "32579",
+            "position": "FWD",
+            "number": "17",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 80
+          },
+          {
+            "name": "Sophian Lovato",
+            "player_id": "32576",
+            "position": "FWD",
+            "number": "28",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 35
+          },
+          {
+            "name": "Jason Broome",
+            "player_id": "32566",
+            "position": "GK",
+            "number": "99",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Xavier Tanyi",
+            "player_id": "32583",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 10
+          },
+          {
+            "name": "Lucas Benuce Sarvas",
+            "player_id": "32565",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 11
+          },
+          {
+            "name": "Drew Lobley",
+            "player_id": "32574",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 32
+          },
+          {
+            "name": "Shane Lonergan",
+            "player_id": "32575",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 10
+          },
+          {
+            "name": "Gil de Souza",
+            "player_id": "32589",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 41
+          },
+          {
+            "name": "Kiko Elliott",
+            "player_id": "32590",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 26
+          },
+          {
+            "name": "Alejandro Palacio",
+            "player_id": "32578",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 39
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Jason Broome",
+            "player_id": "32566",
+            "position": "GK",
+            "number": "99",
+            "minutes": 90,
+            "goals_against": 2,
+            "saves": 4
+          }
+        ]
+      },
+      {
+        "name": "Princeton",
+        "abbr": "PRI",
+        "score": 2,
+        "periods": [
+          1,
+          1
+        ],
+        "winner": true,
+        "shots": 17,
+        "sog": 6,
+        "saves": 4,
+        "corners": 6,
+        "fouls": 7,
+        "players": [
+          {
+            "name": "Andrew Samuels",
+            "position": "GK",
+            "number": "1",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Roka Tsunehara",
+            "position": "FWD",
+            "number": "2",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 90
+          },
+          {
+            "name": "Frederik Sadjak",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Liam Beckwith",
+            "position": "MID",
+            "number": "5",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Kristian Kelley",
+            "position": "MID",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Bardia Hormozi",
+            "number": "14",
+            "started": true,
+            "shots": 6,
+            "sog": 2,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 77
+          },
+          {
+            "name": "Benjamin Manfroy",
+            "position": "MID",
+            "number": "21",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Julien Lacher",
+            "position": "FWD",
+            "number": "25",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 25
+          },
+          {
+            "name": "Jonah Mwilambwe",
+            "position": "FWD",
+            "number": "29",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 25
+          },
+          {
+            "name": "Lucas Ferreira",
+            "position": "DEF",
+            "number": "32",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Tyler Vilet",
+            "position": "MID",
+            "number": "33",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 25
+          },
+          {
+            "name": "Kevin Kelley",
+            "started": false,
+            "shots": 3,
+            "sog": 2,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 39
+          },
+          {
+            "name": "Cyrus Klinenberg",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 38
+          },
+          {
+            "name": "Ryker Joutz",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 13
+          },
+          {
+            "name": "Jackson Martin",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 49
+          },
+          {
+            "name": "Chase Miller",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 27
+          },
+          {
+            "name": "Giacomo Gabrielli",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 42
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Andrew Samuels",
+            "position": "GK",
+            "number": "1",
+            "minutes": 90,
+            "goals_against": 0,
+            "saves": 4
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "28:05",
+        "team": 1,
+        "scorer": "Liam Beckwith",
+        "season_total": 2,
+        "assist": "Roka Tsunehara",
+        "description": "GOAL by PRI Beckwith, Liam Assist by Tsunehara, Roka."
+      },
+      {
+        "time": "53:38",
+        "team": 1,
+        "scorer": "Bardia Hormozi",
+        "season_total": 5,
+        "assist": "Jackson Martin",
+        "description": "GOAL by PRI Hormozi, Bardia Assist by Martin, Jackson."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Alejandro Palacio",
+        "number": "27",
+        "time": "33:55",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Kevin Kelley",
+        "number": "7",
+        "time": "44:31",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Frederik Sadjak",
+        "number": "4",
+        "time": "45:54",
+        "team": 1
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Samuels, Andrew at goalie for Princeton",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Broome, Jason at goalie for Harvard",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [01:35].",
+        "clock": "01:35",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Tellado, Dylan, bottom center, saved by Samuels, Andrew.",
+        "clock": "01:58",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by PRI Lacher, Julien.",
+        "clock": "03:10",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Tellado, Dylan.",
+        "clock": "03:53",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Tellado, Dylan.",
+        "clock": "07:12",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by PRI Lacher, Julien.",
+        "clock": "09:14",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [09:38].",
+        "clock": "09:38",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by PRI Hormozi, Bardia, bottom center, saved by Broome, Jason.",
+        "clock": "13:36",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by PRI Hormozi, Bardia, out top.",
+        "clock": "15:47",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Princeton.",
+        "clock": "16:34",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Wooten, Phoenix.",
+        "clock": "21:03",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Lacher, Julien.",
+        "clock": "23:47",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "PRI substitution: Kelley, Kevin for Lacher, Julien.",
+        "clock": "24:34",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "PRI substitution: Martin, Jackson for Mwilambwe, Jonah.",
+        "clock": "24:34",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "PRI substitution: Klinenberg, Cyrus for Vilet, Tyler.",
+        "clock": "24:34",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: de Souza, Gil for Das, Nayan.",
+        "clock": "24:34",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Das, Nayan for de Souza, Gil.",
+        "clock": "26:02",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [27:00].",
+        "clock": "27:00",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by PRI Kelley, Kevin, bottom center, saved by Broome, Jason.",
+        "clock": "27:35",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by PRI Tsunehara, Roka.",
+        "clock": "28:05",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by PRI Beckwith, Liam Assist by Tsunehara, Roka.",
+        "clock": "28:05",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: de Souza, Gil for Cortellessa, Mikey.",
+        "clock": "28:05",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Elliott, Keean for Tellado, Dylan.",
+        "clock": "28:05",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Palacio, Alejandro for Savva, Andreas.",
+        "clock": "28:05",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "PRI substitution: Gabrielli, Giacomo for Hormozi, Bardia.",
+        "clock": "31:49",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on HAR Palacio, Alejandro.",
+        "clock": "33:55",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Lonergan, Shane for Kelly, Ben.",
+        "clock": "34:07",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Tanyi, Xavier for Poliakov, Adam.",
+        "clock": "34:07",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Lobley, Drew for Lovato, Sophian.",
+        "clock": "34:07",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Lobley, Drew.",
+        "clock": "35:29",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [36:27].",
+        "clock": "36:27",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by PRI Gabrielli, Giacomo, bottom center, saved by Broome, Jason.",
+        "clock": "37:43",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [37:55].",
+        "clock": "37:55",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Princeton.",
+        "clock": "38:28",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Castel, Alexander.",
+        "clock": "41:55",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Kelley, Kristian.",
+        "clock": "42:24",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [43:05].",
+        "clock": "43:05",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by PRI Tsunehara, Roka, out right.",
+        "clock": "43:41",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Das, Nayan",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "PRI Kevin Kelley PENALTY KICK AWARDED.",
+        "clock": "44:31",
+        "team": 1,
+        "type": "penalty",
+        "score": [
+          0,
+          2
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on PRI Kelley, Kevin.",
+        "clock": "44:31",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Tellado, Dylan for Elliott, Keean.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR HAR: , #99 Broome, Jason, #10 Kelly, Ben, #4 Castel, Alexander, #6 Das, Nayan, #7 Tellado, Dylan, #8 Wooten, Phoenix, #2 Cortellessa, Mikey, #17 Poliakov, Adam, #13 Langenbahn, Tim, #11 Savva, Andreas, #16 Lobley, Drew.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR PRI: , #1 Samuels, Andrew, #2 Tsunehara, Roka, #4 Sadjak, Frederik, #5 Beckwith, Liam, #6 Kelley, Kristian, #22 Gabrielli, Giacomo, #21 Manfroy, Benjamin, #14 Hormozi, Bardia, #16 Martin, Jackson, #32 Ferreira, Lucas, #11 Klinenberg, Cyrus.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "PRI substitution: Hormozi, Bardia for Kelley, Kevin.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Kelly, Ben for de Souza, Gil.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Cortellessa, Mikey for Lonergan, Shane.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Poliakov, Adam for Palacio, Alejandro.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Savva, Andreas for Tanyi, Xavier.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on PRI Sadjak, Frederik.",
+        "clock": "45:54",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Langenbahn, Tim.",
+        "clock": "47:00",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Poliakov, Adam, bottom center, saved by Samuels, Andrew.",
+        "clock": "47:38",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PRI Hormozi, Bardia.",
+        "clock": "48:17",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Martin, Jackson.",
+        "clock": "48:59",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Harvard.",
+        "clock": "50:15",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PRI Hormozi, Bardia.",
+        "clock": "52:45",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [52:53].",
+        "clock": "52:53",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PRI Martin, Jackson.",
+        "clock": "53:35",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by PRI Hormozi, Bardia Assist by Martin, Jackson.",
+        "clock": "53:38",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          3
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Wooten, Phoenix, bottom center, saved by Samuels, Andrew.",
+        "clock": "56:31",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Kelley, Kristian.",
+        "clock": "59:49",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "PRI substitution: Miller, Chase for Klinenberg, Cyrus.",
+        "clock": "62:02",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Martin, Jackson.",
+        "clock": "63:16",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Hormozi, Bardia.",
+        "clock": "64:04",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Poliakov, Adam.",
+        "clock": "66:17",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: de Souza, Gil for Savva, Andreas.",
+        "clock": "66:24",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Palacio, Alejandro for Lobley, Drew.",
+        "clock": "66:24",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on de Souza, Gil.",
+        "clock": "66:24",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "PRI substitution: Kelley, Kevin for Gabrielli, Giacomo.",
+        "clock": "67:54",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Wooten, Phoenix, bottom left, saved by Samuels, Andrew.",
+        "clock": "69:41",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "PRI substitution: Gabrielli, Giacomo for Kelley, Kevin.",
+        "clock": "70:16",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Das, Nayan.",
+        "clock": "70:40",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Martin, Jackson.",
+        "clock": "72:13",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "PRI substitution: Kelley, Kevin for Martin, Jackson.",
+        "clock": "73:29",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Castel, Alexander, out top right.",
+        "clock": "73:44",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "PRI substitution: Joutz, Ryker for Gabrielli, Giacomo.",
+        "clock": "76:13",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Elliott, Keean for Cortellessa, Mikey.",
+        "clock": "78:16",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Palacio, Alejandro, out top.",
+        "clock": "78:52",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Benuce Sarvas, Lucas for Das, Nayan.",
+        "clock": "78:55",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Tellado, Dylan, out top.",
+        "clock": "84:01",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PRI Kelley, Kevin, bottom right, saved by Broome, Jason.",
+        "clock": "85:41",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PRI Kelley, Kevin, out top.",
+        "clock": "85:56",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PRI Hormozi, Bardia, top woodwork.",
+        "clock": "87:19",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PRI Miller, Chase, right woodwork.",
+        "clock": "88:49",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "team": 1,
+        "type": "period"
+      }
+    ],
+    "stadium": "Myslik Field at Roberts Stadium",
+    "attendance": 316,
+    "kickoff": "05:00",
+    "officials": [
+      "Referee: Cedric Cook",
+      "Asst. Referee: Sean Lyons",
+      "Asst. Referee: Jamiel Ahmad",
+      "Alt. Official: Mike Palermo"
+    ],
+    "home_index": 1
+  }
+}

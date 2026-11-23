@@ -1,0 +1,1161 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/notre-dame/boxscore/33208",
+  "final_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/notre-dame/boxscore/33208",
+  "etag": null,
+  "last_modified": null,
+  "signature": "2eeee8109900559548975e7cf1ee6d04fb62edefec560db191b5d87ff76148c4",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:15:58+00:00",
+  "verified_at": "2026-11-23T10:15:58+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/notre-dame/boxscore/33208",
+    "teams": [
+      {
+        "name": "Harvard",
+        "abbr": "HARV",
+        "score": 1,
+        "periods": [
+          0,
+          1
+        ],
+        "shots": 8,
+        "sog": 7,
+        "saves": 6,
+        "corners": 4,
+        "fouls": 7,
+        "players": [
+          {
+            "name": "Mikey Cortellessa",
+            "player_id": "32568",
+            "position": "DEF",
+            "number": "2",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 81
+          },
+          {
+            "name": "Alexander Castel",
+            "player_id": "32567",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Nayan Das",
+            "player_id": "32569",
+            "position": "DEF",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 68
+          },
+          {
+            "name": "Phoenix Wooten",
+            "player_id": "32587",
+            "position": "MID",
+            "number": "8",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 77
+          },
+          {
+            "name": "Ben Kelly",
+            "player_id": "32572",
+            "position": "FWD",
+            "number": "10",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 47
+          },
+          {
+            "name": "Andreas Savva",
+            "player_id": "32581",
+            "position": "FWD",
+            "number": "11",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 69
+          },
+          {
+            "name": "Tim Langenbahn",
+            "player_id": "32573",
+            "position": "DEF",
+            "number": "13",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Xavier Tanyi",
+            "player_id": "32583",
+            "position": "FWD",
+            "number": "14",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 31
+          },
+          {
+            "name": "Adam Poliakov",
+            "player_id": "32579",
+            "position": "FWD",
+            "number": "17",
+            "started": true,
+            "shots": 2,
+            "sog": 2,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 47
+          },
+          {
+            "name": "Alejandro Palacio",
+            "player_id": "32578",
+            "position": "DEF",
+            "number": "27",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 82
+          },
+          {
+            "name": "Jason Broome",
+            "player_id": "32566",
+            "position": "GK",
+            "number": "99",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Dylan Tellado",
+            "player_id": "32584",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 66
+          },
+          {
+            "name": "Andreas Engle",
+            "player_id": "32591",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 10
+          },
+          {
+            "name": "Lucas Benuce Sarvas",
+            "player_id": "32565",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 58
+          },
+          {
+            "name": "Drew Lobley",
+            "player_id": "32574",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 21
+          },
+          {
+            "name": "Shane Lonergan",
+            "player_id": "32575",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 43
+          },
+          {
+            "name": "Gil de Souza",
+            "player_id": "32589",
+            "started": false,
+            "shots": 3,
+            "sog": 3,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 43
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Jason Broome",
+            "player_id": "32566",
+            "position": "GK",
+            "number": "99",
+            "minutes": 90,
+            "goals_against": 3,
+            "saves": 6
+          }
+        ]
+      },
+      {
+        "name": "Notre Dame",
+        "abbr": "UND",
+        "score": 3,
+        "periods": [
+          0,
+          3
+        ],
+        "winner": true,
+        "shots": 19,
+        "sog": 9,
+        "saves": 6,
+        "corners": 10,
+        "fouls": 10,
+        "players": [
+          {
+            "name": "Blake Kelly",
+            "position": "GK",
+            "number": "1",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Jack Ross",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Will Schroeder",
+            "position": "MID",
+            "number": "5",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Ian Shaul",
+            "position": "MID",
+            "number": "6",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 64
+          },
+          {
+            "name": "Nolan Spicer",
+            "position": "MID",
+            "number": "10",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 79
+          },
+          {
+            "name": "Jack Flanagan",
+            "position": "FWD",
+            "number": "11",
+            "started": true,
+            "shots": 3,
+            "sog": 3,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 47
+          },
+          {
+            "name": "Tristan Tropeano",
+            "position": "MID",
+            "number": "13",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 56
+          },
+          {
+            "name": "Michael Capretto",
+            "position": "FWD",
+            "number": "15",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 59
+          },
+          {
+            "name": "Vlad Walent",
+            "position": "DEF",
+            "number": "19",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Brady Hilden",
+            "position": "MID",
+            "number": "20",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 64
+          },
+          {
+            "name": "Evan Lim",
+            "position": "MID",
+            "number": "24",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Nate Zimmermann",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 11
+          },
+          {
+            "name": "Nico Bartlett",
+            "started": false,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 31
+          },
+          {
+            "name": "Ethan Scala",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 43
+          },
+          {
+            "name": "Karson Baquero",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 26
+          },
+          {
+            "name": "Stevie Dunphy",
+            "started": false,
+            "shots": 2,
+            "sog": 2,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 34
+          },
+          {
+            "name": "Diego Green",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 26
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Blake Kelly",
+            "position": "GK",
+            "number": "1",
+            "minutes": 90,
+            "goals_against": 1,
+            "saves": 6
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "50:35",
+        "team": 0,
+        "scorer": "Gil de Souza",
+        "season_total": 1,
+        "assist": "Dylan Tellado",
+        "description": "GOAL by HARV de Souza, Gil Assist by Tellado, Dylan."
+      },
+      {
+        "time": "60:14",
+        "team": 1,
+        "scorer": "Stevie Dunphy",
+        "season_total": 1,
+        "assist": "Nolan Spicer",
+        "description": "GOAL by UND Dunphy, Stevie Assist by Spicer, Nolan."
+      },
+      {
+        "time": "78:30",
+        "team": 1,
+        "scorer": "Michael Capretto",
+        "season_total": 2,
+        "assist": "Diego Green",
+        "description": "GOAL by UND Capretto, Michael Assist by Green, Diego."
+      },
+      {
+        "time": "82:08",
+        "team": 1,
+        "scorer": "Vlad Walent",
+        "season_total": 1,
+        "description": "UND Vlad Walent PENALTY KICK GOAL."
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Kelly, Blake at goalie for Notre Dame",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Broome, Jason at goalie for Harvard",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Kelly, Ben, bottom center, saved by Kelly, Blake.",
+        "clock": "00:58",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Poliakov, Adam.",
+        "clock": "05:58",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Engle, Andreas for Cortellessa, Mikey.",
+        "clock": "06:34",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Poliakov, Adam, bottom center, saved by Kelly, Blake.",
+        "clock": "07:00",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Cortellessa, Mikey for Engle, Andreas.",
+        "clock": "08:43",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Poliakov, Adam, bottom center, saved by Kelly, Blake.",
+        "clock": "09:34",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [09:42].",
+        "clock": "09:42",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Tropeano, Tristan.",
+        "clock": "11:23",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [13:24].",
+        "clock": "13:24",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UND Schroeder, Will, out top.",
+        "clock": "13:59",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UND Shaul, Ian, right woodwork.",
+        "clock": "17:48",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Harvard.",
+        "clock": "19:13",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Wooten, Phoenix.",
+        "clock": "20:54",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UND Flanagan, Jack, bottom center, saved by Broome, Jason.",
+        "clock": "21:29",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [21:39].",
+        "clock": "21:39",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Poliakov, Adam.",
+        "clock": "22:11",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UND Lim, Evan.",
+        "clock": "23:05",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UND Capretto, Michael, right woodwork.",
+        "clock": "23:16",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UND Schroeder, Will.",
+        "clock": "23:27",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [23:38].",
+        "clock": "23:38",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Tellado, Dylan for Tanyi, Xavier.",
+        "clock": "23:47",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UND substitution: Bartlett, Nico for Capretto, Michael.",
+        "clock": "23:47",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [23:58].",
+        "clock": "23:58",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Tellado, Dylan.",
+        "clock": "27:14",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "UND substitution: Capretto, Michael for Bartlett, Nico.",
+        "clock": "27:31",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UND substitution: Baquero, Karson for Shaul, Ian.",
+        "clock": "29:33",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UND substitution: Dunphy, Stevie for Flanagan, Jack.",
+        "clock": "29:33",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "UND substitution: Scala, Ethan for Tropeano, Tristan.",
+        "clock": "29:33",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: de Souza, Gil for Wooten, Phoenix.",
+        "clock": "31:46",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Lonergan, Shane for Kelly, Ben.",
+        "clock": "31:46",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Benuce Sarvas, Lucas for Poliakov, Adam.",
+        "clock": "31:46",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [32:54].",
+        "clock": "32:54",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UND Spicer, Nolan, bottom right, saved by Broome, Jason.",
+        "clock": "33:36",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [33:56].",
+        "clock": "33:56",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [34:08].",
+        "clock": "34:08",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV de Souza, Gil, bottom center, saved by Kelly, Blake.",
+        "clock": "35:58",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "UND substitution: Bartlett, Nico for Capretto, Michael.",
+        "clock": "36:31",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Notre Dame.",
+        "clock": "37:17",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UND Bartlett, Nico.",
+        "clock": "44:00",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by UND Bartlett, Nico, out left.",
+        "clock": "44:06",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV de Souza, Gil, bottom left, saved by Kelly, Blake.",
+        "clock": "44:40",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR HARV: , #99 Broome, Jason, #2 Cortellessa, Mikey, #4 Castel, Alexander, #16 Lobley, Drew, #24 de Souza, Gil, #20 Lonergan, Shane, #8 Wooten, Phoenix, #13 Langenbahn, Tim, #7 Tellado, Dylan, #15 Benuce Sarvas, Lucas, #27 Palacio, Alejandro.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR UND: , #1 Kelly, Blake, #4 Ross, Jack, #5 Schroeder, Will, #6 Shaul, Ian, #10 Spicer, Nolan, #23 Dunphy, Stevie, #12 Scala, Ethan, #8 Bartlett, Nico, #19 Walent, Vlad, #20 Hilden, Brady, #24 Lim, Evan.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "UND substitution: Shaul, Ian for Baquero, Karson.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Lobley, Drew for Das, Nayan.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Wooten, Phoenix for Savva, Andreas.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Dunphy, Stevie.",
+        "clock": "46:02",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Langenbahn, Tim.",
+        "clock": "47:33",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Scala, Ethan.",
+        "clock": "49:43",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by HARV de Souza, Gil Assist by Tellado, Dylan.",
+        "clock": "50:35",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          1,
+          0
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [51:31].",
+        "clock": "51:31",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UND Dunphy, Stevie, bottom center, saved by Broome, Jason.",
+        "clock": "51:31",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Bartlett, Nico.",
+        "clock": "52:09",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [52:47].",
+        "clock": "52:47",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [53:37].",
+        "clock": "53:37",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UND Spicer, Nolan, blocked.",
+        "clock": "60:12",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by UND Dunphy, Stevie Assist by Spicer, Nolan.",
+        "clock": "60:14",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          1,
+          1
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Offside against Notre Dame.",
+        "clock": "61:04",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Dunphy, Stevie.",
+        "clock": "62:43",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "UND substitution: Tropeano, Tristan for Dunphy, Stevie.",
+        "clock": "63:52",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UND substitution: Green, Diego for Bartlett, Nico.",
+        "clock": "63:52",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UND substitution: Capretto, Michael for Hilden, Brady.",
+        "clock": "63:52",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [63:57].",
+        "clock": "63:57",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Savva, Andreas for Lobley, Drew.",
+        "clock": "65:48",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Das, Nayan for Mobray, Maxwell.",
+        "clock": "66:50",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [69:50].",
+        "clock": "69:50",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Tellado, Dylan, out top.",
+        "clock": "71:02",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "UND substitution: Flanagan, Jack for Scala, Ethan.",
+        "clock": "72:14",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Lim, Evan.",
+        "clock": "72:07",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UND Shaul, Ian, out top.",
+        "clock": "73:18",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UND Flanagan, Jack, top, saved by Broome, Jason.",
+        "clock": "73:50",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [74:08].",
+        "clock": "74:08",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Kelly, Ben for de Souza, Gil.",
+        "clock": "75:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Poliakov, Adam for Lonergan, Shane.",
+        "clock": "75:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Flanagan, Jack.",
+        "clock": "77:45",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by UND Capretto, Michael Assist by Green, Diego.",
+        "clock": "78:30",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          1,
+          2
+        ]
+      },
+      {
+        "period": "2",
+        "text": "UND substitution: Baquero, Karson for Shaul, Ian.",
+        "clock": "78:30",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "UND substitution: Zimmermann, Nate for Spicer, Nolan.",
+        "clock": "78:30",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Tropeano, Tristan.",
+        "clock": "78:59",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Engle, Andreas for Palacio, Alejandro.",
+        "clock": "81:47",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UND Baquero, Karson.",
+        "clock": "82:01",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "UND Vlad Walent PENALTY KICK GOAL.",
+        "clock": "82:08",
+        "team": 1,
+        "type": "penalty",
+        "score": [
+          1,
+          3
+        ]
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Tanyi, Xavier for Cortellessa, Mikey.",
+        "clock": "82:49",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UND Tropeano, Tristan, bottom center, saved by Broome, Jason.",
+        "clock": "83:08",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Capretto, Michael.",
+        "clock": "83:22",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by UND Flanagan, Jack, bottom center, saved by Broome, Jason.",
+        "clock": "84:27",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Tanyi, Xavier.",
+        "clock": "87:35",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Savva, Andreas, bottom right, saved by Kelly, Blake.",
+        "clock": "88:57",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Zimmermann, Nate.",
+        "clock": "89:44",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "team": 1,
+        "type": "period"
+      }
+    ],
+    "stadium": "Alumni Stadium",
+    "attendance": 357,
+    "kickoff": "07:30",
+    "officials": [
+      "Referee: John Matto",
+      "Asst. Referee: Eric Burton",
+      "Asst. Referee: Corey Beecher",
+      "Alt. Official: Cory Richardson"
+    ],
+    "home_index": 1
+  }
+}

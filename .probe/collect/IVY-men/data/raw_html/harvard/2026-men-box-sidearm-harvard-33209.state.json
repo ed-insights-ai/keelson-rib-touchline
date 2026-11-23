@@ -1,0 +1,1160 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/providence/boxscore/33209",
+  "final_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/providence/boxscore/33209",
+  "etag": null,
+  "last_modified": null,
+  "signature": "e48aa24039687d47fd2aa57e4664423ce62358d6712d2fe3556c5f6bc111386c",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:15:59+00:00",
+  "verified_at": "2026-11-23T10:15:59+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/providence/boxscore/33209",
+    "teams": [
+      {
+        "name": "Providence",
+        "abbr": "PROV",
+        "score": 3,
+        "periods": [
+          2,
+          1
+        ],
+        "winner": true,
+        "shots": 11,
+        "sog": 7,
+        "saves": 3,
+        "corners": 3,
+        "fouls": 5,
+        "players": [
+          {
+            "name": "Ryan Carney",
+            "position": "GK",
+            "number": "1",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Steban Lopera",
+            "position": "DEF",
+            "number": "2",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 69
+          },
+          {
+            "name": "Ian Morel",
+            "position": "DEF",
+            "number": "3",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Brandon Marshall",
+            "position": "DEF",
+            "number": "5",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Jeremy Munoz",
+            "position": "MID",
+            "number": "6",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Angelo Ventrella",
+            "position": "MID",
+            "number": "7",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 2,
+            "minutes": 86
+          },
+          {
+            "name": "Fernando Garcia Gil",
+            "position": "MID",
+            "number": "8",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 88
+          },
+          {
+            "name": "Alvaro Maneiro",
+            "position": "MID",
+            "number": "10",
+            "started": true,
+            "shots": 4,
+            "sog": 4,
+            "goals": 2,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Caleb Williams",
+            "position": "MID",
+            "number": "11",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 80
+          },
+          {
+            "name": "David Casado",
+            "position": "FWD",
+            "number": "21",
+            "started": true,
+            "shots": 3,
+            "sog": 2,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 76
+          },
+          {
+            "name": "Vasco Teixeira",
+            "position": "DEF",
+            "number": "23",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Giuseppe Ciampa",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 14
+          },
+          {
+            "name": "Karim Eljamal",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 2
+          },
+          {
+            "name": "Olumayowa Ajayi",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 21
+          },
+          {
+            "name": "Brian Garrepy",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 14
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Ryan Carney",
+            "position": "GK",
+            "number": "1",
+            "minutes": 90,
+            "goals_against": 1,
+            "saves": 3
+          }
+        ]
+      },
+      {
+        "name": "Harvard",
+        "abbr": "HARV",
+        "score": 1,
+        "periods": [
+          1,
+          0
+        ],
+        "shots": 14,
+        "sog": 4,
+        "saves": 4,
+        "corners": 6,
+        "fouls": 17,
+        "players": [
+          {
+            "name": "Alexander Castel",
+            "player_id": "32567",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 90
+          },
+          {
+            "name": "Nayan Das",
+            "player_id": "32569",
+            "position": "DEF",
+            "number": "6",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 65
+          },
+          {
+            "name": "Dylan Tellado",
+            "player_id": "32584",
+            "position": "FWD",
+            "number": "7",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 35
+          },
+          {
+            "name": "Phoenix Wooten",
+            "player_id": "32587",
+            "position": "MID",
+            "number": "8",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Ben Kelly",
+            "player_id": "32572",
+            "position": "FWD",
+            "number": "10",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 71
+          },
+          {
+            "name": "Andreas Savva",
+            "player_id": "32581",
+            "position": "FWD",
+            "number": "11",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 51
+          },
+          {
+            "name": "Andreas Engle",
+            "player_id": "32591",
+            "position": "FWD",
+            "number": "12",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 76
+          },
+          {
+            "name": "Tim Langenbahn",
+            "player_id": "32573",
+            "position": "DEF",
+            "number": "13",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Adam Poliakov",
+            "player_id": "32579",
+            "position": "FWD",
+            "number": "17",
+            "started": true,
+            "shots": 3,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 76
+          },
+          {
+            "name": "Alejandro Palacio",
+            "player_id": "32578",
+            "position": "DEF",
+            "number": "27",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 70
+          },
+          {
+            "name": "Jason Broome",
+            "player_id": "32566",
+            "position": "GK",
+            "number": "99",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Xavier Tanyi",
+            "player_id": "32583",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 19
+          },
+          {
+            "name": "Lucas Benuce Sarvas",
+            "player_id": "32565",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 39
+          },
+          {
+            "name": "Drew Lobley",
+            "player_id": "32574",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 14
+          },
+          {
+            "name": "Shane Lonergan",
+            "player_id": "32575",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 34
+          },
+          {
+            "name": "Gil de Souza",
+            "player_id": "32589",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 60
+          },
+          {
+            "name": "Sophian Lovato",
+            "player_id": "32576",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 20
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Jason Broome",
+            "player_id": "32566",
+            "position": "GK",
+            "number": "99",
+            "minutes": 90,
+            "goals_against": 3,
+            "saves": 3
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "08:41",
+        "team": 1,
+        "scorer": "Tim Langenbahn",
+        "season_total": 1,
+        "assist": "Alexander Castel , Alejandro Palacio",
+        "description": "GOAL by HARV Langenbahn, Tim Assist by Castel, Alexander and Palacio, Alejandro."
+      },
+      {
+        "time": "12:08",
+        "team": 0,
+        "scorer": "Brandon Marshall",
+        "season_total": 1,
+        "assist": "Angelo Ventrella",
+        "description": "GOAL by PROV Marshall, Brandon Assist by Ventrella, Angelo."
+      },
+      {
+        "time": "30:35",
+        "team": 0,
+        "scorer": "Alvaro Maneiro",
+        "season_total": 3,
+        "assist": "David Casado",
+        "description": "GOAL by PROV Maneiro, Alvaro Assist by Casado, David."
+      },
+      {
+        "time": "64:04",
+        "team": 0,
+        "scorer": "Alvaro Maneiro",
+        "season_total": 3,
+        "assist": "Angelo Ventrella",
+        "description": "GOAL by PROV Maneiro, Alvaro Assist by Ventrella, Angelo."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Brandon Marshall",
+        "number": "5",
+        "time": "42:16",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Lucas Benuce Sarvas",
+        "number": "15",
+        "time": "63:40",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Nayan Das",
+        "number": "6",
+        "time": "79:40",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Phoenix Wooten",
+        "number": "8",
+        "time": "82:12",
+        "team": 1
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Broome, Jason at goalie for Harvard",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Carney, Ryan at goalie for Providence",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Munoz, Jeremy.",
+        "clock": "00:58",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Poliakov, Adam, out left.",
+        "clock": "03:24",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Kelly, Ben.",
+        "clock": "05:41",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Casado, David.",
+        "clock": "07:51",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by HARV Langenbahn, Tim Assist by Castel, Alexander and Palacio, Alejandro.",
+        "clock": "08:41",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Shot by PROV Maneiro, Alvaro, bottom center, saved by Broome, Jason.",
+        "clock": "09:12",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Savva, Andreas.",
+        "clock": "11:17",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by PROV Marshall, Brandon Assist by Ventrella, Angelo.",
+        "clock": "12:08",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          1,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Engle, Andreas, bottom right, saved by Carney, Ryan.",
+        "clock": "13:46",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [13:54].",
+        "clock": "13:54",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Poliakov, Adam, out right.",
+        "clock": "14:27",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Kelly, Ben.",
+        "clock": "15:06",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Savva, Andreas, out top.",
+        "clock": "16:08",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Savva, Andreas.",
+        "clock": "16:48",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Savva, Andreas.",
+        "clock": "19:35",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [19:50].",
+        "clock": "19:50",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by PROV Munoz, Jeremy, out top right.",
+        "clock": "20:17",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Poliakov, Adam, out left.",
+        "clock": "21:15",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by PROV Ventrella, Angelo.",
+        "clock": "22:05",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [22:14].",
+        "clock": "22:14",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Tanyi, Xavier for Kelly, Ben.",
+        "clock": "25:48",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: de Souza, Gil for Savva, Andreas.",
+        "clock": "25:48",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Tellado, Dylan, out right.",
+        "clock": "28:58",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by PROV Maneiro, Alvaro Assist by Casado, David.",
+        "clock": "30:35",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          2,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Lonergan, Shane for Tellado, Dylan.",
+        "clock": "30:42",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Benuce Sarvas, Lucas for Engle, Andreas.",
+        "clock": "30:42",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Lobley, Drew for Poliakov, Adam.",
+        "clock": "30:42",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Benuce Sarvas, Lucas.",
+        "clock": "31:32",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "PROV substitution: Ajayi, Olumayowa for Lopera, Steban.",
+        "clock": "33:43",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Wooten, Phoenix.",
+        "clock": "34:31",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Benuce Sarvas, Lucas.",
+        "clock": "38:06",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "PROV substitution: Ciampa, Giuseppe for Ventrella, Angelo.",
+        "clock": "40:48",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "PROV substitution: Garrepy, Brian for Casado, David.",
+        "clock": "40:48",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Ajayi, Olumayowa.",
+        "clock": "41:17",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Tanyi, Xavier, out top.",
+        "clock": "41:36",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on PROV Marshall, Brandon.",
+        "clock": "42:16",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Palacio, Alejandro, top left, saved by Carney, Ryan.",
+        "clock": "42:20",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR PROV: , #1 Carney, Ryan, #2 Lopera, Steban, #3 Morel, Ian, #5 Marshall, Brandon, #6 Munoz, Jeremy, #21 Casado, David, #8 Garcia Gil, Fernando, #10 Maneiro, Alvaro, #11 Williams, Caleb, #7 Ventrella, Angelo, #23 Teixeira, Vasco.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR HARV: , #99 Broome, Jason, #11 Savva, Andreas, #17 Poliakov, Adam, #7 Tellado, Dylan, #8 Wooten, Phoenix, #14 Tanyi, Xavier, #10 Kelly, Ben, #15 Benuce Sarvas, Lucas, #13 Langenbahn, Tim, #12 Engle, Andreas, #27 Palacio, Alejandro.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Savva, Andreas for Castel, Alexander.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Poliakov, Adam for Das, Nayan.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Tellado, Dylan for Lonergan, Shane.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Kelly, Ben for de Souza, Gil.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Engle, Andreas for Lobley, Drew.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "PROV substitution: Lopera, Steban for Ajayi, Olumayowa.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "PROV substitution: Casado, David for Ciampa, Giuseppe.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "PROV substitution: Ventrella, Angelo for Garrepy, Brian.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Castel, Alexander for Tanyi, Xavier.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: de Souza, Gil for Tellado, Dylan.",
+        "clock": "48:02",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PROV Casado, David, out top.",
+        "clock": "50:57",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Kelly, Ben, out left.",
+        "clock": "54:43",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Palacio, Alejandro.",
+        "clock": "57:09",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on de Souza, Gil.",
+        "clock": "57:59",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on de Souza, Gil.",
+        "clock": "61:00",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PROV Maneiro, Alvaro, bottom left, saved by Broome, Jason.",
+        "clock": "61:47",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PROV Casado, David, bottom left, Team save.",
+        "clock": "61:59",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on de Souza, Gil.",
+        "clock": "62:22",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on HARV Benuce Sarvas, Lucas.",
+        "clock": "63:40",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by PROV Maneiro, Alvaro Assist by Ventrella, Angelo.",
+        "clock": "64:04",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          3,
+          1
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [65:05].",
+        "clock": "65:05",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Williams, Caleb.",
+        "clock": "65:35",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV de Souza, Gil, bottom left, saved by Carney, Ryan.",
+        "clock": "66:20",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Kelly, Ben.",
+        "clock": "68:10",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PROV Williams, Caleb, out top.",
+        "clock": "68:32",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Lovato, Sophian for Savva, Andreas.",
+        "clock": "69:07",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Lonergan, Shane for Benuce Sarvas, Lucas.",
+        "clock": "69:07",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Das, Nayan for Palacio, Alejandro.",
+        "clock": "69:07",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PROV Casado, David, top right, saved by Broome, Jason.",
+        "clock": "70:37",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [74:03].",
+        "clock": "74:03",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [75:26].",
+        "clock": "75:26",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Wooten, Phoenix.",
+        "clock": "75:51",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Munoz, Jeremy.",
+        "clock": "76:36",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on HARV Das, Nayan.",
+        "clock": "79:40",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "PROV substitution: Garrepy, Brian for Lopera, Steban.",
+        "clock": "79:40",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "PROV substitution: Ajayi, Olumayowa for Casado, David.",
+        "clock": "79:40",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "PROV substitution: Ciampa, Giuseppe for Williams, Caleb.",
+        "clock": "79:40",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Das, Nayan.",
+        "clock": "81:25",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on de Souza, Gil.",
+        "clock": "82:04",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on HARV Wooten, Phoenix.",
+        "clock": "82:12",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Langenbahn, Tim.",
+        "clock": "82:36",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Kelly, Ben.",
+        "clock": "83:07",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [83:43].",
+        "clock": "83:43",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Castel, Alexander, out top.",
+        "clock": "84:15",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [87:19].",
+        "clock": "87:19",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "PROV substitution: Eljamal, Karim for Garcia Gil, Fernando.",
+        "clock": "87:46",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Das, Nayan, out left.",
+        "clock": "87:53",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [88:58].",
+        "clock": "88:58",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "team": 1,
+        "type": "period"
+      }
+    ],
+    "stadium": "Jordan Field",
+    "attendance": 572,
+    "kickoff": "06:00",
+    "officials": [
+      "Referee: Artur Sibiga",
+      "Asst. Referee: Ruben Seyde",
+      "Asst. Referee: Jonathan Luk",
+      "Alt. Official: Damien Jarrett"
+    ],
+    "home_index": 1
+  }
+}

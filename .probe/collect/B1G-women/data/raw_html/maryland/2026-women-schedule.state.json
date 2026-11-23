@@ -1,0 +1,76 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://umterps.com/sports/womens-soccer/schedule/2026",
+  "final_url": "https://umterps.com/sports/womens-soccer/schedule/2026",
+  "etag": "W/\"4KT1VVQiSZ\"",
+  "last_modified": "Mon, 23 Nov 2026 10:15:53 GMT",
+  "signature": "651ee23fb88036aeadf337267176626634c1fda80196d13b0be571290a46ea53",
+  "fingerprint": "ff94228046f69c40cea37268e960dcb3825e6d7e26683341d9d7019694de2eb7",
+  "fetched_at": "2026-11-23T10:15:53+00:00",
+  "verified_at": "2026-11-23T10:15:53+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 5,
+    "reason": null
+  },
+  "parsed": {
+    "fixtures": [
+      {
+        "id": "sidearm:maryland:20074",
+        "date": "2026-03-01",
+        "home": "maryland",
+        "away": "william-mary",
+        "status": "scheduled",
+        "conference_game": false,
+        "source_url": "https://umterps.com/sports/womens-soccer/schedule/2026",
+        "time": "14:00",
+        "venue": "Ludwig Field"
+      },
+      {
+        "id": "sidearm:maryland:20075",
+        "date": "2026-03-13",
+        "home": "georgetown",
+        "away": "maryland",
+        "status": "scheduled",
+        "conference_game": false,
+        "source_url": "https://umterps.com/sports/womens-soccer/schedule/2026",
+        "time": "19:00",
+        "venue": "Washington, DC"
+      },
+      {
+        "id": "sidearm:maryland:20076",
+        "date": "2026-03-27",
+        "home": "loyola-maryland",
+        "away": "maryland",
+        "status": "scheduled",
+        "conference_game": false,
+        "source_url": "https://umterps.com/sports/womens-soccer/schedule/2026",
+        "time": "18:00",
+        "venue": "Baltimore, MD"
+      },
+      {
+        "id": "sidearm:maryland:20077",
+        "date": "2026-04-10",
+        "home": "penn",
+        "away": "maryland",
+        "status": "scheduled",
+        "conference_game": false,
+        "source_url": "https://umterps.com/sports/womens-soccer/schedule/2026",
+        "time": "19:00",
+        "venue": "Philadelphia, PA"
+      },
+      {
+        "id": "sidearm:maryland:20078",
+        "date": "2026-04-18",
+        "home": "maryland",
+        "away": "george-washington",
+        "status": "scheduled",
+        "conference_game": false,
+        "source_url": "https://umterps.com/sports/womens-soccer/schedule/2026",
+        "time": "19:00",
+        "venue": "Ludwig Field"
+      }
+    ],
+    "skips": []
+  }
+}

@@ -1,0 +1,1018 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/brown/boxscore/33216",
+  "final_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/brown/boxscore/33216",
+  "etag": null,
+  "last_modified": null,
+  "signature": "a86bf58435884a66fe8ddad0bb9d0fa798b2e93cbedaaf54576b60545f710ff5",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:16:06+00:00",
+  "verified_at": "2026-11-23T10:16:06+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/brown/boxscore/33216",
+    "teams": [
+      {
+        "name": "Harvard",
+        "abbr": "HRVD",
+        "score": 2,
+        "periods": [
+          0,
+          2
+        ],
+        "winner": true,
+        "shots": 9,
+        "sog": 6,
+        "saves": 2,
+        "corners": 1,
+        "fouls": 10,
+        "players": [
+          {
+            "name": "Alexander Castel",
+            "player_id": "32567",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Maxwell Mobray",
+            "player_id": "32577",
+            "position": "DEF",
+            "number": "5",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Nayan Das",
+            "player_id": "32569",
+            "position": "DEF",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 63
+          },
+          {
+            "name": "Phoenix Wooten",
+            "player_id": "32587",
+            "position": "MID",
+            "number": "8",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Ben Kelly",
+            "player_id": "32572",
+            "position": "FWD",
+            "number": "10",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Andreas Savva",
+            "player_id": "32581",
+            "position": "FWD",
+            "number": "11",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 54
+          },
+          {
+            "name": "Andreas Engle",
+            "player_id": "32591",
+            "position": "FWD",
+            "number": "12",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Tim Langenbahn",
+            "player_id": "32573",
+            "position": "DEF",
+            "number": "13",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Xavier Tanyi",
+            "player_id": "32583",
+            "position": "FWD",
+            "number": "14",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 27
+          },
+          {
+            "name": "Shane Lonergan",
+            "player_id": "32575",
+            "position": "MID",
+            "number": "20",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 42
+          },
+          {
+            "name": "Jason Broome",
+            "player_id": "32566",
+            "position": "GK",
+            "number": "99",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Dylan Tellado",
+            "player_id": "32584",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Adam Poliakov",
+            "player_id": "32579",
+            "started": false,
+            "shots": 3,
+            "sog": 3,
+            "goals": 2,
+            "assists": 0,
+            "minutes": 63
+          },
+          {
+            "name": "Gil de Souza",
+            "player_id": "32589",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 48
+          },
+          {
+            "name": "Alejandro Palacio",
+            "player_id": "32578",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 18
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Jason Broome",
+            "player_id": "32566",
+            "position": "GK",
+            "number": "99",
+            "minutes": 90,
+            "goals_against": 1,
+            "saves": 2
+          }
+        ]
+      },
+      {
+        "name": "Brown",
+        "abbr": "BRWN",
+        "score": 1,
+        "periods": [
+          1,
+          0
+        ],
+        "shots": 6,
+        "sog": 3,
+        "saves": 4,
+        "corners": 0,
+        "fouls": 7,
+        "players": [
+          {
+            "name": "Max Pfaffman",
+            "position": "GK",
+            "number": "1",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Alexander Sauerbrei",
+            "position": "DEF",
+            "number": "3",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 81
+          },
+          {
+            "name": "Mathias Hille",
+            "position": "MID",
+            "number": "5",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Sergio Canos Seneci",
+            "position": "MID",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Carlo Brown",
+            "position": "FWD",
+            "number": "9",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 65
+          },
+          {
+            "name": "Lorenzo Amaral",
+            "position": "FWD",
+            "number": "10",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 88
+          },
+          {
+            "name": "Nicholas Sanchez",
+            "position": "DEF",
+            "number": "12",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 72
+          },
+          {
+            "name": "Mateo Pereyra",
+            "position": "FWD",
+            "number": "14",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 80
+          },
+          {
+            "name": "Shayne Thompson",
+            "position": "DEF",
+            "number": "16",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 81
+          },
+          {
+            "name": "Zion Wharton",
+            "position": "MID",
+            "number": "18",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 62
+          },
+          {
+            "name": "Ethan Rabel",
+            "position": "MID",
+            "number": "20",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 85
+          },
+          {
+            "name": "Stefano D'Agostini",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 9
+          },
+          {
+            "name": "Marshall Treese",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 11
+          },
+          {
+            "name": "James Snaith",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 28
+          },
+          {
+            "name": "Isaiah Robledo",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 9
+          },
+          {
+            "name": "Donovan Mark",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 16
+          },
+          {
+            "name": "Kitan Akindele",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 8
+          },
+          {
+            "name": "Luke Harrell",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 9
+          },
+          {
+            "name": "Sawyer Turiace",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 5
+          },
+          {
+            "name": "Solomon Powell",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 2
+          },
+          {
+            "name": "Carter Smith",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 9
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Max Pfaffman",
+            "position": "GK",
+            "number": "1",
+            "minutes": 90,
+            "goals_against": 2,
+            "saves": 4
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "22:35",
+        "team": 1,
+        "scorer": "Ethan Rabel",
+        "season_total": 1,
+        "assist": "Lorenzo Amaral",
+        "description": "GOAL by BRWN Rabel, Ethan Assist by Amaral, Lorenzo."
+      },
+      {
+        "time": "57:35",
+        "team": 0,
+        "scorer": "Adam Poliakov",
+        "season_total": 3,
+        "description": "GOAL by HRVD Poliakov, Adam."
+      },
+      {
+        "time": "74:32",
+        "team": 0,
+        "scorer": "Adam Poliakov",
+        "season_total": 3,
+        "assist": "Nayan Das",
+        "description": "GOAL by HRVD Poliakov, Adam Assist by Das, Nayan."
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Pfaffman, Max at goalie for Brown",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Broome, Jason at goalie for Harvard",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HRVD Savva, Andreas.",
+        "clock": "04:57",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Brown.",
+        "clock": "08:07",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Brown.",
+        "clock": "09:35",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Wooten, Phoenix.",
+        "clock": "10:50",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Kelly, Ben.",
+        "clock": "16:37",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Das, Nayan.",
+        "clock": "17:23",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Hille, Mathias.",
+        "clock": "18:43",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Das, Nayan.",
+        "clock": "20:34",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by BRWN Rabel, Ethan Assist by Amaral, Lorenzo.",
+        "clock": "22:35",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Foul on Das, Nayan.",
+        "clock": "24:19",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "HRVD substitution: Tellado, Dylan for Savva, Andreas.",
+        "clock": "26:39",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HRVD substitution: Poliakov, Adam for Tanyi, Xavier.",
+        "clock": "26:39",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HRVD substitution: de Souza, Gil for Lonergan, Shane.",
+        "clock": "26:39",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Hille, Mathias.",
+        "clock": "27:45",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HRVD Poliakov, Adam, bottom left, saved by Pfaffman, Max.",
+        "clock": "31:38",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "BRWN substitution: Mark, Donovan for Brown, Carlo.",
+        "clock": "34:03",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "BRWN substitution: Akindele, Kitan for Wharton, Zion.",
+        "clock": "34:03",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "BRWN substitution: Snaith, James for Pereyra, Mateo.",
+        "clock": "34:03",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "BRWN substitution: Treese, Marshall for Amaral, Lorenzo.",
+        "clock": "42:15",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "BRWN substitution: Turiace, Sawyer for Akindele, Kitan.",
+        "clock": "42:15",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "BRWN substitution: Powell, Solomon for Rabel, Ethan.",
+        "clock": "42:15",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Harvard.",
+        "clock": "42:27",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [43:36].",
+        "clock": "43:36",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Wooten, Phoenix.",
+        "clock": "44:30",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by BRWN Treese, Marshall.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR HRVD: , #99 Broome, Jason, #4 Castel, Alexander, #5 Mobray, Maxwell, #11 Savva, Andreas, #8 Wooten, Phoenix, #10 Kelly, Ben, #7 Tellado, Dylan, #12 Engle, Andreas, #13 Langenbahn, Tim, #17 Poliakov, Adam, #24 de Souza, Gil.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR BRWN: , #1 Pfaffman, Max, #3 Sauerbrei, Alexander, #5 Hille, Mathias, #6 Canos Seneci, Sergio, #9 Brown, Carlo, #20 Rabel, Ethan, #12 Sanchez, Nicholas, #18 Wharton, Zion, #16 Thompson, Shayne, #10 Amaral, Lorenzo, #14 Pereyra, Mateo.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Brown, Carlo for Mark, Donovan.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Rabel, Ethan for Treese, Marshall.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Wharton, Zion for Snaith, James.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Amaral, Lorenzo for Turiace, Sawyer.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Pereyra, Mateo for Powell, Solomon.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HRVD substitution: Savva, Andreas for Das, Nayan.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Canos Seneci, Sergio.",
+        "clock": "47:24",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Brown.",
+        "clock": "48:07",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Harvard.",
+        "clock": "49:12",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Shot by BRWN Sanchez, Nicholas.",
+        "clock": "50:49",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HRVD Engle, Andreas, out top.",
+        "clock": "51:36",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Brown.",
+        "clock": "52:40",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HRVD Kelly, Ben, out left.",
+        "clock": "53:36",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by BRWN Brown, Carlo, bottom center, saved by Broome, Jason.",
+        "clock": "55:04",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by HRVD Poliakov, Adam.",
+        "clock": "57:35",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          1,
+          1
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Foul on Amaral, Lorenzo.",
+        "clock": "58:50",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HRVD Langenbahn, Tim, bottom right, saved by Pfaffman, Max.",
+        "clock": "58:50",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Castel, Alexander.",
+        "clock": "58:50",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HRVD Kelly, Ben, bottom left, saved by Pfaffman, Max.",
+        "clock": "63:52",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HRVD Tellado, Dylan, bottom center, saved by Pfaffman, Max.",
+        "clock": "65:11",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by BRWN Hille, Mathias, bottom center, saved by Broome, Jason.",
+        "clock": "68:43",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Hille, Mathias.",
+        "clock": "70:37",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Snaith, James for Sanchez, Nicholas.",
+        "clock": "71:19",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Smith, Carter for Wharton, Zion.",
+        "clock": "71:19",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HRVD substitution: Das, Nayan for Savva, Andreas.",
+        "clock": "71:19",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HRVD substitution: Palacio, Alejandro for Tellado, Dylan.",
+        "clock": "71:19",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Harvard.",
+        "clock": "72:35",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Smith, Carter.",
+        "clock": "73:17",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Mark, Donovan for Brown, Carlo.",
+        "clock": "74:03",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by HRVD Poliakov, Adam Assist by Das, Nayan.",
+        "clock": "74:32",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          2,
+          1
+        ]
+      },
+      {
+        "period": "2",
+        "text": "HRVD substitution: Lonergan, Shane for de Souza, Gil.",
+        "clock": "74:25",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Rabel, Ethan.",
+        "clock": "79:24",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Treese, Marshall for Sauerbrei, Alexander.",
+        "clock": "80:03",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: D'Agostini, Stefano for Mark, Donovan.",
+        "clock": "80:03",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Robledo, Isaiah for Smith, Carter.",
+        "clock": "80:03",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Harrell, Luke for Thompson, Shayne.",
+        "clock": "80:03",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Kelly, Ben.",
+        "clock": "80:15",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Lonergan, Shane.",
+        "clock": "84:22",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "BRWN substitution: Turiace, Sawyer for Rabel, Ethan.",
+        "clock": "86:47",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Lonergan, Shane.",
+        "clock": "87:33",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by BRWN Pereyra, Mateo.",
+        "clock": "88:52",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "team": 1,
+        "type": "period"
+      }
+    ],
+    "stadium": "Stevenson-Pincince Field",
+    "attendance": 375,
+    "kickoff": "07:00",
+    "officials": [
+      "Referee: Mounir Idmalak",
+      "Asst. Referee: Christopher Watkins",
+      "Asst. Referee: Bes Milloshi",
+      "Alt. Official: Steven Cardoso"
+    ],
+    "home_index": 1
+  }
+}

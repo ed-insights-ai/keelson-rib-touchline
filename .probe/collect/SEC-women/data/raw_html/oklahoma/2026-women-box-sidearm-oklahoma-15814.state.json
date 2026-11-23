@@ -1,0 +1,1191 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://soonersports.com/sports/soccer/stats/2026/missouri/boxscore/15814",
+  "final_url": "https://soonersports.com/sports/soccer/stats/2026/missouri/boxscore/15814",
+  "etag": null,
+  "last_modified": null,
+  "signature": "7aed3ba45bc015779a1b94e2664d37cb720d3b8714829b8ac38cf19d12af5cfb",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:16:09+00:00",
+  "verified_at": "2026-11-23T10:16:09+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://soonersports.com/sports/soccer/stats/2026/missouri/boxscore/15814",
+    "teams": [
+      {
+        "name": "Missouri",
+        "abbr": "MIZ",
+        "score": 1,
+        "periods": [
+          0,
+          1
+        ],
+        "shots": 7,
+        "saves": 6,
+        "corners": 4,
+        "fouls": 10,
+        "offsides": 0,
+        "sog": 3,
+        "players": [
+          {
+            "name": "Riley Wilkerson",
+            "position": "GK",
+            "number": "22",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Brianna Buels",
+            "position": "FWD",
+            "number": "2",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 55
+          },
+          {
+            "name": "Mia Yang",
+            "position": "DEF",
+            "number": "3",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 45
+          },
+          {
+            "name": "Rylie Morse",
+            "number": "12",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Morgan Meador",
+            "position": "DEF",
+            "number": "13",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Emily Derucki",
+            "position": "FWD",
+            "number": "17",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 66
+          },
+          {
+            "name": "Alyssa Bryant",
+            "position": "MID",
+            "number": "24",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Landis Canada",
+            "position": "MID",
+            "number": "25",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Olivia Chianelli",
+            "position": "MID",
+            "number": "28",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 79
+          },
+          {
+            "name": "McKenna Moran",
+            "position": "MID",
+            "number": "29",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Mia Devrouax",
+            "position": "FWD",
+            "number": "31",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 72
+          },
+          {
+            "name": "Landry Hopkins",
+            "number": "5",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 11
+          },
+          {
+            "name": "Audrey Gilbert",
+            "position": "FWD",
+            "number": "9",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 25
+          },
+          {
+            "name": "Lana Adams",
+            "number": "23",
+            "started": false,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 63
+          },
+          {
+            "name": "Taryn Chance",
+            "position": "DEF",
+            "number": "27",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 34
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Riley Wilkerson",
+            "position": "GK",
+            "number": "22",
+            "minutes": 90,
+            "goals_against": 3,
+            "saves": 6
+          }
+        ]
+      },
+      {
+        "name": "Oklahoma",
+        "abbr": "OKL",
+        "score": 3,
+        "periods": [
+          3,
+          0
+        ],
+        "winner": true,
+        "shots": 13,
+        "saves": 2,
+        "corners": 4,
+        "fouls": 6,
+        "offsides": 1,
+        "sog": 9,
+        "players": [
+          {
+            "name": "Callie Sullivan",
+            "player_id": "20056",
+            "position": "GK",
+            "number": "34",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Paige Califf",
+            "player_id": "20058",
+            "position": "MID",
+            "number": "2",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Lexi Dendis",
+            "player_id": "20046",
+            "position": "FWD",
+            "number": "3",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Sophie Morrin",
+            "player_id": "20053",
+            "position": "MID",
+            "number": "4",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 32
+          },
+          {
+            "name": "Narissa Fults",
+            "player_id": "20059",
+            "position": "FWD",
+            "number": "5",
+            "started": true,
+            "shots": 5,
+            "sog": 4,
+            "goals": 2,
+            "assists": 0,
+            "minutes": 65
+          },
+          {
+            "name": "Kayla Keefer",
+            "player_id": "20049",
+            "position": "FWD",
+            "number": "6",
+            "started": true,
+            "shots": 4,
+            "sog": 2,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 75
+          },
+          {
+            "name": "Ally Laccinole",
+            "player_id": "20050",
+            "position": "DEF",
+            "number": "9",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Kate McCallister",
+            "player_id": "20248",
+            "position": "MID",
+            "number": "17",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 75
+          },
+          {
+            "name": "Kendall Campbell",
+            "player_id": "20250",
+            "position": "DEF",
+            "number": "21",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 64
+          },
+          {
+            "name": "Sadie Sterbenz",
+            "player_id": "20060",
+            "position": "DEF",
+            "number": "23",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 76
+          },
+          {
+            "name": "Elle Canty",
+            "player_id": "20043",
+            "position": "MID",
+            "number": "33",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 2,
+            "minutes": 62
+          },
+          {
+            "name": "Fernanda Dantas",
+            "player_id": "20244",
+            "position": "DEF",
+            "number": "7",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 28
+          },
+          {
+            "name": "Avery Brand",
+            "player_id": "20245",
+            "position": "MID",
+            "number": "10",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 9
+          },
+          {
+            "name": "Drue Legan",
+            "player_id": "20051",
+            "position": "DEF",
+            "number": "11",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 5
+          },
+          {
+            "name": "Kennedy Kaiser",
+            "player_id": "20246",
+            "position": "FWD",
+            "number": "12",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 29
+          },
+          {
+            "name": "Aly Guthrie",
+            "player_id": "20047",
+            "position": "MID",
+            "number": "15",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 7
+          },
+          {
+            "name": "Ariana Ellison",
+            "player_id": "20247",
+            "position": "DEF",
+            "number": "16",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 35
+          },
+          {
+            "name": "Brenna Hallam",
+            "player_id": "20251",
+            "position": "FWD",
+            "number": "22",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 11
+          },
+          {
+            "name": "Claire Curran",
+            "player_id": "20044",
+            "position": "FWD",
+            "number": "30",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 21
+          },
+          {
+            "name": "Emily Davey",
+            "player_id": "20045",
+            "position": "FWD",
+            "number": "36",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 36
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Callie Sullivan",
+            "player_id": "20056",
+            "position": "GK",
+            "number": "34",
+            "minutes": 90,
+            "goals_against": 1,
+            "saves": 2
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "08:12",
+        "team": 1,
+        "scorer": "Narissa Fults",
+        "season_total": 4,
+        "assist": "Sadie Sterbenz , Elle Canty",
+        "description": "GOAL by OKL Fults, Narissa Assist by Sterbenz, Sadie and Canty, Elle."
+      },
+      {
+        "time": "26:09",
+        "team": 1,
+        "scorer": "Kayla Keefer",
+        "season_total": 12,
+        "assist": "Elle Canty",
+        "description": "GOAL by OKL Keefer, Kayla Assist by Canty, Elle."
+      },
+      {
+        "time": "27:02",
+        "team": 1,
+        "scorer": "Narissa Fults",
+        "season_total": 4,
+        "assist": "Emily Davey",
+        "description": "GOAL by OKL Fults, Narissa Assist by Davey, Emily."
+      },
+      {
+        "time": "48:05",
+        "team": 0,
+        "scorer": "Emily Derucki",
+        "season_total": 2,
+        "assist": "Lana Adams",
+        "description": "GOAL by MIZ Derucki, Emily Assist by Adams, Lana."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Ally Laccinole",
+        "number": "9",
+        "time": "73:23",
+        "team": 1
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Sullivan, Callie at goalie for Oklahoma",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Wilkerson, Riley at goalie for Missouri",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OKL Keefer, Kayla, out right.",
+        "clock": "05:57",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OKL Fults, Narissa, bottom center, saved by Wilkerson, Riley.",
+        "clock": "07:03",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OKL Fults, Narissa, bottom right, saved by Wilkerson, Riley.",
+        "clock": "08:02",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by OKL Fults, Narissa Assist by Sterbenz, Sadie and Canty, Elle.",
+        "clock": "08:12",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Foul on Bryant, Alyssa.",
+        "clock": "10:47",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [14:03].",
+        "clock": "14:03",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "OKL substitution: Davey, Emily for Morrin, Sophie.",
+        "clock": "14:56",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by MIZ Derucki, Emily.",
+        "clock": "17:20",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Buels, Brianna.",
+        "clock": "23:13",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by OKL Canty, Elle, bottom left, saved by Wilkerson, Riley.",
+        "clock": "23:46",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [23:52].",
+        "clock": "23:52",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [25:06].",
+        "clock": "25:06",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by OKL Keefer, Kayla Assist by Canty, Elle.",
+        "clock": "26:09",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          2
+        ]
+      },
+      {
+        "period": "1",
+        "text": "OKL substitution: Curran, Claire for Canty, Elle.",
+        "clock": "26:10",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "MIZ substitution: Adams, Lana for Buels, Brianna.",
+        "clock": "26:10",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "MIZ substitution: Chance, Taryn for Devrouax, Mia.",
+        "clock": "26:10",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by OKL Fults, Narissa Assist by Davey, Emily.",
+        "clock": "27:02",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          3
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Foul on Adams, Lana.",
+        "clock": "28:37",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "OKL substitution: Kaiser, Kennedy for Fults, Narissa.",
+        "clock": "30:41",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OKL substitution: Ellison, Ariana for Campbell, Kendall.",
+        "clock": "30:41",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "MIZ substitution: Gilbert, Audrey for Derucki, Emily.",
+        "clock": "30:41",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Dendis, Lexi.",
+        "clock": "32:43",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [34:02].",
+        "clock": "34:02",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "OKL substitution: Hallam, Brenna for Davey, Emily.",
+        "clock": "35:09",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OKL substitution: Dantas, Fernanda for Keefer, Kayla.",
+        "clock": "35:09",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OKL substitution: Brand, Avery for McCallister, Kate.",
+        "clock": "35:09",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "OKL substitution: Guthrie, Aly for Curran, Claire.",
+        "clock": "37:49",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Adams, Lana.",
+        "clock": "39:08",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "OKL substitution: Legan, Drue for Sterbenz, Sadie.",
+        "clock": "39:53",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [43:10].",
+        "clock": "43:10",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Gilbert, Audrey.",
+        "clock": "44:50",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR MIZ: , #22 Wilkerson, Riley, #23 Adams, Lana, #31 Devrouax, Mia, #12 Morse, Rylie, #13 Meador, Morgan, #2 Buels, Brianna, #24 Bryant, Alyssa, #25 Canada, Landis, #28 Chianelli, Olivia, #29 Moran, McKenna, #17 Derucki, Emily.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR OKL: , #34 Sullivan, Callie, #2 Califf, Paige, #3 Dendis, Lexi, #5 Fults, Narissa, #6 Keefer, Kayla, #17 McCallister, Kate, #9 Laccinole, Ally, #21 Campbell, Kendall, #23 Sterbenz, Sadie, #33 Canty, Elle, #36 Davey, Emily.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Fults, Narissa for Hallam, Brenna.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Keefer, Kayla for Kaiser, Kennedy.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: McCallister, Kate for Dantas, Fernanda.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Campbell, Kendall for Brand, Avery.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Sterbenz, Sadie for Ellison, Ariana.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Canty, Elle for Legan, Drue.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Davey, Emily for Guthrie, Aly.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MIZ substitution: Devrouax, Mia for Yang, Mia.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MIZ substitution: Buels, Brianna for Gilbert, Audrey.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MIZ substitution: Derucki, Emily for Chance, Taryn.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Califf, Paige.",
+        "clock": "46:59",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by MIZ Derucki, Emily Assist by Adams, Lana.",
+        "clock": "48:05",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          1,
+          3
+        ]
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Morrin, Sophie for McCallister, Kate.",
+        "clock": "53:43",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OKL Morrin, Sophie, bottom right, saved by Wilkerson, Riley.",
+        "clock": "54:37",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Sterbenz, Sadie.",
+        "clock": "55:06",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by MIZ Buels, Brianna, out top.",
+        "clock": "55:51",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OKL Canty, Elle, out left.",
+        "clock": "56:59",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Oklahoma.",
+        "clock": "58:44",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: McCallister, Kate for Davey, Emily.",
+        "clock": "59:13",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by MIZ Adams, Lana, out top.",
+        "clock": "60:27",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by MIZ Adams, Lana, out top.",
+        "clock": "61:01",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Kaiser, Kennedy for Fults, Narissa.",
+        "clock": "65:09",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Curran, Claire for Morrin, Sophie.",
+        "clock": "65:09",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Dantas, Fernanda for Canty, Elle.",
+        "clock": "65:09",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MIZ substitution: Chance, Taryn for Buels, Brianna.",
+        "clock": "65:40",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Ellison, Ariana for Sterbenz, Sadie.",
+        "clock": "66:31",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Canada, Landis.",
+        "clock": "67:39",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by MIZ Chianelli, Olivia, bottom left, saved by Sullivan, Callie.",
+        "clock": "68:33",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OKL Keefer, Kayla, out right.",
+        "clock": "69:03",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OKL Kaiser, Kennedy, bottom left, saved by Wilkerson, Riley.",
+        "clock": "70:52",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Fults, Narissa for Keefer, Kayla.",
+        "clock": "71:44",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MIZ substitution: Gilbert, Audrey for Derucki, Emily.",
+        "clock": "71:44",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [72:08].",
+        "clock": "72:08",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Adams, Lana.",
+        "clock": "72:46",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on OKL Laccinole, Ally.",
+        "clock": "73:23",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Gilbert, Audrey.",
+        "clock": "74:57",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Sterbenz, Sadie for Curran, Claire.",
+        "clock": "75:57",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Canty, Elle for Campbell, Kendall.",
+        "clock": "75:57",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Keefer, Kayla for Kaiser, Kennedy.",
+        "clock": "77:22",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MIZ substitution: Hopkins, Landry for Chianelli, Olivia.",
+        "clock": "78:03",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Hopkins, Landry.",
+        "clock": "79:04",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OKL Fults, Narissa.",
+        "clock": "79:26",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [79:57].",
+        "clock": "79:57",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by OKL Keefer, Kayla, bottom left, saved by Wilkerson, Riley.",
+        "clock": "80:23",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Califf, Paige.",
+        "clock": "81:12",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "MIZ substitution: Derucki, Emily for Chance, Taryn.",
+        "clock": "81:51",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MIZ substitution: Buels, Brianna for Gilbert, Audrey.",
+        "clock": "82:10",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Kaiser, Kennedy for Fults, Narissa.",
+        "clock": "84:54",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Morrin, Sophie for Dantas, Fernanda.",
+        "clock": "84:54",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "MIZ Rylie Morse PENALTY KICK MISS, saved by Sullivan, Callie.",
+        "clock": "84:54",
+        "team": 0,
+        "type": "penalty"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Campbell, Kendall for Kaiser, Kennedy.",
+        "clock": "87:17",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "OKL substitution: Hallam, Brenna for Ellison, Ariana.",
+        "clock": "87:17",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Hopkins, Landry.",
+        "clock": "88:43",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [89:31].",
+        "clock": "89:31",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "type": "period"
+      }
+    ],
+    "stadium": "John Crain Field",
+    "attendance": 1419,
+    "kickoff": "07:00",
+    "officials": [
+      "Referee: Estefania Estrada",
+      "Asst. Referee: Eric Aplis",
+      "Asst. Referee: Corina Willner",
+      "Alt. Official: Melvin Machayo"
+    ],
+    "home_index": 1
+  }
+}

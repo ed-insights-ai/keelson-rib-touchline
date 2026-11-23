@@ -1,0 +1,1355 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/dartmouth/boxscore/33221",
+  "final_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/dartmouth/boxscore/33221",
+  "etag": null,
+  "last_modified": null,
+  "signature": "9b49b8a03272e15eb82454342578fa50c4c58f6f4821d9887f3fc8f28960846b",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:16:11+00:00",
+  "verified_at": "2026-11-23T10:16:11+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://gocrimson.com/sports/mens-soccer/stats/2026/dartmouth/boxscore/33221",
+    "teams": [
+      {
+        "name": "Dartmouth",
+        "abbr": "DART",
+        "score": 3,
+        "periods": [
+          2,
+          1
+        ],
+        "shots": 13,
+        "sog": 3,
+        "saves": 3,
+        "corners": 8,
+        "fouls": 9,
+        "players": [
+          {
+            "name": "TJ Jeffreys",
+            "position": "GK",
+            "number": "0",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Alexis Huneau",
+            "position": "DEF",
+            "number": "2",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Olly Spicer",
+            "position": "MID",
+            "number": "8",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 90
+          },
+          {
+            "name": "Douglas Arveskar",
+            "position": "FWD",
+            "number": "9",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 24
+          },
+          {
+            "name": "Trenton Blake",
+            "position": "FWD",
+            "number": "11",
+            "started": true,
+            "shots": 5,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 71
+          },
+          {
+            "name": "Benny Rolla-Mullis",
+            "position": "DEF",
+            "number": "13",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 80
+          },
+          {
+            "name": "Noah Sams",
+            "position": "FWD",
+            "number": "14",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Eli Granda",
+            "position": "MID",
+            "number": "18",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 90
+          },
+          {
+            "name": "Hudson Kohler",
+            "position": "DEF",
+            "number": "22",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Will Lulka",
+            "position": "FWD",
+            "number": "23",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 18
+          },
+          {
+            "name": "Nicholas Greer",
+            "number": "27",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Daniel Carey-Evans",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 10
+          },
+          {
+            "name": "Symeon Hadjigeorgiou",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 6
+          },
+          {
+            "name": "Ben Bilden",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 1
+          },
+          {
+            "name": "Vasilis Moiras",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 34
+          },
+          {
+            "name": "Bo Robbins",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 1,
+            "assists": 1,
+            "minutes": 50
+          },
+          {
+            "name": "Eidur Baldvinsson",
+            "started": false,
+            "shots": 3,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 66
+          }
+        ],
+        "keepers": [
+          {
+            "name": "TJ Jeffreys",
+            "position": "GK",
+            "number": "0",
+            "minutes": 90,
+            "goals_against": 3,
+            "saves": 3
+          }
+        ]
+      },
+      {
+        "name": "Harvard",
+        "abbr": "HARV",
+        "score": 3,
+        "periods": [
+          2,
+          1
+        ],
+        "shots": 13,
+        "sog": 5,
+        "saves": 0,
+        "corners": 5,
+        "fouls": 20,
+        "players": [
+          {
+            "name": "Mikey Cortellessa",
+            "player_id": "32568",
+            "position": "DEF",
+            "number": "2",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 68
+          },
+          {
+            "name": "Alexander Castel",
+            "player_id": "32567",
+            "position": "DEF",
+            "number": "4",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 78
+          },
+          {
+            "name": "Nayan Das",
+            "player_id": "32569",
+            "position": "DEF",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Dylan Tellado",
+            "player_id": "32584",
+            "position": "FWD",
+            "number": "7",
+            "started": true,
+            "shots": 3,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 78
+          },
+          {
+            "name": "Phoenix Wooten",
+            "player_id": "32587",
+            "position": "MID",
+            "number": "8",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 79
+          },
+          {
+            "name": "Ben Kelly",
+            "player_id": "32572",
+            "position": "FWD",
+            "number": "10",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 82
+          },
+          {
+            "name": "Andreas Savva",
+            "player_id": "32581",
+            "position": "FWD",
+            "number": "11",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 79
+          },
+          {
+            "name": "Tim Langenbahn",
+            "player_id": "32573",
+            "position": "DEF",
+            "number": "13",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Adam Poliakov",
+            "player_id": "32579",
+            "position": "FWD",
+            "number": "17",
+            "started": true,
+            "shots": 3,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 82
+          },
+          {
+            "name": "Alejandro Palacio",
+            "player_id": "32578",
+            "position": "DEF",
+            "number": "27",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Jason Broome",
+            "player_id": "32566",
+            "position": "GK",
+            "number": "99",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Maxwell Mobray",
+            "player_id": "32577",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 20
+          },
+          {
+            "name": "Xavier Tanyi",
+            "player_id": "32583",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 11
+          },
+          {
+            "name": "Christo Velikin",
+            "player_id": "32585",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 22
+          },
+          {
+            "name": "Shane Lonergan",
+            "player_id": "32575",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 8
+          },
+          {
+            "name": "Gil de Souza",
+            "player_id": "32589",
+            "started": false,
+            "shots": 2,
+            "sog": 2,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 12
+          },
+          {
+            "name": "Kiko Elliott",
+            "player_id": "32590",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 11
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Jason Broome",
+            "player_id": "32566",
+            "position": "GK",
+            "number": "99",
+            "minutes": 90,
+            "goals_against": 3,
+            "saves": 0
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "19:03",
+        "team": 1,
+        "scorer": "0",
+        "description": "GOAL by HARV TEAM."
+      },
+      {
+        "time": "27:24",
+        "team": 0,
+        "scorer": "Trenton Blake",
+        "season_total": 4,
+        "description": "DART Trenton Blake PENALTY KICK GOAL."
+      },
+      {
+        "time": "39:14",
+        "team": 0,
+        "scorer": "Bo Robbins",
+        "season_total": 2,
+        "assist": "Eli Granda , Olly Spicer",
+        "description": "GOAL by DART Robbins, Bo Assist by Granda, Eli and Spicer, Olly."
+      },
+      {
+        "time": "40:51",
+        "team": 1,
+        "scorer": "Gil de Souza",
+        "season_total": 2,
+        "description": "HARV Gil de Souza PENALTY KICK GOAL."
+      },
+      {
+        "time": "70:48",
+        "team": 0,
+        "scorer": "Eidur Baldvinsson",
+        "season_total": 4,
+        "assist": "Bo Robbins",
+        "description": "GOAL by DART Baldvinsson, Eidur Assist by Robbins, Bo."
+      },
+      {
+        "time": "88:01",
+        "team": 1,
+        "scorer": "Dylan Tellado",
+        "season_total": 6,
+        "description": "GOAL by HARV Tellado, Dylan."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Phoenix Wooten",
+        "number": "8",
+        "time": "25:15",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Shane Lonergan",
+        "number": "20",
+        "time": "41:53",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Noah Sams",
+        "number": "14",
+        "time": "50:12",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Mikey Cortellessa",
+        "number": "2",
+        "time": "75:08",
+        "team": 1
+      },
+      {
+        "type": "yellow",
+        "player": "Nicholas Greer",
+        "number": "27",
+        "time": "77:30",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Eli Granda",
+        "number": "18",
+        "time": "80:08",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Ben Kelly",
+        "number": "10",
+        "time": "89:18",
+        "team": 1
+      },
+      {
+        "type": "red",
+        "player": "Ben Kelly",
+        "number": "10",
+        "time": "89:42",
+        "team": 1
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Broome, Jason at goalie for Harvard",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Jeffreys, TJ at goalie for Dartmouth",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Cortellessa, Mikey.",
+        "clock": "00:42",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [01:00].",
+        "clock": "01:00",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [02:21].",
+        "clock": "02:21",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [02:56].",
+        "clock": "02:56",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [03:23].",
+        "clock": "03:23",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Harvard.",
+        "clock": "04:06",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Poliakov, Adam.",
+        "clock": "04:55",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Lulka, Will.",
+        "clock": "08:57",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Harvard.",
+        "clock": "09:29",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Savva, Andreas, out left.",
+        "clock": "10:30",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Sams, Noah.",
+        "clock": "11:03",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Castel, Alexander, out right.",
+        "clock": "11:49",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Langenbahn, Tim.",
+        "clock": "15:01",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "DART substitution: Robbins, Bo for Arveskar, Douglas.",
+        "clock": "17:44",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "DART substitution: Baldvinsson, Eidur for Lulka, Will.",
+        "clock": "17:44",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Wooten, Phoenix.",
+        "clock": "18:28",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Poliakov, Adam, bottom center, saved by Jeffreys, TJ.",
+        "clock": "19:03",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by HARV TEAM.",
+        "clock": "19:03",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          0,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [19:33].",
+        "clock": "19:33",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Poliakov, Adam, out right.",
+        "clock": "21:01",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [21:27].",
+        "clock": "21:27",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Langenbahn, Tim, top, saved by Jeffreys, TJ.",
+        "clock": "21:36",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Tellado, Dylan.",
+        "clock": "21:45",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [23:27].",
+        "clock": "23:27",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by DART Blake, Trenton.",
+        "clock": "24:03",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on HARV Wooten, Phoenix.",
+        "clock": "25:15",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Shot by DART Blake, Trenton.",
+        "clock": "27:04",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Cortellessa, Mikey",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "DART Trenton Blake PENALTY KICK GOAL.",
+        "clock": "27:24",
+        "team": 0,
+        "type": "penalty",
+        "score": [
+          1,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Tellado, Dylan, out top.",
+        "clock": "28:01",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Cortellessa, Mikey.",
+        "clock": "28:56",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV Tellado, Dylan, out right.",
+        "clock": "30:24",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Savva, Andreas.",
+        "clock": "32:03",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "DART substitution: Moiras, Vasilis for Blake, Trenton.",
+        "clock": "32:50",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Dartmouth.",
+        "clock": "33:23",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: de Souza, Gil for Tellado, Dylan.",
+        "clock": "33:51",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Elliott, Keean for Wooten, Phoenix.",
+        "clock": "33:51",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Tanyi, Xavier for Savva, Andreas.",
+        "clock": "33:51",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Tanyi, Xavier.",
+        "clock": "34:52",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Mobray, Maxwell for Cortellessa, Mikey.",
+        "clock": "36:51",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Lonergan, Shane for Kelly, Ben.",
+        "clock": "36:51",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HARV substitution: Velikin, Christo for Poliakov, Adam.",
+        "clock": "36:51",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Lonergan, Shane.",
+        "clock": "38:05",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [38:39].",
+        "clock": "38:39",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by DART Robbins, Bo Assist by Granda, Eli and Spicer, Olly.",
+        "clock": "39:14",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          2,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Shot by HARV de Souza, Gil, top right, saved by Jeffreys, TJ.",
+        "clock": "40:04",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "HARV Gil de Souza PENALTY KICK GOAL.",
+        "clock": "40:51",
+        "team": 1,
+        "type": "penalty",
+        "score": [
+          2,
+          2
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on HARV Lonergan, Shane.",
+        "clock": "41:53",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [43:14].",
+        "clock": "43:14",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR DART: , #0 Jeffreys, TJ, #2 Huneau, Alexis, #8 Spicer, Olly, #11 Blake, Trenton, #10 Moiras, Vasilis, #13 Rolla-Mullis, Benny, #14 Sams, Noah, #18 Granda, Eli, #22 Kohler, Hudson, #9 Arveskar, Douglas, #27 Greer, Nicholas.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR HARV: , #99 Broome, Jason, #2 Cortellessa, Mikey, #4 Castel, Alexander, #6 Das, Nayan, #7 Tellado, Dylan, #8 Wooten, Phoenix, #10 Kelly, Ben, #11 Savva, Andreas, #13 Langenbahn, Tim, #17 Poliakov, Adam, #27 Palacio, Alejandro.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Cortellessa, Mikey for Mobray, Maxwell.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Tellado, Dylan for de Souza, Gil.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Wooten, Phoenix for Elliott, Keean.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Kelly, Ben for Lonergan, Shane.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Savva, Andreas for Tanyi, Xavier.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Poliakov, Adam for Velikin, Christo.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "DART substitution: Blake, Trenton for Robbins, Bo.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "DART substitution: Arveskar, Douglas for Baldvinsson, Eidur.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Tellado, Dylan.",
+        "clock": "47:52",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by DART Granda, Eli.",
+        "clock": "49:34",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on DART Sams, Noah.",
+        "clock": "50:12",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "DART substitution: Baldvinsson, Eidur for Arveskar, Douglas.",
+        "clock": "50:12",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Dartmouth.",
+        "clock": "50:34",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Shot by DART Spicer, Olly, out top.",
+        "clock": "52:15",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Wooten, Phoenix.",
+        "clock": "57:07",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Kohler, Hudson.",
+        "clock": "58:38",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Broome, Jason",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "DART Trenton Blake PENALTY KICK MISS.",
+        "clock": "59:18",
+        "team": 0,
+        "type": "penalty"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Wooten, Phoenix.",
+        "clock": "62:03",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Granda, Eli.",
+        "clock": "62:27",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Tellado, Dylan.",
+        "clock": "63:34",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "DART substitution: Robbins, Bo for Moiras, Vasilis.",
+        "clock": "66:06",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Kelly, Ben.",
+        "clock": "67:16",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by DART Blake, Trenton.",
+        "clock": "68:19",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Wooten, Phoenix.",
+        "clock": "69:53",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Poliakov, Adam.",
+        "clock": "70:17",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by DART Baldvinsson, Eidur Assist by Robbins, Bo.",
+        "clock": "70:48",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          3,
+          2
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Foul on Robbins, Bo.",
+        "clock": "72:13",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Savva, Andreas, out right.",
+        "clock": "73:33",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by DART Kohler, Hudson.",
+        "clock": "74:41",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on HARV Cortellessa, Mikey.",
+        "clock": "75:08",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Velikin, Christo for Cortellessa, Mikey.",
+        "clock": "75:08",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [75:09].",
+        "clock": "75:09",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [75:46].",
+        "clock": "75:46",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on DART Greer, Nicholas.",
+        "clock": "77:30",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: Mobray, Maxwell for Castel, Alexander.",
+        "clock": "77:39",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "DART substitution: Carey-Evans, Daniel for Rolla-Mullis, Benny.",
+        "clock": "77:39",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Huneau, Alexis.",
+        "clock": "78:42",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by DART Baldvinsson, Eidur, out left.",
+        "clock": "79:31",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on DART Granda, Eli.",
+        "clock": "80:08",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "DART substitution: Rolla-Mullis, Benny for Carey-Evans, Daniel.",
+        "clock": "80:08",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by DART Sams, Noah, out top.",
+        "clock": "81:56",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "DART substitution: Carey-Evans, Daniel for Blake, Trenton.",
+        "clock": "82:39",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "DART substitution: Hadjigeorgiou, Symeon for Rolla-Mullis, Benny.",
+        "clock": "82:39",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by DART Baldvinsson, Eidur.",
+        "clock": "83:22",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [83:27].",
+        "clock": "83:27",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Offside against Harvard.",
+        "clock": "84:35",
+        "team": 1,
+        "type": "offside"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Robbins, Bo.",
+        "clock": "87:03",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [87:37].",
+        "clock": "87:37",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Poliakov, Adam.",
+        "clock": "87:59",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HARV Velikin, Christo.",
+        "clock": "88:00",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by HARV Tellado, Dylan.",
+        "clock": "88:01",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          3,
+          3
+        ]
+      },
+      {
+        "period": "2",
+        "text": "DART substitution: Bilden, Ben for Hadjigeorgiou, Symeon.",
+        "clock": "88:01",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on HARV Kelly, Ben.",
+        "clock": "89:18",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "HARV substitution: de Souza, Gil for Tellado, Dylan.",
+        "clock": "89:18",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Red card on HARV Kelly, Ben.",
+        "clock": "89:42",
+        "team": 1,
+        "type": "red"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "team": 1,
+        "type": "period"
+      }
+    ],
+    "stadium": "Jordan Field",
+    "attendance": 1358,
+    "kickoff": "01:00",
+    "home_index": 1
+  }
+}

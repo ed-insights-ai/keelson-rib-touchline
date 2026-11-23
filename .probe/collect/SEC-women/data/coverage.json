@@ -1,0 +1,49 @@
+{
+  "cells": {
+    "2026/women/oklahoma/matches": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-11-23T10:15:52+00:00",
+      "count": 20,
+      "gender": "women",
+      "layer": "matches",
+      "programme": "oklahoma",
+      "season": 2026,
+      "state": "complete"
+    },
+    "2026/women/oklahoma/roster": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-11-23T10:15:52+00:00",
+      "count": 29,
+      "gender": "women",
+      "layer": "roster",
+      "programme": "oklahoma",
+      "season": 2026,
+      "source_url": "https://soonersports.com/sports/soccer/roster/2026",
+      "state": "complete"
+    },
+    "2026/women/oklahoma/schedule": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-11-23T10:15:52+00:00",
+      "count": 22,
+      "gender": "women",
+      "layer": "schedule",
+      "programme": "oklahoma",
+      "season": 2026,
+      "source_url": "https://soonersports.com/sports/soccer/schedule/2026",
+      "state": "complete"
+    },
+    "2026/women/oklahoma/stats": {
+      "collector": "sidearm-live",
+      "confirmed_at": "2026-11-23T10:15:52+00:00",
+      "count": 33,
+      "gender": "women",
+      "layer": "stats",
+      "programme": "oklahoma",
+      "season": 2026,
+      "source_url": "https://soonersports.com/sports/soccer/stats/2026",
+      "state": "complete"
+    }
+  },
+  "schema": "touchline.coverage/1",
+  "updated_at": "2026-11-23T10:16:21+00:00"
+}

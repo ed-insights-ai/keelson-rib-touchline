@@ -1,0 +1,1129 @@
+{
+  "schema": "touchline.page-state/1",
+  "requested_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/university-of-pennsylvania/boxscore/33244",
+  "final_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/university-of-pennsylvania/boxscore/33244",
+  "etag": null,
+  "last_modified": null,
+  "signature": "eb7a0c715f7671c4730980b0732293c283cd148ea5ca672db1b4dc71baa5ba16",
+  "fingerprint": "da2ef9d40bb16fff71fe809e5d32d1f5c74877f4c966bc8816e0cea85b687aca",
+  "fetched_at": "2026-11-23T10:16:11+00:00",
+  "verified_at": "2026-11-23T10:16:11+00:00",
+  "outcome": {
+    "state": "complete",
+    "count": 1,
+    "reason": null
+  },
+  "parsed": {
+    "source_url": "https://gocrimson.com/sports/womens-soccer/stats/2026/university-of-pennsylvania/boxscore/33244",
+    "teams": [
+      {
+        "name": "Harvard",
+        "abbr": "HAR",
+        "score": 3,
+        "periods": [
+          2,
+          1
+        ],
+        "shots": 20,
+        "sog": 9,
+        "saves": 1,
+        "corners": 6,
+        "fouls": 5,
+        "players": [
+          {
+            "name": "Olivia Busby",
+            "player_id": "33038",
+            "position": "GK",
+            "number": "1",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Claire Kessenger",
+            "player_id": "33040",
+            "position": "DEF",
+            "number": "6",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 46
+          },
+          {
+            "name": "Elsa Santos L\u00f3pez",
+            "player_id": "31868",
+            "position": "MID",
+            "number": "7",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "\u00d3l\u00f6f Kristinsd\u00f3ttir",
+            "player_id": "31859",
+            "position": "FWD",
+            "number": "9",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 84
+          },
+          {
+            "name": "Brooke Huleatt",
+            "player_id": "33039",
+            "position": "FWD",
+            "number": "10",
+            "started": true,
+            "shots": 6,
+            "sog": 3,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Lou Ruffien",
+            "player_id": "33042",
+            "number": "12",
+            "started": true,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 61
+          },
+          {
+            "name": "\u00cdrena H\u00e9\u00f0insd\u00f3ttir Gonzalez",
+            "player_id": "31857",
+            "position": "MID",
+            "number": "14",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Camila Reinaldo",
+            "player_id": "33041",
+            "position": "MID",
+            "number": "15",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 32
+          },
+          {
+            "name": "Jasmine Leshnick",
+            "player_id": "31860",
+            "position": "FWD",
+            "number": "16",
+            "started": true,
+            "shots": 5,
+            "sog": 3,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Amy K\u00f6nig",
+            "player_id": "31858",
+            "position": "DEF",
+            "number": "18",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Anna Rayhill",
+            "player_id": "31866",
+            "position": "FWD",
+            "number": "19",
+            "started": true,
+            "shots": 4,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Phoebe Chadwick",
+            "player_id": "31853",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 44
+          },
+          {
+            "name": "Molly Vana",
+            "player_id": "33043",
+            "started": false,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 41
+          },
+          {
+            "name": "Lauren Muniz",
+            "player_id": "31865",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 9
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Olivia Busby",
+            "player_id": "33038",
+            "position": "GK",
+            "number": "1",
+            "minutes": 90,
+            "goals_against": 3,
+            "saves": 1
+          }
+        ]
+      },
+      {
+        "name": "Penn",
+        "abbr": "PEN",
+        "score": 3,
+        "periods": [
+          1,
+          2
+        ],
+        "shots": 11,
+        "sog": 4,
+        "saves": 6,
+        "corners": 2,
+        "fouls": 11,
+        "players": [
+          {
+            "name": "Josephine Hensley",
+            "position": "GK",
+            "number": "00",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Casey Forman",
+            "position": "DEF",
+            "number": "2",
+            "started": true,
+            "shots": 2,
+            "sog": 1,
+            "goals": 1,
+            "assists": 0,
+            "minutes": 82
+          },
+          {
+            "name": "Taylor Ferraro",
+            "position": "FWD",
+            "number": "5",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Magali Capdevila",
+            "position": "FWD",
+            "number": "6",
+            "started": true,
+            "shots": 2,
+            "sog": 2,
+            "goals": 2,
+            "assists": 0,
+            "minutes": 76
+          },
+          {
+            "name": "Mia Fuss",
+            "position": "FWD",
+            "number": "9",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 85
+          },
+          {
+            "name": "Avery Chapel",
+            "position": "MID",
+            "number": "11",
+            "started": true,
+            "shots": 1,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 89
+          },
+          {
+            "name": "Lauren Anderson",
+            "position": "DEF",
+            "number": "14",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 70
+          },
+          {
+            "name": "Abbey Cook",
+            "position": "FWD",
+            "number": "17",
+            "started": true,
+            "shots": 2,
+            "sog": 0,
+            "goals": 0,
+            "assists": 1,
+            "minutes": 83
+          },
+          {
+            "name": "Grace Saxton",
+            "position": "FWD",
+            "number": "23",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Eden Veenema",
+            "position": "DEF",
+            "number": "26",
+            "started": true,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 90
+          },
+          {
+            "name": "Lily White",
+            "position": "FWD",
+            "number": "33",
+            "started": true,
+            "shots": 3,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 81
+          },
+          {
+            "name": "Camarin Choi",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 20
+          },
+          {
+            "name": "Karly Murlless",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 10
+          },
+          {
+            "name": "Zula Root",
+            "started": false,
+            "shots": 1,
+            "sog": 1,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 21
+          },
+          {
+            "name": "Isabella Zulli",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 8
+          },
+          {
+            "name": "Kylie Emanuel",
+            "started": false,
+            "shots": 0,
+            "sog": 0,
+            "goals": 0,
+            "assists": 0,
+            "minutes": 5
+          }
+        ],
+        "keepers": [
+          {
+            "name": "Josephine Hensley",
+            "position": "GK",
+            "number": "00",
+            "minutes": 90,
+            "goals_against": 3,
+            "saves": 6
+          }
+        ]
+      }
+    ],
+    "scoring": [
+      {
+        "time": "02:36",
+        "team": 0,
+        "scorer": "Brooke Huleatt",
+        "season_total": 11,
+        "assist": "\u00d3l\u00f6f Kristinsd\u00f3ttir",
+        "description": "GOAL by HAR Huleatt, Brooke Assist by Kristinsd\u00f3ttir, \u00d3l\u00f6f."
+      },
+      {
+        "time": "12:46",
+        "team": 1,
+        "scorer": "Magali Capdevila",
+        "season_total": 4,
+        "description": "GOAL by PEN Capdevila, Magali."
+      },
+      {
+        "time": "30:47",
+        "team": 0,
+        "scorer": "Jasmine Leshnick",
+        "season_total": 6,
+        "description": "GOAL by HAR Leshnick, Jasmine."
+      },
+      {
+        "time": "45:32",
+        "team": 1,
+        "scorer": "Casey Forman",
+        "season_total": 3,
+        "description": "GOAL by PEN Forman, Casey."
+      },
+      {
+        "time": "54:00",
+        "team": 0,
+        "scorer": "Anna Rayhill",
+        "season_total": 4,
+        "description": "GOAL by HAR Rayhill, Anna."
+      },
+      {
+        "time": "69:57",
+        "team": 1,
+        "scorer": "Magali Capdevila",
+        "season_total": 4,
+        "assist": "Abbey Cook",
+        "description": "GOAL by PEN Capdevila, Magali Assist by Cook, Abbey."
+      }
+    ],
+    "cards": [
+      {
+        "type": "yellow",
+        "player": "Taylor Ferraro",
+        "number": "5",
+        "time": "10:46",
+        "team": 1
+      },
+      {
+        "type": "red",
+        "player": "Claire Kessenger",
+        "number": "6",
+        "time": "45:21",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Amy K\u00f6nig",
+        "number": "18",
+        "time": "51:31",
+        "team": 0
+      },
+      {
+        "type": "yellow",
+        "player": "Mia Fuss",
+        "number": "9",
+        "time": "61:03",
+        "team": 1
+      }
+    ],
+    "plays": [
+      {
+        "period": "1",
+        "text": "Hensley, Josephine at goalie for Penn",
+        "clock": "00:00",
+        "team": 1,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Busby, Olivia at goalie for Harvard",
+        "clock": "00:00",
+        "team": 0,
+        "type": "goalie"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Harvard.",
+        "clock": "01:38",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by HAR Huleatt, Brooke Assist by Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "02:36",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          1,
+          0
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Huleatt, Brooke, bottom center, saved by Hensley, Josephine.",
+        "clock": "03:49",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [06:22].",
+        "clock": "06:22",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Huleatt, Brooke, bottom left, saved by Hensley, Josephine.",
+        "clock": "07:04",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Yellow card on PEN Ferraro, Taylor.",
+        "clock": "10:46",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Reinaldo, Camila, out right.",
+        "clock": "10:46",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Offside against Harvard.",
+        "clock": "10:46",
+        "team": 0,
+        "type": "offside"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by PEN Capdevila, Magali.",
+        "clock": "12:46",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          1,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [14:01].",
+        "clock": "14:01",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Leshnick, Jasmine.",
+        "clock": "15:13",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [17:51].",
+        "clock": "17:51",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Reinaldo, Camila, bottom center, saved by Hensley, Josephine.",
+        "clock": "21:27",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by PEN Cook, Abbey, out top.",
+        "clock": "21:56",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [24:30].",
+        "clock": "24:30",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Huleatt, Brooke, out left.",
+        "clock": "25:05",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Saxton, Grace.",
+        "clock": "25:39",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [27:17].",
+        "clock": "27:17",
+        "team": 1,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Cook, Abbey.",
+        "clock": "27:55",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Rayhill, Anna, out top right.",
+        "clock": "29:03",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Vana, Molly for Reinaldo, Camila.",
+        "clock": "29:20",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "GOAL by HAR Leshnick, Jasmine.",
+        "clock": "30:47",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          2,
+          1
+        ]
+      },
+      {
+        "period": "1",
+        "text": "PEN substitution: Root, Zula for Capdevila, Magali.",
+        "clock": "30:56",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "PEN substitution: Murlless, Karly for White, Lily.",
+        "clock": "35:50",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "HAR substitution: Muniz, Lauren for Ruffien, Lou.",
+        "clock": "35:50",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Corner kick [35:51].",
+        "clock": "35:51",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Santos Lopez, Elsa, out top.",
+        "clock": "36:22",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Leshnick, Jasmine, out top.",
+        "clock": "38:09",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "PEN substitution: Emanuel, Kylie for Fuss, Mia.",
+        "clock": "39:02",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "1",
+        "text": "Shot by HAR Vana, Molly, out right.",
+        "clock": "41:22",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "1",
+        "text": "Foul on Leshnick, Jasmine.",
+        "clock": "43:01",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "1",
+        "text": "End of period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "Start of 2nd period [45:00].",
+        "clock": "45:00",
+        "team": 1,
+        "type": "period"
+      },
+      {
+        "period": "2",
+        "text": "FOR HAR: , #1 Busby, Olivia, #6 Kessenger, Claire, #7 Santos Lopez, Elsa, #9 Kristinsd\u00f3ttir, \u00d3l\u00f6f, #10 Huleatt, Brooke, #12 Ruffien, Lou, #14 H\u00e9\u00f0insd\u00f3ttir Gonzalez, \u00cdrena, #15 Reinaldo, Camila, #16 Leshnick, Jasmine, #18 K\u00f6nig, Amy, #19 Rayhill, Anna.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "FOR PEN: , #00 Hensley, Josephine, #2 Forman, Casey, #5 Ferraro, Taylor, #6 Capdevila, Magali, #33 White, Lily, #11 Chapel, Avery, #14 Anderson, Lauren, #17 Cook, Abbey, #23 Saxton, Grace, #26 Veenema, Eden, #9 Fuss, Mia.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "lineup"
+      },
+      {
+        "period": "2",
+        "text": "PEN substitution: Capdevila, Magali for Root, Zula.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "PEN substitution: White, Lily for Emanuel, Kylie.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "PEN substitution: Fuss, Mia for Murlless, Karly.",
+        "clock": "45:00",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Ruffien, Lou for Muniz, Lauren.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Reinaldo, Camila for Vana, Molly.",
+        "clock": "45:00",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Red card on HAR Kessenger, Claire.",
+        "clock": "45:21",
+        "team": 0,
+        "type": "red"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Chadwick, Phoebe for Kessenger, Claire.",
+        "clock": "45:21",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by PEN Forman, Casey.",
+        "clock": "45:32",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          2,
+          2
+        ]
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: unknown player for Reinaldo, Camila.",
+        "clock": "46:57",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Santos Lopez, Elsa.",
+        "clock": "47:03",
+        "team": 0,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Veenema, Eden.",
+        "clock": "48:34",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Ruffien, Lou, bottom center, saved by Hensley, Josephine.",
+        "clock": "51:27",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on HAR K\u00f6nig, Amy.",
+        "clock": "51:31",
+        "team": 0,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Chapel, Avery.",
+        "clock": "52:59",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by HAR Rayhill, Anna.",
+        "clock": "54:00",
+        "team": 0,
+        "type": "goal",
+        "score": [
+          3,
+          2
+        ]
+      },
+      {
+        "period": "2",
+        "text": "Foul on Capdevila, Magali.",
+        "clock": "55:41",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on White, Lily.",
+        "clock": "59:47",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Saxton, Grace.",
+        "clock": "60:30",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Yellow card on PEN Fuss, Mia.",
+        "clock": "61:03",
+        "team": 1,
+        "type": "yellow"
+      },
+      {
+        "period": "2",
+        "text": "PEN substitution: Choi, Camarin for Anderson, Lauren.",
+        "clock": "63:25",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Vana, Molly for Kristinsd\u00f3ttir, \u00d3l\u00f6f.",
+        "clock": "63:25",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on White, Lily.",
+        "clock": "62:04",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PEN Forman, Casey.",
+        "clock": "64:50",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PEN Chapel, Avery, out right.",
+        "clock": "67:42",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PEN White, Lily.",
+        "clock": "68:31",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PEN White, Lily, out top.",
+        "clock": "69:24",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "HAR substitution: Kristinsd\u00f3ttir, \u00d3l\u00f6f for Ruffien, Lou.",
+        "clock": "69:38",
+        "team": 0,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "GOAL by PEN Capdevila, Magali Assist by Cook, Abbey.",
+        "clock": "69:57",
+        "team": 1,
+        "type": "goal",
+        "score": [
+          3,
+          3
+        ]
+      },
+      {
+        "period": "2",
+        "text": "PEN substitution: Zulli, Isabella for Forman, Casey.",
+        "clock": "70:12",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "PEN substitution: Root, Zula for Cook, Abbey.",
+        "clock": "71:48",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Foul on Choi, Camarin.",
+        "clock": "72:07",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Leshnick, Jasmine, bottom center, saved by Hensley, Josephine.",
+        "clock": "74:43",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on White, Lily.",
+        "clock": "76:04",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PEN Root, Zula, bottom center, saved by Busby, Olivia.",
+        "clock": "77:18",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "PEN substitution: Cook, Abbey for Zulli, Isabella.",
+        "clock": "78:38",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "PEN substitution: Forman, Casey for Root, Zula.",
+        "clock": "78:38",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Rayhill, Anna.",
+        "clock": "79:30",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Rayhill, Anna.",
+        "clock": "79:37",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Foul on White, Lily.",
+        "clock": "80:10",
+        "team": 1,
+        "type": "foul"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Huleatt, Brooke.",
+        "clock": "81:34",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [82:33].",
+        "clock": "82:33",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Leshnick, Jasmine, out left.",
+        "clock": "83:03",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "PEN substitution: Anderson, Lauren for Choi, Camarin.",
+        "clock": "83:20",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Leshnick, Jasmine, bottom center, saved by Hensley, Josephine.",
+        "clock": "84:28",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PEN White, Lily, out top left.",
+        "clock": "85:29",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by PEN Cook, Abbey, out left.",
+        "clock": "86:14",
+        "team": 1,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Shot by HAR Huleatt, Brooke.",
+        "clock": "86:52",
+        "team": 0,
+        "type": "shot"
+      },
+      {
+        "period": "2",
+        "text": "Corner kick [87:30].",
+        "clock": "87:30",
+        "team": 0,
+        "type": "corner"
+      },
+      {
+        "period": "2",
+        "text": "PEN substitution: Murlless, Karly for Chapel, Avery.",
+        "clock": "87:31",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "PEN substitution: Chapel, Avery for Murlless, Karly.",
+        "clock": "88:34",
+        "team": 1,
+        "type": "sub"
+      },
+      {
+        "period": "2",
+        "text": "End of period [90:00].",
+        "clock": "90:00",
+        "team": 1,
+        "type": "period"
+      }
+    ],
+    "stadium": "Rhodes Field",
+    "attendance": 252,
+    "kickoff": "04:00",
+    "officials": [
+      "Referee: Mike De Felice",
+      "Asst. Referee: Connor McCloskey",
+      "Asst. Referee: Glenn Moody",
+      "Alt. Official: David Allan"
+    ],
+    "home_index": 1
+  }
+}
