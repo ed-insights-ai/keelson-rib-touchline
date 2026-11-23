@@ -39,7 +39,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: shadow (collect and land on shadow) or dry-run (sample homes, writes nothing)
+        description: shadow is a real run (lands on main when TOUCHLINE_COLLECT_TARGET=main, otherwise on shadow); dry-run uses the sample homes and writes nothing
         type: choice
         options: [shadow, dry-run]
         default: shadow
