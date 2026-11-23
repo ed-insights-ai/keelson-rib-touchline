@@ -5248,3 +5248,74 @@ def test_canonical_schedule_validators_are_not_sent_to_the_season_url(
 
     assert session.get.call_args_list[0].kwargs.get("headers") is None
     assert fetched.unchanged
+
+
+def test_a_canonical_page_serving_another_current_schedule_is_refused() -> None:
+    """The canonical page must serve the schedule the SEASON page marked
+    current (926), even when it marks a different one current itself."""
+    from src.sidearm_live import fetch_published_page_conditional
+
+    moved = [_sibling(889, current=False), _sibling(999, current=True)]
+    canonical_page = _nuxt_schedule_page(
+        {
+            "id": 999,
+            "title": "2026 Women's Soccer Schedule",
+            "season": 2026,
+            "games": [_nuxt_game(22001, "2026-08-20T19:00:00")],
+        },
+        moved,
+        title="2026 Women's Soccer Schedule - Example",
+    )
+    season_url = "https://example.test/sports/womens-soccer/schedule/2026"
+    canonical = "https://example.test/sports/womens-soccer/schedule"
+    session = MagicMock()
+    session.get.side_effect = [
+        _served(season_url, _SPRING_PAGE),
+        _served(canonical, canonical_page),
+    ]
+
+    with pytest.raises(LiveCollectionError, match=r"current schedule \(926\)"):
+        fetch_published_page_conditional(session, season_url, 2026, "schedule")
+
+
+def test_a_season_completed_the_next_spring_stands_beside_a_sibling() -> None:
+    """The COVID 2020 season was played in spring 2021: its games are not
+    a spring slate of 2020, so it stands whatever else the season files."""
+    from src.sidearm_live import PublishedPage, season_schedule_redirect
+
+    past = [
+        {**_sibling(513, current=False), "seasonTitle": "2020"},
+        {**_sibling(514, current=False), "seasonTitle": "2020"},
+    ]
+    page = _nuxt_schedule_page(
+        {
+            "id": 513,
+            "title": "2020 Women's Soccer Schedule",
+            "season": 2020,
+            "games": [_nuxt_game(9001, "2021-03-05T15:00:00")],
+        },
+        past,
+        title="2020 Women's Soccer Schedule - Example",
+    )
+    url = "https://example.test/sports/womens-soccer/schedule/2020"
+    assert season_schedule_redirect(PublishedPage(url, url, page), 2020) is None
+
+
+def test_the_served_current_schedule_stands_even_with_spring_dates() -> None:
+    """A season page serving the very schedule the site marks current is
+    the season's own, spring-only or not."""
+    from src.sidearm_live import PublishedPage, season_schedule_redirect
+
+    past = [_sibling(889, current=True), _sibling(926, current=False)]
+    page = _nuxt_schedule_page(
+        {
+            "id": 889,
+            "title": "2026 Women's Soccer Schedule",
+            "season": 2026,
+            "games": [_nuxt_game(20074, "2026-03-01T14:00:00")],
+        },
+        past,
+        title="2026 Women's Soccer Schedule - Example",
+    )
+    url = "https://example.test/sports/womens-soccer/schedule/2026"
+    assert season_schedule_redirect(PublishedPage(url, url, page), 2026) is None
