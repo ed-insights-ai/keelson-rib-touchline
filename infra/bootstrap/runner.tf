@@ -171,9 +171,11 @@ resource "aws_instance" "runner" {
   # Not encrypted on purpose: the disk holds a checkout and public pages, and
   # starting an instance with an encrypted disk needs KMS grants the publish
   # role's boundary does not give.
+  # Room for every unit's work home and raw pages, not only the PrestoSports
+  # ones, should all collection move here.
   root_block_device {
     volume_type = "gp3"
-    volume_size = 12
+    volume_size = 20
     encrypted   = false
   }
 

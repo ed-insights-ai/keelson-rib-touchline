@@ -126,9 +126,9 @@ of files every day would cost more than everything else here combined.
 | OIDC provider, IAM roles, budget | $0 |
 | **Total without the PrestoSports runner** | **about $1.20 to $1.50** |
 | PrestoSports runner, in season only: fixed address | $3.65 |
-| PrestoSports runner: 12 GB disk | $0.96 |
+| PrestoSports runner: 20 GB disk | $1.60 |
 | PrestoSports runner: `t3a.small`, about an hour a day | about $0.60 |
-| **Total in season** | **about $6.40 to $6.70** |
+| **Total in season** | **about $7.00 to $7.40** |
 
 The runner (`bootstrap/runner.tf`) puts an in-season month over the $5
 budget, so the $4 and $5 emails are expected from August to mid-December
