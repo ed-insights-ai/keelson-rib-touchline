@@ -551,7 +551,11 @@ jobs:
     needs: [plan, ready, shadow-hosted]
     # Waits for the hosted landing (so its work home reads today's siblings),
     # but runs whether or not a hosted unit failed.
-    if: always() && needs.ready.outputs.ready == 'true' && needs.plan.outputs.presto != '[]'
+    # Never on a pull request and never off main: the runner is our own
+    # machine. This line cannot stop a fork's edited copy of this file, so on
+    # a public repo the setting that makes every outside contributor's
+    # workflow wait for approval must be on (see the guide).
+    if: always() && needs.ready.outputs.ready == 'true' && needs.plan.outputs.presto != '[]' && github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: [self-hosted, presto]
     timeout-minutes: 120
     strategy:

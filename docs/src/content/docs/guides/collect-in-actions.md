@@ -154,7 +154,11 @@ Four repository variables steer it:
 PrestoSports answers GitHub-hosted runners with HTTP 405, and serves AWS
 addresses: schedule pages read from AWS CloudShell on 2026-11-23 came back
 whole. So the presto job runs on a self-hosted runner labelled `presto`,
-registered to this private repo only, never to a public one. It needs no AWS
+registered to this repo only. While the repo is public, a pull request from a
+fork could name the runner's label in its own copy of a workflow, so
+**Settings → Actions → General → Approval for running fork pull request
+workflows** must be **Require approval for all external contributors**, and
+no such run is approved without reading its workflow changes. It needs no AWS
 or GitHub App credentials: the job receives only its work home, and a hosted
 job lands the result.
 
