@@ -16,9 +16,8 @@ The GitHub App that pushes season files to the data homes is set up by hand:
 ## Who can do what
 
 - **`touchline-publish`** (jobs in the `production` environment, on `main`):
-  read the data bucket, write `raw/`, `snapshots/base/<scope>/`,
-  `snapshots/delta/<scope>/`, `bundles/`, `news/` and `latest.json`, and sign
-  with the snapshot key. It cannot delete anything; lifecycle rules do that.
+  read the data bucket, write `raw/`, `snapshots/<source>/<scope>/`,
+  `bundles/` and `news/`, and sign with the snapshot key. It cannot delete anything; lifecycle rules do that.
   No access to the site bucket.
 - **`touchline-publish-site`** (same environment and branch): list, put and
   delete in the site bucket, and invalidate the site's distribution. No access
@@ -51,18 +50,27 @@ Data bucket lifecycle, per kind:
 | Prefix | Kept |
 | --- | --- |
 | `raw/` | forever (re-parse, never re-scrape) |
-| `snapshots/base/<scope>/` | current version forever; replaced versions 7 days |
-| `snapshots/delta/<scope>/` | 45 days |
+| `snapshots/<source>/<scope>/deltas/` | 45 days |
+| `snapshots/<source>/<scope>/base/`, `manifests/`, `latest.json` | forever (see below) |
 | `bundles/` | 30 days |
-| `news/`, `latest.json` | forever |
+| `news/` | forever |
 | any overwritten version | 7 days |
 
-Bases live at a stable key per scope and are overwritten by each publish, so
-the base `latest.json` points at never expires, even through the off-season
-when collection stops for months. `latest.json` should record the base's S3
-version id, and desk links should include it, so a desk reads exactly the
-base that was signed. Deltas use dated keys and age out; a desk whose base is
-older than the oldest delta takes the full base.
+Each `snapshots/<source>/<scope>/` is one touchline-desk publish folder, as
+`packages/data` writes it, so `touchline index fetch <folder>` reads it
+unchanged. `source` is `data` (the private homes) or `samples` (the rib's
+`samples/`); `scope` is `all` (every division and gender, what the desk reads
+in the pilot) or one division and gender (`d2-men`, ...). Snapshot files are
+written once under their id and never overwritten; only `latest.json` moves,
+by conditional write, after the site smoke check passes
+([snapshot/README.md](../snapshot/README.md)). Deltas age out; a desk whose
+snapshot is older than the oldest delta takes the full base.
+
+Bases are kept, because an age rule could expire the base a `latest.json`
+still names (a folder not published for a long time, such as `samples`).
+They add up to a few GB a season (cents a month); pruning superseded bases
+safely, for example by tagging each base the release replaces and expiring
+tagged objects, is a follow-up before next season.
 
 ## The site
 
