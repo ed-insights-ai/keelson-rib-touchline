@@ -1,0 +1,132 @@
+data "aws_caller_identity" "current" {}
+
+locals {
+  account_id = data.aws_caller_identity.current.account_id
+
+  # Snapshot scopes: d1-men, d1-women, d2-men, ... from the two lists.
+  scopes = [for pair in setproduct(var.divisions, var.genders) : "${pair[0]}-${pair[1]}"]
+}
+
+# ---------------------------------------------------------------------------
+# The private data bucket. Layout (kind first, so lifecycle rules are one
+# prefix each, whatever the scope):
+#
+#   raw/<school>/...                 raw HTML cache, kept (re-parse, never re-scrape)
+#   snapshots/base/<scope>/...       signed DuckDB bases at a STABLE key per scope,
+#                                    overwritten each publish; the current version
+#                                    never expires, replaced ones are kept
+#                                    noncurrent_retention_days (a week of bases)
+#   snapshots/delta/<scope>/<id>...  signed daily deltas, expire after delta_retention_days
+#   bundles/<build id>/...           current-season data bundles the site build reads,
+#                                    expire after 30 days (the built site itself is
+#                                    in the separate site bucket, site.tf)
+#   news/...                         journals, kept
+#   latest.json                      pointer the desk reads; moved by conditional write
+# ---------------------------------------------------------------------------
+
+resource "aws_s3_bucket" "data" {
+  bucket = "touchline-data-${local.account_id}"
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+resource "aws_s3_bucket_ownership_controls" "data" {
+  bucket = aws_s3_bucket.data.id
+  rule {
+    object_ownership = "BucketOwnerEnforced"
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "data" {
+  bucket                  = aws_s3_bucket.data.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# Versioning, with old versions gone after a week. This is also how bases are
+# retained: the current base never expires, even through an off-season with no
+# publish runs (collection stops mid-December until summer), and the last
+# week of replaced bases stays readable by version id. The publish role has no
+# delete permission, so a bad run's overwrite is recoverable for a week.
+resource "aws_s3_bucket_versioning" "data" {
+  bucket = aws_s3_bucket.data.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+# SSE-S3 is free. SSE-KMS with our own key would bill every request.
+resource "aws_s3_bucket_server_side_encryption_configuration" "data" {
+  bucket = aws_s3_bucket.data.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "data" {
+  bucket     = aws_s3_bucket.data.id
+  depends_on = [aws_s3_bucket_versioning.data]
+
+  rule {
+    id     = "housekeeping"
+    status = "Enabled"
+    filter {}
+
+    noncurrent_version_expiration {
+      noncurrent_days = var.noncurrent_retention_days
+    }
+
+    expiration {
+      expired_object_delete_marker = true
+    }
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 3
+    }
+  }
+
+  rule {
+    id     = "expire-snapshot-deltas"
+    status = "Enabled"
+    filter {
+      prefix = "snapshots/delta/"
+    }
+    expiration {
+      days = var.delta_retention_days
+    }
+  }
+
+  rule {
+    id     = "expire-data-bundles"
+    status = "Enabled"
+    filter {
+      prefix = "bundles/"
+    }
+    expiration {
+      days = var.bundle_retention_days
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "data" {
+  bucket     = aws_s3_bucket.data.id
+  depends_on = [aws_s3_bucket_public_access_block.data]
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Sid       = "DenyInsecureTransport"
+      Effect    = "Deny"
+      Principal = "*"
+      Action    = "s3:*"
+      Resource  = [aws_s3_bucket.data.arn, "${aws_s3_bucket.data.arn}/*"]
+      Condition = { Bool = { "aws:SecureTransport" = "false" } }
+    }]
+  })
+}

@@ -1,0 +1,12 @@
+# Terraform working files. State lives in the S3 state bucket, never in git.
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
+crash.log
+# The one-time local-backend override used by the bootstrap runbook.
+*_override.tf
+# Variable files may hold an email address or account id.
+*.tfvars
+*.tfvars.json
