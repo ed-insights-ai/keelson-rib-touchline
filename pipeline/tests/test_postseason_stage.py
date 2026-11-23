@@ -17,6 +17,7 @@ from src.sidearm_live import (
     parse_schedule_page,
     parse_shootout,
     resolution_scope,
+    round_named_side,
     round_placeholder,
     tournament_stage,
 )
@@ -811,3 +812,33 @@ def test_the_generic_conference_word_never_reads_another_levels_conference() -> 
     assert not d2.names_another_level("Great American Conference Tournament")
     assert not d2.names_another_level("Conference Tournament")
     assert not D1_HEADERS.names_another_level("Big Ten Conference Tournament")
+
+
+def test_a_filled_slot_that_keeps_its_round_is_a_fixture() -> None:
+    # godeacs.com 2026: "First Round vs. Longwood" and "Boston College -
+    # First Round" were skipped as slots, and Wake Forest's 4-1 over Longwood
+    # lived only on Longwood's page.
+    assert round_named_side("First Round vs. Longwood") == "Longwood"
+    assert round_named_side("Second Round vs. (1) Akron") == "Akron"
+    assert round_named_side("Boston College - First Round") == "Boston College"
+    # Still slots: no side, a side that is itself a slot, or a host.
+    for slot in (
+        "NCAA First Round",
+        "NCAA First Round vs. TBD",
+        "GLVC Quarterfinals",
+        "USCA/Lander Winner",
+        "CCAA Tournament Semifinals (at Cal Poly Pomona)",
+        "NCAA Tournament at Wake Forest",
+    ):
+        assert round_named_side(slot) is None, slot
+    # A name with a hyphen is no slot to begin with.
+    assert round_named_side("Winston-Salem State") is None
+    html = _page(
+        _row("1", "Nov 9 (Sun)", "Quincy - GLVC Semifinal", "W, 2-0")
+        + _row("2", "Nov 23 (Sun)", "NCAA Second Round vs. Tiffin", "W, 3-1")
+        + _row("3", "Nov 30 (Sun)", "NCAA Third Round")
+    )
+    rows = _parse(html)
+    assert set(rows) == {"1", "2"}
+    assert {rows["1"]["home"], rows["1"]["away"]} == {"lincoln", "quincy"}
+    assert {rows["2"]["home"], rows["2"]["away"]} == {"lincoln", "tiffin"}

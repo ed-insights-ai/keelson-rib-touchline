@@ -76,6 +76,7 @@ from src.membership import (
 )
 from src.page_state import BoxArchive, PageStateStore
 from src.programmes import load_programmes, programme_points
+from src.twins import repoint_by_twins, season_index
 from src.recipes import PRESTO, SIDEARM, WMT, NoCollector, Recipe, live_recipe
 from src.sidearm_live import (
     DEFAULT_LAYERS,
@@ -1262,6 +1263,19 @@ def _assemble(
 
     all_fixtures = [fixture for result in results for fixture in result.fixtures]
     fixtures, duplicates = _dedupe_fixtures(all_fixtures)
+    # A non-conference side the name rules misread ("Loyola", "Miami"): the
+    # other programme's own page, in a sibling season file, settles it when
+    # exactly one lists this match that day with the same score. Read-only
+    # over the siblings; one log line per re-pointing (src/twins.py).
+    for change in repoint_by_twins(
+        fixtures,
+        {result.slug for result in results},
+        season_index(
+            data_root / "data" / "fixtures",
+            f"{season}-{gender}-{programme_slug(conference)}",
+        ),
+    ):
+        print(change.line(), flush=True)
     # A friendly one side marked and the other did not, across two conference
     # files: borrow the mark from the twin row before the season file is
     # written (bead tl-1go).  Read-only over the sibling files, own text wins.
