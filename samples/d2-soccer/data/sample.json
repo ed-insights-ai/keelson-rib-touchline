@@ -28,7 +28,8 @@
       "southwestern-oklahoma-state"
     ]
   },
-  "cut_at": "2026-11-23T01:25:12+00:00",
+  "people": "invented: 2415 real name tokens swapped for invented ones by pipeline/scripts/sample_names.py",
+  "cut_at": "2026-11-23T16:41:18+00:00",
   "files": [
     {
       "path": "data/fixtures/2026-men-gac.json",
@@ -37,18 +38,18 @@
     },
     {
       "path": "data/rosters/2026-men-gac.json",
-      "bytes": 77387,
-      "sha256": "357d87cf2f1f3e79cc4b3b97b4d1741b24e89b6bcac0c4585e354ad35dfef36c"
+      "bytes": 77532,
+      "sha256": "9c9abda35bb2622ba43fba8e76a3a77f4bd36d34ee84bd7f784112396ac11681"
     },
     {
       "path": "data/stats/2026-men-gac.json",
-      "bytes": 125804,
-      "sha256": "f0683461aa066d5f6d56f2b9a931d4f374daffade056374a1d9674af0c831a5b"
+      "bytes": 125879,
+      "sha256": "cb0bffa2116b899d3203a07ba4071e00802772c6aec4025a7779e66c8287a553"
     },
     {
       "path": "data/matches/2026-men-gac.json",
-      "bytes": 3417290,
-      "sha256": "6c640fb1e3e470b1e956344b95635e2a2738fb0edf5ab7cbdbcd3175bcaaf98b"
+      "bytes": 3420605,
+      "sha256": "3ad77fe648fd19af3fb0347063c3662c658c51e863b7db9e8d143fe01168ae5c"
     },
     {
       "path": "data/fixtures/2026-women-gac.json",
@@ -57,18 +58,18 @@
     },
     {
       "path": "data/rosters/2026-women-gac.json",
-      "bytes": 66741,
-      "sha256": "b1d790b40e9bb2538b58bbdc4341b44cc0f28c1d83ad490be565b6786e3f8121"
+      "bytes": 66997,
+      "sha256": "dd07dd596c59b48eb4f81e47b60afafe56b2dbe56dc23971f4afa13fbd488266"
     },
     {
       "path": "data/stats/2026-women-gac.json",
-      "bytes": 118024,
-      "sha256": "57a3aa1cdba8d43c88df9b14f5f8fc34a70154b78e2433289fb63dd499529f40"
+      "bytes": 118258,
+      "sha256": "0a5512e9606e0991f8a32ce2dec5f0765f161f52cbf8755b8136e78d1eaabff6"
     },
     {
       "path": "data/matches/2026-women-gac.json",
-      "bytes": 3381814,
-      "sha256": "3cc5e2971413b192f052526e39d0bd6148ad0acc02f8bb0be2dfd1703125e2c9"
+      "bytes": 3392093,
+      "sha256": "8a0814971806927d31fdf9837b6229334ca7d09ff8043bf267118065d3f08c5d"
     }
   ]
 }

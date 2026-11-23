@@ -71,7 +71,7 @@ jobs:
         run: uv run pytest -q
       - name: Sample data homes within the contracts
         # The real data homes are private and never reach CI; the samples
-        # under samples/ are byte-identical cuts of them. A fixture change
+        # under samples/ are cuts of them (people's names invented). A fixture change
         # that the real data no longer fits fails here, not on the next
         # daily run. No samples yet (or none left), nothing to check.
         if: steps.pipeline.outputs.exists == 'true'

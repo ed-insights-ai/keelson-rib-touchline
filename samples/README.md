@@ -1,6 +1,6 @@
 # Sample data homes
 
-Two small, real data homes cut from the private Division I and II datasets, so
+Two small data homes cut from the private Division I and II datasets, so
 every public Touchline repo can build and test from a plain clone. Each is laid
 out exactly like a full home (`touchline-data.yaml`, `data/...`) and carries a
 `data/sample.json` manifest that says it is a sample and lists, with sizes and
@@ -17,14 +17,33 @@ programmes its checks sample, are members.
 
 ## What each home holds
 
-- `data/{fixtures,rosters,stats,matches}/2026-{men,women}-{conf}.json`,
-  byte-identical to the real home's files.
+- `data/{fixtures,rosters,stats,matches}/2026-{men,women}-{conf}.json`, the
+  real home's files with every person given an invented name (below).
+  Fixtures name no one and stay byte-identical.
 - `data/coverage.json`, only the 2026 cells for the conference's members.
 - `data/reference/programmes.json`, only the programmes those fixtures name
   (members and opponents).
 - `data/reference/membership.json`, only the members, and for each only the
   window covering 2026 (the latest authored one, which the collector carries
   forward).
+
+## Invented people
+
+These homes are public, so nobody in them keeps a real name. The cut runs
+`pipeline/scripts/sample_names.py` over the season files: every name token
+of every player, keeper, scorer, assister, carded player and match official
+is swapped for an invented token, and the swap is applied wherever that token
+appears (name fields, play-by-play and goal text, the name slug in roster and
+bio URLs, and key-sourced `player_ref` ids, which are re-folded). The map
+works on tokens, so "Payton Roehrich", "Roehrich, Payton", "ROEHRICH,PAYTON"
+and "P. Roehrich" stay one person. An invented token keeps the real one's
+first letter, case, accent and apostrophe, and the map is one-to-one, so
+initials, accent folding and joins behave as they did on the real data.
+
+Everything else is as collected: numbers, positions, hometowns, player and
+page ids, teams, scores, times and every count. The cut refuses to write a
+sample in which any real name token survives in those fields. Tokens of one
+or two letters (JJ, Li) and particles and suffixes (de, van, Jr) are kept.
 
 Nothing else comes across: no other season, no other conference, no raw HTML,
 errors, research or reports. The full homes hold every season from 2016 to 2026
@@ -42,6 +61,9 @@ uv run python -m scripts.cut_sample --home ~/keelson/d1-soccer --conference a10 
 ```
 
 The script only reads the source home. Never hand-edit a sample; re-cut it.
+The desk's `fixtures/oracle/season-files` are copies of `d2-soccer`'s match
+and fixture files: re-copy them (and move `snapshot/touchline-desk.sha`) after
+a re-cut changes the GAC files.
 
 ## Building the site from it
 

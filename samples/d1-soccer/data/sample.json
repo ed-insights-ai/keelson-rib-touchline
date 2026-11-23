@@ -41,7 +41,8 @@
       "vcu"
     ]
   },
-  "cut_at": "2026-11-23T01:25:14+00:00",
+  "people": "invented: 5267 real name tokens swapped for invented ones by pipeline/scripts/sample_names.py",
+  "cut_at": "2026-11-23T16:41:22+00:00",
   "files": [
     {
       "path": "data/fixtures/2026-men-a10.json",
@@ -50,18 +51,18 @@
     },
     {
       "path": "data/rosters/2026-men-a10.json",
-      "bytes": 121818,
-      "sha256": "617ccdd64a58bbe5ff9ff1ed42baffcc8193f6a50750b494b500ae8f4c7c4322"
+      "bytes": 122174,
+      "sha256": "172f91099f60508b261b5a95aa4f8b33710832e1cc46710e36db3e720328bb2f"
     },
     {
       "path": "data/stats/2026-men-a10.json",
-      "bytes": 206319,
-      "sha256": "e7666c3cb3557647fb2752b84b5a9c4fc00ab84b8ca8abcc80e097d9ac121746"
+      "bytes": 206674,
+      "sha256": "3c037f194d3aff8fe2b497f003e9c9d7ab94a0668741b00d59a11d76d0d7de48"
     },
     {
       "path": "data/matches/2026-men-a10.json",
-      "bytes": 5817904,
-      "sha256": "a6089815c66786ea74d9cae45b176b3040858d4e4d8ccc3f6aa13b13dc300b01"
+      "bytes": 5829048,
+      "sha256": "0ec9093e146464cb76a4919b74deb2205acc731b42c261f39b8839f61e31fed6"
     },
     {
       "path": "data/fixtures/2026-women-a10.json",
@@ -70,18 +71,18 @@
     },
     {
       "path": "data/rosters/2026-women-a10.json",
-      "bytes": 115133,
-      "sha256": "6b4eaddbca50a641eda95da481ebf0113846cc180120f2bcd456b583fcc44ca5"
+      "bytes": 115564,
+      "sha256": "ccb2cc5ee33dabd237ee7e49d55e39c931b46448424a3b26e65fc462d4756172"
     },
     {
       "path": "data/stats/2026-women-a10.json",
-      "bytes": 207278,
-      "sha256": "b4c4ef8fda63d80a74f6bf23ffea589ffabcf06659ad27f6ad38eba6d0f915e7"
+      "bytes": 207744,
+      "sha256": "037ec799a4e98e46a9fe14c373ff78c0026cdf41a6607c15fa381e8e1ef344ad"
     },
     {
       "path": "data/matches/2026-women-a10.json",
-      "bytes": 6798169,
-      "sha256": "568a3967294be0e3f7d5540d16dd28c6b48c86196ef78bc544b37562a76b429a"
+      "bytes": 6819518,
+      "sha256": "0c568928ba930f88057b09d9d04a891346d506a83a8d027b084c4cdd18ba0d19"
     }
   ]
 }
