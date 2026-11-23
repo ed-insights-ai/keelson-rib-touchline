@@ -239,6 +239,13 @@ jobs:
     env:
       DEPLOY: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
       SOURCES: ${{ needs.bundle.outputs.sources }}
+    outputs:
+      # "true" only when the site's program figures and the desk's agree; the
+      # release job refuses to move latest.json otherwise.
+      agree: ${{ steps.agree.outputs.agree || 'false' }}
+      # "true" only when the pinned desk reproduces its oracle on the sample
+      # homes; the release job refuses to move latest.json otherwise.
+      oracle: ${{ steps.oracle.outputs.oracle || 'false' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -295,9 +302,6 @@ jobs:
           if [ "$pinned" != "$NODE_API" ]; then
             echo "::error::the desk pins @duckdb/node-api $pinned, snapshot/duckdb.env says $NODE_API"; exit 1
           fi
-          # Until the desk's lockfile names the public registry, fetch the same
-          # tarballs from it; the lockfile's integrity hashes still check them.
-          sed -i 's#https://ms-feed-25.pkgs.visualstudio.com/1es-public/_packaging/npm-public/npm/registry/#https://registry.npmjs.org/#g' pnpm-lock.yaml
           corepack enable
           pnpm install --frozen-lockfile --ignore-scripts --filter "@touchline/data..."
           pnpm exec tsc -b packages/data
@@ -366,6 +370,19 @@ jobs:
             cp "$RUNNER_TEMP/throwaway.pub" keys/public.pem
             echo "sign=key:$RUNNER_TEMP/throwaway.key" >> "$GITHUB_OUTPUT"
           fi
+      - name: The desk reproduces its oracle
+        if: steps.access.outputs.ok == 'true'
+        id: oracle
+        env:
+          DESK: ${{ github.workspace }}/desk
+          SAMPLES: ${{ github.workspace }}/rib/samples
+        run: |
+          set -u
+          # Like the site check, a failure here stops only the release job.
+          if sh rib/snapshot/oracle.sh > oracle.txt; then oracle=true; else oracle=false; fi
+          echo "oracle=$oracle" >> "$GITHUB_OUTPUT"
+          { echo "### Oracle"; echo; cat oracle.txt; [ "$oracle" = true ] || echo "The pinned desk does NOT reproduce its oracle; latest.json will not move."; } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$oracle" != true ]; then echo "::error::the pinned desk does not reproduce its oracle on the sample homes; latest.json will not move"; fi
       - name: Build, sign, verify and upload
         if: steps.access.outputs.ok == 'true'
         shell: bash
@@ -391,6 +408,51 @@ jobs:
             sh rib/snapshot/build.sh
           fi
           { echo "### Snapshot ($SOURCE)"; echo; cat work/summary.md; } >> "$GITHUB_STEP_SUMMARY"
+      # The site and the desk must show the same numbers: touchline-ui at the
+      # site's pin prints each build's figures from the bundle, and
+      # snapshot/agree.sh holds them to the `all` index just published.
+      - name: Pinned touchline-ui
+        if: steps.access.outputs.ok == 'true'
+        id: ui
+        run: echo "sha=$(tr -d '[:space:]' < rib/site/touchline-ui.sha)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: steps.access.outputs.ok == 'true'
+        with:
+          repository: ed-insights-ai/touchline-ui
+          ref: ${{ steps.ui.outputs.sha }}
+          path: ui
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        if: steps.access.outputs.ok == 'true'
+        with:
+          bun-version: 1.3.13
+      - name: Install touchline-ui
+        if: steps.access.outputs.ok == 'true'
+        working-directory: ui
+        run: bun install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        if: steps.access.outputs.ok == 'true'
+        with:
+          name: site-bundle
+          path: bundle
+      - name: The site and the desk show the same numbers
+        if: steps.access.outputs.ok == 'true'
+        id: agree
+        env:
+          UI: ${{ github.workspace }}/ui
+          BUNDLE: ${{ github.workspace }}/bundle
+          DESK: ${{ github.workspace }}/desk
+          INDEX: ${{ github.workspace }}/work/index/all
+          CONTRACTS: ${{ github.workspace }}/rib/contracts
+          OUT: ${{ github.workspace }}/work/agree.md
+        run: |
+          set -u
+          # A difference does not fail this job (the site may still deploy);
+          # it stops the release job from moving latest.json.
+          if sh rib/snapshot/agree.sh; then agree=true; else agree=false; fi
+          echo "agree=$agree" >> "$GITHUB_OUTPUT"
+          { echo "### The site and the desk"; echo; cat "$OUT" 2>/dev/null || echo "No comparison was made."; } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$agree" != true ]; then echo "::error::the site and the desk show different numbers; latest.json will not move"; fi
       - uses: actions/upload-artifact@v4
         if: steps.access.outputs.ok == 'true' && env.DEPLOY == 'true'
         with:
@@ -536,6 +598,19 @@ jobs:
           role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/touchline-publish
           aws-region: ${{ env.AWS_REGION }}
           role-session-name: touchline-release-${{ github.run_id }}
+      - name: The desk's checks passed
+        env:
+          AGREE: ${{ needs.snapshot.outputs.agree }}
+          ORACLE: ${{ needs.snapshot.outputs.oracle }}
+        run: |
+          failed=0
+          if [ "$ORACLE" != true ]; then
+            echo "::error::the pinned desk does not reproduce its oracle (see the snapshot job's summary); latest.json not moved"; failed=1
+          fi
+          if [ "$AGREE" != true ]; then
+            echo "::error::the site and the desk show different numbers (see the snapshot job's summary); latest.json not moved"; failed=1
+          fi
+          exit "$failed"
       - name: Conditional write of each scope's latest.json
         env:
           BUCKET: ${{ env.DATA_BUCKET }}
