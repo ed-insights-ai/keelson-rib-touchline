@@ -19,7 +19,8 @@ name: Publish site
 # Snapshot seam: the snapshot job (DuckDB plus KMS signing, a later change)
 # goes between `bundle` and `site`. It reads the same homes at the commits the
 # bundle job reports (outputs.sources, also in each bundle's data/bundle.json),
-# and the release step that moves latest.json goes after `site`'s smoke check.
+# and the release step that moves latest.json goes after `site`, gated on
+# needs.site.outputs.smoke_passed == 'true'.
 #
 # Pull requests build and gate the sample site and deploy nothing. Only main,
 # through the `production` environment, can assume touchline-publish-site.
@@ -162,6 +163,11 @@ jobs:
       id-token: write
     env:
       DEPLOY: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+    outputs:
+      # The release gate: "true" only when this run deployed and every build's
+      # live smoke check passed. A later release job (move latest.json) needs
+      # this job and checks needs.site.outputs.smoke_passed == 'true'.
+      smoke_passed: ${{ steps.smoke.outputs.passed || 'false' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -237,6 +243,7 @@ jobs:
           echo "invalidation $id"
           aws cloudfront wait invalidation-completed --distribution-id "$SITE_DISTRIBUTION_ID" --id "$id"
       - name: Smoke-check the live site
+        id: smoke
         if: env.DEPLOY == 'true'
         working-directory: ui
         run: |
@@ -249,4 +256,5 @@ jobs:
             bun scripts/deployed.ts "$url" "$stamp" "$pages" || status=1
           done < ../smoke.tsv
           echo "- live: $SITE_URL" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$status" = 0 ]; then echo "passed=true" >> "$GITHUB_OUTPUT"; fi
           exit $status
