@@ -159,6 +159,61 @@ is expected, and shows CloudFront is serving the site's error page path.
 Then tell Claude it is done. The next steps (the GitHub App, then the publish
 workflow) pick up from here.
 
+## 10. Stop using root
+
+`infra/identity` creates the identities for all later work:
+
+- **`touchline-operator`**, an IAM user with a password, MFA and no access
+  keys. It can read what bootstrap manages, run `terraform plan`, and start,
+  stop and send commands to the PrestoSports runner.
+- **`touchline-bootstrap-apply`**, a role the operator steps up to for
+  `terraform apply` in `infra/bootstrap`.
+
+Apply the stack once as root:
+
+```bash
+cd ~/source/edinsights/keelson-rib-touchline/infra/identity
+terraform init -backend-config="bucket=touchline-tfstate-$AWS_ACCOUNT_ID"
+terraform plan -out=tfplan
+terraform apply tfplan
+```
+
+Still signed in to the console as root, open the user's **Security
+credentials**, enable console access with a password, and assign a passkey or
+authenticator app. The user cannot sign in from the CLI without MFA.
+
+Add the profiles to `~/.aws/config`:
+
+```ini
+[profile touchline]
+region = us-east-1
+
+[profile touchline-session]
+region = us-east-1
+credential_process = aws configure export-credentials --profile touchline --format process
+
+[profile touchline-apply]
+region = us-east-1
+role_arn = arn:aws:iam::<account id>:role/touchline-bootstrap-apply
+source_profile = touchline-session
+```
+
+Sign out of root in the browser, sign in as `touchline-operator`, then:
+
+```bash
+aws login --profile touchline
+aws sts get-caller-identity --profile touchline   # must name the user, not root
+aws logout                                        # ends the root CLI session
+```
+
+Use `AWS_PROFILE=touchline` for plans and the runner, and
+`AWS_PROFILE=touchline-apply` for bootstrap applies.
+
+**These still need root:** this identity stack, any role's trust policy, the
+OIDC provider, the signing key, account-wide Block Public Access, and the state
+bucket's settings. The apply role can still edit the `touchline-infra-deploy`
+policy and the publish boundary, so treat it as powerful.
+
 ## If something goes wrong
 
 - **The signing key** is permanent: it has `prevent_destroy`, and only this
