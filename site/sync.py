@@ -15,6 +15,12 @@ Order, so a reader never gets a page whose assets are missing:
   2. new and changed HTML,
   3. deletes of objects the build no longer has.
 
+A hashed asset (`_astro/`) the build dropped is not deleted at once: a page
+cached before this deploy (five minutes in CloudFront or a browser) may still
+ask for it. The first deploy without it marks it retired (a copy onto itself
+with `retired` metadata, which restarts its LastModified clock); a later deploy
+deletes it once it has been retired for --asset-retention-hours.
+
 A deploy that would delete more than --max-delete-fraction of the bucket
 stops before touching anything, unless --allow-mass-delete: a half-built dist/
 must not empty the live site.
@@ -33,6 +39,7 @@ import json
 import mimetypes
 import sys
 from concurrent.futures import ThreadPoolExecutor
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 # Types mimetypes gets wrong or does not know on a bare runner.
@@ -103,6 +110,39 @@ def remote_etags(s3, bucket: str) -> dict[str, str]:
     return out
 
 
+def is_asset(key: str) -> bool:
+    return "_astro/" in key
+
+
+def sort_retired(
+    s3, bucket: str, keys: list[str], retention: timedelta
+) -> tuple[list[str], list[str]]:
+    """Split dropped hashed assets into (delete now, retire now); the rest wait."""
+    now = datetime.now(UTC)
+    expired: list[str] = []
+    retire: list[str] = []
+    for key in keys:
+        head = s3.head_object(Bucket=bucket, Key=key)
+        if head.get("Metadata", {}).get("retired") != "1":
+            retire.append(key)
+        elif now - head["LastModified"] >= retention:
+            expired.append(key)
+    return expired, retire
+
+
+def retire_asset(s3, bucket: str, key: str) -> None:
+    head = s3.head_object(Bucket=bucket, Key=key)
+    s3.copy_object(
+        Bucket=bucket,
+        Key=key,
+        CopySource={"Bucket": bucket, "Key": key},
+        MetadataDirective="REPLACE",
+        Metadata={"retired": "1"},
+        ContentType=head.get("ContentType", "application/octet-stream"),
+        CacheControl=head.get("CacheControl", IMMUTABLE),
+    )
+
+
 def plan(
     local: dict[str, Path], remote: dict[str, str], workers: int
 ) -> tuple[list[str], list[str]]:
@@ -123,6 +163,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--allow-mass-delete", action="store_true")
     ap.add_argument("--max-delete-fraction", type=float, default=0.25)
+    ap.add_argument("--asset-retention-hours", type=float, default=24)
     ap.add_argument("--workers", type=int, default=32)
     ap.add_argument("--changed-out", type=Path)
     args = ap.parse_args(argv)
@@ -140,7 +181,14 @@ def main(argv: list[str] | None = None) -> int:
         config=Config(max_pool_connections=args.workers, retries={"mode": "standard"}),
     )
     remote = remote_etags(s3, args.bucket)
-    upload, delete = plan(local, remote, args.workers)
+    upload, dropped = plan(local, remote, args.workers)
+    expired, retire = sort_retired(
+        s3,
+        args.bucket,
+        [k for k in dropped if is_asset(k)],
+        timedelta(hours=args.asset_retention_hours),
+    )
+    delete = sorted([k for k in dropped if not is_asset(k)] + expired)
 
     # A bucket of a handful of objects (a first deploy, a test) has no site to protect.
     if (
@@ -174,6 +222,8 @@ def main(argv: list[str] | None = None) -> int:
             # Assets land before any page that names them.
             uploaded_bytes += sum(pool.map(put, upload[:html_from]))
             uploaded_bytes += sum(pool.map(put, upload[html_from:]))
+        for key in retire:
+            retire_asset(s3, args.bucket, key)
         for i in range(0, len(delete), 1000):
             batch = delete[i : i + 1000]
             resp = s3.delete_objects(
@@ -190,6 +240,8 @@ def main(argv: list[str] | None = None) -> int:
         "uploaded": len(upload),
         "uploaded_mb": round(uploaded_bytes / 1e6, 1),
         "deleted": len(delete),
+        "retired": len(retire),
+        "kept_retired": len(dropped) - len(delete) - len(retire),
         "unchanged": len(local) - len(upload),
         "dry_run": args.dry_run,
     }

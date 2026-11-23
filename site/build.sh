@@ -24,7 +24,7 @@ set -eu
 ui=$(cd "$1" && pwd)
 bundle=$(cd "$2" && pwd)
 site_url=${3%/}
-smoke=$4
+smoke=$(cd "$(dirname "$4")" && pwd)/$(basename "$4")
 divisions=${SITE_DIVISIONS:-d2 d1}
 genders=${SITE_GENDERS:-men women}
 root=${divisions%% *}
