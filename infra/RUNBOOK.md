@@ -52,8 +52,8 @@ aws s3api list-buckets --query 'Buckets[].Name'
 
 ```bash
 cd ~/source/edinsights/keelson-rib-touchline
-git fetch origin infra/aws-foundation
-git switch infra/aws-foundation
+git fetch origin infra/aws-foundation:refs/remotes/origin/infra/aws-foundation
+git switch --track origin/infra/aws-foundation
 cd infra/bootstrap
 
 cat > terraform.tfvars <<'TFVARS'
