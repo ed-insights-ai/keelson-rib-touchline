@@ -9,8 +9,9 @@ name: Publish contracts
 #
 # Credentials: the touchline-publisher GitHub App (infra/GITHUB_APP.md), whose
 # id and key live in the `production` environment. The App must be installed
-# on touchline-contracts with Contents read and write. Until it is, the job
-# says so and exits clean rather than failing every merge.
+# on touchline-contracts with Contents read and write. Until both secrets are
+# set and the App is installed, the job says which step is missing and skips
+# rather than failing every merge.
 
 on:
   push:
@@ -31,16 +32,20 @@ concurrency:
 jobs:
   publish:
     name: Copy contracts and samples to touchline-contracts
+    # Only main is ever published: an on-demand run from another branch
+    # would copy unmerged fixtures over the shared copy.
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: production
     env:
       APP_ID: ${{ secrets.TOUCHLINE_APP_ID }}
+      APP_KEY: ${{ secrets.TOUCHLINE_APP_PRIVATE_KEY }}
     steps:
       - name: Publisher App configured?
         id: configured
         run: |
-          if [ -z "$APP_ID" ]; then
-            echo "::notice::TOUCHLINE_APP_ID is not set in the production environment; touchline-contracts was not updated (see infra/GITHUB_APP.md)."
+          if [ -z "$APP_ID" ] || [ -z "$APP_KEY" ]; then
+            echo "::notice::TOUCHLINE_APP_ID or TOUCHLINE_APP_PRIVATE_KEY is not set in the production environment; touchline-contracts was not updated (see infra/GITHUB_APP.md)."
             echo "ok=false" >> "$GITHUB_OUTPUT"
           else
             echo "ok=true" >> "$GITHUB_OUTPUT"
@@ -52,20 +57,28 @@ jobs:
       - name: Token for touchline-contracts
         if: steps.configured.outputs.ok == 'true'
         id: token
+        # An App not yet installed on touchline-contracts cannot mint this
+        # token; that is the last setup step, so it is reported below and the
+        # job skips rather than failing. Copy and push failures still fail.
+        continue-on-error: true
         uses: actions/create-github-app-token@v1
         with:
           app-id: ${{ secrets.TOUCHLINE_APP_ID }}
           private-key: ${{ secrets.TOUCHLINE_APP_PRIVATE_KEY }}
           owner: ed-insights-ai
           repositories: touchline-contracts
+      - name: App installed on touchline-contracts?
+        if: steps.configured.outputs.ok == 'true' && steps.token.outcome != 'success'
+        run: |
+          echo "::warning::Could not mint a touchline-publisher token for touchline-contracts. Install the App on that repo with Contents read and write (infra/GITHUB_APP.md); if it is installed, check the key. touchline-contracts was not updated."
       - uses: actions/checkout@v4
-        if: steps.configured.outputs.ok == 'true'
+        if: steps.configured.outputs.ok == 'true' && steps.token.outcome == 'success'
         with:
           repository: ed-insights-ai/touchline-contracts
           token: ${{ steps.token.outputs.token }}
           path: contracts-repo
       - name: Copy and push
-        if: steps.configured.outputs.ok == 'true'
+        if: steps.configured.outputs.ok == 'true' && steps.token.outcome == 'success'
         run: |
           set -euo pipefail
           rsync -a --delete rib/contracts/ contracts-repo/contracts/
