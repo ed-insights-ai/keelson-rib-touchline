@@ -1164,7 +1164,9 @@ done
 #    over a sample that lags its data would trade a known-good site for a
 #    stale one. A check that cannot run says so the same way. ───────────────
 check_contracts() {
-  _pd="$(rib_package_dir)/pipeline"
+  # The same pipeline the collect used: touchline-collect.yml honours
+  # TOUCHLINE_PIPELINE_DIR before the rib's config, so this does too.
+  _pd="${TOUCHLINE_PIPELINE_DIR:-$(rib_package_dir)/pipeline}"
   if [ ! -f "$_pd/pyproject.toml" ]; then
     CONTRACTS_RESULT="not run (no pipeline)"
     log "WARNING: contract check did NOT run — no pipeline at $_pd."

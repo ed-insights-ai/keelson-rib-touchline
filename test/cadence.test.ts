@@ -847,6 +847,26 @@ describe("bin/touchline-collect-cadence.sh", () => {
   );
 
   test(
+    "the contract check runs from TOUCHLINE_PIPELINE_DIR when the collect does",
+    async () => {
+      const h = await makeHarness();
+      const override = join(h.root, "pipeline-override");
+      await mkdir(override, { recursive: true });
+      await writeFile(join(override, "pyproject.toml"), "# override stub\n");
+      const r = await h.cadence("collect", {
+        TOUCHLINE_CONFERENCES: "GAC",
+        CADENCE_FAKE_PLAN: "GAC=changed",
+        TOUCHLINE_PIPELINE_DIR: override,
+      });
+      expect(r.code).toBe(0);
+      expect(await h.calls()).toContain(
+        `uv run --quiet --project ${override} check-contracts ${h.data}`,
+      );
+    },
+    LOOP_TIMEOUT,
+  );
+
+  test(
     "contract drift is named in the log and fails the run, but the publish still runs",
     async () => {
       const h = await makeHarness();
