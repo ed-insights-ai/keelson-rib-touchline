@@ -25,11 +25,13 @@ locals {
 #                                    site smoke check), manifests/<id>.json and
 #                                    .sig, base/<id>.duckdb.zst, deltas/<a>__<b>.
 #                                    Deltas expire after delta_retention_days.
-#                                    Bases and manifests are kept: an age rule
-#                                    could take the base a latest.json still
-#                                    names (a folder not published for a long
-#                                    time), so old bases are only pruned once a
-#                                    rule can tell the current one apart
+#                                    Bases carry a touchline-base tag: pending
+#                                    when uploaded, current once a latest.json
+#                                    names them, superseded when a later release
+#                                    replaces them. Pending and superseded bases
+#                                    expire after base_retention_days; a current
+#                                    one (or an untagged one) is never expired by
+#                                    age. Manifests are kept (a few KB each).
 #   bundles/<build id>/...           current-season data bundles the site build reads,
 #                                    expire after 30 days (the built site itself is
 #                                    in the separate site bucket, site.tf)
@@ -113,6 +115,27 @@ resource "aws_s3_bucket_lifecycle_configuration" "data" {
       }
       expiration {
         days = var.delta_retention_days
+      }
+    }
+  }
+
+  # A base is expendable once no latest.json can name it. Lifecycle ages count
+  # from upload, so a base superseded long after it was written goes at the
+  # next daily pass; snapshot/release.sh tags the new base current before it
+  # moves latest.json, so the base a latest.json names is never expendable.
+  dynamic "rule" {
+    for_each = { for p in setproduct(local.snapshot_folders, ["pending", "superseded"]) : "${p[0]}#${p[1]}" => { folder = p[0], state = p[1] } }
+    content {
+      id     = "expire-${rule.value.state}-bases-${replace(rule.value.folder, "/", "-")}"
+      status = "Enabled"
+      filter {
+        and {
+          prefix = "${rule.value.folder}/base/"
+          tags   = { "touchline-base" = rule.value.state }
+        }
+      }
+      expiration {
+        days = var.base_retention_days
       }
     }
   }

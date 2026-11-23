@@ -27,6 +27,12 @@ variable "delta_retention_days" {
   default = 45
 }
 
+variable "base_retention_days" {
+  description = "Days a snapshot base is kept once no latest.json can name it: tagged touchline-base=pending (uploaded, never released) or superseded (replaced by a later release)."
+  type        = number
+  default     = 14
+}
+
 variable "bundle_retention_days" {
   type    = number
   default = 30
