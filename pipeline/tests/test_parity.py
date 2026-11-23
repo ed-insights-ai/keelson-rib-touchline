@@ -388,9 +388,10 @@ def test_a_skipped_unit_is_excluded_not_counted(
     rec = parity.load_records([_record(tmp_path / "r.json", "skipped")])
     result = run(e, a, records=rec)
     assert result.verdict == "pass"
-    assert {x["path"] for x in result.excluded if "#" not in x["path"]} == set(
-        SEASON_FILES
-    )
+    assert {x["path"] for x in result.excluded if "#" not in x["path"]} == {
+        *SEASON_FILES,
+        "unit 2026-men-gac",
+    }
     assert run(e, a, records=rec, require_complete=True).verdict == "fail"
 
 
@@ -609,7 +610,7 @@ def test_a_result_dated_after_both_collections_disagrees(
     stamp(e, at("2026-11-20"))
     stamp(a, at("2026-11-21"))
     reasons = {f.layer: f.reason for f in run(e, a).disagreements}
-    assert "after both collections" in reasons["fixtures"]
+    assert "outside the window" in reasons["fixtures"]
     assert "after both collections" in reasons["matches"]
 
 
@@ -826,3 +827,109 @@ def test_a_marker_without_a_level_is_the_legacy_d2(homes: tuple[Path, Path]) -> 
     result = run(e, a)
     assert result.verdict == "pass", result.errors
     assert result.level == "d2"
+
+
+# -- review round three ------------------------------------------------------
+
+
+def test_a_failed_unit_with_no_files_still_blocks_the_gate(
+    homes: tuple[Path, Path], tmp_path: Path
+) -> None:
+    e, a = homes
+    path = tmp_path / "r.json"
+    path.write_text(
+        json.dumps(
+            {
+                "schema": "touchline.collect-record/1",
+                "division": "d2",
+                "season": 2025,
+                "units": [{"conference": "GAC", "gender": "men", "result": "failed"}],
+            }
+        )
+    )
+    result = run(
+        e,
+        a,
+        records=parity.load_records([path]),
+        compare_inherited=True,
+        require_complete=True,
+    )
+    assert result.excluded == [
+        {"path": "unit 2025-men-gac", "reason": "run record says failed"}
+    ]
+    assert result.verdict == "fail"
+    assert result.to_json()["units_excluded"] == 1
+
+
+def test_a_box_score_cannot_borrow_a_fixture_date_the_other_side_moved(
+    homes: tuple[Path, Path],
+) -> None:
+    e, a = homes
+    game = final_fixture(e)
+    for home in (e, a):
+        doc = load(home, FIX)
+        row = next(f for f in doc["fixtures"] if f["id"] == game["id"])
+        if home == e:
+            row["status"] = "scheduled"
+            row.pop("home_score", None)
+            row.pop("away_score", None)
+        else:
+            row["date"] = "2026-12-30"
+        save(home, FIX, doc)
+    m = load(e, MAT)
+    del m["matches"][game["id"]]
+    save(e, MAT, m)
+    stamp(e, at(game["date"], 2))
+    stamp(a, at(game["date"], 20))
+    found = {f.layer: (f.cls, f.reason) for f in run(e, a).findings}
+    assert found["fixtures"][0] == "disagreement"
+    assert "2026-12-30" in found["fixtures"][1]
+    assert found["matches"][0] == "disagreement"
+    assert "2026-12-30" in found["matches"][1]
+
+
+def test_reformatting_alone_stays_unproven(homes: tuple[Path, Path]) -> None:
+    e, a = homes
+    (a / ROS).write_text(json.dumps(load(a, ROS), indent=4, sort_keys=True))
+    result = run(e, a)
+    assert ROS in {u["path"] for u in result.unproven}
+    assert result.to_json()["layers"].get("rosters") is None
+
+
+def test_units_that_are_not_a_list_are_refused(tmp_path: Path) -> None:
+    path = tmp_path / "r.json"
+    path.write_text(
+        json.dumps(
+            {"schema": "touchline.collect-record/1", "division": "d2", "units": 1}
+        )
+    )
+    with pytest.raises(parity.ParityError):
+        parity.load_records([path])
+
+
+def test_a_one_sided_file_at_an_unknown_schema_is_an_error(
+    homes: tuple[Path, Path],
+) -> None:
+    e, a = homes
+    doc = load(a, ROS)
+    doc["schema"] = "touchline.rosters/9"
+    (a / "data/rosters/2026-men-xyz.json").write_text(json.dumps(doc))
+    result = run(e, a)
+    assert result.verdict == "error"
+    assert "touchline.rosters/9" in result.errors[0]
+    (a / "data/rosters/2026-men-xyz.json").unlink()
+    (e / COV).unlink()
+    cov = load(a, COV)
+    cov["schema"] = "touchline.coverage/9"
+    save(a, COV, cov)
+    assert any("coverage/9" in x for x in run(e, a).errors)
+
+
+def test_a_cell_that_is_not_an_object_is_an_error(homes: tuple[Path, Path]) -> None:
+    e, a = homes
+    doc = load(a, COV)
+    doc["cells"]["2026/men/nowhere/roster"] = 7
+    save(a, COV, doc)
+    result = run(e, a)
+    assert result.verdict == "error"
+    assert "not an object" in result.errors[0]

@@ -372,7 +372,12 @@ def load_records(paths: Iterable[Path]) -> dict[tuple[int, str, str], Unit]:
         if not isinstance(division, str) or not division:
             raise ParityError(f"run record {path}: no division")
         season = doc.get("season")
-        for unit in doc.get("units") or []:
+        units_in = doc.get("units")
+        if units_in is None:
+            units_in = []
+        if not isinstance(units_in, list):
+            raise ParityError(f"run record {path}: units is not a list")
+        for unit in units_in:
             try:
                 key = (
                     int(unit.get("season", season)),
@@ -514,6 +519,9 @@ class Result:
             "complete": self.complete,
             "totals": totals,
             "layers": layers,
+            "units_excluded": sum(
+                1 for u in self.excluded if u["path"].startswith("unit ")
+            ),
             "coverage_cells": {
                 "unproven": sum(1 for u in self.unproven if "#" in u["path"]),
                 "excluded": sum(1 for u in self.excluded if "#" in u["path"]),
@@ -522,7 +530,11 @@ class Result:
                 "compared": self.compared_files,
                 "identical": self.identical_files,
                 "unproven": sum(1 for u in self.unproven if "#" not in u["path"]),
-                "excluded": sum(1 for u in self.excluded if "#" not in u["path"]),
+                "excluded": sum(
+                    1
+                    for u in self.excluded
+                    if "#" not in u["path"] and not u["path"].startswith("unit ")
+                ),
                 "not_compared": sum(int(n["count"]) for n in self.not_compared),
             },
             "errors": self.errors,
@@ -625,6 +637,22 @@ def _fields(a: Any, b: Any) -> tuple[list[dict[str, Any]], int]:
         for p, x, y in diffs[:FIELD_DIFF_CAP]
     ]
     return shown, max(0, len(diffs) - FIELD_DIFF_CAP)
+
+
+def _check_other_version(path: str, doc: Any, label: str) -> None:
+    """Coverage and reference files: refuse a version this check cannot read."""
+    if not isinstance(doc, dict):
+        raise ParityError(f"{path} ({label}): not a JSON object")
+    name = path.rsplit("/", 1)[1]
+    field_name, want = (
+        ("schema", COVERAGE_SCHEMA)
+        if name == "coverage.json"
+        else REFERENCE_VERSIONS[name]
+    )
+    if doc.get(field_name) != want:
+        raise ParityError(
+            f"{path} ({label}): {field_name} {doc.get(field_name)!r}, this check reads {want!r}"
+        )
 
 
 def _dig(doc: Any, dotted: str) -> Any:
@@ -762,6 +790,8 @@ class Comparison:
         self.fixture_index: dict[
             tuple[int, str, str], tuple[dt.date | None, list[str]]
         ] = {}
+        # (season, gender, match id) -> every date either side gives it
+        self.fixture_dates: dict[tuple[int, str, str], set[dt.date]] = defaultdict(set)
         # (season, gender, slug) -> conference (file stem), for coverage cells
         self.member_of: dict[tuple[int, str, str], str] = {}
 
@@ -784,6 +814,17 @@ class Comparison:
                 )
                 return r
             season_files, other = self._classify_paths()
+            # Every unit a run says it did not land is excluded, whether or
+            # not it left a file behind: a failed first collect leaves none.
+            for (season, gender, conf), unit in sorted(self.units.items()):
+                if unit.result in EXCLUDING_RESULTS:
+                    r.excluded.append(
+                        {
+                            "path": f"unit {season}-{gender}-{conf}",
+                            "reason": f"run record says {unit.result}"
+                            + (f": {unit.reason}" if unit.reason else ""),
+                        }
+                    )
             self._index_fixtures(season_files)
             for path in season_files:
                 self._season_file(path)
@@ -877,6 +918,8 @@ class Comparison:
                     day = _date(fx.get("date"))
                     progs = [s for s in (fx.get("home"), fx.get("away")) if s]
                     key = (season, gender, str(fx.get("id")))
+                    if day:
+                        self.fixture_dates[key].add(day)
                     if (
                         key not in self.fixture_index
                         or self.fixture_index[key][0] is None
@@ -910,7 +953,15 @@ class Comparison:
             )
             return
         in_e, in_a = path in self.e.entries, path in self.a.entries
+        want = SEASON_SCHEMAS[layer]
         if not (in_e and in_a):
+            only_doc = (self.a if in_a else self.e).load(path)
+            if not isinstance(only_doc, dict) or only_doc.get("schema") not in want:
+                got = only_doc.get("schema") if isinstance(only_doc, dict) else None
+                r.errors.append(
+                    f"{path}: schema {got!r}, this check reads {', '.join(want)}"
+                )
+                return
             r.find(
                 Finding(
                     layer,
@@ -923,7 +974,10 @@ class Comparison:
             )
             return
         de, da = self.e.load(path), self.a.load(path)
-        want = SEASON_SCHEMAS[layer]
+        for label, doc in (("expected", de), ("actual", da)):
+            if not isinstance(doc, dict):
+                r.errors.append(f"{path} ({label}): not a JSON object")
+                return
         for label, doc in (("expected", de), ("actual", da)):
             if doc.get("schema") not in want:
                 r.errors.append(
@@ -955,9 +1009,15 @@ class Comparison:
             and unit.collected_at is not None
         )
         same_bytes = self.e.entries[path].digest == self.a.entries[path].digest
-        # A file that differs is always compared: under one stamp, as a
-        # simultaneous collection, so any difference disagrees.
-        if te == ta and same_bytes and not vouched and not self.compare_inherited:
+        # A file whose facts differ is always compared: under one stamp, as a
+        # simultaneous collection, so any difference disagrees. Formatting
+        # alone (same facts, other bytes) stays unproven.
+        if (
+            te == ta
+            and not vouched
+            and not self.compare_inherited
+            and (same_bytes or same(de, da))
+        ):
             r.unproven.append(
                 {
                     "path": path,
@@ -1071,10 +1131,11 @@ class Comparison:
                 f"an unplayed fixture was dropped from the schedule before the later collection ({when})",
             )
         played = late.get("status") in ("live", "final")
-        if played and not w.played_between(day):
+        late_day = _date(late.get("date"))
+        if played and not w.played_between(late_day):
             return (
                 DISAGREEMENT,
-                f"the later side has a result for a game dated {day}, after both collections ({when})",
+                f"the later side has a result for a game dated {late_day}, outside the window between the collections ({when})",
             )
         if early is None:
             return TIMING, f"fixture first listed after the earlier collection ({when})"
@@ -1164,9 +1225,9 @@ class Comparison:
                         )
                     )
                 continue
-            day = self.fixture_index.get((*ctx, key), (None, []))[0]
+            days = sorted(self.fixture_dates.get((*ctx, key), ()))
             kind = "added" if x is None else "removed" if y is None else "changed"
-            cls, reason = self._match_class(x, y, day, w)
+            cls, reason = self._match_class(x, y, days, w)
             if (
                 x is not None
                 and y is not None
@@ -1204,10 +1265,13 @@ class Comparison:
         return str(day) if day else None
 
     def _match_class(
-        self, x: dict | None, y: dict | None, day: dt.date | None, w: Window
+        self, x: dict | None, y: dict | None, days: list[dt.date], w: Window
     ) -> tuple[str, str]:
+        """Every date either side gives the game must fall in the played
+        window: a fixture moved between collections cannot lend its old date
+        to a box score."""
         when = w.describe()
-        if day is None:
+        if not days:
             return (
                 DISAGREEMENT,
                 "no fixture on either side dates this box score, so no timing can explain it",
@@ -1217,16 +1281,17 @@ class Comparison:
                 DISAGREEMENT,
                 f"differs between collections made at the same time ({when})",
             )
-        if not w.open_for(day):
-            return (
-                DISAGREEMENT,
-                f"game dated {day}, more than {w.lag.days} days before the earlier collection ({when})",
-            )
-        if not w.played_between(day):
-            return (
-                DISAGREEMENT,
-                f"box score for a game dated {day}, after both collections ({when})",
-            )
+        for day in days:
+            if not w.open_for(day):
+                return (
+                    DISAGREEMENT,
+                    f"game dated {day}, more than {w.lag.days} days before the earlier collection ({when})",
+                )
+            if not w.played_between(day):
+                return (
+                    DISAGREEMENT,
+                    f"box score for a game dated {day}, after both collections ({when})",
+                )
         early, late = (x, y) if w.actual_is_later else (y, x)
         if late is None:
             return (
@@ -1414,6 +1479,9 @@ class Comparison:
         in_e, in_a = path in self.e.entries, path in self.a.entries
         layer = "coverage" if path.endswith("coverage.json") else "reference"
         if not (in_e and in_a):
+            _check_other_version(
+                path, (self.a if in_a else self.e).load(path), "only side"
+            )
             r.find(
                 Finding(
                     layer,
@@ -1488,10 +1556,18 @@ class Comparison:
                     f"{path} ({label}): schema {doc.get('schema')!r}, this check reads {COVERAGE_SCHEMA}"
                 )
         ce, ca = de.get("cells") or {}, da.get("cells") or {}
+        if not isinstance(ce, dict) or not isinstance(ca, dict):
+            raise ParityError(f"{path}: cells is not an object")
         for key in sorted(set(ce) | set(ca)):
             x, y = ce.get(key), ca.get(key)
+            for label, c in (("expected", x), ("actual", y)):
+                if c is not None and not isinstance(c, dict):
+                    raise ParityError(
+                        f"{path} ({label}): cell {key!r} is not an object"
+                    )
             cell = x or y
-            assert isinstance(cell, dict)
+            if not isinstance(cell, dict):
+                raise ParityError(f"{path}: cell {key!r} is empty on both sides")
             parts = key.split("/")
             season, gender, slug = (
                 int(cell.get("season") or parts[0]),
