@@ -24,8 +24,8 @@ and the parity check compares `shadow` with `main`.
    and each conference's programmes with them. A level with no conference yet
    (d3 today) gets no job. Each season unit is routed:
    - **presto** when any of its programmes collects through PrestoSports,
-     which answers GitHub-hosted runners with HTTP 405 (the cloud trial,
-     PR #155);
+     which answers GitHub-hosted runners with HTTP 405 (measured by the
+     cloud trial of PR #155, since removed);
    - **hosted** otherwise (Sidearm, WMT, and Harding's StatCrew school, whose
      live pages are Sidearm).
 
