@@ -1,15 +1,1 @@
-https://soonersports.com/sports/soccer/schedule/2026
-https://soonersports.com/sports/soccer/schedule/2022
-https://soonersports.com/sports/soccer/roster/2026
-https://soonersports.com/sports/soccer/stats/2026
-https://umterps.com/sports/womens-soccer/schedule/2026?schedule=926
-https://umterps.com/sports/womens-soccer/schedule/2026?scheduleId=926
-https://umterps.com/sports/womens-soccer/schedule/2026?schedule=925
-https://umterps.com/services/schedule_txt.ashx?schedule=926
-https://umterps.com/sports/womens-soccer/schedule/text?schedule=926
-https://umterps.com/sports/womens-soccer/schedule/2026/926
-https://umterps.com/sports/womens-soccer/roster/2026
-https://umterps.com/sports/womens-soccer/stats/2026
-https://arkansasrazorbacks.com/sport/w-soccer/schedule/?season=2022-23
-https://arkansasrazorbacks.com/sport/w-soccer/roster/?season=2022-23
-https://arkansasrazorbacks.com/sport/w-soccer/stats/?season=2025-26
+https://umterps.com/sports/womens-soccer/schedule/text?schedule=889
