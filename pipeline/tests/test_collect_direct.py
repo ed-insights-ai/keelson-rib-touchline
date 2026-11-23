@@ -349,3 +349,48 @@ def test_skipped_units_carry_the_reason() -> None:
         "no presto runner",
         "presto",
     )
+
+
+def test_a_resolver_fault_is_not_an_empty_division(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def fake(rib, *args):
+        return subprocess.CompletedProcess(args, 1, "", fake.stderr)
+
+    monkeypatch.setattr(cd, "_resolve", fake)
+    fake.stderr = "no d3 conference has a men member in 2026 (known conferences: A10)"
+    assert cd.resolve_conferences(Path("."), "men", "d3", SEASON) == ([], fake.stderr)
+    fake.stderr = "membership.json: Unexpected token } in JSON at position 12"
+    with pytest.raises(
+        cd.DirectError, match="cannot resolve the d2 men 2026 conferences"
+    ):
+        cd.resolve_conferences(Path("."), "men", "d2", SEASON)
+
+
+def test_replaying_cells_already_landed_leaves_the_manifest_alone(
+    tmp_path: Path,
+) -> None:
+    home = make_home(tmp_path)
+    work = tmp_path / "w"
+    cd.make_work_home(home, work, SEASON)
+    cd.collect_unit(
+        work,
+        unit("GAC"),
+        SEASON,
+        accept_loss=False,
+        timeout=60,
+        runner=fake_runner(
+            {"fixtures": board("t1", ["a", "b"], extra="moved")},
+            coverage={f"{SEASON}/men/a/schedule": {"state": "complete", "at": "t1"}},
+        ),
+    )
+    assert cd.replay(work, home)
+    # Another job lands later and moves updated_at on.
+    manifest = json.loads((home / cd.COVERAGE).read_text())
+    manifest["updated_at"] = "t9"
+    manifest["cells"][f"{SEASON}/men/x/schedule"] = {"state": "empty", "at": "t9"}
+    write(home / cd.COVERAGE, manifest)
+    git(home, "commit", "-qam", "other job")
+    before = (home / cd.COVERAGE).read_text()
+    assert cd.replay(work, home) == []
+    assert (home / cd.COVERAGE).read_text() == before

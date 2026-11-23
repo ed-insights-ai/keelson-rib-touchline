@@ -49,6 +49,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -209,6 +210,12 @@ def resolve_levels(rib: Path) -> list[str]:
     return done.stdout.split()
 
 
+#: How bin/resolve-membership.ts says a level has no conference for a gender
+#: (exit 1, by design): "no d3 conference has a men member in 2026 (...)" or
+#: "no d3 conference authors a men membership window (...)".
+_NONE_RESOLVE = re.compile(r"^no (?:d\d )?conference (?:has a|authors a) ")
+
+
 def resolve_conferences(
     rib: Path, gender: str, level: str, season: int
 ) -> tuple[list[str], str]:
@@ -219,7 +226,15 @@ def resolve_conferences(
     )
     note = done.stderr.strip()
     if done.returncode != 0:
-        return [], note or f"no {level} {gender} conferences resolve"
+        # "None resolve" is an answer (d3 before its stanzas exist); anything
+        # else (an unreadable record, a conference with no profile) is a
+        # fault that must not pass for an empty division.
+        if _NONE_RESOLVE.match(note.splitlines()[-1] if note else ""):
+            return [], note
+        raise DirectError(
+            f"cannot resolve the {level} {gender} {season} conferences: "
+            f"{note or f'resolver exited {done.returncode}'}"
+        )
     return done.stdout.split(), note
 
 
@@ -667,6 +682,12 @@ def overlay_coverage(target: Path, before: bytes | None, after: bytes | None) ->
     if not isinstance(manifest, dict):
         manifest = {}
     cells = manifest.get("cells") if isinstance(manifest.get("cells"), dict) else {}
+    if all(cells.get(k) == v for k, v in changed.items()) and not any(
+        k in cells for k in removed
+    ):
+        # Already landed (a replay after the branch moved): leave the
+        # manifest, its updated_at included, exactly as it stands.
+        return
     cells.update(changed)
     for k in removed:
         cells.pop(k, None)
