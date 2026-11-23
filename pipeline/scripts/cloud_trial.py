@@ -30,6 +30,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import os
 import re
 import shutil
@@ -95,7 +96,9 @@ class CellOutcome:
     programme: str
     layer: str
     state: str
-    cls: str  # ok | no-collector | challenge | http-NNN | timeout | connect | proxy | unproven
+    # ok | no-collector | follows-schedule | challenge |
+    # http-NNN | timeout | connect | proxy | unproven
+    cls: str
     host: str = ""
 
 
@@ -119,7 +122,7 @@ def classify_reason(state: str, reason: str) -> str:
     if "no proven schedule to take box-score links from" in text:
         # Box scores follow the schedule; this is the schedule's failure
         # again, not a second request refused.
-        return "no-collector"
+        return "follows-schedule"
     if (
         "served a challenge" in text
         or "459 Client Error" in text
@@ -252,6 +255,10 @@ def _box_score_failures(home: Path, platform: str, label: str) -> list[CellOutco
             continue
         for reason in missing.values():
             text = str(reason)
+            if "no box-score link" in text:
+                # The site published no box score to ask for: no request
+                # was made, so nothing was refused.
+                continue
             host = _HOST.search(text)
             outcomes.append(
                 CellOutcome(
@@ -396,7 +403,7 @@ def _d3_probe(season: int) -> list[CellOutcome]:
 
 
 def verdict(cells: list[CellOutcome], runs: list[GroupRun], platform: str) -> str:
-    mine = [c for c in cells if c.platform == platform and c.cls != "no-collector"]
+    mine = [c for c in cells if c.platform == platform and c.cls != "follows-schedule"]
     missing = sum(len(r.missing) for r in runs if r.platform == platform)
     if not mine and not missing:
         return "not tested"
@@ -425,7 +432,9 @@ def render(
     ]
     result: dict = {"at": now, "season": season, "runner": runner, "platforms": {}}
     for platform in PLATFORMS:
-        mine = [c for c in cells if c.platform == platform and c.cls != "no-collector"]
+        mine = [
+            c for c in cells if c.platform == platform and c.cls != "follows-schedule"
+        ]
         ok = sum(c.cls == "ok" for c in mine)
         failed = Counter(c.cls for c in mine if c.cls != "ok")
         v = verdict(cells, runs, platform)
@@ -470,13 +479,13 @@ def render(
         "|---|---|---|---|---|---|",
     ]
     for run in runs:
-        tried = [c for c in run.cells if c.cls != "no-collector"]
+        tried = [c for c in run.cells if c.cls != "follows-schedule"]
         ok = sum(c.cls == "ok" for c in tried)
         lines.append(
             f"| {run.group} | {run.platform} | {run.exit_code} | {run.seconds:.0f} | "
             f"{ok} / {len(tried)} | {', '.join(run.missing) or '—'} |"
         )
-    bad = [c for c in cells if c.cls not in {"ok", "no-collector"}]
+    bad = [c for c in cells if c.cls not in {"ok", "follows-schedule"}]
     if bad:
         lines += [
             "",
@@ -561,8 +570,17 @@ def main(argv: list[str] | None = None) -> int:
 
         with ThreadPoolExecutor(max_workers=len(by_platform)) as pool:
             futures = [pool.submit(run_platform, p) for p in by_platform]
-            statcrew = _statcrew_check(args.season)
-            d3 = _d3_probe(args.season)
+            # The in-process checks share the collector's modules, whose
+            # parser warnings can name fixtures and scores; silence logging
+            # for them so the log stays counts-only.  (collect-board's own
+            # output is captured to the temp home and never echoed.)
+            previous = logging.root.manager.disable
+            logging.disable(logging.CRITICAL)
+            try:
+                statcrew = _statcrew_check(args.season)
+                d3 = _d3_probe(args.season)
+            finally:
+                logging.disable(previous)
             runs = [run for f in futures for run in f.result()]
         cells = [c for r in runs for c in r.cells] + statcrew + d3
         report, result = render(args.season, runs, cells, time.monotonic() - started)

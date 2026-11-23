@@ -35,7 +35,7 @@ def test_classify_reason_names_blocks_and_flaky_minutes_apart():
         classify_reason(
             "unavailable", "[2026] no proven schedule to take box-score links from"
         )
-        == "no-collector"
+        == "follows-schedule"
     )
 
 
@@ -118,3 +118,34 @@ def test_failed_box_scores_count_by_class_and_host_without_fixture_ids(tmp_path)
     runs = [GroupRun("prestosports", "SAC men", 0, 1.0)]
     cells = [_cell("prestosports", "ok"), *outcomes]
     assert verdict(cells, runs, "prestosports") == "PARTLY BLOCKED"
+
+
+def test_unsupported_coverage_blocks_pass_but_downstream_skips_do_not():
+    runs = [GroupRun("wmt", "G", 0, 1.0)]
+    assert (
+        verdict([_cell("wmt", "ok"), _cell("wmt", "no-collector")], runs, "wmt")
+        == "DEGRADED"
+    )
+    assert (
+        verdict([_cell("wmt", "ok"), _cell("wmt", "follows-schedule")], runs, "wmt")
+        == "PASS"
+    )
+    text, _ = render(
+        2026, runs, [_cell("wmt", "ok"), _cell("wmt", "no-collector")], 1.0
+    )
+    assert "no-collector" in text
+
+
+def test_unpublished_box_scores_are_not_failed_fetches(tmp_path):
+    import json
+
+    from scripts.cloud_trial import _box_score_failures
+
+    matches = tmp_path / "data" / "matches"
+    matches.mkdir(parents=True)
+    (matches / "2026-men-sac.json").write_text(
+        json.dumps(
+            {"missing": {"fx-1": "no box-score link on any collected schedule page"}}
+        )
+    )
+    assert _box_score_failures(tmp_path, "sidearm", "G") == []
