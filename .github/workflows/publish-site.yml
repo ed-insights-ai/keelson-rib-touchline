@@ -222,11 +222,19 @@ jobs:
             sources="$sources $d-soccer=$sha"
           done
           echo "sources=${sources# }" >> "$GITHUB_OUTPUT"
+      - name: Pack the bundle for the next jobs
+        # Artifacts of a public repository can be downloaded by any signed-in
+        # GitHub user, so a bundle cut from the private homes is stored
+        # encrypted (site/bundle-artifact.sh). One day is enough: only this
+        # run's own jobs read it.
+        env:
+          BUNDLE_KEY_SOURCE: ${{ env.SOURCE == 'data' && secrets.TOUCHLINE_APP_PRIVATE_KEY || '' }}
+        run: sh rib/site/bundle-artifact.sh pack bundle bundle-artifact
       - uses: actions/upload-artifact@v4
         with:
           name: site-bundle
-          path: bundle/
-          retention-days: 7
+          path: bundle-artifact/
+          retention-days: 1
 
   snapshot:
     name: Build, sign and verify the dataset snapshot
@@ -442,7 +450,13 @@ jobs:
         continue-on-error: true
         with:
           name: site-bundle
-          path: bundle
+          path: bundle-artifact
+      - name: Unpack the bundle
+        if: steps.access.outputs.ok == 'true'
+        continue-on-error: true
+        env:
+          BUNDLE_KEY_SOURCE: ${{ env.SOURCE == 'data' && secrets.TOUCHLINE_APP_PRIVATE_KEY || '' }}
+        run: sh rib/site/bundle-artifact.sh unpack bundle-artifact bundle
       - name: The site and the desk show the same numbers
         if: steps.access.outputs.ok == 'true'
         id: agree
@@ -531,7 +545,11 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: site-bundle
-          path: bundle
+          path: bundle-artifact
+      - name: Unpack the bundle
+        env:
+          BUNDLE_KEY_SOURCE: ${{ env.SOURCE == 'data' && secrets.TOUCHLINE_APP_PRIVATE_KEY || '' }}
+        run: sh rib/site/bundle-artifact.sh unpack bundle-artifact bundle
       - name: Build and gate every build
         run: |
           if [ "$SOURCE" = data ]; then export TOUCHLINE_JOURNAL_DIR="$PWD/journals/journal"; fi
