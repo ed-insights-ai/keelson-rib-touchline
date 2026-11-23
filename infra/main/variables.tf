@@ -44,12 +44,6 @@ variable "signing_key_spec" {
   default     = "ECC_NIST_P256"
 }
 
-variable "base_retention_days" {
-  description = "Days a snapshot base is kept. Publish must write a fresh base more often than this, or latest.json can point at an expired object."
-  type        = number
-  default     = 14
-}
-
 variable "delta_retention_days" {
   type    = number
   default = 45
@@ -61,7 +55,7 @@ variable "site_bundle_retention_days" {
 }
 
 variable "noncurrent_retention_days" {
-  description = "Days an overwritten object version stays recoverable."
+  description = "Days an overwritten object version stays readable. Also the history kept for snapshot bases, which live at a stable key per scope."
   type        = number
   default     = 7
 }

@@ -15,7 +15,10 @@ locals {
 # prefix each, whatever the scope):
 #
 #   raw/<school>/...                 raw HTML cache, kept (re-parse, never re-scrape)
-#   snapshots/base/<scope>/<id>...   signed DuckDB bases, expire after base_retention_days
+#   snapshots/base/<scope>/...       signed DuckDB bases at a STABLE key per scope,
+#                                    overwritten each publish; the current version
+#                                    never expires, replaced ones are kept
+#                                    noncurrent_retention_days (a week of bases)
 #   snapshots/delta/<scope>/<id>...  signed daily deltas, expire after delta_retention_days
 #   site/<build id>/...              current-season site bundles, expire after 30 days
 #   news/...                         journals, kept
@@ -45,8 +48,11 @@ resource "aws_s3_bucket_public_access_block" "data" {
   restrict_public_buckets = true
 }
 
-# Versioning, with old versions gone after a week: the publish role has no
-# delete permission, so an overwrite by a bad run is recoverable for a week.
+# Versioning, with old versions gone after a week. This is also how bases are
+# retained: the current base never expires, even through an off-season with no
+# publish runs (collection stops mid-December until summer), and the last
+# week of replaced bases stays readable by version id. The publish role has no
+# delete permission, so a bad run's overwrite is recoverable for a week.
 resource "aws_s3_bucket_versioning" "data" {
   bucket = aws_s3_bucket.data.id
   versioning_configuration {
@@ -83,17 +89,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "data" {
 
     abort_incomplete_multipart_upload {
       days_after_initiation = 3
-    }
-  }
-
-  rule {
-    id     = "expire-snapshot-bases"
-    status = "Enabled"
-    filter {
-      prefix = "snapshots/base/"
-    }
-    expiration {
-      days = var.base_retention_days
     }
   }
 

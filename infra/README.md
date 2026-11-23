@@ -40,14 +40,18 @@ change. Lifecycle rules are per kind, not per scope:
 | Prefix | Kept |
 | --- | --- |
 | `raw/` | forever (re-parse, never re-scrape) |
-| `snapshots/base/<scope>/` | 14 days |
+| `snapshots/base/<scope>/` | current version forever; replaced versions 7 days |
 | `snapshots/delta/<scope>/` | 45 days |
 | `site/` | 30 days |
 | `news/`, `latest.json` | forever |
 | any overwritten version | 7 days |
 
-Publish must write a fresh base more often than every 14 days, or
-`latest.json` can point at an object that has expired.
+Bases live at a stable key per scope and are overwritten by each publish, so
+the base `latest.json` points at never expires, even through the off-season
+when collection stops for months. `latest.json` should record the base's S3
+version id, and desk links should include it, so a desk reads exactly the
+base that was signed. Deltas use dated keys and age out; a desk whose base is
+older than the oldest delta takes the full base.
 
 ## Expected cost
 
