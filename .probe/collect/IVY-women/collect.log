@@ -1,9 +1,0 @@
-membership reference synced: the data home copy at /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/IVY-women/data/reference/membership.json was absent, mirrored from the packaged source of record at /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/data/reference/membership.json
-programmes reference synced: the data home copy at /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/IVY-women/data/reference/programmes.json was absent, mirrored from the packaged source of record at /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/data/reference/programmes.json
-identity: owner side 311 lines: page 310 · key 1; opponent side 296 lines: key 296 (key by reason: no_roster 296, not_on_roster 1)
-wrote /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/IVY-women/data/fixtures/2026-women-ivy.json, /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/IVY-women/data/rosters/2026-women-ivy.json, /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/IVY-women/data/stats/2026-women-ivy.json, /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/IVY-women/data/matches/2026-women-ivy.json and /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/IVY-women/data/coverage.json
-schedule: 1/1 programmes, 16 fixtures (16 played, 0 upcoming)
-conference flags PUBLISHED by each programme's official schedule page
-roster: 1/1 programmes, 24 players
-stats: 1/1 programmes, 26 player season lines
-matches: 16 of 16 played fixtures carry a collected box score

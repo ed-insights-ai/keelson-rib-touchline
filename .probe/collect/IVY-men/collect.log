@@ -1,9 +1,0 @@
-membership reference synced: the data home copy at /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/IVY-men/data/reference/membership.json was absent, mirrored from the packaged source of record at /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/data/reference/membership.json
-programmes reference synced: the data home copy at /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/IVY-men/data/reference/programmes.json was absent, mirrored from the packaged source of record at /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/data/reference/programmes.json
-identity: owner side 299 lines: page 299; opponent side 298 lines: key 298 (key by reason: no_roster 298)
-wrote /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/IVY-men/data/fixtures/2026-men-ivy.json, /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/IVY-men/data/rosters/2026-men-ivy.json, /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/IVY-men/data/stats/2026-men-ivy.json, /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/IVY-men/data/matches/2026-men-ivy.json and /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/.probe/collect/IVY-men/data/coverage.json
-schedule: 1/1 programmes, 16 fixtures (16 played, 0 upcoming)
-conference flags PUBLISHED by each programme's official schedule page
-roster: 1/1 programmes, 29 players
-stats: 1/1 programmes, 29 player season lines
-matches: 16 of 16 played fixtures carry a collected box score

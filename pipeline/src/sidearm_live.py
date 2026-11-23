@@ -385,6 +385,23 @@ def fetch_published_page_conditional(
         ) from exc
     assert_served_body(response, year=year, kind=kind, url=requested_url)
     page = PublishedPage(requested_url, response.url, response.text)
+    if kind == LAYER_SCHEDULE:
+        current_url = season_schedule_redirect(page, year)
+        if current_url is not None:
+            # The season URL served a sibling schedule (a spring slate) of
+            # the season; the season's own is the site's current schedule,
+            # which only the canonical page serves.
+            try:
+                response = session.get(current_url, timeout=30)
+                response.raise_for_status()
+            except requests.RequestException as exc:
+                raise LiveCollectionError(
+                    f"[{year}] failed to fetch {kind} page {current_url}: {exc}",
+                    status=http_status(exc),
+                ) from exc
+            assert_served_body(response, year=year, kind=kind, url=current_url)
+            page = PublishedPage(requested_url, response.url, response.text)
+            assert_season_schedule_served(page, year)
     etag: str | None = None
     last_modified: str | None = None
     signature: str | None = None
@@ -573,6 +590,103 @@ def _nuxt_schedule_objects(html: str) -> list[dict[str, object]]:
         for value in schedules.values()
         if isinstance(value, dict) and isinstance(value.get("games"), list)
     ]
+
+
+def _nuxt_season_siblings(html: str, year: int) -> list[dict[str, object]]:
+    """Every schedule the Nuxt page's ``pastSchedules`` files under ``year``.
+
+    The store lists the sport's schedules by season (``seasonTitle``), each
+    with its ``scheduleId`` and an ``isCurrent`` flag.  A season may hold
+    more than one: measured 2026-11-23 on umterps.com women's soccer, season
+    "2026" holds 889 ("2026 Women's Soccer Spring Schedule", five March and
+    April dates), 925 (no games) and 926 ("2026 Women's Soccer Schedule",
+    the 18-game fall season, current).
+    """
+    past = _nuxt_store(html, "schedule").get("pastSchedules")
+    if not isinstance(past, dict):
+        return []
+    return [
+        entry
+        for entries in past.values()
+        if isinstance(entries, list)
+        for entry in entries
+        if isinstance(entry, dict) and str(entry.get("seasonTitle") or "") == str(year)
+    ]
+
+
+def _fall_dated(games: object, year: int) -> bool:
+    """Whether any game is dated August to December of ``year``."""
+    for game in games if isinstance(games, list) else []:
+        date = str(game.get("date") or "") if isinstance(game, dict) else ""
+        match = re.match(rf"{year}-(\d{{2}})-", date)
+        if match and int(match.group(1)) >= 8:
+            return True
+    return False
+
+
+def season_schedule_redirect(page: PublishedPage, year: int) -> str | None:
+    """The canonical schedule URL when the season URL served a sibling.
+
+    The Nuxt skin serves ``/schedule/{year}`` by the season's title and
+    takes the FIRST schedule filed under it (the site's own
+    ``getPastScheduleByTitle`` filters by ``seasonTitle`` and keeps
+    ``[0]``).  When a season holds a spring slate beside the fall season,
+    the season URL therefore serves the spring games (umterps.com
+    ``/sports/womens-soccer/schedule/2026``, 2026-11-23: schedule 889, five
+    spring dates, while the 18-game fall season is 926).  No season URL
+    addresses the others, but the canonical ``/schedule`` page serves the
+    sport's current schedule.  So: a served schedule with no fall date,
+    beside a sibling the site marks current, answers that canonical URL;
+    one with no current sibling is refused, a named gap rather than a
+    spring slate collected as the season.  ``None`` when the served
+    schedule stands (one schedule in the season, or a fall-dated one).
+    """
+    siblings = _nuxt_season_siblings(page.html, year)
+    if len(siblings) < 2:
+        return None
+    served = _nuxt_schedule_objects(page.html)
+    if any(_fall_dated(schedule.get("games"), year) for schedule in served):
+        return None
+    served_ids = {str(schedule.get("id")) for schedule in served}
+    current = [
+        entry
+        for entry in siblings
+        if entry.get("isCurrent") is True
+        and str(entry.get("scheduleId")) not in served_ids
+    ]
+    if len(current) == 1:
+        path = urlparse(page.final_url).path.rstrip("/")
+        base = re.sub(rf"/schedule/{year}(?:-\d{{2}})?$", "/schedule", path)
+        if base != path:
+            return urljoin(page.final_url, base)
+    listed = ", ".join(str(entry.get("scheduleId")) for entry in siblings)
+    titles = "; ".join(str(schedule.get("title") or "") for schedule in served)
+    raise LiveCollectionError(
+        f"[{year}] {page.final_url} serves {titles or 'a schedule'} with no fall "
+        f"date, one of the {len(siblings)} schedules the site files under season "
+        f"{year} ({listed}); its season URL cannot address the others"
+    )
+
+
+def assert_season_schedule_served(page: PublishedPage, year: int) -> None:
+    """Refuse a canonical schedule page that is not the season's current one."""
+    served = _nuxt_schedule_objects(page.html)
+    siblings = _nuxt_season_siblings(page.html, year)
+    current = {
+        str(entry.get("scheduleId"))
+        for entry in siblings
+        if entry.get("isCurrent") is True
+    }
+    ids = {str(schedule.get("id")) for schedule in served}
+    titled = all(
+        re.search(rf"\b{year}\b", str(schedule.get("title") or ""))
+        for schedule in served
+    )
+    if not served or not current or ids != current or not titled:
+        raise LiveCollectionError(
+            f"[{year}] {page.final_url} does not serve the season's current "
+            f"schedule ({', '.join(sorted(current)) or 'none marked'})"
+        )
 
 
 #: SideArm's global code for the soccer programme of each gender, the

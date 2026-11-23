@@ -12761,12 +12761,12 @@
       "provenance": {
         "nickname": {
           "source": "schools.toml mascot, as the site names itself",
-          "url": "https://soonersports.com/sports/womens-soccer",
+          "url": "https://soonersports.com/sports/soccer",
           "accessed": "2026-11-20"
         },
         "abbreviation": {
           "source": "schools.toml abbreviation, the site's own short form",
-          "url": "https://soonersports.com/sports/womens-soccer",
+          "url": "https://soonersports.com/sports/soccer",
           "accessed": "2026-11-20"
         },
         "city": {

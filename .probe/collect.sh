@@ -8,8 +8,6 @@ run() { # conf gender programmes
     --season 2026 --gender "$2" --conference "$1" --programmes "$3" >"$home/collect.log" 2>&1
   echo "$1 $2 exit $?"
 }
-run IVY women harvard &
-run IVY men harvard &
 run SEC women oklahoma &
 run B1G women maryland &
 wait
