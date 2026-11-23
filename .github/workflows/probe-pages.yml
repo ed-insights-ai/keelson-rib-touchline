@@ -1,0 +1,22 @@
+name: Probe pages (temporary)
+# Thread scratch: fetch .probe/urls.txt from a hosted runner and commit the
+# bodies back to this branch for offline reading. Deleted before merge.
+on:
+  push:
+    branches: [claude/project-thread-8gmfo2]
+    paths: [.probe/urls.txt, .probe/fetch.py, .github/workflows/probe-pages.yml]
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install requests
+      - run: python3 .probe/fetch.py
+      - run: |
+          git config user.name probe-bot
+          git config user.email probe-bot@users.noreply.github.com
+          git add .probe/pages
+          git commit -m "probe: fetched pages" && git push
