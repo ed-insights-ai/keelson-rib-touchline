@@ -14,6 +14,10 @@
 // callers, so the touchline_collect tool and the workflows share one answer to
 // "who is in this conference this season". Nothing here names a conference.
 //
+//   bun bin/resolve-membership.ts levels
+//     prints the NCAA levels (src/levels.ts CONFERENCE_LEVELS), space-separated
+//     on one line: the one list every level-keyed thing derives from.
+//
 //   bun bin/resolve-membership.ts conference <CONF> <gender> <season>
 //     prints "<true|false> <slug,slug,...>" (extrapolated flag, then the
 //     comma-separated member slugs); exit 1 with a reason on stderr when no
@@ -65,7 +69,7 @@ import {
 } from "../src/membership.ts";
 
 const USAGE =
-  "usage: resolve-membership.ts conference <CONF> <gender> <season> | conferences <gender> [--level d1|d2|d3] [--season YYYY] | divisions <CONF> <gender> <season> | home-level <dir> | guard <dir> <CONF>...";
+  "usage: resolve-membership.ts levels | conference <CONF> <gender> <season> | conferences <gender> [--level d1|d2|d3] [--season YYYY] | divisions <CONF> <gender> <season> | home-level <dir> | guard <dir> <CONF>...";
 
 function fail(message: string): never {
   process.stderr.write(`${message}\n`);
@@ -74,7 +78,11 @@ function fail(message: string): never {
 
 const [mode, ...rest] = process.argv.slice(2);
 
-if (mode === "conference") {
+if (mode === "levels") {
+  // The one list of NCAA levels (src/levels.ts), for callers outside
+  // TypeScript: the direct collect plans one data home per level from it.
+  process.stdout.write(`${CONFERENCE_LEVELS.join(" ")}\n`);
+} else if (mode === "conference") {
   const [conference, gender, seasonText] = rest;
   if (!conference || !gender || !seasonText) fail(USAGE);
   const season = Number(seasonText);
