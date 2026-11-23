@@ -490,7 +490,11 @@ jobs:
       contents: read
       id-token: write
     env:
-      DEPLOY: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+      # A dispatch that names a source other than the live site's (samples
+      # while the site serves the real data) builds and gates the site but
+      # never deploys it: it is run to fill that source's snapshot folder,
+      # not to replace the live site. The release job has the same test.
+      DEPLOY: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && !(inputs.source != '' && inputs.source != 'default' && inputs.source != (vars.SITE_SOURCE || 'data')) }}
     outputs:
       # The release gate: "true" only when this run deployed and every build's
       # live smoke check passed. A later release job (move latest.json) needs
@@ -551,8 +555,11 @@ jobs:
       - name: Upload changed files
         if: env.DEPLOY == 'true'
         id: sync
+        # pipefail: sync.py stopping (the mass-delete guard) must fail this
+        # step, not pass through tee and leave the smoke check to time out.
+        shell: bash
         run: |
-          set -eu
+          set -euo pipefail
           mass=""
           if [ "${{ inputs.allow_mass_delete }}" = true ]; then mass="--allow-mass-delete"; fi
           # shellcheck disable=SC2086
@@ -590,8 +597,14 @@ jobs:
   release:
     name: Move latest.json to the new snapshot
     needs: [snapshot, site]
-    # Only once the live site shows this run's data.
-    if: needs.site.outputs.smoke_passed == 'true'
+    # Only once the live site shows this run's data. A main dispatch of a
+    # source the live site does not serve deploys nothing (the site job), so
+    # its snapshot is released on the site job's build gates alone.
+    if: >-
+      needs.site.outputs.smoke_passed == 'true' ||
+      (needs.site.result == 'success' && github.ref == 'refs/heads/main' &&
+      github.event_name == 'workflow_dispatch' && inputs.source != '' &&
+      inputs.source != 'default' && inputs.source != (vars.SITE_SOURCE || 'data'))
     runs-on: ubuntu-latest
     environment: production
     permissions:
