@@ -2,7 +2,8 @@
 
 One GitHub App replaces personal tokens for the pushes the pipeline makes to
 GitHub: the season files into `d1-soccer` and `d2-soccer` (and `d3-soccer`
-when it exists). The site no longer needs it, since it deploys to S3 and
+when it exists), and the published contracts and samples into
+`touchline-contracts` (`.github/workflows/publish-contracts.yml`). The site no longer needs it, since it deploys to S3 and
 CloudFront through the `touchline-publish-site` role. Daniel does this by
 hand, about 10 minutes, after the bootstrap runbook. Its tokens last an hour
 and are minted per job, so nothing expires on a calendar.
@@ -24,10 +25,10 @@ Open <https://github.com/organizations/ed-insights-ai/settings/apps/new> and set
 Click **Create GitHub App**. On the next page note the **App ID**, then under
 **Private keys** click **Generate a private key**. A `.pem` file downloads.
 
-## 2. Install it on the data homes only
+## 2. Install it on three repos only
 
 On the App's page, **Install App**, `ed-insights-ai`, **Only select
-repositories**: `d1-soccer`, `d2-soccer`. Install.
+repositories**: `d1-soccer`, `d2-soccer`, `touchline-contracts`. Install.
 
 ## 3. Store the id and key in the rib's production environment
 
