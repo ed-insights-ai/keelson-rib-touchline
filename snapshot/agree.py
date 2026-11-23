@@ -8,9 +8,16 @@ player lines). <desk.json> is snapshot/desk-figures.mjs over the `all` index
 this run published.
 
 Program figures are the gate: every program the site lists must be in the desk
-with the same won, drawn, lost, goals for, goals against and games. Both count
-the same games from the same season files, so any difference is a bug in one
-of them, and the run exits 1.
+with the same won, drawn, lost, goals for, goals against and games, over the
+games its team page counts (those its own conference file lists with a
+result; a forfeit's awarded score is not goals on either side). Both read the
+same games from the same season files there, so any difference is a bug in
+one of them, and the run exits 1.
+
+Games the desk counts beyond that are reported, not gated: the desk folds the
+whole division, so it also counts a game listed only on an opponent's
+schedule, or one its own schedule has no result for yet. Each one is a gap or
+a misnamed opponent in a data home, to fix there.
 
 Player lines are reported, not gated: the site prints each school's season
 stats sheet, while the desk sums its own box-score lines, so the two can differ
@@ -44,32 +51,38 @@ KEEPER_FIELDS = [("gp", "k_gp"), ("saves", "k_saves"), ("goals_against", "k_ga")
 LIMIT = 40  # differences listed before the rest are counted
 
 
-def load_desk(path: str) -> tuple[dict, dict]:
+def load_desk(path: str) -> tuple[dict, dict, dict]:
     with open(path, encoding="utf-8") as fh:
         doc = json.load(fh)
-    if doc.get("schema") != "touchline.desk-figures/1":
+    if doc.get("schema") != "touchline.desk-figures/2":
         raise SystemExit(
-            f"not a touchline.desk-figures/1 document: {doc.get('schema')!r}"
+            f"not a touchline.desk-figures/2 document: {doc.get('schema')!r}"
         )
     teams: dict = {}
     players: dict = {}
+    extra: dict = {}
     for r in doc["rows"]:
         key = (r["division"], r["gender"], int(r["season"]), r["team"])
         if r["kind"] == "team":
             teams[key] = r
+        elif r["kind"] == "extra":
+            extra.setdefault(key, []).append(r)
         else:
             players.setdefault(key, {}).setdefault(r["name"], []).append(r)
-    return teams, players
+    return teams, players, extra
 
 
 def num(v):
     return None if v is None else int(v)
 
 
-def compare(teams: dict, players: dict, figures: list[dict]):
-    """(program differences, player-line differences, one summary row per build)."""
+def compare(teams: dict, players: dict, figures: list[dict], extra: dict | None = None):
+    """(program differences, player-line differences, one summary row per build,
+    games the desk counts beyond the team pages)."""
+    extra = extra or {}
     team_diffs: list[str] = []
     player_diffs: list[str] = []
+    beyond: list[str] = []
     rows: list[str] = []
     for f in figures:
         if f.get("schema") != "touchline.figures/1":
@@ -84,6 +97,13 @@ def compare(teams: dict, players: dict, figures: list[dict]):
                 # A program with no counted results has no row in the desk: zero.
                 desk = teams.get(key) or {b: 0 for _, b in TEAM_FIELDS}
                 site = p["record"]
+                for e in sorted(
+                    extra.get(key, []), key=lambda e: (e["date"], e["opponent"])
+                ):
+                    beyond.append(
+                        f"{where} {e['date']} v {e['opponent']} "
+                        f"{e['goals_for']}-{e['goals_against']}: {e['why']}"
+                    )
                 for a, b in TEAM_FIELDS:
                     if num(site[a]) != num(desk[b]):
                         team_diffs.append(
@@ -124,7 +144,7 @@ def compare(teams: dict, players: dict, figures: list[dict]):
             # compared nothing, which must not read as agreement.
             team_diffs.append(f"{d} {g} {s}: the site's figures list no programs")
         rows.append(f"| {d} | {g} | {s} | {n_teams} | {n_lines} | {n_line_diffs} |")
-    return team_diffs, player_diffs, rows
+    return team_diffs, player_diffs, rows, beyond
 
 
 def listed(diffs: list[str]) -> list[str]:
@@ -138,14 +158,14 @@ def main(argv: list[str]) -> int:
     if len(argv) < 3:
         print(__doc__, file=sys.stderr)
         return 2
-    teams, players = load_desk(argv[1])
+    teams, players, extra = load_desk(argv[1])
     figures = []
     for path in argv[2:]:
         with open(path, encoding="utf-8") as fh:
             figures.append(json.load(fh))
     if not figures:
         raise SystemExit("no site figures given")
-    team_diffs, player_diffs, rows = compare(teams, players, figures)
+    team_diffs, player_diffs, rows, beyond = compare(teams, players, figures, extra)
     out = [
         "| division | gender | season | programs | player lines | lines that differ |",
         "| --- | --- | --- | --- | --- | --- |",
@@ -160,6 +180,16 @@ def main(argv: list[str]) -> int:
         out += listed(team_diffs) + [""]
     else:
         out += ["Every program's record, goals and games agree.", ""]
+    if beyond:
+        out += [
+            f"<details><summary>{len(beyond)} game(s) the desk counts that the team pages "
+            "leave out, reported only (fix them in the data homes)</summary>",
+            "",
+            *listed(beyond),
+            "",
+            "</details>",
+            "",
+        ]
     if player_diffs:
         out += [
             f"<details><summary>{len(player_diffs)} player-line difference(s), reported only "

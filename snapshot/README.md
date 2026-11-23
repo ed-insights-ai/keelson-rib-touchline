@@ -57,10 +57,18 @@ deltas/<from>__<to>.duckdb.zst rows that changed since the last snapshot
      touchline-ui at the site's pin prints each build's figures
      (`scripts/figures.ts`) from the bundle, and `agree.py` compares them with
      the `all` index just published (`desk-figures.mjs`). Every program's
-     won, drawn, lost, goals for, goals against and games must match. Player
-     lines are listed but not gated: the site prints each school's season
-     stats sheet, the desk sums box-score lines, and the two disagree where a
-     school's sheet does.
+     won, drawn, lost, goals for, goals against and games must match over the
+     games its team page counts: those its own conference file lists with a
+     result, with a forfeit's awarded score left out of goals on both sides.
+     Two things are listed but not gated:
+     - Games the desk counts beyond that. The desk folds the whole division,
+       so it also counts a game listed only on an opponent's schedule, or one
+       its own schedule has no result for yet. Each is a gap or a misnamed
+       opponent in a data home (92 on Nov 23, e.g. Harvard's Ivy schedule
+       missing games, "Loyola" and "Miami" resolved to the wrong school).
+     - Player lines. The site prints each school's season stats sheet, the
+       desk sums box-score lines, and the two disagree where a school's sheet
+       does.
 3. `site` deploys and smoke-checks the live site. It needs `snapshot`, so a
    dataset that does not build, sign and verify keeps the site as it was.
 4. `release` runs only when the smoke check passed, and moves nothing unless
