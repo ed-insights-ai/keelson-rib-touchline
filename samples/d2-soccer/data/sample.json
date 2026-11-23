@@ -28,8 +28,8 @@
       "southwestern-oklahoma-state"
     ]
   },
-  "people": "invented: 2415 real name tokens swapped for invented ones by pipeline/scripts/sample_names.py",
-  "cut_at": "2026-11-23T16:41:18+00:00",
+  "people": "invented: 2415 real name tokens, every page id and every hometown town swapped for invented ones by pipeline/scripts/sample_names.py",
+  "cut_at": "2026-11-23T16:57:05+00:00",
   "files": [
     {
       "path": "data/fixtures/2026-men-gac.json",
@@ -38,18 +38,18 @@
     },
     {
       "path": "data/rosters/2026-men-gac.json",
-      "bytes": 77532,
-      "sha256": "9c9abda35bb2622ba43fba8e76a3a77f4bd36d34ee84bd7f784112396ac11681"
+      "bytes": 77939,
+      "sha256": "d9a094481c7de94284df3bfe2eb7641bae0d811c84c7cc1101580b15896598c3"
     },
     {
       "path": "data/stats/2026-men-gac.json",
       "bytes": 125879,
-      "sha256": "cb0bffa2116b899d3203a07ba4071e00802772c6aec4025a7779e66c8287a553"
+      "sha256": "9d1ea5253c931b14bfdf802e2495097dcbe6a209c010384da1cfe571e6f50f65"
     },
     {
       "path": "data/matches/2026-men-gac.json",
-      "bytes": 3420605,
-      "sha256": "3ad77fe648fd19af3fb0347063c3662c658c51e863b7db9e8d143fe01168ae5c"
+      "bytes": 3420569,
+      "sha256": "547d7aadabc2e9fe7b7b017a581121062edcafd8fce7653f9c539f9c22b6b5a3"
     },
     {
       "path": "data/fixtures/2026-women-gac.json",
@@ -58,18 +58,18 @@
     },
     {
       "path": "data/rosters/2026-women-gac.json",
-      "bytes": 66997,
-      "sha256": "dd07dd596c59b48eb4f81e47b60afafe56b2dbe56dc23971f4afa13fbd488266"
+      "bytes": 67354,
+      "sha256": "4f7cd8cfba226c2c7871fcd2713328941622184fd4d5a10e9bfe8cd7e1d79c8d"
     },
     {
       "path": "data/stats/2026-women-gac.json",
       "bytes": 118258,
-      "sha256": "0a5512e9606e0991f8a32ce2dec5f0765f161f52cbf8755b8136e78d1eaabff6"
+      "sha256": "af29604c978e594dbf4d3385eb68ba9b46c2022219cd961a4862b086338a2c2f"
     },
     {
       "path": "data/matches/2026-women-gac.json",
-      "bytes": 3392093,
-      "sha256": "8a0814971806927d31fdf9837b6229334ca7d09ff8043bf267118065d3f08c5d"
+      "bytes": 3392105,
+      "sha256": "3007e67083109c7bf05381bb186ee0067d6217456e91a7494c6e1cbba09422b5"
     }
   ]
 }

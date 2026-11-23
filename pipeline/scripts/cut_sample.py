@@ -10,7 +10,8 @@ What it copies, per (home, conference, season):
 
 - data/{fixtures,rosters,stats,matches}/{season}-{gender}-{conf}.json for
   each gender whose fixtures file exists, as collected except that every
-  person in them gets an invented name (scripts/sample_names.py): the
+  person in them gets an invented name, page id and hometown town
+  (scripts/sample_names.py): the
   samples are public, so nobody in them keeps a real one;
 - data/coverage.json, keeping only that season's cells for the conference's
   members;
@@ -209,8 +210,9 @@ def _cut_into(home: Path, conference: str, season: int, out: Path) -> dict:
         "genders": genders,
         "programmes": {g: sorted(members[g]) for g in genders},
         "people": (
-            f"invented: {people['tokens']} real name tokens swapped for invented ones "
-            "by pipeline/scripts/sample_names.py"
+            f"invented: {people['tokens']} real name tokens, every page id and "
+            "every hometown town swapped for invented ones by "
+            "pipeline/scripts/sample_names.py"
         ),
         "cut_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
         "files": files,

@@ -16,8 +16,11 @@ they did. The map is injective and never produces a real token of the home,
 so two people stay two people and no invented token reads as someone real
 from the same home.
 
-Everything else (numbers, ids, positions, hometowns, teams, scores, times)
-stays as collected. Particles and suffixes (de, van, Jr, III) and tokens of
+A person's page ids (the bio id in roster and bio URLs, `player_id`, and
+page/twin/roster `player_ref.id`) and the town of a hometown are swapped too,
+one-to-one, so no sample player leads back to a real one; `veil` does that.
+Everything else (shirt numbers, positions, state or country of a hometown,
+teams, scores, times) stays as collected. Particles and suffixes (de, van, Jr, III) and tokens of
 one or two letters (JJ, Li) are kept: on their own they name nobody.
 
 `invent(home)` rewrites the season files of a home in place and returns a
@@ -56,6 +59,53 @@ PLAY_WORDS = frozenset(
     pass penalty period post quick rebound red right rush save saved short shot
     start sub substitution ten the to top under volley wide win woodwork yellow
     """.split()
+)
+
+# Invented tokens never contain these: famous names and words nobody wants
+# printed as a student's name.
+BLOCKED = (
+    "putin",
+    "hitler",
+    "stalin",
+    "trump",
+    "biden",
+    "obama",
+    "osama",
+    "nazi",
+    "satan",
+    "anal",
+    "anus",
+    "rape",
+    "nig",
+    "fag",
+    "slut",
+    "whor",
+    "porn",
+    "cum",
+    "cock",
+    "dick",
+    "puss",
+    "tit",
+    "sex",
+    "kkk",
+    "shit",
+    "fuc",
+    "kil",
+    "dead",
+    "dumb",
+    "crap",
+    "butt",
+    "poo",
+    "piss",
+    "homo",
+    "jew",
+    "gay",
+    "bitch",
+    "bastard",
+    "damn",
+    "hell",
+    "pedo",
+    "isis",
 )
 
 TOKEN = re.compile(r"[^\W\d_]+(?:['’][^\W\d_]+)*")
@@ -175,7 +225,11 @@ class NameMap:
             i = int(hashlib.sha256(key.encode()).hexdigest(), 16) % len(pool)
             for step in range(len(pool)):
                 cand = pool[(i + step) % len(pool)]
-                if cand not in used and cand not in avoid:
+                if (
+                    cand not in used
+                    and cand not in avoid
+                    and not any(b in cand for b in BLOCKED)
+                ):
                     break
             else:  # pragma: no cover - pools hold thousands per letter
                 raise SystemExit(f"ran out of invented names for {letter!r}")
@@ -391,6 +445,195 @@ def _slug(url) -> str:
     return m.group(2).replace("-", " ") if m else ""
 
 
+# -- page ids and hometowns ------------------------------------------------------
+#
+# A name alone is not the whole person: a school's bio page id (in a roster or
+# bio URL, a stats `player_id`, a box-score `player_id` or a page/twin/roster
+# `player_ref.id`) opens the real bio, and a hometown narrows a roster line to
+# one real player. Both are swapped too, one-to-one, so every join on an id
+# still holds. Shirt numbers stay.
+
+_TOWN_HEADS = [
+    "Ash",
+    "Bram",
+    "Cold",
+    "Dun",
+    "Elm",
+    "Fen",
+    "Glen",
+    "Hollow",
+    "Iron",
+    "Juniper",
+    "Kest",
+    "Lark",
+    "Marrow",
+    "North",
+    "Oak",
+    "Pine",
+    "Quarry",
+    "Red",
+    "Sable",
+    "Thorn",
+    "Upper",
+    "Vale",
+    "Wil",
+    "Yarrow",
+    "Alder",
+    "Birch",
+    "Cinder",
+    "Drift",
+    "Ember",
+    "Flint",
+    "Gull",
+    "Heron",
+    "Ivy",
+    "Kettle",
+    "Lantern",
+    "Moss",
+    "Nettle",
+    "Otter",
+    "Pebble",
+    "Rook",
+    "Slate",
+    "Tallow",
+    "Wren",
+]
+_TOWN_TAILS = [
+    "ford",
+    "ville",
+    "ton",
+    "dale",
+    "field",
+    "burg",
+    "haven",
+    "port",
+    "wick",
+    "mere",
+    "stead",
+    "brook",
+    " Creek",
+    " Falls",
+    " Springs",
+    " Hollow",
+    " Bend",
+    " Crossing",
+    " Ridge",
+    " Mills",
+]
+
+
+def _id_paths(doc: dict):
+    """(row, key) for every person id a season file holds, and URL rows."""
+    ids, urls = [], []
+    for team in (doc.get("rosters") or {}).values():
+        urls += [(p, "source_url") for p in team.get("players", [])]
+    for team in (doc.get("teams") or {}).values():
+        for k in ("players", "keepers"):
+            for p in team.get(k, []):
+                ids.append((p, "player_id"))
+                urls.append((p, "bio_url"))
+    for match in (doc.get("matches") or {}).values():
+        for side in match.get("teams", []):
+            for k in ("players", "keepers"):
+                for p in side.get(k, []):
+                    ids.append((p, "player_id"))
+                    urls.append((p, "bio_url"))
+                    ref = p.get("player_ref")
+                    if isinstance(ref, dict) and ref.get("source") != "key":
+                        ids.append((ref, "id"))
+    ids = [(r, k) for r, k in ids if isinstance(r.get(k), str) and r[k]]
+    urls = [(r, k) for r, k in urls if isinstance(r.get(k), str)]
+    return ids, urls
+
+
+def _hometowns(doc: dict):
+    return [
+        p
+        for team in (doc.get("rosters") or {}).values()
+        for p in team.get("players", [])
+        if isinstance(p.get("hometown"), str) and "," in p["hometown"]
+    ]
+
+
+def _injective(real: list[str], make, size: int) -> dict[str, str]:
+    """Map each real value to an invented one: hashed, probed, never real."""
+    taken = set(real)
+    out: dict[str, str] = {}
+    for value in sorted(set(real)):
+        i = int(hashlib.sha256(value.encode()).hexdigest(), 16)
+        for step in range(size):
+            cand = make((i + step) % size, value)
+            if cand not in taken:
+                break
+        else:  # pragma: no cover
+            raise SystemExit(f"ran out of invented values for {value!r}")
+        taken.add(cand)
+        out[value] = cand
+    return out
+
+
+def _new_id(n: int, real: str) -> str:
+    if not real.isdigit():
+        return f"x{n % 10**8:08d}"
+    width = len(real)
+    lo = 10 ** (width - 1) if width > 1 else 0
+    return str(lo + n % (10**width - lo))
+
+
+def _new_town(n: int, _real: str) -> str:
+    head = _TOWN_HEADS[n % len(_TOWN_HEADS)]
+    tail = _TOWN_TAILS[(n // len(_TOWN_HEADS)) % len(_TOWN_TAILS)]
+    return head + tail
+
+
+def veil(docs: list[dict]) -> list[str]:
+    """Swap every person id and hometown town across a home's season files;
+    return what is left of the real ones (empty when clean)."""
+    rows = [_id_paths(d) for d in docs]
+    real_ids = [r[k] for ids, _ in rows for r, k in ids]
+    for _, urls in rows:
+        for r, k in urls:
+            m = ROSTER_SLUG.search(r[k])
+            if m:
+                real_ids.append(m.group(3).lstrip("/"))
+    by_width = {}
+    for v in real_ids:
+        by_width.setdefault(len(v), []).append(v)
+    id_map: dict[str, str] = {}
+    for width, values in by_width.items():
+        span = max(10**width - (10 ** (width - 1) if width > 1 else 0), 1)
+        id_map |= _injective(values, _new_id, span)
+    for ids, urls in rows:
+        for r, k in ids:
+            r[k] = id_map[r[k]]
+        for r, k in urls:
+            m = ROSTER_SLUG.search(r[k])
+            if m:
+                new = "/" + id_map[m.group(3).lstrip("/")]
+                r[k] = r[k][: m.start(3)] + new + r[k][m.end(3) :]
+
+    towns = [p for d in docs for p in _hometowns(d)]
+    real_towns = [p["hometown"].split(",", 1)[0].strip() for p in towns]
+    town_map = _injective(real_towns, _new_town, len(_TOWN_HEADS) * len(_TOWN_TAILS))
+    for p, town in zip(towns, real_towns):
+        rest = p["hometown"].split(",", 1)[1]
+        p["hometown"] = f"{town_map[town]},{rest}"
+
+    left: list[str] = []
+    real_id_set, real_town_set = set(real_ids), set(real_towns)
+    for d in docs:
+        ids, urls = _id_paths(d)
+        left += [f"id {r[k]!r} is real" for r, k in ids if r[k] in real_id_set]
+        for r, k in urls:
+            m = ROSTER_SLUG.search(r[k])
+            if m and m.group(3).lstrip("/") in real_id_set:
+                left.append(f"url {r[k]!r} keeps a real id")
+        for p in _hometowns(d):
+            if p["hometown"].split(",", 1)[0].strip() in real_town_set:
+                left.append(f"hometown {p['hometown']!r} is real")
+    return left
+
+
 # -- a home --------------------------------------------------------------------
 
 
@@ -425,6 +668,7 @@ def invent(home: Path) -> dict:
     for path, doc in docs.items():
         left += [f"{path.name} {r}" for r in rekey(doc, names)]
         left += [f"{path.name} {r}" for r in residue(doc, names)]
+    left += veil(list(docs.values()))
     if left:
         shown = "\n  ".join(left[:20])
         raise SystemExit(

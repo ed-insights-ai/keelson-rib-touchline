@@ -186,3 +186,38 @@ def test_key_sourced_player_ids_fold_the_invented_name() -> None:
     assert rekey(stray, names) == [
         "key id 'harding:nobodyhere:3' folds no name in the home"
     ]
+
+
+def test_page_ids_and_hometown_towns_are_swapped_consistently() -> None:
+    from scripts.sample_names import veil
+
+    roster = _roster_file()
+    stats = {
+        "teams": {
+            "harding": {
+                "players": [
+                    {
+                        "name": "X",
+                        "player_id": "9246",
+                        "bio_url": "https://x.example/sports/mens-soccer/roster/x/9246",
+                    }
+                ]
+            }
+        }
+    }
+    matches = _match_file()
+    line = matches["matches"]["sidearm:harding:1"]["teams"][0]["players"][0]
+    line["player_id"] = "9246"
+    line["player_ref"] = {"id": "9246", "source": "page"}
+    key = matches["matches"]["sidearm:harding:1"]["teams"][0]["players"][1]
+    key["player_ref"] = {"id": "harding:anamunoz:8", "source": "key"}
+    assert veil([roster, stats, matches]) == []
+
+    new = stats["teams"]["harding"]["players"][0]["player_id"]
+    assert new != "9246" and len(new) == 4
+    assert line["player_id"] == line["player_ref"]["id"] == new
+    assert stats["teams"]["harding"]["players"][0]["bio_url"].endswith(f"/x/{new}")
+    assert roster["rosters"]["harding"]["players"][0]["source_url"].endswith(f"/{new}")
+    assert key["player_ref"]["id"] == "harding:anamunoz:8"
+    town, rest = roster["rosters"]["harding"]["players"][0]["hometown"].split(",", 1)
+    assert town != "Lavon" and rest == " Texas"

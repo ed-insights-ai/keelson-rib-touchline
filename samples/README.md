@@ -18,7 +18,8 @@ programmes its checks sample, are members.
 ## What each home holds
 
 - `data/{fixtures,rosters,stats,matches}/2026-{men,women}-{conf}.json`, the
-  real home's files with every person given an invented name (below).
+  real home's files with every person given an invented name, page id and
+  hometown (below).
   Fixtures name no one and stay byte-identical.
 - `data/coverage.json`, only the 2026 cells for the conference's members.
 - `data/reference/programmes.json`, only the programmes those fixtures name
@@ -40,9 +41,13 @@ and "P. Roehrich" stay one person. An invented token keeps the real one's
 first letter, case, accent and apostrophe, and the map is one-to-one, so
 initials, accent folding and joins behave as they did on the real data.
 
-Everything else is as collected: numbers, positions, hometowns, player and
-page ids, teams, scores, times and every count. The cut refuses to write a
-sample in which any real name token survives in those fields. Tokens of one
+A person's page ids are swapped too (the bio id in roster and bio URLs,
+`player_id`, and page, twin and roster `player_ref.id`), one-to-one and with
+the same number of digits, so the links and joins hold but lead to no real
+page; so is the town of each hometown (its state or country stays).
+Everything else is as collected: shirt numbers, positions, heights, class
+years, teams, scores, times and every count. The cut refuses to write a
+sample in which any real name token, page id or hometown town survives. Tokens of one
 or two letters (JJ, Li) and particles and suffixes (de, van, Jr) are kept.
 
 Nothing else comes across: no other season, no other conference, no raw HTML,
