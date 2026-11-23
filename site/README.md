@@ -5,9 +5,10 @@ behind CloudFront (`infra/main/site.tf`). `.github/workflows/publish-site.yml`
 runs the whole step:
 
 1. `uv run check-contracts` over the data homes (samples or the private homes).
-2. `pipeline/scripts/cut_bundle.py` cuts each home to the current-season
-   bundle the site reads, with a `data/bundle.json` manifest naming the home's
-   commit.
+2. `pipeline/scripts/cut_bundle.py` cuts each home to the site bundle: every
+   season's JSON (the site renders the current season but reads earlier ones
+   too), no raw pages, with a `data/bundle.json` manifest naming the home's
+   commit and the season to build.
 3. `site/build.sh` builds touchline-ui at the commit in `touchline-ui.sha`,
    once per division and gender, at the paths they are served from (`/`,
    `/women/`, `/d1/`, `/d1/women/`), and runs touchline-ui's tests and link

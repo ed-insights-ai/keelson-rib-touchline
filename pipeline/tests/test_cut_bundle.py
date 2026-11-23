@@ -1,4 +1,4 @@
-"""The site bundle: the current season of a home, nothing else, with a manifest."""
+"""The site bundle: every season's JSON of a home, no raw pages, with a manifest."""
 
 from __future__ import annotations
 
@@ -30,13 +30,14 @@ def _home(tmp_path: Path) -> Path:
     return home
 
 
-def test_cuts_only_the_current_season(tmp_path: Path) -> None:
+def test_cuts_every_season_and_no_raw_pages(tmp_path: Path) -> None:
     home = _home(tmp_path)
     out = tmp_path / "bundle"
     m = cut_bundle.cut(home, out, "abc1234")
     paths = {f["path"] for f in m["files"]}
     assert paths == {
         "touchline-data.yaml",
+        "data/fixtures/2025-men-aaa.json",
         "data/fixtures/2026-men-aaa.json",
         "data/fixtures/2026-women-bbb.json",
         "data/matches/2026-men-aaa.json",

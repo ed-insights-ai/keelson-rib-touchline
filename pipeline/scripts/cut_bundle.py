@@ -1,21 +1,24 @@
-"""Cut the current-season site bundle from a data home.
+"""Cut the site bundle from a data home: the season JSON the site reads.
 
-The site is built from current-season JSON only (it reads no other season), so
-the publish workflow does not hand it a whole data home. It cuts this bundle
-first, from the home at a known commit, and builds the site from the bundle:
+The publish workflow does not hand the site build a whole data home. It cuts
+this bundle first, from the home at a known commit, and builds the site from
+it:
 
-- data/{fixtures,rosters,stats,matches}/{season}-*.json, byte for byte, every
-  conference and gender the home holds for the season;
-- data/coverage.json and data/reference/*.json, as they are (small, and the
-  site reads them whole);
+- data/{fixtures,rosters,stats,matches}/*.json, byte for byte, every season,
+  conference and gender the home holds. The site renders the current season,
+  but its pages read earlier ones too (last season's rosters for returning
+  players, career tiers), and touchline-ui's tests read the whole archive; a
+  current-season-only cut builds without error and silently empties those;
+- data/coverage.json and data/reference/*.json, as they are;
 - touchline-data.yaml, as is, and data/sample.json when the home is a sample
   (so a sample bundle still narrows the build to its one conference);
-- data/bundle.json, the manifest: level, season, the source home's commit, and
-  every copied file with its size and SHA-256.
+- data/bundle.json, the manifest: level, the season the site builds (the
+  latest with fixtures), the source home's commit, and every copied file with
+  its size and SHA-256.
 
-Raw HTML, errors, research, reports and every other season stay behind. The
-snapshot step (DuckDB, signed) reads the same homes at the same commits; the
-manifest's ``source`` is what ties the two together.
+Raw HTML, errors, research and reports stay behind. The snapshot step (DuckDB,
+signed) reads the same homes at the same commits; the manifest's ``source`` is
+what ties the two together.
 
 Usage (from pipeline/):
 
@@ -93,10 +96,12 @@ def cut(home: Path, out: Path, source_sha: str, season: int | None = None) -> di
 
     copy(marker)
     for layer in LAYERS:
-        for src in sorted((data / layer).glob(f"{season}-*.json")):
+        for src in sorted((data / layer).glob("*.json")):
             if SEASON_FILE.match(src.name):
                 copy(src)
-    if not any(p.parent.name == "fixtures" for p in copied):
+    if not any(
+        p.parent.name == "fixtures" and p.name.startswith(f"{season}-") for p in copied
+    ):
         raise SystemExit(f"no {season} fixtures under {data / 'fixtures'}")
     for name in ("coverage.json", "sample.json"):
         if (data / name).is_file():
@@ -107,8 +112,8 @@ def cut(home: Path, out: Path, source_sha: str, season: int | None = None) -> di
     manifest = {
         "schema": "touchline.bundle/1",
         "description": (
-            "The current-season site bundle, cut from a data home by "
-            "pipeline/scripts/cut_bundle.py. The site builds from it."
+            "The site bundle (every season's JSON, no raw pages), cut from a data "
+            "home by pipeline/scripts/cut_bundle.py. The site builds `season` from it."
         ),
         "level": _level(marker),
         "season": season,
@@ -142,7 +147,9 @@ def main(argv: list[str] | None = None) -> int:
         help="the home's commit, recorded in the manifest",
     )
     ap.add_argument(
-        "--season", type=int, help="default: the latest season with fixtures"
+        "--season",
+        type=int,
+        help="the season the site builds; default: the latest with fixtures",
     )
     args = ap.parse_args(argv)
     m = cut(args.home.expanduser(), args.out, args.source_sha, args.season)

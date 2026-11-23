@@ -1,7 +1,7 @@
 name: Publish site
 
 # The site half of the publish workflow (plan step "Site"): hold the data homes
-# to the contracts, cut the current-season bundle, build touchline-ui at the
+# to the contracts, cut the site bundle (season JSON), build touchline-ui at the
 # pinned commit in site/touchline-ui.sha from it, upload only the files whose
 # content changed to the site bucket, invalidate CloudFront, and ask the live
 # site for real status codes. It runs beside gh-pages; nothing redirects here
@@ -142,7 +142,7 @@ jobs:
           for d in $SITE_DIVISIONS; do homes="$homes $GITHUB_WORKSPACE/homes/$d-soccer"; done
           # shellcheck disable=SC2086
           uv run check-contracts $homes
-      - name: Cut the current-season bundle
+      - name: Cut the site bundle
         id: cut
         working-directory: rib/pipeline
         run: |
