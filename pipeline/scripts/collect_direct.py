@@ -281,7 +281,9 @@ def build_plan(
         for gender in genders:
             confs, note = resolve_conferences(rib, gender, level, season)
             if note:
-                division.notes.append(f"{gender}: {note.split(' (known conferences')[0]}")
+                division.notes.append(
+                    f"{gender}: {note.split(' (known conferences')[0]}"
+                )
             for conference in confs:
                 if pinned and conference.upper() not in pinned:
                     continue
