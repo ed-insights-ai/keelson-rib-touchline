@@ -10,8 +10,11 @@ Commands assume `zsh` and a clone at
 ## 0. Check the tools and the GitHub plan
 
 ```bash
-terraform version          # needs 1.10 or newer
-# if missing or older: brew tap hashicorp/tap && brew install hashicorp/tap/terraform
+# Terraform: infra/.terraform-version pins 1.13.4, which tfenv reads.
+cd ~/source/edinsights/keelson-rib-touchline   # after step 3's checkout, or any clone of the branch
+tfenv install              # installs the pinned version
+terraform version          # should print 1.13.4
+# without tfenv: brew tap hashicorp/tap && brew install hashicorp/tap/terraform
 aws --version
 gh auth status
 gh api orgs/ed-insights-ai --jq .plan.name
