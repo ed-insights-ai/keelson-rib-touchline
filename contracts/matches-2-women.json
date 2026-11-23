@@ -1,0 +1,193 @@
+{
+  "schema": "touchline.matches/2",
+  "season": 2026,
+  "gender": "women",
+  "collected_at": "2026-11-16T12:53:51+00:00",
+  "matches": {
+    "sidearm:east-central:7470": {
+      "source_url": "https://ecutigers.com/sports/womens-soccer/stats/2026/regis-university/boxscore/7470",
+      "teams": [
+        {
+          "name": "East Central",
+          "abbr": "ECU",
+          "score": 0,
+          "periods": [0, 0],
+          "shots": 3,
+          "sog": 0,
+          "saves": 5,
+          "corners": 2,
+          "fouls": 10,
+          "players": [
+            {
+              "name": "Parker Frei",
+              "player_id": "7301",
+              "position": "GK",
+              "number": "1",
+              "started": true,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0,
+              "minutes": 90,
+              "player_ref": {
+                "id": "7301",
+                "source": "page"
+              }
+            },
+            {
+              "name": "Madison Martinez",
+              "player_id": "7302",
+              "position": "FWD",
+              "number": "2",
+              "started": true,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0,
+              "minutes": 62,
+              "player_ref": {
+                "id": "7302",
+                "source": "page"
+              }
+            }
+          ],
+          "keepers": [
+            {
+              "name": "Parker Frei",
+              "player_id": "7301",
+              "position": "GK",
+              "number": "1",
+              "minutes": 90,
+              "goals_against": 3,
+              "saves": 5,
+              "player_ref": {
+                "id": "7301",
+                "source": "page"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Regis (CO)",
+          "abbr": "REG",
+          "score": 3,
+          "periods": [1, 2],
+          "winner": true,
+          "shots": 17,
+          "sog": 8,
+          "saves": 0,
+          "corners": 4,
+          "fouls": 9,
+          "players": [
+            {
+              "name": "Maggie Payne",
+              "position": "GK",
+              "number": "1",
+              "started": true,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0,
+              "minutes": 45,
+              "player_ref": {
+                "id": "5627",
+                "source": "twin"
+              }
+            },
+            {
+              "name": "Elsa Nolen",
+              "position": "MID",
+              "number": "4",
+              "started": true,
+              "shots": 4,
+              "sog": 2,
+              "goals": 0,
+              "assists": 1,
+              "minutes": 40,
+              "player_ref": {
+                "id": "5625",
+                "source": "twin"
+              }
+            }
+          ],
+          "keepers": [
+            {
+              "name": "Maggie Payne",
+              "position": "GK",
+              "number": "1",
+              "minutes": 45,
+              "goals_against": 0,
+              "saves": 0,
+              "player_ref": {
+                "id": "5627",
+                "source": "twin"
+              }
+            },
+            {
+              "name": "Helen Stegner",
+              "position": "GK",
+              "number": "31",
+              "minutes": 45,
+              "goals_against": 0,
+              "saves": 0,
+              "player_ref": {
+                "id": "5632",
+                "source": "twin"
+              }
+            }
+          ]
+        }
+      ],
+      "scoring": [
+        {
+          "time": "15:23",
+          "team": 1,
+          "scorer": "Blake Plummer",
+          "season_total": 1,
+          "assist": "Elsa Nolen",
+          "description": "GOAL by REG Plummer, Blake Assist by Nolen, Elsa."
+        },
+        {
+          "time": "64:23",
+          "team": 1,
+          "scorer": "Paige Davis",
+          "season_total": 1,
+          "assist": "Addysen Gasser",
+          "description": "GOAL by REG Davis, Paige Assist by Gasser, Addysen."
+        },
+        {
+          "time": "65:35",
+          "team": 1,
+          "scorer": "Addysen Gasser",
+          "season_total": 1,
+          "description": "GOAL by REG Gasser, Addysen."
+        }
+      ],
+      "plays": [
+        {
+          "period": "1",
+          "text": "Payne, Maggie at goalie for Regis (CO)",
+          "clock": "00:00",
+          "team": 1,
+          "type": "goalie"
+        },
+        {
+          "period": "1",
+          "text": "Frei, Parker at goalie for East Central",
+          "clock": "00:00",
+          "team": 0,
+          "type": "goalie"
+        }
+      ],
+      "stadium": "Regis Turf Fields",
+      "attendance": 68,
+      "kickoff": "05:00",
+      "officials": [
+        "Referee: Jarred Mosher",
+        "Asst. Referee: Mindi Lamboni",
+        "Asst. Referee: John Barron"
+      ],
+      "home_index": 1
+    }
+  }
+}

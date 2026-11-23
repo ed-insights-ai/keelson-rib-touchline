@@ -4,6 +4,28 @@ One line per change to a published contract, newest first. A fixture change
 without a line here is incomplete; a writer change without a fixture change
 fails `pipeline/tests/test_contracts.py`.
 
+## 2026-11-23
+
+- No shape change: every shape below was already declared by `src/model.ts`
+  (and the site's copy) and already written by the collector; the samples
+  had fallen behind the data. Checked against the full D1 and D2 homes and
+  both sample homes, all within the samples now.
+- Season schemas: each gains a women's companion sample
+  (`fixtures-2-women.json`, `rosters-1-women.json`, `stats-1-women.json`,
+  `matches-2-women.json`), so the samples promise `gender: "women"`, which
+  every women's file in both homes carries.
+- `touchline.matches/2`: the sample now carries a team's `offsides` (written
+  by the SideArm and PrestoSports box-score parsers whenever the page prints
+  it; 252 of 272 D1 files), `player_ref.source: "roster"` on a keeper line,
+  and a play in period `"5"` (a shootout so sectioned by its page). The
+  site's `model-drift.test.ts` lists `matches.*.teams.[].offsides` as
+  unexercised; that entry comes off its list with this change.
+- `pipeline/tests/test_contracts.py`'s real-home check read programmes from
+  `data/programmes/`, where no home keeps it; it now reads
+  `data/reference/programmes.json`, and checks `membership.json` too.
+- New `check-contracts` command, run by the daily cadence before the publish
+  and by CI over `samples/`.
+
 ## 2026-11-20
 
 - Membership reference: a window may carry `level` (`d1`, `d2` or `d3`),

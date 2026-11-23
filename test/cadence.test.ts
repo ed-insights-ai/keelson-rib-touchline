@@ -310,6 +310,22 @@ printf 'fake bun: unhandled args: %s\\n' "$*" >&2
 exit 97
 `;
 
+// Fake uv: stands in for `uv run --project <pipeline> check-contracts <home>`.
+// CADENCE_FAKE_CONTRACTS picks the verdict: unset passes, "drift" exits 1
+// naming one fact, "crash" exits 2 without a verdict.
+const FAKE_UV = `#!/bin/sh
+printf 'uv %s\\n' "$*" >>"$CADENCE_FAKE_LOG"
+case "\${CADENCE_FAKE_CONTRACTS:-}" in
+  drift)
+    printf 'DRIFT matches: matches/*/teams/[]/throw_ins: integer (1 file, e.g. data/matches/x.json)\\n'
+    printf '{"check": "contracts", "verdict": "fail", "headline": "1 shape facts beyond the contracts"}\\n'
+    exit 1 ;;
+  crash) printf 'Traceback: boom\\n' >&2; exit 2 ;;
+esac
+printf '{"check": "contracts", "verdict": "pass", "headline": "12 files within the contracts"}\\n'
+exit 0
+`;
+
 const FAKE_JUST = `#!/bin/sh
 # Fake just: records the recipe and writes the built index with the
 # touchline-build meta the cadence reads for its build stamp.
@@ -440,6 +456,10 @@ async function makeHarness(): Promise<Harness> {
   await writeExec(join(fakes, "keelson"), FAKE_KEELSON);
   await writeExec(join(fakes, "bun"), FAKE_BUN);
   await writeExec(join(fakes, "just"), FAKE_JUST);
+  await writeExec(join(fakes, "uv"), FAKE_UV);
+  // the pipeline the contract check runs from
+  await mkdir(join(pkg, "pipeline"), { recursive: true });
+  await writeFile(join(pkg, "pipeline", "pyproject.toml"), "# pipeline stub\n");
   await writeFile(fakeLog, "");
 
   // data home: marked, one board file set per conference, committed, upstream set
@@ -722,7 +742,7 @@ describe("bin/touchline-collect-cadence.sh", () => {
           `^\\[\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\] run summary: mode=loop season=${SEASON} ` +
             `collect=\\[GAC=changed\\] changed=\\[gac\\] failed=\\[none\\] journal_model_calls=2 ` +
             `journal_commit=${siteHead} publish=succeeded exit=0 data_head=${dataHead} build=${BUILD} ` +
-            `locked=\\[none\\] busy=none archive=skipped \\(disabled; archive day 0, today is ${weekday(h.env)}\\)$`,
+            `locked=\\[none\\] busy=none archive=skipped \\(disabled; archive day 0, today is ${weekday(h.env)}\\) contracts=ok$`,
           "m",
         ),
       );
@@ -749,6 +769,7 @@ describe("bin/touchline-collect-cadence.sh", () => {
           "data_head",
           "data_push",
           "build_stamp",
+          "contracts",
           "publish",
           "exit",
           "archive",
@@ -787,7 +808,7 @@ describe("bin/touchline-collect-cadence.sh", () => {
       const log = await h.log();
       expect(log).toContain("PUBLISH FAILED (exit 1) — the live site did NOT update.");
       expect(log).toMatch(
-        /run summary: .* publish=FAILED \(exit 1\) exit=1 data_head=[0-9a-f]{7,} build=none locked=\[none\] busy=none archive=skipped \(disabled; archive day 0, today is [1-7]\)$/m,
+        /run summary: .* publish=FAILED \(exit 1\) exit=1 data_head=[0-9a-f]{7,} build=none locked=\[none\] busy=none archive=skipped \(disabled; archive day 0, today is [1-7]\) contracts=ok$/m,
       );
       const [rec] = await h.records();
       expect(rec.publish).toBe("FAILED (exit 1)");
@@ -795,6 +816,80 @@ describe("bin/touchline-collect-cadence.sh", () => {
       expect(rec.journaled).toEqual(["gac", "national"]);
       expect(rec.data_push).toBe("ok");
       expect(rec.exit).toBe(1);
+    },
+    LOOP_TIMEOUT,
+  );
+
+  test(
+    "the contract check runs once over the data home after the collects, and a clean home records ok",
+    async () => {
+      const h = await makeHarness();
+      const r = await h.cadence("loop", {
+        TOUCHLINE_CONFERENCES: "GAC",
+        CADENCE_FAKE_PLAN: "GAC=changed",
+      });
+      expect(r.code).toBe(0);
+      const calls = (await h.calls()).split("\n");
+      const checks = calls.filter((l) => l.startsWith("uv run"));
+      expect(checks).toEqual([
+        `uv run --quiet --project ${h.pkg}/pipeline check-contracts ${h.data}`,
+      ]);
+      // before the publish, so a drifted home is named before the site moves
+      expect(calls.indexOf(checks[0]!)).toBeLessThan(
+        calls.findIndex((l) => l.startsWith("just publish")),
+      );
+      expect(await h.log()).toContain("contracts: 12 files within the contracts");
+      const [rec] = await h.records();
+      expect(rec.contracts).toBe("ok");
+    },
+    LOOP_TIMEOUT,
+  );
+
+  test(
+    "contract drift is named in the log and fails the run, but the publish still runs",
+    async () => {
+      const h = await makeHarness();
+      const r = await h.cadence("loop", {
+        TOUCHLINE_CONFERENCES: "GAC",
+        CADENCE_FAKE_PLAN: "GAC=changed",
+        CADENCE_FAKE_CONTRACTS: "drift",
+      });
+      expect(r.code).toBe(1);
+      const log = await h.log();
+      expect(log).toContain("DRIFT matches: matches/*/teams/[]/throw_ins: integer");
+      expect(log).toContain("CONTRACT DRIFT — the data home now carries shapes");
+      expect(log).toMatch(/run summary: .* publish=succeeded exit=1 .* contracts=drift$/m);
+      const [rec] = await h.records();
+      expect(rec.contracts).toBe("drift");
+      expect(rec.publish).toBe("succeeded");
+      expect(rec.exit).toBe(1);
+    },
+    LOOP_TIMEOUT,
+  );
+
+  test(
+    "a contract check that cannot run says so and fails the run; a run that collected nothing skips it",
+    async () => {
+      const h = await makeHarness();
+      const r = await h.cadence("collect", {
+        TOUCHLINE_CONFERENCES: "GAC",
+        CADENCE_FAKE_PLAN: "GAC=churn",
+        CADENCE_FAKE_CONTRACTS: "crash",
+      });
+      expect(r.code).toBe(1);
+      expect(await h.log()).toContain(
+        "WARNING: contract check did NOT run — check-contracts exited 2.",
+      );
+      const [rec] = await h.records();
+      expect(rec.contracts).toBe("not run (exit 2)");
+
+      const quiet = await h.cadence("collect", {
+        TOUCHLINE_CONFERENCES: "GAC",
+        CADENCE_FAKE_PLAN: "GAC=failed",
+      });
+      expect(quiet.code).toBe(1);
+      const records = await h.records();
+      expect(records[1].contracts).toBe("skipped (nothing collected)");
     },
     LOOP_TIMEOUT,
   );
@@ -940,7 +1035,7 @@ describe("bin/touchline-collect-cadence.sh", () => {
     );
     expect(log).not.toContain("sweeping leftovers");
     expect(log).toMatch(
-      /run summary: mode=loop season=2026 collect=\[none\] changed=\[none\] failed=\[none\] .* exit=0 .* locked=\[none\] busy=touchline-backfill run-abc archive=skipped \(not reached\)$/m,
+      /run summary: mode=loop season=2026 collect=\[none\] changed=\[none\] failed=\[none\] .* exit=0 .* locked=\[none\] busy=touchline-backfill run-abc archive=skipped \(not reached\) contracts=skipped \(nothing collected\)$/m,
     );
 
     const [rec] = await h.records();
@@ -994,7 +1089,7 @@ describe("bin/touchline-collect-cadence.sh", () => {
       expect(log).not.toContain("partial writes rolled back");
       expect(log).not.toContain("churn rolled back");
       expect(log).toMatch(
-        /run summary: mode=loop season=2026 collect=\[GAC=changed LSC=locked\] changed=\[gac\] failed=\[none\] journal_model_calls=2 .* publish=succeeded exit=1 .* locked=\[LSC\] busy=none archive=skipped \(disabled; .*\)$/m,
+        /run summary: mode=loop season=2026 collect=\[GAC=changed LSC=locked\] changed=\[gac\] failed=\[none\] journal_model_calls=2 .* publish=succeeded exit=1 .* locked=\[LSC\] busy=none archive=skipped \(disabled; .*\) contracts=ok$/m,
       );
 
       const [rec] = await h.records();
@@ -1881,7 +1976,9 @@ describe("bin/touchline-collect-cadence.sh archive step", () => {
       expect(log).toContain("archive retention: kept 1 of 1");
       // the archive ran after the data push and before the summary
       expect(log.indexOf("data home push:")).toBeLessThan(log.indexOf("archive: writing"));
-      expect(log).toMatch(new RegExp(`run summary: .* busy=none archive=ok ${dir} \\S+$`, "m"));
+      expect(log).toMatch(
+        new RegExp(`run summary: .* busy=none archive=ok ${dir} \\S+ contracts=ok$`, "m"),
+      );
 
       const [rec] = await h.records();
       expect(rec.archive).toMatch(new RegExp(`^ok ${dir} \\S+$`));

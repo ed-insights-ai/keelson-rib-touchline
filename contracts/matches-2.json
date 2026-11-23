@@ -729,6 +729,518 @@
         }
       ],
       "home_index": 1
+    },
+    "sidearm:barton:5414": {
+      "source_url": "https://bartonbulldogs.com/sports/mens-soccer/stats/2023/young-harris-conference-carolinas-championship-/boxscore/5414",
+      "teams": [
+        {
+          "name": "Barton",
+          "abbr": "BARTON",
+          "score": 5,
+          "periods": [3, 1, 1, 0, 0],
+          "shots": 9,
+          "sog": 5,
+          "saves": 6,
+          "corners": 3,
+          "fouls": 14,
+          "players": [
+            {
+              "name": "Alfie Mattocks",
+              "player_id": "5099",
+              "position": "DEF",
+              "number": "3",
+              "started": true,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0,
+              "minutes": 78,
+              "player_ref": {
+                "id": "5099",
+                "source": "page"
+              }
+            },
+            {
+              "name": "Nico Rocksien",
+              "player_id": "5067",
+              "position": "MID",
+              "number": "6",
+              "started": true,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 1,
+              "minutes": 68,
+              "player_ref": {
+                "id": "5067",
+                "source": "page"
+              }
+            }
+          ],
+          "keepers": [
+            {
+              "name": "Steingrimur Gunnarsson",
+              "player_id": "5052",
+              "position": "GK",
+              "number": "33",
+              "minutes": 110,
+              "goals_against": 5,
+              "saves": 6,
+              "player_ref": {
+                "id": "5052",
+                "source": "page"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Young Harris",
+          "abbr": "YHC",
+          "score": 5,
+          "periods": [0, 4, 0, 1, 0],
+          "shots": 19,
+          "sog": 11,
+          "saves": 0,
+          "corners": 10,
+          "fouls": 13,
+          "players": [
+            {
+              "name": "Stathis Paplomatos",
+              "position": "GK",
+              "number": "1",
+              "started": true,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0,
+              "minutes": 110,
+              "player_ref": {
+                "id": "young-harris:stathispaplomatos:1",
+                "source": "key"
+              }
+            },
+            {
+              "name": "Ivar NaAga",
+              "position": "DEF",
+              "number": "2",
+              "started": true,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0,
+              "minutes": 110,
+              "player_ref": {
+                "id": "4226",
+                "source": "roster"
+              }
+            }
+          ],
+          "keepers": [
+            {
+              "name": "Stathis Paplomatos",
+              "position": "GK",
+              "number": "1",
+              "minutes": 110,
+              "goals_against": 5,
+              "saves": 0,
+              "player_ref": {
+                "id": "young-harris:stathispaplomatos:1",
+                "source": "key"
+              }
+            }
+          ]
+        }
+      ],
+      "scoring": [
+        {
+          "time": "9:17",
+          "team": 0,
+          "scorer": "Kai Thurston",
+          "season_total": 3,
+          "assist": "Nico Rocksien",
+          "description": "GOAL by BARTON Kai Thurston (FIRST GOAL), Assist by Nico Rocksien, goal number 3 for season."
+        },
+        {
+          "time": "22:17",
+          "team": 0,
+          "scorer": "Gabriel Slemer Lopes",
+          "season_total": 5,
+          "description": "GOAL by BARTON Gabriel Slemer Lopes, goal number 5 for season."
+        },
+        {
+          "time": "43:47",
+          "team": 0,
+          "scorer": "Peer Brendler",
+          "season_total": 3,
+          "assist": "Gonzalez, Eddie",
+          "description": "GOAL by BARTON Peer Brendler, Assist by Gonzalez, Eddie, goal number 3 for season."
+        },
+        {
+          "time": "46:43",
+          "team": 1,
+          "scorer": "Sambugaro, Riccardo",
+          "season_total": 1,
+          "description": "GOAL by YHC Sambugaro, Riccardo, goal number 1 for season."
+        },
+        {
+          "time": "63:57",
+          "team": 1,
+          "scorer": "Kleinpenning, Thomas",
+          "season_total": 6,
+          "assist": "Thompson, Quinn",
+          "description": "GOAL by YHC Kleinpenning, Thomas, Assist by Thompson, Quinn, goal number 6 for season."
+        },
+        {
+          "time": "71:17",
+          "team": 1,
+          "scorer": "Padilla, Pato",
+          "season_total": 7,
+          "assist": "Maziane, Saad",
+          "description": "GOAL by YHC Padilla, Pato, Assist by Maziane, Saad, goal number 7 for season."
+        },
+        {
+          "time": "84:06",
+          "team": 1,
+          "scorer": "Morel, Alexsi",
+          "description": "YHC Morel, Alexsi PENALTY KICK GOAL."
+        },
+        {
+          "time": "88:08",
+          "team": 0,
+          "scorer": "Peer Brendler",
+          "season_total": 4,
+          "assist": "Endi Rahmani",
+          "description": "GOAL by BARTON Peer Brendler, Assist by Endi Rahmani, goal number 4 for season."
+        },
+        {
+          "time": "98:43",
+          "team": 0,
+          "scorer": "Immanuel Akpeme",
+          "season_total": 2,
+          "assist": "Jacob Gompers",
+          "description": "GOAL by BARTON Immanuel Akpeme, Assist by Jacob Gompers, goal number 2 for season."
+        },
+        {
+          "time": "109:45",
+          "team": 1,
+          "scorer": "Kleinpenning, Thomas",
+          "season_total": 7,
+          "assist": "Maziane, Saad , Padilla, Pato",
+          "description": "GOAL by YHC Kleinpenning, Thomas, Assist by Maziane, Saad and Padilla, Pato, goal number 7 for season."
+        }
+      ],
+      "cards": [
+        {
+          "type": "yellow",
+          "player": "Thompson, Quinn",
+          "number": "7",
+          "time": "8:56",
+          "team": 1
+        },
+        {
+          "type": "yellow",
+          "player": "Zeph Rico-Jaramillo",
+          "number": "27",
+          "time": "22:19",
+          "team": 0
+        },
+        {
+          "type": "yellow",
+          "player": "Nico Rocksien",
+          "number": "6",
+          "time": "57:54",
+          "team": 0
+        },
+        {
+          "type": "yellow",
+          "player": "Kai Thurston",
+          "number": "28",
+          "time": "70:00",
+          "team": 0
+        },
+        {
+          "type": "yellow",
+          "player": "Zeno Rodatz",
+          "number": "13",
+          "time": "90:00",
+          "team": 0
+        },
+        {
+          "type": "yellow",
+          "player": "DeCorte, Sacha",
+          "number": "5",
+          "time": "90:00",
+          "team": 1
+        },
+        {
+          "type": "red",
+          "player": "Zeph Rico-Jaramillo",
+          "number": "27",
+          "time": "98:43",
+          "team": 0
+        },
+        {
+          "type": "yellow",
+          "player": "Paplomatos, Stathis",
+          "number": "1",
+          "time": "110:00",
+          "team": 1
+        }
+      ],
+      "plays": [
+        {
+          "period": "5",
+          "text": "Start of SO period [110:00].",
+          "clock": "110:00",
+          "team": 0,
+          "type": "period"
+        },
+        {
+          "period": "5",
+          "text": "Shootout attempt by YHC Padilla, Pato MADE [S. Gunnarsson].",
+          "team": 1,
+          "type": "shootout"
+        },
+        {
+          "period": "5",
+          "text": "Shootout attempt by BARTON Alfie Mattocks MADE [Paplomatos, Stathis].",
+          "team": 0,
+          "type": "shootout"
+        }
+      ],
+      "stadium": "Mountain Lions Field",
+      "attendance": 80,
+      "kickoff": "4:00 pm",
+      "officials": ["Referee: Brandon Adams", "Asst. Referee: Christopher Heintzma"],
+      "home_index": 1
+    },
+    "sidearm:slippery-rock:12568": {
+      "source_url": "https://millersvilleathletics.com/sports/mens-soccer/stats/2026/slippery-rock/boxscore/10779",
+      "teams": [
+        {
+          "name": "Slippery Rock",
+          "abbr": "SLIPP",
+          "score": 0,
+          "periods": [0, 0],
+          "shots": 5,
+          "saves": 2,
+          "corners": 8,
+          "fouls": 10,
+          "offsides": 1,
+          "sog": 3,
+          "players": [
+            {
+              "name": "Troy Nine",
+              "position": "GK",
+              "number": "0",
+              "started": true,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0,
+              "minutes": 90,
+              "player_ref": {
+                "id": "37741",
+                "source": "roster"
+              }
+            },
+            {
+              "name": "Gabin Lonjard",
+              "position": "DEF",
+              "number": "3",
+              "started": true,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0,
+              "minutes": 83,
+              "player_ref": {
+                "id": "37739",
+                "source": "roster"
+              }
+            }
+          ],
+          "keepers": [
+            {
+              "name": "Troy Nine",
+              "position": "GK",
+              "number": "0",
+              "minutes": 90,
+              "goals_against": 2,
+              "saves": 2,
+              "player_ref": {
+                "id": "37741",
+                "source": "roster"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Millersville",
+          "abbr": "VILLE",
+          "score": 2,
+          "periods": [1, 1],
+          "winner": true,
+          "shots": 13,
+          "saves": 3,
+          "corners": 6,
+          "fouls": 7,
+          "offsides": 2,
+          "sog": 4,
+          "players": [
+            {
+              "name": "Gavin Massimi",
+              "player_id": "12541",
+              "position": "GK",
+              "number": "30",
+              "started": true,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0,
+              "minutes": 90,
+              "player_ref": {
+                "id": "12541",
+                "source": "page"
+              }
+            },
+            {
+              "name": "Nolan McCarty",
+              "player_id": "12542",
+              "position": "DEF",
+              "number": "3",
+              "started": true,
+              "shots": 0,
+              "sog": 0,
+              "goals": 0,
+              "assists": 0,
+              "minutes": 90,
+              "player_ref": {
+                "id": "12542",
+                "source": "page"
+              }
+            }
+          ],
+          "keepers": [
+            {
+              "name": "Gavin Massimi",
+              "player_id": "12541",
+              "position": "GK",
+              "number": "30",
+              "minutes": 90,
+              "goals_against": 0,
+              "saves": 3,
+              "player_ref": {
+                "id": "12541",
+                "source": "page"
+              }
+            }
+          ]
+        }
+      ],
+      "scoring": [
+        {
+          "time": "20:58",
+          "team": 1,
+          "scorer": "Matias Schmidt",
+          "season_total": 4,
+          "description": "GOAL by VILLE Schmidt, Matias."
+        },
+        {
+          "time": "75:00",
+          "team": 1,
+          "scorer": "Zander Leik",
+          "season_total": 7,
+          "assist": "Louis Wright",
+          "description": "GOAL by VILLE Leik, Zander Assist by Wright, Louis."
+        }
+      ],
+      "cards": [
+        {
+          "type": "yellow",
+          "player": "Aashi Pandher",
+          "number": "27",
+          "time": "75:00",
+          "team": 0
+        }
+      ],
+      "plays": [
+        {
+          "period": "1",
+          "text": "Massimi, Gavin at goalie for Millersville",
+          "clock": "00:00",
+          "team": 1,
+          "type": "goalie"
+        },
+        {
+          "period": "1",
+          "text": "Foul on Retfalvi, Zsombor.",
+          "clock": "00:52",
+          "team": 0,
+          "type": "foul"
+        },
+        {
+          "period": "1",
+          "text": "Shot by VILLE ONeill, Brian.",
+          "clock": "06:22",
+          "team": 1,
+          "type": "shot"
+        },
+        {
+          "period": "1",
+          "text": "Corner kick [06:27].",
+          "clock": "06:27",
+          "team": 1,
+          "type": "corner"
+        },
+        {
+          "period": "1",
+          "text": "GOAL by VILLE Schmidt, Matias.",
+          "clock": "20:58",
+          "team": 1,
+          "type": "goal",
+          "score": [0, 1]
+        },
+        {
+          "period": "1",
+          "text": "VILLE substitution: Ortiz Escobar, Juan for Zea, David.",
+          "clock": "27:56",
+          "team": 1,
+          "type": "sub"
+        },
+        {
+          "period": "1",
+          "text": "Offside against Millersville.",
+          "clock": "36:39",
+          "team": 1,
+          "type": "offside"
+        },
+        {
+          "period": "1",
+          "text": "End of period [45:00].",
+          "clock": "45:00",
+          "type": "period"
+        },
+        {
+          "period": "2",
+          "text": "FOR SLIPP: , #0 Nine, Troy, #3 Lonjard, Gabin, #5 Tierney, Patrick, #6 Lopez Marti, Gerard, #11 Reynolds, Kaden, #10 Alldredge, Caleb, #13 Zwartele, Boele, #16 Irani, Jimmy, #20 Retfalvi, Zsombor, #2 Greggs, Dylan, #33 Uebele, Fynn.",
+          "clock": "45:00",
+          "team": 0,
+          "type": "lineup"
+        },
+        {
+          "period": "2",
+          "text": "Yellow card on SLIPP Pandher, Aashi.",
+          "clock": "75:00",
+          "team": 0,
+          "type": "yellow"
+        }
+      ],
+      "stadium": "Pucillo Field",
+      "attendance": 223,
+      "kickoff": "01:00",
+      "officials": ["Referee: Michael Gorsegner"],
+      "home_index": 1
     }
   },
   "missing": {

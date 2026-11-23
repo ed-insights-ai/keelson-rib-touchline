@@ -14,6 +14,13 @@ value the writer can emit.
 | `matches-2.json` | `touchline.matches/2` | `pipeline/scripts/collect_board.py` |
 | `membership.json` | untagged membership reference | authored at `data/reference/membership.json` |
 | `programmes-2.json` | `touchline.programmes/2` | built at `data/reference/programmes.json` by `pipeline/scripts/build_programmes.py` |
+| `fixtures-2-women.json`, `rosters-1-women.json`, `stats-1-women.json`, `matches-2-women.json` | the four season schemas above | companions: see below |
+
+A season file names one `gender` at its root, so one document can promise
+only one of the two values the writer emits. Each season schema therefore
+has a women's companion, cut from GAC women 2026 in the D2 home and trimmed
+to a couple of rows; the contract is the union of the fixture and its
+companion (`Contract.companions` in `pipeline/src/contracts.py`).
 
 ## The rule
 
@@ -34,12 +41,39 @@ site's failure to catch, in its CI, before the published build.
 
 ```bash
 cd pipeline
+uv run check-contracts ~/keelson/d2-soccer ~/keelson/d1-soccer
+# or, as a test:
 TOUCHLINE_CONTRACT_DATA_DIR=~/keelson/d2-soccer uv run pytest tests/test_contracts.py
 ```
 
-Every season file and the coverage manifest under that root must stay within
-the fixtures. Run it before shipping a fixture change, against the longest
-history you have.
+Every season file, the coverage manifest and both reference files
+(`data/reference/programmes.json`, `data/reference/membership.json`) under
+that root must stay within the samples. Run it before shipping a fixture
+change, against the longest history you have. It also runs:
+
+- in the daily cadence (`bin/touchline-collect-cadence.sh`, step 2b), over
+  the whole data home after the collects and before the publish. Drift is
+  logged by fact, recorded as `contracts` in the run record, and fails the
+  run; it does not hold back the publish, because the site's strict schemas
+  already refuse anything they cannot read at build time.
+- in CI, over every sample data home under `samples/`.
+
+Any publish job built later (the cloud pipeline) should run
+`uv run check-contracts <home>` the same way, before it uploads anything.
+
+## Real rows added 2026-11-23
+
+`matches-2.json` gained two real box scores, trimmed to two player lines a
+side and a few plays, for shapes the D1 and D2 homes carried that the
+fixture did not:
+
+- `sidearm:slippery-rock:12568` (PSAC men 2026): team `offsides` counts,
+  and a keeper resolved through the season roster (`player_ref.source:
+  "roster"` on a keeper line, not only on an outfield one).
+- `sidearm:barton:5414` (Conference Carolinas men 2023 final): a shootout
+  the page sectioned as period `"5"` after two overtimes. The period is the
+  page's own token, so a shootout is not always `"SO"`; a reader that wants
+  shootouts should go by the play's `type: "shootout"`.
 
 ## Two values no collect has produced yet
 
