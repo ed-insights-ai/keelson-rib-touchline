@@ -1,0 +1,1425 @@
+{
+  "schema": "touchline.fixtures/2",
+  "season": 2026,
+  "gender": "women",
+  "conference": "GAC",
+  "collected_at": "2026-11-16T12:53:51+00:00",
+  "membership_extrapolated": true,
+  "conference_game_source": "published:schedule-page",
+  "programmes": [
+    {
+      "slug": "east-central",
+      "name": "East Central",
+      "conference": "GAC",
+      "abbr": "ECU"
+    },
+    {
+      "slug": "harding",
+      "name": "Harding",
+      "conference": "GAC",
+      "abbr": "HUW"
+    },
+    {
+      "slug": "northwestern-oklahoma-state",
+      "name": "Northwestern Oklahoma State",
+      "conference": "GAC",
+      "abbr": "NWOSU"
+    },
+    {
+      "slug": "oklahoma-baptist",
+      "name": "Oklahoma Baptist",
+      "conference": "GAC",
+      "abbr": "OKBU"
+    },
+    {
+      "slug": "ouachita-baptist",
+      "name": "Ouachita Baptist",
+      "conference": "GAC",
+      "abbr": "OBUW"
+    },
+    {
+      "slug": "southern-nazarene",
+      "name": "Southern Nazarene",
+      "conference": "GAC",
+      "abbr": "SNUW"
+    },
+    {
+      "slug": "southwestern-oklahoma-state",
+      "name": "Southwestern Oklahoma State",
+      "conference": "GAC",
+      "abbr": "SWOSU"
+    }
+  ],
+  "fixtures": [
+    {
+      "id": "sidearm:northwestern-oklahoma-state:6170",
+      "date": "2026-08-15",
+      "home": "kansas-wesleyan",
+      "away": "northwestern-oklahoma-state",
+      "status": "scheduled",
+      "source_url": "https://riderangersride.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Salina, KS JRI Stadium"
+    },
+    {
+      "id": "sidearm:northwestern-oklahoma-state:6171",
+      "date": "2026-08-18",
+      "home": "northwestern-oklahoma-state",
+      "away": "friends",
+      "status": "scheduled",
+      "source_url": "https://riderangersride.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:30",
+      "venue": "Ranger Soccer Field"
+    },
+    {
+      "id": "sidearm:northwestern-oklahoma-state:6558",
+      "date": "2026-08-22",
+      "home": "central-oklahoma",
+      "away": "northwestern-oklahoma-state",
+      "status": "scheduled",
+      "source_url": "https://riderangersride.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "Edmond, OK Tom Thompson Field"
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6622",
+      "date": "2026-08-22",
+      "home": "ouachita-baptist",
+      "away": "texas-womans",
+      "status": "scheduled",
+      "source_url": "https://obutigers.com/sports/womens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "15:00",
+      "venue": "Kluck Field"
+    },
+    {
+      "id": "sidearm:east-central:7470",
+      "date": "2026-08-27",
+      "home": "regis",
+      "away": "east-central",
+      "status": "final",
+      "source_url": "https://ecutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "17:00",
+      "venue": "Denver, CO",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:harding:15256",
+      "date": "2026-08-27",
+      "home": "christian-brothers",
+      "away": "harding",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Memphis, TN",
+      "home_score": 0,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:northwestern-oklahoma-state:6165",
+      "date": "2026-08-27",
+      "home": "northwestern-oklahoma-state",
+      "away": "newman",
+      "status": "final",
+      "source_url": "https://riderangersride.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "Ranger Soccer Field",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:oklahoma-baptist:11850",
+      "date": "2026-08-27",
+      "home": "oklahoma-baptist",
+      "away": "midwestern-state",
+      "status": "final",
+      "source_url": "https://obubison.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "OBU Soccer Complex",
+      "home_score": 0,
+      "away_score": 5
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6623",
+      "date": "2026-08-27",
+      "home": "ouachita-baptist",
+      "away": "northeastern-state",
+      "status": "final",
+      "source_url": "https://obutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "17:30",
+      "venue": "Kluck Field",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:southwestern-oklahoma-state:7230",
+      "date": "2026-08-27",
+      "home": "southwestern-oklahoma-state",
+      "away": "colorado-christian",
+      "status": "final",
+      "source_url": "https://swosuathletics.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "16:00",
+      "venue": "Weatherford, Okla. SWOSU Soccer Field",
+      "home_score": 2,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:southern-nazarene:7658",
+      "date": "2026-08-28",
+      "home": "southern-nazarene",
+      "away": "augustana",
+      "status": "final",
+      "source_url": "https://snuathletics.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "Wes Harmon Field (Wanda Rhodes Soccer Complex)",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:east-central:7471",
+      "date": "2026-08-30",
+      "home": "pittsburg-state",
+      "away": "east-central",
+      "status": "final",
+      "source_url": "https://ecutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "10:00",
+      "venue": "Pittsburg, KS",
+      "home_score": 6,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:harding:15257",
+      "date": "2026-08-30",
+      "home": "northeastern-state",
+      "away": "harding",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "15:00",
+      "venue": "Tahlequah, OK",
+      "home_score": 1,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:northwestern-oklahoma-state:6166",
+      "date": "2026-08-30",
+      "home": "northwestern-oklahoma-state",
+      "away": "rogers-state",
+      "status": "final",
+      "source_url": "https://riderangersride.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "Ranger Soccer Field",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6624",
+      "date": "2026-08-30",
+      "home": "midwestern-state",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "source_url": "https://obutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Wichita Falls, TX",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:southwestern-oklahoma-state:7231",
+      "date": "2026-08-30",
+      "home": "saint-edwards",
+      "away": "southwestern-oklahoma-state",
+      "status": "final",
+      "source_url": "https://swosuathletics.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Austin, Texas",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:east-central:7472",
+      "date": "2026-09-02",
+      "home": "ut-tyler",
+      "away": "east-central",
+      "status": "final",
+      "source_url": "https://ecutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "Tyler, TX",
+      "home_score": 9,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:northwestern-oklahoma-state:6167",
+      "date": "2026-09-02",
+      "home": "william-jewell",
+      "away": "northwestern-oklahoma-state",
+      "status": "final",
+      "source_url": "https://riderangersride.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "10:00",
+      "venue": "Liberty, MO William Jewell Soccer Field",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:oklahoma-baptist:11851",
+      "date": "2026-09-02",
+      "home": "oklahoma-baptist",
+      "away": "ut-dallas",
+      "status": "final",
+      "source_url": "https://obubison.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "OBU Soccer Complex",
+      "home_score": 0,
+      "away_score": 4
+    },
+    {
+      "id": "sidearm:southern-nazarene:7659",
+      "date": "2026-09-02",
+      "home": "southern-nazarene",
+      "away": "texas-womans",
+      "status": "final",
+      "source_url": "https://snuathletics.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "Wes Harmon Field (Wanda Rhodes Soccer Complex)",
+      "home_score": 0,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:southwestern-oklahoma-state:7232",
+      "date": "2026-09-02",
+      "home": "newman",
+      "away": "southwestern-oklahoma-state",
+      "status": "final",
+      "source_url": "https://swosuathletics.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:30",
+      "venue": "Wichita, Kan.",
+      "home_score": 1,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:harding:15255",
+      "date": "2026-09-04",
+      "home": "harding",
+      "away": "rogers-state",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Stevens Soccer Complex",
+      "home_score": 0,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:oklahoma-baptist:11852",
+      "date": "2026-09-04",
+      "home": "oklahoma-baptist",
+      "away": "central-oklahoma",
+      "status": "final",
+      "source_url": "https://obubison.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "OBU Soccer Complex",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6625",
+      "date": "2026-09-04",
+      "home": "missouri-southern",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "source_url": "https://obutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:30",
+      "venue": "Joplin, MO",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:east-central:7473",
+      "date": "2026-09-05",
+      "home": "east-central",
+      "away": "mississippi-college",
+      "status": "final",
+      "source_url": "https://ecutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "12:00",
+      "venue": "Ada, OK / Tiger Soccer Field",
+      "home_score": 2,
+      "away_score": 4
+    },
+    {
+      "id": "sidearm:northwestern-oklahoma-state:6168",
+      "date": "2026-09-05",
+      "home": "northwestern-oklahoma-state",
+      "away": "fort-hays-state",
+      "status": "final",
+      "source_url": "https://riderangersride.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Ranger Soccer Field",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:southern-nazarene:7660",
+      "date": "2026-09-05",
+      "home": "southern-nazarene",
+      "away": "pittsburg-state",
+      "status": "final",
+      "source_url": "https://snuathletics.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "10:00",
+      "venue": "Wes Harmon Field (Wanda Rhodes Soccer Complex)",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:southwestern-oklahoma-state:7233",
+      "date": "2026-09-05",
+      "home": "southwestern-oklahoma-state",
+      "away": "emporia-state",
+      "status": "final",
+      "source_url": "https://swosuathletics.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "11:00",
+      "venue": "Weatherford, Okla. SWOSU Soccer Field",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6626",
+      "date": "2026-09-06",
+      "home": "rogers-state",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "source_url": "https://obutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "10:30",
+      "venue": "Claremore, OK",
+      "home_score": 2,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:east-central:7474",
+      "date": "2026-09-08",
+      "home": "northeastern-state",
+      "away": "east-central",
+      "status": "final",
+      "source_url": "https://ecutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Tahlequah, OK",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:oklahoma-baptist:11853",
+      "date": "2026-09-09",
+      "home": "oklahoma-baptist",
+      "away": "newman",
+      "status": "final",
+      "source_url": "https://obubison.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "OBU Soccer Complex",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:southern-nazarene:7661",
+      "date": "2026-09-09",
+      "home": "central-oklahoma",
+      "away": "southern-nazarene",
+      "status": "final",
+      "source_url": "https://snuathletics.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Edmond, OK",
+      "home_score": 4,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:southwestern-oklahoma-state:7234",
+      "date": "2026-09-09",
+      "home": "missouri-western",
+      "away": "southwestern-oklahoma-state",
+      "status": "final",
+      "source_url": "https://swosuathletics.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "10:30",
+      "venue": "St. Joseph, Mo.",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:northwestern-oklahoma-state:6169",
+      "date": "2026-09-10",
+      "home": "oklahoma-panhandle-state",
+      "away": "northwestern-oklahoma-state",
+      "status": "final",
+      "source_url": "https://riderangersride.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "17:00",
+      "venue": "Goodwell, OK Anchor D Stadium at Carl Wooten Field",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:harding:15258",
+      "date": "2026-09-11",
+      "home": "harding",
+      "away": "central-missouri",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Stevens Soccer Complex",
+      "home_score": 0,
+      "away_score": 4,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6627",
+      "date": "2026-09-11",
+      "home": "ouachita-baptist",
+      "away": "washburn",
+      "status": "final",
+      "source_url": "https://obutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "15:00",
+      "venue": "Kluck Field",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:east-central:7475",
+      "date": "2026-09-12",
+      "home": "east-central",
+      "away": "rogers-state",
+      "status": "final",
+      "source_url": "https://ecutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "13:00",
+      "venue": "Ada, OK / Tiger Soccer Field",
+      "home_score": 1,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:northwestern-oklahoma-state:6160",
+      "date": "2026-09-12",
+      "home": "new-mexico-highlands",
+      "away": "northwestern-oklahoma-state",
+      "status": "final",
+      "source_url": "https://riderangersride.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "16:00",
+      "venue": "Las Vegas, NM Sanchez Family Stadium",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:southern-nazarene:7746",
+      "date": "2026-09-12",
+      "home": "southwestern",
+      "away": "southern-nazarene",
+      "status": "final",
+      "source_url": "https://snuathletics.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "Winfield, KS",
+      "home_score": 0,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:southwestern-oklahoma-state:7235",
+      "date": "2026-09-12",
+      "home": "southwestern-oklahoma-state",
+      "away": "central-oklahoma",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://swosuathletics.com/sports/womens-soccer/schedule/2026",
+      "time": "11:00",
+      "venue": "SWOSU Soccer Field",
+      "home_score": 0,
+      "away_score": 2,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:harding:15259",
+      "date": "2026-09-13",
+      "home": "harding",
+      "away": "washburn",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Stevens Soccer Complex",
+      "home_score": 0,
+      "away_score": 2,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6628",
+      "date": "2026-09-13",
+      "home": "ouachita-baptist",
+      "away": "central-missouri",
+      "status": "final",
+      "source_url": "https://obutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Kluck Field",
+      "home_score": 0,
+      "away_score": 4
+    },
+    {
+      "id": "sidearm:oklahoma-baptist:11854",
+      "date": "2026-09-14",
+      "home": "emporia-state",
+      "away": "oklahoma-baptist",
+      "status": "final",
+      "source_url": "https://obubison.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "13:00",
+      "venue": "Emporia, KS",
+      "home_score": 5,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:harding:15260",
+      "date": "2026-09-16",
+      "home": "east-central",
+      "away": "harding",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "15:00",
+      "venue": "Ada, OK",
+      "home_score": 0,
+      "away_score": 4,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:southern-nazarene:7663",
+      "date": "2026-09-16",
+      "home": "northwestern-oklahoma-state",
+      "away": "southern-nazarene",
+      "status": "final",
+      "source_url": "https://snuathletics.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "Alva, OK",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:southwestern-oklahoma-state:7236",
+      "date": "2026-09-16",
+      "home": "southwestern-oklahoma-state",
+      "away": "oklahoma-baptist",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://swosuathletics.com/sports/womens-soccer/schedule/2026",
+      "time": "17:00",
+      "venue": "SWOSU Soccer Field",
+      "home_score": 2,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:northwestern-oklahoma-state:6158",
+      "date": "2026-09-19",
+      "home": "northwestern-oklahoma-state",
+      "away": "oklahoma-baptist",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://riderangersride.com/sports/womens-soccer/schedule/2026",
+      "time": "11:00",
+      "venue": "Ranger Soccer Field",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6629",
+      "date": "2026-09-19",
+      "home": "east-central",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "source_url": "https://obutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "14:00",
+      "venue": "Ada, OK",
+      "home_score": 1,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:southern-nazarene:7664",
+      "date": "2026-09-19",
+      "home": "southern-nazarene",
+      "away": "southwestern-oklahoma-state",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://snuathletics.com/sports/womens-soccer/schedule/2026",
+      "time": "12:00",
+      "venue": "Wes Harmon Field (Wanda Rhodes Soccer Complex)",
+      "home_score": 2,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:harding:15261",
+      "date": "2026-09-23",
+      "home": "harding",
+      "away": "southern-nazarene",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "15:00",
+      "venue": "Stevens Soccer Complex",
+      "home_score": 1,
+      "away_score": 2,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6630",
+      "date": "2026-09-23",
+      "home": "ouachita-baptist",
+      "away": "oklahoma-baptist",
+      "status": "final",
+      "source_url": "https://obutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "15:00",
+      "venue": "Kluck Field",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:southwestern-oklahoma-state:7238",
+      "date": "2026-09-23",
+      "home": "southwestern-oklahoma-state",
+      "away": "east-central",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://swosuathletics.com/sports/womens-soccer/schedule/2026",
+      "time": "17:00",
+      "venue": "SWOSU Soccer Field",
+      "home_score": 3,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:east-central:7423",
+      "date": "2026-09-26",
+      "home": "east-central",
+      "away": "northwestern-oklahoma-state",
+      "status": "final",
+      "source_url": "https://ecutigers.com/sports/womens-soccer/schedule/2026",
+      "neutral": true,
+      "conference_game": true,
+      "time": "13:00",
+      "venue": "Enid, OK / Advance Soccer Complex",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:harding:15262",
+      "date": "2026-09-26",
+      "home": "oklahoma-baptist",
+      "away": "harding",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Shawnee, OK",
+      "home_score": 2,
+      "away_score": 5,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6631",
+      "date": "2026-09-26",
+      "home": "southern-nazarene",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "source_url": "https://obutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Bethany, OK",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:east-central:7424",
+      "date": "2026-09-29",
+      "home": "oklahoma-baptist",
+      "away": "east-central",
+      "status": "final",
+      "source_url": "https://ecutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "time": "18:00",
+      "venue": "Shawnee, Okla.",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:harding:15263",
+      "date": "2026-10-01",
+      "home": "harding",
+      "away": "northwestern-oklahoma-state",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Stevens Soccer Complex",
+      "home_score": 1,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6632",
+      "date": "2026-10-01",
+      "home": "ouachita-baptist",
+      "away": "southwestern-oklahoma-state",
+      "status": "final",
+      "source_url": "https://obutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "15:00",
+      "venue": "Kluck Field",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:harding:15264",
+      "date": "2026-10-03",
+      "home": "harding",
+      "away": "southwestern-oklahoma-state",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Stevens Soccer Complex",
+      "home_score": 1,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6633",
+      "date": "2026-10-03",
+      "home": "ouachita-baptist",
+      "away": "northwestern-oklahoma-state",
+      "status": "final",
+      "source_url": "https://obutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "11:00",
+      "venue": "Kluck Field",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:southern-nazarene:7667",
+      "date": "2026-10-03",
+      "home": "east-central",
+      "away": "southern-nazarene",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://snuathletics.com/sports/womens-soccer/schedule/2026",
+      "neutral": true,
+      "time": "11:00",
+      "venue": "Seminole, OK",
+      "home_score": 0,
+      "away_score": 2,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:harding:15265",
+      "date": "2026-10-07",
+      "home": "harding",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "15:00",
+      "venue": "Stevens Soccer Complex",
+      "home_score": 2,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:northwestern-oklahoma-state:6159",
+      "date": "2026-10-07",
+      "home": "oklahoma-baptist",
+      "away": "northwestern-oklahoma-state",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://riderangersride.com/sports/womens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "OBU Soccer Complex",
+      "home_score": 2,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:southern-nazarene:7668",
+      "date": "2026-10-07",
+      "home": "southwestern-oklahoma-state",
+      "away": "southern-nazarene",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://snuathletics.com/sports/womens-soccer/schedule/2026",
+      "time": "15:00",
+      "venue": "Weatherford, OK",
+      "home_score": 3,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6635",
+      "date": "2026-10-10",
+      "home": "ouachita-baptist",
+      "away": "east-central",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://obutigers.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Kluck Field",
+      "home_score": 5,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:southern-nazarene:7669",
+      "date": "2026-10-10",
+      "home": "southern-nazarene",
+      "away": "oklahoma-baptist",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://snuathletics.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Wes Harmon Field (Wanda Rhodes Soccer Complex)",
+      "home_score": 4,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:southwestern-oklahoma-state:7242",
+      "date": "2026-10-10",
+      "home": "northwestern-oklahoma-state",
+      "away": "southwestern-oklahoma-state",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://swosuathletics.com/sports/womens-soccer/schedule/2026",
+      "time": "11:00",
+      "venue": "Alva, Okla.",
+      "home_score": 0,
+      "away_score": 4,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6636",
+      "date": "2026-10-14",
+      "home": "oklahoma-baptist",
+      "away": "ouachita-baptist",
+      "status": "postponed",
+      "conference_game": true,
+      "source_url": "https://obutigers.com/sports/womens-soccer/schedule/2026",
+      "time": "15:00",
+      "venue": "Shawnee, OK",
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:harding:15267",
+      "date": "2026-10-17",
+      "home": "harding",
+      "away": "oklahoma-baptist",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "10:00",
+      "venue": "Stevens Soccer Complex",
+      "home_score": 2,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6637",
+      "date": "2026-10-17",
+      "home": "ouachita-baptist",
+      "away": "southern-nazarene",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://obutigers.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Kluck Field",
+      "home_score": 1,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:southwestern-oklahoma-state:7243",
+      "date": "2026-10-17",
+      "home": "east-central",
+      "away": "southwestern-oklahoma-state",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://swosuathletics.com/sports/womens-soccer/schedule/2026",
+      "time": "14:00",
+      "venue": "Ada, Okla.",
+      "home_score": 1,
+      "away_score": 3,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:southern-nazarene:7672",
+      "date": "2026-10-21",
+      "home": "southern-nazarene",
+      "away": "east-central",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://snuathletics.com/sports/womens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Wes Harmon Field (Wanda Rhodes Soccer Complex)",
+      "home_score": 1,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:harding:15268",
+      "date": "2026-10-22",
+      "home": "southwestern-oklahoma-state",
+      "away": "harding",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "15:15",
+      "venue": "Weatherford, OK",
+      "home_score": 0,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6638",
+      "date": "2026-10-22",
+      "home": "northwestern-oklahoma-state",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://obutigers.com/sports/womens-soccer/schedule/2026",
+      "time": "15:00",
+      "venue": "Alva, OK",
+      "home_score": 0,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:east-central:7430",
+      "date": "2026-10-24",
+      "home": "east-central",
+      "away": "oklahoma-baptist",
+      "status": "final",
+      "source_url": "https://ecutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "time": "11:00",
+      "venue": "Ada, OK / Tiger Soccer Field",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:harding:15269",
+      "date": "2026-10-24",
+      "home": "northwestern-oklahoma-state",
+      "away": "harding",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "11:00",
+      "venue": "Alva, OK",
+      "home_score": 0,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6639",
+      "date": "2026-10-24",
+      "home": "southwestern-oklahoma-state",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://obutigers.com/sports/womens-soccer/schedule/2026",
+      "time": "11:00",
+      "venue": "Weatherford, OK",
+      "home_score": 1,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:harding:15270",
+      "date": "2026-10-28",
+      "home": "ouachita-baptist",
+      "away": "harding",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "15:00",
+      "venue": "Arkadelphia, AR",
+      "home_score": 0,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:southern-nazarene:7673",
+      "date": "2026-10-28",
+      "home": "southern-nazarene",
+      "away": "northwestern-oklahoma-state",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://snuathletics.com/sports/womens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Wes Harmon Field (Wanda Rhodes Soccer Complex)",
+      "home_score": 0,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:southwestern-oklahoma-state:7246",
+      "date": "2026-10-28",
+      "home": "oklahoma-baptist",
+      "away": "southwestern-oklahoma-state",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://swosuathletics.com/sports/womens-soccer/schedule/2026",
+      "time": "17:00",
+      "venue": "Shawnee, Okla.",
+      "home_score": 0,
+      "away_score": 4,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:harding:15271",
+      "date": "2026-10-31",
+      "home": "harding",
+      "away": "east-central",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Stevens Soccer Complex",
+      "home_score": 2,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:southern-nazarene:7674",
+      "date": "2026-10-31",
+      "home": "oklahoma-baptist",
+      "away": "southern-nazarene",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://snuathletics.com/sports/womens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Shawnee, OK",
+      "home_score": 2,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:southwestern-oklahoma-state:7247",
+      "date": "2026-10-31",
+      "home": "southwestern-oklahoma-state",
+      "away": "northwestern-oklahoma-state",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://swosuathletics.com/sports/womens-soccer/schedule/2026",
+      "time": "11:00",
+      "venue": "SWOSU Soccer Field",
+      "home_score": 0,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:east-central:7427",
+      "date": "2026-11-02",
+      "home": "east-central",
+      "away": "northwestern-oklahoma-state",
+      "status": "final",
+      "source_url": "https://ecutigers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "time": "15:00",
+      "venue": "Ada, OK / Tiger Soccer Field",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:harding:15266",
+      "date": "2026-11-02",
+      "home": "southern-nazarene",
+      "away": "harding",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "14:30",
+      "venue": "Bethany, OK",
+      "home_score": 1,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6803",
+      "date": "2026-11-02",
+      "home": "oklahoma-baptist",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://obutigers.com/sports/womens-soccer/schedule/2026",
+      "time": "12:00",
+      "venue": "Shawnee, OK",
+      "home_score": 1,
+      "away_score": 4,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:harding:15272",
+      "date": "2026-11-06",
+      "home": "harding",
+      "away": "southern-nazarene",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "11:00",
+      "venue": "Stevens Soccer Complex",
+      "home_score": 1,
+      "away_score": 0,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "GAC Tournament"
+      }
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6641",
+      "date": "2026-11-06",
+      "home": "southwestern-oklahoma-state",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://obutigers.com/sports/womens-soccer/schedule/2026",
+      "neutral": true,
+      "time": "14:00",
+      "venue": "Searcy, AR",
+      "home_score": 3,
+      "away_score": 0,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "Great American Conference Championship Tournament"
+      }
+    },
+    {
+      "id": "sidearm:harding:15540",
+      "date": "2026-11-08",
+      "home": "harding",
+      "away": "southwestern-oklahoma-state",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://hardingsports.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Stevens Soccer Complex",
+      "home_score": 0,
+      "away_score": 0,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "GAC Tournament"
+      },
+      "result_published": "T, 0-0 (Lost 4-2 in PKs)",
+      "shootout": {
+        "winner": "southwestern-oklahoma-state",
+        "home": 2,
+        "away": 4
+      }
+    },
+    {
+      "id": "sidearm:southwestern-oklahoma-state:7382",
+      "date": "2026-11-13",
+      "home": "washburn",
+      "away": "southwestern-oklahoma-state",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://swosuathletics.com/sports/womens-soccer/schedule/2026",
+      "time": "15:00",
+      "venue": "Topeka, Kan.",
+      "home_score": 4,
+      "away_score": 1,
+      "stage": {
+        "phase": "postseason",
+        "competition": "ncaa",
+        "source": "NCAA Division II Central Region Championships"
+      }
+    }
+  ]
+}

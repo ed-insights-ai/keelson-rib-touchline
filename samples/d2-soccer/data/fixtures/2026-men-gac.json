@@ -1,0 +1,1499 @@
+{
+  "schema": "touchline.fixtures/2",
+  "season": 2026,
+  "gender": "men",
+  "conference": "GAC",
+  "collected_at": "2026-11-20T12:32:34+00:00",
+  "membership_extrapolated": true,
+  "conference_game_source": "published:schedule-page",
+  "programmes": [
+    {
+      "slug": "fort-hays-state",
+      "name": "Fort Hays State",
+      "conference": "GAC",
+      "abbr": "FHSU"
+    },
+    {
+      "slug": "harding",
+      "name": "Harding",
+      "conference": "GAC",
+      "abbr": "HU"
+    },
+    {
+      "slug": "newman",
+      "name": "Newman",
+      "conference": "GAC",
+      "abbr": "NU"
+    },
+    {
+      "slug": "northeastern-state",
+      "name": "Northeastern State",
+      "conference": "GAC",
+      "abbr": "NSU"
+    },
+    {
+      "slug": "ouachita-baptist",
+      "name": "Ouachita Baptist",
+      "conference": "GAC",
+      "abbr": "OBU"
+    },
+    {
+      "slug": "rogers-state",
+      "name": "Rogers State",
+      "conference": "GAC",
+      "abbr": "RSU"
+    },
+    {
+      "slug": "southern-nazarene",
+      "name": "Southern Nazarene",
+      "conference": "GAC",
+      "abbr": "SNU"
+    }
+  ],
+  "fixtures": [
+    {
+      "id": "sidearm:rogers-state:7655",
+      "date": "2026-08-13",
+      "home": "rogers-state",
+      "away": "oklahoma-wesleyan",
+      "status": "scheduled",
+      "source_url": "https://rsuhillcats.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Soldier Field"
+    },
+    {
+      "id": "sidearm:northeastern-state:14421",
+      "date": "2026-08-14",
+      "home": "oral-roberts",
+      "away": "northeastern-state",
+      "status": "scheduled",
+      "source_url": "https://goriverhawksgo.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Tulsa, Okla."
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6642",
+      "date": "2026-08-15",
+      "home": "ouachita-baptist",
+      "away": "ut-tyler",
+      "status": "scheduled",
+      "source_url": "https://obutigers.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "time": "16:00",
+      "venue": "Kluck Field"
+    },
+    {
+      "id": "sidearm:rogers-state:7656",
+      "date": "2026-08-18",
+      "home": "rogers-state",
+      "away": "southwestern-christian",
+      "status": "scheduled",
+      "source_url": "https://rsuhillcats.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Soldier Field"
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6643",
+      "date": "2026-08-19",
+      "home": "austin",
+      "away": "ouachita-baptist",
+      "status": "scheduled",
+      "source_url": "https://obutigers.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "Sherman, TX"
+    },
+    {
+      "id": "sidearm:northeastern-state:14422",
+      "date": "2026-08-21",
+      "home": "northeastern-state",
+      "away": "oklahoma-wesleyan",
+      "status": "scheduled",
+      "source_url": "https://goriverhawksgo.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "DeLoache Field"
+    },
+    {
+      "id": "sidearm:rogers-state:7657",
+      "date": "2026-08-21",
+      "home": "midwestern-state",
+      "away": "rogers-state",
+      "status": "scheduled",
+      "source_url": "https://rsuhillcats.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "16:30",
+      "venue": "Wichita Falls, Texas"
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6644",
+      "date": "2026-08-22",
+      "home": "southwest-baptist",
+      "away": "ouachita-baptist",
+      "status": "scheduled",
+      "source_url": "https://obutigers.com/sports/mens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "time": "15:00",
+      "venue": "Bolivar, MO"
+    },
+    {
+      "id": "sidearm:fort-hays-state:14053",
+      "date": "2026-08-27",
+      "home": "fort-hays-state",
+      "away": "rockhurst",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "15:00",
+      "venue": "FHSU Soccer Stadium",
+      "home_score": 4,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:harding:15273",
+      "date": "2026-08-27",
+      "home": "harding",
+      "away": "delta-state",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://hardingsports.com/sports/mens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Stevens Soccer Complex",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:newman:8911",
+      "date": "2026-08-27",
+      "home": "william-jewell",
+      "away": "newman",
+      "status": "final",
+      "source_url": "https://newmanjets.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Liberty, MO",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:northeastern-state:14384",
+      "date": "2026-08-27",
+      "home": "northeastern-state",
+      "away": "missouri-s-t",
+      "status": "final",
+      "source_url": "https://goriverhawksgo.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "DeLoache Field",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6645",
+      "date": "2026-08-27",
+      "home": "ouachita-baptist",
+      "away": "union",
+      "status": "final",
+      "source_url": "https://obutigers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "15:00",
+      "venue": "Kluck Field",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:rogers-state:7616",
+      "date": "2026-08-27",
+      "home": "rogers-state",
+      "away": "mckendree",
+      "status": "final",
+      "source_url": "https://rsuhillcats.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:30",
+      "venue": "Soldier Field",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:southern-nazarene:7718",
+      "date": "2026-08-27",
+      "home": "southern-nazarene",
+      "away": "maryville",
+      "status": "final",
+      "source_url": "https://snuathletics.com/sports/mens-soccer/schedule/2026",
+      "neutral": true,
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "17:00",
+      "venue": "Claremore, OK",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:fort-hays-state:14054",
+      "date": "2026-08-29",
+      "home": "fort-hays-state",
+      "away": "regis",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "FHSU Soccer Stadium",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:newman:8912",
+      "date": "2026-08-29",
+      "home": "rockhurst",
+      "away": "newman",
+      "status": "final",
+      "source_url": "https://newmanjets.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Kansas City, KS",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6646",
+      "date": "2026-08-29",
+      "home": "ouachita-baptist",
+      "away": "ecclesia",
+      "status": "final",
+      "source_url": "https://obutigers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "17:00",
+      "venue": "Kluck Field",
+      "home_score": 5,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:rogers-state:7619",
+      "date": "2026-08-29",
+      "home": "rogers-state",
+      "away": "maryville",
+      "status": "final",
+      "source_url": "https://rsuhillcats.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "10:00",
+      "venue": "Soldier Field",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:southern-nazarene:7719",
+      "date": "2026-08-29",
+      "home": "southern-nazarene",
+      "away": "mckendree",
+      "status": "final",
+      "source_url": "https://snuathletics.com/sports/mens-soccer/schedule/2026",
+      "neutral": true,
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "12:30",
+      "venue": "Claremore, OK",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:northeastern-state:14385",
+      "date": "2026-08-30",
+      "home": "northeastern-state",
+      "away": "lincoln",
+      "status": "final",
+      "source_url": "https://goriverhawksgo.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "DeLoache Field",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6647",
+      "date": "2026-09-01",
+      "home": "ouachita-baptist",
+      "away": "delta-state",
+      "status": "final",
+      "source_url": "https://obutigers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "15:30",
+      "venue": "Kluck Field",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:fort-hays-state:14055",
+      "date": "2026-09-02",
+      "home": "fort-hays-state",
+      "away": "william-jewell",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "FHSU Soccer Stadium",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:newman:8913",
+      "date": "2026-09-02",
+      "home": "oklahoma-christian",
+      "away": "newman",
+      "status": "final",
+      "source_url": "https://newmanjets.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Edmond, OK",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:northeastern-state:14386",
+      "date": "2026-09-02",
+      "home": "northeastern-state",
+      "away": "drury",
+      "status": "final",
+      "source_url": "https://goriverhawksgo.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "DeLoache Field",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:rogers-state:7620",
+      "date": "2026-09-02",
+      "home": "rockhurst",
+      "away": "rogers-state",
+      "status": "final",
+      "source_url": "https://rsuhillcats.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Kansas City, Mo.",
+      "home_score": 1,
+      "away_score": 5
+    },
+    {
+      "id": "sidearm:harding:15274",
+      "date": "2026-09-03",
+      "home": "harding",
+      "away": "dallas-baptist",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://hardingsports.com/sports/mens-soccer/schedule/2026",
+      "time": "14:00",
+      "venue": "Stevens Soccer Complex",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:harding:15275",
+      "date": "2026-09-04",
+      "home": "harding",
+      "away": "christian-brothers",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://hardingsports.com/sports/mens-soccer/schedule/2026",
+      "time": "17:00",
+      "venue": "Stevens Soccer Complex",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:newman:8914",
+      "date": "2026-09-05",
+      "home": "csu-pueblo",
+      "away": "newman",
+      "status": "final",
+      "source_url": "https://newmanjets.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "15:00",
+      "venue": "Pueblo, CO",
+      "home_score": 4,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:northeastern-state:14387",
+      "date": "2026-09-05",
+      "home": "northeastern-state",
+      "away": "oklahoma-christian",
+      "status": "final",
+      "source_url": "https://goriverhawksgo.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "DeLoache Field",
+      "home_score": 3,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6648",
+      "date": "2026-09-05",
+      "home": "ouachita-baptist",
+      "away": "dallas-baptist",
+      "status": "final",
+      "source_url": "https://obutigers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "15:00",
+      "venue": "Kluck Field",
+      "home_score": 1,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:rogers-state:7621",
+      "date": "2026-09-05",
+      "home": "ut-tyler",
+      "away": "rogers-state",
+      "status": "final",
+      "source_url": "https://rsuhillcats.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Tyler, Texas",
+      "home_score": 2,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:southern-nazarene:7720",
+      "date": "2026-09-05",
+      "home": "southern-nazarene",
+      "away": "west-texas-a-m",
+      "status": "final",
+      "source_url": "https://snuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "Wes Harmon Field (Wanda Rhodes Soccer Complex)",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:fort-hays-state:14056",
+      "date": "2026-09-06",
+      "home": "fort-hays-state",
+      "away": "fort-lewis",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "neutral": true,
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "14:00",
+      "venue": "Alamosa, Colo.",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:harding:15276",
+      "date": "2026-09-07",
+      "home": "tampa",
+      "away": "harding",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://hardingsports.com/sports/mens-soccer/schedule/2026",
+      "time": "11:00",
+      "venue": "Tampa, FL",
+      "home_score": 5,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6649",
+      "date": "2026-09-09",
+      "home": "hendrix",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "source_url": "https://obutigers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:30",
+      "venue": "Conway, AR",
+      "home_score": 0,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:rogers-state:7779",
+      "date": "2026-09-09",
+      "home": "rogers-state",
+      "away": "oklahoma-christian",
+      "status": "final",
+      "source_url": "https://rsuhillcats.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Soldier Field",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:fort-hays-state:14057",
+      "date": "2026-09-10",
+      "home": "west-texas-a-m",
+      "away": "fort-hays-state",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "16:00",
+      "venue": "Canyon, Texas",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:newman:8915",
+      "date": "2026-09-10",
+      "home": "lubbock-christian",
+      "away": "newman",
+      "status": "final",
+      "source_url": "https://newmanjets.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Lubbock, TX",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:northeastern-state:14388",
+      "date": "2026-09-10",
+      "home": "ut-dallas",
+      "away": "northeastern-state",
+      "status": "final",
+      "source_url": "https://goriverhawksgo.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Dallas, Texas",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:southern-nazarene:7721",
+      "date": "2026-09-10",
+      "home": "midwestern-state",
+      "away": "southern-nazarene",
+      "status": "final",
+      "source_url": "https://snuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Wichita Falls, TX",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:fort-hays-state:14058",
+      "date": "2026-09-12",
+      "home": "lubbock-christian",
+      "away": "fort-hays-state",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Lubbock, Texas",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:newman:8916",
+      "date": "2026-09-12",
+      "home": "west-texas-a-m",
+      "away": "newman",
+      "status": "final",
+      "source_url": "https://newmanjets.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "14:00",
+      "venue": "Canyon, TX",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:ouachita-baptist:6650",
+      "date": "2026-09-12",
+      "home": "ouachita-baptist",
+      "away": "ut-dallas",
+      "status": "scheduled",
+      "source_url": "https://obutigers.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "16:00",
+      "venue": "Kluck Field"
+    },
+    {
+      "id": "sidearm:rogers-state:7623",
+      "date": "2026-09-12",
+      "home": "rogers-state",
+      "away": "saint-marys",
+      "status": "final",
+      "source_url": "https://rsuhillcats.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "17:00",
+      "venue": "Soldier Field",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:southern-nazarene:7722",
+      "date": "2026-09-13",
+      "home": "oklahoma-christian",
+      "away": "southern-nazarene",
+      "status": "final",
+      "source_url": "https://snuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Oklahoma City, OK",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:harding:15277",
+      "date": "2026-09-15",
+      "home": "william-jewell",
+      "away": "harding",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://hardingsports.com/sports/mens-soccer/schedule/2026",
+      "time": "17:00",
+      "venue": "Liberty, MO",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:fort-hays-state:14059",
+      "date": "2026-09-17",
+      "home": "fort-hays-state",
+      "away": "rogers-state",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "FHSU Soccer Stadium",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:newman:8917",
+      "date": "2026-09-17",
+      "home": "newman",
+      "away": "northeastern-state",
+      "status": "final",
+      "source_url": "https://newmanjets.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Wilkins Field",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:southern-nazarene:7723",
+      "date": "2026-09-17",
+      "home": "southern-nazarene",
+      "away": "harding",
+      "status": "final",
+      "source_url": "https://snuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Wes Harmon Field (Wanda Rhodes Soccer Complex)",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:fort-hays-state:14060",
+      "date": "2026-09-19",
+      "home": "fort-hays-state",
+      "away": "northeastern-state",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "FHSU Soccer Stadium",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:newman:8918",
+      "date": "2026-09-19",
+      "home": "newman",
+      "away": "rogers-state",
+      "status": "final",
+      "source_url": "https://newmanjets.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "10:00",
+      "venue": "Wilkins Field",
+      "home_score": 0,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:southern-nazarene:7724",
+      "date": "2026-09-19",
+      "home": "southern-nazarene",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://snuathletics.com/sports/mens-soccer/schedule/2026",
+      "time": "15:00",
+      "venue": "Wes Harmon Field (Wanda Rhodes Soccer Complex)",
+      "home_score": 1,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:harding:15279",
+      "date": "2026-09-20",
+      "home": "west-alabama",
+      "away": "harding",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://hardingsports.com/sports/mens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Livingston, AL",
+      "home_score": 8,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:southern-nazarene:7725",
+      "date": "2026-09-23",
+      "home": "northeastern-state",
+      "away": "southern-nazarene",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://snuathletics.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Tahlequah, OK",
+      "home_score": 3,
+      "away_score": 3,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:fort-hays-state:14061",
+      "date": "2026-09-24",
+      "home": "harding",
+      "away": "fort-hays-state",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Searcy, Ark.",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:newman:8919",
+      "date": "2026-09-24",
+      "home": "ouachita-baptist",
+      "away": "newman",
+      "status": "final",
+      "source_url": "https://newmanjets.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "15:30",
+      "venue": "Arkadelphia, AR",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:fort-hays-state:14062",
+      "date": "2026-09-26",
+      "home": "ouachita-baptist",
+      "away": "fort-hays-state",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "11:00",
+      "venue": "Arkadelphia, Ark.",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:newman:8920",
+      "date": "2026-09-26",
+      "home": "harding",
+      "away": "newman",
+      "status": "final",
+      "source_url": "https://newmanjets.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Searcy, AR",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:rogers-state:7626",
+      "date": "2026-09-26",
+      "home": "rogers-state",
+      "away": "northeastern-state",
+      "status": "final",
+      "source_url": "https://rsuhillcats.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Soldier Field",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:northeastern-state:14352",
+      "date": "2026-09-30",
+      "home": "northeastern-state",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "source_url": "https://goriverhawksgo.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "time": "18:00",
+      "venue": "DeLoache Field",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:fort-hays-state:14063",
+      "date": "2026-10-01",
+      "home": "southern-nazarene",
+      "away": "fort-hays-state",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "15:30",
+      "venue": "Bethany, Okla.",
+      "home_score": 0,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:rogers-state:7627",
+      "date": "2026-10-01",
+      "home": "rogers-state",
+      "away": "harding",
+      "status": "final",
+      "source_url": "https://rsuhillcats.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "17:00",
+      "venue": "Soldier Field",
+      "home_score": 7,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:harding:15283",
+      "date": "2026-10-03",
+      "home": "northeastern-state",
+      "away": "harding",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://hardingsports.com/sports/mens-soccer/schedule/2026",
+      "time": "12:00",
+      "venue": "Tahlequah, OK",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:newman:8921",
+      "date": "2026-10-03",
+      "home": "newman",
+      "away": "southern-nazarene",
+      "status": "final",
+      "source_url": "https://newmanjets.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Wilkins Field",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:rogers-state:7628",
+      "date": "2026-10-03",
+      "home": "ouachita-baptist",
+      "away": "rogers-state",
+      "status": "final",
+      "source_url": "https://rsuhillcats.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "14:30",
+      "venue": "Arkadelphia, Ark.",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:fort-hays-state:14064",
+      "date": "2026-10-08",
+      "home": "fort-hays-state",
+      "away": "newman",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "FHSU Soccer Stadium",
+      "home_score": 4,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:harding:15284",
+      "date": "2026-10-08",
+      "home": "harding",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://hardingsports.com/sports/mens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Stevens Soccer Complex",
+      "home_score": 2,
+      "away_score": 4
+    },
+    {
+      "id": "sidearm:rogers-state:7629",
+      "date": "2026-10-08",
+      "home": "southern-nazarene",
+      "away": "rogers-state",
+      "status": "final",
+      "source_url": "https://rsuhillcats.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Bethany, Okla.",
+      "home_score": 1,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:fort-hays-state:14065",
+      "date": "2026-10-10",
+      "home": "rogers-state",
+      "away": "fort-hays-state",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Claremore, Okla.",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:newman:8923",
+      "date": "2026-10-10",
+      "home": "northeastern-state",
+      "away": "newman",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://newmanjets.com/sports/mens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Tahlequah, OK",
+      "home_score": 3,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:southern-nazarene:7729",
+      "date": "2026-10-10",
+      "home": "harding",
+      "away": "southern-nazarene",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://snuathletics.com/sports/mens-soccer/schedule/2026",
+      "time": "10:00",
+      "venue": "Searcy, AR",
+      "home_score": 0,
+      "away_score": 4,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:southern-nazarene:7730",
+      "date": "2026-10-14",
+      "home": "ouachita-baptist",
+      "away": "southern-nazarene",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://snuathletics.com/sports/mens-soccer/schedule/2026",
+      "time": "12:00",
+      "venue": "Arkadelphia, AR",
+      "home_score": 3,
+      "away_score": 2,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:fort-hays-state:14066",
+      "date": "2026-10-15",
+      "home": "northeastern-state",
+      "away": "fort-hays-state",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "17:00",
+      "venue": "Tulsa, Okla.",
+      "home_score": 0,
+      "away_score": 3,
+      "neutral": true
+    },
+    {
+      "id": "sidearm:newman:8924",
+      "date": "2026-10-15",
+      "home": "rogers-state",
+      "away": "newman",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://newmanjets.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Claremore, OK",
+      "home_score": 1,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:fort-hays-state:14067",
+      "date": "2026-10-17",
+      "home": "newman",
+      "away": "fort-hays-state",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "12:00",
+      "venue": "Wichita, Kan.",
+      "home_score": 0,
+      "away_score": 4
+    },
+    {
+      "id": "sidearm:harding:15286",
+      "date": "2026-10-17",
+      "home": "ouachita-baptist",
+      "away": "harding",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://hardingsports.com/sports/mens-soccer/schedule/2026",
+      "time": "16:00",
+      "venue": "Arkadelphia, AR",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:southern-nazarene:7731",
+      "date": "2026-10-17",
+      "home": "southern-nazarene",
+      "away": "northeastern-state",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://snuathletics.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Wes Harmon Field (Wanda Rhodes Soccer Complex)",
+      "home_score": 2,
+      "away_score": 3,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:fort-hays-state:14068",
+      "date": "2026-10-22",
+      "home": "fort-hays-state",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "FHSU Soccer Stadium",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:newman:8926",
+      "date": "2026-10-22",
+      "home": "newman",
+      "away": "harding",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://newmanjets.com/sports/mens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Wilkins Field",
+      "home_score": 2,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:rogers-state:7632",
+      "date": "2026-10-22",
+      "home": "rogers-state",
+      "away": "southern-nazarene",
+      "status": "final",
+      "source_url": "https://rsuhillcats.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Soldier Field",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:fort-hays-state:14069",
+      "date": "2026-10-24",
+      "home": "fort-hays-state",
+      "away": "harding",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "09:00",
+      "venue": "FHSU Soccer Stadium",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:newman:8927",
+      "date": "2026-10-24",
+      "home": "newman",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://newmanjets.com/sports/mens-soccer/schedule/2026",
+      "time": "12:00",
+      "venue": "Wilkins Field",
+      "home_score": 2,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:rogers-state:7633",
+      "date": "2026-10-24",
+      "home": "northeastern-state",
+      "away": "rogers-state",
+      "status": "final",
+      "source_url": "https://rsuhillcats.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Tahlequah, Okla.",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:fort-hays-state:14070",
+      "date": "2026-10-28",
+      "home": "fort-hays-state",
+      "away": "southern-nazarene",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "15:30",
+      "venue": "FHSU Soccer Stadium",
+      "home_score": 4,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:northeastern-state:14358",
+      "date": "2026-10-29",
+      "home": "ouachita-baptist",
+      "away": "northeastern-state",
+      "status": "final",
+      "source_url": "https://goriverhawksgo.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "time": "15:00",
+      "venue": "Arkadelphia, Ark.",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:rogers-state:7634",
+      "date": "2026-10-29",
+      "home": "harding",
+      "away": "rogers-state",
+      "status": "final",
+      "source_url": "https://rsuhillcats.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "17:00",
+      "venue": "Searcy, Ark.",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:harding:15290",
+      "date": "2026-10-31",
+      "home": "harding",
+      "away": "northeastern-state",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://hardingsports.com/sports/mens-soccer/schedule/2026",
+      "time": "15:00",
+      "venue": "Stevens Soccer Complex",
+      "home_score": 0,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:newman:8928",
+      "date": "2026-10-31",
+      "home": "southern-nazarene",
+      "away": "newman",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://newmanjets.com/sports/mens-soccer/schedule/2026",
+      "time": "16:00",
+      "venue": "Bethany, OK",
+      "home_score": 0,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:rogers-state:7635",
+      "date": "2026-10-31",
+      "home": "rogers-state",
+      "away": "ouachita-baptist",
+      "status": "final",
+      "source_url": "https://rsuhillcats.com/sports/mens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Soldier Field",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:fort-hays-state:14071",
+      "date": "2026-11-05",
+      "home": "fort-hays-state",
+      "away": "southern-nazarene",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "2026 GAC Men's Soccer Tournament",
+        "round_published": "Semifinals"
+      },
+      "time": "15:00",
+      "venue": "FHSU Soccer Stadium",
+      "home_score": 4,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:rogers-state:7658",
+      "date": "2026-11-05",
+      "home": "rogers-state",
+      "away": "northeastern-state",
+      "status": "final",
+      "source_url": "https://rsuhillcats.com/sports/mens-soccer/schedule/2026",
+      "neutral": true,
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "GAC/MIAA Tournament"
+      },
+      "time": "18:00",
+      "venue": "Hays, Kan. / FHSU Soccer Stadium",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:fort-hays-state:14405",
+      "date": "2026-11-07",
+      "home": "fort-hays-state",
+      "away": "northeastern-state",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "2026 GAC Men's Soccer Tournament",
+        "round_published": "Championship"
+      },
+      "time": "12:00",
+      "venue": "FHSU Soccer Stadium",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:fort-hays-state:14072",
+      "date": "2026-11-15",
+      "home": "fort-hays-state",
+      "away": "lake-erie",
+      "status": "final",
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "ncaa",
+        "source": "2026 NCAA Men's Soccer Tournament",
+        "round_published": "Super Region 3 Second Round"
+      },
+      "time": "13:00",
+      "venue": "FHSU Soccer Stadium",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:fort-hays-state:14073",
+      "date": "2026-11-20",
+      "home": "fort-hays-state",
+      "away": "maryville",
+      "status": "scheduled",
+      "conference_game": false,
+      "source_url": "https://fhsuathletics.com/sports/mens-soccer/schedule/2026",
+      "neutral": true,
+      "time": "12:00",
+      "venue": "Capital City High School",
+      "stage": {
+        "phase": "postseason",
+        "competition": "ncaa",
+        "source": "2026 NCAA Men's Soccer Tournament",
+        "round_published": "Super Region 3 Third Round"
+      }
+    }
+  ]
+}

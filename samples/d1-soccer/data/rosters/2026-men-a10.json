@@ -1,0 +1,3499 @@
+{
+  "schema": "touchline.rosters/1",
+  "season": 2026,
+  "gender": "men",
+  "collected_at": "2026-11-20T13:15:12+00:00",
+  "rosters": {
+    "davidson": {
+      "programme": "davidson",
+      "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Ben Hanas",
+          "number": "0",
+          "position": "GK",
+          "height": "6'2\"",
+          "weight": "195 lbs",
+          "hometown": "Danvers, Mass.",
+          "class_year": "Junior",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/ben-hanas/11817"
+        },
+        {
+          "name": "Lucas Beltran",
+          "number": "1",
+          "position": "GK",
+          "height": "6'2\"",
+          "weight": "170 lbs",
+          "hometown": "Encinitas, Calif.",
+          "class_year": "Senior",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/lucas-beltran/11798"
+        },
+        {
+          "name": "Hampton Hughes",
+          "number": "2",
+          "position": "D",
+          "height": "6'3\"",
+          "weight": "180 lbs",
+          "hometown": "Greenville, S.C.",
+          "class_year": "Senior",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/hampton-hughes/11804"
+        },
+        {
+          "name": "Ayman Maadir",
+          "number": "3",
+          "position": "D",
+          "height": "6'2\"",
+          "weight": "190 lbs",
+          "hometown": "Mooresville, N.C.",
+          "class_year": "Senior",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/ayman-maadir/11808"
+        },
+        {
+          "name": "Grayson Armistead",
+          "number": "4",
+          "position": "D",
+          "height": "6'0\"",
+          "weight": "145 lbs",
+          "hometown": "Atlanta, Ga.",
+          "class_year": "Freshman",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/grayson-armistead/11820"
+        },
+        {
+          "name": "Michael Roman",
+          "number": "5",
+          "position": "D",
+          "height": "6'3\"",
+          "weight": "180 lbs",
+          "hometown": "Menlo Park, Calif.",
+          "class_year": "Junior",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/michael-roman/11816"
+        },
+        {
+          "name": "Myles Culley",
+          "number": "7",
+          "position": "F/MF",
+          "height": "6'0\"",
+          "weight": "170 lbs",
+          "hometown": "Falmouth, Maine",
+          "class_year": "Senior",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/myles-culley/11802"
+        },
+        {
+          "name": "Mateo Castellini",
+          "number": "8",
+          "position": "MF",
+          "height": "6'1\"",
+          "weight": "165 lbs",
+          "hometown": "Sewickley, Pa.",
+          "class_year": "Junior",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/mateo-castellini/11801"
+        },
+        {
+          "name": "Tobe Ibe",
+          "number": "9",
+          "position": "F",
+          "height": "6'1\"",
+          "weight": "190 lbs",
+          "hometown": "Richmond, Va.",
+          "class_year": "Junior",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/tobe-ibe/11805"
+        },
+        {
+          "name": "Noah Louzan",
+          "number": "10",
+          "position": "MF",
+          "height": "6'1\"",
+          "weight": "160 lbs",
+          "hometown": "Marietta, Ga.",
+          "class_year": "Senior",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/noah-louzan/11807"
+        },
+        {
+          "name": "Matthew Thissell",
+          "number": "11",
+          "position": "F/MF",
+          "height": "6'0\"",
+          "weight": "160 lbs",
+          "hometown": "Ashburn, Va.",
+          "class_year": "Senior",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/matthew-thissell/11813"
+        },
+        {
+          "name": "Patrick Ward",
+          "number": "12",
+          "position": "D",
+          "height": "5'11\"",
+          "weight": "165 lbs",
+          "hometown": "San Diego, Calif.",
+          "class_year": "Senior",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/patrick-ward/11814"
+        },
+        {
+          "name": "Neil Meyers",
+          "number": "13",
+          "position": "MF",
+          "height": "6'3\"",
+          "weight": "185 lbs",
+          "hometown": "Richmond, Va.",
+          "class_year": "Freshman",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/neil-meyers/11819"
+        },
+        {
+          "name": "Garrett Wilkens",
+          "number": "14",
+          "position": "D",
+          "height": "6'1\"",
+          "weight": "170 lbs",
+          "hometown": "Gunter, Texas",
+          "class_year": "Junior",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/garrett-wilkens/11815"
+        },
+        {
+          "name": "Brady McGlone",
+          "number": "15",
+          "position": "D",
+          "height": "6'4\"",
+          "weight": "190 lbs",
+          "hometown": "Columbus, Ohio",
+          "class_year": "Junior",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/brady-mcglone/11809"
+        },
+        {
+          "name": "JP Ramos",
+          "number": "16",
+          "position": "F",
+          "height": "5'11\"",
+          "weight": "142 lbs",
+          "hometown": "Mexico City, Mexico",
+          "class_year": "Sophomore",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/jp-ramos/11812"
+        },
+        {
+          "name": "Arden Tobolski",
+          "number": "17",
+          "position": "MF",
+          "height": "5'8\"",
+          "weight": "150 lbs",
+          "hometown": "Chapel Hill, N.C.",
+          "class_year": "Junior",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/arden-tobolski/11818"
+        },
+        {
+          "name": "Cohen Muse",
+          "number": "18",
+          "position": "F",
+          "height": "5'9\"",
+          "weight": "165 lbs",
+          "hometown": "Greensboro, N.C.",
+          "class_year": "Freshman",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/cohen-muse/11822"
+        },
+        {
+          "name": "Nico Quanbeck",
+          "number": "19",
+          "position": "MF",
+          "height": "6'1\"",
+          "weight": "160 lbs",
+          "hometown": "Encinitas, Calif.",
+          "class_year": "Senior",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/nico-quanbeck/11811"
+        },
+        {
+          "name": "Aiden Boudro",
+          "number": "21",
+          "position": "F",
+          "height": "6'3\"",
+          "weight": "180 lbs",
+          "hometown": "Bay St. Louis, Miss.",
+          "class_year": "Sophomore",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/aiden-boudro/11799"
+        },
+        {
+          "name": "Pablo Linzoain",
+          "number": "22",
+          "position": "F/MF",
+          "height": "5'8\"",
+          "weight": "155 lbs",
+          "hometown": "Pittsburgh, Pa.",
+          "class_year": "Sophomore",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/pablo-linzoain/11806"
+        },
+        {
+          "name": "Christian Akerele",
+          "number": "23",
+          "position": "D",
+          "height": "6'3\"",
+          "weight": "175 lbs",
+          "hometown": "Atlanta, Ga.",
+          "class_year": "Freshman",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/christian-akerele/11823"
+        },
+        {
+          "name": "Theo Simpson",
+          "number": "24",
+          "position": "MF",
+          "height": "6'2\"",
+          "weight": "185 lbs",
+          "hometown": "Franklin, Tenn.",
+          "class_year": "Freshman",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/theo-simpson/11824"
+        },
+        {
+          "name": "Bijan Champagne",
+          "number": "25",
+          "position": "D",
+          "height": "6'4\"",
+          "weight": "185 lbs",
+          "hometown": "St. Louis, Mo.",
+          "class_year": "Freshman",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/bijan-champagne/11825"
+        },
+        {
+          "name": "Nico Zeballos",
+          "number": "27",
+          "position": "F/MF",
+          "height": "6'4\"",
+          "weight": "190 lbs",
+          "hometown": "Richmond, Va.",
+          "class_year": "Sophomore",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/nico-zeballos/11797"
+        },
+        {
+          "name": "Charlie Frink",
+          "number": "30",
+          "position": "MF",
+          "height": "5'10\"",
+          "weight": "160 lbs",
+          "hometown": "Mercer Island, Wash.",
+          "class_year": "Sophomore",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/charlie-frink/11803"
+        },
+        {
+          "name": "Owen Ellis",
+          "number": "35",
+          "position": "GK",
+          "height": "6'3\"",
+          "weight": "180 lbs",
+          "hometown": "Durham, N.C.",
+          "class_year": "Freshman",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/owen-ellis/11821"
+        },
+        {
+          "name": "Judah Boyce",
+          "position": "Team Impact",
+          "height": "3'10\"",
+          "weight": "49 lbs",
+          "hometown": "Denver, N.C.",
+          "class_year": "Sophomore",
+          "source_url": "https://davidsonwildcats.com/sports/mens-soccer/roster/judah-boyce/11800"
+        }
+      ]
+    },
+    "dayton": {
+      "programme": "dayton",
+      "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Miguel Boura Vieira",
+          "number": "1",
+          "position": "Goalkeeper",
+          "height": "6'1\"",
+          "hometown": "Loures, Portugal",
+          "class_year": "Freshman",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/miguel-boura-vieira/16603"
+        },
+        {
+          "name": "Pablo Gomez",
+          "number": "2",
+          "position": "Midfielder",
+          "height": "5'11\"",
+          "hometown": "Madrid, Spain",
+          "class_year": "Freshman",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/pablo-gomez/16604"
+        },
+        {
+          "name": "Kingsford Acheampong",
+          "number": "4",
+          "position": "Midfielder",
+          "height": "5'9\"",
+          "hometown": "Accra, Ghana",
+          "class_year": "Sophomore",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/kingsford-acheampong/16136"
+        },
+        {
+          "name": "Jaydus Camacho",
+          "number": "5",
+          "position": "Defender",
+          "height": "6'2\"",
+          "hometown": "Monroe, N.C.",
+          "class_year": "Freshman",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/jaydus-camacho/16605"
+        },
+        {
+          "name": "Mikkel Madsen",
+          "number": "6",
+          "position": "Defender",
+          "height": "6'0\"",
+          "hometown": "Kalundborg, Denmark",
+          "class_year": "Sophomore",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/mikkel-madsen/16145"
+        },
+        {
+          "name": "Pablo Martinez",
+          "number": "7",
+          "position": "Midfielder",
+          "height": "5'10\"",
+          "hometown": "Seville, Spain",
+          "class_year": "Junior",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/pablo-martinez/16620"
+        },
+        {
+          "name": "Farouq Ogundare",
+          "number": "8",
+          "position": "Midfielder",
+          "height": "5'8\"",
+          "hometown": "Lagos, Nigeria",
+          "class_year": "Sophomore",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/farouq-ogundare/16147"
+        },
+        {
+          "name": "Braden Seel",
+          "number": "10",
+          "position": "Midfielder",
+          "height": "6'0\"",
+          "hometown": "Glen Carbon, Ill.",
+          "class_year": "Senior",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/braden-seel/16148"
+        },
+        {
+          "name": "Antonio Pinto",
+          "number": "11",
+          "position": "Forward",
+          "height": "6'0\"",
+          "hometown": "Park Ridge, Ill.",
+          "class_year": "Sophomore",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/antonio-pinto/16150"
+        },
+        {
+          "name": "Cooper Lijewski",
+          "number": "12",
+          "position": "Forward",
+          "height": "6'3\"",
+          "hometown": "Hudson, Wis.",
+          "class_year": "Senior",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/cooper-lijewski/16144"
+        },
+        {
+          "name": "Emmanuel Adeboyejo",
+          "number": "13",
+          "position": "Midfielder",
+          "height": "5'6\"",
+          "hometown": "Lagos, Nigeria",
+          "class_year": "Freshman",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/emmanuel-adeboyejo/16623"
+        },
+        {
+          "name": "Edgar Bazan",
+          "number": "14",
+          "position": "Midfielder",
+          "height": "5'9\"",
+          "hometown": "Overland Park, Kan.",
+          "class_year": "Junior",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/edgar-bazan/16138"
+        },
+        {
+          "name": "Jabari Kibisu",
+          "number": "15",
+          "position": "Midfielder",
+          "height": "5'9\"",
+          "hometown": "Otsego, Minn.",
+          "class_year": "Freshman",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/jabari-kibisu/16606"
+        },
+        {
+          "name": "Ransford Gyau",
+          "number": "16",
+          "position": "Midfielder",
+          "hometown": "Kumasi, Ghana",
+          "class_year": "Freshman",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/ransford-gyau/16607"
+        },
+        {
+          "name": "Miles Bonham",
+          "number": "17",
+          "position": "Midfielder",
+          "height": "6'3\"",
+          "hometown": "Upper Arlington, Ohio",
+          "class_year": "Senior",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/miles-bonham/16139"
+        },
+        {
+          "name": "Daniel Acquah",
+          "number": "19",
+          "position": "Midfielder",
+          "height": "6'0\"",
+          "hometown": "Accra, Ghana",
+          "class_year": "Freshman",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/daniel-acquah/16611"
+        },
+        {
+          "name": "Zach Forehand",
+          "number": "21",
+          "position": "Forward",
+          "height": "5'10\"",
+          "hometown": "McKinney, Texas",
+          "class_year": "Senior",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/zach-forehand/16152"
+        },
+        {
+          "name": "Jacob Marshall",
+          "number": "22",
+          "position": "Forward",
+          "height": "5'10\"",
+          "hometown": "Sunbury, Ohio",
+          "class_year": "Freshman",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/jacob-marshall/16608"
+        },
+        {
+          "name": "Kiryl Dubins",
+          "number": "23",
+          "position": "Defender",
+          "height": "6'0\"",
+          "hometown": "Brooklyn, N.Y.",
+          "class_year": "Sophomore",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/kiryl-dubins/16154"
+        },
+        {
+          "name": "Will Barry",
+          "number": "25",
+          "position": "Goalkeeper",
+          "height": "6'5\"",
+          "hometown": "Haslett, Mich.",
+          "class_year": "Redshirt Sophomore",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/will-barry/16137"
+        },
+        {
+          "name": "Tyler Sloan",
+          "number": "26",
+          "position": "Goalkeeper",
+          "height": "6'2\"",
+          "hometown": "Tallahassee, Fla.",
+          "class_year": "Redshirt Junior",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/tyler-sloan/16155"
+        },
+        {
+          "name": "Santino Inkpen",
+          "number": "27",
+          "position": "Goalkeeper",
+          "height": "6'1\"",
+          "hometown": "Alexandria, Va.",
+          "class_year": "Redshirt Sophomore",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/santino-inkpen/16156"
+        },
+        {
+          "name": "Uri Koffi",
+          "number": "28",
+          "position": "Forward",
+          "height": "5'8\"",
+          "hometown": "Columbia, Md.",
+          "class_year": "Sophomore",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/uri-koffi/16609"
+        },
+        {
+          "name": "Jai Weinrich",
+          "number": "30",
+          "position": "F",
+          "height": "6'4\"",
+          "hometown": "Grand Rapids, Mich.",
+          "class_year": "Freshman",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/jai-weinrich/16610"
+        },
+        {
+          "name": "Alex Dorko",
+          "number": "31",
+          "position": "Midfielder",
+          "height": "6'2\"",
+          "hometown": "Cincinnati, Ohio",
+          "class_year": "Sophomore",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/alex-dorko/16143"
+        },
+        {
+          "name": "Chase Jackson",
+          "number": "32",
+          "position": "Defender",
+          "height": "5'11\"",
+          "hometown": "Phoenix, Ariz.",
+          "class_year": "Junior",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/chase-jackson/16157"
+        },
+        {
+          "name": "Adebayo Dikko",
+          "number": "33",
+          "position": "Defender",
+          "height": "6'0\"",
+          "hometown": "Lagos, Nigeria",
+          "class_year": "Junior",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/adebayo-dikko/16141"
+        },
+        {
+          "name": "Felix Buabeng",
+          "number": "34",
+          "position": "Forward",
+          "height": "5'10\"",
+          "hometown": "Accra, Ghana",
+          "class_year": "Senior",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/felix-buabeng/16140"
+        },
+        {
+          "name": "Jonathan Moumboko",
+          "number": "36",
+          "position": "Defender",
+          "height": "6'7\"",
+          "hometown": "Grez-sur-Loing, France",
+          "class_year": "Sophomore",
+          "source_url": "https://daytonflyers.com/sports/mens-soccer/roster/jonathan-moumboko/16146"
+        }
+      ]
+    },
+    "duquesne": {
+      "programme": "duquesne",
+      "source_url": "https://goduquesne.com/sports/mens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Aaron Meono",
+          "number": "0",
+          "position": "GK",
+          "height": "6'0\"",
+          "weight": "170 lbs",
+          "hometown": "Redondo Beach, Calif.",
+          "class_year": "Junior",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/aaron-meono/13684"
+        },
+        {
+          "name": "Sam Coss",
+          "number": "1",
+          "position": "GK",
+          "height": "6'1\"",
+          "weight": "180 lbs",
+          "hometown": "Bowie, Md.",
+          "class_year": "Redshirt Senior",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/sam-coss/13671"
+        },
+        {
+          "name": "Sergios Feneridis",
+          "number": "2",
+          "position": "D",
+          "height": "6'0\"",
+          "weight": "150 lbs",
+          "hometown": "Nicosia, Cyprus",
+          "class_year": "Senior",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/sergios-feneridis/13675"
+        },
+        {
+          "name": "Blaize Hardy",
+          "number": "3",
+          "position": "D",
+          "height": "6'2\"",
+          "weight": "165 lbs",
+          "hometown": "Queen Creek, Ariz.",
+          "class_year": "Redshirt Senior",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/blaize-hardy/13678"
+        },
+        {
+          "name": "Ofek Sasson",
+          "number": "4",
+          "position": "D",
+          "height": "6'4\"",
+          "weight": "188 lbs",
+          "hometown": "Ramat Gan, Israel",
+          "class_year": "Junior",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/ofek-sasson/13689"
+        },
+        {
+          "name": "Dylan Fisher",
+          "number": "5",
+          "position": "D",
+          "height": "6'4\"",
+          "weight": "195 lbs",
+          "hometown": "Garden City, N.Y.",
+          "class_year": "Freshman",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/dylan-fisher/13803"
+        },
+        {
+          "name": "Mathieu Brick",
+          "number": "6",
+          "position": "D",
+          "height": "5'9\"",
+          "weight": "154 lbs",
+          "hometown": "Oviedo, Fla.",
+          "class_year": "Senior",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/mathieu-brick/13670"
+        },
+        {
+          "name": "H\u00e1kon Dagur Matth\u00edasson",
+          "number": "7",
+          "position": "MF",
+          "height": "6'1\"",
+          "weight": "158 lbs",
+          "hometown": "Reykjav\u00edk, Iceland",
+          "class_year": "Sophomore",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/hkon-dagur-matthasson/13682"
+        },
+        {
+          "name": "Miles Imparato",
+          "number": "10",
+          "position": "MF",
+          "height": "5'10\"",
+          "weight": "150 lbs",
+          "hometown": "Tampa, Fla.",
+          "class_year": "Junior",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/miles-imparato/13680"
+        },
+        {
+          "name": "Marko Rasmussen",
+          "number": "11",
+          "position": "F",
+          "height": "5'11\"",
+          "weight": "155 lbs",
+          "hometown": "Silkeborg, Denmark",
+          "class_year": "Junior",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/marko-rasmussen/13687"
+        },
+        {
+          "name": "Steel Bayer",
+          "number": "12",
+          "position": "D",
+          "height": "6'5\"",
+          "weight": "180 lbs",
+          "hometown": "Mechanicsburg, Pa.",
+          "class_year": "Redshirt Freshman",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/steel-bayer/13804"
+        },
+        {
+          "name": "Jameson Michel",
+          "number": "13",
+          "position": "MF/F",
+          "height": "5'10\"",
+          "weight": "150 lbs",
+          "hometown": "Columbia, Md.",
+          "class_year": "Redshirt Sophomore",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/jameson-michel/13691"
+        },
+        {
+          "name": "Dan Banks",
+          "number": "14",
+          "position": "MF",
+          "height": "6'1\"",
+          "weight": "165 lbs",
+          "hometown": "Providence, R.I.",
+          "class_year": "Junior",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/dan-banks/13668"
+        },
+        {
+          "name": "Ethan Soto",
+          "number": "15",
+          "position": "D",
+          "height": "5'11\"",
+          "weight": "160 lbs",
+          "hometown": "San Jose, Calif.",
+          "class_year": "Freshman",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/ethan-soto/13808"
+        },
+        {
+          "name": "Jack Karwoski",
+          "number": "16",
+          "position": "MF",
+          "height": "5'10\"",
+          "weight": "165 lbs",
+          "hometown": "Sewickley, Pa.",
+          "class_year": "Freshman",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/jack-karwoski/13693"
+        },
+        {
+          "name": "Jaxon Ervin",
+          "number": "17",
+          "position": "MF",
+          "height": "5'10\"",
+          "weight": "160 lbs",
+          "hometown": "Pittsburgh, Pa.",
+          "class_year": "Redshirt Senior",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/jaxon-ervin/13674"
+        },
+        {
+          "name": "Cody Da",
+          "number": "19",
+          "position": "F",
+          "height": "6'1\"",
+          "weight": "163 lbs",
+          "hometown": "Rockville, Md.",
+          "class_year": "Senior",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/cody-da/13672"
+        },
+        {
+          "name": "Nico Simakas",
+          "number": "20",
+          "position": "D",
+          "height": "6'0\"",
+          "weight": "155 lbs",
+          "hometown": "Pittsburgh, Pa.",
+          "class_year": "Freshman",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/nico-simakas/13805"
+        },
+        {
+          "name": "Chris Philibin",
+          "number": "21",
+          "position": "D",
+          "height": "5'11\"",
+          "weight": "155 lbs",
+          "hometown": "Youngstown, Ohio",
+          "class_year": "Redshirt Junior",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/chris-philibin/13685"
+        },
+        {
+          "name": "Tyler Kato",
+          "number": "22",
+          "position": "MF",
+          "height": "6'3\"",
+          "weight": "170 lbs",
+          "hometown": "Ann Arbor, Mich.",
+          "class_year": "Senior",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/tyler-kato/13681"
+        },
+        {
+          "name": "Ashwin Menon",
+          "number": "23",
+          "position": "D",
+          "height": "5'10\"",
+          "weight": "168 lbs",
+          "hometown": "Trophy Club, Texas",
+          "class_year": "Redshirt Senior",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/ashwin-menon/13683"
+        },
+        {
+          "name": "Patrick Longo",
+          "number": "24",
+          "position": "MF/F",
+          "height": "6'0\"",
+          "weight": "185 lbs",
+          "hometown": "St. Louis, Mo.",
+          "class_year": "Freshman",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/patrick-longo/13806"
+        },
+        {
+          "name": "Pepo Bravo",
+          "number": "26",
+          "position": "M",
+          "height": "5'9\"",
+          "weight": "155 lbs",
+          "hometown": "Madrid, Spain",
+          "class_year": "Graduate Student",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/pepo-bravo/13669"
+        },
+        {
+          "name": "Hayden Owens",
+          "number": "27",
+          "position": "GK",
+          "height": "6'4\"",
+          "weight": "190 lbs",
+          "hometown": "Frisco, Texas",
+          "class_year": "Redshirt Junior",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/hayden-owens/13690"
+        },
+        {
+          "name": "Jose Goodman Millman",
+          "number": "28",
+          "position": "GK",
+          "height": "5'10\"",
+          "weight": "155 lbs",
+          "hometown": "Cochecton, N.Y.",
+          "class_year": "Freshman",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/jose-goodman-millman/13692"
+        },
+        {
+          "name": "Roni Badler",
+          "number": "29",
+          "position": "F",
+          "height": "5'10\"",
+          "weight": "165 lbs",
+          "hometown": "Tel Aviv, Israel",
+          "class_year": "Junior",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/roni-badler/13667"
+        },
+        {
+          "name": "Elijah Jensen",
+          "number": "31",
+          "position": "MF/F",
+          "height": "5'11\"",
+          "weight": "160 lbs",
+          "hometown": "Minneapolis, Minn.",
+          "class_year": "Freshman",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/elijah-jensen/13807"
+        },
+        {
+          "name": "Luke Fiscus",
+          "number": "32",
+          "position": "D",
+          "height": "5'8\"",
+          "weight": "145 lbs",
+          "hometown": "Pittsburgh, Pa.",
+          "class_year": "Junior",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/luke-fiscus/13676"
+        },
+        {
+          "name": "Alex Posada",
+          "number": "33",
+          "position": "D",
+          "height": "5'11\"",
+          "weight": "170 lbs",
+          "hometown": "Hampton Bays, N.Y.",
+          "class_year": "Sophomore",
+          "source_url": "https://goduquesne.com/sports/mens-soccer/roster/alex-posada/13686"
+        }
+      ]
+    },
+    "fordham": {
+      "programme": "fordham",
+      "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Shayon Kashi",
+          "number": "0",
+          "position": "Goalkeeper",
+          "height": "6'1\"",
+          "weight": "220 lbs",
+          "hometown": "Bethesda, Md.",
+          "class_year": "Senior",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/shayon-kashi/15657"
+        },
+        {
+          "name": "Leo Perelman",
+          "number": "1",
+          "position": "Goalkeeper",
+          "height": "6'2\"",
+          "weight": "170 lbs",
+          "hometown": "Staten Island, N.Y.",
+          "class_year": "Senior",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/leo-perelman/15651"
+        },
+        {
+          "name": "Leevi Swearengen",
+          "number": "2",
+          "position": "Defender",
+          "height": "6'0\"",
+          "weight": "170 lbs",
+          "hometown": "Thunder Bay, Ont.",
+          "class_year": "Junior",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/leevi-swearengen/15658"
+        },
+        {
+          "name": "Kamran Mojabi",
+          "number": "3",
+          "position": "Defender",
+          "height": "5'11\"",
+          "weight": "165 lbs",
+          "hometown": "San Francisco, Calif.",
+          "class_year": "Senior",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/kamran-mojabi/15650"
+        },
+        {
+          "name": "Arne Michaelis",
+          "number": "4",
+          "position": "Defender",
+          "height": "6'1\"",
+          "weight": "185 lbs",
+          "hometown": "Willich, Germany",
+          "class_year": "Graduate Student",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/arne-michaelis/15998"
+        },
+        {
+          "name": "Cosimo Tristani",
+          "number": "5",
+          "position": "Defender",
+          "height": "6'2\"",
+          "weight": "180 lbs",
+          "hometown": "Closter, N.J.",
+          "class_year": "Junior",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/cosimo-tristani/15655"
+        },
+        {
+          "name": "Jason Hsu",
+          "number": "6",
+          "position": "Defender",
+          "height": "6'2\"",
+          "weight": "175 lbs",
+          "hometown": "San Rafael, Calif.",
+          "class_year": "Graduate Student",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/jason-hsu/15656"
+        },
+        {
+          "name": "Rayane Tchemmoun",
+          "number": "7",
+          "position": "Midfiedler",
+          "height": "6'2\"",
+          "weight": "165 lbs",
+          "hometown": "Montreal, Quebec",
+          "class_year": "Sophomore",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/rayane-tchemmoun/15660"
+        },
+        {
+          "name": "Joel Goncalves",
+          "number": "8",
+          "position": "Midfiedler",
+          "height": "5'9\"",
+          "weight": "155 lbs",
+          "hometown": "East Meadow, N.Y.",
+          "class_year": "Freshman",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/joel-goncalves/15999"
+        },
+        {
+          "name": "Ryan Mattison",
+          "number": "9",
+          "position": "Forward",
+          "height": "5'7\"",
+          "weight": "150 lbs",
+          "hometown": "Monroe, N.Y.",
+          "class_year": "Junior",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/ryan-mattison/15648"
+        },
+        {
+          "name": "Nicholas Di Sessa",
+          "number": "10",
+          "position": "Midfielder/Forward",
+          "height": "5'8\"",
+          "weight": "150 lbs",
+          "hometown": "Walnut Creek, Calif.",
+          "class_year": "Sophomore",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/nicholas-di-sessa/15643"
+        },
+        {
+          "name": "Gavin Flickinger",
+          "number": "11",
+          "position": "Forward",
+          "height": "5'11\"",
+          "weight": "165 lbs",
+          "hometown": "Henderson, Nev.",
+          "class_year": "Freshman",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/gavin-flickinger/16000"
+        },
+        {
+          "name": "Niko Cappellini",
+          "number": "12",
+          "position": "Defender",
+          "height": "6'1\"",
+          "weight": "175 lbs",
+          "hometown": "Colts Neck, N.J.",
+          "class_year": "Senior",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/niko-cappellini/15642"
+        },
+        {
+          "name": "Edoardo Grandi",
+          "number": "13",
+          "position": "Goalkeeper",
+          "height": "6'1\"",
+          "weight": "183 lbs",
+          "hometown": "Bologna, Italy",
+          "class_year": "Graduate Student",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/edoardo-grandi/16001"
+        },
+        {
+          "name": "Elias Betancourt",
+          "number": "14",
+          "position": "Midfielder",
+          "height": "5'9\"",
+          "weight": "158 lbs",
+          "hometown": "Bala Cynwyd, Pa.",
+          "class_year": "Senior",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/elias-betancourt/15641"
+        },
+        {
+          "name": "Sam Delgado",
+          "number": "15",
+          "position": "Forward",
+          "height": "5'10\"",
+          "weight": "160 lbs",
+          "hometown": "Vienna, Va.",
+          "class_year": "Graduate Student",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/sam-delgado/16002"
+        },
+        {
+          "name": "Luca Giannola",
+          "number": "16",
+          "position": "Defender",
+          "height": "5'7\"",
+          "weight": "155 lbs",
+          "hometown": "Glen Head, N.Y.",
+          "class_year": "Junior",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/luca-giannola/15644"
+        },
+        {
+          "name": "Christian Pica",
+          "number": "17",
+          "position": "Defender",
+          "height": "5'10\"",
+          "weight": "160 lbs",
+          "hometown": "Garden City, N.Y.",
+          "class_year": "Senior",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/christian-pica/15652"
+        },
+        {
+          "name": "Edu Ramirez",
+          "number": "18",
+          "position": "Midfiedler",
+          "height": "5'8\"",
+          "weight": "155 lbs",
+          "hometown": "Doral, Fla.",
+          "class_year": "Freshman",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/edu-ramirez/15662"
+        },
+        {
+          "name": "Niko Kolega",
+          "number": "19",
+          "position": "Midfielder",
+          "height": "6'0\"",
+          "weight": "170 lbs",
+          "hometown": "Roslyn, N.Y.",
+          "class_year": "Sophomore",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/niko-kolega/15645"
+        },
+        {
+          "name": "Nico Linares",
+          "number": "20",
+          "position": "Midfiedler",
+          "height": "6'1\"",
+          "weight": "181 lbs",
+          "hometown": "Madrid, Spain",
+          "class_year": "Freshman",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/nico-linares/16004"
+        },
+        {
+          "name": "Bruno Cellerino",
+          "number": "21",
+          "position": "Midfiedler",
+          "height": "6'0\"",
+          "weight": "165 lbs",
+          "hometown": "Milan, Italy",
+          "class_year": "Sophomore",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/bruno-cellerino/15659"
+        },
+        {
+          "name": "Maclin Stover",
+          "number": "22",
+          "position": "Midfielder",
+          "height": "5'10\"",
+          "weight": "165 lbs",
+          "hometown": "Bloomfield Hills, Mich.",
+          "class_year": "Senior",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/maclin-stover/15654"
+        },
+        {
+          "name": "Arata Mizuno",
+          "number": "23",
+          "position": "Forward",
+          "height": "5'9\"",
+          "weight": "145 lbs",
+          "hometown": "Tokyo, Japan",
+          "class_year": "Freshman",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/arata-mizuno/15661"
+        },
+        {
+          "name": "Nick Mesquita",
+          "number": "24",
+          "position": "Midfielder",
+          "height": "5'11\"",
+          "weight": "160 lbs",
+          "hometown": "Harwich, Mass.",
+          "class_year": "Sophomore",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/nick-mesquita/15649"
+        },
+        {
+          "name": "Joseph Maimone",
+          "number": "25",
+          "position": "Defender",
+          "height": "5'11\"",
+          "weight": "160 lbs",
+          "hometown": "Englewood Cliffs, N.J.",
+          "class_year": "Sophomore",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/joseph-maimone/15647"
+        },
+        {
+          "name": "Mirko Lekovic",
+          "number": "26",
+          "position": "Defender",
+          "height": "6'3\"",
+          "weight": "180 lbs",
+          "hometown": "Belgrade, Serbia",
+          "class_year": "Freshman",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/mirko-lekovic/16005"
+        },
+        {
+          "name": "Fabio Sebastian Sanchez",
+          "number": "27",
+          "position": "Midfielder",
+          "height": "5'11\"",
+          "weight": "175 lbs",
+          "hometown": "New Hyde Park, N.Y.",
+          "class_year": "Junior",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/fabio-sebastian-sanchez/15653"
+        },
+        {
+          "name": "Daniel Gaviria",
+          "number": "28",
+          "position": "Defender",
+          "height": "6'3\"",
+          "weight": "185 lbs",
+          "hometown": "Weston, Fla.",
+          "class_year": "Freshman",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/daniel-gaviria/16006"
+        },
+        {
+          "name": "Marco Cantalapiedra",
+          "number": "30",
+          "position": "Midfiedler",
+          "height": "5'10\"",
+          "weight": "167 lbs",
+          "hometown": "Biscayne, Fla.",
+          "class_year": "Freshman",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/marco-cantalapiedra/16007"
+        },
+        {
+          "name": "Marc-Alexandre Happi Emaga",
+          "number": "32",
+          "position": "Forward",
+          "height": "6'1\"",
+          "weight": "194 lbs",
+          "hometown": "Pointe-aux-Trembles, QC",
+          "class_year": "Freshman",
+          "source_url": "https://fordhamsports.com/sports/mens-soccer/roster/marc-alexandre-happi-emaga/16008"
+        }
+      ]
+    },
+    "george-mason": {
+      "programme": "george-mason",
+      "source_url": "https://gomason.com/sports/mens-soccer/roster/2026",
+      "players": []
+    },
+    "george-washington": {
+      "programme": "george-washington",
+      "source_url": "https://gwsports.com/sports/mens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "JP Martin",
+          "number": "0",
+          "position": "GK",
+          "height": "6'2\"",
+          "weight": "180 lbs",
+          "hometown": "Charlottesville, VA",
+          "class_year": "Sophomore",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/jp-martin/9777"
+        },
+        {
+          "name": "Tom Macauley",
+          "number": "1",
+          "position": "GK",
+          "height": "6'2\"",
+          "weight": "187 lbs",
+          "hometown": "Filey, England",
+          "class_year": "4th Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/tom-macauley/10263"
+        },
+        {
+          "name": "Jeremy Meloney",
+          "number": "2",
+          "position": "D",
+          "height": "6'0\"",
+          "weight": "190 lbs",
+          "hometown": "Teaneck, NJ",
+          "class_year": "1st Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/jeremy-meloney/10304"
+        },
+        {
+          "name": "Santi Cremaschi",
+          "number": "3",
+          "position": "D",
+          "height": "6'0\"",
+          "weight": "170 lbs",
+          "hometown": "Miami, FL",
+          "class_year": "1st Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/santi-cremaschi/10309"
+        },
+        {
+          "name": "Colin Prendergast",
+          "number": "4",
+          "position": "D",
+          "height": "6'0\"",
+          "weight": "165 lbs",
+          "hometown": "Falls Church, VA",
+          "class_year": "4th Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/colin-prendergast/10271"
+        },
+        {
+          "name": "Foday Bangura",
+          "number": "5",
+          "position": "D",
+          "height": "6'1\"",
+          "weight": "185 lbs",
+          "hometown": "Greencastle, PA",
+          "class_year": "Junior",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/foday-bangura/10372"
+        },
+        {
+          "name": "Samy Kolby",
+          "number": "6",
+          "position": "M",
+          "height": "5'10\"",
+          "weight": "160 lbs",
+          "hometown": "Charlotte, NC",
+          "class_year": "Fifth Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/samy-kolby/10305"
+        },
+        {
+          "name": "Axel Dickson",
+          "number": "7",
+          "position": "M",
+          "height": "6'0\"",
+          "weight": "160 lbs",
+          "hometown": "Naples, FL",
+          "class_year": "1st Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/axel-dickson/10310"
+        },
+        {
+          "name": "Jaden Dubon",
+          "number": "8",
+          "position": "F",
+          "height": "6'1\"",
+          "weight": "175 lbs",
+          "hometown": "Hood River, OR",
+          "class_year": "Fifth Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/jaden-dubon/10259"
+        },
+        {
+          "name": "Joe Brayson",
+          "number": "9",
+          "position": "F",
+          "height": "5'9\"",
+          "weight": "159 lbs",
+          "hometown": "Newcastle upon Tyne, England",
+          "class_year": "1st Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/joe-brayson/10437"
+        },
+        {
+          "name": "Finn Roberts",
+          "number": "10",
+          "position": "M",
+          "height": "6'1\"",
+          "weight": "170 lbs",
+          "hometown": "Cardiff, Wales",
+          "class_year": "3rd Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/finn-roberts/10272"
+        },
+        {
+          "name": "Louis Saville",
+          "number": "11",
+          "position": "F",
+          "height": "5'8\"",
+          "weight": "154 lbs",
+          "hometown": "London, England",
+          "class_year": "4th Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/louis-saville/10275"
+        },
+        {
+          "name": "Jake Poole",
+          "number": "12",
+          "position": "D",
+          "height": "6'1\"",
+          "weight": "180 lbs",
+          "hometown": "San Clemente, CA",
+          "class_year": "3rd Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/jake-poole/10270"
+        },
+        {
+          "name": "Tommaso Lami",
+          "number": "14",
+          "position": "F",
+          "height": "5'10\"",
+          "weight": "155 lbs",
+          "hometown": "Bologna, Italy",
+          "class_year": "Fifth Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/tommaso-lami/9788"
+        },
+        {
+          "name": "Ben McGovern",
+          "number": "15",
+          "position": "M",
+          "height": "6'0\"",
+          "weight": "180 lbs",
+          "hometown": "Salisbury, MD",
+          "class_year": "2nd Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/ben-mcgovern/10266"
+        },
+        {
+          "name": "Carter Byrom",
+          "number": "16",
+          "position": "D",
+          "height": "6'3\"",
+          "weight": "190 lbs",
+          "hometown": "Naples, FL",
+          "class_year": "1st Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/carter-byrom/10306"
+        },
+        {
+          "name": "Yago Torres",
+          "number": "17",
+          "position": "F",
+          "height": "5'11\"",
+          "weight": "152 lbs",
+          "hometown": "Madrid, Spain",
+          "class_year": "Sophomore",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/yago-torres/9786"
+        },
+        {
+          "name": "Lucas Caldas",
+          "number": "18",
+          "position": "F",
+          "height": "6'3\"",
+          "weight": "190 lbs",
+          "hometown": "Lowes Island, VA",
+          "class_year": "Junior",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/lucas-caldas/10307"
+        },
+        {
+          "name": "Joel Russ",
+          "number": "19",
+          "position": "F",
+          "height": "6'3\"",
+          "weight": "175 lbs",
+          "hometown": "Charlotte, NC",
+          "class_year": "2nd Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/joel-russ/10274"
+        },
+        {
+          "name": "Omar Alsabagh",
+          "number": "20",
+          "position": "M",
+          "height": "5'10\"",
+          "weight": "163 lbs",
+          "hometown": "Santa Barbara, CA",
+          "class_year": "2nd Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/omar-alsabagh/10255"
+        },
+        {
+          "name": "Nico Medina",
+          "number": "21",
+          "position": "M",
+          "height": "5'7\"",
+          "weight": "140 lbs",
+          "hometown": "Placentia, CA",
+          "class_year": "4th Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/nico-medina/10267"
+        },
+        {
+          "name": "Will Kelly",
+          "number": "22",
+          "position": "M",
+          "height": "5'8\"",
+          "weight": "160 lbs",
+          "hometown": "Brighton, NY",
+          "class_year": "Fifth Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/will-kelly/10303"
+        },
+        {
+          "name": "Luciano Zuniga",
+          "number": "23",
+          "position": "M",
+          "height": "5'10\"",
+          "weight": "165 lbs",
+          "hometown": "Miami, FL",
+          "class_year": "1st Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/luciano-zuniga/10302"
+        },
+        {
+          "name": "Connor Russ",
+          "number": "24",
+          "position": "D",
+          "height": "6'3\"",
+          "weight": "180 lbs",
+          "hometown": "Charlotte, NC",
+          "class_year": "2nd Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/connor-russ/10273"
+        },
+        {
+          "name": "Rocky Perez",
+          "number": "25",
+          "position": "M",
+          "height": "5'11\"",
+          "weight": "175 lbs",
+          "hometown": "El Paso, TX",
+          "class_year": "Fifth Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/rocky-perez/10311"
+        },
+        {
+          "name": "Miguel Sosa",
+          "number": "26",
+          "position": "M",
+          "height": "5'9\"",
+          "weight": "160 lbs",
+          "hometown": "Miami, FL",
+          "class_year": "3rd Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/miguel-sosa/10742"
+        },
+        {
+          "name": "Webb Kosich",
+          "number": "27",
+          "position": "M",
+          "height": "5'11\"",
+          "weight": "170 lbs",
+          "hometown": "Hollywood, MD",
+          "class_year": "Fifth Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/webb-kosich/10308"
+        },
+        {
+          "name": "Diego Pe\u00f1a",
+          "number": "30",
+          "position": "GK",
+          "height": "6'0\"",
+          "weight": "170 lbs",
+          "hometown": "Santo Domingo, Dominican Republic",
+          "class_year": "2nd Year",
+          "source_url": "https://gwsports.com/sports/mens-soccer/roster/diego-pea/10269"
+        }
+      ]
+    },
+    "la-salle": {
+      "programme": "la-salle",
+      "source_url": "https://goexplorers.com/sports/mens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Kiernan Webb",
+          "number": "1",
+          "position": "Goalkeeper",
+          "height": "6'3\"",
+          "weight": "210 lbs",
+          "hometown": "Philadelphia, Pa.",
+          "class_year": "Senior",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/kiernan-webb/13571"
+        },
+        {
+          "name": "Pascal Leatherman",
+          "number": "2",
+          "position": "Defender",
+          "height": "5'8\"",
+          "weight": "145 lbs",
+          "hometown": "Saint Paul, Minn.",
+          "class_year": "Sophomore",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/pascal-leatherman/13577"
+        },
+        {
+          "name": "Zeke Zambrano",
+          "number": "3",
+          "position": "Defender",
+          "height": "5'11\"",
+          "weight": "155 lbs",
+          "hometown": "Austin, Texas",
+          "class_year": "Senior",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/zeke-zambrano/13573"
+        },
+        {
+          "name": "Lucas Kelley",
+          "number": "4",
+          "position": "Defender",
+          "height": "6'3\"",
+          "weight": "195 lbs",
+          "hometown": "Bristol, Vt.",
+          "class_year": "Senior",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/lucas-kelley/13563"
+        },
+        {
+          "name": "Yordan Torres",
+          "number": "6",
+          "position": "Defender",
+          "height": "5'9\"",
+          "weight": "175 lbs",
+          "hometown": "Rockledge, Fla.",
+          "class_year": "Junior",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/yordan-torres/13797"
+        },
+        {
+          "name": "Michael Ziegler",
+          "number": "7",
+          "position": "Forward",
+          "height": "5'7\"",
+          "weight": "145 lbs",
+          "hometown": "Phoenixville, Pa.",
+          "class_year": "Sophomore",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/michael-ziegler/13574"
+        },
+        {
+          "name": "Alberto \"Toto\" Esquivel Meza",
+          "number": "8",
+          "position": "Midfielder",
+          "height": "5'11\"",
+          "weight": "175 lbs",
+          "hometown": "San Jose, Costa Rica",
+          "class_year": "Junior",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/alberto-toto-esquivel-meza/13560"
+        },
+        {
+          "name": "Julius de Vries",
+          "number": "9",
+          "position": "Forward",
+          "height": "6'4\"",
+          "weight": "200 lbs",
+          "hometown": "Amsterdam, Netherlands",
+          "class_year": "Sophomore",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/julius-de-vries/13558"
+        },
+        {
+          "name": "Kyrese Lynch-Bailey",
+          "number": "10",
+          "position": "Forward / Midfielder",
+          "height": "5'8\"",
+          "weight": "135 lbs",
+          "hometown": "Brampton, Ontario, Canada",
+          "class_year": "Senior",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/kyrese-lynch-bailey/13566"
+        },
+        {
+          "name": "Mardig Alajajian",
+          "number": "11",
+          "position": "Forward / Midfielder",
+          "height": "5'10\"",
+          "weight": "170 lbs",
+          "hometown": "West Bloomfield, Mich.",
+          "class_year": "Graduate Student",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/mardig-alajajian/13551"
+        },
+        {
+          "name": "Samir Bloise",
+          "number": "12",
+          "position": "Goalkeeper",
+          "height": "6'0\"",
+          "weight": "180 lbs",
+          "hometown": "Lauderhill, Fla.",
+          "class_year": "Sophomore",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/samir-bloise/13771"
+        },
+        {
+          "name": "Grayson Parks",
+          "number": "13",
+          "position": "Midfielder",
+          "height": "5'10\"",
+          "weight": "170 lbs",
+          "hometown": "Island Heights, N.J.",
+          "class_year": "Senior",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/grayson-parks/13770"
+        },
+        {
+          "name": "Marcos Villanueva",
+          "number": "14",
+          "position": "Midfielder",
+          "height": "6'1\"",
+          "weight": "175 lbs",
+          "hometown": "San Juan, Puerto Rico",
+          "class_year": "Junior",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/marcos-villanueva/13772"
+        },
+        {
+          "name": "Jonathan Daniel",
+          "number": "15",
+          "position": "Forward / Midfielder",
+          "height": "5'11\"",
+          "weight": "165 lbs",
+          "hometown": "Middletown, Del.",
+          "class_year": "Senior",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/jonathan-daniel/13557"
+        },
+        {
+          "name": "Ajahni Carter",
+          "number": "16",
+          "position": "Defender",
+          "height": "5'4\"",
+          "weight": "150 lbs",
+          "hometown": "Toronto, Ontario, Canada",
+          "class_year": "Freshman",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/ajahni-carter/13773"
+        },
+        {
+          "name": "Ismael Deme",
+          "number": "17",
+          "position": "Midfielder",
+          "height": "5'10\"",
+          "weight": "155 lbs",
+          "hometown": "Ouagadougou, Burkina Faso",
+          "class_year": "Senior",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/ismael-deme/13559"
+        },
+        {
+          "name": "Keiji Sugiura",
+          "number": "18",
+          "position": "Midfielder",
+          "height": "5'8\"",
+          "weight": "145 lbs",
+          "hometown": "Tokyo, Japan",
+          "class_year": "Senior",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/keiji-sugiura/13767"
+        },
+        {
+          "name": "Reed Pickett",
+          "number": "19",
+          "position": "Midfielder",
+          "height": "6'1\"",
+          "weight": "180 lbs",
+          "hometown": "Seattle, Wash.",
+          "class_year": "Freshman",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/reed-pickett/13765"
+        },
+        {
+          "name": "Alexandru Zama",
+          "number": "20",
+          "position": "Forward / Midfielder",
+          "height": "5'10\"",
+          "weight": "150 lbs",
+          "hometown": "Warminster, Pa.",
+          "class_year": "Senior",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/alexandru-zama/13572"
+        },
+        {
+          "name": "Dominic Brady",
+          "number": "21",
+          "position": "Midfielder",
+          "height": "5'7\"",
+          "weight": "140 lbs",
+          "hometown": "Glasgow, Scotland",
+          "class_year": "Sophomore",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/dominic-brady/13769"
+        },
+        {
+          "name": "Jeremy Ogango",
+          "number": "22",
+          "position": "Defender / Midfielder",
+          "height": "5'11\"",
+          "weight": "170 lbs",
+          "hometown": "Nairobi, Kenya",
+          "class_year": "Graduate Student",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/jeremy-ogango/13764"
+        },
+        {
+          "name": "Daniel Lainsbury",
+          "number": "23",
+          "position": "Forward",
+          "height": "6'0\"",
+          "weight": "170 lbs",
+          "hometown": "St. Louis Park, Minn.",
+          "class_year": "Senior",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/daniel-lainsbury/13564"
+        },
+        {
+          "name": "Pedro Amadou",
+          "number": "24",
+          "position": "Forward",
+          "height": "6'2\"",
+          "weight": "190 lbs",
+          "hometown": "Fontenay Sous Bois, France",
+          "class_year": "Junior",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/pedro-amadou/13552"
+        },
+        {
+          "name": "Sasha Rabala",
+          "number": "25",
+          "position": "Defender",
+          "height": "6'5\"",
+          "weight": "185 lbs",
+          "hometown": "Nairobi, Kenya",
+          "class_year": "Senior",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/sasha-rabala/13569"
+        },
+        {
+          "name": "Luca Brems-Stamov",
+          "number": "26",
+          "position": "Defender",
+          "height": "6'1\"",
+          "weight": "190 lbs",
+          "hometown": "Kongens Lyngby, Denmark",
+          "class_year": "Freshman",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/luca-brems-stamov/13768"
+        },
+        {
+          "name": "Sebastian Gubi",
+          "number": "28",
+          "position": "Defender / Midfielder",
+          "height": "6'0\"",
+          "weight": "170 lbs",
+          "hometown": "Taarnby, Denmark",
+          "class_year": "Freshman",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/sebastian-gubi/13798"
+        },
+        {
+          "name": "Gabe Faust",
+          "number": "29",
+          "position": "Forward",
+          "height": "6'3\"",
+          "weight": "180 lbs",
+          "hometown": "Cherry Hill, N.J.",
+          "class_year": "Junior",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/gabe-faust/13575"
+        },
+        {
+          "name": "Sean Ellis",
+          "number": "31",
+          "position": "Goalkeeper",
+          "height": "6'2\"",
+          "weight": "180 lbs",
+          "hometown": "Detroit, MI",
+          "class_year": "Graduate Student",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/sean-ellis/13920"
+        },
+        {
+          "name": "Maximilian Retzer",
+          "number": "32",
+          "position": "Goalkeeper",
+          "height": "6'2\"",
+          "weight": "190 lbs",
+          "hometown": "Landshut, Germany",
+          "class_year": "Graduate Student",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/maximilian-retzer/13766"
+        },
+        {
+          "name": "Andy McClintock",
+          "number": "33",
+          "position": "Midfielder",
+          "height": "5'11\"",
+          "weight": "170 lbs",
+          "hometown": "Littlestown, Pa.",
+          "class_year": "Freshman",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/andy-mcclintock/13763"
+        },
+        {
+          "name": "Davin Millisock",
+          "number": "34",
+          "position": "Forward",
+          "height": "5'6\"",
+          "weight": "150 lbs",
+          "hometown": "Fleetwood, Pa.",
+          "class_year": "Sophomore",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/davin-millisock/13567"
+        },
+        {
+          "name": "Emmanuel Tamen",
+          "number": "35",
+          "position": "Defender",
+          "height": "6'6\"",
+          "weight": "230 lbs",
+          "hometown": "Washington, D.C.",
+          "class_year": "Junior",
+          "source_url": "https://goexplorers.com/sports/mens-soccer/roster/emmanuel-tamen/13578"
+        }
+      ]
+    },
+    "loyola-chicago": {
+      "programme": "loyola-chicago",
+      "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Maxwell Ionita",
+          "number": "0",
+          "height": "6'3\"",
+          "hometown": "Chicago, Ill.",
+          "position": "GK",
+          "class_year": "Junior",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/maxwell-ionita/3347"
+        },
+        {
+          "name": "Gabe Velasco",
+          "number": "1",
+          "position": "GK",
+          "height": "6'3\"",
+          "hometown": "Raleigh, N.C.",
+          "class_year": "Senior",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/gabe-velasco/3243"
+        },
+        {
+          "name": "Braeden Wright",
+          "number": "2",
+          "height": "5'9\"",
+          "hometown": "St. Petersburg, Fla.",
+          "position": "D/MF",
+          "class_year": "Fifth Year",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/braeden-wright/3346"
+        },
+        {
+          "name": "Cohen Havill",
+          "number": "3",
+          "height": "5'10\"",
+          "hometown": "Evansville, Ind.",
+          "position": "D",
+          "class_year": "Freshman",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/cohen-havill/3349"
+        },
+        {
+          "name": "Daniel Firs",
+          "number": "4",
+          "position": "D",
+          "height": "6'2\"",
+          "hometown": "Park Ridge, Ill.",
+          "class_year": "Junior",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/daniel-firs/3229"
+        },
+        {
+          "name": "Ameer Abdullah",
+          "number": "5",
+          "position": "D",
+          "height": "6'2\"",
+          "hometown": "Chicago, Ill.",
+          "class_year": "Senior",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/ameer-abdullah/3226"
+        },
+        {
+          "name": "Nicholas Roe",
+          "number": "7",
+          "position": "D",
+          "height": "6'0\"",
+          "hometown": "Naperville, Ill.",
+          "class_year": "Junior",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/nicholas-roe/3240"
+        },
+        {
+          "name": "Seth Stewart",
+          "number": "8",
+          "position": "MF",
+          "height": "5'9\"",
+          "hometown": "Oswego, Ill.",
+          "class_year": "Fifth Year",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/seth-stewart/3259"
+        },
+        {
+          "name": "Petar Janjic",
+          "number": "9",
+          "position": "F",
+          "height": "6'0\"",
+          "hometown": "Elmhurst, Ill.",
+          "class_year": "Senior",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/petar-janjic/3233"
+        },
+        {
+          "name": "Luka Ivancic",
+          "number": "10",
+          "position": "MF",
+          "height": "5'11\"",
+          "hometown": "Chicago, Ill.",
+          "class_year": "Junior",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/luka-ivancic/3232"
+        },
+        {
+          "name": "Jack McFeely",
+          "number": "11",
+          "position": "MF",
+          "height": "5'9\"",
+          "hometown": "Derry, Northern Ireland",
+          "class_year": "Senior",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/jack-mcfeely/3235"
+        },
+        {
+          "name": "Chimnosoh Okeke",
+          "number": "12",
+          "height": "5'9\"",
+          "hometown": "Laval, Quebec, Canada",
+          "position": "F",
+          "class_year": "Sophomore",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/chimnosoh-okeke/3345"
+        },
+        {
+          "name": "Shane Howard",
+          "number": "13",
+          "height": "5'8\"",
+          "hometown": "Los Angeles, Calif.",
+          "position": "F",
+          "class_year": "Freshman",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/shane-howard/3352"
+        },
+        {
+          "name": "Nico Kehayov",
+          "number": "14",
+          "height": "5'11\"",
+          "hometown": "Northbrook, Ill.",
+          "position": "MF",
+          "class_year": "Freshman",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/nico-kehayov/3348"
+        },
+        {
+          "name": "Caden Lee",
+          "number": "15",
+          "height": "5'10\"",
+          "hometown": "Las Vegas, Nev.",
+          "position": "MF",
+          "class_year": "Freshman",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/caden-lee/3350"
+        },
+        {
+          "name": "Arved von Vegesack",
+          "number": "16",
+          "position": "F",
+          "height": "6'2\"",
+          "hometown": "Stockholm, Sweden",
+          "class_year": "Junior",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/arved-von-vegesack/3242"
+        },
+        {
+          "name": "Riley Ferraro",
+          "number": "17",
+          "height": "5'10\"",
+          "hometown": "Vancouver, British Columbia, Canada",
+          "position": "F",
+          "class_year": "Sophomore",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/riley-ferraro/3344"
+        },
+        {
+          "name": "Benji Chavarria",
+          "number": "19",
+          "position": "MF/F",
+          "height": "5'8\"",
+          "hometown": "Elkhart, Ind.",
+          "class_year": "Junior",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/benji-chavarria/3228"
+        },
+        {
+          "name": "Grant  Bailey",
+          "number": "20",
+          "position": "D",
+          "height": "5'9\"",
+          "hometown": "Carmel, Ind.",
+          "class_year": "Senior",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/grant-bailey/3227"
+        },
+        {
+          "name": "Mateusz Drazek",
+          "number": "23",
+          "position": "MF",
+          "height": "5'9\"",
+          "hometown": "Des Plaines, Ill.",
+          "class_year": "Freshman",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/mateusz-drazek/3245"
+        },
+        {
+          "name": "Charlie Lacy",
+          "number": "24",
+          "position": "D",
+          "height": "5'9\"",
+          "hometown": "Ann Arbor, Mich.",
+          "class_year": "Junior",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/charlie-lacy/3234"
+        },
+        {
+          "name": "Lucas Webb",
+          "number": "25",
+          "height": "5'11\"",
+          "hometown": "St. Louis, Mo.",
+          "position": "D",
+          "class_year": "Freshman",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/lucas-webb/3351"
+        },
+        {
+          "name": "Zach Dunne",
+          "number": "26",
+          "position": "MF/F",
+          "height": "5'7\"",
+          "hometown": "Cork, Ireland",
+          "class_year": "Junior",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/zach-dunne/3246"
+        },
+        {
+          "name": "Liam O'Donoghue",
+          "number": "27",
+          "position": "D",
+          "height": "6'2\"",
+          "hometown": "Geneva, Ill.",
+          "class_year": "Junior",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/liam-o-donoghue/3236"
+        },
+        {
+          "name": "Foster Hayes",
+          "number": "28",
+          "position": "MF/F",
+          "height": "5'11\"",
+          "hometown": "Carbondale, Colo.",
+          "class_year": "Sophomore",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/foster-hayes/3230"
+        },
+        {
+          "name": "Chase Herbel",
+          "number": "29",
+          "position": "D/MF",
+          "height": "6'0\"",
+          "hometown": "Wheaton, Ill.",
+          "class_year": "Sophomore",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/chase-herbel/3231"
+        },
+        {
+          "name": "Frankie Pinto",
+          "number": "30",
+          "position": "GK",
+          "height": "5'9\"",
+          "hometown": "Park Ridge, Ill.",
+          "class_year": "Junior",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/frankie-pinto/3238"
+        },
+        {
+          "name": "Ori Yedlin",
+          "number": "31",
+          "position": "GK",
+          "height": "5'9\"",
+          "hometown": "Northbrook, Ill.",
+          "class_year": "Freshman",
+          "source_url": "https://loyolaramblers.com/sports/mens-soccer/roster/ori-yedlin/3244"
+        }
+      ]
+    },
+    "rhode-island": {
+      "programme": "rhode-island",
+      "source_url": "https://gorhody.com/sports/mens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Jack Maynes",
+          "number": "0",
+          "position": "Goalkeeper",
+          "height": "6'1\"",
+          "weight": "175 lbs",
+          "hometown": "Hanover, N.H.",
+          "class_year": "4th Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/jack-maynes/9935"
+        },
+        {
+          "name": "William Synnestvedt",
+          "number": "1",
+          "position": "Goalkeeper",
+          "height": "6'2\"",
+          "weight": "186 lbs",
+          "hometown": "Cohasset, MA",
+          "class_year": "3rd Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/william-synnestvedt/9933"
+        },
+        {
+          "name": "Collin Martin",
+          "number": "2",
+          "position": "Defender",
+          "height": "6'3\"",
+          "weight": "189 lbs",
+          "hometown": "Glastonbury, Conn.",
+          "class_year": "3rd Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/collin-martin/9931"
+        },
+        {
+          "name": "Cassidy Tanddo",
+          "number": "3",
+          "position": "Defender",
+          "height": "5'11\"",
+          "weight": "170 lbs",
+          "hometown": "Wanniassa, Australia",
+          "class_year": "3rd Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/cassidy-tanddo/9936"
+        },
+        {
+          "name": "Tim Huhnholz",
+          "number": "4",
+          "position": "Defender",
+          "height": "6'4\"",
+          "weight": "185 lbs",
+          "hometown": "Amberg, Germany",
+          "class_year": "3rd Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/tim-huhnholz/9929"
+        },
+        {
+          "name": "Maksim Kalina",
+          "number": "5",
+          "position": "Defender",
+          "height": "6'2\"",
+          "weight": "178 lbs",
+          "hometown": "Calgary, Alberta",
+          "class_year": "2nd Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/maksim-kalina/9930"
+        },
+        {
+          "name": "Anyole Peter",
+          "number": "6",
+          "position": "Midfielder",
+          "height": "6'1\"",
+          "weight": "172 lbs",
+          "hometown": "Edmonton, Alberta",
+          "class_year": "1st Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/anyole-peter/9937"
+        },
+        {
+          "name": "Luca Krause",
+          "number": "7",
+          "position": "Forward",
+          "height": "5'11\"",
+          "weight": "180 lbs",
+          "hometown": "Dresdan, Germany",
+          "class_year": "2nd Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/luca-krause/9938"
+        },
+        {
+          "name": "Tiago Barriguinha",
+          "number": "8",
+          "position": "Midfielder",
+          "height": "6'1\"",
+          "weight": "172 lbs",
+          "hometown": "Alverca, Portugal",
+          "class_year": "Fifth Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/tiago-barriguinha/9921"
+        },
+        {
+          "name": "Sinan Bruning",
+          "number": "10",
+          "position": "Midfielder",
+          "height": "5'11\"",
+          "weight": "160 lbs",
+          "hometown": "Bremen, Germany",
+          "class_year": "2nd Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/sinan-bruning/9922"
+        },
+        {
+          "name": "Everson Goglia",
+          "number": "11",
+          "position": "Midfielder",
+          "height": "5'10\"",
+          "weight": "157 lbs",
+          "hometown": "Bristol, R.I.",
+          "class_year": "2nd Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/everson-goglia/9926"
+        },
+        {
+          "name": "Lou Forster",
+          "number": "13",
+          "position": "Forward",
+          "height": "5'10\"",
+          "weight": "155 lbs",
+          "hometown": "San Francisco, Calif.",
+          "class_year": "2nd Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/lou-forster/9923"
+        },
+        {
+          "name": "Liam Kuemmritz",
+          "number": "14",
+          "position": "Midfielder",
+          "height": "5'11\"",
+          "weight": "160 lbs",
+          "hometown": "Bremen, Germany",
+          "class_year": "3rd Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/liam-kuemmritz/9939"
+        },
+        {
+          "name": "Jackson Cofran",
+          "number": "15",
+          "position": "Midfielder",
+          "height": "5'9\"",
+          "weight": "145 lbs",
+          "hometown": "Mullica Hill, N.J.",
+          "class_year": "1st Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/jackson-cofran/9940"
+        },
+        {
+          "name": "Luca Mueller",
+          "number": "16",
+          "position": "Defender/Midfielder",
+          "height": "6'0\"",
+          "weight": "162 lbs",
+          "hometown": "Jena, Germany",
+          "class_year": "1st Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/luca-mueller/9941"
+        },
+        {
+          "name": "Jonny Osinski",
+          "number": "17",
+          "position": "Defender",
+          "height": "6'0\"",
+          "weight": "178 lbs",
+          "hometown": "Milton, Mass.",
+          "class_year": "1st Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/jonny-osinski/9942"
+        },
+        {
+          "name": "Theo Harris",
+          "number": "18",
+          "position": "Forward",
+          "height": "6'2\"",
+          "weight": "184 lbs",
+          "hometown": "Carolina, R.I.",
+          "class_year": "3rd Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/theo-harris/9927"
+        },
+        {
+          "name": "Lean Husterer",
+          "number": "19",
+          "position": "Defender",
+          "height": "6'3\"",
+          "weight": "176 lbs",
+          "hometown": "Frankfurt, Germany",
+          "class_year": "1st Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/lean-husterer/9943"
+        },
+        {
+          "name": "Connor Froberg",
+          "number": "20",
+          "position": "Midfielder",
+          "height": "5'8\"",
+          "weight": "158 lbs",
+          "hometown": "Jamestown, R.I.",
+          "class_year": "4th Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/connor-froberg/9924"
+        },
+        {
+          "name": "Brett Schwab",
+          "number": "21",
+          "position": "Defender/Midfielder",
+          "height": "6'0\"",
+          "weight": "160 lbs",
+          "hometown": "East Providence, R.I.",
+          "class_year": "Fifth Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/brett-schwab/9932"
+        },
+        {
+          "name": "Ryder Hayes",
+          "number": "22",
+          "position": "Midfielder",
+          "height": "6'0\"",
+          "weight": "165 lbs",
+          "hometown": "Hanover, N.H.",
+          "class_year": "2nd Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/ryder-hayes/9928"
+        },
+        {
+          "name": "Vasili Galiotos",
+          "number": "23",
+          "position": "Defender/Midfielder",
+          "height": "5'10\"",
+          "weight": "160 lbs",
+          "hometown": "Carmel, Ind.",
+          "class_year": "1st Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/vasili-galiotos/9944"
+        },
+        {
+          "name": "Daniel Goba",
+          "number": "27",
+          "position": "Forward",
+          "height": "6'4\"",
+          "weight": "187 lbs",
+          "hometown": "North Kingstown, R.I.",
+          "class_year": "4th Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/daniel-goba/9925"
+        },
+        {
+          "name": "Nate Yurkovic",
+          "number": "28",
+          "position": "Defender",
+          "height": "5'9\"",
+          "weight": "156 lbs",
+          "hometown": "Clinton, Mass.",
+          "class_year": "4th Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/nate-yurkovic/9934"
+        },
+        {
+          "name": "Matthew Droggitis",
+          "number": "29",
+          "position": "Goalkeeper",
+          "height": "6'1\"",
+          "weight": "173 lbs",
+          "hometown": "Peabody, Mass.",
+          "class_year": "1st Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/matthew-droggitis/9945"
+        },
+        {
+          "name": "Julian Monteiro",
+          "number": "31",
+          "position": "Defender",
+          "height": "5'8\"",
+          "weight": "152 lbs",
+          "hometown": "East Providence, R.I.",
+          "class_year": "1st Year",
+          "source_url": "https://gorhody.com/sports/mens-soccer/roster/julian-monteiro/9946"
+        }
+      ]
+    },
+    "saint-josephs": {
+      "programme": "saint-josephs",
+      "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Alex Smith",
+          "number": "0",
+          "position": "Goalkeeper",
+          "height": "6'2\"",
+          "hometown": "Devon, Pa.",
+          "class_year": "Freshman",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/alex-smith/10552"
+        },
+        {
+          "name": "Peter Morano",
+          "number": "00",
+          "position": "Goalkeeper",
+          "height": "6'1\"",
+          "hometown": "Chapel Hill, N.C.",
+          "class_year": "Junior",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/peter-morano/10551"
+        },
+        {
+          "name": "Cooper Jennings",
+          "number": "1",
+          "position": "Goalkeeper",
+          "height": "6'1\"",
+          "hometown": "Murrells Inlet, S.C.",
+          "class_year": "Redshirt Senior",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/cooper-jennings/10456"
+        },
+        {
+          "name": "Jake Ross",
+          "number": "2",
+          "position": "Forward",
+          "height": "6'5\"",
+          "hometown": "Wilmington, Del.",
+          "class_year": "Senior",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/jake-ross/10467"
+        },
+        {
+          "name": "Diego Avelar",
+          "number": "3",
+          "position": "Defender",
+          "height": "6'0\"",
+          "hometown": "Aldie, Va.",
+          "class_year": "Senior",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/diego-avelar/10446"
+        },
+        {
+          "name": "Nick Hanushchak",
+          "number": "4",
+          "position": "Defender",
+          "height": "6'4\"",
+          "hometown": "Lviv, Ukraine",
+          "class_year": "Sophomore",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/nick-hanushchak/10454"
+        },
+        {
+          "name": "Mason Csapo",
+          "number": "5",
+          "position": "Midfielder",
+          "height": "6'0\"",
+          "hometown": "Bear, Del.",
+          "class_year": "Sophomore",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/mason-csapo/10451"
+        },
+        {
+          "name": "Rob Myrick",
+          "number": "6",
+          "position": "Defender",
+          "height": "5'10\"",
+          "hometown": "Philadelphia, Pa.",
+          "class_year": "Redshirt Junior",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/rob-myrick/10474"
+        },
+        {
+          "name": "Sebastian Perez-Gasiba",
+          "number": "7",
+          "position": "Midfielder/Forward",
+          "height": "5'8\"",
+          "hometown": "Media, Pa.",
+          "class_year": "Junior",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/sebastian-perez-gasiba/10464"
+        },
+        {
+          "name": "Conor Clair",
+          "number": "8",
+          "position": "Midfielder",
+          "height": "6'0\"",
+          "hometown": "Chalfont, Pa.",
+          "class_year": "Junior",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/conor-clair/10473"
+        },
+        {
+          "name": "Eddie Krupski",
+          "number": "9",
+          "position": "Forward",
+          "height": "6'3\"",
+          "hometown": "Clark, N.J.",
+          "class_year": "Junior",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/eddie-krupski/10457"
+        },
+        {
+          "name": "Patrick Vani",
+          "number": "10",
+          "position": "Midfielder/Forward",
+          "height": "6'0\"",
+          "hometown": "Toronto, Ontario",
+          "class_year": "Senior",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/patrick-vani/10472"
+        },
+        {
+          "name": "Luke Johnson",
+          "number": "11",
+          "position": "Forward/Midfielder",
+          "height": "6'0\"",
+          "hometown": "Harrisburg, Pa.",
+          "class_year": "Fifth Year",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/luke-johnson/10689"
+        },
+        {
+          "name": "Mark Mazzoni",
+          "number": "12",
+          "position": "Defender/Forward",
+          "height": "5'11\"",
+          "hometown": "Southampton, Pa.",
+          "class_year": "Sophomore",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/mark-mazzoni/10459"
+        },
+        {
+          "name": "Oskar Steinicke",
+          "number": "13",
+          "position": "Forward",
+          "height": "6'1\"",
+          "hometown": "Silkeborg, Denmark",
+          "class_year": "Junior",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/oskar-steinicke/10468"
+        },
+        {
+          "name": "Finn Murray",
+          "number": "14",
+          "position": "Midfielder",
+          "height": "5'11\"",
+          "hometown": "Galway, Ireland",
+          "class_year": "Sophomore",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/finn-murray/10462"
+        },
+        {
+          "name": "Aidan Donnelly",
+          "number": "15",
+          "position": "Forward",
+          "height": "6'0\"",
+          "hometown": "Manahawkin, N.J.",
+          "class_year": "Sophomore",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/aidan-donnelly/10452"
+        },
+        {
+          "name": "Matteo Mazzotta",
+          "number": "16",
+          "position": "Midfielder",
+          "height": "5'10\"",
+          "hometown": "Rome, Italy",
+          "class_year": "Graduate Student",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/matteo-mazzotta/10460"
+        },
+        {
+          "name": "Tommy Regan",
+          "number": "17",
+          "position": "Forward/Midfielder",
+          "height": "5'8\"",
+          "hometown": "Ambler, Pa.",
+          "class_year": "Sophomore",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/tommy-regan/10466"
+        },
+        {
+          "name": "Aldo Hernandez",
+          "number": "19",
+          "position": "Midfielder",
+          "height": "6'0\"",
+          "hometown": "Harbeson, Del.",
+          "class_year": "Sophomore",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/aldo-hernandez/10455"
+        },
+        {
+          "name": "Logan LaMaina",
+          "number": "21",
+          "position": "Defender",
+          "height": "6'0\"",
+          "hometown": "Sellersville, Pa.",
+          "class_year": "Sophomore",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/logan-lamaina/10553"
+        },
+        {
+          "name": "Herman Tveit-Reffsgaard",
+          "number": "22",
+          "position": "Defender",
+          "height": "6'1\"",
+          "hometown": "Hvaler, Norway",
+          "class_year": "Senior",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/herman-tveit-reffsgaard/10470"
+        },
+        {
+          "name": "Ronan Sullivan",
+          "number": "23",
+          "position": "Forward",
+          "height": "5'10\"",
+          "hometown": "Philadelphia, Pa.",
+          "class_year": "Freshman",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/ronan-sullivan/10554"
+        },
+        {
+          "name": "Sean Boyle",
+          "number": "24",
+          "position": "Defender",
+          "height": "6'5\"",
+          "hometown": "Havertown, Pa.",
+          "class_year": "Senior",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/sean-boyle/10448"
+        },
+        {
+          "name": "Marko Mari\u0107",
+          "number": "25",
+          "position": "Midfielder",
+          "height": "5'11\"",
+          "hometown": "Tampa, Fla.",
+          "class_year": "Freshman",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/marko-mari-263-/10555"
+        },
+        {
+          "name": "Harrison Carolan",
+          "number": "26",
+          "position": "Defender",
+          "height": "5'10\"",
+          "hometown": "Park Ridge, N.J.",
+          "class_year": "Sophomore",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/harrison-carolan/10450"
+        },
+        {
+          "name": "Connor Winters",
+          "number": "28",
+          "position": "Midfielder",
+          "height": "5'8\"",
+          "hometown": "Medford, N.J.",
+          "class_year": "Sophomore",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/connor-winters/10565"
+        },
+        {
+          "name": "Cristian Oliveira",
+          "number": "29",
+          "position": "Forward/Midfielder",
+          "height": "5'8\"",
+          "hometown": "Union, N.J.",
+          "class_year": "Sophomore",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/cristian-oliveira/10463"
+        },
+        {
+          "name": "Charlie Undorf",
+          "number": "30",
+          "position": "Forward",
+          "height": "6'2\"",
+          "hometown": "West Chester, Pa.",
+          "class_year": "Sophomore",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/charlie-undorf/10471"
+        },
+        {
+          "name": "Sebastian Delacruz",
+          "number": "32",
+          "position": "Defender/Forward",
+          "height": "5'11\"",
+          "hometown": "Weston, Fla.",
+          "class_year": "Junior",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/sebastian-delacruz/10556"
+        },
+        {
+          "name": "Declan Sullivan",
+          "number": "33",
+          "position": "Defender",
+          "height": "5'8\"",
+          "hometown": "Philadelphia, Pa.",
+          "class_year": "Freshman",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/declan-sullivan/10557"
+        },
+        {
+          "name": "Juan Correa",
+          "number": "34",
+          "position": "Defender/Midfielder",
+          "height": "5'9\"",
+          "hometown": "Bensalem, Pa.",
+          "class_year": "Freshman",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/juan-correa/10558"
+        },
+        {
+          "name": "Chase Lee",
+          "number": "35",
+          "position": "Forward",
+          "height": "5'7\"",
+          "hometown": "Lansdale, Pa.",
+          "class_year": "Freshman",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/chase-lee/10559"
+        },
+        {
+          "name": "Will Powers",
+          "number": "37",
+          "position": "Defender",
+          "height": "5'8\"",
+          "hometown": "Lower Gwynedd, Pa.",
+          "class_year": "Freshman",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/will-powers/10560"
+        },
+        {
+          "name": "Carter Courtney",
+          "number": "38",
+          "position": "Midfielder",
+          "height": "5'8\"",
+          "hometown": "Downingtown, Pa.",
+          "class_year": "Freshman",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/carter-courtney/10561"
+        },
+        {
+          "name": "Colin Priestley",
+          "number": "39",
+          "position": "Defender",
+          "height": "6'1\"",
+          "hometown": "Havertown, Pa.",
+          "class_year": "Freshman",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/colin-priestley/10562"
+        },
+        {
+          "name": "Timmy Comey",
+          "number": "40",
+          "position": "Midfielder/Defender",
+          "height": "5'8\"",
+          "hometown": "Philadelphia, Pa.",
+          "class_year": "Freshman",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/timmy-comey/10563"
+        },
+        {
+          "name": "Will Turk",
+          "number": "88",
+          "position": "Goalkeeper",
+          "height": "6'0\"",
+          "hometown": "Philadelphia, Pa.",
+          "class_year": "Sophomore",
+          "source_url": "https://sjuhawks.com/sports/mens-soccer/roster/will-turk/10564"
+        }
+      ]
+    },
+    "saint-louis": {
+      "programme": "saint-louis",
+      "source_url": "https://slubillikens.com/sports/mens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Connor Dillman",
+          "number": "0",
+          "position": "Goalkeeper",
+          "height": "6'2\"",
+          "hometown": "Springfield, Ill.",
+          "class_year": "Junior",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/connor-dillman/13656"
+        },
+        {
+          "name": "Christian Herluf",
+          "number": "1",
+          "position": "Goalkeeper",
+          "height": "6'3\"",
+          "hometown": "Odder, Denmark",
+          "class_year": "Senior",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/christian-herluf/13675"
+        },
+        {
+          "name": "Carlos Leatherman",
+          "number": "2",
+          "position": "Defender",
+          "height": "5'5\"",
+          "hometown": "Saint Paul, Minn.",
+          "class_year": "Senior",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/carlos-leatherman/13665"
+        },
+        {
+          "name": "Gershon Henry",
+          "number": "3",
+          "position": "Defender",
+          "height": "6'1\"",
+          "hometown": "Portage, Mich.",
+          "class_year": "Junior",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/gershon-henry/13661"
+        },
+        {
+          "name": "George Wyatt",
+          "number": "4",
+          "position": "Defender",
+          "height": "6'2\"",
+          "hometown": "Bury, England",
+          "class_year": "Fifth Year",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/george-wyatt/13680"
+        },
+        {
+          "name": "JC Cortez",
+          "number": "5",
+          "position": "Defender",
+          "height": "6'0\"",
+          "hometown": "Ridgewood, N.J.",
+          "class_year": "Fifth Year",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/jc-cortez/13652"
+        },
+        {
+          "name": "Joao Pereira",
+          "number": "6",
+          "position": "Defender",
+          "height": "6'5\"",
+          "hometown": "Lisbon, Portugal",
+          "class_year": "Freshman",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/joao-pereira/13677"
+        },
+        {
+          "name": "Alander Soares",
+          "number": "7",
+          "position": "Midfielder",
+          "height": "5'10\"",
+          "hometown": "Caxias do Sul, Brazil",
+          "class_year": "Junior",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/alander-soares/13679"
+        },
+        {
+          "name": "Sam Coughlan",
+          "number": "8",
+          "position": "Midfielder",
+          "height": "6'1\"",
+          "hometown": "Liverpool, England",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/sam-coughlan/13653"
+        },
+        {
+          "name": "Tanner Anderson",
+          "number": "9",
+          "position": "Midfielder",
+          "height": "6'1\"",
+          "hometown": "Quincy, Ill.",
+          "class_year": "Senior",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/tanner-anderson/13650"
+        },
+        {
+          "name": "Jack DiMaria",
+          "number": "10",
+          "position": "Midfielder",
+          "height": "5'11\"",
+          "hometown": "St. Louis, Mo.",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/jack-dimaria/13657"
+        },
+        {
+          "name": "Xavi O'Neil",
+          "number": "11",
+          "position": "Midfielder",
+          "height": "5'11\"",
+          "hometown": "Herndon, Va.",
+          "class_year": "Senior",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/xavi-o-neil/13667"
+        },
+        {
+          "name": "Kai Jaeger",
+          "number": "13",
+          "position": "Defender",
+          "height": "6'0\"",
+          "hometown": "Springfield, Mo.",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/kai-jaeger/13662"
+        },
+        {
+          "name": "Luke Adams",
+          "number": "14",
+          "position": "Defender",
+          "height": "6'4\"",
+          "hometown": "McKinney, Texas",
+          "class_year": "Junior",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/luke-adams/13672"
+        },
+        {
+          "name": "Carter Knodle",
+          "number": "15",
+          "position": "Defender",
+          "height": "6'2\"",
+          "hometown": "St. Louis, Mo.",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/carter-knodle/13664"
+        },
+        {
+          "name": "Guilherme Gomes",
+          "number": "16",
+          "position": "Midfielder",
+          "height": "6'2\"",
+          "hometown": "Sao Paulo, Brazil",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/guilherme-gomes/13674"
+        },
+        {
+          "name": "Andrew Heckenlaible",
+          "number": "17",
+          "position": "Forward",
+          "height": "6'1\"",
+          "hometown": "Ankeny, Iowa",
+          "class_year": "Junior",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/andrew-heckenlaible/13660"
+        },
+        {
+          "name": "Theo Franca",
+          "number": "18",
+          "position": "Forward",
+          "height": "6'2\"",
+          "hometown": "Nova Lima, Brazil",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/theo-franca/13659"
+        },
+        {
+          "name": "Drake Fournier",
+          "number": "19",
+          "position": "Midfielder",
+          "height": "5'10\"",
+          "hometown": "Leander, Texas",
+          "class_year": "Junior",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/drake-fournier/13658"
+        },
+        {
+          "name": "Jacksen McNeal",
+          "number": "21",
+          "position": "Defender",
+          "height": "6'4\"",
+          "hometown": "St. Louis, Mo.",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/jacksen-mcneal/13666"
+        },
+        {
+          "name": "Jackson Delkus",
+          "number": "22",
+          "position": "Forward",
+          "height": "6'0\"",
+          "hometown": "St. Louis, Mo.",
+          "class_year": "Junior",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/jackson-delkus/13654"
+        },
+        {
+          "name": "Nick Schramm",
+          "number": "23",
+          "position": "Midfielder",
+          "height": "5'9\"",
+          "hometown": "St. Louis, Mo.",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/nick-schramm/13670"
+        },
+        {
+          "name": "Kavi Badh",
+          "number": "24",
+          "position": "Midfielder",
+          "height": "5'11\"",
+          "hometown": "Sammamish, Wash.",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/kavi-badh/13651"
+        },
+        {
+          "name": "Axel Torres",
+          "number": "26",
+          "position": "Forward",
+          "height": "5'9\"",
+          "hometown": "Katy, Texas",
+          "class_year": "Senior",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/axel-torres/13671"
+        },
+        {
+          "name": "Sam Kalish",
+          "number": "27",
+          "position": "Midfielder",
+          "height": "6'0\"",
+          "hometown": "St. Louis, Mo.",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/sam-kalish/13663"
+        },
+        {
+          "name": "Kyle Deming",
+          "number": "29",
+          "position": "Goalkeeper",
+          "height": "6'1\"",
+          "hometown": "Rockford, Mich.",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/kyle-deming/13655"
+        },
+        {
+          "name": "Lucas  McPartlin",
+          "number": "30",
+          "position": "Goalkeeper",
+          "height": "6'4\"",
+          "hometown": "Wildwood, Mo.",
+          "class_year": "Freshman",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/lucas-mcpartlin/13676"
+        },
+        {
+          "name": "Luke Ponciroli",
+          "number": "33",
+          "position": "Midfielder",
+          "height": "6'1\"",
+          "hometown": "St. Louis, Mo.",
+          "class_year": "Sophomore",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/luke-ponciroli/13668"
+        },
+        {
+          "name": "Henry Sanders",
+          "number": "34",
+          "position": "Midfielder",
+          "height": "6'0\"",
+          "hometown": "St. Louis, Mo.",
+          "class_year": "Freshman",
+          "source_url": "https://slubillikens.com/sports/mens-soccer/roster/henry-sanders/13678"
+        }
+      ]
+    },
+    "st-bonaventure": {
+      "programme": "st-bonaventure",
+      "source_url": "https://gobonnies.com/sports/mens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Dylan Mueller",
+          "number": "0",
+          "position": "Goalkeeper",
+          "height": "6'3\"",
+          "weight": "185 lbs",
+          "hometown": "Carlsbad, Calif.",
+          "class_year": "Sophomore",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/dylan-mueller/7060"
+        },
+        {
+          "name": "Winston Jory",
+          "number": "1",
+          "position": "Goalkeeper",
+          "height": "6'5\"",
+          "weight": "185 lbs",
+          "hometown": "Brisbane, Australia",
+          "class_year": "Junior",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/winston-jory/7063"
+        },
+        {
+          "name": "Jackson Minneci",
+          "number": "2",
+          "position": "Defense",
+          "height": "5'8\"",
+          "weight": "155 lbs",
+          "hometown": "Wilmington, N.C.",
+          "class_year": "Senior",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/jackson-minneci/7007"
+        },
+        {
+          "name": "Benjamin Haynes",
+          "number": "3",
+          "position": "Defense",
+          "height": "5'7\"",
+          "weight": "147 lbs",
+          "hometown": "Montreal, Quebec",
+          "class_year": "Sophomore",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/benjamin-haynes/6994"
+        },
+        {
+          "name": "Josh Seyer",
+          "number": "4",
+          "position": "Defense",
+          "height": "6'2\"",
+          "weight": "185 lbs",
+          "hometown": "St. Louis, Mo.",
+          "class_year": "Graduate Student",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/josh-seyer/7008"
+        },
+        {
+          "name": "Callum Shillington",
+          "number": "6",
+          "position": "Midfield",
+          "height": "6'2\"",
+          "weight": "175 lbs",
+          "hometown": "Victoria, British Columbia, Canada",
+          "class_year": "Senior",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/callum-shillington/7003"
+        },
+        {
+          "name": "Alistair McFall",
+          "number": "7",
+          "position": "Midfield",
+          "height": "5'11\"",
+          "weight": "155 lbs",
+          "hometown": "Ottawa, Ontario",
+          "class_year": "Freshman",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/alistair-mcfall/7067"
+        },
+        {
+          "name": "Ritter Sundby",
+          "number": "8",
+          "position": "Midfield",
+          "height": "5'10\"",
+          "weight": "165 lbs",
+          "hometown": "Hood River, Ore.",
+          "class_year": "Junior",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/ritter-sundby/7005"
+        },
+        {
+          "name": "Daniel Helle",
+          "number": "9",
+          "position": "Midfield",
+          "height": "5'11\"",
+          "weight": "166 lbs",
+          "hometown": "Odense, Denmark",
+          "class_year": "Senior",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/daniel-helle/6995"
+        },
+        {
+          "name": "Ryan Holt",
+          "number": "10",
+          "position": "Forward",
+          "height": "6'3\"",
+          "weight": "190 lbs",
+          "hometown": "London, England",
+          "class_year": "Sophomore",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/ryan-holt/7009"
+        },
+        {
+          "name": "Brendan Sheehan",
+          "number": "11",
+          "position": "Forward",
+          "height": "6'2\"",
+          "weight": "160 lbs",
+          "hometown": "Avon Lake, Ohio",
+          "class_year": "Sophomore",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/brendan-sheehan/7002"
+        },
+        {
+          "name": "Landon Weber",
+          "number": "12",
+          "position": "Midfield",
+          "height": "5'10\"",
+          "weight": "180 lbs",
+          "hometown": "Chesterfield, Mo.",
+          "class_year": "Sophomore",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/landon-weber/7064"
+        },
+        {
+          "name": "Harvey Skurek",
+          "number": "13",
+          "position": "Defense",
+          "height": "5'9\"",
+          "weight": "155 lbs",
+          "hometown": "Cheltenham, England",
+          "class_year": "Senior",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/harvey-skurek/7010"
+        },
+        {
+          "name": "Etienne Godin",
+          "number": "14",
+          "position": "Defense",
+          "height": "6'1\"",
+          "weight": "197 lbs",
+          "hometown": "Montreal, Quebec",
+          "class_year": "Sophomore",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/etienne-godin/6993"
+        },
+        {
+          "name": "Ben Marsh",
+          "number": "15",
+          "position": "Midfield",
+          "height": "5'9\"",
+          "weight": "165 lbs",
+          "hometown": "Halifax, Nova Scotia",
+          "class_year": "Freshman",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/ben-marsh/7069"
+        },
+        {
+          "name": "Luc Finelli",
+          "number": "16",
+          "position": "Defense",
+          "height": "5'10\"",
+          "weight": "165 lbs",
+          "hometown": "Oakville, Ontario, Canada",
+          "class_year": "Senior",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/luc-finelli/6992"
+        },
+        {
+          "name": "Neshawn Sutherland",
+          "number": "17",
+          "position": "Forward",
+          "height": "5'8\"",
+          "weight": "155 lbs",
+          "hometown": "Toronto, Ontario",
+          "class_year": "Junior",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/neshawn-sutherland/7006"
+        },
+        {
+          "name": "Bryce Strumeier",
+          "number": "18",
+          "position": "Defense/Midfield",
+          "height": "5'10\"",
+          "weight": "161 lbs",
+          "hometown": "Seaside Heights, N.J.",
+          "class_year": "Sophomore",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/bryce-strumeier/7004"
+        },
+        {
+          "name": "Ethan Lustig",
+          "number": "19",
+          "position": "Midfield",
+          "height": "5'8\"",
+          "weight": "165 lbs",
+          "hometown": "Manalapan, N.J.",
+          "class_year": "Freshman",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/ethan-lustig/7066"
+        },
+        {
+          "name": "Michael Adenaike Jr.",
+          "number": "20",
+          "position": "Defense",
+          "height": "6'0\"",
+          "weight": "165 lbs",
+          "hometown": "Philadelphia, Pa.",
+          "class_year": "Freshman",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/michael-adenaike-jr-/7068"
+        },
+        {
+          "name": "Kyle Macfarlane",
+          "number": "22",
+          "position": "Midfield",
+          "height": "6'0\"",
+          "weight": "162 lbs",
+          "hometown": "Glasgow, Scotland",
+          "class_year": "Senior",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/kyle-macfarlane/6997"
+        },
+        {
+          "name": "Jack Steel",
+          "number": "23",
+          "position": "Midfield",
+          "height": "5'11\"",
+          "weight": "160 lbs",
+          "hometown": "London, United Kingdom",
+          "class_year": "Senior",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/jack-steel/7011"
+        },
+        {
+          "name": "Darien Martin",
+          "number": "24",
+          "position": "Defense",
+          "height": "5'10\"",
+          "weight": "150 lbs",
+          "hometown": "Palatine, Ill.",
+          "class_year": "Graduate Student",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/darien-martin/7065"
+        },
+        {
+          "name": "Yaseen Khaled",
+          "number": "26",
+          "position": "Midfield",
+          "height": "5'7\"",
+          "weight": "137 lbs",
+          "hometown": "Mequon, Wisc.",
+          "class_year": "Junior",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/yaseen-khaled/6996"
+        },
+        {
+          "name": "Harrison Nitz",
+          "number": "27",
+          "position": "Midfield",
+          "height": "6'0\"",
+          "weight": "175 lbs",
+          "hometown": "Frisco, Texas",
+          "class_year": "Sophomore",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/harrison-nitz/6999"
+        },
+        {
+          "name": "Christopher Mularadelis",
+          "number": "28",
+          "position": "Defense",
+          "height": "6'0\"",
+          "weight": "183 lbs",
+          "hometown": "Aberdeen, N.J.",
+          "class_year": "Junior",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/christopher-mularadelis/6998"
+        },
+        {
+          "name": "Alex Ohmart",
+          "number": "30",
+          "position": "Goalkeeper",
+          "height": "6'2\"",
+          "weight": "185 lbs",
+          "hometown": "Peoria, Ariz.",
+          "class_year": "Senior",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/alex-ohmart/7000"
+        },
+        {
+          "name": "Felix Sch\u00f6ne",
+          "number": "31",
+          "position": "Goalkeeper",
+          "height": "6'1\"",
+          "weight": "165 lbs",
+          "hometown": "Leipzig, Germany",
+          "class_year": "Sophomore",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/felix-sch-ne/7001"
+        },
+        {
+          "name": "Manex Landa",
+          "number": "32",
+          "position": "Midfield",
+          "height": "5'7\"",
+          "weight": "154 lbs",
+          "hometown": "Zarautz, Spain",
+          "class_year": "Junior",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/manex-landa/7062"
+        },
+        {
+          "name": "Maarten Schouten",
+          "number": "45",
+          "position": "Goalkeeper",
+          "height": "6'1\"",
+          "weight": "160 lbs",
+          "hometown": "Arhem, Gelderland, Netherlands",
+          "class_year": "Sophomore",
+          "source_url": "https://gobonnies.com/sports/mens-soccer/roster/maarten-schouten/7138"
+        }
+      ]
+    },
+    "vcu": {
+      "programme": "vcu",
+      "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/2026",
+      "players": [
+        {
+          "name": "Nathan Pratt",
+          "number": "0",
+          "position": "Goalkeeper",
+          "height": "6'2\"",
+          "weight": "185 lbs",
+          "hometown": "Blacksburg, Va.",
+          "class_year": "Freshman",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/nathan-pratt/7059"
+        },
+        {
+          "name": "Trevor Maloney",
+          "number": "1",
+          "position": "Goalkeeper",
+          "height": "6'1\"",
+          "weight": "190 lbs",
+          "hometown": "Norfolk, Va.",
+          "class_year": "Senior",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/trevor-maloney/7044"
+        },
+        {
+          "name": "Brendan Dobzyniak",
+          "number": "2",
+          "position": "Defender",
+          "height": "5'11\"",
+          "weight": "153 lbs",
+          "hometown": "Midlothian, Va.",
+          "class_year": "Sophomore",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/brendan-dobzyniak/7037"
+        },
+        {
+          "name": "Fabian Garita",
+          "number": "3",
+          "position": "Defender",
+          "height": "5'11\"",
+          "weight": "170 lbs",
+          "hometown": "Heredia, Costa Rica",
+          "class_year": "Sophomore",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/fabian-garita/7039"
+        },
+        {
+          "name": "Theo Drennan",
+          "number": "4",
+          "position": "Midfielder",
+          "height": "5'10\"",
+          "weight": "178 lbs",
+          "hometown": "Richmond, Va.",
+          "class_year": "Redshirt Senior",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/theo-drennan/7038"
+        },
+        {
+          "name": "Pedro Salmon",
+          "number": "5",
+          "position": "Defender",
+          "height": "6'2\"",
+          "weight": "178 lbs",
+          "hometown": "Santander, Cantabria, Spain",
+          "class_year": "Senior",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/pedro-salmon/7047"
+        },
+        {
+          "name": "Jordan Cheetham",
+          "number": "6",
+          "position": "Defender",
+          "height": "6'3\"",
+          "weight": "185 lbs",
+          "hometown": "Nassau, Bahamas",
+          "class_year": "Sophomore",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/jordan-cheetham/7052"
+        },
+        {
+          "name": "Nikita Hayes",
+          "number": "7",
+          "position": "Defender",
+          "height": "5'10\"",
+          "weight": "163 lbs",
+          "hometown": "Powhatan, Va.",
+          "class_year": "Junior",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/nikita-hayes/7041"
+        },
+        {
+          "name": "Bya Ndimubandi",
+          "number": "8",
+          "position": "Midfielder",
+          "height": "6'0\"",
+          "weight": "180 lbs",
+          "hometown": "Cape Town, South Africa",
+          "class_year": "Freshman",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/bya-ndimubandi/7053"
+        },
+        {
+          "name": "Andrey Salmeron",
+          "number": "10",
+          "position": "Midfielder",
+          "height": "5'10\"",
+          "weight": "145 lbs",
+          "hometown": "San Jose, Costa Rica",
+          "class_year": "Senior",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/andrey-salmeron/7046"
+        },
+        {
+          "name": "Deniss Hayes",
+          "number": "11",
+          "position": "Forward",
+          "height": "5'10\"",
+          "weight": "163 lbs",
+          "hometown": "Powhatan, Va.",
+          "class_year": "Junior",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/deniss-hayes/7040"
+        },
+        {
+          "name": "Parker Simkins",
+          "number": "12",
+          "position": "Defender",
+          "height": "6'1\"",
+          "weight": "160 lbs",
+          "hometown": "Sanford, Fla.",
+          "class_year": "Sophomore",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/parker-simkins/7049"
+        },
+        {
+          "name": "Manuel Monteiro",
+          "number": "13",
+          "position": "Goalkeeper",
+          "height": "6'1\"",
+          "weight": "183 lbs",
+          "hometown": "Cascais, Portugal",
+          "class_year": "Sophomore",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/manuel-monteiro/7045"
+        },
+        {
+          "name": "Mohammed Ibrahim",
+          "number": "14",
+          "position": "Midfielder",
+          "height": "5'8\"",
+          "weight": "134 lbs",
+          "hometown": "Cape Coast, Ghana",
+          "class_year": "Junior",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/mohammed-ibrahim/7042"
+        },
+        {
+          "name": "Kishin Togashi",
+          "number": "15",
+          "position": "Midfielder",
+          "height": "5'8\"",
+          "weight": "140 lbs",
+          "hometown": "Virginia Beach, Va.",
+          "class_year": "Sophomore",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/kishin-togashi/7050"
+        },
+        {
+          "name": "David Leavey",
+          "number": "16",
+          "position": "Midfielder",
+          "height": "6'0\"",
+          "weight": "166 lbs",
+          "hometown": "Waterford, Ireland",
+          "class_year": "Sophomore",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/david-leavey/7054"
+        },
+        {
+          "name": "Lucas White",
+          "number": "17",
+          "position": "Midfielder",
+          "height": "5'11\"",
+          "weight": "170 lbs",
+          "hometown": "Virginia Beach, Va.",
+          "class_year": "Redshirt Senior",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/lucas-white/7051"
+        },
+        {
+          "name": "Jonas Pettersen",
+          "number": "19",
+          "position": "Defender",
+          "height": "5'11\"",
+          "weight": "168 lbs",
+          "hometown": "Sarpsborg, Norway",
+          "class_year": "Freshman",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/jonas-pettersen/7056"
+        },
+        {
+          "name": "Esteban Vasquez",
+          "number": "20",
+          "position": "Midfielder",
+          "height": "5'9\"",
+          "hometown": "San Jose, Costa Rica",
+          "class_year": "Freshman",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/esteban-vasquez/7060"
+        },
+        {
+          "name": "Emmett Shea",
+          "number": "21",
+          "position": "Midfielder",
+          "height": "5'11\"",
+          "weight": "160 lbs",
+          "hometown": "Center Barnstead, N.H.",
+          "class_year": "Senior",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/emmett-shea/7048"
+        },
+        {
+          "name": "Kimarly Scott",
+          "number": "22",
+          "position": "Forward",
+          "height": "5'7\"",
+          "hometown": "Kingston, Jamaica",
+          "class_year": "Freshman",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/kimarly-scott/7061"
+        },
+        {
+          "name": "Caleb Pak",
+          "number": "23",
+          "position": "Midfielder",
+          "height": "5'9\"",
+          "weight": "150 lbs",
+          "hometown": "Prosper, Texas",
+          "class_year": "Freshman",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/caleb-pak/7057"
+        },
+        {
+          "name": "Nathan Forst",
+          "number": "25",
+          "position": "Forward",
+          "height": "5'10\"",
+          "weight": "150 lbs",
+          "hometown": "Manassas, Va.",
+          "class_year": "Freshman",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/nathan-forst/7055"
+        },
+        {
+          "name": "Ty Johnson",
+          "number": "27",
+          "position": "Forward",
+          "height": "5'9\"",
+          "hometown": "Chesterfield, Va.",
+          "class_year": "Graduate Student",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/ty-johnson/7043"
+        },
+        {
+          "name": "Ricky Oliva",
+          "number": "30",
+          "position": "Defender",
+          "height": "6'0\"",
+          "weight": "170 lbs",
+          "hometown": "Woodbridge, Va.",
+          "class_year": "Freshman",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/ricky-oliva/7058"
+        },
+        {
+          "name": "Sulaiman Abdul-Mateen",
+          "number": "35",
+          "position": "Forward",
+          "height": "5'11\"",
+          "weight": "180 lbs",
+          "hometown": "Richmond, Va.",
+          "class_year": "Senior",
+          "source_url": "https://vcuathletics.com/sports/mens-soccer/roster/sulaiman-abdul-mateen/7036"
+        }
+      ]
+    }
+  },
+  "missing": [
+    "george-mason"
+  ]
+}

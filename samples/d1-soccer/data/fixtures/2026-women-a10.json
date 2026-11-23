@@ -1,0 +1,3046 @@
+{
+  "schema": "touchline.fixtures/2",
+  "season": 2026,
+  "gender": "women",
+  "conference": "A10",
+  "collected_at": "2026-11-21T16:38:15+00:00",
+  "membership_extrapolated": false,
+  "conference_game_source": "published:schedule-page",
+  "programmes": [
+    {
+      "slug": "davidson",
+      "name": "Davidson",
+      "conference": "A10",
+      "abbr": "DAV"
+    },
+    {
+      "slug": "dayton",
+      "name": "Dayton",
+      "conference": "A10",
+      "abbr": "UD"
+    },
+    {
+      "slug": "duquesne",
+      "name": "Duquesne",
+      "conference": "A10",
+      "abbr": "DUQ"
+    },
+    {
+      "slug": "fordham",
+      "name": "Fordham",
+      "conference": "A10",
+      "abbr": "FOR"
+    },
+    {
+      "slug": "george-mason",
+      "name": "George Mason",
+      "conference": "A10",
+      "abbr": "GMU"
+    },
+    {
+      "slug": "george-washington",
+      "name": "George Washington",
+      "conference": "A10",
+      "abbr": "GW"
+    },
+    {
+      "slug": "la-salle",
+      "name": "La Salle",
+      "conference": "A10",
+      "abbr": "LAS"
+    },
+    {
+      "slug": "loyola-chicago",
+      "name": "Loyola Chicago",
+      "conference": "A10",
+      "abbr": "LUC"
+    },
+    {
+      "slug": "rhode-island",
+      "name": "Rhode Island",
+      "conference": "A10",
+      "abbr": "URI"
+    },
+    {
+      "slug": "richmond",
+      "name": "Richmond",
+      "conference": "A10",
+      "abbr": "RICH"
+    },
+    {
+      "slug": "saint-josephs",
+      "name": "Saint Joseph's",
+      "conference": "A10",
+      "abbr": "SJU"
+    },
+    {
+      "slug": "saint-louis",
+      "name": "Saint Louis",
+      "conference": "A10",
+      "abbr": "SLU"
+    },
+    {
+      "slug": "st-bonaventure",
+      "name": "St. Bonaventure",
+      "conference": "A10",
+      "abbr": "SBU"
+    },
+    {
+      "slug": "vcu",
+      "name": "VCU",
+      "conference": "A10",
+      "abbr": "VCU"
+    }
+  ],
+  "fixtures": [
+    {
+      "id": "sidearm:dayton:17766",
+      "date": "2026-08-05",
+      "home": "dayton",
+      "away": "eku",
+      "status": "scheduled",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field"
+    },
+    {
+      "id": "sidearm:george-washington:15605",
+      "date": "2026-08-05",
+      "home": "william-mary",
+      "away": "george-washington",
+      "status": "scheduled",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/womens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "time": "18:00",
+      "venue": "Williamsburg, VA"
+    },
+    {
+      "id": "sidearm:la-salle:12789",
+      "date": "2026-08-05",
+      "home": "monmouth",
+      "away": "la-salle",
+      "status": "scheduled",
+      "source_url": "https://goexplorers.com/sports/womens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "West Long Branch, N.J. Hesse Field on The Great Lawn"
+    },
+    {
+      "id": "sidearm:loyola-chicago:7210",
+      "date": "2026-08-05",
+      "home": "loyola-chicago",
+      "away": "milwaukee",
+      "status": "scheduled",
+      "source_url": "https://loyolaramblers.com/sports/womens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "Loyola Soccer Park"
+    },
+    {
+      "id": "sidearm:richmond:12136",
+      "date": "2026-08-05",
+      "home": "richmond",
+      "away": "etsu",
+      "status": "scheduled",
+      "conference_game": false,
+      "source_url": "https://richmondspiders.com/sports/womens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "time": "17:00",
+      "venue": "President's Field at River Road"
+    },
+    {
+      "id": "sidearm:davidson:10331",
+      "date": "2026-08-06",
+      "home": "presbyterian",
+      "away": "davidson",
+      "status": "scheduled",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/womens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "time": "18:30",
+      "venue": "Clinton, SC"
+    },
+    {
+      "id": "sidearm:dayton:17767",
+      "date": "2026-08-08",
+      "home": "indiana",
+      "away": "dayton",
+      "status": "scheduled",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Bill Armstrong Stadium"
+    },
+    {
+      "id": "sidearm:george-washington:15606",
+      "date": "2026-08-08",
+      "home": "george-washington",
+      "away": "lehigh",
+      "status": "scheduled",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/womens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "time": "17:00",
+      "venue": "GW Soccer Field"
+    },
+    {
+      "id": "sidearm:loyola-chicago:7211",
+      "date": "2026-08-08",
+      "home": "michigan",
+      "away": "loyola-chicago",
+      "status": "scheduled",
+      "source_url": "https://loyolaramblers.com/sports/womens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "14:00",
+      "venue": "Ann Arbor, Mich."
+    },
+    {
+      "id": "sidearm:saint-louis:18679",
+      "date": "2026-08-08",
+      "home": "missouri-state",
+      "away": "saint-louis",
+      "status": "scheduled",
+      "source_url": "https://slubillikens.com/sports/womens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "15:00",
+      "venue": "Springfield, Mo."
+    },
+    {
+      "id": "sidearm:davidson:10332",
+      "date": "2026-08-09",
+      "home": "davidson",
+      "away": "unc-greensboro",
+      "status": "scheduled",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/womens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "time": "11:00",
+      "venue": "Alumni Soccer Stadium"
+    },
+    {
+      "id": "sidearm:richmond:12137",
+      "date": "2026-08-09",
+      "home": "east-carolina",
+      "away": "richmond",
+      "status": "scheduled",
+      "conference_game": false,
+      "source_url": "https://richmondspiders.com/sports/womens-soccer/schedule/2026",
+      "match_type": "exhibition",
+      "time": "19:00",
+      "venue": "Greenville, N.C."
+    },
+    {
+      "id": "sidearm:duquesne:22942",
+      "date": "2026-08-12",
+      "home": "eastern-michigan",
+      "away": "duquesne",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goduquesne.com/sports/womens-soccer/schedule/2026",
+      "time": "16:30",
+      "venue": "Ypsilanti, Mich.",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:george-washington:15607",
+      "date": "2026-08-12",
+      "home": "george-washington",
+      "away": "temple",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/womens-soccer/schedule/2026",
+      "time": "15:00",
+      "venue": "GW Soccer Field",
+      "home_score": 4,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:loyola-chicago:7212",
+      "date": "2026-08-12",
+      "home": "loyola-chicago",
+      "away": "central-michigan",
+      "status": "final",
+      "source_url": "https://loyolaramblers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Loyola Soccer Park",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:rhode-island:11981",
+      "date": "2026-08-12",
+      "home": "rhode-island",
+      "away": "maine",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "URI Soccer Complex",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:saint-josephs:20076",
+      "date": "2026-08-12",
+      "home": "saint-josephs",
+      "away": "drexel",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Sean Sweeney Field",
+      "home_score": 3,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:saint-louis:18680",
+      "date": "2026-08-12",
+      "home": "saint-louis",
+      "away": "alabama",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Hermann Stadium",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:dayton:17769",
+      "date": "2026-08-13",
+      "home": "west-virginia",
+      "away": "dayton",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Morgantown, W. Va. Dick Dlesk Soccer Stadium",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:fordham:20934",
+      "date": "2026-08-13",
+      "home": "georgetown",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:30",
+      "venue": "Washington, D.C.",
+      "home_score": 4,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:george-mason:14190",
+      "date": "2026-08-13",
+      "home": "george-mason",
+      "away": "vmi",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gomason.com/sports/womens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "George Mason Stadium",
+      "home_score": 4,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:la-salle:12790",
+      "date": "2026-08-13",
+      "home": "la-salle",
+      "away": "american",
+      "status": "final",
+      "source_url": "https://goexplorers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "McCarthy Stadium",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:vcu:9297",
+      "date": "2026-08-13",
+      "home": "elon",
+      "away": "vcu",
+      "status": "final",
+      "source_url": "https://vcuathletics.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Elon, N.C. / Rudd Field",
+      "home_score": 4,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:george-washington:15608",
+      "date": "2026-08-15",
+      "home": "delaware",
+      "away": "george-washington",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/womens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Newark, DE",
+      "home_score": 3,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:loyola-chicago:7213",
+      "date": "2026-08-15",
+      "home": "iowa",
+      "away": "loyola-chicago",
+      "status": "final",
+      "source_url": "https://loyolaramblers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "17:00",
+      "venue": "Iowa City, Iowa",
+      "home_score": 5,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:rhode-island:11982",
+      "date": "2026-08-15",
+      "home": "providence",
+      "away": "rhode-island",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:30",
+      "venue": "Providence, RI",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:saint-josephs:20077",
+      "date": "2026-08-15",
+      "home": "saint-josephs",
+      "away": "hofstra",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "16:00",
+      "venue": "Sean Sweeney Field",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:davidson:10333",
+      "date": "2026-08-16",
+      "home": "high-point",
+      "away": "davidson",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "High Point, NC",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:dayton:17770",
+      "date": "2026-08-16",
+      "home": "dayton",
+      "away": "toledo",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Baujan Field",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:fordham:20935",
+      "date": "2026-08-16",
+      "home": "maryland",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "12:00",
+      "venue": "College Park, Md.",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:george-mason:14191",
+      "date": "2026-08-16",
+      "home": "james-madison",
+      "away": "george-mason",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gomason.com/sports/womens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Harrisonburg, VA",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:richmond:12138",
+      "date": "2026-08-16",
+      "home": "richmond",
+      "away": "wofford",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://richmondspiders.com/sports/womens-soccer/schedule/2026",
+      "time": "14:00",
+      "venue": "President's Field at River Road",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:saint-louis:18681",
+      "date": "2026-08-16",
+      "home": "saint-louis",
+      "away": "lindenwood",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Hermann Stadium",
+      "home_score": 5,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:st-bonaventure:8644",
+      "date": "2026-08-16",
+      "home": "st-bonaventure",
+      "away": "saint-peters",
+      "status": "final",
+      "source_url": "https://gobonnies.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "13:00",
+      "venue": "Tom 80' and Michelle Marra Athletics Field Complex",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:vcu:9298",
+      "date": "2026-08-16",
+      "home": "vcu",
+      "away": "nc-state",
+      "status": "final",
+      "source_url": "https://vcuathletics.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "13:00",
+      "venue": "Richmond, Va. / VCU Athletic Village",
+      "home_score": 0,
+      "away_score": 4
+    },
+    {
+      "id": "sidearm:george-washington:15609",
+      "date": "2026-08-19",
+      "home": "howard",
+      "away": "george-washington",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/womens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Washington, DC",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:loyola-chicago:7214",
+      "date": "2026-08-19",
+      "home": "michigan-state",
+      "away": "loyola-chicago",
+      "status": "final",
+      "source_url": "https://loyolaramblers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:30",
+      "venue": "East Lansing, Mich.",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:davidson:10334",
+      "date": "2026-08-20",
+      "home": "usc-upstate",
+      "away": "davidson",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/womens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Spartanburg, SC",
+      "home_score": 3,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:dayton:17771",
+      "date": "2026-08-20",
+      "home": "dayton",
+      "away": "kentucky",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field",
+      "home_score": 0,
+      "away_score": 5
+    },
+    {
+      "id": "sidearm:duquesne:22943",
+      "date": "2026-08-20",
+      "home": "cleveland-state",
+      "away": "duquesne",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goduquesne.com/sports/womens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Cleveland, Ohio",
+      "home_score": 0,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:fordham:20936",
+      "date": "2026-08-20",
+      "home": "fordham",
+      "away": "manhattan",
+      "status": "postponed",
+      "source_url": "https://fordhamsports.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Bronx, N.Y."
+    },
+    {
+      "id": "sidearm:george-mason:14192",
+      "date": "2026-08-20",
+      "home": "george-mason",
+      "away": "penn",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gomason.com/sports/womens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "George Mason Stadium",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:la-salle:12791",
+      "date": "2026-08-20",
+      "home": "virginia",
+      "away": "la-salle",
+      "status": "final",
+      "source_url": "https://goexplorers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "16:00",
+      "venue": "Charlottesville, Va. Kl\u00f6ckner Stadium",
+      "home_score": 7,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:rhode-island:11983",
+      "date": "2026-08-20",
+      "home": "rhode-island",
+      "away": "northeastern",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "URI Soccer Complex",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:richmond:12139",
+      "date": "2026-08-20",
+      "home": "richmond",
+      "away": "american",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://richmondspiders.com/sports/womens-soccer/schedule/2026",
+      "time": "15:00",
+      "venue": "President's Field at River Road",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:saint-louis:18682",
+      "date": "2026-08-20",
+      "home": "missouri",
+      "away": "saint-louis",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "16:30",
+      "venue": "Columbia, Mo.",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:st-bonaventure:8645",
+      "date": "2026-08-20",
+      "home": "cornell",
+      "away": "st-bonaventure",
+      "status": "final",
+      "source_url": "https://gobonnies.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "15:00",
+      "venue": "Ithaca, N.Y.",
+      "home_score": 3,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:vcu:9299",
+      "date": "2026-08-20",
+      "home": "delaware",
+      "away": "vcu",
+      "status": "final",
+      "source_url": "https://vcuathletics.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "12:00",
+      "venue": "Newark, Del. / Grant Stadium",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:davidson:10335",
+      "date": "2026-08-23",
+      "home": "davidson",
+      "away": "charleston-south-carolina",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Alumni Soccer Stadium",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:duquesne:22944",
+      "date": "2026-08-23",
+      "home": "west-virginia",
+      "away": "duquesne",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goduquesne.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Morgantown, W.Va.",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:fordham:20937",
+      "date": "2026-08-23",
+      "home": "marist",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Poughkeepsie, N.Y.",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:george-mason:14193",
+      "date": "2026-08-23",
+      "home": "george-mason",
+      "away": "mount-st-marys",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gomason.com/sports/womens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "George Mason Stadium",
+      "home_score": 4,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:george-washington:15610",
+      "date": "2026-08-23",
+      "home": "towson",
+      "away": "george-washington",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/womens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Towson, MD",
+      "home_score": 2,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:la-salle:12792",
+      "date": "2026-08-23",
+      "home": "bucknell",
+      "away": "la-salle",
+      "status": "final",
+      "source_url": "https://goexplorers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Lewisburg, Pa. Emmitt Field at Holmes Stadium",
+      "home_score": 4,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:rhode-island:11984",
+      "date": "2026-08-23",
+      "home": "duke",
+      "away": "rhode-island",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "Durham, NC",
+      "home_score": 6,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:richmond:12140",
+      "date": "2026-08-23",
+      "home": "richmond",
+      "away": "queens-charlotte",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://richmondspiders.com/sports/womens-soccer/schedule/2026",
+      "time": "14:00",
+      "venue": "President's Field at River Road",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:saint-josephs:20078",
+      "date": "2026-08-23",
+      "home": "lafayette",
+      "away": "saint-josephs",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "15:00",
+      "venue": "Easton, Pa.",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:st-bonaventure:8646",
+      "date": "2026-08-23",
+      "home": "st-bonaventure",
+      "away": "canisius",
+      "status": "final",
+      "source_url": "https://gobonnies.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "13:00",
+      "venue": "Tom 80' and Michelle Marra Athletics Field Complex",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:vcu:9300",
+      "date": "2026-08-23",
+      "home": "vcu",
+      "away": "liberty",
+      "status": "final",
+      "source_url": "https://vcuathletics.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "13:00",
+      "venue": "Richmond, Va. / VCU Athletic Village",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:davidson:10336",
+      "date": "2026-08-27",
+      "home": "davidson",
+      "away": "elon",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/womens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Alumni Soccer Stadium",
+      "home_score": 3,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:dayton:17772",
+      "date": "2026-08-27",
+      "home": "dayton",
+      "away": "louisville",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field",
+      "home_score": 2,
+      "away_score": 4
+    },
+    {
+      "id": "sidearm:duquesne:22945",
+      "date": "2026-08-27",
+      "home": "duquesne",
+      "away": "akron",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goduquesne.com/sports/womens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Rooney Field",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:fordham:20938",
+      "date": "2026-08-27",
+      "home": "hofstra",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Hempstead, N.Y.",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:george-washington:15611",
+      "date": "2026-08-27",
+      "home": "penn",
+      "away": "george-washington",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/womens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Philadelphia, PA",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:rhode-island:11985",
+      "date": "2026-08-27",
+      "home": "new-hampshire",
+      "away": "rhode-island",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "16:00",
+      "venue": "Durham, NH",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:saint-louis:18683",
+      "date": "2026-08-27",
+      "home": "illinois",
+      "away": "saint-louis",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "Urbana-Champaign, Ill.",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:st-bonaventure:8647",
+      "date": "2026-08-27",
+      "home": "st-bonaventure",
+      "away": "le-moyne",
+      "status": "final",
+      "source_url": "https://gobonnies.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "Tom 80' and Michelle Marra Athletics Field Complex",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:vcu:9301",
+      "date": "2026-08-27",
+      "home": "uncw",
+      "away": "vcu",
+      "status": "final",
+      "source_url": "https://vcuathletics.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Wilmington, N.C. / UNCW Soccer Stadium",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:la-salle:12931",
+      "date": "2026-08-28",
+      "home": "la-salle",
+      "away": "drexel",
+      "status": "final",
+      "source_url": "https://goexplorers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "McCarthy Stadium",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:davidson:10337",
+      "date": "2026-08-30",
+      "home": "nc-state",
+      "away": "davidson",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/womens-soccer/schedule/2026",
+      "time": "17:00",
+      "venue": "Raleigh, NC",
+      "home_score": 6,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:duquesne:22946",
+      "date": "2026-08-30",
+      "home": "duquesne",
+      "away": "kent-state",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goduquesne.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Rooney Field",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:george-mason:14194",
+      "date": "2026-08-30",
+      "home": "george-mason",
+      "away": "loyola-maryland",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gomason.com/sports/womens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "George Mason Stadium",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:la-salle:12794",
+      "date": "2026-08-30",
+      "home": "la-salle",
+      "away": "columbia",
+      "status": "final",
+      "source_url": "https://goexplorers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "McCarthy Stadium",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:loyola-chicago:7215",
+      "date": "2026-08-30",
+      "home": "loyola-chicago",
+      "away": "illinois-state",
+      "status": "final",
+      "source_url": "https://loyolaramblers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "14:00",
+      "venue": "Loyola Soccer Park",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:rhode-island:11986",
+      "date": "2026-08-30",
+      "home": "central-connecticut",
+      "away": "rhode-island",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "14:00",
+      "venue": "New Britain, Conn.",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:richmond:12141",
+      "date": "2026-08-30",
+      "home": "mount-st-marys",
+      "away": "richmond",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://richmondspiders.com/sports/womens-soccer/schedule/2026",
+      "time": "14:00",
+      "venue": "Emmitsburg, Md.",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:saint-josephs:20079",
+      "date": "2026-08-30",
+      "home": "bucknell",
+      "away": "saint-josephs",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "14:00",
+      "venue": "Lewisburg, Pa.",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:saint-louis:18684",
+      "date": "2026-08-30",
+      "home": "indiana",
+      "away": "saint-louis",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "12:00",
+      "venue": "Bloomington, Ind.",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:vcu:9302",
+      "date": "2026-08-30",
+      "home": "duke",
+      "away": "vcu",
+      "status": "final",
+      "source_url": "https://vcuathletics.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "13:00",
+      "venue": "Durham, N.C. / Koskinen Stadium",
+      "home_score": 6,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:st-bonaventure:8648",
+      "date": "2026-08-31",
+      "home": "st-bonaventure",
+      "away": "niagara",
+      "status": "final",
+      "source_url": "https://gobonnies.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "Tom 80' and Michelle Marra Athletics Field Complex",
+      "home_score": 1,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:dayton:17773",
+      "date": "2026-09-03",
+      "home": "dayton",
+      "away": "wright-state",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "20:00",
+      "venue": "Baujan Field",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:duquesne:22947",
+      "date": "2026-09-03",
+      "home": "duquesne",
+      "away": "toledo",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goduquesne.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Rooney Field",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:la-salle:12795",
+      "date": "2026-09-03",
+      "home": "lafayette",
+      "away": "la-salle",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goexplorers.com/sports/womens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Gummeson Grounds",
+      "home_score": 2,
+      "away_score": 2,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:loyola-chicago:7216",
+      "date": "2026-09-03",
+      "home": "northwestern",
+      "away": "loyola-chicago",
+      "status": "final",
+      "source_url": "https://loyolaramblers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:30",
+      "venue": "Evanston, Ill.",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:rhode-island:11987",
+      "date": "2026-09-03",
+      "home": "bryant",
+      "away": "rhode-island",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Smithfield, RI",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:richmond:12142",
+      "date": "2026-09-03",
+      "home": "richmond",
+      "away": "longwood",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://richmondspiders.com/sports/womens-soccer/schedule/2026",
+      "time": "17:00",
+      "venue": "President's Field at River Road",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:saint-josephs:20080",
+      "date": "2026-09-03",
+      "home": "temple",
+      "away": "saint-josephs",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "19:00",
+      "venue": "Philadelphia, Pa.",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:saint-louis:18685",
+      "date": "2026-09-03",
+      "home": "illinois-state",
+      "away": "saint-louis",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "Normal, Ill.",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:davidson:10338",
+      "date": "2026-09-06",
+      "home": "davidson",
+      "away": "coastal-carolina",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Alumni Soccer Stadium",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:dayton:17774",
+      "date": "2026-09-06",
+      "home": "pitt",
+      "away": "dayton",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Ambrose Urbanic Field",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:fordham:20939",
+      "date": "2026-09-06",
+      "home": "stonehill",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Easton, Mass.",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:george-mason:14195",
+      "date": "2026-09-06",
+      "home": "liberty",
+      "away": "george-mason",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gomason.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Lynchburg, VA",
+      "home_score": 4,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:george-washington:15612",
+      "date": "2026-09-06",
+      "home": "george-washington",
+      "away": "colgate",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "GW Soccer Field",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:la-salle:12796",
+      "date": "2026-09-06",
+      "home": "la-salle",
+      "away": "howard",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goexplorers.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "McCarthy Stadium",
+      "home_score": 7,
+      "away_score": 4,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:loyola-chicago:7217",
+      "date": "2026-09-06",
+      "home": "loyola-chicago",
+      "away": "depaul",
+      "status": "final",
+      "source_url": "https://loyolaramblers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Loyola Soccer Park",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:richmond:12143",
+      "date": "2026-09-06",
+      "home": "radford",
+      "away": "richmond",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://richmondspiders.com/sports/womens-soccer/schedule/2026",
+      "time": "14:00",
+      "venue": "Radford, Va.",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:saint-josephs:20081",
+      "date": "2026-09-06",
+      "home": "saint-josephs",
+      "away": "vermont",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "13:00",
+      "venue": "Sean Sweeney Field",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:st-bonaventure:8649",
+      "date": "2026-09-06",
+      "home": "st-bonaventure",
+      "away": "cleveland-state",
+      "status": "final",
+      "source_url": "https://gobonnies.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "13:00",
+      "venue": "Tom 80' and Michelle Marra Athletics Field Complex",
+      "home_score": 4,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:vcu:9303",
+      "date": "2026-09-06",
+      "home": "william-mary",
+      "away": "vcu",
+      "status": "final",
+      "source_url": "https://vcuathletics.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "13:00",
+      "venue": "Williamsburg, Va. / Martin Family Stadium",
+      "home_score": 2,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:saint-louis:18686",
+      "date": "2026-09-09",
+      "home": "saint-louis",
+      "away": "southeast-missouri",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Hermann Stadium",
+      "home_score": 4,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:davidson:10339",
+      "date": "2026-09-10",
+      "home": "davidson",
+      "away": "unc-asheville",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/womens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Alumni Soccer Stadium",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:dayton:17775",
+      "date": "2026-09-10",
+      "home": "xavier",
+      "away": "dayton",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:30",
+      "venue": "Corcoran Field",
+      "home_score": 4,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:duquesne:22948",
+      "date": "2026-09-10",
+      "home": "youngstown-state",
+      "away": "duquesne",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goduquesne.com/sports/womens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Youngstown, Ohio",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:fordham:20940",
+      "date": "2026-09-10",
+      "home": "columbia",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "New York, N.Y.",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:george-mason:14196",
+      "date": "2026-09-10",
+      "home": "longwood",
+      "away": "george-mason",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gomason.com/sports/womens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Farmville, VA",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:george-washington:15613",
+      "date": "2026-09-10",
+      "home": "george-washington",
+      "away": "american",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/womens-soccer/schedule/2026",
+      "time": "15:00",
+      "venue": "GW Soccer Field",
+      "home_score": 5,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:la-salle:12797",
+      "date": "2026-09-10",
+      "home": "lehigh",
+      "away": "la-salle",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goexplorers.com/sports/womens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "Ulrich Sports Complex",
+      "home_score": 0,
+      "away_score": 2,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:loyola-chicago:7218",
+      "date": "2026-09-10",
+      "home": "northern-illinois",
+      "away": "loyola-chicago",
+      "status": "final",
+      "source_url": "https://loyolaramblers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "DeKalb, Ill.",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:rhode-island:11988",
+      "date": "2026-09-10",
+      "home": "rhode-island",
+      "away": "brown",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "URI Soccer Complex",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:richmond:12144",
+      "date": "2026-09-10",
+      "home": "vmi",
+      "away": "richmond",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://richmondspiders.com/sports/womens-soccer/schedule/2026",
+      "time": "16:00",
+      "venue": "Lexington, Va.",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:saint-josephs:20082",
+      "date": "2026-09-10",
+      "home": "penn",
+      "away": "saint-josephs",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "Philadelphia, Pa.",
+      "home_score": 4,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:vcu:9304",
+      "date": "2026-09-10",
+      "home": "east-carolina",
+      "away": "vcu",
+      "status": "final",
+      "source_url": "https://vcuathletics.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "18:00",
+      "venue": "Greenville, N.C. / Stewart Johnson Stadium",
+      "home_score": 2,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:saint-louis:18687",
+      "date": "2026-09-12",
+      "home": "saint-louis",
+      "away": "kansas",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "15:30",
+      "venue": "Hermann Stadium",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:davidson:10340",
+      "date": "2026-09-13",
+      "home": "furman",
+      "away": "davidson",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://davidsonwildcats.com/sports/womens-soccer/schedule/2026",
+      "time": "14:00",
+      "venue": "Greenville, SC",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:dayton:17776",
+      "date": "2026-09-13",
+      "home": "dayton",
+      "away": "ball-state",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "Baujan Field",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:duquesne:22949",
+      "date": "2026-09-13",
+      "home": "duquesne",
+      "away": "ohio",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goduquesne.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Rooney Field",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:fordham:20941",
+      "date": "2026-09-13",
+      "home": "yale",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "16:00",
+      "venue": "New Haven, Conn.",
+      "home_score": 5,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:george-mason:14197",
+      "date": "2026-09-13",
+      "home": "george-mason",
+      "away": "hampton",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gomason.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "George Mason Stadium",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:loyola-chicago:7219",
+      "date": "2026-09-13",
+      "home": "marquette",
+      "away": "loyola-chicago",
+      "status": "final",
+      "source_url": "https://loyolaramblers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Milwaukee, Wis.",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:richmond:12145",
+      "date": "2026-09-13",
+      "home": "richmond",
+      "away": "howard",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://richmondspiders.com/sports/womens-soccer/schedule/2026",
+      "time": "15:00",
+      "venue": "President's Field at River Road",
+      "home_score": 4,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:saint-josephs:20083",
+      "date": "2026-09-13",
+      "home": "saint-josephs",
+      "away": "wagner",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "13:00",
+      "venue": "Sean Sweeney Field",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:st-bonaventure:8650",
+      "date": "2026-09-13",
+      "home": "liu",
+      "away": "st-bonaventure",
+      "status": "final",
+      "source_url": "https://gobonnies.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "time": "13:00",
+      "venue": "Central Islip, N.Y.",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:george-washington:15614",
+      "date": "2026-09-16",
+      "home": "georgetown",
+      "away": "george-washington",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://gwsports.com/sports/womens-soccer/schedule/2026",
+      "time": "19:30",
+      "venue": "Washington, DC",
+      "home_score": 4,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:dayton:17777",
+      "date": "2026-09-19",
+      "home": "st-bonaventure",
+      "away": "dayton",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "Tom '80 and Michelle Marra Athletics Field Complex",
+      "home_score": 0,
+      "away_score": 5
+    },
+    {
+      "id": "sidearm:george-mason:14198",
+      "date": "2026-09-19",
+      "home": "saint-josephs",
+      "away": "george-mason",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://gomason.com/sports/womens-soccer/schedule/2026",
+      "time": "17:00",
+      "venue": "Philadelphia, PA",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:la-salle:12798",
+      "date": "2026-09-19",
+      "home": "la-salle",
+      "away": "davidson",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goexplorers.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "McCarthy Stadium",
+      "home_score": 2,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:rhode-island:11989",
+      "date": "2026-09-19",
+      "home": "duquesne",
+      "away": "rhode-island",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "16:00",
+      "venue": "Pittsburgh, PA",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:saint-louis:18688",
+      "date": "2026-09-19",
+      "home": "saint-louis",
+      "away": "vcu",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "11:00",
+      "venue": "Hermann Stadium",
+      "home_score": 7,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:fordham:20942",
+      "date": "2026-09-20",
+      "home": "fordham",
+      "away": "loyola-chicago",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Bronx, N.Y.",
+      "home_score": 0,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:george-washington:15615",
+      "date": "2026-09-20",
+      "home": "george-washington",
+      "away": "richmond",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://gwsports.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "GW Soccer Field",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:davidson:10342",
+      "date": "2026-09-24",
+      "home": "davidson",
+      "away": "saint-josephs",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://davidsonwildcats.com/sports/womens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Alumni Soccer Stadium",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:dayton:17778",
+      "date": "2026-09-24",
+      "home": "dayton",
+      "away": "saint-louis",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:duquesne:22951",
+      "date": "2026-09-24",
+      "home": "richmond",
+      "away": "duquesne",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goduquesne.com/sports/womens-soccer/schedule/2026",
+      "time": "17:00",
+      "venue": "Richmond, Va.",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:fordham:20943",
+      "date": "2026-09-24",
+      "home": "george-mason",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "Fairfax, Va.",
+      "home_score": 4,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:la-salle:12799",
+      "date": "2026-09-24",
+      "home": "loyola-chicago",
+      "away": "la-salle",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goexplorers.com/sports/womens-soccer/schedule/2026",
+      "time": "20:00",
+      "venue": "Loyola Soccer Park",
+      "home_score": 1,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:rhode-island:11990",
+      "date": "2026-09-24",
+      "home": "rhode-island",
+      "away": "george-washington",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "URI Soccer Complex",
+      "home_score": 3,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:st-bonaventure:8652",
+      "date": "2026-09-24",
+      "home": "vcu",
+      "away": "st-bonaventure",
+      "status": "final",
+      "source_url": "https://gobonnies.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "time": "13:00",
+      "venue": "Richmond, VA",
+      "home_score": 5,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:dayton:17779",
+      "date": "2026-09-27",
+      "home": "loyola-chicago",
+      "away": "dayton",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "14:00",
+      "venue": "Loyola Soccer Park",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:duquesne:22952",
+      "date": "2026-09-27",
+      "home": "vcu",
+      "away": "duquesne",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goduquesne.com/sports/womens-soccer/schedule/2026",
+      "time": "15:00",
+      "venue": "City Stadium",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:fordham:20944",
+      "date": "2026-09-27",
+      "home": "fordham",
+      "away": "davidson",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Bronx, N.Y.",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:george-washington:15617",
+      "date": "2026-09-27",
+      "home": "george-washington",
+      "away": "saint-josephs",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://gwsports.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "GW Soccer Field",
+      "home_score": 2,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:la-salle:12800",
+      "date": "2026-09-27",
+      "home": "la-salle",
+      "away": "rhode-island",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goexplorers.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "McCarthy Stadium",
+      "home_score": 2,
+      "away_score": 3,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:richmond:12148",
+      "date": "2026-09-27",
+      "home": "richmond",
+      "away": "st-bonaventure",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://richmondspiders.com/sports/womens-soccer/schedule/2026",
+      "time": "14:00",
+      "venue": "President's Field at River Road",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:saint-louis:18690",
+      "date": "2026-09-27",
+      "home": "saint-louis",
+      "away": "george-mason",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Hermann Stadium",
+      "home_score": 3,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:dayton:17780",
+      "date": "2026-10-02",
+      "home": "dayton",
+      "away": "la-salle",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:george-mason:14201",
+      "date": "2026-10-03",
+      "home": "george-mason",
+      "away": "richmond",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://gomason.com/sports/womens-soccer/schedule/2026",
+      "time": "16:00",
+      "venue": "George Mason Stadium",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:saint-josephs:20087",
+      "date": "2026-10-03",
+      "home": "saint-josephs",
+      "away": "vcu",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "time": "17:00",
+      "venue": "Sean Sweeney Field",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:saint-louis:18691",
+      "date": "2026-10-03",
+      "home": "davidson",
+      "away": "saint-louis",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "Davidson, N.C.",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:duquesne:22953",
+      "date": "2026-10-04",
+      "home": "duquesne",
+      "away": "george-washington",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goduquesne.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Rooney Field",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:fordham:20945",
+      "date": "2026-10-04",
+      "home": "st-bonaventure",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "St. Bonaventure, N.Y.",
+      "home_score": 0,
+      "away_score": 5
+    },
+    {
+      "id": "sidearm:loyola-chicago:7223",
+      "date": "2026-10-04",
+      "home": "rhode-island",
+      "away": "loyola-chicago",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://loyolaramblers.com/sports/womens-soccer/schedule/2026",
+      "time": "12:00",
+      "venue": "Kingston, R.I.",
+      "home_score": 1,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:dayton:17781",
+      "date": "2026-10-08",
+      "home": "duquesne",
+      "away": "dayton",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Rooney Field",
+      "home_score": 1,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:fordham:20946",
+      "date": "2026-10-08",
+      "home": "fordham",
+      "away": "vcu",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Bronx, N.Y.",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:george-mason:14202",
+      "date": "2026-10-08",
+      "home": "george-washington",
+      "away": "george-mason",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://gomason.com/sports/womens-soccer/schedule/2026",
+      "time": "15:00",
+      "venue": "Washington, D.C",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:la-salle:12802",
+      "date": "2026-10-08",
+      "home": "la-salle",
+      "away": "richmond",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goexplorers.com/sports/womens-soccer/schedule/2026",
+      "time": "18:00",
+      "venue": "McCarthy Stadium",
+      "home_score": 2,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:loyola-chicago:7224",
+      "date": "2026-10-08",
+      "home": "st-bonaventure",
+      "away": "loyola-chicago",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://loyolaramblers.com/sports/womens-soccer/schedule/2026",
+      "time": "17:00",
+      "venue": "St. Bonaventure, N.Y.",
+      "home_score": 0,
+      "away_score": 3,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:rhode-island:11993",
+      "date": "2026-10-08",
+      "home": "davidson",
+      "away": "rhode-island",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Davidson, NC",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:saint-louis:18692",
+      "date": "2026-10-08",
+      "home": "saint-louis",
+      "away": "saint-josephs",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Hermann Stadium",
+      "home_score": 2,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:davidson:10346",
+      "date": "2026-10-11",
+      "home": "richmond",
+      "away": "davidson",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://davidsonwildcats.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Richmond, VA",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:dayton:17782",
+      "date": "2026-10-11",
+      "home": "dayton",
+      "away": "george-washington",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Baujan Field",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:duquesne:22955",
+      "date": "2026-10-11",
+      "home": "george-mason",
+      "away": "duquesne",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goduquesne.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Fairfax, Va.",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:fordham:20947",
+      "date": "2026-10-11",
+      "home": "saint-josephs",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Philadelphia, Pa.",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:la-salle:12803",
+      "date": "2026-10-11",
+      "home": "vcu",
+      "away": "la-salle",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goexplorers.com/sports/womens-soccer/schedule/2026",
+      "time": "12:00",
+      "venue": "VCU Athletic Village",
+      "home_score": 2,
+      "away_score": 5,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:loyola-chicago:7225",
+      "date": "2026-10-11",
+      "home": "loyola-chicago",
+      "away": "saint-louis",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://loyolaramblers.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Loyola Soccer Park",
+      "home_score": 1,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:rhode-island:11994",
+      "date": "2026-10-11",
+      "home": "rhode-island",
+      "away": "st-bonaventure",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "URI Soccer Complex",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:dayton:17783",
+      "date": "2026-10-17",
+      "home": "davidson",
+      "away": "dayton",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Alumni Soccer Stadium",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:george-mason:14204",
+      "date": "2026-10-17",
+      "home": "st-bonaventure",
+      "away": "george-mason",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://gomason.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "St. Bonaventure, N.Y.",
+      "home_score": 2,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:george-washington:15621",
+      "date": "2026-10-17",
+      "home": "vcu",
+      "away": "george-washington",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://gwsports.com/sports/womens-soccer/schedule/2026",
+      "time": "14:00",
+      "venue": "Richmond, VA",
+      "home_score": 2,
+      "away_score": 3
+    },
+    {
+      "id": "sidearm:rhode-island:11995",
+      "date": "2026-10-17",
+      "home": "rhode-island",
+      "away": "saint-josephs",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "15:00",
+      "venue": "URI Soccer Complex",
+      "home_score": 4,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:saint-louis:18694",
+      "date": "2026-10-17",
+      "home": "saint-louis",
+      "away": "richmond",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Hermann Stadium",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:fordham:20948",
+      "date": "2026-10-18",
+      "home": "fordham",
+      "away": "la-salle",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Bronx, N.Y.",
+      "home_score": 2,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:loyola-chicago:7226",
+      "date": "2026-10-18",
+      "home": "loyola-chicago",
+      "away": "duquesne",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://loyolaramblers.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "Loyola Soccer Park",
+      "home_score": 2,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:davidson:10348",
+      "date": "2026-10-22",
+      "home": "duquesne",
+      "away": "davidson",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://davidsonwildcats.com/sports/womens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "Pittsburgh, PA",
+      "home_score": 2,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:dayton:17784",
+      "date": "2026-10-22",
+      "home": "dayton",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:la-salle:12805",
+      "date": "2026-10-22",
+      "home": "la-salle",
+      "away": "saint-louis",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goexplorers.com/sports/womens-soccer/schedule/2026",
+      "time": "19:00",
+      "venue": "McCarthy Stadium",
+      "home_score": 1,
+      "away_score": 2,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:loyola-chicago:7227",
+      "date": "2026-10-22",
+      "home": "george-washington",
+      "away": "loyola-chicago",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://loyolaramblers.com/sports/womens-soccer/schedule/2026",
+      "time": "14:00",
+      "venue": "Washington, D.C",
+      "home_score": 2,
+      "away_score": 1,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:rhode-island:11996",
+      "date": "2026-10-22",
+      "home": "george-mason",
+      "away": "rhode-island",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "18:00",
+      "venue": "Fairfax, VA",
+      "home_score": 1,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:richmond:12153",
+      "date": "2026-10-22",
+      "home": "richmond",
+      "away": "vcu",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://richmondspiders.com/sports/womens-soccer/schedule/2026",
+      "time": "16:00",
+      "venue": "President's Field at River Road",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:saint-josephs:20091",
+      "date": "2026-10-22",
+      "home": "saint-josephs",
+      "away": "st-bonaventure",
+      "status": "final",
+      "source_url": "https://sjuhawks.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "time": "19:00",
+      "venue": "Sean Sweeney Field",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:davidson:10349",
+      "date": "2026-10-25",
+      "home": "st-bonaventure",
+      "away": "davidson",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://davidsonwildcats.com/sports/womens-soccer/schedule/2026",
+      "time": "12:00",
+      "venue": "St. Bonaventure, N.Y.",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:dayton:17785",
+      "date": "2026-10-25",
+      "home": "saint-josephs",
+      "away": "dayton",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Sweeney Field",
+      "home_score": 1,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:fordham:20950",
+      "date": "2026-10-25",
+      "home": "fordham",
+      "away": "george-washington",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "Bronx, N.Y.",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:la-salle:12806",
+      "date": "2026-10-25",
+      "home": "george-mason",
+      "away": "la-salle",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goexplorers.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "George Mason Stadium",
+      "home_score": 1,
+      "away_score": 5,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:loyola-chicago:7228",
+      "date": "2026-10-25",
+      "home": "vcu",
+      "away": "loyola-chicago",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://loyolaramblers.com/sports/womens-soccer/schedule/2026",
+      "time": "12:00",
+      "venue": "Richmond, Va.",
+      "home_score": 0,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:rhode-island:11997",
+      "date": "2026-10-25",
+      "home": "rhode-island",
+      "away": "richmond",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:00",
+      "venue": "URI Soccer Complex",
+      "home_score": 1,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:saint-louis:18696",
+      "date": "2026-10-25",
+      "home": "duquesne",
+      "away": "saint-louis",
+      "status": "final",
+      "source_url": "https://slubillikens.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "12:00",
+      "venue": "Pittsburgh, Pa.",
+      "home_score": 0,
+      "away_score": 2
+    },
+    {
+      "id": "sidearm:dayton:17786",
+      "date": "2026-10-31",
+      "home": "dayton",
+      "away": "vcu",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:la-salle:14409",
+      "date": "2026-10-31",
+      "home": "la-salle",
+      "away": "duquesne",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://goexplorers.com/sports/womens-soccer/schedule/2026",
+      "time": "12:00",
+      "venue": "McCarthy Stadium",
+      "home_score": 3,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:rhode-island:11998",
+      "date": "2026-10-31",
+      "home": "saint-louis",
+      "away": "rhode-island",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "20:00",
+      "venue": "Saint Louis, MO",
+      "home_score": 0,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:davidson:10350",
+      "date": "2026-11-01",
+      "home": "davidson",
+      "away": "george-mason",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://davidsonwildcats.com/sports/womens-soccer/schedule/2026",
+      "time": "13:30",
+      "venue": "Alumni Soccer Stadium",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:fordham:20951",
+      "date": "2026-11-01",
+      "home": "richmond",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/womens-soccer/schedule/2026",
+      "conference_game": true,
+      "stage": {
+        "phase": "regular"
+      },
+      "time": "13:30",
+      "venue": "Richmond, Va.",
+      "home_score": 0,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:george-washington:15624",
+      "date": "2026-11-01",
+      "home": "george-washington",
+      "away": "st-bonaventure",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://gwsports.com/sports/womens-soccer/schedule/2026",
+      "time": "13:00",
+      "venue": "GW Soccer Field",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:loyola-chicago:7229",
+      "date": "2026-11-01",
+      "home": "loyola-chicago",
+      "away": "saint-josephs",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://loyolaramblers.com/sports/womens-soccer/schedule/2026",
+      "time": "12:30",
+      "venue": "Loyola Soccer Park",
+      "home_score": 2,
+      "away_score": 0,
+      "stage": {
+        "phase": "regular"
+      }
+    },
+    {
+      "id": "sidearm:dayton:17787",
+      "date": "2026-11-06",
+      "home": "dayton",
+      "away": "george-washington",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "Atlantic 10 Championship"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:la-salle:12808",
+      "date": "2026-11-06",
+      "home": "la-salle",
+      "away": "loyola-chicago",
+      "status": "final",
+      "conference_game": false,
+      "source_url": "https://goexplorers.com/sports/womens-soccer/schedule/2026",
+      "time": "17:00",
+      "venue": "McCarthy Stadium",
+      "home_score": 1,
+      "away_score": 0,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "Atlantic 10 Tournament"
+      }
+    },
+    {
+      "id": "sidearm:fordham:21384",
+      "date": "2026-11-07",
+      "home": "saint-louis",
+      "away": "fordham",
+      "status": "final",
+      "source_url": "https://fordhamsports.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "Atlantic 10 Championship",
+        "round_published": "Quarterfinal"
+      },
+      "time": "18:00",
+      "venue": "Saint Louis, MO",
+      "home_score": 5,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:george-mason:14484",
+      "date": "2026-11-07",
+      "home": "george-mason",
+      "away": "rhode-island",
+      "status": "final",
+      "conference_game": true,
+      "source_url": "https://gomason.com/sports/womens-soccer/schedule/2026",
+      "neutral": true,
+      "time": "19:00",
+      "venue": "George Mason Stadium",
+      "home_score": 1,
+      "away_score": 3,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "Atlantic 10 Tournament",
+        "round_published": "Quarterfinals"
+      }
+    },
+    {
+      "id": "sidearm:dayton:17788",
+      "date": "2026-11-11",
+      "home": "dayton",
+      "away": "la-salle",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "Atlantic 10 Championship"
+      },
+      "time": "19:00",
+      "venue": "Baujan Field",
+      "home_score": 3,
+      "away_score": 1
+    },
+    {
+      "id": "sidearm:rhode-island:12230",
+      "date": "2026-11-11",
+      "home": "saint-louis",
+      "away": "rhode-island",
+      "status": "final",
+      "source_url": "https://gorhody.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "Atlantic 10 Tournament",
+        "round_published": "Semifinal"
+      },
+      "time": "20:00",
+      "venue": "Saint Louis, MO",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:dayton:17789",
+      "date": "2026-11-15",
+      "home": "saint-louis",
+      "away": "dayton",
+      "status": "final",
+      "source_url": "https://daytonflyers.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "conference",
+        "source": "Atlantic 10 Championship",
+        "round_published": "Final"
+      },
+      "time": "13:00",
+      "venue": "Hermann Stadium",
+      "home_score": 2,
+      "away_score": 0
+    },
+    {
+      "id": "sidearm:saint-louis:18955",
+      "date": "2026-11-21",
+      "home": "arkansas",
+      "away": "saint-louis",
+      "status": "scheduled",
+      "source_url": "https://slubillikens.com/sports/womens-soccer/schedule/2026",
+      "conference_game": false,
+      "stage": {
+        "phase": "postseason",
+        "competition": "ncaa",
+        "source": "NCAA Championship",
+        "round_published": "First Round"
+      },
+      "time": "18:00",
+      "venue": "Fayetteville, Ark."
+    }
+  ]
+}

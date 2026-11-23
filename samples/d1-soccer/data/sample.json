@@ -1,0 +1,87 @@
+{
+  "schema": "touchline.sample/1",
+  "description": "A sample data home: one conference, one season, cut from the real home by pipeline/scripts/cut_sample.py. Readers that see this file build only the season files it lists.",
+  "level": "d1",
+  "season": 2026,
+  "conference": "a10",
+  "genders": [
+    "men",
+    "women"
+  ],
+  "programmes": {
+    "men": [
+      "davidson",
+      "dayton",
+      "duquesne",
+      "fordham",
+      "george-mason",
+      "george-washington",
+      "la-salle",
+      "loyola-chicago",
+      "rhode-island",
+      "saint-josephs",
+      "saint-louis",
+      "st-bonaventure",
+      "vcu"
+    ],
+    "women": [
+      "davidson",
+      "dayton",
+      "duquesne",
+      "fordham",
+      "george-mason",
+      "george-washington",
+      "la-salle",
+      "loyola-chicago",
+      "rhode-island",
+      "richmond",
+      "saint-josephs",
+      "saint-louis",
+      "st-bonaventure",
+      "vcu"
+    ]
+  },
+  "cut_at": "2026-11-23T01:25:14+00:00",
+  "files": [
+    {
+      "path": "data/fixtures/2026-men-a10.json",
+      "bytes": 77483,
+      "sha256": "d88aacc0449e293bb9e524a53f6550a114b47760a195102f548b2987a650d982"
+    },
+    {
+      "path": "data/rosters/2026-men-a10.json",
+      "bytes": 121818,
+      "sha256": "617ccdd64a58bbe5ff9ff1ed42baffcc8193f6a50750b494b500ae8f4c7c4322"
+    },
+    {
+      "path": "data/stats/2026-men-a10.json",
+      "bytes": 206319,
+      "sha256": "e7666c3cb3557647fb2752b84b5a9c4fc00ab84b8ca8abcc80e097d9ac121746"
+    },
+    {
+      "path": "data/matches/2026-men-a10.json",
+      "bytes": 5817904,
+      "sha256": "a6089815c66786ea74d9cae45b176b3040858d4e4d8ccc3f6aa13b13dc300b01"
+    },
+    {
+      "path": "data/fixtures/2026-women-a10.json",
+      "bytes": 84927,
+      "sha256": "fe7126d04160730cba1e9735797dc244267d1b7b465bfc16a1060caa5b30df7e"
+    },
+    {
+      "path": "data/rosters/2026-women-a10.json",
+      "bytes": 115133,
+      "sha256": "6b4eaddbca50a641eda95da481ebf0113846cc180120f2bcd456b583fcc44ca5"
+    },
+    {
+      "path": "data/stats/2026-women-a10.json",
+      "bytes": 207278,
+      "sha256": "b4c4ef8fda63d80a74f6bf23ffea589ffabcf06659ad27f6ad38eba6d0f915e7"
+    },
+    {
+      "path": "data/matches/2026-women-a10.json",
+      "bytes": 6798169,
+      "sha256": "568a3967294be0e3f7d5540d16dd28c6b48c86196ef78bc544b37562a76b429a"
+    }
+  ]
+}
