@@ -1,0 +1,72 @@
+name: Cloud collection trial
+
+# Pilot trial (temporary): does a GitHub-hosted runner get served by the
+# athletics sites the collector reads? Runs the real collector
+# (pipeline/scripts/cloud_trial.py -> collect-board) for a small spread of
+# programmes on every live platform, plus a read-only probe of a few
+# Division III sites, into a throwaway temp home that is deleted afterwards.
+#
+# It reports pass/fail per platform and nothing else: no data home is checked
+# out, nothing is committed, the collector's own output is never echoed, and
+# the only artifact is the counts-only result JSON. Remove this workflow once
+# the verdict is in (it also stops itself after the season ends).
+
+on:
+  schedule:
+    # Twice a day, away from the Mac's morning cadence, so each day samples
+    # two runner IP draws.
+    - cron: "17 15 * * *"
+    - cron: "47 3 * * *"
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - .github/workflows/cloud-trial.yml
+      - pipeline/scripts/cloud_trial.py
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cloud-trial
+  cancel-in-progress: false
+
+jobs:
+  trial:
+    name: Collect a spread of programmes from a hosted runner
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Stop after the season
+        id: window
+        run: |
+          if [ "$(date -u +%Y%m%d)" -gt 20261215 ]; then
+            echo "Trial window closed (season over). Delete this workflow." >> "$GITHUB_STEP_SUMMARY"
+            echo "open=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "open=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.window.outputs.open == 'true'
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v5
+        if: steps.window.outputs.open == 'true'
+      - name: Build the pipeline environment
+        if: steps.window.outputs.open == 'true'
+        run: uv sync --project pipeline --frozen --no-dev
+      - name: Run the trial
+        if: steps.window.outputs.open == 'true'
+        working-directory: pipeline
+        run: |
+          uv run --frozen --no-dev cloud-trial \
+            --season 2026 \
+            --summary "$GITHUB_STEP_SUMMARY" \
+            --json "$RUNNER_TEMP/cloud-trial-result.json"
+      - name: Keep the counts-only result
+        if: steps.window.outputs.open == 'true' && always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cloud-trial-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/cloud-trial-result.json
+          retention-days: 30
+          if-no-files-found: ignore
