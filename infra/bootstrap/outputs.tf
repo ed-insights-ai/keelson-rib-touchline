@@ -18,6 +18,14 @@ output "signing_key_arn" {
   value = aws_kms_key.signing.arn
 }
 
+output "publish_role_arn" {
+  value = aws_iam_role.publish.arn
+}
+
+output "publish_site_role_arn" {
+  value = aws_iam_role.publish_site.arn
+}
+
 output "publish_boundary_arn" {
   value = aws_iam_policy.publish_boundary.arn
 }

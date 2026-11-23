@@ -4,22 +4,6 @@ variable "region" {
   default     = "us-east-1"
 }
 
-variable "github_owner" {
-  type    = string
-  default = "ed-insights-ai"
-}
-
-variable "github_repo" {
-  type    = string
-  default = "keelson-rib-touchline"
-}
-
-variable "publish_environment" {
-  description = "GitHub Actions environment whose jobs (collect and publish) may assume the publish role."
-  type        = string
-  default     = "production"
-}
-
 # One list drives every per-scope prefix and the publish role's write paths.
 # Adding a division (d3) is a one-line change here.
 variable "divisions" {

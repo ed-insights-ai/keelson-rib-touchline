@@ -56,3 +56,9 @@ variable "block_account_public_access" {
   type        = bool
   default     = true
 }
+
+variable "publish_environment" {
+  description = "GitHub Actions environment whose jobs (collect, publish, site deploy) may assume the publish roles."
+  type        = string
+  default     = "production"
+}

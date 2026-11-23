@@ -2,9 +2,6 @@ data "aws_caller_identity" "current" {}
 
 locals {
   account_id = data.aws_caller_identity.current.account_id
-  repo       = "${var.github_owner}/${var.github_repo}"
-  oidc_host  = "token.actions.githubusercontent.com"
-  oidc_arn   = "arn:aws:iam::${local.account_id}:oidc-provider/${local.oidc_host}"
 
   # Snapshot scopes: d1-men, d1-women, d2-men, ... from the two lists.
   scopes = [for pair in setproduct(var.divisions, var.genders) : "${pair[0]}-${pair[1]}"]

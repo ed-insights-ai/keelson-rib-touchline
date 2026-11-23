@@ -3,7 +3,7 @@ output "data_bucket" {
 }
 
 output "publish_role_arn" {
-  value = aws_iam_role.publish.arn
+  value = data.aws_iam_role.publish.arn
 }
 
 output "snapshot_scopes" {
@@ -45,7 +45,7 @@ output "site_url" {
 }
 
 output "site_deploy_role_arn" {
-  value = aws_iam_role.site_deploy.arn
+  value = data.aws_iam_role.site_deploy.arn
 }
 
 output "site_build_prefixes" {

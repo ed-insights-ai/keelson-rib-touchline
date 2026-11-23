@@ -3,15 +3,15 @@
 # main only, runs Terraform for infra/main with it.
 #
 # It can manage the data and site buckets' configuration (never their
-# objects), the site's CloudFront distribution and its policies, and roles
-# named touchline-publish*, each of which must carry the
-# touchline-publish-boundary permissions boundary. It can read the signing
+# objects), the site's CloudFront distribution and its policies, and the
+# inline permissions of the touchline-publish* roles (never their trust or
+# boundary). It can read the signing
 # key's metadata and public key, nothing more. It cannot change itself, the
 # OIDC provider, the signing key, the budget or the bootstrap state, so a
 # change to any of those needs Daniel's signed-in CLI again.
 #
-# The daily publish job does not use this role. It uses touchline-publish,
-# made by infra/main, which can only write data and sign.
+# The daily publish job does not use this role. It uses touchline-publish
+# (roles.tf), which can only write data and sign.
 # ---------------------------------------------------------------------------
 
 locals {
@@ -19,7 +19,6 @@ locals {
   data_bucket_arn = "arn:aws:s3:::${local.data_bucket}"
   site_bucket_arn = "arn:aws:s3:::touchline-site-${local.account_id}"
   publish_role    = "arn:aws:iam::${local.account_id}:role/touchline-publish*"
-  boundary_arn    = "arn:aws:iam::${local.account_id}:policy/touchline-publish-boundary"
 
   # Requires the repo's OIDC subject template to include repo, context and ref
   # (RUNBOOK.md step 6). The default template has no ref for environment jobs,
@@ -106,35 +105,18 @@ data "aws_iam_policy_document" "infra_deploy" {
     resources = [aws_kms_key.signing.arn]
   }
 
-  # Publish roles: created only with the boundary attached.
+  # Publish roles: inline permissions only. The roles, their trust and their
+  # boundary are bootstrap's (roles.tf), so this role cannot point a publish
+  # role's trust at its own OIDC subject.
   statement {
-    sid       = "PublishRoleCreate"
-    actions   = ["iam:CreateRole", "iam:PutRolePermissionsBoundary"]
-    resources = [local.publish_role]
-    condition {
-      test     = "StringEquals"
-      variable = "iam:PermissionsBoundary"
-      values   = [local.boundary_arn]
-    }
-  }
-
-  statement {
-    sid = "PublishRoleManage"
+    sid = "PublishRoleInlinePolicies"
     actions = [
       "iam:GetRole",
-      "iam:UpdateRole",
-      "iam:UpdateRoleDescription",
-      "iam:UpdateAssumeRolePolicy",
-      "iam:DeleteRole",
-      "iam:TagRole",
-      "iam:UntagRole",
-      "iam:ListRoleTags",
-      "iam:PutRolePolicy",
-      "iam:GetRolePolicy",
-      "iam:DeleteRolePolicy",
       "iam:ListRolePolicies",
       "iam:ListAttachedRolePolicies",
-      "iam:ListInstanceProfilesForRole",
+      "iam:GetRolePolicy",
+      "iam:PutRolePolicy",
+      "iam:DeleteRolePolicy",
     ]
     resources = [local.publish_role]
   }
@@ -160,6 +142,10 @@ data "aws_iam_policy_document" "infra_deploy" {
       "kms:PutKeyPolicy",
       "kms:CreateKey",
       "s3:PutAccountPublicAccessBlock",
+      "iam:CreateRole",
+      "iam:DeleteRole",
+      "iam:UpdateAssumeRolePolicy",
+      "iam:PutRolePermissionsBoundary",
       "iam:DeleteRolePermissionsBoundary",
       "iam:AttachRolePolicy",
       "iam:CreatePolicy",
@@ -191,7 +177,7 @@ data "aws_iam_policy_document" "publish_boundary" {
 
   statement {
     sid       = "DataObjects"
-    actions   = ["s3:GetObject", "s3:PutObject", "s3:AbortMultipartUpload"]
+    actions   = ["s3:GetObject", "s3:GetObjectVersion", "s3:PutObject", "s3:AbortMultipartUpload"]
     resources = ["${local.data_bucket_arn}/*"]
   }
 

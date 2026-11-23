@@ -75,11 +75,13 @@ terraform plan -out=tfplan
 terraform apply tfplan
 ```
 
-The plan should add **15** resources and change or destroy nothing: the state
+The plan should add **17** resources and change or destroy nothing: the state
 bucket and its six settings, account-wide Block Public Access, the OIDC
 provider, the snapshot signing key and its alias, the budget, the
-`touchline-infra-deploy` role and its policy, and the
-`touchline-publish-boundary` policy. Each line you uncommented in
+`touchline-infra-deploy` role and its policy, the
+`touchline-publish-boundary` policy, and the `touchline-publish` and
+`touchline-publish-site` roles (with no permissions yet; the Infra workflow
+adds those). Each line you uncommented in
 `terraform.tfvars` removes one.
 
 ## 5. Move the state into the bucket
@@ -126,8 +128,8 @@ required reviewer, so each apply waits for your click.
 ## 8. Merge the pull request
 
 Merging runs the Infra workflow, which applies `infra/main`: the data bucket,
-the signing key, the site bucket and CloudFront distribution, and the two
-publish roles. The distribution takes 5 to 10 minutes to deploy, so the run
+the site bucket and CloudFront distribution, and the two publish roles'
+permissions. The distribution takes 5 to 10 minutes to deploy, so the run
 takes about that long. Watch it:
 
 ```bash

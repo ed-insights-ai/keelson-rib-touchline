@@ -7,8 +7,8 @@ OIDC. No long-lived AWS keys exist anywhere.
 
 | Stack | Applied by | Holds |
 | --- | --- | --- |
-| [`bootstrap/`](bootstrap/) | Daniel, once, with his signed-in AWS CLI ([RUNBOOK.md](RUNBOOK.md)) | Terraform state bucket, account-wide S3 Block Public Access, GitHub's OIDC provider, the snapshot signing key, the `touchline-infra-deploy` role, the boundary for publish roles, the monthly budget and its alerts |
-| [`main/`](main/) | The [Infra workflow](../.github/workflows/infra.yml) on merge to `main`, via `touchline-infra-deploy` | `touchline-data-<account>` bucket, `touchline-site-<account>` bucket and its CloudFront distribution, the `touchline-publish` and `touchline-publish-site` roles |
+| [`bootstrap/`](bootstrap/) | Daniel, once, with his signed-in AWS CLI ([RUNBOOK.md](RUNBOOK.md)) | Terraform state bucket, account-wide S3 Block Public Access, GitHub's OIDC provider, the snapshot signing key, the `touchline-infra-deploy` role, the `touchline-publish` and `touchline-publish-site` roles with their trust and boundary, the monthly budget and its alerts |
+| [`main/`](main/) | The [Infra workflow](../.github/workflows/infra.yml) on merge to `main`, via `touchline-infra-deploy` | `touchline-data-<account>` bucket, `touchline-site-<account>` bucket and its CloudFront distribution, the inline permissions of the two publish roles |
 
 The GitHub App that pushes season files to the data homes is set up by hand:
 [GITHUB_APP.md](GITHUB_APP.md).
@@ -26,8 +26,9 @@ The GitHub App that pushes season files to the data homes is set up by hand:
 - Both publish roles are capped by the `touchline-publish-boundary` policy, so
   a change to `main/` cannot widen them past it.
 - **`touchline-infra-deploy`** (jobs in the `infra` environment, on `main`):
-  manage the two buckets' configuration, CloudFront, and `touchline-publish*`
-  roles that carry the boundary. An explicit deny keeps it out of both
+  manage the two buckets' configuration, CloudFront, and the publish roles'
+  inline permissions. It cannot create roles or change any role's trust or
+  boundary, so it cannot make a publish role trust its own jobs. An explicit deny keeps it out of both
   buckets' objects, even through a bucket policy it writes. It can only read
   the signing key's public half: no grants, key policy changes, new keys or
   signing. It cannot attach managed policies, or touch itself, the budget,

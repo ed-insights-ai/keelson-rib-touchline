@@ -297,17 +297,13 @@ resource "aws_cloudfront_distribution" "site" {
 }
 
 # ---------------------------------------------------------------------------
-# Site deploy role: the publish workflow's site job, in `production` on main.
-# Syncs the site bucket and invalidates this one distribution. No access to
-# the data bucket or the signing key.
+# Permissions for touchline-publish-site (the role and its trust, production
+# on main, are in infra/bootstrap/roles.tf): sync the site bucket and
+# invalidate this one distribution. No access to the data bucket or the key.
 # ---------------------------------------------------------------------------
 
-resource "aws_iam_role" "site_deploy" {
-  name                 = "touchline-publish-site"
-  description          = "Site deploy, from ${local.repo} environment ${var.publish_environment} on main"
-  assume_role_policy   = data.aws_iam_policy_document.publish_trust.json
-  permissions_boundary = "arn:aws:iam::${local.account_id}:policy/touchline-publish-boundary"
-  max_session_duration = 3600
+data "aws_iam_role" "site_deploy" {
+  name = "touchline-publish-site"
 }
 
 data "aws_iam_policy_document" "site_deploy" {
@@ -332,6 +328,6 @@ data "aws_iam_policy_document" "site_deploy" {
 
 resource "aws_iam_role_policy" "site_deploy" {
   name   = "touchline-publish-site"
-  role   = aws_iam_role.site_deploy.id
+  role   = data.aws_iam_role.site_deploy.name
   policy = data.aws_iam_policy_document.site_deploy.json
 }
