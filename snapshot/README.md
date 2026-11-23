@@ -61,9 +61,10 @@ publishes past them.
 - `duckdb.env`: `NODE_API` must equal the desk's exact `@duckdb/node-api`
   pin and `ENGINE` the engine its manifests name. The app reads only a
   snapshot written by its own engine, so both sides move together.
-- `signing-public-key.pem` (once committed): the KMS public key. A run whose
-  key differs stops before signing. Each main run prints the key in its
-  summary; the desk ships the same key as `SNAPSHOT_PUBLIC_KEY`.
+- `signing-public-key.pem`: the KMS public key (pinned Nov 23 from run
+  45117589533). A run whose key differs stops before signing. Each main run
+  prints the key in its log and summary; the desk ships the same key as
+  `SNAPSHOT_PUBLIC_KEY`. Rotating the key means changing both together.
 
 ## Signing
 
