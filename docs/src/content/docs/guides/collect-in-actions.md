@@ -147,7 +147,7 @@ Four repository variables steer it:
 | `TOUCHLINE_COLLECT_UNTIL` | `YYYY-MM-DD`. The schedule (14:17 UTC daily) collects through this date. Unset, scheduled runs do nothing. `2026-12-15` ends with the season. |
 | `TOUCHLINE_COLLECT_TARGET` | `main` makes this workflow production: real runs land on each data home's `main`, with commits `collect(actions): {CONF} {gender} {season}`. Unset or anything else, they land on `shadow`. Before setting it, stop the Mac's cadence for the same units (it may keep the PrestoSports conferences until a presto runner exists). To roll back, unset it and revert the commits on `main`. |
 | `TOUCHLINE_PRESTO_RUNNER` | `true` once a self-hosted runner labelled `presto` is registered. Otherwise the presto units are recorded `skipped` and everything else still lands. |
-| `TOUCHLINE_PRESTO_RUNNER_INSTANCE` | The instance id of the AWS presto runner. Set, the hosted job starts that instance before the presto job is queued. Unset, the runner is taken to be a machine that is always on. |
+| `TOUCHLINE_PRESTO_RUNNER_INSTANCE` | The instance id of the AWS presto runner. Set, a small hosted job starts that instance once every division's hosted job is done. Unset, the runner is taken to be a machine that is always on. |
 
 ### The PrestoSports runner
 
@@ -167,7 +167,7 @@ encrypted under the `TOUCHLINE_ARTIFACT_KEY` secret
 fails rather than store them in the clear.
 
 **The AWS runner** (`infra/bootstrap/runner.tf`) is one small EC2 instance
-with one fixed address. The hosted job starts it just before the presto job is
+with one fixed address. A hosted job starts it just before the presto job is
 queued, and it stops itself after 15 minutes with no job, so it runs about an
 hour a day. Daniel sets it up once a season, from his signed-in CLIs:
 

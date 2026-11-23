@@ -17,8 +17,9 @@ name: Collect
 #                  shadow, sync raw HTML, and hand the presto units' work home
 #                  to the next job.
 #   presto-collect per division, on the self-hosted runner labelled `presto`.
-#                  With TOUCHLINE_PRESTO_RUNNER_INSTANCE set, shadow-hosted
-#                  starts that AWS instance first; it stops itself when idle.
+#   presto-start   with TOUCHLINE_PRESTO_RUNNER_INSTANCE set, starts that AWS
+#                  instance once the hosted jobs are done; it stops itself
+#                  when idle.
 #                  Gets one secret, the key its artifacts are encrypted
 #                  under (TOUCHLINE_ARTIFACT_KEY), and no AWS or App
 #                  credential. Runs only when
@@ -505,33 +506,6 @@ jobs:
           name: presto-home-${{ matrix.division }}
           path: ${{ runner.temp }}/presto-home.tgz.enc
           retention-days: 1
-      - name: Start the presto runner
-        # The AWS runner is stopped between runs and stops itself when idle
-        # (infra/bootstrap/runner.tf). Unset, the runner is a machine that is
-        # always on, and there is nothing to start. A failure here is a
-        # warning: the presto job then waits in the queue as it would for any
-        # runner that is off.
-        if: env.PRESTO_ON == 'true' && vars.TOUCHLINE_PRESTO_RUNNER_INSTANCE != ''
-        env:
-          INSTANCE: ${{ vars.TOUCHLINE_PRESTO_RUNNER_INSTANCE }}
-        run: |
-          set -uo pipefail
-          case "$INSTANCE" in
-            i-*[!0-9a-f]*|i-) echo "::warning::TOUCHLINE_PRESTO_RUNNER_INSTANCE is not an instance id; the presto runner was not started."; exit 0 ;;
-            i-*) ;;
-            *) echo "::warning::TOUCHLINE_PRESTO_RUNNER_INSTANCE is not an instance id; the presto runner was not started."; exit 0 ;;
-          esac
-          # An instance that is still stopping refuses a start; wait it out.
-          for attempt in 1 2 3 4 5 6 7 8 9 10 11 12; do
-            if state=$(aws ec2 start-instances --instance-ids "$INSTANCE" \
-                --query 'StartingInstances[0].CurrentState.Name' --output text 2> "$RUNNER_TEMP/start.err"); then
-              echo "presto runner $INSTANCE: $state"
-              exit 0
-            fi
-            if ! grep -q IncorrectInstanceState "$RUNNER_TEMP/start.err"; then break; fi
-            sleep 15
-          done
-          echo "::warning::could not start the presto runner: $(tail -n 1 "$RUNNER_TEMP/start.err")"
       - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         if: always()
         with:
@@ -553,9 +527,54 @@ jobs:
             exit 1
           fi
 
+  presto-start:
+    name: Start the presto runner
+    needs: [plan, ready, shadow-hosted]
+    # The AWS runner is stopped between runs and stops itself when idle
+    # (infra/bootstrap/runner.tf). It is started here, after every division's
+    # hosted job, because that is when the presto jobs become runnable: started
+    # any earlier, it could idle out while a longer division is still
+    # collecting. With TOUCHLINE_PRESTO_RUNNER_INSTANCE unset, the runner is a
+    # machine that is always on and there is nothing to start. A failure is a
+    # warning: the presto jobs then wait in the queue as they would for any
+    # runner that is off.
+    if: always() && needs.ready.outputs.ready == 'true' && needs.plan.outputs.presto != '[]' && vars.TOUCHLINE_PRESTO_RUNNER_INSTANCE != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: production
+    permissions:
+      id-token: write
+    steps:
+      - uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+        with:
+          role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/touchline-publish
+          aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+          role-session-name: collect-presto-start-${{ github.run_id }}
+      - name: Start the instance
+        env:
+          INSTANCE: ${{ vars.TOUCHLINE_PRESTO_RUNNER_INSTANCE }}
+        run: |
+          set -uo pipefail
+          case "$INSTANCE" in
+            i-*[!0-9a-f]*|i-) echo "::warning::TOUCHLINE_PRESTO_RUNNER_INSTANCE is not an instance id; the presto runner was not started."; exit 0 ;;
+            i-*) ;;
+            *) echo "::warning::TOUCHLINE_PRESTO_RUNNER_INSTANCE is not an instance id; the presto runner was not started."; exit 0 ;;
+          esac
+          # An instance that is still stopping refuses a start; wait it out.
+          for attempt in 1 2 3 4 5 6 7 8 9 10 11 12; do
+            if state=$(aws ec2 start-instances --instance-ids "$INSTANCE" \
+                --query 'StartingInstances[0].CurrentState.Name' --output text 2> "$RUNNER_TEMP/start.err"); then
+              echo "presto runner $INSTANCE: $state"
+              exit 0
+            fi
+            if ! grep -q IncorrectInstanceState "$RUNNER_TEMP/start.err"; then break; fi
+            sleep 15
+          done
+          echo "::warning::could not start the presto runner: $(tail -n 1 "$RUNNER_TEMP/start.err")"
+
   presto-collect:
     name: Collect ${{ matrix.division }} (presto runner)
-    needs: [plan, ready, shadow-hosted]
+    needs: [plan, ready, shadow-hosted, presto-start]
     # Waits for the hosted landing (so its work home reads today's siblings),
     # but runs whether or not a hosted unit failed.
     # Never on a pull request and never off main: the runner is our own
