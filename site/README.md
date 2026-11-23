@@ -20,10 +20,10 @@ runs the whole step:
 
 ## Run it
 
-It runs daily after each scheduled Collect run on main while today (UTC) is
-on or before the `TOUCHLINE_COLLECT_UNTIL` variable, the same date Collect
-stops on, and always reads the data homes' `main` (the Mac's production
-data), never Collect's `shadow`. Otherwise: Actions → Publish site → Run
+It runs daily at 15:47 UTC, 90 minutes after Collect's schedule, while today
+(UTC) is on or before the `TOUCHLINE_COLLECT_UNTIL` variable, the same date
+Collect stops on. It always reads the data homes' `main` (the Mac's production
+data), never Collect's `shadow`, so it does not wait on Collect finishing. Otherwise: Actions → Publish site → Run
 workflow on `main`, or merge a change under `site/`. `source` is `data` (the private homes, read with the publisher App,
 see `infra/GITHUB_APP.md`; the default) or `samples` (the sample homes). The
 repo variable `SITE_SOURCE` overrides the default for runs that do not say.
