@@ -1,11 +1,12 @@
 name: Infra
 
-# Terraform for infra/main. Pull requests check formatting and validate both
-# stacks with no cloud access. A merge to main that touches infra/main plans
+# Terraform for infra/main. Pull requests check formatting and validate every
+# stack with no cloud access. A merge to main that touches infra/main plans
 # and applies it through the `infra` environment's OIDC role.
 #
-# infra/bootstrap is never applied here: it holds the role this workflow
-# uses, so it changes only through Daniel's signed-in CLI (infra/RUNBOOK.md).
+# infra/bootstrap and infra/identity are never applied here: they hold the
+# roles this workflow and Daniel use, so they change only through Daniel's
+# signed-in CLI (infra/RUNBOOK.md).
 
 on:
   pull_request:
@@ -54,6 +55,10 @@ jobs:
         run: |
           terraform -chdir=infra/main init -backend=false
           terraform -chdir=infra/main validate
+      - name: Validate identity
+        run: |
+          terraform -chdir=infra/identity init -backend=false
+          terraform -chdir=infra/identity validate
 
   apply:
     name: Apply infra/main

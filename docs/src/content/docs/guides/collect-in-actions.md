@@ -173,6 +173,8 @@ hour a day. Daniel sets it up once a season, from his signed-in CLIs:
 
 ```bash
 cd ~/source/edinsights/keelson-rib-touchline/infra/bootstrap
+aws login --profile touchline
+export AWS_PROFILE=touchline-apply
 terraform init -backend-config="bucket=touchline-tfstate-$(aws sts get-caller-identity --query Account --output text)"
 terraform plan -out=tfplan      # adds the runner and one boundary statement
 terraform apply tfplan
@@ -186,6 +188,7 @@ openssl rand -hex 32 | gh secret set TOUCHLINE_ARTIFACT_KEY -R ed-insights-ai/ke
 
 # About three minutes after the apply, register the runner. The token lasts
 # an hour and is used once.
+export AWS_PROFILE=touchline
 aws ssm send-command --region us-east-1 --document-name AWS-RunShellScript \
   --instance-ids "$(terraform output -raw presto_runner_instance_id)" \
   --parameters "commands=['/usr/local/bin/touchline-register-runner $(gh api -X POST repos/ed-insights-ai/keelson-rib-touchline/actions/runners/registration-token --jq .token)']" \
