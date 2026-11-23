@@ -44,7 +44,7 @@ change is:
 
 | Result | When | Lands? |
 | --- | --- | --- |
-| `changed` | a new board file, or a board diff beyond the `collected_at` stamp | yes, one commit `collect(shadow): <CONF> <gender> <season>` |
+| `changed` | a new board file, or a board diff beyond the `collected_at` stamp | yes, one commit `collect(shadow): {CONF} {gender} {season}` |
 | `no-change` | the only diff is `collected_at` | no; the stamp is kept in the run record |
 | `lost` | a programme HEAD held is now a named gap (`missing`) | no, unless `accept_loss` names the conference |
 | `failed` | `collect-board` exited non-zero or passed its 40-minute unit budget | no |
@@ -76,7 +76,7 @@ The pages `collect-board` fetches, and their `.state.json` sidecars, live in
 the data bucket in the same layout as a data home's `data/raw_html/`:
 
 ```
-s3://touchline-data-<account>/raw/<division>/raw_html/<slug>/<season>-<gender>-<kind>.{html,state.json}
+s3://touchline-data-{account}/raw/{division}/raw_html/{slug}/{season}-{gender}-{kind}.html (and .state.json)
 ```
 
 Before collecting, a job restores the season's pages for its units'
@@ -90,7 +90,7 @@ with Daniel's AWS CLI.
 
 ## The run record
 
-Every job uploads `collect-record-<division>-<job>` (90 days), a
+Every job uploads `collect-record-{division}-{job}` (90 days), a
 `touchline.collect-record/1` JSON document:
 
 ```json
