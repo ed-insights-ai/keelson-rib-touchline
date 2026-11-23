@@ -821,6 +821,8 @@ def test_a_filled_slot_that_keeps_its_round_is_a_fixture() -> None:
     assert round_named_side("First Round vs. Longwood") == "Longwood"
     assert round_named_side("Second Round vs. (1) Akron") == "Akron"
     assert round_named_side("Boston College - First Round") == "Boston College"
+    # A state qualifier stays for the state check; a host does not split.
+    assert round_named_side("NCAA First Round vs. Loyola (Md.)") == "Loyola (Md.)"
     # Still slots: no side, a side that is itself a slot, or a host.
     for slot in (
         "NCAA First Round",

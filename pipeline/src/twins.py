@@ -159,6 +159,9 @@ def repoint_by_twins(
         ):
             continue
         fixture[side] = chosen
+        shootout = fixture.get("shootout")
+        if isinstance(shootout, dict) and shootout.get("winner") == printed:
+            shootout["winner"] = chosen
         changes.append(
             Repoint(
                 fixture_id=str(fixture.get("id")),

@@ -154,3 +154,15 @@ def test_the_index_reads_the_sibling_files_only(tmp_path: Path) -> None:
     index = season_index(fixtures, "2026-men-horizon")
     assert set(index.own) == {"loyola-chicago"}
     assert "green-bay" not in index.programmes
+
+
+def test_a_shootout_winner_follows_the_re_pointed_side() -> None:
+    twin = _doc(
+        ["loyola-chicago"],
+        [_row("loyola-chicago", 1, "2026-11-01", "green-bay", "loyola-chicago", 1, 1)],
+    )
+    row = _row("green-bay", 1, "2026-11-01", "green-bay", "loyola", 1, 1)
+    row["shootout"] = {"winner": "loyola", "home": 3, "away": 4}
+    repoint_by_twins([row], {"green-bay"}, _index(twin))
+    assert row["away"] == "loyola-chicago"
+    assert row["shootout"] == {"winner": "loyola-chicago", "home": 3, "away": 4}

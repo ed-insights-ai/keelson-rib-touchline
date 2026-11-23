@@ -1076,17 +1076,20 @@ def round_named_side(name: str) -> str | None:
     Only when one part is a round placeholder and the other is not: "NCAA
     First Round vs. TBD" names nobody, and a plain name is no slot at all.
     """
-    # A parenthetical is a seed or a host ("(at Cal Poly Pomona)"), never
-    # the separator.
-    text = " ".join(_PARENTHETICAL.sub(" ", name).split())
+    # A parenthetical is never the separator ("(at Cal Poly Pomona)" names a
+    # host), so the match runs on the text with each one masked; the side is
+    # cut from the original, keeping a state qualifier ("Loyola (Md.)") for
+    # the state check.
+    text = " ".join(name.split())
+    masked = _PARENTHETICAL.sub(lambda m: "_" * len(m.group(0)), text)
     for pattern in (_ROUND_THEN_SIDE, _SIDE_THEN_ROUND):
-        found = pattern.match(text)
+        found = pattern.match(masked)
         if found is None:
             continue
-        side = _clean_team_name(found.group("side"))
+        side = _clean_team_name(text[found.start("side") : found.end("side")])
         if (
             side
-            and round_placeholder(found.group("round"))
+            and round_placeholder(text[found.start("round") : found.end("round")])
             and not round_placeholder(side)
         ):
             return side
