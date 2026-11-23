@@ -45,6 +45,14 @@ on:
       allow_mass_delete:
         type: boolean
         default: false
+  # A merge that changes the site's code (the pin, the scripts, this file)
+  # deploys it, from SITE_SOURCE (samples until that variable says data).
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "pipeline/scripts/cut_bundle.py"
+      - ".github/workflows/publish-site.yml"
   pull_request:
     branches: [main]
     paths:
