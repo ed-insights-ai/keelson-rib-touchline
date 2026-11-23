@@ -35,6 +35,7 @@
     "bin",
     "workflows",
     "pipeline",
+    "contracts",
     "README.md",
     "LICENSE",
     "NOTICE"

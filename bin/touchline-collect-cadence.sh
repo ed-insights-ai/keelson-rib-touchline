@@ -1179,6 +1179,11 @@ check_contracts() {
   fi
   COUT=$(TOUCHLINE_DATA_DIR="$DATA_HOME" uv run --quiet --project "$_pd" check-contracts "$DATA_HOME" 2>&1)
   crc=$?
+  # Drift is exit 1 WITH the check's own fail verdict; any other exit 1 (an
+  # uncaught Python error) is a check that did not run, not drift.
+  if [ "$crc" -eq 1 ] && ! printf '%s\n' "$COUT" | grep -q '"verdict": "fail"'; then
+    crc=2
+  fi
   case "$crc" in
     0)
       CONTRACTS_RESULT="ok"
@@ -1192,8 +1197,8 @@ check_contracts() {
       ;;
     *)
       CONTRACTS_RESULT="not run (exit $crc)"
-      printf '%s\n' "$COUT" | tail -5 | logblock
-      log "WARNING: contract check did NOT run — check-contracts exited $crc."
+      printf '%s\n' "$COUT" | grep -v '^warning: ' | tail -8 | logblock
+      log "WARNING: contract check did NOT run — check-contracts exited $crc (its last lines are above)."
       RUN_RC=1
       ;;
   esac

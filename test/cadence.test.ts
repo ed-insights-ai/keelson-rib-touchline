@@ -321,6 +321,7 @@ case "\${CADENCE_FAKE_CONTRACTS:-}" in
     printf '{"check": "contracts", "verdict": "fail", "headline": "1 shape facts beyond the contracts"}\\n'
     exit 1 ;;
   crash) printf 'Traceback: boom\\n' >&2; exit 2 ;;
+  traceback) printf 'Traceback (most recent call last):\\nKeyError: x\\n' >&2; exit 1 ;;
 esac
 printf '{"check": "contracts", "verdict": "pass", "headline": "12 files within the contracts"}\\n'
 exit 0
@@ -878,10 +879,23 @@ describe("bin/touchline-collect-cadence.sh", () => {
       });
       expect(r.code).toBe(1);
       expect(await h.log()).toContain(
-        "WARNING: contract check did NOT run — check-contracts exited 2.",
+        "WARNING: contract check did NOT run — check-contracts exited 2 (its last lines are above).",
       );
       const [rec] = await h.records();
       expect(rec.contracts).toBe("not run (exit 2)");
+
+      expect(await h.log()).toContain("Traceback: boom");
+
+      // an uncaught Python error exits 1 too, but carries no fail verdict:
+      // a check that did not run, never drift
+      const tb = await h.cadence("collect", {
+        TOUCHLINE_CONFERENCES: "GAC",
+        CADENCE_FAKE_PLAN: "GAC=churn",
+        CADENCE_FAKE_CONTRACTS: "traceback",
+      });
+      expect(tb.code).toBe(1);
+      expect((await h.records())[1].contracts).toBe("not run (exit 2)");
+      expect(await h.log()).toContain("KeyError: x");
 
       const quiet = await h.cadence("collect", {
         TOUCHLINE_CONFERENCES: "GAC",
@@ -889,7 +903,7 @@ describe("bin/touchline-collect-cadence.sh", () => {
       });
       expect(quiet.code).toBe(1);
       const records = await h.records();
-      expect(records[1].contracts).toBe("skipped (nothing collected)");
+      expect(records[2].contracts).toBe("skipped (nothing collected)");
     },
     LOOP_TIMEOUT,
   );

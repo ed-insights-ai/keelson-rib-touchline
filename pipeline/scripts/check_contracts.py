@@ -16,7 +16,9 @@ Run it after a collect and before a publish:
 
 Output: one line per drift fact (with how many files carry it and one of
 them), one line per missing file, then one JSON verdict line per home.
-Exit 0 when every home is within the contracts, 1 when any is not.
+Exit 0 when every home is within the contracts, 1 when any is not, 2 when
+the check could not run (an unreadable file, a missing contracts/ directory):
+an alarm, never mistaken for drift.
 """
 
 from __future__ import annotations
@@ -93,7 +95,22 @@ def main(argv: list[str] | None = None) -> int:
             )
             ok = False
             continue
-        report = contracts.check_home(home)
+        try:
+            report = contracts.check_home(home)
+        except (OSError, ValueError, TypeError) as error:
+            print(f"ERROR {home}: {type(error).__name__}: {error}")
+            print(
+                json.dumps(
+                    {
+                        "check": CHECK,
+                        "verdict": "alarm",
+                        "home": str(home),
+                        "headline": "CHECK DID NOT RUN",
+                        "cause": f"{type(error).__name__}: {error}",
+                    }
+                )
+            )
+            return 2
         _report(report)
         ok = ok and report.ok
     return 0 if ok else 1

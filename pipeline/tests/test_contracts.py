@@ -651,3 +651,16 @@ def test_check_contracts_refuses_a_directory_that_is_not_a_home(
 
     assert check_contracts.main([str(tmp_path)]) == 1
     assert "not a Touchline data home" in capsys.readouterr().out
+
+
+def test_check_contracts_alarms_rather_than_drifts_on_an_unreadable_file(
+    tmp_path, capsys
+) -> None:
+    from scripts import check_contracts
+
+    home = _home(tmp_path)
+    (home / "data" / "coverage.json").write_text("{not json", encoding="utf-8")
+    assert check_contracts.main([str(home)]) == 2
+    out = capsys.readouterr().out
+    assert "ERROR" in out and "JSONDecodeError" in out
+    assert json.loads(out.strip().splitlines()[-1])["verdict"] == "alarm"
