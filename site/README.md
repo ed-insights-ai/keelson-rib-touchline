@@ -27,6 +27,10 @@ data), never Collect's `shadow`, so it does not wait on Collect finishing. Other
 workflow on `main`, or merge a change under `site/`. `source` is `data` (the private homes, read with the publisher App,
 see `infra/GITHUB_APP.md`; the default) or `samples` (the sample homes). The
 repo variable `SITE_SOURCE` overrides the default for runs that do not say.
+A dispatch that names the other source (`samples` while the site serves
+`data`) builds and gates the site but does not deploy it: it fills that
+source's snapshot folder (`snapshots/samples/`) and leaves the live site alone.
+To switch what the live site serves, change `SITE_SOURCE`.
 Pull requests that touch the site build and test the sample site and deploy
 nothing.
 
