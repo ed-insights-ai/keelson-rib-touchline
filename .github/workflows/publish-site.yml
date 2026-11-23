@@ -1,11 +1,26 @@
 name: Publish site
 
-# The site half of the publish workflow (plan step "Site"): hold the data homes
-# to the contracts, cut the site bundle (season JSON), build touchline-ui at the
-# pinned commit in site/touchline-ui.sha from it, upload only the files whose
-# content changed to the site bucket, invalidate CloudFront, and ask the live
-# site for real status codes. It runs beside gh-pages; nothing redirects here
-# yet.
+# The publish workflow (plan steps "Build", "Site" and "Release"):
+#
+#   bundle    hold the data homes to the contracts and cut the site bundle
+#             (season JSON) the site reads
+#   snapshot  build the desk's dataset (touchline.duckdb format 1, deltas and
+#             manifest) from the same homes at the same commits with
+#             touchline-desk's packages/data at the commit in
+#             snapshot/touchline-desk.sha, sign it with the KMS key, verify it
+#             through the desk's own fetch, and upload it, all but latest.json
+#             (snapshot/README.md)
+#   site      build touchline-ui at the pinned commit in site/touchline-ui.sha
+#             from the bundle, upload only the files whose content changed to
+#             the site bucket, invalidate CloudFront, and ask the live site for
+#             real status codes
+#   release   only when the live smoke check passed: move each snapshot scope's
+#             latest.json with a conditional write, so the desk never sees a
+#             snapshot the live site does not show
+#
+# The site job needs the snapshot job, so a dataset that does not build,
+# sign and verify also keeps the site as it was. It runs beside gh-pages;
+# nothing redirects here yet.
 #
 # Source of the data:
 #   samples  the sample homes under samples/ (the site then shows GAC and A10;
@@ -16,14 +31,12 @@ name: Publish site
 # A run takes the `source` input unless it is `default`, else the repo
 # variable SITE_SOURCE, else data.
 #
-# Snapshot seam: the snapshot job (DuckDB plus KMS signing, a later change)
-# goes between `bundle` and `site`. It reads the same homes at the commits the
-# bundle job reports (outputs.sources, also in each bundle's data/bundle.json),
-# and the release step that moves latest.json goes after `site`, gated on
-# needs.site.outputs.smoke_passed == 'true'.
-#
-# Pull requests build and gate the sample site and deploy nothing. Only main,
-# through the `production` environment, can assume touchline-publish-site.
+# Pull requests build and gate the sample site and deploy nothing. Their
+# snapshot job cannot read the private touchline-desk (the publisher App's key
+# is in `production`, which only main may use), so it says so and the snapshot
+# is built and verified on main. Only main, through `production`, can assume
+# touchline-publish-site and touchline-publish or use the signing key. A run
+# on any other branch signs with a throwaway key and uploads nothing.
 
 on:
   workflow_dispatch:
@@ -37,6 +50,10 @@ on:
         description: "Allow a deploy that deletes over a quarter of the live site"
         type: boolean
         default: false
+      allow_shrink:
+        description: "Why the dataset may lose rows this time (empty: a loss stops the run)"
+        type: string
+        default: ""
   workflow_call:
     inputs:
       source:
@@ -45,6 +62,9 @@ on:
       allow_mass_delete:
         type: boolean
         default: false
+      allow_shrink:
+        type: string
+        default: ""
   # A merge that changes the site's code (the pin, the scripts, this file)
   # deploys it, from SITE_SOURCE (data unless that variable says samples).
   push:
@@ -52,6 +72,7 @@ on:
     paths:
       - "site/**"
       - "pipeline/scripts/cut_bundle.py"
+      - "snapshot/**"
       - ".github/workflows/publish-site.yml"
   pull_request:
     branches: [main]
@@ -60,6 +81,7 @@ on:
       - "samples/**"
       - "contracts/**"
       - "pipeline/scripts/cut_bundle.py"
+      - "snapshot/**"
       - ".github/workflows/publish-site.yml"
 
 permissions:
@@ -73,14 +95,19 @@ concurrency:
 env:
   # Pull requests always build the samples, whatever the default.
   SOURCE: ${{ github.event_name == 'pull_request' && 'samples' || (inputs.source != '' && inputs.source != 'default') && inputs.source || vars.SITE_SOURCE || 'data' }}
-  # Division order: the root division first (infra/main site_root_division).
-  SITE_DIVISIONS: d2 d1
+  # The one division list: site builds and snapshot scopes both come from it.
+  # Root division first (infra/main site_root_division). Add d3 here once the
+  # d3-soccer home exists (infra/main already lists it).
+  DIVISIONS: d2 d1
   AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID || '822013580129' }}
   AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
   # Terraform outputs site_bucket, site_distribution_id, site_url (infra/main).
   SITE_BUCKET: ${{ vars.SITE_BUCKET || 'touchline-site-822013580129' }}
   SITE_DISTRIBUTION_ID: ${{ vars.SITE_DISTRIBUTION_ID || 'E2OD2GJ3B1JTOK' }}
   SITE_URL: ${{ vars.SITE_URL || 'https://dn1yvpcd2depb.cloudfront.net' }}
+  # Terraform outputs data_bucket and signing_key_alias (infra/main).
+  DATA_BUCKET: ${{ vars.DATA_BUCKET || 'touchline-data-822013580129' }}
+  SIGNING_KEY: alias/touchline-snapshot-signing
 
 jobs:
   bundle:
@@ -134,12 +161,12 @@ jobs:
         if: env.SOURCE == 'samples'
         run: |
           mkdir homes
-          for d in $SITE_DIVISIONS; do ln -s "$PWD/rib/samples/$d-soccer" "homes/$d-soccer"; done
+          for d in $DIVISIONS; do ln -s "$PWD/rib/samples/$d-soccer" "homes/$d-soccer"; done
       - name: Homes within the contracts
         working-directory: rib/pipeline
         run: |
           homes=""
-          for d in $SITE_DIVISIONS; do homes="$homes $GITHUB_WORKSPACE/homes/$d-soccer"; done
+          for d in $DIVISIONS; do homes="$homes $GITHUB_WORKSPACE/homes/$d-soccer"; done
           # shellcheck disable=SC2086
           uv run check-contracts $homes
       - name: Cut the site bundle
@@ -148,7 +175,7 @@ jobs:
         run: |
           set -eu
           sources=""
-          for d in $SITE_DIVISIONS; do
+          for d in $DIVISIONS; do
             home="$GITHUB_WORKSPACE/homes/$d-soccer"
             if [ "$SOURCE" = data ]; then sha=$(git -C "$home" rev-parse HEAD); else sha="samples@$(git -C .. rev-parse HEAD)"; fi
             uv run python -m scripts.cut_bundle --home "$home" --source-sha "$sha" --out "$GITHUB_WORKSPACE/bundle/$d-soccer"
@@ -161,9 +188,183 @@ jobs:
           path: bundle/
           retention-days: 7
 
+  snapshot:
+    name: Build, sign and verify the dataset snapshot
+    needs: bundle
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && 'production' || '' }}
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      DEPLOY: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+      SOURCES: ${{ needs.bundle.outputs.sources }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: rib
+      - name: Pins
+        id: pins
+        run: |
+          set -eu
+          sha=$(tr -d '[:space:]' < rib/snapshot/touchline-desk.sha)
+          case "$sha" in *[!0-9a-f]* | "") echo "::error::snapshot/touchline-desk.sha is not a commit"; exit 1 ;; esac
+          [ ${#sha} -eq 40 ] || { echo "::error::snapshot/touchline-desk.sha is not a full commit"; exit 1; }
+          echo "desk=$sha" >> "$GITHUB_OUTPUT"
+          grep -E '^(NODE_API|ENGINE)=[0-9A-Za-z.-]+$' rib/snapshot/duckdb.env | sed 's/^NODE_API=/node_api=/; s/^ENGINE=/engine=/' >> "$GITHUB_OUTPUT"
+      - name: Can this run read touchline-desk?
+        id: access
+        env:
+          HAS_KEY: ${{ secrets.TOUCHLINE_APP_PRIVATE_KEY != '' }}
+        run: |
+          if [ "$HAS_KEY" = true ]; then echo "ok=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          echo "ok=false" >> "$GITHUB_OUTPUT"
+          if [ "$DEPLOY" = true ]; then
+            echo "::error::TOUCHLINE_APP_PRIVATE_KEY is not set in production; the snapshot needs it to read touchline-desk."; exit 1
+          fi
+          echo "::notice::The snapshot was not built: this run cannot read the private touchline-desk (the publisher App's key is in production, main only). It is built, signed and verified on main."
+      - name: Token for touchline-desk and the data homes
+        if: steps.access.outputs.ok == 'true'
+        id: token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.TOUCHLINE_APP_ID || secrets.TOUCHLINE_APP_ID }}
+          private-key: ${{ secrets.TOUCHLINE_APP_PRIVATE_KEY }}
+          owner: ed-insights-ai
+          repositories: ${{ env.SOURCE == 'data' && 'touchline-desk,d1-soccer,d2-soccer' || 'touchline-desk' }}
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: steps.access.outputs.ok == 'true'
+        with:
+          repository: ed-insights-ai/touchline-desk
+          ref: ${{ steps.pins.outputs.desk }}
+          token: ${{ steps.token.outputs.token }}
+          path: desk
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        if: steps.access.outputs.ok == 'true'
+        with:
+          node-version: 22
+      - name: Install the desk's packages/data only
+        if: steps.access.outputs.ok == 'true'
+        working-directory: desk
+        env:
+          NODE_API: ${{ steps.pins.outputs.node_api }}
+        run: |
+          set -eu
+          pinned=$(jq -r '.dependencies["@duckdb/node-api"]' packages/data/package.json)
+          if [ "$pinned" != "$NODE_API" ]; then
+            echo "::error::the desk pins @duckdb/node-api $pinned, snapshot/duckdb.env says $NODE_API"; exit 1
+          fi
+          # Until the desk's lockfile names the public registry, fetch the same
+          # tarballs from it; the lockfile's integrity hashes still check them.
+          sed -i 's#https://ms-feed-25.pkgs.visualstudio.com/1es-public/_packaging/npm-public/npm/registry/#https://registry.npmjs.org/#g' pnpm-lock.yaml
+          corepack enable
+          pnpm install --frozen-lockfile --ignore-scripts --filter "@touchline/data..."
+          pnpm exec tsc -b packages/data
+      - uses: astral-sh/setup-uv@v5
+        if: steps.access.outputs.ok == 'true'
+      - name: Homes at the bundle's commits
+        if: steps.access.outputs.ok == 'true'
+        env:
+          TOKEN: ${{ steps.token.outputs.token }}
+        run: |
+          set -eu
+          mkdir homes
+          for d in $DIVISIONS; do
+            if [ "$SOURCE" = samples ]; then ln -s "$PWD/rib/samples/$d-soccer" "homes/$d-soccer"; continue; fi
+            sha=""
+            for pair in $SOURCES; do
+              case "$pair" in "$d-soccer="*) sha=${pair#*=} ;; esac
+            done
+            case "$sha" in *[!0-9a-f]* | "") echo "::error::the bundle reported no commit for $d-soccer"; exit 1 ;; esac
+            git init -q "homes/$d-soccer"
+            git -C "homes/$d-soccer" -c http.extraheader="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$TOKEN" | base64 -w0)" \
+              fetch -q --depth 1 "https://github.com/ed-insights-ai/$d-soccer" "$sha"
+            git -C "homes/$d-soccer" checkout -q FETCH_HEAD
+          done
+      - name: Homes within the contracts
+        if: steps.access.outputs.ok == 'true'
+        working-directory: rib/pipeline
+        run: |
+          homes=""
+          for d in $DIVISIONS; do homes="$homes $GITHUB_WORKSPACE/homes/$d-soccer"; done
+          # shellcheck disable=SC2086
+          uv run check-contracts $homes
+      - uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        if: steps.access.outputs.ok == 'true' && env.DEPLOY == 'true'
+        with:
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/touchline-publish
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: touchline-snapshot-${{ github.run_id }}
+      - name: Signing key
+        if: steps.access.outputs.ok == 'true'
+        id: key
+        run: |
+          set -eu
+          mkdir -p keys
+          if [ "$DEPLOY" = true ]; then
+            aws kms get-public-key --key-id "$SIGNING_KEY" --query PublicKey --output text |
+              base64 -d | openssl pkey -pubin -inform DER -outform PEM > keys/public.pem
+            if [ -f rib/snapshot/signing-public-key.pem ] &&
+              ! cmp -s <(openssl pkey -pubin -in rib/snapshot/signing-public-key.pem -outform DER) \
+                       <(openssl pkey -pubin -in keys/public.pem -outform DER); then
+              echo "::error::$SIGNING_KEY is not the key in snapshot/signing-public-key.pem"; exit 1
+            fi
+            echo "sign=kms:$SIGNING_KEY" >> "$GITHUB_OUTPUT"
+            {
+              echo "### Signing key"
+              echo "KMS \`$SIGNING_KEY\`, ECDSA P-256. Public key (the desk's \`SNAPSHOT_PUBLIC_KEY\`):"
+              echo '```'; cat keys/public.pem; echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            # Not main: a throwaway key, so the whole path is exercised and
+            # nothing this run signs could be trusted by an app.
+            node desk/packages/data/dist/cli.js keygen "$RUNNER_TEMP/throwaway" > /dev/null
+            cp "$RUNNER_TEMP/throwaway.pub" keys/public.pem
+            echo "sign=key:$RUNNER_TEMP/throwaway.key" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Build, sign, verify and upload
+        if: steps.access.outputs.ok == 'true'
+        shell: bash
+        env:
+          DESK_CLI: ${{ github.workspace }}/desk/packages/data/dist/cli.js
+          HOMES_DIR: ${{ github.workspace }}/homes
+          WORK: ${{ github.workspace }}/work
+          SIGN: ${{ steps.key.outputs.sign }}
+          PUBLIC_KEY: ${{ github.workspace }}/keys/public.pem
+          ENGINE: ${{ steps.pins.outputs.engine }}
+          DESK_SHA: ${{ steps.pins.outputs.desk }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          ALLOW_SHRINK: ${{ inputs.allow_shrink }}
+        run: |
+          set -eu
+          export PROVENANCE="$SOURCES"
+          if [ "$DEPLOY" = true ]; then
+            BUCKET="$DATA_BUCKET" sh rib/snapshot/build.sh
+          else
+            # No bucket: publish twice locally, so the second snapshot is
+            # also checked by delta from the first.
+            sh rib/snapshot/build.sh
+            sh rib/snapshot/build.sh
+          fi
+          { echo "### Snapshot ($SOURCE)"; echo; cat work/summary.md; } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: steps.access.outputs.ok == 'true' && env.DEPLOY == 'true'
+        with:
+          name: snapshot-release
+          path: work/release/*.latest.json
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: steps.access.outputs.ok == 'true' && env.DEPLOY == 'true'
+        with:
+          # ETags travel beside latest.json; both are small and carry no data.
+          name: snapshot-release-etags
+          path: work/release/*.etag
+          retention-days: 7
+
   site:
     name: Build, deploy and smoke-check the site
-    needs: bundle
+    needs: [bundle, snapshot]
     runs-on: ubuntu-latest
     environment: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && 'production' || '' }}
     permissions:
@@ -211,7 +412,7 @@ jobs:
       - name: Build and gate every build
         run: |
           if [ "$SOURCE" = data ]; then export TOUCHLINE_JOURNAL_DIR="$PWD/journals/journal"; fi
-          TOUCHLINE_CONTRACTS_DIR="$PWD/rib/contracts" \
+          TOUCHLINE_CONTRACTS_DIR="$PWD/rib/contracts" SITE_DIVISIONS="$DIVISIONS" \
             sh rib/site/build.sh ui bundle "$SITE_URL" smoke.tsv
           {
             echo "### Site build"
@@ -266,3 +467,38 @@ jobs:
           echo "- live: $SITE_URL" >> "$GITHUB_STEP_SUMMARY"
           if [ "$status" = 0 ]; then echo "passed=true" >> "$GITHUB_OUTPUT"; fi
           exit $status
+
+  release:
+    name: Move latest.json to the new snapshot
+    needs: [snapshot, site]
+    # Only once the live site shows this run's data.
+    if: needs.site.outputs.smoke_passed == 'true'
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: rib
+          sparse-checkout: snapshot
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: snapshot-release*
+          merge-multiple: true
+          path: release
+      - uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/touchline-publish
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: touchline-release-${{ github.run_id }}
+      - name: Conditional write of each scope's latest.json
+        env:
+          BUCKET: ${{ env.DATA_BUCKET }}
+          RELEASE: ${{ github.workspace }}/release
+        shell: bash
+        run: |
+          set -euo pipefail
+          sh rib/snapshot/release.sh | tee released.txt
+          { echo "### Released ($SOURCE)"; sed 's/^/- /' released.txt; } >> "$GITHUB_STEP_SUMMARY"

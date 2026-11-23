@@ -25,10 +25,14 @@ Open <https://github.com/organizations/ed-insights-ai/settings/apps/new> and set
 Click **Create GitHub App**. On the next page note the **App ID**, then under
 **Private keys** click **Generate a private key**. A `.pem` file downloads.
 
-## 2. Install it on three repos only
+## 2. Install it on four repos only
 
 On the App's page, **Install App**, `ed-insights-ai`, **Only select
-repositories**: `d1-soccer`, `d2-soccer`, `touchline-contracts`. Install.
+repositories**: `d1-soccer`, `d2-soccer`, `touchline-contracts`,
+`touchline-desk`. Install. The publish workflow's snapshot job reads the
+private touchline-desk (its `packages/data` at the commit in
+`snapshot/touchline-desk.sha`) with a token it mints for that repo alone; a
+main run stops at token creation without it. (Done Nov 23.)
 
 ## 3. Store the id and key in the rib's production environment
 
