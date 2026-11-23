@@ -38,8 +38,11 @@ import hashlib
 import json
 import shutil
 import sys
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
+
+from src.paths import UNDECLARED_HOME_LEVEL, marker_level
 
 LAYERS = ("fixtures", "rosters", "stats", "matches")
 GENDERS = ("men", "women")
@@ -60,16 +63,41 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _guard_out(home: Path, out: Path) -> None:
+    """Refuse an --out that could destroy a real home or anything not a sample."""
+    if out == home or out.is_relative_to(home) or home.is_relative_to(out):
+        raise SystemExit(f"--out {out} overlaps the source home {home}; refusing")
+    if out.exists() and (not out.is_dir() or any(out.iterdir())):
+        if not (out / "data" / "sample.json").is_file():
+            raise SystemExit(
+                f"--out {out} exists and is not a sample home (no data/sample.json); refusing"
+            )
+
+
 def cut(home: Path, conference: str, season: int, out: Path) -> dict:
-    data = home / "data"
-    marker = home / "touchline-data.yaml"
-    if not marker.is_file():
+    """Cut into a staging directory; replace `out` only once the cut succeeded."""
+    home, out = home.resolve(), out.resolve()
+    if not (home / "touchline-data.yaml").is_file():
         raise SystemExit(
             f"{home} is not a Touchline data home (no touchline-data.yaml)"
         )
+    _guard_out(home, out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    stage = Path(tempfile.mkdtemp(prefix=f".{out.name}.cut-", dir=out.parent))
+    try:
+        manifest = _cut_into(home, conference, season, stage)
+        if out.exists():
+            shutil.rmtree(out)
+        stage.rename(out)
+    finally:
+        if stage.exists():
+            shutil.rmtree(stage)
+    return manifest
 
-    if out.exists():
-        shutil.rmtree(out)
+
+def _cut_into(home: Path, conference: str, season: int, out: Path) -> dict:
+    data = home / "data"
+    marker = home / "touchline-data.yaml"
     (out / "data").mkdir(parents=True)
     shutil.copy2(marker, out / "touchline-data.yaml")
 
@@ -152,7 +180,9 @@ def cut(home: Path, conference: str, season: int, out: Path) -> dict:
                 if hit:
                     kept.setdefault(slug, {})[gender] = hit
         membership["memberships"] = kept
-        membership["seasons"] = {"from": season, "to": season}
+        # The source span and authored window bounds stay as they are: the
+        # membership checker holds every window inside the span. The sample
+        # season is recorded in sample.json.
         if "standings_archives" in membership:
             membership["standings_archives"] = {
                 k: v for k, v in membership["standings_archives"].items() if k == code
@@ -178,11 +208,13 @@ def cut(home: Path, conference: str, season: int, out: Path) -> dict:
     return manifest
 
 
-def _level(marker: Path) -> str | None:
-    for line in marker.read_text(encoding="utf-8").splitlines():
-        if line.strip().startswith("level:"):
-            return line.split(":", 1)[1].strip()
-    return None
+def _level(marker: Path) -> str:
+    """The marker's level by the rib's one rule (src.paths.marker_level)."""
+    try:
+        level = marker_level(marker.read_text(encoding="utf-8"))
+    except ValueError as exc:
+        raise SystemExit(f"{marker} {exc}") from exc
+    return level or UNDECLARED_HOME_LEVEL
 
 
 def main(argv: list[str] | None = None) -> int:

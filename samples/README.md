@@ -37,8 +37,8 @@ the public site already renders for those conferences.
 After a collect, from `pipeline/`:
 
 ```bash
-python3 -I scripts/cut_sample.py --home ~/keelson/d2-soccer --conference gac --out ../samples/d2-soccer
-python3 -I scripts/cut_sample.py --home ~/keelson/d1-soccer --conference a10 --out ../samples/d1-soccer
+uv run python -m scripts.cut_sample --home ~/keelson/d2-soccer --conference gac --out ../samples/d2-soccer
+uv run python -m scripts.cut_sample --home ~/keelson/d1-soccer --conference a10 --out ../samples/d1-soccer
 ```
 
 The script only reads the source home. Never hand-edit a sample; re-cut it.
