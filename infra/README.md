@@ -50,9 +50,8 @@ Data bucket lifecycle, per kind:
 | Prefix | Kept |
 | --- | --- |
 | `raw/` | forever (re-parse, never re-scrape) |
-| `snapshots/<source>/<scope>/base/` | 400 days (well past an off-season) |
 | `snapshots/<source>/<scope>/deltas/` | 45 days |
-| `snapshots/<source>/<scope>/manifests/`, `latest.json` | forever |
+| `snapshots/<source>/<scope>/base/`, `manifests/`, `latest.json` | forever (see below) |
 | `bundles/` | 30 days |
 | `news/` | forever |
 | any overwritten version | 7 days |
@@ -66,6 +65,12 @@ written once under their id and never overwritten; only `latest.json` moves,
 by conditional write, after the site smoke check passes
 ([snapshot/README.md](../snapshot/README.md)). Deltas age out; a desk whose
 snapshot is older than the oldest delta takes the full base.
+
+Bases are kept, because an age rule could expire the base a `latest.json`
+still names (a folder not published for a long time, such as `samples`).
+They add up to a few GB a season (cents a month); pruning superseded bases
+safely, for example by tagging each base the release replaces and expiring
+tagged objects, is a follow-up before next season.
 
 ## The site
 

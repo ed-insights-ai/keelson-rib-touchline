@@ -24,9 +24,12 @@ locals {
 #                                    last, by conditional write, only after the
 #                                    site smoke check), manifests/<id>.json and
 #                                    .sig, base/<id>.duckdb.zst, deltas/<a>__<b>.
-#                                    Deltas expire after delta_retention_days and
-#                                    bases after base_retention_days; manifests
-#                                    and latest.json are kept
+#                                    Deltas expire after delta_retention_days.
+#                                    Bases and manifests are kept: an age rule
+#                                    could take the base a latest.json still
+#                                    names (a folder not published for a long
+#                                    time), so old bases are only pruned once a
+#                                    rule can tell the current one apart
 #   bundles/<build id>/...           current-season data bundles the site build reads,
 #                                    expire after 30 days (the built site itself is
 #                                    in the separate site bucket, site.tf)
@@ -110,24 +113,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "data" {
       }
       expiration {
         days = var.delta_retention_days
-      }
-    }
-  }
-
-  # A base is written once under its snapshot id and never overwritten. The
-  # current one is at most an off-season old (collection stops mid-December
-  # until summer), so a bound well past a year never takes the base that
-  # latest.json names, and the archive of old bases stops growing.
-  dynamic "rule" {
-    for_each = local.snapshot_folders
-    content {
-      id     = "expire-bases-${replace(rule.value, "/", "-")}"
-      status = "Enabled"
-      filter {
-        prefix = "${rule.value}/base/"
-      }
-      expiration {
-        days = var.base_retention_days
       }
     }
   }
