@@ -14,6 +14,7 @@ dependencies = [
 check-membership = "scripts.check_membership:main"
 check-box-scores = "scripts.check_box_scores:main"
 check-contracts = "scripts.check_contracts:main"
+check-parity = "scripts.check_parity:main"
 check-player-identity = "scripts.check_player_identity:main"
 sweep-opponent-slugs = "scripts.sweep_opponent_slugs:main"
 collect-board = "scripts.collect_board:main"

@@ -83,6 +83,19 @@ jobs:
           for d in "$@"; do homes="$homes ${d%/data}"; done
           # shellcheck disable=SC2086
           uv run check-contracts $homes
+      - name: Sample data homes at parity with themselves
+        # Runs the parity check end to end on real-shaped data: every record
+        # of each sample must match itself. tests/test_parity.py covers the
+        # timing and disagreement rules on edited copies of the same samples.
+        if: steps.pipeline.outputs.exists == 'true'
+        working-directory: pipeline
+        run: |
+          set -- ../samples/*/data
+          if [ ! -d "$1" ]; then echo "no sample data homes under samples/"; exit 0; fi
+          for d in "$@"; do
+            home="${d%/data}"
+            uv run check-parity "$home" "$home" --compare-inherited --require-complete --summary "$GITHUB_STEP_SUMMARY" --json /dev/null
+          done
       - name: Await pipeline extraction
         if: steps.pipeline.outputs.exists != 'true'
         run: echo "No pipeline/pyproject.toml yet - pipeline CI is a no-op until the extraction lands."
