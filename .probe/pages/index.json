@@ -1,11 +1,38 @@
 [
  {
-  "url": "https://umterps.com/sports/womens-soccer/schedule/text?schedule=889",
-  "file": "bb1edb5a9be0",
+  "url": "https://umterps.com/api/v2/Schedule/926",
+  "file": "1b98960d6697",
   "status": 200,
-  "final": "https://umterps.com/sports/womens-soccer/schedule/text?schedule=889",
-  "len": 554780,
+  "final": "https://umterps.com/api/v2/Schedule/926",
+  "len": 63054,
   "history": [],
-  "ctype": "text/html;charset=utf-8"
+  "ctype": "application/json; charset=utf-8"
+ },
+ {
+  "url": "https://umterps.com/api/v2/Schedule/889",
+  "file": "e69e3bc8673e",
+  "status": 200,
+  "final": "https://umterps.com/api/v2/Schedule/889",
+  "len": 11903,
+  "history": [],
+  "ctype": "application/json; charset=utf-8"
+ },
+ {
+  "url": "https://umterps.com/api/v2/Schedule/925",
+  "file": "ac5e91778103",
+  "status": 200,
+  "final": "https://umterps.com/api/v2/Schedule/925",
+  "len": 1338,
+  "history": [],
+  "ctype": "application/json; charset=utf-8"
+ },
+ {
+  "url": "https://umterps.com/api/v2/Schedule/819",
+  "file": "8d692d32f6f1",
+  "status": 200,
+  "final": "https://umterps.com/api/v2/Schedule/819",
+  "len": 66055,
+  "history": [],
+  "ctype": "application/json; charset=utf-8"
  }
 ]
