@@ -381,6 +381,7 @@ jobs:
           # Like the site check, a failure here stops only the release job.
           if sh rib/snapshot/oracle.sh > oracle.txt; then oracle=true; else oracle=false; fi
           echo "oracle=$oracle" >> "$GITHUB_OUTPUT"
+          cat oracle.txt
           { echo "### Oracle"; echo; cat oracle.txt; [ "$oracle" = true ] || echo "The pinned desk does NOT reproduce its oracle; latest.json will not move."; } >> "$GITHUB_STEP_SUMMARY"
           if [ "$oracle" != true ]; then echo "::error::the pinned desk does not reproduce its oracle on the sample homes; latest.json will not move"; fi
       - name: Build, sign, verify and upload
@@ -458,6 +459,8 @@ jobs:
           # it stops the release job from moving latest.json.
           if sh rib/snapshot/agree.sh; then agree=true; else agree=false; fi
           echo "agree=$agree" >> "$GITHUB_OUTPUT"
+          # In the log as well: the step summary cannot be read through the API.
+          cat "$OUT" 2>/dev/null || echo "No comparison was made."
           { echo "### The site and the desk"; echo; cat "$OUT" 2>/dev/null || echo "No comparison was made."; } >> "$GITHUB_STEP_SUMMARY"
           if [ "$agree" != true ]; then echo "::error::the site and the desk show different numbers; latest.json will not move"; fi
       - uses: actions/upload-artifact@v4
