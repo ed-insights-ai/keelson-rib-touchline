@@ -1,1 +1,4 @@
-https://umterps.com/sports/womens-soccer/schedule/text?schedule=889
+https://umterps.com/api/v2/Schedule/926
+https://umterps.com/api/v2/Schedule/889
+https://umterps.com/api/v2/Schedule/925
+https://umterps.com/api/v2/Schedule/819
