@@ -119,5 +119,13 @@ The fixtures promise what the writer *can* emit, not only what it has:
   declared yet. `d1` and `d3` join the fixture with the first conference
   authored at that level.
 
+## Names are invented
+
+Every person's name in the season samples is made up (CHANGELOG, 2026-11-23):
+each real name part was swapped for an invented one with the same first
+letter and letter case, consistently across files, so the shapes are the
+collector's own. A row cut into a fixture later gets the same treatment by
+hand before it lands: invent its names, keep its punctuation.
+
 All were restamped from real rows and are called out here so nobody goes
 looking for the page they came from.

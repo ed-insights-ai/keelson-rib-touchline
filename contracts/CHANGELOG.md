@@ -6,6 +6,16 @@ fails `pipeline/tests/test_contracts.py`.
 
 ## 2026-11-23
 
+- No shape change: every person's name in the season samples (players,
+  keepers, scorers, assists, cards, play-by-play text, match officials, and
+  the name slugs in roster and bio URLs) is now invented. Each real name
+  part maps to one made-up part with the same first letter and letter case,
+  everywhere it appears, so initials, "Last, First" forms, odd spacing and
+  punctuation are exactly as the pages printed them. Team names, places,
+  numbers and page ids are unchanged; the four key-sourced
+  `player_ref.id` values (`programme:foldedname:number`) now fold the
+  invented names. The samples are copied to the shared
+  touchline-contracts repo, which other repos will build on.
 - No shape change: every shape below was already declared by `src/model.ts`
   (and the site's copy) and already written by the collector; the samples
   had fallen behind the data. Checked against the full D1 and D2 homes and
