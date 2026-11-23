@@ -95,6 +95,11 @@ SEASON_SCHEMAS = {
 }
 COVERAGE_SCHEMA = "touchline.coverage/1"
 REFERENCE_FILES = ("membership.json", "programmes.json")
+# The field and value that version each reference file.
+REFERENCE_VERSIONS: dict[str, tuple[str, Any]] = {
+    "membership.json": ("version", 1),
+    "programmes.json": ("schema", "touchline.programmes/2"),
+}
 
 # Paths under data/ that are deliberately not compared. They are run
 # artefacts (errors), derived documents (reports), working notes (research),
@@ -171,11 +176,20 @@ def _blob_sha(data: bytes) -> str:
     ).hexdigest()
 
 
+def _comparable(rel: str) -> bool:
+    """Could this path hold records (or the level marker)?"""
+    if rel == "touchline-data.yaml":
+        return True
+    parts = rel.split("/")
+    if len(parts) < 2 or parts[0] != "data":
+        return False
+    return not (len(parts) > 2 and parts[1] in NOT_COMPARED_DIRS)
+
+
 class DirTree(Tree):
     def __init__(self, root: Path) -> None:
         self.root = root
         self.label = str(root)
-        self._cache: dict[str, bytes] = {}
 
     def entries(self) -> dict[str, Entry]:
         out: dict[str, Entry] = {}
@@ -186,17 +200,19 @@ class DirTree(Tree):
             if p.is_symlink():
                 out[rel] = Entry(rel, "", symlink=True)
             elif p.is_file():
-                out[rel] = Entry(rel, _blob_sha(self.read(rel)))
+                # Files never compared (raw pages, errors, reports) are
+                # listed for the count but never read.
+                digest = _blob_sha(self.read(rel)) if _comparable(rel) else ""
+                out[rel] = Entry(rel, digest)
         return out
 
     def read(self, path: str) -> bytes:
-        data = self._cache.pop(path, None)
-        if data is None:
-            data = (self.root / path).read_bytes()
-            # entries() reads every file once to hash it; keep the bytes for
-            # the one later read of a file that turns out to differ.
-            self._cache[path] = data
-        return data
+        # No cache: a compared file is read twice (hash, then parse), which
+        # keeps memory bounded by the largest file, not the whole home.
+        try:
+            return (self.root / path).read_bytes()
+        except OSError as exc:
+            raise ParityError(f"{self.label}: cannot read {path}: {exc}") from exc
 
 
 class GitTree(Tree):
@@ -319,6 +335,7 @@ class Unit:
     result: str
     collected_at: dt.datetime | None
     reason: str | None
+    division: str = ""
 
 
 EXCLUDING_RESULTS = {"skipped", "failed", "lost"}
@@ -333,10 +350,15 @@ def load_records(paths: Iterable[Path]) -> dict[tuple[int, str, str], Unit]:
             doc = json.loads(Path(path).read_text())
         except (OSError, ValueError) as exc:
             raise ParityError(f"run record {path}: {exc}") from exc
+        if not isinstance(doc, dict):
+            raise ParityError(f"run record {path}: not a JSON object")
         if doc.get("schema") != "touchline.collect-record/1":
             raise ParityError(
                 f"run record {path}: schema {doc.get('schema')!r} is not touchline.collect-record/1"
             )
+        division = doc.get("division")
+        if not isinstance(division, str) or not division:
+            raise ParityError(f"run record {path}: no division")
         season = doc.get("season")
         for unit in doc.get("units") or []:
             try:
@@ -345,14 +367,18 @@ def load_records(paths: Iterable[Path]) -> dict[tuple[int, str, str], Unit]:
                     str(unit["gender"]),
                     str(unit["conference"]).lower(),
                 )
+                result = str(unit["result"])
+                if result not in EXCLUDING_RESULTS | VOUCHING_RESULTS:
+                    raise ValueError(f"unknown result {result!r}")
                 stamp = unit.get("collected_at")
                 new = Unit(
                     *key,
-                    result=str(unit["result"]),
+                    result=result,
                     collected_at=_ts(stamp) if stamp else None,
                     reason=unit.get("reason"),
+                    division=division,
                 )
-            except (KeyError, TypeError, ValueError) as exc:
+            except (KeyError, TypeError, ValueError, AttributeError) as exc:
                 raise ParityError(
                     f"run record {path}: bad unit {unit!r}: {exc}"
                 ) from exc
@@ -703,18 +729,36 @@ class Comparison:
                 )
                 return r
             r.level = le
+            foreign = sorted({u.division for u in self.units.values()} - {le})
+            if foreign:
+                r.errors.append(
+                    f"run records name division {', '.join(foreign)}, but the homes are {le!r}"
+                )
+                return r
             season_files, other = self._classify_paths()
             self._index_fixtures(season_files)
             for path in season_files:
                 self._season_file(path)
+                self._release(path)
             for path in other:
                 self._other_file(path)
+                self._release(path)
         except ParityError as exc:
             r.errors.append(str(exc))
+        except (ValueError, TypeError, AttributeError, KeyError, OSError) as exc:
+            # Malformed input (a bad timestamp, a list where an object
+            # belongs, an unreadable file): the check could not run.
+            r.errors.append(f"malformed input: {type(exc).__name__}: {exc}")
         r.findings.sort(
             key=lambda f: (f.cls != DISAGREEMENT, f.file, f.date or "", f.key)
         )
         return r
+
+    def _release(self, path: str) -> None:
+        """Drop a compared file's parsed documents; only fixtures' are needed
+        again, and the fixture index already holds what they are needed for."""
+        self.e.docs.pop(path, None)
+        self.a.docs.pop(path, None)
 
     # -- paths --------------------------------------------------------------
 
@@ -790,7 +834,9 @@ class Comparison:
                         or self.fixture_index[key][0] is None
                     ):
                         self.fixture_index[key] = (day, progs)
-                    if day:
+                    # Only a game with evidence of play can explain totals
+                    # or coverage that moved.
+                    if day and fx.get("status") in ("live", "final"):
                         for slug in progs:
                             self.game_days[(season, gender, slug)].add(day)
 
@@ -860,7 +906,10 @@ class Comparison:
             and unit.result in VOUCHING_RESULTS
             and unit.collected_at is not None
         )
-        if te == ta and not vouched and not self.compare_inherited:
+        same_bytes = self.e.entries[path].digest == self.a.entries[path].digest
+        # A file that differs is always compared: under one stamp, as a
+        # simultaneous collection, so any difference disagrees.
+        if te == ta and same_bytes and not vouched and not self.compare_inherited:
             r.unproven.append(
                 {
                     "path": path,
@@ -870,7 +919,7 @@ class Comparison:
             )
             return
         r.compared_files += 1
-        if self.e.entries[path].digest == self.a.entries[path].digest:
+        if same_bytes:
             r.identical_files += 1
         window = Window(
             _ts(te) if te else None,
@@ -973,8 +1022,20 @@ class Comparison:
                 TIMING,
                 f"an unplayed fixture was dropped from the schedule before the later collection ({when})",
             )
+        played = late.get("status") in ("live", "final")
+        if played and not w.played_between(day):
+            return (
+                DISAGREEMENT,
+                f"the later side has a result for a game dated {day}, after both collections ({when})",
+            )
         if early is None:
             return TIMING, f"fixture first listed after the earlier collection ({when})"
+        for score in ("home_score", "away_score"):
+            if score in early and score not in late:
+                return (
+                    DISAGREEMENT,
+                    f"the later collection lost the {score} the earlier one had ({when})",
+                )
         for ident in ("home", "away"):
             if early.get(ident) != late.get(ident):
                 return (
@@ -1020,8 +1081,25 @@ class Comparison:
                 continue
             if x is None and y is None:
                 # A gap on both sides, or on one side with no box score on
-                # the other: both are gaps, compare presence only.
-                if (key in gone_e) == (key in gone_a):
+                # the other.
+                if key in gone_e and key in gone_a:
+                    if gone_e[key] == gone_a[key]:
+                        self.result.add("matches", MATCH)
+                    else:
+                        self.result.find(
+                            Finding(
+                                "matches",
+                                path,
+                                key,
+                                "changed",
+                                DISAGREEMENT,
+                                "both sides name this gap, for different reasons",
+                                self._programmes(ctx, key),
+                                self._day_str(ctx, key),
+                                *_fields(gone_e[key], gone_a[key]),
+                            )
+                        )
+                elif (key in gone_e) == (key in gone_a):
                     self.result.add("matches", MATCH)
                 else:
                     side = "expected" if key in gone_e else "actual"
@@ -1095,6 +1173,11 @@ class Comparison:
             return (
                 DISAGREEMENT,
                 f"game dated {day}, more than {w.lag.days} days before the earlier collection ({when})",
+            )
+        if not w.played_between(day):
+            return (
+                DISAGREEMENT,
+                f"box score for a game dated {day}, after both collections ({when})",
             )
         early, late = (x, y) if w.actual_is_later else (y, x)
         if late is None:
@@ -1299,8 +1382,15 @@ class Comparison:
         one record per file: any difference means the two sides ran
         different rib versions, and one finding says so with the entries
         that differ, rather than one finding per entry."""
-        if not isinstance(de, dict) or not isinstance(da, dict):
-            raise ParityError(f"{path}: not a JSON object")
+        name = path.rsplit("/", 1)[1]
+        field_name, want = REFERENCE_VERSIONS[name]
+        for label, doc in (("expected", de), ("actual", da)):
+            if not isinstance(doc, dict):
+                raise ParityError(f"{path} ({label}): not a JSON object")
+            if doc.get(field_name) != want:
+                raise ParityError(
+                    f"{path} ({label}): {field_name} {doc.get(field_name)!r}, this check reads {want!r}"
+                )
         if de == da:
             self.result.add("reference", MATCH)
             return
@@ -1443,9 +1533,11 @@ class Comparison:
                 DISAGREEMENT,
                 f"later collection lost what the earlier one had: {late.get('state')}, {late.get('reason')!r} ({when})",
             )
-        if early.get("state") != late.get("state") and early.get("state") not in (
-            "empty",
-            "unavailable",
+        # The only state changes a game can explain: a gap or an empty
+        # layer that filled in. Anything else loses or reshapes coverage.
+        if early.get("state") != late.get("state") and not (
+            early.get("state") in ("empty", "unavailable")
+            and late.get("state") == "complete"
         ):
             return (
                 DISAGREEMENT,

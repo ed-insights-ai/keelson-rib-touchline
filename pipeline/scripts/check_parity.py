@@ -46,12 +46,19 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 from pathlib import Path
 
 from src import parity
 
 CHECK = "parity"
+
+
+def _error(exc: object) -> int:
+    print(f"ERROR {exc}", file=sys.stderr)
+    print(json.dumps({"check": CHECK, "verdict": "error", "error": str(exc)}))
+    return 2
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -98,25 +105,26 @@ def main(argv: list[str] | None = None) -> int:
             require_complete=args.require_complete,
             compare_inherited=args.compare_inherited,
         )
-    except parity.ParityError as exc:
-        print(f"ERROR {exc}", file=sys.stderr)
-        print(json.dumps({"check": CHECK, "verdict": "error", "error": str(exc)}))
-        return 2
+    except (parity.ParityError, OSError, subprocess.SubprocessError) as exc:
+        return _error(exc)
     finally:
         for t in trees:
             t.close()
 
     report = parity.render_markdown(result)
     doc = result.to_json()
-    if args.report == "-" or (args.report is None and args.json_path is None):
-        print(report)
-    elif args.report:
-        Path(args.report).write_text(report + "\n")
-    if args.json_path:
-        args.json_path.write_text(json.dumps(doc, indent=2, sort_keys=False) + "\n")
-    if args.summary:
-        with args.summary.open("a") as fh:
-            fh.write(report + "\n")
+    try:
+        if args.report == "-" or (args.report is None and args.json_path is None):
+            print(report)
+        elif args.report:
+            Path(args.report).write_text(report + "\n")
+        if args.json_path:
+            args.json_path.write_text(json.dumps(doc, indent=2) + "\n")
+        if args.summary:
+            with args.summary.open("a") as fh:
+                fh.write(report + "\n")
+    except OSError as exc:
+        return _error(f"cannot write output: {exc}")
 
     print(
         json.dumps(

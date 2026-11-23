@@ -557,3 +557,172 @@ def test_two_records_naming_one_unit_keep_the_collect_that_landed(
     later = _record(tmp_path / "later.json", "no-change", at("2026-11-22"))
     [unit] = parity.load_records([later, hosted]).values()
     assert unit.collected_at == at("2026-11-22")
+
+
+# -- review round: holes a lenient rule would leave ---------------------------
+
+
+def test_a_changed_file_under_the_same_stamp_is_compared_not_unproven(
+    homes: tuple[Path, Path],
+) -> None:
+    e, a = homes
+    game = final_fixture(e)
+    doc = load(a, FIX)
+    next(f for f in doc["fixtures"] if f["id"] == game["id"])["home_score"] += 1
+    save(a, FIX, doc)
+    result = run(e, a)
+    [f] = result.disagreements
+    assert f.key == game["id"]
+    assert "same time" in f.reason
+    assert FIX not in {u["path"] for u in result.unproven}
+
+
+def test_a_final_that_lost_its_score_disagrees(homes: tuple[Path, Path]) -> None:
+    e, a = homes
+    game = final_fixture(e)
+    doc = load(a, FIX)
+    del next(f for f in doc["fixtures"] if f["id"] == game["id"])["away_score"]
+    save(a, FIX, doc)
+    stamp(e, at(game["date"], 2))
+    stamp(a, at(game["date"], 20))
+    [f] = run(e, a).disagreements
+    assert "lost the away_score" in f.reason
+
+
+def test_a_result_dated_after_both_collections_disagrees(
+    homes: tuple[Path, Path],
+) -> None:
+    e, a = homes
+    game = final_fixture(e)
+    for home in (e, a):
+        doc = load(home, FIX)
+        row = next(f for f in doc["fixtures"] if f["id"] == game["id"])
+        row["date"] = "2026-12-30"
+        if home == e:
+            row["status"] = "scheduled"
+            row.pop("home_score", None)
+            row.pop("away_score", None)
+        save(home, FIX, doc)
+    m = load(e, MAT)
+    del m["matches"][game["id"]]
+    save(e, MAT, m)
+    stamp(e, at("2026-11-20"))
+    stamp(a, at("2026-11-21"))
+    reasons = {f.layer: f.reason for f in run(e, a).disagreements}
+    assert "after both collections" in reasons["fixtures"]
+    assert "after both collections" in reasons["matches"]
+
+
+def test_an_unplayed_game_does_not_explain_grown_totals(
+    homes: tuple[Path, Path],
+) -> None:
+    e, a = homes
+    game = final_fixture(e)
+    for home in (e, a):
+        doc = load(home, FIX)
+        row = next(f for f in doc["fixtures"] if f["id"] == game["id"])
+        row["status"] = "postponed"
+        row.pop("home_score", None)
+        row.pop("away_score", None)
+        save(home, FIX, doc)
+    doc = load(a, STA)
+    slug = game["home"] if game["home"] in doc["teams"] else game["away"]
+    doc["teams"][slug]["players"][0]["minutes"] += 90
+    save(a, STA, doc)
+    # lag 0 and the earlier collect on the game's own day: the postponed game
+    # is the only one in the window.
+    stamp(e, at(game["date"], 1))
+    stamp(a, at(game["date"], 30))
+    [f] = only(run(e, a, lag_days=0), "stats")
+    assert f.cls == "disagreement", f.reason
+    assert "no game" in f.reason
+
+
+def test_a_cell_that_went_from_empty_to_unavailable_disagrees(
+    homes: tuple[Path, Path],
+) -> None:
+    e, a = homes
+    game = final_fixture(e)
+    key = f"2026/men/{game['home']}/matches"
+    for home, state in ((e, "empty"), (a, "unavailable")):
+        doc = load(home, COV)
+        doc["cells"][key].update(
+            state=state,
+            reason=state,
+            confirmed_at=at(game["date"], 2 if home == e else 20).isoformat(),
+        )
+        save(home, COV, doc)
+    [f] = only(run(e, a), "coverage")
+    assert (f.key, f.cls) == (key, "disagreement")
+    assert "empty then unavailable" in f.reason
+
+
+def test_a_gap_named_for_different_reasons_disagrees(
+    homes: tuple[Path, Path],
+) -> None:
+    e, a = homes
+    for home, why in ((e, "failed to fetch"), (a, "no box-score link")):
+        doc = load(home, MAT)
+        doc["missing"] = {"sidearm:gap:1": why}
+        save(home, MAT, doc)
+    stamp(e, at("2026-11-01"))
+    stamp(a, at("2026-11-02"))
+    [f] = run(e, a).disagreements
+    assert (f.key, f.reason) == (
+        "sidearm:gap:1",
+        "both sides name this gap, for different reasons",
+    )
+
+
+def test_a_reference_at_an_unknown_version_is_an_error(
+    homes: tuple[Path, Path],
+) -> None:
+    e, a = homes
+    for home in (e, a):
+        doc = load(home, "data/reference/membership.json")
+        doc["version"] = 2
+        save(home, "data/reference/membership.json", doc)
+    result = run(e, a)
+    assert result.verdict == "error"
+    assert "version 2" in result.errors[0]
+
+
+def test_a_record_from_another_division_is_an_error(
+    homes: tuple[Path, Path], tmp_path: Path
+) -> None:
+    e, a = homes
+    path = _record(tmp_path / "r.json", "skipped")
+    doc = json.loads(path.read_text())
+    doc["division"] = "d1"
+    path.write_text(json.dumps(doc))
+    result = run(e, a, records=parity.load_records([path]))
+    assert result.verdict == "error"
+    assert "division d1" in result.errors[0]
+    del doc["division"]
+    path.write_text(json.dumps(doc))
+    with pytest.raises(parity.ParityError):
+        parity.load_records([path])
+
+
+def test_a_malformed_stamp_is_an_error_not_a_traceback(
+    homes: tuple[Path, Path], tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    e, a = homes
+    doc = load(a, ROS)
+    doc["collected_at"] = "yesterday"
+    save(a, ROS, doc)
+    assert run(e, a).verdict == "error"
+    assert check_parity.main([str(e), str(a), "--json", str(tmp_path / "p.json")]) == 2
+
+
+def test_an_unwritable_output_is_exit_2(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    code = check_parity.main(
+        [str(D2), str(D2), "--json", str(tmp_path / "no" / "p.json")]
+    )
+    assert code == 2
+    assert (
+        json.loads(capsys.readouterr().out.strip().splitlines()[-1])["verdict"]
+        == "error"
+    )
