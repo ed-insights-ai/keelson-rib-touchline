@@ -597,13 +597,13 @@ jobs:
   release:
     name: Move latest.json to the new snapshot
     needs: [snapshot, site]
-    # Only once the live site shows this run's data. A main dispatch of a
+    # Only once the live site shows this run's data. A main run that names a
     # source the live site does not serve deploys nothing (the site job), so
     # its snapshot is released on the site job's build gates alone.
     if: >-
       needs.site.outputs.smoke_passed == 'true' ||
       (needs.site.result == 'success' && github.ref == 'refs/heads/main' &&
-      github.event_name == 'workflow_dispatch' && inputs.source != '' &&
+      github.event_name != 'pull_request' && inputs.source != '' &&
       inputs.source != 'default' && inputs.source != (vars.SITE_SOURCE || 'data'))
     runs-on: ubuntu-latest
     environment: production
