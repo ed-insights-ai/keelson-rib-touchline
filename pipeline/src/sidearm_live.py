@@ -1056,6 +1056,46 @@ def round_placeholder(name: str) -> bool:
     )
 
 
+# A filled slot some sites keep the round in: "First Round vs. Longwood" and
+# "Boston College - First Round" (godeacs.com 2026, NCAA and ACC brackets;
+# the four rows were skipped as slots and Wake Forest's 4-1 over Longwood
+# lived only on Longwood's page). One side of the separator is the round,
+# the other a name that is no slot itself; that name is the opponent. "at"
+# is not a separator: "NCAA Tournament at Wake Forest" names the host.
+_ROUND_THEN_SIDE = re.compile(
+    r"^(?P<round>.+?)\s+(?:vs\.?|v\.?)\s+(?P<side>.+)$", re.IGNORECASE
+)
+_SIDE_THEN_ROUND = re.compile(
+    r"^(?P<side>.+?)\s*(?:\s[-\u2013\u2014]|:)\s+(?P<round>.+)$"
+)
+
+
+def round_named_side(name: str) -> str | None:
+    """The opponent a filled round slot names, or None.
+
+    Only when one part is a round placeholder and the other is not: "NCAA
+    First Round vs. TBD" names nobody, and a plain name is no slot at all.
+    """
+    # A parenthetical is never the separator ("(at Cal Poly Pomona)" names a
+    # host), so the match runs on the text with each one masked; the side is
+    # cut from the original, keeping a state qualifier ("Loyola (Md.)") for
+    # the state check.
+    text = " ".join(name.split())
+    masked = _PARENTHETICAL.sub(lambda m: "_" * len(m.group(0)), text)
+    for pattern in (_ROUND_THEN_SIDE, _SIDE_THEN_ROUND):
+        found = pattern.match(masked)
+        if found is None:
+            continue
+        side = _clean_team_name(text[found.start("side") : found.end("side")])
+        if (
+            side
+            and round_placeholder(text[found.start("round") : found.end("round")])
+            and not round_placeholder(side)
+        ):
+            return side
+    return None
+
+
 def placeholder_skip(date: str, name: str) -> str:
     """The named skip the collect summary prints for one postseason slot row."""
     return f"round placeholder skipped: {date}, {name}"
@@ -3627,9 +3667,12 @@ def _parse_schedule_dom(
         # opponent, and their date is a range.  Real matches from those rounds
         # arrive later with actual opponents. Named, never minted.
         if round_placeholder(opponent_name):
-            if skips is not None:
-                skips.append(placeholder_skip(date, opponent_name))
-            continue
+            named = round_named_side(opponent_name)
+            if named is None:
+                if skips is not None:
+                    skips.append(placeholder_skip(date, opponent_name))
+                continue
+            opponent_name = named
         # A calendar event filed under an opponent record (a media day)
         # prints a start-to-end time range where a match prints its kickoff;
         # named for the collect summary, never minted (bead tl-ttr).
@@ -3904,9 +3947,12 @@ def parse_schedule_page(
         # never reached this path, which is how every 2026 shard came to hold
         # "ncaa-first-round" and "gulf-south-conference" as programmes.
         if round_placeholder(opponent_name):
-            if skips is not None:
-                skips.append(placeholder_skip(date_text[:10], opponent_name))
-            continue
+            named = round_named_side(opponent_name)
+            if named is None:
+                if skips is not None:
+                    skips.append(placeholder_skip(date_text[:10], opponent_name))
+                continue
+            opponent_name = named
         # The payload's copy of the calendar-event tell: the rendered time
         # string printing a range, or an end_date after the start (bead
         # tl-ttr). Named for the collect summary, never minted.
