@@ -7,8 +7,13 @@ output "publish_role_arn" {
 }
 
 output "snapshot_scopes" {
-  description = "Scopes the publish role may write under snapshots/base/ and snapshots/delta/."
+  description = "Snapshot scopes; each is published at snapshots/<source>/<scope>/."
   value       = local.scopes
+}
+
+output "snapshot_folders" {
+  description = "The published folders the publish role may write."
+  value       = local.snapshot_folders
 }
 
 output "signing_key_arn" {

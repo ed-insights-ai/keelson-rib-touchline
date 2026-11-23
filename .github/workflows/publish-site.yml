@@ -2,8 +2,8 @@ name: Publish site
 
 # The publish workflow (plan steps "Build", "Site" and "Release"):
 #
-#   bundle    hold the data homes to the contracts and cut the current-season
-#             bundle the site reads
+#   bundle    hold the data homes to the contracts and cut the site bundle
+#             (season JSON) the site reads
 #   snapshot  build the desk's dataset (touchline.duckdb format 1, deltas and
 #             manifest) from the same homes at the same commits with
 #             touchline-desk's packages/data at the commit in
@@ -169,7 +169,7 @@ jobs:
           for d in $DIVISIONS; do homes="$homes $GITHUB_WORKSPACE/homes/$d-soccer"; done
           # shellcheck disable=SC2086
           uv run check-contracts $homes
-      - name: Cut the current-season bundle
+      - name: Cut the site bundle
         id: cut
         working-directory: rib/pipeline
         run: |

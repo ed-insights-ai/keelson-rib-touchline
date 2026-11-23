@@ -33,7 +33,7 @@ variable "bundle_retention_days" {
 }
 
 variable "noncurrent_retention_days" {
-  description = "Days an overwritten object version stays readable. Also the history kept for snapshot bases, which live at a stable key per scope."
+  description = "Days an overwritten object version stays readable (latest.json and other replaced files)."
   type        = number
   default     = 7
 }
