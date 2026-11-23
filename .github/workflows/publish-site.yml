@@ -351,6 +351,9 @@ jobs:
               echo "::error::$SIGNING_KEY is not the key in snapshot/signing-public-key.pem"; exit 1
             fi
             echo "sign=kms:$SIGNING_KEY" >> "$GITHUB_OUTPUT"
+            # Public, so it goes in the log too: the summary is not readable
+            # through the API, and pinning the key needs it.
+            echo "Public key of $SIGNING_KEY:"; cat keys/public.pem
             {
               echo "### Signing key"
               echo "KMS \`$SIGNING_KEY\`, ECDSA P-256. Public key (the desk's \`SNAPSHOT_PUBLIC_KEY\`):"
