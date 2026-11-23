@@ -50,6 +50,7 @@ def test_probe_values_map_to_the_same_classes():
 
 def test_blocks_are_refusals_not_outages():
     assert is_block("http-403") and is_block("challenge") and is_block("http-202")
+    assert is_block("http-405")
     assert not is_block("http-404") and not is_block("timeout") and not is_block("ok")
 
 
@@ -78,3 +79,42 @@ def test_verdict_and_report_carry_only_states():
         "failed": {"challenge": 1},
     }
     assert "| wmt | BLOCKED |" in text
+
+
+def test_probe_refuses_a_served_non_page_as_a_challenge():
+    assert _probe_class("error (HTTP 200)") == "challenge"
+    assert _probe_class("error (HTTP 202)") == "challenge"
+
+
+def test_an_interrupted_group_never_passes():
+    cells = [_cell("wmt", "ok")]
+    assert verdict(cells, [GroupRun("wmt", "G", 124, 1.0)], "wmt") == "DEGRADED"
+    assert verdict(cells, [GroupRun("wmt", "G", 0, 1.0)], "wmt") == "PASS"
+
+
+def test_failed_box_scores_count_by_class_and_host_without_fixture_ids(tmp_path):
+    import json
+
+    from scripts.cloud_trial import _box_score_failures
+
+    matches = tmp_path / "data" / "matches"
+    matches.mkdir(parents=True)
+    (matches / "2026-men-sac.json").write_text(
+        json.dumps(
+            {
+                "matches": {},
+                "missing": {
+                    "fx-1": "[2026] fx-1: failed to fetch box score "
+                    "https://a.example/b: 403 Client Error: Forbidden",
+                    "fx-2": "[2026] fx-2: served a challenge, not the page",
+                },
+            }
+        )
+    )
+    outcomes = _box_score_failures(tmp_path, "prestosports", "SAC men")
+    assert sorted(o.cls for o in outcomes) == ["challenge", "http-403"]
+    assert {o.host for o in outcomes} == {"a.example", ""}
+    assert all("fx-" not in o.programme for o in outcomes)
+    runs = [GroupRun("prestosports", "SAC men", 0, 1.0)]
+    cells = [_cell("prestosports", "ok"), *outcomes]
+    assert verdict(cells, runs, "prestosports") == "PARTLY BLOCKED"

@@ -49,9 +49,9 @@ from src.config import load_schools
 from src.sidearm_live import build_session, programme_slug
 
 # One collect-board call per group: a conference-season of one gender, a few
-# programmes on distinct hosts.  Groups run concurrently because no two share
-# a host; collect-board's per-host gate still keeps each host at one politely
-# spaced request at a time.  Chosen for spread: Division I and II, men and
+# programmes on distinct hosts.  Platforms run side by side and a platform's
+# groups run in turn (see main), so collect-board's per-host gate keeps every
+# host, shared upstreams included, at one politely spaced request at a time.  Chosen for spread: Division I and II, men and
 # women, and every PrestoSports conference shape the config carries.
 TRIAL_GROUPS: tuple[tuple[str, str, str, tuple[str, ...]], ...] = (
     ("prestosports", "SAC", "men", ("tusculum", "coker", "mars-hill", "carson-newman")),
@@ -147,6 +147,7 @@ def is_block(cls: str) -> bool:
     return cls == "challenge" or cls in {
         "http-401",
         "http-403",
+        "http-405",  # PrestoSports' WAF answers a refused GET with 405
         "http-406",
         "http-202",
         "http-429",
@@ -228,7 +229,42 @@ def _run_group(
             )
         )
     run.missing = [p for p in wanted if p not in seen]
+    run.cells.extend(_box_score_failures(home, platform, label))
     return run
+
+
+_HOST = re.compile(r"https?://([^/\s:'\"]+)")
+
+
+def _box_score_failures(home: Path, platform: str, label: str) -> list[CellOutcome]:
+    """One outcome per box score that failed to land, by class and host only.
+
+    A matches cell reads ``complete`` when even one box score landed, and its
+    reason lists fixture ids, not why each fetch failed.  The season file's
+    ``missing`` map carries the per-fixture reason; only its class and host
+    are kept, never the fixture id.
+    """
+    outcomes: list[CellOutcome] = []
+    for path in sorted((home / "data" / "matches").glob("*.json")):
+        try:
+            missing = json.loads(path.read_text()).get("missing") or {}
+        except (OSError, ValueError):
+            continue
+        for reason in missing.values():
+            text = str(reason)
+            host = _HOST.search(text)
+            outcomes.append(
+                CellOutcome(
+                    platform,
+                    label,
+                    "(box score)",
+                    "box-score fetch",
+                    "unavailable",
+                    classify_reason("unavailable", text),
+                    host.group(1) if host else "",
+                )
+            )
+    return outcomes
 
 
 def _statcrew_check(season: int) -> list[CellOutcome]:
@@ -282,7 +318,11 @@ def _probe_class(value: str) -> str:
     text = detail.group(1) if detail else value
     status = re.search(r"HTTP (\d{3})", text)
     if status:
-        return f"http-{status.group(1)}"
+        code = status.group(1)
+        # The collectors refuse a 2xx whose body is not the page (an empty
+        # 202, an HTML challenge in place of JSON) with its status: a
+        # challenge, whatever the code.
+        return "challenge" if code.startswith("2") else f"http-{code}"
     if "timeout" in text:
         return "timeout"
     if "connection" in text or "request failed" in text:
@@ -363,7 +403,8 @@ def verdict(cells: list[CellOutcome], runs: list[GroupRun], platform: str) -> st
     if any(is_block(c.cls) for c in mine):
         blocked = sum(is_block(c.cls) for c in mine)
         return "BLOCKED" if blocked == len(mine) else "PARTLY BLOCKED"
-    if all(c.cls == "ok" for c in mine) and not missing:
+    finished = all(r.exit_code == 0 for r in runs if r.platform == platform)
+    if all(c.cls == "ok" for c in mine) and not missing and finished:
         return "PASS"
     return "DEGRADED"
 
@@ -397,6 +438,30 @@ def render(
             "ok": ok,
             "failed": dict(failed),
         }
+    d3_hosts = sorted(
+        {
+            (c.host, c.group)
+            for c in cells
+            if c.platform == "d3-probe" and c.layer == "landing"
+        }
+    )
+    if d3_hosts:
+        lines += [
+            "",
+            "## Division III probe",
+            "",
+            "| Host | Landing / platform |",
+            "|---|---|",
+        ]
+        for host, group in d3_hosts:
+            landing = next(
+                c
+                for c in cells
+                if c.platform == "d3-probe" and c.host == host and c.layer == "landing"
+            )
+            seen = group.removeprefix("D3 probe").strip(" ()") or landing.cls
+            lines.append(f"| {host} | {seen if landing.cls == 'ok' else landing.cls} |")
+        result["d3_platforms"] = {host: group for host, group in d3_hosts}
     lines += [
         "",
         "## By group",
@@ -420,9 +485,11 @@ def render(
             "| Programme | Layer | Platform | Class | Host |",
             "|---|---|---|---|---|",
         ]
-        for c in sorted(bad, key=lambda c: (c.platform, c.programme, c.layer)):
+        tally = Counter((c.programme, c.layer, c.platform, c.cls, c.host) for c in bad)
+        for (programme, layer, platform, cls, host), n in sorted(tally.items()):
+            times = f" ×{n}" if n > 1 else ""
             lines.append(
-                f"| {c.programme} | {c.layer} | {c.platform} | {c.cls} | {c.host or '—'} |"
+                f"| {programme} | {layer}{times} | {platform} | {cls} | {host or '—'} |"
             )
     result["groups"] = [
         {
@@ -454,7 +521,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--group-timeout",
         type=float,
-        default=1200.0,
+        default=900.0,
         help="Seconds per collect-board call.",
     )
     parser.add_argument("--summary", help="Append the markdown report to this file.")
@@ -467,10 +534,19 @@ def main(argv: list[str] | None = None) -> int:
     root = Path(tempfile.mkdtemp(prefix="touchline-cloud-trial-"))
     started = time.monotonic()
     try:
-        with ThreadPoolExecutor(max_workers=len(TRIAL_GROUPS)) as pool:
-            futures = [
-                pool.submit(
-                    _run_group,
+        # Each collect-board process has its own per-host gate, so two groups
+        # on one platform at once could double up on a host they share (every
+        # WMT site's statistics and box scores come from wmt.games).  Groups
+        # of one platform therefore run in turn; platforms run side by side.
+        by_platform: dict[str, list[tuple[str, str, tuple[str, ...]]]] = {}
+        for platform, conference, gender, programmes in TRIAL_GROUPS:
+            by_platform.setdefault(platform, []).append(
+                (conference, gender, programmes)
+            )
+
+        def run_platform(platform: str) -> list[GroupRun]:
+            return [
+                _run_group(
                     root,
                     args.season,
                     platform,
@@ -480,11 +556,14 @@ def main(argv: list[str] | None = None) -> int:
                     args.layers,
                     args.group_timeout,
                 )
-                for platform, conference, gender, programmes in TRIAL_GROUPS
+                for conference, gender, programmes in by_platform[platform]
             ]
+
+        with ThreadPoolExecutor(max_workers=len(by_platform)) as pool:
+            futures = [pool.submit(run_platform, p) for p in by_platform]
             statcrew = _statcrew_check(args.season)
             d3 = _d3_probe(args.season)
-            runs = [f.result() for f in futures]
+            runs = [run for f in futures for run in f.result()]
         cells = [c for r in runs for c in r.cells] + statcrew + d3
         report, result = render(args.season, runs, cells, time.monotonic() - started)
     except Exception as exc:  # noqa: BLE001
