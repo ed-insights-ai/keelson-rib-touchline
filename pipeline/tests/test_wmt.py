@@ -1454,3 +1454,32 @@ def test_the_probe_reports_an_unread_box_score_join_as_an_error_not_absent() -> 
         )
         is None
     )
+
+
+def test_a_spring_date_before_the_season_is_a_named_skip_not_a_fixture() -> None:
+    """thesundevils.com women's 2026 schedule carried eight spring 2026
+    dates (a February to April slate, still ``as_scheduled`` in November)
+    beside the fall season: the spring of 2025, never 2026 matches.  A date
+    the spring AFTER the season (Clemson's exhibitions) stays a fixture."""
+    events = json.loads(EVENTS)
+    first, second = events["data"][0], events["data"][1]
+    first["datetime"] = "2025-03-09T19:00:00.000000Z"
+    second["datetime"] = "2026-03-09T19:00:00.000000Z"
+    site = _seattle_site(**{EVENTS_URL: json.dumps(events)})
+    skips: list[str] = []
+    fixtures = wmt.parse_schedule(
+        wmt.fetch_layer(site, BASE, 2025, LAYER_SCHEDULE).page.html,
+        page_url=SCHEDULE_URL,
+        year=2025,
+        owner_slug="seattle-u",
+        aliases={},
+        skips=skips,
+    )
+    ids = {fixture["id"] for fixture in fixtures}
+    assert f"wmt:seattle-u:{first['id']}" not in ids
+    assert f"wmt:seattle-u:{second['id']}" in ids
+    assert len(skips) == 1
+    assert skips[0].startswith("date before the 2025 season skipped: 2025-03-09, ")
+    assert wmt.before_season("2025-07-31", 2025)
+    assert not wmt.before_season("2025-08-01", 2025)
+    assert not wmt.before_season("2026-03-09", 2025)

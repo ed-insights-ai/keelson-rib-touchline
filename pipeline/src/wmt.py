@@ -1541,6 +1541,29 @@ def _record_school_name(
     return printed
 
 
+def before_season(date: str, year: int) -> bool:
+    """Whether ``date`` falls January to July of ``year``: before the fall
+    ``year`` season, so never one of its matches.
+
+    A WMT season schedule can carry the spring that came BEFORE it.  Measured
+    on thesundevils.com women's soccer 2026 (collected 2026-11-21): the
+    ``2026`` schedule lists eight spring 2026 dates (Cochise on February 28,
+    a March tour against AFC Fylde and Wrexham, Arizona, Northern Arizona and
+    an Arizona State v Arizona State intrasquad on April 18) beside the fall
+    season, every one still ``as_scheduled`` in November.  They are the
+    spring of the 2025 season, not 2026 matches.  The spring AFTER a season
+    (Clemson's and Notre Dame's February to April exhibitions, the COVID
+    2020 season played in 2021) is dated ``year + 1`` and is untouched.
+    """
+    match = re.match(rf"{year}-(\d{{2}})-", date)
+    return match is not None and int(match.group(1)) < 8
+
+
+def before_season_skip(date: str, name: str, year: int) -> str:
+    """The named skip the collect summary prints for one such row."""
+    return f"date before the {year} season skipped: {date}, {name}"
+
+
 def parse_schedule(
     html: str,
     *,
@@ -1619,6 +1642,10 @@ def parse_schedule(
         ).strip()
         opponent_name = _clean_team_name(opponent_raw)
         if not opponent_name:
+            continue
+        if before_season(date, year):
+            if skips is not None:
+                skips.append(before_season_skip(date, opponent_name, year))
             continue
         if round_placeholder(opponent_name):
             if skips is not None:
@@ -2245,6 +2272,10 @@ def _parse_wordpress_schedule(
     for row in wordpress_rows(bundle.parts[0].body, year=year, url=page_url):
         opponent_name = _clean_team_name(row.opponent)
         if not opponent_name:
+            continue
+        if before_season(row.date, year):
+            if skips is not None:
+                skips.append(before_season_skip(row.date, opponent_name, year))
             continue
         if round_placeholder(opponent_name):
             if skips is not None:
