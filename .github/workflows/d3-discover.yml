@@ -7,7 +7,7 @@ name: D3 discovery (temporary)
 on:
   push:
     branches: [claude/project-thread-htvkce]
-    paths: [.github/workflows/d3-discover.yml, pipeline/config/schools.toml]
+    paths: [.github/workflows/d3-discover.yml, pipeline/config/schools.toml, spikes/d3/gaz_lookup.py]
 
 permissions:
   contents: write
@@ -28,7 +28,10 @@ jobs:
         run: |
           mkdir -p ../spikes/d3/out
           uv sync --frozen --no-dev
+          export TOUCHLINE_GAZETTEER_FILE="$RUNNER_TEMP/places.txt" TOUCHLINE_GAZETTEER_COUSUBS_FILE="$RUNNER_TEMP/cousubs.txt"
           uv run --frozen --no-dev build-programmes 2>&1 | tee ../spikes/d3/out/build-programmes.log || true
+          ls -la "$RUNNER_TEMP"
+          python3 -I ../spikes/d3/gaz_lookup.py "$RUNNER_TEMP/places.txt" "$RUNNER_TEMP/cousubs.txt" > ../spikes/d3/out/gaz-lookup.txt 2>&1 || true
       - name: Commit the results to the branch
         run: |
           git config user.name "github-actions[bot]"
