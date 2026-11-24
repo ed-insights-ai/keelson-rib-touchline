@@ -193,7 +193,7 @@ PROGRAMMES = {
 # bracketed seed "(3)", "[7]" or "(5-Seed)", a seed spelled as a word
 # "3-seed", "#5 Seed", "5th-seeded" or "#2 Seeded", a marked rank closed by a
 # full stop ("No. 14."), any of these slash-joined with the first or last
-# slot allowed empty or a dash ("/#5", "-/#21", "#19/-", "No. 23/--"), and
+# slot allowed empty or a dash ("/#5", "-/#21", "#-/22", "#19/-", "No. 23/--"), and
 # any of these stacked in front of another. Leaving one in mints an identity
 # that drifts with the poll.
 _RANK_VALUE = r"(?:rv|nr|\d{1,2})"
@@ -209,7 +209,7 @@ _RANK_TOKEN = (
 # A hash-marked rank glued to the name by a hyphen ("#21-McKendree") is the
 # live grammar's _RANK_HASH_HYPHEN, mirrored here.
 _RANK_PREFIX = re.compile(
-    rf"^(?:-?\s*/\s*)?(?:{_RANK_TOKEN}(?:\s*/\s*{_RANK_TOKEN})*(?:\s*/\s*-{{1,2}})?\s+)*"
+    rf"^(?:(?:#\s*)?-{{0,2}}\s*/\s*)?(?:{_RANK_TOKEN}(?:\s*/\s*{_RANK_TOKEN})*(?:\s*/\s*-{{1,2}})?\s+)*"
     rf"(?:{_RANK_TOKEN}(?:\s*/\s*{_RANK_TOKEN})*(?:\s*/\s*-{{1,2}})?\s+"
     rf"|#\s*\d{{1,2}}-(?=[a-z])(?!seed\b))",
     re.IGNORECASE,

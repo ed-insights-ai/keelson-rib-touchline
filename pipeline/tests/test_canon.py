@@ -56,6 +56,7 @@ def test_normalize_strips_every_published_rank_form():
         "#24/NR Harding",
         "NR/No. 20 Harding",
         "-/#21 Harding",
+        "#-/22 Harding",
         "/#5 Harding",
         "#19/- Harding",
         "(5-Seed) #23/18 Harding",

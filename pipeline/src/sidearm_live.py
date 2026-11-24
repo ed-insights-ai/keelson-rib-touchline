@@ -1019,6 +1019,11 @@ def assert_schedule_proven(
 # letter onto the seed (measured "No. 2E West Chester (PSAC Quarterfinal)" on
 # lockhavenathletics.com 2025), so a value may carry one trailing letter; the
 # whitespace rule still keeps "2E" from being the start of a word.
+#
+# A two-poll prefix may mark its empty first slot with the hash as well as
+# the dash (measured "#-/22 Texas" on soonersports.com 2026 women, game
+# 15818, filed as 22-texas; the same page prints "#7/12 Alabama" and
+# "RV/- Auburn").
 _RANK_VALUE = r"(?:rv|nr|t-\d{1,2}|\d{1,2}[a-z]?)"
 _RANK_MARKER = r"(?:#|no\.?)?"
 _RANK_BRACKETED = rf"{_RANK_MARKER}\s*{_RANK_VALUE}(?:[-\s]*seed)?"
@@ -1039,7 +1044,7 @@ _RANK_JOINER = r"\s*[/|]\s*"
 # and "T-Bird College" stay whole, and a bare "21-" is never read as a rank.
 _RANK_HASH_HYPHEN = r"#\s*\d{1,2}-(?=[a-z])(?!seed\b)"
 _RANK_PREFIX = re.compile(
-    rf"^(?:-?{_RANK_JOINER})?"
+    rf"^(?:(?:#\s*)?-{{0,2}}{_RANK_JOINER})?"
     rf"(?:{_RANK_TOKEN}(?:{_RANK_JOINER}{_RANK_TOKEN})*(?:{_RANK_JOINER}-{{1,2}})?\s+)*"
     rf"(?:{_RANK_TOKEN}(?:{_RANK_JOINER}{_RANK_TOKEN})*(?:{_RANK_JOINER}-{{1,2}})?\s+"
     rf"|{_RANK_HASH_HYPHEN})"
@@ -4230,9 +4235,20 @@ def parse_schedule_page(
         if not event.get("tbd") and "T" in date_text:
             try:
                 local = datetime.fromisoformat(date_text)
-                fixture["time"] = local.strftime("%H:%M")
             except ValueError:
-                pass
+                local = None
+            if local is not None:
+                clock = local.strftime("%H:%M")
+                # An event the school filed as all-day carries midnight in
+                # ``date`` and the kickoff only in the rendered ``time``
+                # string (measured wusports.com 2026 women, game 21742:
+                # "date":"2026-10-09T00:00:00", "allday":true,
+                # "time":"7 p.m."). Midnight there is no kickoff: read the
+                # rendered string, and store no time when it has none.
+                if event.get("allday") and clock == "00:00":
+                    clock = _dom_time(str(event.get("time") or "")) or ""
+                if clock:
+                    fixture["time"] = clock
         if venue:
             fixture["venue"] = venue
         if (

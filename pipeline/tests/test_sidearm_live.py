@@ -106,6 +106,50 @@ def test_schedule_parser_preserves_future_fixture_as_scheduled() -> None:
     ]
 
 
+def _all_day_event(**changes: object) -> dict[str, object]:
+    return {
+        "id": 21742,
+        "date": "2026-10-09T00:00:00",
+        "time": "7 p.m.",
+        "allday": True,
+        "tbd": False,
+        "location_indicator": "A",
+        "location": "Claremore, Okla.",
+        "is_conference": True,
+        "type": "recent",
+        "schedule": {"title": "2026 Women's Soccer Schedule"},
+        "opponent": {"title": "Southern Nazarene"},
+        "result": {"team_score": "4", "opponent_score": "0", "status": "W"},
+        **changes,
+    }
+
+
+def _all_day_fixture(**changes: object) -> dict[str, object]:
+    return parse_schedule_page(
+        _schedule_html(_all_day_event(**changes)),
+        page_url="https://example.test/sports/womens-soccer/schedule/2026",
+        year=2026,
+        owner_slug="harding",
+        aliases={"southern nazarene": "southern-nazarene"},
+    )[0]
+
+
+def test_an_all_day_event_takes_its_kickoff_from_the_rendered_time() -> None:
+    """wusports.com 2026 women, game 21742: the school filed the game as
+    all-day, so ``date`` carries midnight and the kickoff is only in the
+    rendered ``time`` string. Stored as 00:00; the kickoff is 19:00."""
+    assert _all_day_fixture()["time"] == "19:00"
+
+
+def test_an_all_day_event_with_no_rendered_time_stores_no_kickoff() -> None:
+    assert "time" not in _all_day_fixture(time="")
+    assert "time" not in _all_day_fixture(time="TBA")
+
+
+def test_midnight_is_kept_when_the_event_is_not_all_day() -> None:
+    assert _all_day_fixture(allday=False)["time"] == "00:00"
+
+
 def test_schedule_parser_orients_a_published_result() -> None:
     event = {
         "id": 43,
@@ -3438,6 +3482,11 @@ def test_a_division_seed_is_a_rank_prefix() -> None:
         ("NR/No. 20 Kansas", "Kansas"),
         ("-/#21 LSU", "LSU"),
         ("-/#19 Texas Tech", "Texas Tech"),
+        # The empty first slot marked with the hash as well as the dash
+        # (soonersports.com 2026 women, game 15818, filed as 22-texas).
+        ("#-/22 Texas", "Texas"),
+        ("#7/12 Alabama", "Alabama"),
+        ("RV/- Auburn", "Auburn"),
         # Division I women's 2022-2025: a dash in the second poll slot
         # (tulsahurricane.com 2024 game 15519), a hyphenated bracketed seed
         # (texastech.com 2025 game 21293), a marked rank closed by a full
