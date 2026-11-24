@@ -1,0 +1,22 @@
+{
+ "dir-members-1.json": {
+  "url": "https://web3.ncaa.org/directory/api/directory/memberList?type=12&division=III",
+  "status": 403,
+  "bytes": 418
+ },
+ "dir-members-2.json": {
+  "url": "https://web3.ncaa.org/directory/api/directory/memberList?division=III",
+  "status": 403,
+  "bytes": 418
+ },
+ "stats-mso-2026.html": {
+  "url": "https://stats.ncaa.org/team/inst_team_list?academic_year=2027&conf_id=-1&division=3&sport_code=MSO",
+  "status": 403,
+  "bytes": 404
+ },
+ "stats-wso-2026.html": {
+  "url": "https://stats.ncaa.org/team/inst_team_list?academic_year=2027&conf_id=-1&division=3&sport_code=WSO",
+  "status": 403,
+  "bytes": 404
+ }
+}
