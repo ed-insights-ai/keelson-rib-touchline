@@ -725,6 +725,7 @@ def conference_in_effect(
     conference: str,
     *,
     document: dict[str, Any] | None = None,
+    effective: int | None = None,
 ) -> str | None:
     """A programme's conference for one season, as a collect of ``conference`` reads it.
 
@@ -747,14 +748,19 @@ def conference_in_effect(
     2027 LOWER collect does not restore it. A later window is what was
     authored after the horizon season; only a programme with none is still
     where the horizon left it.
+
+    ``effective`` is ``effective_season`` for the conference, gender and
+    season, when the caller has it already (``members_in_effect`` asks it
+    once for every slug instead of once per slug).
     """
     membership_document = document if document is not None else load_membership()
     declared = conference_for(slug, gender, season_year, document=membership_document)
     if declared is not None:
         return declared
-    effective = effective_season(
-        conference, gender, season_year, document=membership_document
-    )
+    if effective is None:
+        effective = effective_season(
+            conference, gender, season_year, document=membership_document
+        )
     if effective == season_year:
         return None
     carried = conference_for(slug, gender, effective, document=membership_document)
@@ -798,12 +804,20 @@ def members_in_effect(
     memberships = membership_document.get("memberships")
     if not isinstance(memberships, dict):
         return set()
+    effective = effective_season(
+        conference, gender, season_year, document=membership_document
+    )
     return {
         slug
         for slug in memberships
         if isinstance(slug, str)
         and conference_in_effect(
-            slug, gender, season_year, conference, document=membership_document
+            slug,
+            gender,
+            season_year,
+            conference,
+            document=membership_document,
+            effective=effective,
         )
         == conference
     }
