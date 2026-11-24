@@ -226,3 +226,51 @@ def test_a_challenge_retry_waits_at_least_the_crawl_delay() -> None:
     before = t.clock()
     assert gate.backoff_wait("a.example", 0)
     assert t.clock() - before >= 9.0
+
+
+def test_robots_rules_read_wildcards_anchors_and_the_longest_match() -> None:
+    from src.fetch_pool import RobotRules
+
+    rules = RobotRules(
+        "User-agent: *\nAllow: /\nDisallow: /sports/*/schedule/\nDisallow: /*.pdf$\n"
+        "Allow: /sports/msoc/schedule/print/\n\nUser-agent: Other\nDisallow: /\n",
+        "Touchline",
+    )
+    assert not rules.can_fetch("https://a.example/sports/msoc/schedule/2025")
+    assert rules.can_fetch("https://a.example/sports/msoc/schedule/print/2025")
+    assert not rules.can_fetch("https://a.example/files/x.pdf")
+    assert rules.can_fetch("https://a.example/files/x.pdf?v=1")
+    assert rules.can_fetch("https://a.example/sports/msoc/roster")
+    named = RobotRules(
+        "User-agent: *\nDisallow: /\n\nUser-agent: touchline\nDisallow: /api/\nCrawl-delay: 9\n",
+        "Touchline",
+    )
+    assert named.can_fetch("https://a.example/sports/msoc")
+    assert not named.can_fetch("https://a.example/api/x")
+    assert named.crawl_delay == 9.0
+
+
+def test_robots_check_enforces_a_wildcard_disallow() -> None:
+    gate, _t, _log = _gate(robots="enforce")
+    fetch, _calls = _robots("User-agent: *\nDisallow: /sports/*/schedule/\n")
+    with pytest.raises(RobotsDisallowed):
+        gate.robots_check("https://a.example/sports/msoc/schedule/2025", fetch)
+    gate.robots_check("https://a.example/sports/msoc/roster/2025", fetch)
+
+
+def test_a_refusing_session_never_retries_a_429() -> None:
+    from src.fetch_pool import GatedSession
+    from src.sidearm_live import build_session
+
+    gate, _t, _log = _gate(stop_on_refusal=True)
+    strict = (
+        build_session(GatedSession(gate)).get_adapter("https://a.example").max_retries
+    )
+    assert not strict.is_retry("GET", 429, has_retry_after=True)
+    assert strict.is_retry("GET", 503, has_retry_after=True)
+    daily = (
+        build_session(GatedSession(_gate()[0]))
+        .get_adapter("https://a.example")
+        .max_retries
+    )
+    assert daily.is_retry("GET", 429, has_retry_after=True)

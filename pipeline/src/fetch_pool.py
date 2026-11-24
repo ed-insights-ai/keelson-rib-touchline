@@ -63,7 +63,8 @@ from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass, field
 from urllib.parse import urljoin, urlparse
-from urllib.robotparser import RobotFileParser
+import re
+from urllib.parse import unquote
 
 import requests
 
@@ -168,6 +169,74 @@ class HostCoolingDown(requests.RequestException):
             f"host {host} is {COOLDOWN_MARKER} {status} challenges "
             f"({remaining:.0f}s of cool-down remain)"
         )
+
+
+class RobotRules:
+    """A robots.txt as RFC 9309 reads it, for one user agent.
+
+    The group naming the agent (case-insensitive substring of its product
+    token) applies, else the ``*`` group.  ``*`` in a path matches any run of
+    characters and a trailing ``$`` anchors the end; the longest matching
+    rule wins, and ``Allow`` wins a tie.  ``Crawl-delay`` is read from the
+    same group (it is not in the RFC, but sites that set it mean it).
+    """
+
+    def __init__(self, text: str, agent: str = "") -> None:
+        groups: list[tuple[list[str], list[tuple[bool, str]], float | None]] = []
+        agents: list[str] = []
+        rules: list[tuple[bool, str]] = []
+        delay: float | None = None
+        in_rules = False
+        for raw in text.splitlines():
+            line = raw.split("#", 1)[0].strip()
+            if ":" not in line:
+                continue
+            key, _, value = line.partition(":")
+            key, value = key.strip().lower(), value.strip()
+            if key == "user-agent":
+                if in_rules:
+                    groups.append((agents, rules, delay))
+                    agents, rules, delay, in_rules = [], [], None, False
+                agents.append(value.lower())
+            elif key in ("allow", "disallow"):
+                in_rules = True
+                if value:
+                    rules.append((key == "allow", value))
+            elif key == "crawl-delay":
+                in_rules = True
+                try:
+                    delay = float(value)
+                except ValueError:
+                    pass
+        if agents:
+            groups.append((agents, rules, delay))
+        name = agent.lower()
+        chosen = [g for g in groups if any(a != "*" and a in name for a in g[0])]
+        if not chosen:
+            chosen = [g for g in groups if "*" in g[0]]
+        self.rules = [rule for group in chosen for rule in group[1]]
+        delays = [group[2] for group in chosen if group[2] is not None]
+        self.crawl_delay = max(delays) if delays else None
+
+    @staticmethod
+    def _matches(pattern: str, path: str) -> bool:
+        anchored = pattern.endswith("$")
+        body = pattern[:-1] if anchored else pattern
+        regex = ".*".join(re.escape(unquote(part)) for part in body.split("*"))
+        return re.match(regex + ("$" if anchored else ""), path) is not None
+
+    def can_fetch(self, url: str) -> bool:
+        parts = urlparse(url)
+        path = unquote(parts.path or "/") + (
+            f"?{unquote(parts.query)}" if parts.query else ""
+        )
+        best: tuple[int, bool] | None = None
+        for allow, pattern in self.rules:
+            if self._matches(pattern, path):
+                rank = (len(pattern), allow)
+                if best is None or rank > best:
+                    best = rank
+        return True if best is None else best[1]
 
 
 class RobotsDisallowed(requests.RequestException):
@@ -316,7 +385,7 @@ class HostGate:
         self._cooling_status: dict[str, int] = {}
         self._stopped: dict[str, int] = {}
         self._delay: dict[str, float] = {}
-        self._robots: dict[str, RobotFileParser | str | None] = {}
+        self._robots: dict[str, RobotRules | str | None] = {}
         self._robots_locks: dict[str, threading.Lock] = {}
 
     # -- what the gate knows about the fleet -----------------------------
@@ -488,7 +557,7 @@ class HostGate:
             if mode == "enforce":
                 raise RobotsDisallowed(url, rules)
             return
-        if not rules.can_fetch(ROBOTS_AGENT, url):
+        if not rules.can_fetch(url):
             if mode == "enforce":
                 raise RobotsDisallowed(url)
             self._log(f"robots: {host} disallows {parts.path or '/'} (report only)")
@@ -498,7 +567,7 @@ class HostGate:
 
     def _read_robots(
         self, scheme: str, host: str, fetch: Callable[[str], requests.Response]
-    ) -> RobotFileParser | str | None:
+    ) -> RobotRules | str | None:
         """``fetch`` must not follow redirects: each hop is asked here, in the
         slot of the host it names, and that host's answer is observed."""
         url = f"{scheme}://{host}/robots.txt"
@@ -507,8 +576,10 @@ class HostGate:
                 asked = host_of(url)
                 with self.slot(asked):
                     response = fetch(url)
-                status = int(getattr(response, "status_code", 0) or 0)
-                self.observe_status(asked, status)
+                    # Recorded before the slot is released, so a worker
+                    # waiting on it sees the refusal.
+                    status = int(getattr(response, "status_code", 0) or 0)
+                    self.observe_status(asked, status)
                 if not getattr(response, "is_redirect", False):
                     break
                 url = urljoin(url, response.headers.get("location", ""))
@@ -520,9 +591,8 @@ class HostGate:
         if status >= 500 or status == 0:
             self._log(f"robots: {host} robots.txt answered HTTP {status}")
             return f"robots.txt answered HTTP {status}"
-        parser = RobotFileParser()
-        parser.parse((getattr(response, "text", "") or "").splitlines())
-        delay = parser.crawl_delay(ROBOTS_AGENT)
+        parser = RobotRules(getattr(response, "text", "") or "", ROBOTS_AGENT)
+        delay = parser.crawl_delay
         if delay:
             delay = float(delay)
             if delay > self.policy.robots_delay_cap:
@@ -583,6 +653,11 @@ class GatedSession(requests.Session):
     def __init__(self, gate: HostGate) -> None:
         super().__init__()
         self._gate = gate
+
+    @property
+    def stops_on_refusal(self) -> bool:
+        """Whether a 403 or 429 must reach the gate unretried."""
+        return self._gate.policy.stop_on_refusal
 
     def presume_paced(self, url: str) -> None:
         """Pace ``url``'s host from now on, before any challenge is seen.

@@ -219,6 +219,12 @@ def user_agent(contact: str | None = None) -> str:
     return "Mozilla/5.0 (Touchline educational/research collector)"
 
 
+class _RefusalFinalRetry(Retry):
+    """Retries as ``Retry`` does, but never a 429, Retry-After or not."""
+
+    RETRY_AFTER_STATUS_CODES = frozenset({413, 503})
+
+
 def build_session(session: requests.Session | None = None) -> requests.Session:
     """Configure the collector's session — headers, retries, OS-trust TLS.
 
@@ -228,7 +234,10 @@ def build_session(session: requests.Session | None = None) -> requests.Session:
     """
     session = session if session is not None else requests.Session()
     session.headers.update({"User-Agent": user_agent()})
-    retry = Retry(total=3, backoff_factor=1, status_forcelist=[500, 502, 503, 504])
+    # A session that stops on a refusal must see a 429 itself: urllib3 would
+    # otherwise retry one carrying Retry-After, asking a refusing host again.
+    kind = _RefusalFinalRetry if getattr(session, "stops_on_refusal", False) else Retry
+    retry = kind(total=3, backoff_factor=1, status_forcelist=[500, 502, 503, 504])
     adapter = TruststoreHTTPAdapter(max_retries=retry)
     session.mount("https://", adapter)
     session.mount("http://", adapter)
