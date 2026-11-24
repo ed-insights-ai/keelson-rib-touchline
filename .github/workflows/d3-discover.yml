@@ -1,0 +1,38 @@
+name: D3 discovery (temporary)
+
+# Temporary, branch only: reads the Wikipedia list of Division III
+# institutions (nickname, city, state) as wikitext and commits it to this
+# branch for the registry's identity facts. Removed before merge.
+on:
+  push:
+    branches: [claude/project-thread-htvkce]
+    paths: [.github/workflows/d3-discover.yml]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: d3-discover
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Read the list
+        run: |
+          mkdir -p spikes/d3/out
+          curl -fsS -A "Touchline/0.1 (https://github.com/ed-insights-ai; educational research)" \
+            "https://en.wikipedia.org/w/index.php?title=List_of_NCAA_Division_III_institutions&action=raw" \
+            -o spikes/d3/out/wiki-d3.txt
+          wc -c spikes/d3/out/wiki-d3.txt
+      - name: Commit the results to the branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898+github-actions[bot]@users.noreply.github.com"
+          git add spikes/d3/out
+          git commit -m "spike(d3): wikipedia list [skip ci]" || exit 0
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin "HEAD:$GITHUB_REF_NAME"
