@@ -90,6 +90,12 @@ RESULT_SKIPPED = "skipped"
 #: own (five minutes each); this only stops a wedged process from eating the
 #: job's whole budget.
 DEFAULT_UNIT_TIMEOUT = 2400.0
+#: collect-board workers under the backfill profile (one host each).
+BACKFILL_WORKERS = 16
+#: A backfill task's budget counts its wait for the host's slot, so it is
+#: widened to cover every worker queued on one host at the longest honoured
+#: Crawl-delay (60 s), on top of the usual five minutes of network work.
+BACKFILL_TASK_BUDGET = 300 + BACKFILL_WORKERS * 60
 
 GIT_AUTHOR = ("touchline-collect", "touchline-collect@users.noreply.github.com")
 
@@ -253,10 +259,12 @@ def resolve_programmes(
 
 
 def platforms(config: Path) -> dict[tuple[str, str], str]:
-    """(slug, gender) -> live platform, from the enabled stanzas."""
+    """(slug, gender) -> live platform, from the enabled stanzas. A stanza
+    whose site serves only our fixed address routes as PrestoSports does."""
     table: dict[tuple[str, str], str] = {}
     for school in load_schools(config):
-        table[(programme_slug(school.name), school.gender)] = school.live_collector()
+        platform = PRESTO.platform if school.fixed_address else school.live_collector()
+        table[(programme_slug(school.name), school.gender)] = platform
     return table
 
 
@@ -840,6 +848,15 @@ def cmd_collect(args: argparse.Namespace) -> int:
     skip = plan_units(plan, args.division, JOB_PRESTO) if args.skip_presto else []
     accept = {c.upper() for c in _csv(args.accept_loss)}
     extra = ["--refetch"] if args.refetch else []
+    if os.environ.get("TOUCHLINE_FETCH_PROFILE", "").strip().lower() == "backfill":
+        # Hosts are 5 s apart in a backfill, so more of them run side by side;
+        # each still sees one request at a time.
+        extra += [
+            "--workers",
+            str(BACKFILL_WORKERS),
+            "--programme-timeout",
+            str(BACKFILL_TASK_BUDGET),
+        ]
     started = _now()
     base = _git(home, "rev-parse", "HEAD").strip()
     results: list[UnitResult] = []

@@ -26,6 +26,7 @@ build-profile = "scripts.build_profile:main"
 normalize-research = "scripts.normalize_research:main"
 probe = "scripts.probe:main"
 build-programmes = "scripts.build_programmes:main"
+reference-capture = "scripts.reference_capture:main"
 
 [build-system]
 requires = ["hatchling"]

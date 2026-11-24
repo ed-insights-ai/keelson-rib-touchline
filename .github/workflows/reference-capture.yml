@@ -1,0 +1,77 @@
+name: Reference capture
+
+# Onboarding reads for sites that refuse GitHub-hosted runners and serve the
+# AWS runner (PrestoSports conference standings; a few school sites). A push
+# to main that changes pipeline/config/reference-capture.txt starts the
+# runner and prints, as CAPTURE lines in the job log, what each listed page
+# says: standings tables' team cells, or a schedule's games with their
+# conference marks (pipeline/scripts/reference_capture.py). It reads through
+# the collector's politeness (backfill spacing, robots.txt, a host stopped on
+# its first refusal) and writes nothing: no artifact, no push, no page kept.
+
+on:
+  push:
+    branches: [main]
+    paths: [pipeline/config/reference-capture.txt]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: reference-capture
+  cancel-in-progress: false
+
+jobs:
+  start:
+    name: Start the presto runner
+    if: vars.TOUCHLINE_PRESTO_RUNNER_INSTANCE != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: production
+    permissions:
+      id-token: write
+    steps:
+      - uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+        with:
+          role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/touchline-publish
+          aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+          role-session-name: reference-capture-start-${{ github.run_id }}
+      - name: Start the instance
+        env:
+          INSTANCE: ${{ vars.TOUCHLINE_PRESTO_RUNNER_INSTANCE }}
+        run: |
+          set -uo pipefail
+          case "$INSTANCE" in
+            i-*[!0-9a-f]*|i-) echo "::warning::TOUCHLINE_PRESTO_RUNNER_INSTANCE is not an instance id."; exit 0 ;;
+            i-*) ;;
+            *) echo "::warning::TOUCHLINE_PRESTO_RUNNER_INSTANCE is not an instance id."; exit 0 ;;
+          esac
+          for attempt in 1 2 3 4 5 6 7 8 9 10 11 12; do
+            if state=$(aws ec2 start-instances --instance-ids "$INSTANCE" \
+                --query 'StartingInstances[0].CurrentState.Name' --output text 2> "$RUNNER_TEMP/start.err"); then
+              echo "presto runner $INSTANCE: $state"
+              exit 0
+            fi
+            if ! grep -q IncorrectInstanceState "$RUNNER_TEMP/start.err"; then break; fi
+            sleep 15
+          done
+          echo "::warning::could not start the presto runner: $(tail -n 1 "$RUNNER_TEMP/start.err")"
+
+  capture:
+    name: Capture (presto runner)
+    needs: start
+    if: always() && github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: [self-hosted, presto]
+    timeout-minutes: 120
+    env:
+      TOUCHLINE_CONTACT: ${{ vars.TOUCHLINE_CONTACT }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+      - name: Build the pipeline environment
+        run: uv sync --project pipeline --frozen --no-dev
+      - name: Read the listed pages
+        working-directory: pipeline
+        run: uv run --frozen --no-dev reference-capture config/reference-capture.txt
