@@ -54,7 +54,7 @@ def host_job(host, items):
             rec = {"url": url, "status": status, "final": final, "bytes": len(body)}
             if err:
                 rec["error"] = err
-            if status in (403, 429):
+            if status in (202, 403, 405, 429, 459):
                 rec["stopped_host"] = True
         (out / name).write_bytes(body)
         with lock:
