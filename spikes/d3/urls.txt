@@ -1,0 +1,6 @@
+# NCAA directory: D3 member list (two guesses at the API shape)
+dir-members-1.json https://web3.ncaa.org/directory/api/directory/memberList?type=12&division=III
+dir-members-2.json https://web3.ncaa.org/directory/api/directory/memberList?division=III
+# NCAA statistics: D3 team lists, men (MSO) and women (WSO), academic years 2024-2027 = seasons 2023-2026
+stats-mso-2026.html https://stats.ncaa.org/team/inst_team_list?academic_year=2027&conf_id=-1&division=3&sport_code=MSO
+stats-wso-2026.html https://stats.ncaa.org/team/inst_team_list?academic_year=2027&conf_id=-1&division=3&sport_code=WSO
