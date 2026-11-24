@@ -34686,6 +34686,7 @@ enabled      = true
 city         = "La Plume Township, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 gazetteer_geoid = "4206941504"
+gazetteer_note = "the campus stands in La Plume township, which the city string names"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -34841,6 +34842,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "St. Mary's City, Md."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "2446725"
+gazetteer_note = "St. Mary's City has no Gazetteer place; Lexington Park CDP, about 10 km north, is the nearest"
 member_aliases = ["St. Mary's"]
 identity_accessed = "2026-11-24"
 
@@ -34952,6 +34955,7 @@ enabled      = true
 city         = "La Plume Township, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 gazetteer_geoid = "4206941504"
+gazetteer_note = "the campus stands in La Plume township, which the city string names"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -35107,6 +35111,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "St. Mary's City, Md."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "2446725"
+gazetteer_note = "St. Mary's City has no Gazetteer place; Lexington Park CDP, about 10 km north, is the nearest"
 member_aliases = ["St. Mary's"]
 identity_accessed = "2026-11-24"
 
