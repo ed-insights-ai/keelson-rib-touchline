@@ -42,15 +42,20 @@ def _text(fragment: str) -> str:
 
 
 def standings_rows(page: str) -> list[list[str]]:
-    """Every table's rows as their first cell's text, table by table."""
+    """Every table's rows, each row its cells' text joined by " | ", table by
+    table under the table's caption. A PrestoSports schedule is a table too,
+    so its rows (date, opponent, the conference mark, result) read the same."""
     tables = []
     for table in re.findall(r"<table\b.*?</table>", page, re.S | re.I):
         caption = re.search(r"<caption\b[^>]*>(.*?)</caption>", table, re.S | re.I)
         rows = [caption and _text(caption.group(1)) or ""]
         for row in re.findall(r"<tr\b.*?</tr>", table, re.S | re.I):
-            cell = re.search(r"<t[dh]\b[^>]*>(.*?)</t[dh]>", row, re.S | re.I)
-            if cell and _text(cell.group(1)):
-                rows.append(_text(cell.group(1)))
+            cells = [
+                _text(cell)
+                for cell in re.findall(r"<t[dh]\b[^>]*>(.*?)</t[dh]>", row, re.S | re.I)
+            ]
+            if any(cells):
+                rows.append(" | ".join(cells))
         tables.append(rows)
     return tables
 
@@ -90,24 +95,46 @@ def title(page: str) -> str:
     return _text(found.group(1)) if found else ""
 
 
+def platform(page: str) -> str:
+    """Which site platform served the page, from its own markup."""
+    if "sidearm" in page.lower():
+        return "sidearm"
+    if "prestosports" in page.lower() or "event-row" in page:
+        return "prestosports"
+    return "other"
+
+
 def read_one(session: requests.Session, label: str, url: str) -> dict[str, object]:
+    """What the page says, kept short enough to read in a job log: a
+    standings page's rows; a schedule's game count and its conference-marked
+    games (opponent and mark), or for a table schedule its rows' count."""
     record: dict[str, object] = {"label": label, "url": url}
     try:
         response = session.get(url, timeout=30)
     except requests.RequestException as exc:
-        record["error"] = str(exc)
+        record["error"] = str(exc)[:200]
         return record
     record["status"] = response.status_code
-    record["final"] = response.url
+    if response.url != url:
+        record["final"] = response.url
     if response.status_code != 200:
         return record
     page = response.text
-    record["title"] = title(page)
+    record["title"] = title(page)[:120]
+    record["platform"] = platform(page)
+    if "standings" in urlparse(url).path:
+        record["tables"] = [rows for rows in standings_rows(page) if len(rows) > 2]
+        return record
     games = schedule_games(page)
     if games:
-        record["games"] = games
+        record["games"] = len(games)
+        record["marked"] = [
+            [game["opponent"], game["conference"]]
+            for game in games
+            if game["conference"] and not game["tournament"]
+        ]
     else:
-        record["tables"] = standings_rows(page)
+        record["rows"] = sum(len(rows) - 1 for rows in standings_rows(page))
     return record
 
 
