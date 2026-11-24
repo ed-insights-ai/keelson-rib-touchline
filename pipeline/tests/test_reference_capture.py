@@ -1,0 +1,43 @@
+from pathlib import Path
+
+import pytest
+
+from scripts import reference_capture as rc
+
+SCHEDULE = """<ul>
+<li class="sidearm-schedule-game sidearm-schedule-home-game"><div class="sidearm-schedule-game-opponent-name"><a href="https://a.example">Alpha College</a></div>
+<div class="sidearm-schedule-game-conference x"><span><img alt="Sample Conference" src="/c.png"></span></div></li>
+<li class="sidearm-schedule-game sidearm-schedule-away-game tourney"><div class="sidearm-schedule-game-opponent-name">(2) Beta</div>
+<div class="sidearm-schedule-game-conference x"></div></li>
+</ul>"""
+
+STANDINGS = """<table><caption>2025 Men's Soccer</caption><tr><th>Team</th><th>W</th></tr>
+<tr><td><a href="/t">Gamma</a></td><td>3</td></tr><tr><td>Delta &amp; Co</td><td>1</td></tr></table>"""
+
+
+def test_schedule_games_carry_the_conference_mark_and_tournament() -> None:
+    games = rc.schedule_games(SCHEDULE)
+    assert games == [
+        {
+            "opponent": "Alpha College",
+            "conference": "Sample Conference",
+            "tournament": False,
+        },
+        {"opponent": "(2) Beta", "conference": None, "tournament": True},
+    ]
+
+
+def test_standings_rows_are_first_cells_under_the_caption() -> None:
+    assert rc.standings_rows(STANDINGS) == [
+        ["2025 Men's Soccer", "Team", "Gamma", "Delta & Co"]
+    ]
+
+
+def test_the_list_refuses_a_line_without_an_https_url(tmp_path: Path) -> None:
+    good = tmp_path / "good.txt"
+    good.write_text("# note\n\nsunyac-m-2025 https://example.org/standings\n")
+    assert rc.read_list(good) == [("sunyac-m-2025", "https://example.org/standings")]
+    bad = tmp_path / "bad.txt"
+    bad.write_text("label http://example.org/\n")
+    with pytest.raises(ValueError):
+        rc.read_list(bad)
