@@ -196,3 +196,33 @@ def test_each_redirect_hop_is_judged_by_robots(monkeypatch) -> None:
     with pytest.raises(RobotsDisallowed):
         session.get("https://a.example/start")
     assert asked == ["https://a.example/start"]
+
+
+def test_a_robots_redirect_is_asked_in_the_target_hosts_slot() -> None:
+    gate, _t, _log = _gate(robots="enforce", stop_on_refusal=True)
+    asked: list[str] = []
+
+    def fetch(url: str):
+        asked.append(url)
+        if url.startswith("https://a.example"):
+            return _Hop(url, 301, "https://b.example/robots.txt")
+        return _Hop(url, 403)
+
+    gate.robots_check("https://a.example/sports/x", fetch)
+    assert asked == ["https://a.example/robots.txt", "https://b.example/robots.txt"]
+    # The refusal is the target's, not the origin's.
+    assert gate.stopped_hosts() == {"b.example": 403}
+    # A robots.txt that redirects to a stopped host is not asked, and reads as
+    # "could not say", which enforce treats as do not crawl.
+    with pytest.raises(RobotsDisallowed):
+        gate.robots_check(
+            "https://c.example/x", lambda url: _Hop(url, 302, "https://b.example/r")
+        )
+
+
+def test_a_challenge_retry_waits_at_least_the_crawl_delay() -> None:
+    gate, t, _log = _gate(robots="enforce", backoff=(1.0,))
+    gate._delay["a.example"] = 9.0
+    before = t.clock()
+    assert gate.backoff_wait("a.example", 0)
+    assert t.clock() - before >= 9.0

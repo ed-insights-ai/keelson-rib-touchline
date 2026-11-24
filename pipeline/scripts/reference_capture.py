@@ -28,8 +28,10 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import requests
+from bs4 import BeautifulSoup
 
 from src.fetch_pool import GatedSession, HostGate, PacingPolicy
+from src.presto import _ROW_OPPONENT
 from src.sidearm_live import build_session
 
 WORKERS = 8
@@ -95,15 +97,19 @@ def schedule_games(page: str) -> list[dict[str, object]]:
 
 
 def presto_games(page: str) -> list[dict[str, object]]:
-    """A PrestoSports schedule's games, table rows or event cards alike: each
-    event's text, and whether the page marks it with the conference star."""
+    """A PrestoSports schedule's games on any skin, read with the collector's
+    own row selectors (``src.presto``): each event row's opponent, and
+    whether the row carries the conference notation or ``conf`` class."""
+    soup = BeautifulSoup(page, "lxml")
     games = []
-    for row in re.findall(
-        r'<(tr|div)\b[^>]*class="[^"]*\bevent-row\b[^"]*"[^>]*>(.*?)</\1>', page, re.S
-    ):
-        text = _text(row[1])
-        if text:
-            games.append({"event": text[:120], "conference": "*" in text})
+    for row in soup.select(".event-row"):
+        name = row.select_one(_ROW_OPPONENT)
+        if name is None:
+            continue
+        marked = row.select_one('.notation[title="Conference"]') is not None or (
+            "conf" in set(row.get("class") or [])
+        )
+        games.append({"opponent": _text(str(name)), "conference": marked})
     return games
 
 
@@ -153,7 +159,7 @@ def read_one(session: requests.Session, label: str, url: str) -> dict[str, objec
         return record
     events = presto_games(page)
     record["games"] = len(events)
-    record["marked"] = [event["event"] for event in events if event["conference"]]
+    record["marked"] = [event["opponent"] for event in events if event["conference"]]
     return record
 
 

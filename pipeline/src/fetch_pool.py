@@ -493,18 +493,28 @@ class HostGate:
                 raise RobotsDisallowed(url)
             self._log(f"robots: {host} disallows {parts.path or '/'} (report only)")
 
+    #: robots.txt redirect hops followed, each in its own host's slot.
+    ROBOTS_REDIRECTS = 5
+
     def _read_robots(
         self, scheme: str, host: str, fetch: Callable[[str], requests.Response]
     ) -> RobotFileParser | str | None:
-        robots_url = f"{scheme}://{host}/robots.txt"
+        """``fetch`` must not follow redirects: each hop is asked here, in the
+        slot of the host it names, and that host's answer is observed."""
+        url = f"{scheme}://{host}/robots.txt"
         try:
-            with self.slot(host):
-                response = fetch(robots_url)
+            for _ in range(self.ROBOTS_REDIRECTS + 1):
+                asked = host_of(url)
+                with self.slot(asked):
+                    response = fetch(url)
+                status = int(getattr(response, "status_code", 0) or 0)
+                self.observe_status(asked, status)
+                if not getattr(response, "is_redirect", False):
+                    break
+                url = urljoin(url, response.headers.get("location", ""))
         except requests.RequestException as exc:
             self._log(f"robots: {host} robots.txt could not be read ({exc})")
             return f"robots.txt unreachable: {exc}"
-        status = int(getattr(response, "status_code", 0) or 0)
-        self.observe_status(host, status)
         if 400 <= status < 500:
             return None
         if status >= 500 or status == 0:
@@ -538,7 +548,10 @@ class HostGate:
         if attempt >= len(self.policy.backoff):
             self.begin_cooldown(host, status)
             return False
-        wait = self.policy.backoff[attempt]
+        # A retry is another request to the host, so it waits its Crawl-delay too.
+        with self._registry:
+            delay = self._delay.get(host.lower(), 0.0)
+        wait = max(self.policy.backoff[attempt], delay)
         self._log(
             f"pacing: {host} answered {challenge_label(status)}; retrying in "
             f"{wait:g}s (retry {attempt + 1} of {len(self.policy.backoff)})"
@@ -609,7 +622,10 @@ class GatedSession(requests.Session):
         self._gate.robots_check(
             str(url),
             lambda robots_url: super(GatedSession, self).request(
-                "GET", robots_url, timeout=kwargs.get("timeout", 30)
+                "GET",
+                robots_url,
+                timeout=kwargs.get("timeout", 30),
+                allow_redirects=False,
             ),
         )
         with self._gate.slot(host):

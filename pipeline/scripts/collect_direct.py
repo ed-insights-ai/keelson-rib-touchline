@@ -92,6 +92,10 @@ RESULT_SKIPPED = "skipped"
 DEFAULT_UNIT_TIMEOUT = 2400.0
 #: collect-board workers under the backfill profile (one host each).
 BACKFILL_WORKERS = 16
+#: A backfill task's budget counts its wait for the host's slot, so it is
+#: widened to cover every worker queued on one host at the longest honoured
+#: Crawl-delay (60 s), on top of the usual five minutes of network work.
+BACKFILL_TASK_BUDGET = 300 + BACKFILL_WORKERS * 60
 
 GIT_AUTHOR = ("touchline-collect", "touchline-collect@users.noreply.github.com")
 
@@ -847,7 +851,12 @@ def cmd_collect(args: argparse.Namespace) -> int:
     if os.environ.get("TOUCHLINE_FETCH_PROFILE", "").strip().lower() == "backfill":
         # Hosts are 5 s apart in a backfill, so more of them run side by side;
         # each still sees one request at a time.
-        extra += ["--workers", str(BACKFILL_WORKERS)]
+        extra += [
+            "--workers",
+            str(BACKFILL_WORKERS),
+            "--programme-timeout",
+            str(BACKFILL_TASK_BUDGET),
+        ]
     started = _now()
     base = _git(home, "rev-parse", "HEAD").strip()
     results: list[UnitResult] = []

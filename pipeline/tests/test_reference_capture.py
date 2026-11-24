@@ -86,17 +86,33 @@ def test_the_home_away_label_is_not_a_conference_mark() -> None:
     ]
 
 
-def test_presto_events_carry_the_conference_star() -> None:
+def test_presto_rows_carry_the_conference_mark_on_every_skin() -> None:
     page = """<table>
-<tr class="event-row"><td>Sep 6</td><td>at Zeta *</td><td>W 2-1</td></tr>
-<tr class="event-row"><td>Sep 9</td><td>vs Eta</td><td>L 0-1</td></tr>
-</table>"""
+<tr class="event-row"><td class="opponent"><span class="team-name">Zeta</span></td>
+<td class="status">Final <span class="notation" title="Conference">*</span></td></tr>
+<tr class="event-row"><td class="opponent"><span class="team-name">Eta</span></td></tr>
+</table>
+<div class="item event-row home conf"><div class="date"><span>Sep 20</span></div>
+<div class="opponent"><span class="va">vs</span> <span class="team-name">Theta</span></div></div>"""
     assert rc.presto_games(page) == [
-        {"event": "Sep 6 at Zeta * W 2-1", "conference": True},
-        {"event": "Sep 9 vs Eta L 0-1", "conference": False},
+        {"opponent": "Zeta", "conference": True},
+        {"opponent": "Eta", "conference": False},
+        {"opponent": "Theta", "conference": True},
     ]
-    record = rc.read_one(
-        _Session(_Response(page)), "zeta", "https://z.example/schedule"
+    record = rc.read_one(_Session(_Response(page)), "z", "https://z.example/schedule")
+    assert record["games"] == 3
+    assert record["marked"] == ["Zeta", "Theta"]
+
+
+def test_presto_fixtures_keep_their_opponents() -> None:
+    fixtures = Path(__file__).parent / "fixtures"
+    for name in ("stac", "bridgeport", "wilmington", "tampa"):
+        page = (fixtures / f"prestosports_{name}_schedule_2025.html").read_text()
+        games = rc.presto_games(page)
+        assert games and all(game["opponent"] for game in games), name
+    stac = rc.presto_games(
+        (fixtures / "prestosports_stac_schedule_2025.html").read_text()
     )
-    assert record["games"] == 2
-    assert record["marked"] == ["Sep 6 at Zeta * W 2-1"]
+    assert any(
+        game["opponent"].startswith("Daemen") and game["conference"] for game in stac
+    )
