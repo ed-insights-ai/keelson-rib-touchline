@@ -1,0 +1,3502 @@
+{
+ "census-www-simpsonathletics-com-m.html": {
+  "url": "https://www.simpsonathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://www.simpsonathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-duhawks-com-m.html": {
+  "url": "https://duhawks.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://duhawks.com/sports/mens-soccer/schedule/2026",
+  "bytes": 635193
+ },
+ "census-www-coeathletics-com-m.html": {
+  "url": "https://www.coeathletics.com/sports/mens-soccer/schedule/2026",
+  "status": null,
+  "final": "https://www.coeathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 0,
+  "error": "URLError(ConnectionResetError(104, 'Connection reset by peer'))"
+ },
+ "census-udspartans-com-m.html": {
+  "url": "https://udspartans.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://udspartans.com/sports/mens-soccer/schedule/2026",
+  "bytes": 547355
+ },
+ "census-athletics-central-edu-m.html": {
+  "url": "https://athletics.central.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.central.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 415786
+ },
+ "census-www-nwusports-com-m.html": {
+  "url": "https://www.nwusports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://nwusports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 564290
+ },
+ "census-www-gomightymacs-com-m.html": {
+  "url": "https://www.gomightymacs.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gomightymacs.com/sports/mens-soccer/schedule/2026",
+  "bytes": 733960
+ },
+ "census-www-bvuathletics-com-m.html": {
+  "url": "https://www.bvuathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://bvuathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 707175
+ },
+ "census-www-centenarycyclones-com-m.html": {
+  "url": "https://www.centenarycyclones.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://centenarycyclones.com/sports/mens-soccer/schedule/2026",
+  "bytes": 507254
+ },
+ "census-gwyneddathletics-com-m.html": {
+  "url": "https://gwyneddathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gwyneddathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 575164
+ },
+ "census-marymountsaints-com-m.html": {
+  "url": "https://marymountsaints.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://marymountsaints.com/sports/mens-soccer/schedule/2026",
+  "bytes": 625314
+ },
+ "census-www-go-knights-net-m.html": {
+  "url": "https://www.go-knights.net/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://go-knights.net/sports/mens-soccer/schedule/2026",
+  "bytes": 584018
+ },
+ "census-www-simpsonathletics-com-w.html": {
+  "url": "https://www.simpsonathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://www.simpsonathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-www-coeathletics-com-w.html": {
+  "url": "https://www.coeathletics.com/sports/womens-soccer/schedule/2026",
+  "status": null,
+  "final": "https://www.coeathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 0,
+  "error": "URLError(ConnectionResetError(104, 'Connection reset by peer'))"
+ },
+ "census-athletics-central-edu-w.html": {
+  "url": "https://athletics.central.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.central.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 429944
+ },
+ "census-udspartans-com-w.html": {
+  "url": "https://udspartans.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://udspartans.com/sports/womens-soccer/schedule/2026",
+  "bytes": 556019
+ },
+ "census-www-nwusports-com-w.html": {
+  "url": "https://www.nwusports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://nwusports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 560035
+ },
+ "census-www-centenarycyclones-com-w.html": {
+  "url": "https://www.centenarycyclones.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://centenarycyclones.com/sports/womens-soccer/schedule/2026",
+  "bytes": 473823
+ },
+ "census-duhawks-com-w.html": {
+  "url": "https://duhawks.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://duhawks.com/sports/womens-soccer/schedule/2026",
+  "bytes": 578635
+ },
+ "census-gwyneddathletics-com-w.html": {
+  "url": "https://gwyneddathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gwyneddathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 574665
+ },
+ "census-www-gomightymacs-com-w.html": {
+  "url": "https://www.gomightymacs.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gomightymacs.com/sports/womens-soccer/schedule/2026",
+  "bytes": 721173
+ },
+ "census-marymountsaints-com-w.html": {
+  "url": "https://marymountsaints.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://marymountsaints.com/sports/womens-soccer/schedule/2026",
+  "bytes": 608130
+ },
+ "census-www-go-knights-net-w.html": {
+  "url": "https://www.go-knights.net/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://go-knights.net/sports/womens-soccer/schedule/2026",
+  "bytes": 585717
+ },
+ "census-www-bvuathletics-com-w.html": {
+  "url": "https://www.bvuathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://bvuathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 694977
+ },
+ "census-www-athletics-augustana-edu-m.html": {
+  "url": "https://www.athletics.augustana.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.augustana.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 630506
+ },
+ "census-goprattgo-com-m.html": {
+  "url": "https://goprattgo.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://goprattgo.com/sports/mens-soccer/schedule/2026",
+  "bytes": 468961
+ },
+ "census-www-elmhurstbluejays-com-m.html": {
+  "url": "https://www.elmhurstbluejays.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://elmhurstbluejays.com/sports/mens-soccer/schedule/2026",
+  "bytes": 694280
+ },
+ "census-seueagles-com-m.html": {
+  "url": "https://seueagles.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://seueagles.com/sports/mens-soccer/schedule/2026",
+  "bytes": 568362
+ },
+ "census-athletics-millikin-edu-m.html": {
+  "url": "https://athletics.millikin.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.millikin.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 473520
+ },
+ "census-www-iwusports-com-m.html": {
+  "url": "https://www.iwusports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.iwusports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 499698
+ },
+ "census-athletics-carthage-edu-m.html": {
+  "url": "https://athletics.carthage.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.carthage.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 610796
+ },
+ "census-athletics-northpark-edu-m.html": {
+  "url": "https://athletics.northpark.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.northpark.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 779156
+ },
+ "census-gopios-com-m.html": {
+  "url": "https://gopios.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gopios.com/sports/mens-soccer/schedule/2026",
+  "bytes": 840999
+ },
+ "census-athletics-wheaton-edu-m.html": {
+  "url": "https://athletics.wheaton.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.wheaton.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 717211
+ },
+ "census-northcentralcardinals-com-m.html": {
+  "url": "https://northcentralcardinals.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://northcentralcardinals.com/sports/mens-soccer/schedule/2026",
+  "bytes": 463577
+ },
+ "census-ascscotties-com-m.html": {
+  "url": "https://ascscotties.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://ascscotties.com/index.aspx",
+  "bytes": 521929
+ },
+ "census-goprattgo-com-w.html": {
+  "url": "https://goprattgo.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://goprattgo.com/sports/womens-soccer/schedule/2026",
+  "bytes": 468797
+ },
+ "census-seueagles-com-w.html": {
+  "url": "https://seueagles.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://seueagles.com/sports/womens-soccer/schedule/2026",
+  "bytes": 595789
+ },
+ "census-athletics-millikin-edu-w.html": {
+  "url": "https://athletics.millikin.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.millikin.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 479769
+ },
+ "census-www-iwusports-com-w.html": {
+  "url": "https://www.iwusports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.iwusports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 515021
+ },
+ "census-www-athletics-augustana-edu-w.html": {
+  "url": "https://www.athletics.augustana.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.augustana.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 617436
+ },
+ "census-athletics-carthage-edu-w.html": {
+  "url": "https://athletics.carthage.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.carthage.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 590769
+ },
+ "census-athletics-northpark-edu-w.html": {
+  "url": "https://athletics.northpark.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.northpark.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 721649
+ },
+ "census-www-elmhurstbluejays-com-w.html": {
+  "url": "https://www.elmhurstbluejays.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://elmhurstbluejays.com/sports/womens-soccer/schedule/2026",
+  "bytes": 741765
+ },
+ "census-northcentralcardinals-com-w.html": {
+  "url": "https://northcentralcardinals.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://northcentralcardinals.com/sports/womens-soccer/schedule/2026",
+  "bytes": 496433
+ },
+ "census-gopios-com-w.html": {
+  "url": "https://gopios.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gopios.com/sports/womens-soccer/schedule/2026",
+  "bytes": 866228
+ },
+ "census-ascscotties-com-w.html": {
+  "url": "https://ascscotties.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://ascscotties.com/sports/womens-soccer/schedule/2026",
+  "bytes": 415078
+ },
+ "census-athletics-wheaton-edu-w.html": {
+  "url": "https://athletics.wheaton.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.wheaton.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 698278
+ },
+ "census-blazers-belhaven-edu-m.html": {
+  "url": "https://blazers.belhaven.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://blazers.belhaven.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 647892
+ },
+ "census-www-huntingdonhawks-com-m.html": {
+  "url": "https://www.huntingdonhawks.com/sports/mens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://www.huntingdonhawks.com/sports/mens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-www-lagrangepanthers-com-m.html": {
+  "url": "https://www.lagrangepanthers.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://lagrangepanthers.com/sports/mens-soccer/schedule/2026",
+  "bytes": 502732
+ },
+ "census-asburyeagles-com-m.html": {
+  "url": "https://asburyeagles.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://asburyeagles.com/sports/mens-soccer/schedule/2026",
+  "bytes": 612034
+ },
+ "census-dickinsonathletics-com-m.html": {
+  "url": "https://dickinsonathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://dickinsonathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 816539
+ },
+ "census-gobrynmawr-com-m.html": {
+  "url": "https://gobrynmawr.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gobrynmawr.com/index.aspx",
+  "bytes": 114249
+ },
+ "census-athletics-covenant-edu-m.html": {
+  "url": "https://athletics.covenant.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.covenant.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 449358
+ },
+ "census-www-piedmontlions-com-m.html": {
+  "url": "https://www.piedmontlions.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://piedmontlions.com/sports/mens-soccer/schedule/2026",
+  "bytes": 595260
+ },
+ "census-cabriniathletics-com-m.html": {
+  "url": "https://cabriniathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://cabrini.villanova.com/sports/mens-soccer/schedule",
+  "bytes": 522528
+ },
+ "census-godiplomats-com-m.html": {
+  "url": "https://godiplomats.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://godiplomats.com/sports/mens-soccer/schedule/2026",
+  "bytes": 643643
+ },
+ "census-haverfordathletics-com-m.html": {
+  "url": "https://haverfordathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://haverfordathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 669360
+ },
+ "census-gettysburgsports-com-m.html": {
+  "url": "https://gettysburgsports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gettysburgsports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 793625
+ },
+ "census-www-huntingdonhawks-com-w.html": {
+  "url": "https://www.huntingdonhawks.com/sports/womens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://www.huntingdonhawks.com/sports/womens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-blazers-belhaven-edu-w.html": {
+  "url": "https://blazers.belhaven.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://blazers.belhaven.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 639012
+ },
+ "census-asburyeagles-com-w.html": {
+  "url": "https://asburyeagles.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://asburyeagles.com/sports/womens-soccer/schedule/2026",
+  "bytes": 623476
+ },
+ "census-www-lagrangepanthers-com-w.html": {
+  "url": "https://www.lagrangepanthers.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://lagrangepanthers.com/sports/womens-soccer/schedule/2026",
+  "bytes": 503060
+ },
+ "census-dickinsonathletics-com-w.html": {
+  "url": "https://dickinsonathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://dickinsonathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 880193
+ },
+ "census-gobrynmawr-com-w.html": {
+  "url": "https://gobrynmawr.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gobrynmawr.com/sports/womens-soccer/schedule/2026",
+  "bytes": 445849
+ },
+ "census-athletics-covenant-edu-w.html": {
+  "url": "https://athletics.covenant.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.covenant.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 422164
+ },
+ "census-www-piedmontlions-com-w.html": {
+  "url": "https://www.piedmontlions.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://piedmontlions.com/sports/womens-soccer/schedule/2026",
+  "bytes": 567020
+ },
+ "census-godiplomats-com-w.html": {
+  "url": "https://godiplomats.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://godiplomats.com/sports/womens-soccer/schedule/2026",
+  "bytes": 653599
+ },
+ "census-cabriniathletics-com-w.html": {
+  "url": "https://cabriniathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://cabrini.villanova.com/sports/womens-soccer/schedule",
+  "bytes": 501548
+ },
+ "census-haverfordathletics-com-w.html": {
+  "url": "https://haverfordathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://haverfordathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 634125
+ },
+ "census-gettysburgsports-com-w.html": {
+  "url": "https://gettysburgsports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gettysburgsports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 820718
+ },
+ "census-hopkinssports-com-m.html": {
+  "url": "https://hopkinssports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://hopkinssports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 884936
+ },
+ "census-mcdanielathletics-com-m.html": {
+  "url": "https://mcdanielathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://mcdanielathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 565276
+ },
+ "census-swarthmoreathletics-com-m.html": {
+  "url": "https://swarthmoreathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://swarthmoreathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 688301
+ },
+ "census-washcollsports-com-m.html": {
+  "url": "https://washcollsports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://washcollsports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 597136
+ },
+ "census-muhlenbergsports-com-m.html": {
+  "url": "https://muhlenbergsports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://muhlenbergsports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 613386
+ },
+ "census-www-catholicathletics-com-m.html": {
+  "url": "https://www.catholicathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://catholicathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 732488
+ },
+ "census-ursinusathletics-com-m.html": {
+  "url": "https://ursinusathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://ursinusathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 542626
+ },
+ "census-www-drewrangers-com-m.html": {
+  "url": "https://www.drewrangers.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://drewrangers.com/sports/mens-soccer/schedule/2026",
+  "bytes": 663770
+ },
+ "census-athletics-goucher-edu-m.html": {
+  "url": "https://athletics.goucher.edu/sports/mens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://athletics.goucher.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-www-juniatasports-net-m.html": {
+  "url": "https://www.juniatasports.net/sports/mens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://www.juniatasports.net/sports/mens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-www-etownbluejays-com-m.html": {
+  "url": "https://www.etownbluejays.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://etownbluejays.com/sports/mens-soccer/schedule/2026",
+  "bytes": 646186
+ },
+ "census-athletics-lycoming-edu-m.html": {
+  "url": "https://athletics.lycoming.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://lycomingathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 1031540
+ },
+ "census-mcdanielathletics-com-w.html": {
+  "url": "https://mcdanielathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://mcdanielathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 569512
+ },
+ "census-hopkinssports-com-w.html": {
+  "url": "https://hopkinssports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://hopkinssports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 897316
+ },
+ "census-swarthmoreathletics-com-w.html": {
+  "url": "https://swarthmoreathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://swarthmoreathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 725391
+ },
+ "census-muhlenbergsports-com-w.html": {
+  "url": "https://muhlenbergsports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://muhlenbergsports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 585831
+ },
+ "census-washcollsports-com-w.html": {
+  "url": "https://washcollsports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://washcollsports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 619086
+ },
+ "census-ursinusathletics-com-w.html": {
+  "url": "https://ursinusathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://ursinusathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 534040
+ },
+ "census-www-catholicathletics-com-w.html": {
+  "url": "https://www.catholicathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://catholicathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 721093
+ },
+ "census-athletics-goucher-edu-w.html": {
+  "url": "https://athletics.goucher.edu/sports/womens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://athletics.goucher.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-www-drewrangers-com-w.html": {
+  "url": "https://www.drewrangers.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://drewrangers.com/sports/womens-soccer/schedule/2026",
+  "bytes": 682351
+ },
+ "census-www-juniatasports-net-w.html": {
+  "url": "https://www.juniatasports.net/sports/womens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://www.juniatasports.net/sports/womens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-www-etownbluejays-com-w.html": {
+  "url": "https://www.etownbluejays.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://etownbluejays.com/sports/womens-soccer/schedule/2026",
+  "bytes": 644137
+ },
+ "census-athletics-lycoming-edu-w.html": {
+  "url": "https://athletics.lycoming.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://lycomingathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 1002487
+ },
+ "census-moraviansports-com-m.html": {
+  "url": "https://moraviansports.com/sports/mens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://moraviansports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-athletics-scranton-edu-m.html": {
+  "url": "https://athletics.scranton.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.scranton.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 775540
+ },
+ "census-suriverhawks-com-m.html": {
+  "url": "https://suriverhawks.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://suriverhawks.com/sports/mens-soccer/schedule/2026",
+  "bytes": 1070230
+ },
+ "census-www-keeneowls-com-m.html": {
+  "url": "https://www.keeneowls.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://keeneowls.com/sports/mens-soccer/schedule/2026",
+  "bytes": 766902
+ },
+ "census-gowarriorathletics-com-m.html": {
+  "url": "https://gowarriorathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gowarriorathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 532733
+ },
+ "census-www-beaconsathletics-com-m.html": {
+  "url": "https://www.beaconsathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://beaconsathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 780862
+ },
+ "census-athletics-plymouth-edu-m.html": {
+  "url": "https://athletics.plymouth.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.plymouth.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 611553
+ },
+ "census-goanchormen-com-m.html": {
+  "url": "https://goanchormen.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://goanchormen.com/sports/mens-soccer/schedule/2026",
+  "bytes": 514609
+ },
+ "census-www-gowilkesu-com-m.html": {
+  "url": "https://www.gowilkesu.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gowilkesu.com/sports/mens-soccer/schedule/2026",
+  "bytes": 575757
+ },
+ "census-www-corsairathletics-com-m.html": {
+  "url": "https://www.corsairathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://corsairathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 709543
+ },
+ "census-www-southernmainehuskies-com-m.html": {
+  "url": "https://www.southernmainehuskies.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://southernmainehuskies.com/sports/mens-soccer/schedule/2026",
+  "bytes": 724184
+ },
+ "census-moraviansports-com-w.html": {
+  "url": "https://moraviansports.com/sports/womens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://moraviansports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-athletics-scranton-edu-w.html": {
+  "url": "https://athletics.scranton.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.scranton.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 760092
+ },
+ "census-suriverhawks-com-w.html": {
+  "url": "https://suriverhawks.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://suriverhawks.com/sports/womens-soccer/schedule/2026",
+  "bytes": 1111958
+ },
+ "census-www-castletonsports-com-m.html": {
+  "url": "https://www.castletonsports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://castletonsports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 566569
+ },
+ "census-athletics-plymouth-edu-w.html": {
+  "url": "https://athletics.plymouth.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.plymouth.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 617177
+ },
+ "census-www-keeneowls-com-w.html": {
+  "url": "https://www.keeneowls.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://keeneowls.com/sports/womens-soccer/schedule/2026",
+  "bytes": 792767
+ },
+ "census-www-beaconsathletics-com-w.html": {
+  "url": "https://www.beaconsathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://beaconsathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 789020
+ },
+ "census-gowarriorathletics-com-w.html": {
+  "url": "https://gowarriorathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gowarriorathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 559228
+ },
+ "census-www-gowilkesu-com-w.html": {
+  "url": "https://www.gowilkesu.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gowilkesu.com/sports/womens-soccer/schedule/2026",
+  "bytes": 608707
+ },
+ "census-www-corsairathletics-com-w.html": {
+  "url": "https://www.corsairathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://corsairathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 695606
+ },
+ "census-goanchormen-com-w.html": {
+  "url": "https://goanchormen.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://goanchormen.com/sports/womens-soccer/schedule/2026",
+  "bytes": 515316
+ },
+ "census-www-southernmainehuskies-com-w.html": {
+  "url": "https://www.southernmainehuskies.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://southernmainehuskies.com/sports/womens-soccer/schedule/2026",
+  "bytes": 731750
+ },
+ "census-westconnathletics-com-m.html": {
+  "url": "https://westconnathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://westconnathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 608861
+ },
+ "census-bardathletics-com-m.html": {
+  "url": "https://bardathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://bardathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 477518
+ },
+ "census-clarksonathletics-com-m.html": {
+  "url": "https://clarksonathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://clarksonathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 565583
+ },
+ "census-www-castletonsports-com-w.html": {
+  "url": "https://www.castletonsports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://castletonsports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 571044
+ },
+ "census-www-hwsathletics-com-m.html": {
+  "url": "https://www.hwsathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://hwsathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 900397
+ },
+ "census-bombers-ithaca-edu-m.html": {
+  "url": "https://bombers.ithaca.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.ithaca.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 615078
+ },
+ "census-ritathletics-com-m.html": {
+  "url": "https://ritathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://ritathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 418815
+ },
+ "census-www-skidmoreathletics-com-m.html": {
+  "url": "https://www.skidmoreathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://skidmoreathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 542346
+ },
+ "census-saintsathletics-com-m.html": {
+  "url": "https://saintsathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://saintsathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 524217
+ },
+ "census-www-unionathletics-com-m.html": {
+  "url": "https://www.unionathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://unionathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 562892
+ },
+ "census-www-rpiathletics-com-m.html": {
+  "url": "https://www.rpiathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://rpiathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 564246
+ },
+ "census-www-uofrathletics-com-m.html": {
+  "url": "https://www.uofrathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://uofrathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 586050
+ },
+ "census-westconnathletics-com-w.html": {
+  "url": "https://westconnathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://westconnathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 588169
+ },
+ "census-bardathletics-com-w.html": {
+  "url": "https://bardathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://bardathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 467466
+ },
+ "census-www-vassarathletics-com-m.html": {
+  "url": "https://www.vassarathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.vassarathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 583834
+ },
+ "census-clarksonathletics-com-w.html": {
+  "url": "https://clarksonathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://clarksonathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 565434
+ },
+ "census-ritathletics-com-w.html": {
+  "url": "https://ritathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://ritathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 419959
+ },
+ "census-bombers-ithaca-edu-w.html": {
+  "url": "https://bombers.ithaca.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.ithaca.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 583932
+ },
+ "census-www-hwsathletics-com-w.html": {
+  "url": "https://www.hwsathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://hwsathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 932412
+ },
+ "census-saintsathletics-com-w.html": {
+  "url": "https://saintsathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://saintsathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 515459
+ },
+ "census-www-skidmoreathletics-com-w.html": {
+  "url": "https://www.skidmoreathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://skidmoreathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 507863
+ },
+ "census-www-unionathletics-com-w.html": {
+  "url": "https://www.unionathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://unionathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 561553
+ },
+ "census-www-rpiathletics-com-w.html": {
+  "url": "https://www.rpiathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://rpiathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 548223
+ },
+ "census-www-uofrathletics-com-w.html": {
+  "url": "https://www.uofrathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://uofrathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 578069
+ },
+ "census-www-adrianbulldogs-com-m.html": {
+  "url": "https://www.adrianbulldogs.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://adrianbulldogs.com/sports/mens-soccer/schedule/2026",
+  "bytes": 746953
+ },
+ "census-gobrits-com-m.html": {
+  "url": "https://gobrits.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gobrits.com/sports/mens-soccer/schedule/2026",
+  "bytes": 682565
+ },
+ "census-www-vassarathletics-com-w.html": {
+  "url": "https://www.vassarathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.vassarathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 614496
+ },
+ "census-almascots-com-m.html": {
+  "url": "https://almascots.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://almascots.com/sports/mens-soccer/schedule/2026",
+  "bytes": 708935
+ },
+ "census-calvinknights-com-m.html": {
+  "url": "https://calvinknights.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://calvinknights.com/sports/mens-soccer/schedule/2026",
+  "bytes": 662089
+ },
+ "census-www-olivetcomets-com-m.html": {
+  "url": "https://www.olivetcomets.com/sports/mens-soccer/schedule/2026",
+  "status": 202,
+  "final": "https://www.olivetcomets.com/sports/mens-soccer/schedule/2026",
+  "bytes": 0
+ },
+ "census-hornets-kzoo-edu-m.html": {
+  "url": "https://hornets.kzoo.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://hornets.kzoo.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 669799
+ },
+ "census-athletics-hope-edu-m.html": {
+  "url": "https://athletics.hope.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.hope.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 915718
+ },
+ "census-belles-saintmarys-edu-m.html": {
+  "url": "https://belles.saintmarys.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://belles.saintmarys.edu/index.aspx",
+  "bytes": 406612
+ },
+ "census-trinethunder-com-m.html": {
+  "url": "https://trinethunder.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://trinethunder.com/sports/mens-soccer/schedule/2026",
+  "bytes": 565279
+ },
+ "census-www-miacathletics-com-m.html": {
+  "url": "https://www.miacathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 500,
+  "final": "https://www.miacathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 511
+ },
+ "census-gobrits-com-w.html": {
+  "url": "https://gobrits.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gobrits.com/sports/womens-soccer/schedule/2026",
+  "bytes": 682137
+ },
+ "census-www-adrianbulldogs-com-w.html": {
+  "url": "https://www.adrianbulldogs.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://adrianbulldogs.com/sports/womens-soccer/schedule/2026",
+  "bytes": 747822
+ },
+ "census-athletics-augsburg-edu-m.html": {
+  "url": "https://athletics.augsburg.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.augsburg.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 782371
+ },
+ "census-calvinknights-com-w.html": {
+  "url": "https://calvinknights.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://calvinknights.com/sports/womens-soccer/schedule/2026",
+  "bytes": 673532
+ },
+ "census-athletics-bethel-edu-m.html": {
+  "url": "https://athletics.bethel.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.bethel.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 650659
+ },
+ "census-www-olivetcomets-com-w.html": {
+  "url": "https://www.olivetcomets.com/sports/womens-soccer/schedule/2026",
+  "status": 202,
+  "final": "https://www.olivetcomets.com/sports/womens-soccer/schedule/2026",
+  "bytes": 0
+ },
+ "census-almascots-com-w.html": {
+  "url": "https://almascots.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://almascots.com/sports/womens-soccer/schedule/2026",
+  "bytes": 722201
+ },
+ "census-hornets-kzoo-edu-w.html": {
+  "url": "https://hornets.kzoo.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://hornets.kzoo.edu/sports/womens-soccer/schedule",
+  "bytes": 661687
+ },
+ "census-belles-saintmarys-edu-w.html": {
+  "url": "https://belles.saintmarys.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://belles.saintmarys.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 514744
+ },
+ "census-athletics-hope-edu-w.html": {
+  "url": "https://athletics.hope.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.hope.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 905876
+ },
+ "census-trinethunder-com-w.html": {
+  "url": "https://trinethunder.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://trinethunder.com/sports/womens-soccer/schedule/2026",
+  "bytes": 588572
+ },
+ "census-www-miacathletics-com-w.html": {
+  "url": "https://www.miacathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 500,
+  "final": "https://www.miacathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 511
+ },
+ "census-www-gocobbers-com-m.html": {
+  "url": "https://www.gocobbers.com/sports/mens-soccer/schedule/2026",
+  "status": 202,
+  "final": "https://www.gocobbers.com/sports/mens-soccer/schedule/2026",
+  "bytes": 0
+ },
+ "census-athletics-carleton-edu-m.html": {
+  "url": "https://athletics.carleton.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.carleton.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 772691
+ },
+ "census-athletics-augsburg-edu-w.html": {
+  "url": "https://athletics.augsburg.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.augsburg.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 764473
+ },
+ "census-hamlineathletics-com-m.html": {
+  "url": "https://hamlineathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://hamlineathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 514421
+ },
+ "census-gogusties-com-m.html": {
+  "url": "https://gogusties.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gogusties.com/sports/mens-soccer/schedule/2026",
+  "bytes": 754724
+ },
+ "census-athletics-bethel-edu-w.html": {
+  "url": "https://athletics.bethel.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.bethel.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 633345
+ },
+ "census-gojohnnies-com-m.html": {
+  "url": "https://gojohnnies.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gojohnnies.com/sports/mens-soccer/schedule/2026",
+  "bytes": 716207
+ },
+ "census-athletics-macalester-edu-m.html": {
+  "url": "https://athletics.macalester.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.macalester.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 504544
+ },
+ "census-www-saintmaryssports-com-m.html": {
+  "url": "https://www.saintmaryssports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://saintmaryssports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 651719
+ },
+ "census-gobennies-com-m.html": {
+  "url": "https://gobennies.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gobennies.com/sports/mens-soccer/schedule",
+  "bytes": 485496
+ },
+ "census-athletics-stolaf-edu-m.html": {
+  "url": "https://athletics.stolaf.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.stolaf.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 1216250
+ },
+ "census-www-stkatesathletics-com-m.html": {
+  "url": "https://www.stkatesathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://stkatesathletics.com/index.aspx",
+  "bytes": 717392
+ },
+ "census-www-gocobbers-com-w.html": {
+  "url": "https://www.gocobbers.com/sports/womens-soccer/schedule/2026",
+  "status": 202,
+  "final": "https://www.gocobbers.com/sports/womens-soccer/schedule/2026",
+  "bytes": 0
+ },
+ "census-athletics-carleton-edu-w.html": {
+  "url": "https://athletics.carleton.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.carleton.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 784612
+ },
+ "census-csssaints-com-m.html": {
+  "url": "https://csssaints.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://csssaints.com/sports/mens-soccer/schedule/2026",
+  "bytes": 635919
+ },
+ "census-hamlineathletics-com-w.html": {
+  "url": "https://hamlineathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://hamlineathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 536657
+ },
+ "census-gogusties-com-w.html": {
+  "url": "https://gogusties.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gogusties.com/sports/womens-soccer/schedule/2026",
+  "bytes": 741872
+ },
+ "census-beloitcollegeathletics-com-m.html": {
+  "url": "https://beloitcollegeathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://beloitcollegeathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 771094
+ },
+ "census-athletics-macalester-edu-w.html": {
+  "url": "https://athletics.macalester.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.macalester.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 516703
+ },
+ "census-gojohnnies-com-w.html": {
+  "url": "https://gojohnnies.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gojohnnies.com/index.aspx",
+  "bytes": 604490
+ },
+ "census-www-saintmaryssports-com-w.html": {
+  "url": "https://www.saintmaryssports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://saintmaryssports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 621277
+ },
+ "census-www-stkatesathletics-com-w.html": {
+  "url": "https://www.stkatesathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://stkatesathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 611287
+ },
+ "census-gobennies-com-w.html": {
+  "url": "https://gobennies.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gobennies.com/sports/womens-soccer/schedule/2026",
+  "bytes": 685649
+ },
+ "census-athletics-stolaf-edu-w.html": {
+  "url": "https://athletics.stolaf.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.stolaf.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 1165441
+ },
+ "census-cornellrams-com-m.html": {
+  "url": "https://cornellrams.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://cornellrams.com/sports/mens-soccer/schedule/2026",
+  "bytes": 569864
+ },
+ "census-csssaints-com-w.html": {
+  "url": "https://csssaints.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://csssaints.com/sports/womens-soccer/schedule/2026",
+  "bytes": 629563
+ },
+ "census-pioneers-grinnell-edu-m.html": {
+  "url": "https://pioneers.grinnell.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://pioneers.grinnell.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 551217
+ },
+ "census-www-illinoiscollegeathletics-com-m.html": {
+  "url": "https://www.illinoiscollegeathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://illinoiscollegeathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 624031
+ },
+ "census-prairiefire-knox-edu-m.html": {
+  "url": "https://prairiefire.knox.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://prairiefire.knox.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 558723
+ },
+ "census-goforesters-com-m.html": {
+  "url": "https://goforesters.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://goforesters.com/sports/mens-soccer/schedule/2026",
+  "bytes": 739152
+ },
+ "census-beloitcollegeathletics-com-w.html": {
+  "url": "https://beloitcollegeathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://beloitcollegeathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 684074
+ },
+ "census-vikings-lawrence-edu-m.html": {
+  "url": "https://vikings.lawrence.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://vikings.lawrence.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 456801
+ },
+ "census-luthernorse-com-m.html": {
+  "url": "https://luthernorse.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://luthernorse.com/sports/mens-soccer/schedule/2026",
+  "bytes": 654119
+ },
+ "census-monmouthscots-com-m.html": {
+  "url": "https://monmouthscots.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://monmouthscots.com/sports/mens-soccer/schedule/2026",
+  "bytes": 549985
+ },
+ "census-athletics-aurora-edu-m.html": {
+  "url": "https://athletics.aurora.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.aurora.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 696056
+ },
+ "census-riponredhawks-com-m.html": {
+  "url": "https://riponredhawks.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://riponredhawks.com/sports/mens-soccer/schedule/2026",
+  "bytes": 482125
+ },
+ "census-cornellrams-com-w.html": {
+  "url": "https://cornellrams.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://cornellrams.com/sports/womens-soccer/schedule/2026",
+  "bytes": 567798
+ },
+ "census-pioneers-grinnell-edu-w.html": {
+  "url": "https://pioneers.grinnell.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://pioneers.grinnell.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 529937
+ },
+ "census-www-illinoiscollegeathletics-com-w.html": {
+  "url": "https://www.illinoiscollegeathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://illinoiscollegeathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 651096
+ },
+ "census-www-benueagles-com-m.html": {
+  "url": "https://www.benueagles.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://benueagles.com/sports/mens-soccer/schedule/2026",
+  "bytes": 664140
+ },
+ "census-goforesters-com-w.html": {
+  "url": "https://goforesters.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://goforesters.com/sports/womens-soccer/schedule/2026",
+  "bytes": 737026
+ },
+ "census-www-cucougars-com-m.html": {
+  "url": "https://www.cucougars.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.cucougars.com/sports/mens-soccer/schedule/2026",
+  "bytes": 623850
+ },
+ "census-prairiefire-knox-edu-w.html": {
+  "url": "https://prairiefire.knox.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://prairiefire.knox.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 569584
+ },
+ "census-vikings-lawrence-edu-w.html": {
+  "url": "https://vikings.lawrence.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://vikings.lawrence.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 507722
+ },
+ "census-luthernorse-com-w.html": {
+  "url": "https://luthernorse.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://luthernorse.com/sports/womens-soccer/schedule/2026",
+  "bytes": 638163
+ },
+ "census-monmouthscots-com-w.html": {
+  "url": "https://monmouthscots.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://monmouthscots.com/sports/womens-soccer/schedule/2026",
+  "bytes": 537520
+ },
+ "census-riponredhawks-com-w.html": {
+  "url": "https://riponredhawks.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://riponredhawks.com/sports/womens-soccer/schedule/2026",
+  "bytes": 489935
+ },
+ "census-athletics-aurora-edu-w.html": {
+  "url": "https://athletics.aurora.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.aurora.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 673431
+ },
+ "census-cuwfalcons-com-m.html": {
+  "url": "https://cuwfalcons.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://cuwfalcons.com/sports/mens-soccer/schedule/2026",
+  "bytes": 662880
+ },
+ "census-www-dustars-com-m.html": {
+  "url": "https://www.dustars.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://dustars.com/sports/mens-soccer/schedule/2026",
+  "bytes": 431792
+ },
+ "census-www-cucougars-com-w.html": {
+  "url": "https://www.cucougars.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.cucougars.com/sports/womens-soccer/schedule/2026",
+  "bytes": 635297
+ },
+ "census-www-illinoistechathletics-com-m.html": {
+  "url": "https://www.illinoistechathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://illinoistechathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 470095
+ },
+ "census-sabreathletics-com-m.html": {
+  "url": "https://sabreathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://sabreathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 678252
+ },
+ "census-www-edgewoodcollegeeagles-com-m.html": {
+  "url": "https://www.edgewoodcollegeeagles.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://edgewoodeagles.com/sports/mens-soccer/schedule/2026",
+  "bytes": 622647
+ },
+ "census-lakelandmuskies-com-m.html": {
+  "url": "https://lakelandmuskies.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://lakelandmuskies.com/sports/mens-soccer/schedule/2026",
+  "bytes": 481304
+ },
+ "census-www-benueagles-com-w.html": {
+  "url": "https://www.benueagles.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://benueagles.com/sports/womens-soccer/schedule/2026",
+  "bytes": 655920
+ },
+ "census-www-msoeraiders-com-m.html": {
+  "url": "https://www.msoeraiders.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://msoeraiders.com/sports/mens-soccer/schedule/2026",
+  "bytes": 632896
+ },
+ "census-www-rockfordregents-com-m.html": {
+  "url": "https://www.rockfordregents.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://rockfordregents.com/sports/mens-soccer/schedule/2026",
+  "bytes": 600584
+ },
+ "census-athletics-snc-edu-m.html": {
+  "url": "https://athletics.snc.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.snc.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 580896
+ },
+ "census-wlcsports-com-m.html": {
+  "url": "https://wlcsports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://wlcsports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 580979
+ },
+ "census-cuwfalcons-com-w.html": {
+  "url": "https://cuwfalcons.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://cuwfalcons.com/sports/womens-soccer/schedule/2026",
+  "bytes": 690158
+ },
+ "census-www-dustars-com-w.html": {
+  "url": "https://www.dustars.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://dustars.com/sports/womens-soccer/schedule/2026",
+  "bytes": 455602
+ },
+ "census-www-illinoistechathletics-com-w.html": {
+  "url": "https://www.illinoistechathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://illinoistechathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 511728
+ },
+ "census-lakelandmuskies-com-w.html": {
+  "url": "https://lakelandmuskies.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://lakelandmuskies.com/sports/womens-soccer/schedule/2026",
+  "bytes": 445436
+ },
+ "census-www-edgewoodcollegeeagles-com-w.html": {
+  "url": "https://www.edgewoodcollegeeagles.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://edgewoodeagles.com/sports/womens-soccer/schedule/2026",
+  "bytes": 617909
+ },
+ "census-www-msoeraiders-com-w.html": {
+  "url": "https://www.msoeraiders.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://msoeraiders.com/sports/womens-soccer/schedule/2026",
+  "bytes": 637740
+ },
+ "census-www-northcoast-org-m.html": {
+  "url": "https://www.northcoast.org/sports/mens-soccer/schedule/2026",
+  "status": 500,
+  "final": "https://www.northcoast.org/sports/mens-soccer/schedule/2026",
+  "bytes": 511
+ },
+ "census-www-rockfordregents-com-w.html": {
+  "url": "https://www.rockfordregents.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://rockfordregents.com/sports/womens-soccer/schedule/2026",
+  "bytes": 588417
+ },
+ "census-denisonbigred-com-m.html": {
+  "url": "https://denisonbigred.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://bigred.denison.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 630110
+ },
+ "census-sabreathletics-com-w.html": {
+  "url": "https://sabreathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://sabreathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 703063
+ },
+ "census-athletics-snc-edu-w.html": {
+  "url": "https://athletics.snc.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.snc.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 590448
+ },
+ "census-wlcsports-com-w.html": {
+  "url": "https://wlcsports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://wlcsports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 591198
+ },
+ "census-depauwtigers-com-m.html": {
+  "url": "https://depauwtigers.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://depauwtigers.com/sports/mens-soccer/schedule/2026",
+  "bytes": 671903
+ },
+ "census-jcusports-com-m.html": {
+  "url": "https://jcusports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://jcusports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 632585
+ },
+ "census-www-goyeo-com-m.html": {
+  "url": "https://www.goyeo.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://goyeo.com/sports/mens-soccer/schedule/2026",
+  "bytes": 773299
+ },
+ "census-www-wittenbergtigers-com-m.html": {
+  "url": "https://www.wittenbergtigers.com/sports/mens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://www.wittenbergtigers.com/sports/mens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-denisonbigred-com-w.html": {
+  "url": "https://denisonbigred.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://bigred.denison.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 594959
+ },
+ "census-www-northcoast-org-w.html": {
+  "url": "https://www.northcoast.org/sports/womens-soccer/schedule/2026",
+  "status": 500,
+  "final": "https://www.northcoast.org/sports/womens-soccer/schedule/2026",
+  "bytes": 511
+ },
+ "census-www-battlingbishops-com-m.html": {
+  "url": "https://www.battlingbishops.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://battlingbishops.com/sports/mens-soccer/schedule/2026",
+  "bytes": 629409
+ },
+ "census-sports-wabash-edu-m.html": {
+  "url": "https://sports.wabash.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://sports.wabash.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 584542
+ },
+ "census-athletics-amherst-edu-m.html": {
+  "url": "https://athletics.amherst.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.amherst.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 833789
+ },
+ "census-www-woosterathletics-com-m.html": {
+  "url": "https://www.woosterathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://woosterathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 841261
+ },
+ "census-gobatesbobcats-com-m.html": {
+  "url": "https://gobatesbobcats.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gobatesbobcats.com/sports/mens-soccer/schedule/2026",
+  "bytes": 706026
+ },
+ "census-athletics-kenyon-edu-m.html": {
+  "url": "https://athletics.kenyon.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.kenyon.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 644077
+ },
+ "census-depauwtigers-com-w.html": {
+  "url": "https://depauwtigers.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://depauwtigers.com/sports/womens-soccer/schedule/2026",
+  "bytes": 646842
+ },
+ "census-www-goyeo-com-w.html": {
+  "url": "https://www.goyeo.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://goyeo.com/sports/womens-soccer/schedule/2026",
+  "bytes": 751405
+ },
+ "census-www-wittenbergtigers-com-w.html": {
+  "url": "https://www.wittenbergtigers.com/sports/womens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://www.wittenbergtigers.com/sports/womens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-jcusports-com-w.html": {
+  "url": "https://jcusports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://jcusports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 632312
+ },
+ "census-athletics-bowdoin-edu-m.html": {
+  "url": "https://athletics.bowdoin.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.bowdoin.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 564214
+ },
+ "census-gocolbymules-com-m.html": {
+  "url": "https://gocolbymules.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://colbyathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 616062
+ },
+ "census-sports-wabash-edu-w.html": {
+  "url": "https://sports.wabash.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://sports.wabash.edu/index.aspx",
+  "bytes": 425476
+ },
+ "census-athletics-amherst-edu-w.html": {
+  "url": "https://athletics.amherst.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.amherst.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 752779
+ },
+ "census-www-battlingbishops-com-w.html": {
+  "url": "https://www.battlingbishops.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://battlingbishops.com/sports/womens-soccer/schedule/2026",
+  "bytes": 627426
+ },
+ "census-www-woosterathletics-com-w.html": {
+  "url": "https://www.woosterathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://woosterathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 853123
+ },
+ "census-gobatesbobcats-com-w.html": {
+  "url": "https://gobatesbobcats.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gobatesbobcats.com/sports/womens-soccer/schedule/2026",
+  "bytes": 720802
+ },
+ "census-athletics-kenyon-edu-w.html": {
+  "url": "https://athletics.kenyon.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.kenyon.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 616898
+ },
+ "census-camelathletics-com-m.html": {
+  "url": "https://camelathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://camelathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 636211
+ },
+ "census-athletics-hamilton-edu-m.html": {
+  "url": "https://athletics.hamilton.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.hamilton.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 588228
+ },
+ "census-bantamsports-com-m.html": {
+  "url": "https://bantamsports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://bantamsports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 489675
+ },
+ "census-athletics-middlebury-edu-m.html": {
+  "url": "https://athletics.middlebury.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.middlebury.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 590411
+ },
+ "census-gocolbymules-com-w.html": {
+  "url": "https://gocolbymules.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://colbyathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 651377
+ },
+ "census-athletics-bowdoin-edu-w.html": {
+  "url": "https://athletics.bowdoin.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.bowdoin.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 520407
+ },
+ "census-athletics-wesleyan-edu-m.html": {
+  "url": "https://athletics.wesleyan.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.wesleyan.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 838233
+ },
+ "census-ephsports-williams-edu-m.html": {
+  "url": "https://ephsports.williams.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://ephsports.williams.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 569402
+ },
+ "census-gotuftsjumbos-com-m.html": {
+  "url": "https://gotuftsjumbos.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gotuftsjumbos.com/sports/mens-soccer/schedule/2026",
+  "bytes": 569785
+ },
+ "census-www-babsonathletics-com-m.html": {
+  "url": "https://www.babsonathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://babsonathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 643279
+ },
+ "census-www-clarkathletics-com-m.html": {
+  "url": "https://www.clarkathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://clarkathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 556488
+ },
+ "census-emersonlions-com-m.html": {
+  "url": "https://emersonlions.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://emersonlions.com/sports/mens-soccer/schedule/2026",
+  "bytes": 547060
+ },
+ "census-camelathletics-com-w.html": {
+  "url": "https://camelathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://camelathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 628100
+ },
+ "census-bantamsports-com-w.html": {
+  "url": "https://bantamsports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://bantamsports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 499204
+ },
+ "census-athletics-hamilton-edu-w.html": {
+  "url": "https://athletics.hamilton.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.hamilton.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 588465
+ },
+ "census-athletics-middlebury-edu-w.html": {
+  "url": "https://athletics.middlebury.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.middlebury.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 613547
+ },
+ "census-athletics-mtholyoke-edu-m.html": {
+  "url": "https://athletics.mtholyoke.edu/sports/mens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://athletics.mtholyoke.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-athletics-wesleyan-edu-w.html": {
+  "url": "https://athletics.wesleyan.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.wesleyan.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 805412
+ },
+ "census-ephsports-williams-edu-w.html": {
+  "url": "https://ephsports.williams.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://ephsports.williams.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 559985
+ },
+ "census-www-mitathletics-com-m.html": {
+  "url": "https://www.mitathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://mitathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 991602
+ },
+ "census-gotuftsjumbos-com-w.html": {
+  "url": "https://gotuftsjumbos.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gotuftsjumbos.com/sports/womens-soccer/schedule/2026",
+  "bytes": 542039
+ },
+ "census-www-babsonathletics-com-w.html": {
+  "url": "https://www.babsonathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://babsonathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 646049
+ },
+ "census-emersonlions-com-w.html": {
+  "url": "https://emersonlions.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://emersonlions.com/sports/womens-soccer/schedule/2026",
+  "bytes": 536924
+ },
+ "census-www-clarkathletics-com-w.html": {
+  "url": "https://www.clarkathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://clarkathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 584395
+ },
+ "census-www-salveathletics-com-m.html": {
+  "url": "https://www.salveathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://salveathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 609149
+ },
+ "census-springfieldcollegepride-com-m.html": {
+  "url": "https://springfieldcollegepride.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://springfieldcollegepride.com/sports/mens-soccer/schedule/2026",
+  "bytes": 638005
+ },
+ "census-www-smithpioneers-com-m.html": {
+  "url": "https://www.smithpioneers.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gosmithbears.com/index.aspx",
+  "bytes": 691229
+ },
+ "census-athletics-mtholyoke-edu-w.html": {
+  "url": "https://athletics.mtholyoke.edu/sports/womens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://athletics.mtholyoke.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-www-uscgasports-com-m.html": {
+  "url": "https://www.uscgasports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://coastguardathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 602321
+ },
+ "census-wheatoncollegelyons-com-m.html": {
+  "url": "https://wheatoncollegelyons.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://wheatoncollegelyons.com/sports/mens-soccer/schedule/2026",
+  "bytes": 757747
+ },
+ "census-athletics-wpi-edu-m.html": {
+  "url": "https://athletics.wpi.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.wpi.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 647041
+ },
+ "census-www-wellesleyblue-com-m.html": {
+  "url": "https://www.wellesleyblue.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://wellesleyblue.com/index.aspx",
+  "bytes": 431727
+ },
+ "census-www-mitathletics-com-w.html": {
+  "url": "https://www.mitathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://mitathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 1043836
+ },
+ "census-www-montclairathletics-com-m.html": {
+  "url": "https://www.montclairathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://montclairathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 814193
+ },
+ "census-nphawks-com-m.html": {
+  "url": "https://nphawks.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://nphawks.com/sports/mens-soccer/schedule/2026",
+  "bytes": 626495
+ },
+ "census-keanathletics-com-m.html": {
+  "url": "https://keanathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://keanathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 563306
+ },
+ "census-www-salveathletics-com-w.html": {
+  "url": "https://www.salveathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://salveathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 656700
+ },
+ "census-springfieldcollegepride-com-w.html": {
+  "url": "https://springfieldcollegepride.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://springfieldcollegepride.com/sports/womens-soccer/schedule/2026",
+  "bytes": 651451
+ },
+ "census-www-smithpioneers-com-w.html": {
+  "url": "https://www.smithpioneers.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gosmithbears.com/sports/womens-soccer/schedule/2026",
+  "bytes": 492420
+ },
+ "census-www-ramapoathletics-com-m.html": {
+  "url": "https://www.ramapoathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://ramapoathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 640719
+ },
+ "census-www-uscgasports-com-w.html": {
+  "url": "https://www.uscgasports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://coastguardathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 586698
+ },
+ "census-wheatoncollegelyons-com-w.html": {
+  "url": "https://wheatoncollegelyons.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://wheatoncollegelyons.com/sports/womens-soccer/schedule/2026",
+  "bytes": 738252
+ },
+ "census-athletics-wpi-edu-w.html": {
+  "url": "https://athletics.wpi.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.wpi.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 676783
+ },
+ "census-www-wellesleyblue-com-w.html": {
+  "url": "https://www.wellesleyblue.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://wellesleyblue.com/sports/womens-soccer/schedule/2026",
+  "bytes": 529402
+ },
+ "census-www-rowanathletics-com-m.html": {
+  "url": "https://www.rowanathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.rowanathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 606658
+ },
+ "census-www-montclairathletics-com-w.html": {
+  "url": "https://www.montclairathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://montclairathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 746290
+ },
+ "census-nphawks-com-w.html": {
+  "url": "https://nphawks.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://nphawks.com/sports/womens-soccer/schedule/2026",
+  "bytes": 599226
+ },
+ "census-keanathletics-com-w.html": {
+  "url": "https://keanathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://keanathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 575638
+ },
+ "census-www-scarletraptors-com-m.html": {
+  "url": "https://www.scarletraptors.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://scarletraptors.com/sports/mens-soccer/schedule/2026",
+  "bytes": 476092
+ },
+ "census-www-rutgersnewarkathletics-com-m.html": {
+  "url": "https://www.rutgersnewarkathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://rutgersnewarkathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 830567
+ },
+ "census-www-stocktonathletics-com-m.html": {
+  "url": "https://www.stocktonathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://stocktonathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 584566
+ },
+ "census-www-ramapoathletics-com-w.html": {
+  "url": "https://www.ramapoathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://ramapoathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 610748
+ },
+ "census-www-wpupioneers-com-m.html": {
+  "url": "https://www.wpupioneers.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.wpupioneers.com/sports/mens-soccer/schedule/2026",
+  "bytes": 441775
+ },
+ "census-www-tcnjathletics-com-m.html": {
+  "url": "https://www.tcnjathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://tcnjathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 530687
+ },
+ "census-golcathletics-com-m.html": {
+  "url": "https://golcathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://golcathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 543178
+ },
+ "census-www-rowanathletics-com-w.html": {
+  "url": "https://www.rowanathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.rowanathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 563038
+ },
+ "census-athletics-georgefox-edu-m.html": {
+  "url": "https://athletics.georgefox.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.georgefox.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 518525
+ },
+ "census-golutes-com-m.html": {
+  "url": "https://golutes.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://golutes.com/sports/mens-soccer/schedule/2026",
+  "bytes": 644800
+ },
+ "census-www-goboxers-com-m.html": {
+  "url": "https://www.goboxers.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://goboxers.com/sports/mens-soccer/schedule/2026",
+  "bytes": 595303
+ },
+ "census-golinfieldwildcats-com-m.html": {
+  "url": "https://golinfieldwildcats.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://golinfieldwildcats.com/sports/mens-soccer/schedule/2026",
+  "bytes": 644286
+ },
+ "census-www-scarletraptors-com-w.html": {
+  "url": "https://www.scarletraptors.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://scarletraptors.com/sports/womens-soccer/schedule/2026",
+  "bytes": 506641
+ },
+ "census-www-rutgersnewarkathletics-com-w.html": {
+  "url": "https://www.rutgersnewarkathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://rutgersnewarkathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 824293
+ },
+ "census-www-loggerathletics-com-m.html": {
+  "url": "https://www.loggerathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://loggerathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 447922
+ },
+ "census-www-tcnjathletics-com-w.html": {
+  "url": "https://www.tcnjathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://tcnjathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 547022
+ },
+ "census-www-wpupioneers-com-w.html": {
+  "url": "https://www.wpupioneers.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.wpupioneers.com/sports/womens-soccer/schedule/2026",
+  "bytes": 441031
+ },
+ "census-www-stocktonathletics-com-w.html": {
+  "url": "https://www.stocktonathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://stocktonathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 595892
+ },
+ "census-golcathletics-com-w.html": {
+  "url": "https://golcathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://golcathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 552645
+ },
+ "census-athletics-whitman-edu-m.html": {
+  "url": "https://athletics.whitman.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://whitmanblues.com/sports/mens-soccer/schedule/2026",
+  "bytes": 629256
+ },
+ "census-athletics-georgefox-edu-w.html": {
+  "url": "https://athletics.georgefox.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.georgefox.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 520978
+ },
+ "census-golutes-com-w.html": {
+  "url": "https://golutes.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://golutes.com/sports/womens-soccer/schedule/2026",
+  "bytes": 657156
+ },
+ "census-golinfieldwildcats-com-w.html": {
+  "url": "https://golinfieldwildcats.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://golinfieldwildcats.com/sports/womens-soccer/schedule/2026",
+  "bytes": 644901
+ },
+ "census-www-goboxers-com-w.html": {
+  "url": "https://www.goboxers.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://goboxers.com/sports/womens-soccer/schedule/2026",
+  "bytes": 608222
+ },
+ "census-www-whitworthpirates-com-m.html": {
+  "url": "https://www.whitworthpirates.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://whitworthpirates.com/sports/mens-soccer/schedule/2026",
+  "bytes": 785778
+ },
+ "census-wubearcats-com-m.html": {
+  "url": "https://wubearcats.com/sports/mens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://wubearcats.com/sports/mens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-www-loggerathletics-com-w.html": {
+  "url": "https://www.loggerathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://loggerathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 487868
+ },
+ "census-www-bergathletics-com-m.html": {
+  "url": "https://www.bergathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.bergathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 604604
+ },
+ "census-pioneers-marietta-edu-m.html": {
+  "url": "https://pioneers.marietta.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://pioneers.marietta.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 827005
+ },
+ "census-athletics-whitman-edu-w.html": {
+  "url": "https://athletics.whitman.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://whitmanblues.com/sports/womens-soccer/schedule/2026",
+  "bytes": 639468
+ },
+ "census-athletics-capital-edu-m.html": {
+  "url": "https://athletics.capital.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.capital.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 693948
+ },
+ "census-www-bwyellowjackets-com-m.html": {
+  "url": "https://www.bwyellowjackets.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://bwyellowjackets.com/sports/mens-soccer/schedule/2026",
+  "bytes": 640339
+ },
+ "census-athletics-mountunion-edu-m.html": {
+  "url": "https://athletics.mountunion.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.mountunion.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 630515
+ },
+ "census-fightingmuskies-com-m.html": {
+  "url": "https://fightingmuskies.com/sports/mens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://fightingmuskies.com/sports/mens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-www-onusports-com-m.html": {
+  "url": "https://www.onusports.com/sports/mens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://www.onusports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-wubearcats-com-w.html": {
+  "url": "https://wubearcats.com/sports/womens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://wubearcats.com/sports/womens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-www-otterbeincardinals-com-m.html": {
+  "url": "https://www.otterbeincardinals.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://otterbeincardinals.com/sports/mens-soccer/schedule/2026",
+  "bytes": 975240
+ },
+ "census-www-whitworthpirates-com-w.html": {
+  "url": "https://www.whitworthpirates.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://whitworthpirates.com/sports/womens-soccer/schedule/2026",
+  "bytes": 752240
+ },
+ "census-www-bergathletics-com-w.html": {
+  "url": "https://www.bergathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.bergathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 603555
+ },
+ "census-pioneers-marietta-edu-w.html": {
+  "url": "https://pioneers.marietta.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://pioneers.marietta.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 831604
+ },
+ "census-www-wilmingtonquakers-com-m.html": {
+  "url": "https://www.wilmingtonquakers.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://wilmingtonquakers.com/sports/mens-soccer/schedule/2026",
+  "bytes": 622350
+ },
+ "census-athletics-capital-edu-w.html": {
+  "url": "https://athletics.capital.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.capital.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 722061
+ },
+ "census-www-averettcougars-com-m.html": {
+  "url": "https://www.averettcougars.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://averettcougars.com/sports/mens-soccer/schedule/2026",
+  "bytes": 651537
+ },
+ "census-athletics-mountunion-edu-w.html": {
+  "url": "https://athletics.mountunion.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.mountunion.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 594800
+ },
+ "census-fightingmuskies-com-w.html": {
+  "url": "https://fightingmuskies.com/sports/womens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://fightingmuskies.com/sports/womens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-www-bwyellowjackets-com-w.html": {
+  "url": "https://www.bwyellowjackets.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://bwyellowjackets.com/sports/womens-soccer/schedule/2026",
+  "bytes": 629571
+ },
+ "census-www-onusports-com-w.html": {
+  "url": "https://www.onusports.com/sports/womens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://www.onusports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-www-otterbeincardinals-com-w.html": {
+  "url": "https://www.otterbeincardinals.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://otterbeincardinals.com/sports/womens-soccer/schedule/2026",
+  "bytes": 979490
+ },
+ "census-battenathletics-com-m.html": {
+  "url": "https://battenathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://battenathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 523779
+ },
+ "census-bridgewatereagles-com-m.html": {
+  "url": "https://bridgewatereagles.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://bridgewatereagles.com/sports/mens-soccer/schedule/2026",
+  "bytes": 510451
+ },
+ "census-guilfordquakers-com-m.html": {
+  "url": "https://guilfordquakers.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://guilfordquakers.com/sports/mens-soccer/schedule/2026",
+  "bytes": 1020638
+ },
+ "census-www-wilmingtonquakers-com-w.html": {
+  "url": "https://www.wilmingtonquakers.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://wilmingtonquakers.com/sports/womens-soccer/schedule/2026",
+  "bytes": 599115
+ },
+ "census-emuroyals-com-m.html": {
+  "url": "https://emuroyals.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://emuroyals.com/sports/mens-soccer/schedule/2026",
+  "bytes": 518698
+ },
+ "census-hscathletics-com-m.html": {
+  "url": "https://hscathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://hscathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 488355
+ },
+ "census-www-odaconline-com-m.html": {
+  "url": "https://www.odaconline.com/sports/mens-soccer/schedule/2026",
+  "status": 500,
+  "final": "https://www.odaconline.com/sports/mens-soccer/schedule/2026",
+  "bytes": 511
+ },
+ "census-www-averettcougars-com-w.html": {
+  "url": "https://www.averettcougars.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://averettcougars.com/sports/womens-soccer/schedule/2026",
+  "bytes": 639929
+ },
+ "census-hollinssports-com-m.html": {
+  "url": "https://hollinssports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://hollinssports.com/index.aspx",
+  "bytes": 395569
+ },
+ "census-www-lynchburgsports-com-m.html": {
+  "url": "https://www.lynchburgsports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://lynchburgsports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 687427
+ },
+ "census-www-randolphwildcats-com-m.html": {
+  "url": "https://www.randolphwildcats.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://randolphwildcats.com/sports/mens-soccer/schedule/2026",
+  "bytes": 511226
+ },
+ "census-rmcathletics-com-m.html": {
+  "url": "https://rmcathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://rmcathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 702037
+ },
+ "census-battenathletics-com-w.html": {
+  "url": "https://battenathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://battenathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 549463
+ },
+ "census-bridgewatereagles-com-w.html": {
+  "url": "https://bridgewatereagles.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://bridgewatereagles.com/sports/womens-soccer/schedule/2026",
+  "bytes": 510811
+ },
+ "census-guilfordquakers-com-w.html": {
+  "url": "https://guilfordquakers.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://guilfordquakers.com/sports/womens-soccer/schedule/2026",
+  "bytes": 1000742
+ },
+ "census-roanokemaroons-com-m.html": {
+  "url": "https://roanokemaroons.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://roanokemaroons.com/sports/mens-soccer/schedule/2026",
+  "bytes": 725917
+ },
+ "census-emuroyals-com-w.html": {
+  "url": "https://emuroyals.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://emuroyals.com/sports/womens-soccer/schedule/2026",
+  "bytes": 518729
+ },
+ "census-hscathletics-com-w.html": {
+  "url": "https://hscathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://hscathletics.com/splash.aspx?id=splash_7",
+  "bytes": 28468
+ },
+ "census-www-odaconline-com-w.html": {
+  "url": "https://www.odaconline.com/sports/womens-soccer/schedule/2026",
+  "status": 500,
+  "final": "https://www.odaconline.com/sports/womens-soccer/schedule/2026",
+  "bytes": 511
+ },
+ "census-hollinssports-com-w.html": {
+  "url": "https://hollinssports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://hollinssports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 410939
+ },
+ "census-www-suhornets-com-m.html": {
+  "url": "https://www.suhornets.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://suhornets.com/sports/mens-soccer/schedule/2026",
+  "bytes": 703884
+ },
+ "census-www-randolphwildcats-com-w.html": {
+  "url": "https://www.randolphwildcats.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://randolphwildcats.com/sports/womens-soccer/schedule/2026",
+  "bytes": 521833
+ },
+ "census-www-lynchburgsports-com-w.html": {
+  "url": "https://www.lynchburgsports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://lynchburgsports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 689065
+ },
+ "census-rmcathletics-com-w.html": {
+  "url": "https://rmcathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://rmcathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 697008
+ },
+ "census-roanokemaroons-com-w.html": {
+  "url": "https://roanokemaroons.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://roanokemaroons.com/sports/womens-soccer/schedule/2026",
+  "bytes": 751780
+ },
+ "census-bethanybison-com-m.html": {
+  "url": "https://bethanybison.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://bethanybison.com/sports/mens-soccer/schedule/2026",
+  "bytes": 580693
+ },
+ "census-www-generalssports-com-m.html": {
+  "url": "https://www.generalssports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://generalssports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 699514
+ },
+ "census-vixenathletics-com-m.html": {
+  "url": "https://vixenathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://vixenathletics.com/index.aspx",
+  "bytes": 1115387
+ },
+ "census-gochathamcougars-com-m.html": {
+  "url": "https://gochathamcougars.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gochathamcougars.com/sports/mens-soccer/schedule/2026",
+  "bytes": 653556
+ },
+ "census-franciscanathletics-com-m.html": {
+  "url": "https://franciscanathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://franciscanathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 467725
+ },
+ "census-alleghenygators-com-m.html": {
+  "url": "https://alleghenygators.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://alleghenygators.com/sports/mens-soccer/schedule/2026",
+  "bytes": 533574
+ },
+ "census-athletics-geneva-edu-m.html": {
+  "url": "https://athletics.geneva.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.geneva.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 521337
+ },
+ "census-www-suhornets-com-w.html": {
+  "url": "https://www.suhornets.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://suhornets.com/sports/womens-soccer/schedule/2026",
+  "bytes": 698065
+ },
+ "census-athletics-gcc-edu-m.html": {
+  "url": "https://athletics.gcc.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.gcc.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 571167
+ },
+ "census-hiramterriers-com-m.html": {
+  "url": "https://hiramterriers.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://hiramterriers.com/sports/mens-soccer/schedule/2026",
+  "bytes": 523912
+ },
+ "census-www-sfuathletics-com-m.html": {
+  "url": "https://www.sfuathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://sfuathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 616988
+ },
+ "census-vixenathletics-com-w.html": {
+  "url": "https://vixenathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://vixenathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 494870
+ },
+ "census-bethanybison-com-w.html": {
+  "url": "https://bethanybison.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://bethanybison.com/sports/womens-soccer/schedule/2026",
+  "bytes": 603570
+ },
+ "census-athletics-stvincent-edu-m.html": {
+  "url": "https://athletics.stvincent.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.stvincent.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 623277
+ },
+ "census-www-generalssports-com-w.html": {
+  "url": "https://www.generalssports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://generalssports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 709380
+ },
+ "census-franciscanathletics-com-w.html": {
+  "url": "https://franciscanathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://franciscanathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 465176
+ },
+ "census-gochathamcougars-com-w.html": {
+  "url": "https://gochathamcougars.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gochathamcougars.com/sports/womens-soccer/schedule/2026",
+  "bytes": 644429
+ },
+ "census-athletics-geneva-edu-w.html": {
+  "url": "https://athletics.geneva.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.geneva.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 517113
+ },
+ "census-alleghenygators-com-w.html": {
+  "url": "https://alleghenygators.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://alleghenygators.com/sports/womens-soccer/schedule/2026",
+  "bytes": 522494
+ },
+ "census-athletics-gcc-edu-w.html": {
+  "url": "https://athletics.gcc.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.gcc.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 590158
+ },
+ "census-hiramterriers-com-w.html": {
+  "url": "https://hiramterriers.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://hiramterriers.com/sports/womens-soccer/schedule/2026",
+  "bytes": 520406
+ },
+ "census-www-thielathletics-com-m.html": {
+  "url": "https://www.thielathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://thielathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 753155
+ },
+ "census-www-sfuathletics-com-w.html": {
+  "url": "https://www.sfuathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://sfuathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 657752
+ },
+ "census-gopresidents-com-m.html": {
+  "url": "https://gopresidents.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gopresidents.com/sports/mens-soccer/schedule/2026",
+  "bytes": 490923
+ },
+ "census-athletics-stvincent-edu-w.html": {
+  "url": "https://athletics.stvincent.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.stvincent.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 674197
+ },
+ "census-athletics-apu-edu-m.html": {
+  "url": "https://athletics.apu.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.apu.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 756956
+ },
+ "census-athletics-westminster-edu-m.html": {
+  "url": "https://athletics.westminster.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.westminster.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 856412
+ },
+ "census-www-waynesburgsports-com-m.html": {
+  "url": "https://www.waynesburgsports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://waynesburgsports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 600912
+ },
+ "census-athletics-chapman-edu-m.html": {
+  "url": "https://athletics.chapman.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.chapman.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 556054
+ },
+ "census-www-clusports-com-m.html": {
+  "url": "https://www.clusports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://clusports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 746815
+ },
+ "census-gocaltech-com-m.html": {
+  "url": "https://gocaltech.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gocaltech.com/sports/mens-soccer/schedule/2026",
+  "bytes": 440068
+ },
+ "census-oxyathletics-com-m.html": {
+  "url": "https://oxyathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://oxyathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 862396
+ },
+ "census-www-cmsathletics-org-m.html": {
+  "url": "https://www.cmsathletics.org/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://cmsathletics.org/sports/mens-soccer/schedule/2026",
+  "bytes": 741346
+ },
+ "census-www-thielathletics-com-w.html": {
+  "url": "https://www.thielathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://thielathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 751006
+ },
+ "census-sagehens-com-m.html": {
+  "url": "https://sagehens.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://sagehens.com/sports/mens-soccer/schedule/2026",
+  "bytes": 558043
+ },
+ "census-gopresidents-com-w.html": {
+  "url": "https://gopresidents.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gopresidents.com/sports/womens-soccer/schedule/2026",
+  "bytes": 510302
+ },
+ "census-athletics-apu-edu-w.html": {
+  "url": "https://athletics.apu.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.apu.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 715537
+ },
+ "census-www-leopardathletics-com-m.html": {
+  "url": "https://www.leopardathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://leopardathletics.com/sports/mens-soccer/schedule",
+  "bytes": 672718
+ },
+ "census-athletics-westminster-edu-w.html": {
+  "url": "https://athletics.westminster.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.westminster.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 861271
+ },
+ "census-www-waynesburgsports-com-w.html": {
+  "url": "https://www.waynesburgsports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://waynesburgsports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 601956
+ },
+ "census-gocaltech-com-w.html": {
+  "url": "https://gocaltech.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gocaltech.com/sports/womens-soccer/schedule/2026",
+  "bytes": 417434
+ },
+ "census-athletics-chapman-edu-w.html": {
+  "url": "https://athletics.chapman.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.chapman.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 581469
+ },
+ "census-www-clusports-com-w.html": {
+  "url": "https://www.clusports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://clusports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 795576
+ },
+ "census-oxyathletics-com-w.html": {
+  "url": "https://oxyathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://oxyathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 865307
+ },
+ "census-goredlands-com-m.html": {
+  "url": "https://goredlands.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://goredlands.com/sports/mens-soccer/schedule/2026",
+  "bytes": 622664
+ },
+ "census-sagehens-com-w.html": {
+  "url": "https://sagehens.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://sagehens.com/sports/womens-soccer/schedule/2026",
+  "bytes": 552702
+ },
+ "census-www-wcpoets-com-m.html": {
+  "url": "https://www.wcpoets.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://wcpoets.com/sports/mens-soccer/schedule/2026",
+  "bytes": 525405
+ },
+ "census-www-cmsathletics-org-w.html": {
+  "url": "https://www.cmsathletics.org/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://cmsathletics.org/sports/womens-soccer/schedule/2026",
+  "bytes": 749476
+ },
+ "census-www-farmingdalesports-com-m.html": {
+  "url": "https://www.farmingdalesports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://farmingdalesports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 542762
+ },
+ "census-www-leopardathletics-com-w.html": {
+  "url": "https://www.leopardathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://leopardathletics.com/sports/womens-soccer/schedule",
+  "bytes": 637415
+ },
+ "census-www-govaliants-com-m.html": {
+  "url": "https://www.govaliants.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://govaliants.com/sports/mens-soccer/schedule/2026",
+  "bytes": 663067
+ },
+ "census-www-usmmasports-com-m.html": {
+  "url": "https://www.usmmasports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.usmmasports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 544404
+ },
+ "census-www-maritimeathletics-com-m.html": {
+  "url": "https://www.maritimeathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://maritimeathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 515327
+ },
+ "census-goredlands-com-w.html": {
+  "url": "https://goredlands.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://goredlands.com/sports/womens-soccer/schedule/2026",
+  "bytes": 621823
+ },
+ "census-msmcknights-com-m.html": {
+  "url": "https://msmcknights.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://msmcknights.com/sports/mens-soccer/schedule/2026",
+  "bytes": 524142
+ },
+ "census-cmsvathletics-com-m.html": {
+  "url": "https://cmsvathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://umsvathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 615205
+ },
+ "census-www-oldwestburypanthers-com-m.html": {
+  "url": "https://www.oldwestburypanthers.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.oldwestburypanthers.com/sports/mens-soccer/schedule/2026",
+  "bytes": 456653
+ },
+ "census-www-wcpoets-com-w.html": {
+  "url": "https://www.wcpoets.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://wcpoets.com/sports/womens-soccer/schedule/2026",
+  "bytes": 504966
+ },
+ "census-www-purchasecollegeathletics-com-m.html": {
+  "url": "https://www.purchasecollegeathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.purchasecollegeathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 460530
+ },
+ "census-www-farmingdalesports-com-w.html": {
+  "url": "https://www.farmingdalesports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://farmingdalesports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 562398
+ },
+ "census-www-govaliants-com-w.html": {
+  "url": "https://www.govaliants.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://govaliants.com/sports/womens-soccer/schedule/2026",
+  "bytes": 617255
+ },
+ "census-www-gogryphons-com-m.html": {
+  "url": "https://www.gogryphons.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gogryphons.com/sports/mens-soccer/schedule/2026",
+  "bytes": 645171
+ },
+ "census-www-usmmasports-com-w.html": {
+  "url": "https://www.usmmasports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.usmmasports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 505419
+ },
+ "census-sjbkathletics-com-m.html": {
+  "url": "https://sjbkathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://sjbkathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 863078
+ },
+ "census-www-maritimeathletics-com-w.html": {
+  "url": "https://www.maritimeathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://maritimeathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 513766
+ },
+ "census-sjliathletics-com-m.html": {
+  "url": "https://sjliathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://sjliathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 518855
+ },
+ "census-cmsvathletics-com-w.html": {
+  "url": "https://cmsvathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://umsvathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 642085
+ },
+ "census-www-oldwestburypanthers-com-w.html": {
+  "url": "https://www.oldwestburypanthers.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.oldwestburypanthers.com/sports/womens-soccer/schedule/2026",
+  "bytes": 464673
+ },
+ "census-msmcknights-com-w.html": {
+  "url": "https://msmcknights.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://msmcknights.com/sports/womens-soccer/schedule/2026",
+  "bytes": 530993
+ },
+ "census-www-purchasecollegeathletics-com-w.html": {
+  "url": "https://www.purchasecollegeathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.purchasecollegeathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 428266
+ },
+ "census-www-blackburnbeavers-com-m.html": {
+  "url": "https://www.blackburnbeavers.com/sports/mens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://www.blackburnbeavers.com/sports/mens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-eurekareddevils-com-m.html": {
+  "url": "https://eurekareddevils.com/sports/mens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://eurekareddevils.com/sports/mens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-www-gogryphons-com-w.html": {
+  "url": "https://www.gogryphons.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gogryphons.com/sports/womens-soccer/schedule/2026",
+  "bytes": 676248
+ },
+ "census-www-yumacs-com-m.html": {
+  "url": "https://www.yumacs.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://yumacs.com/sports/mens-soccer/schedule/2026",
+  "bytes": 496858
+ },
+ "census-lyonscots-com-m.html": {
+  "url": "https://lyonscots.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://lyonscots.com/sports/mens-soccer/schedule/2026",
+  "bytes": 482374
+ },
+ "census-sjbkathletics-com-w.html": {
+  "url": "https://sjbkathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://sjbkathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 868393
+ },
+ "census-greenvillepanthers-com-m.html": {
+  "url": "https://greenvillepanthers.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://greenvillepanthers.com/sports/mens-soccer/schedule/2026",
+  "bytes": 988503
+ },
+ "census-sjliathletics-com-w.html": {
+  "url": "https://sjliathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://sjliathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 517483
+ },
+ "census-owlsathletics-com-m.html": {
+  "url": "https://owlsathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://owlsathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 471431
+ },
+ "census-principiaathletics-com-m.html": {
+  "url": "https://principiaathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.principiacollege.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 465340
+ },
+ "census-spaldingathletics-com-m.html": {
+  "url": "https://spaldingathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://spaldingathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 857555
+ },
+ "census-www-blackburnbeavers-com-w.html": {
+  "url": "https://www.blackburnbeavers.com/sports/womens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://www.blackburnbeavers.com/sports/womens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-eurekareddevils-com-w.html": {
+  "url": "https://eurekareddevils.com/sports/womens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://eurekareddevils.com/sports/womens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-www-websterathletics-com-m.html": {
+  "url": "https://www.websterathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://websterathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 429010
+ },
+ "census-www-yumacs-com-w.html": {
+  "url": "https://www.yumacs.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://yumacs.com/sports/womens-soccer/schedule/2026",
+  "bytes": 470035
+ },
+ "census-wcbluejays-wcmo-edu-m.html": {
+  "url": "https://wcbluejays.wcmo.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://wcbluejays.wcmo.edu/sports/mens-soccer/schedule",
+  "bytes": 749898
+ },
+ "census-lyonscots-com-w.html": {
+  "url": "https://lyonscots.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://lyonscots.com/sports/womens-soccer/schedule/2026",
+  "bytes": 458068
+ },
+ "census-greenvillepanthers-com-w.html": {
+  "url": "https://greenvillepanthers.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://greenvillepanthers.com/sports/womens-soccer/schedule/2026",
+  "bytes": 1005587
+ },
+ "census-www-brandeisjudges-com-m.html": {
+  "url": "https://www.brandeisjudges.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://brandeisjudges.com/sports/mens-soccer/schedule/2026",
+  "bytes": 563331
+ },
+ "census-athletics-cmu-edu-m.html": {
+  "url": "https://athletics.cmu.edu/sports/mens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://athletics.cmu.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-owlsathletics-com-w.html": {
+  "url": "https://owlsathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://owlsathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 456782
+ },
+ "census-principiaathletics-com-w.html": {
+  "url": "https://principiaathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.principiacollege.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 459139
+ },
+ "census-spaldingathletics-com-w.html": {
+  "url": "https://spaldingathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://spaldingathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 824837
+ },
+ "census-athletics-case-edu-m.html": {
+  "url": "https://athletics.case.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.case.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 710792
+ },
+ "census-emoryathletics-com-m.html": {
+  "url": "https://emoryathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://emoryathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 676955
+ },
+ "census-www-websterathletics-com-w.html": {
+  "url": "https://www.websterathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://websterathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 417865
+ },
+ "census-wcbluejays-wcmo-edu-w.html": {
+  "url": "https://wcbluejays.wcmo.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://wcbluejays.wcmo.edu/sports/womens-soccer/schedule",
+  "bytes": 747729
+ },
+ "census-www-gonyuathletics-com-m.html": {
+  "url": "https://www.gonyuathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gonyuathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 730046
+ },
+ "census-athletics-uchicago-edu-m.html": {
+  "url": "https://athletics.uchicago.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.uchicago.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 707013
+ },
+ "census-www-brandeisjudges-com-w.html": {
+  "url": "https://www.brandeisjudges.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://brandeisjudges.com/sports/womens-soccer/schedule/2026",
+  "bytes": 559454
+ },
+ "census-athletics-cmu-edu-w.html": {
+  "url": "https://athletics.cmu.edu/sports/womens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://athletics.cmu.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-washubears-com-m.html": {
+  "url": "https://washubears.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://washubears.com/sports/mens-soccer/schedule/2026",
+  "bytes": 932980
+ },
+ "census-www-blcvikings-com-m.html": {
+  "url": "https://www.blcvikings.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://blcvikings.com/sports/mens-soccer/schedule/2026",
+  "bytes": 556494
+ },
+ "census-athletics-crown-edu-m.html": {
+  "url": "https://athletics.crown.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.crown.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 745431
+ },
+ "census-athletics-case-edu-w.html": {
+  "url": "https://athletics.case.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.case.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 685951
+ },
+ "census-emoryathletics-com-w.html": {
+  "url": "https://emoryathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://emoryathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 689868
+ },
+ "census-mlcknights-com-m.html": {
+  "url": "https://mlcknights.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://mlcknights.com/sports/mens-soccer/schedule/2026",
+  "bytes": 463955
+ },
+ "census-ncurams-com-m.html": {
+  "url": "https://ncurams.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://ncurams.com/sports/mens-soccer/schedule/2026",
+  "bytes": 669707
+ },
+ "census-athletics-uchicago-edu-w.html": {
+  "url": "https://athletics.uchicago.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.uchicago.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 723687
+ },
+ "census-www-gonyuathletics-com-w.html": {
+  "url": "https://www.gonyuathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gonyuathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 723411
+ },
+ "census-morriscougars-com-m.html": {
+  "url": "https://morriscougars.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://morriscougars.com/sports/mens-soccer/schedule/2026",
+  "bytes": 733858
+ },
+ "census-uwsyellowjackets-com-m.html": {
+  "url": "https://uwsyellowjackets.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://uwsyellowjackets.com/sports/mens-soccer/schedule/2026",
+  "bytes": 844881
+ },
+ "census-washubears-com-w.html": {
+  "url": "https://washubears.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://washubears.com/sports/womens-soccer/schedule/2026",
+  "bytes": 1001275
+ },
+ "census-unweagles-com-m.html": {
+  "url": "https://unweagles.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://unweagles.com/sports/mens-soccer/schedule/2026",
+  "bytes": 489733
+ },
+ "census-www-blcvikings-com-w.html": {
+  "url": "https://www.blcvikings.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://blcvikings.com/sports/womens-soccer/schedule/2026",
+  "bytes": 475892
+ },
+ "census-athletics-crown-edu-w.html": {
+  "url": "https://athletics.crown.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.crown.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 727710
+ },
+ "census-mlcknights-com-w.html": {
+  "url": "https://mlcknights.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://mlcknights.com/sports/womens-soccer/schedule/2026",
+  "bytes": 475586
+ },
+ "census-cedarcrestathletics-com-m.html": {
+  "url": "https://cedarcrestathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://cedarcrestathletics.com/index.aspx",
+  "bytes": 462556
+ },
+ "census-www-cairnhighlanders-com-m.html": {
+  "url": "https://www.cairnhighlanders.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.cairnhighlanders.com/sports/mens-soccer/schedule/2026",
+  "bytes": 601233
+ },
+ "census-ncurams-com-w.html": {
+  "url": "https://ncurams.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://ncurams.com/sports/womens-soccer/schedule/2026",
+  "bytes": 622807
+ },
+ "census-morriscougars-com-w.html": {
+  "url": "https://morriscougars.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://morriscougars.com/sports/womens-soccer/schedule/2026",
+  "bytes": 659748
+ },
+ "census-www-gocsudefenders-com-m.html": {
+  "url": "https://www.gocsudefenders.com/sports/mens-soccer/schedule/2026",
+  "status": 404,
+  "final": "https://www.gocsudefenders.com/sports/mens-soccer/schedule/2026",
+  "bytes": 355
+ },
+ "census-uwsyellowjackets-com-w.html": {
+  "url": "https://uwsyellowjackets.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://uwsyellowjackets.com/sports/womens-soccer/schedule/2026",
+  "bytes": 834193
+ },
+ "census-gallaudetbison-com-m.html": {
+  "url": "https://gallaudetbison.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gallaudetbison.com/sports/mens-soccer/schedule/2026",
+  "bytes": 483489
+ },
+ "census-gokcgiants-com-m.html": {
+  "url": "https://gokcgiants.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.gokcgiants.com/sports/mens-soccer/schedule/2026",
+  "bytes": 566154
+ },
+ "census-unweagles-com-w.html": {
+  "url": "https://unweagles.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://unweagles.com/sports/womens-soccer/schedule/2026",
+  "bytes": 529378
+ },
+ "census-morrisvillemustangs-com-m.html": {
+  "url": "https://morrisvillemustangs.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://morrisvillemustangs.com/sports/mens-soccer/schedule/2026",
+  "bytes": 559911
+ },
+ "census-pctwildcats-com-m.html": {
+  "url": "https://pctwildcats.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://pctwildcats.com/sports/mens-soccer/schedule/2026",
+  "bytes": 508409
+ },
+ "census-cedarcrestathletics-com-w.html": {
+  "url": "https://cedarcrestathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://cedarcrestathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 467280
+ },
+ "census-lbcchargers-com-m.html": {
+  "url": "https://lbcchargers.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://lbcchargers.com/sports/mens-soccer/schedule/2026",
+  "bytes": 501861
+ },
+ "census-notredamegators-com-m.html": {
+  "url": "https://notredamegators.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://notredamegators.com/sports/mens-soccer/schedule/2026",
+  "bytes": 466678
+ },
+ "census-www-cairnhighlanders-com-w.html": {
+  "url": "https://www.cairnhighlanders.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.cairnhighlanders.com/sports/womens-soccer/schedule/2026",
+  "bytes": 579079
+ },
+ "census-abingtonsports-com-m.html": {
+  "url": "https://abingtonsports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://abingtonsports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 637592
+ },
+ "census-www-gocsudefenders-com-w.html": {
+  "url": "https://www.gocsudefenders.com/sports/womens-soccer/schedule/2026",
+  "status": 404,
+  "final": "https://www.gocsudefenders.com/sports/womens-soccer/schedule/2026",
+  "bytes": 355
+ },
+ "census-psuberksathletics-com-m.html": {
+  "url": "https://psuberksathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://psuberksathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 448682
+ },
+ "census-gokcgiants-com-w.html": {
+  "url": "https://gokcgiants.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.gokcgiants.com/sports/womens-soccer/schedule/2026",
+  "bytes": 499145
+ },
+ "census-www-psubrandywineathletics-com-m.html": {
+  "url": "https://www.psubrandywineathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://www.psubrandywineathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-gallaudetbison-com-w.html": {
+  "url": "https://gallaudetbison.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gallaudetbison.com/index.aspx",
+  "bytes": 340825
+ },
+ "census-pctwildcats-com-w.html": {
+  "url": "https://pctwildcats.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://pctwildcats.com/sports/womens-soccer/schedule/2026",
+  "bytes": 518085
+ },
+ "census-morrisvillemustangs-com-w.html": {
+  "url": "https://morrisvillemustangs.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://morrisvillemustangs.com/sports/womens-soccer/schedule/2026",
+  "bytes": 573108
+ },
+ "census-psuharrisburgsports-com-m.html": {
+  "url": "https://psuharrisburgsports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://psuharrisburgsports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 885394
+ },
+ "census-lbcchargers-com-w.html": {
+  "url": "https://lbcchargers.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://lbcchargers.com/sports/womens-soccer/schedule/2026",
+  "bytes": 491426
+ },
+ "census-notredamegators-com-w.html": {
+  "url": "https://notredamegators.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://notredamegators.com/sports/womens-soccer/schedule/2026",
+  "bytes": 479518
+ },
+ "census-www-wells-express-com-m.html": {
+  "url": "https://www.wells-express.com/sports/mens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://www.wells-express.com/sports/mens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-abingtonsports-com-w.html": {
+  "url": "https://abingtonsports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://abingtonsports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 598559
+ },
+ "census-psuberksathletics-com-w.html": {
+  "url": "https://psuberksathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://psuberksathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 444156
+ },
+ "census-smcmathletics-com-m.html": {
+  "url": "https://smcmathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://smcmathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 539127
+ },
+ "census-www-psubrandywineathletics-com-w.html": {
+  "url": "https://www.psubrandywineathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://www.psubrandywineathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-wilsonphoenix-com-m.html": {
+  "url": "https://wilsonphoenix.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://wilsonphoenix.com/sports/mens-soccer/schedule/2026",
+  "bytes": 550310
+ },
+ "census-bctornados-com-m.html": {
+  "url": "https://bctornados.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://bctornados.com/sports/mens-soccer/schedule/2026",
+  "bytes": 671458
+ },
+ "census-marybaldwinathletics-com-m.html": {
+  "url": "https://marybaldwinathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://marybaldwinathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 419767
+ },
+ "census-psuharrisburgsports-com-w.html": {
+  "url": "https://psuharrisburgsports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://psuharrisburgsports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 895428
+ },
+ "census-greensborocollegesports-com-m.html": {
+  "url": "https://greensborocollegesports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://greensborocollegesports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 601276
+ },
+ "census-www-wells-express-com-w.html": {
+  "url": "https://www.wells-express.com/sports/womens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://www.wells-express.com/sports/womens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "census-ncwsports-com-m.html": {
+  "url": "https://ncwsports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://ncwsports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 595231
+ },
+ "census-goavengingangels-com-m.html": {
+  "url": "https://goavengingangels.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://goavengingangels.com/index.aspx",
+  "bytes": 410173
+ },
+ "census-mumonarchs-com-m.html": {
+  "url": "https://mumonarchs.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://mumonarchs.com/sports/mens-soccer/schedule/2026",
+  "bytes": 583614
+ },
+ "census-gofalconsports-com-m.html": {
+  "url": "https://gofalconsports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gofalconsports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 510156
+ },
+ "census-smcmathletics-com-w.html": {
+  "url": "https://smcmathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://smcmathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 564442
+ },
+ "census-wilsonphoenix-com-w.html": {
+  "url": "https://wilsonphoenix.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://wilsonphoenix.com/sports/womens-soccer/schedule/2026",
+  "bytes": 584226
+ },
+ "census-salemspirits-com-m.html": {
+  "url": "https://salemspirits.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://salemcollegeathletics.com/index.aspx",
+  "bytes": 386981
+ },
+ "census-bctornados-com-w.html": {
+  "url": "https://bctornados.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://bctornados.com/sports/womens-soccer/schedule/2026",
+  "bytes": 745256
+ },
+ "census-marybaldwinathletics-com-w.html": {
+  "url": "https://marybaldwinathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://marybaldwinathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 413655
+ },
+ "census-knightathletics-com-m.html": {
+  "url": "https://knightathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://knightathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 591985
+ },
+ "census-greensborocollegesports-com-w.html": {
+  "url": "https://greensborocollegesports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://greensborocollegesports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 602122
+ },
+ "census-gopeacepacers-com-m.html": {
+  "url": "https://gopeacepacers.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gopeacepacers.com/sports/mens-soccer/schedule/2026",
+  "bytes": 557499
+ },
+ "census-ncwsports-com-w.html": {
+  "url": "https://ncwsports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://ncwsports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 589348
+ },
+ "census-gofalconsports-com-w.html": {
+  "url": "https://gofalconsports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gofalconsports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 504749
+ },
+ "census-flosports-link-m.html": {
+  "url": "https://flosports.link/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.flosports.tv/",
+  "bytes": 14702
+ },
+ "census-goavengingangels-com-w.html": {
+  "url": "https://goavengingangels.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://goavengingangels.com/sports/womens-soccer/schedule/2026",
+  "bytes": 487694
+ },
+ "census-mumonarchs-com-w.html": {
+  "url": "https://mumonarchs.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://mumonarchs.com/sports/womens-soccer/schedule/2026",
+  "bytes": 569805
+ },
+ "census-salemspirits-com-w.html": {
+  "url": "https://salemspirits.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://salemcollegeathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 532966
+ },
+ "census-www-blugolds-com-m.html": {
+  "url": "https://www.blugolds.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://blugolds.com/sports/mens-soccer/schedule/2026",
+  "bytes": 737337
+ },
+ "census-knightathletics-com-w.html": {
+  "url": "https://knightathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://knightathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 607036
+ },
+ "census-www-uwoshkoshtitans-com-m.html": {
+  "url": "https://www.uwoshkoshtitans.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://uwoshkoshtitans.com/sports/mens-soccer/schedule",
+  "bytes": 671464
+ },
+ "census-gopeacepacers-com-w.html": {
+  "url": "https://gopeacepacers.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://gopeacepacers.com/sports/womens-soccer/schedule/2026",
+  "bytes": 536498
+ },
+ "census-letsgopioneers-com-m.html": {
+  "url": "https://letsgopioneers.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://letsgopioneers.com/sports/mens-soccer/schedule/2026",
+  "bytes": 573049
+ },
+ "census-www-uwlathletics-com-m.html": {
+  "url": "https://www.uwlathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://uwlathletics.com/index.aspx",
+  "bytes": 1000426
+ },
+ "census-www-uwrfsports-com-m.html": {
+  "url": "https://www.uwrfsports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://uwrfsports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 602846
+ },
+ "census-athletics-uwsp-edu-m.html": {
+  "url": "https://athletics.uwsp.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.uwsp.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 1013774
+ },
+ "census-flosports-link-w.html": {
+  "url": "https://flosports.link/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.flosports.tv/",
+  "bytes": 14702
+ },
+ "census-www-stoutbluedevils-com-m.html": {
+  "url": "https://www.stoutbluedevils.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://stoutbluedevils.com/sports/mens-soccer/schedule/2026",
+  "bytes": 561580
+ },
+ "census-www-blugolds-com-w.html": {
+  "url": "https://www.blugolds.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://blugolds.com/sports/womens-soccer/schedule/2026",
+  "bytes": 742413
+ },
+ "census-www-uwwsports-com-m.html": {
+  "url": "https://www.uwwsports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://uwwsports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 628776
+ },
+ "cunyac-msoc-nuxt.html": {
+  "url": "https://cunyathletics.com/standings.aspx?path=msoc&print=true",
+  "status": 500,
+  "final": "https://cunyathletics.com/standings.aspx?path=msoc&print=true",
+  "bytes": 511
+ },
+ "census-www-uwoshkoshtitans-com-w.html": {
+  "url": "https://www.uwoshkoshtitans.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://uwoshkoshtitans.com/sports/womens-soccer/schedule/2026",
+  "bytes": 719236
+ },
+ "census-letsgopioneers-com-w.html": {
+  "url": "https://letsgopioneers.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://letsgopioneers.com/sports/womens-soccer/schedule/2026",
+  "bytes": 589173
+ },
+ "census-www-uwlathletics-com-w.html": {
+  "url": "https://www.uwlathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://uwlathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 769056
+ },
+ "census-www-uwrfsports-com-w.html": {
+  "url": "https://www.uwrfsports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://uwrfsports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 587364
+ },
+ "census-athletics-uwsp-edu-w.html": {
+  "url": "https://athletics.uwsp.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.uwsp.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 994163
+ },
+ "newmac-msoc-2025.html": {
+  "url": "https://newmacsports.com/standings.aspx?standings=318",
+  "status": 200,
+  "final": "https://newmacsports.com/standings.aspx?standings=318",
+  "bytes": 270302
+ },
+ "census-www-stoutbluedevils-com-w.html": {
+  "url": "https://www.stoutbluedevils.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://stoutbluedevils.com/sports/womens-soccer/schedule/2026",
+  "bytes": 573900
+ },
+ "census-www-uwwsports-com-w.html": {
+  "url": "https://www.uwwsports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://uwwsports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 643795
+ },
+ "newmac-msoc-2024.html": {
+  "url": "https://newmacsports.com/standings.aspx?standings=299",
+  "status": 200,
+  "final": "https://newmacsports.com/standings.aspx?standings=299",
+  "bytes": 267802
+ },
+ "newmac-msoc-2023.html": {
+  "url": "https://newmacsports.com/standings.aspx?standings=277",
+  "status": 200,
+  "final": "https://newmacsports.com/standings.aspx?standings=277",
+  "bytes": 267793
+ },
+ "newmac-msoc-2022.html": {
+  "url": "https://newmacsports.com/standings.aspx?standings=257",
+  "status": 200,
+  "final": "https://newmacsports.com/standings.aspx?standings=257",
+  "bytes": 267124
+ },
+ "newmac-wsoc-2025.html": {
+  "url": "https://newmacsports.com/standings.aspx?standings=319",
+  "status": 200,
+  "final": "https://newmacsports.com/standings.aspx?standings=319",
+  "bytes": 276759
+ },
+ "newmac-wsoc-2024.html": {
+  "url": "https://newmacsports.com/standings.aspx?standings=300",
+  "status": 200,
+  "final": "https://newmacsports.com/standings.aspx?standings=300",
+  "bytes": 273498
+ },
+ "newmac-wsoc-2023.html": {
+  "url": "https://newmacsports.com/standings.aspx?standings=280",
+  "status": 200,
+  "final": "https://newmacsports.com/standings.aspx?standings=280",
+  "bytes": 273490
+ },
+ "newmac-wsoc-2022.html": {
+  "url": "https://newmacsports.com/standings.aspx?standings=264",
+  "status": 200,
+  "final": "https://newmacsports.com/standings.aspx?standings=264",
+  "bytes": 273185
+ }
+}

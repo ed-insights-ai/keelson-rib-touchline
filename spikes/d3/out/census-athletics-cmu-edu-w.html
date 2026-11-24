@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Human Verification</title>
+    <style>
+        body {
+            font-family: "Arial";
+        }
+    </style>
+    <script type="text/javascript">
+    window.awsWafCookieDomainList = [];
+    window.gokuProps = {
+"key":"AQIDAHjcYu/GjX+QlghicBgQ/7bFaQZ+m5FKCMDnO+vTbNg96AE5bE5T1+wuC8xxZrdIHIzNAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMeDKsD5UL0fbbmGPkAgEQgDsqjwWkVR0KwABe7YvOG2y38G2r4RPybIV46LkfKdqye8QTjKf6Eur+bcpbln/mn4BIL3leclTwEji7FQ==",
+          "iv":"A6xFygDE8QAAGCVH",
+          "context":"KAvklUyxsSR68gN7q7AolPWdEt+eIHiMdyMN+IcG3D1BngdkGVmiO77K1INdTjbKQxSLXKZiTN3RMOIRjlgCuJpJhkmHnVzXY6S5i0/sOOyjJvIwblods00iUD7OIcXpxpifVOICjoZE3lsE0q8Y3bMcaWBKo8nXn4/1KnomwVHJ5jL7vr5dAe9cy6sfCyAAi7EMLBJwDjGmxZg0uzwSRxg+s7i+D2eL+xKaNW657Yeq8PMI5bu5XjnOjFsT32olHQPEhxlUCKgDnw5jpLMjNR2MD63OA1DmuVxDw6WNIhSnxAuN5uM+NN5KONcCe+Q4bvu4iLxxwYBpEdnQmNQnb9qFoWR4nYtbHsYC1SAcTN6oKlfy+FEr76xKMSu7Lp0bL8BHM5tV6UJEvLCFuDeR"
+};
+    </script>
+    <script src="https://e51644f80c28.0421493d.us-east-1.token.awswaf.com/e51644f80c28/f442efc8ad32/5833c2784151/challenge.js"></script>
+    <script src="https://e51644f80c28.0421493d.us-east-1.captcha.awswaf.com/e51644f80c28/f442efc8ad32/5833c2784151/captcha.js"></script>
+</head>
+<body>
+    <div id="captcha-container"></div>
+    <script type="text/javascript">
+        AwsWafIntegration.saveReferrer();
+        window.addEventListener("load", function() {
+          const container = document.querySelector("#captcha-container");
+          CaptchaScript.renderCaptcha(container, async (voucher) => {
+              await ChallengeScript.submitCaptcha(voucher);
+              window.location.reload(true);
+          }
+      );
+    });
+    </script>
+    <noscript>
+        <h1>JavaScript is disabled</h1>
+        In order to continue, you need to verify that you're not a robot by solving a CAPTCHA puzzle.
+         The CAPTCHA puzzle requires JavaScript. Enable JavaScript and then reload the page.
+    </noscript>
+</body>
+</html>
