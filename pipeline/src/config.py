@@ -146,6 +146,11 @@ class SchoolConfig:
     # use base_url directly.
     live_base_url: str = ""
     live_scraper: str = ""
+    # The school's site answers GitHub-hosted runners with a refusal (HTTP
+    # 405, or a challenge) but serves our fixed-address runner, so its
+    # collect unit runs there, as a PrestoSports member's does. Set it from
+    # an observed refusal, never as a way round one the site meant for us.
+    fixed_address: bool = False
 
     def display(self) -> str:
         """The reader-facing programme name — published spelling over slug source."""
@@ -319,6 +324,7 @@ def load_schools(path: str | Path = DEFAULT_CONFIG) -> list[SchoolConfig]:
             scraper=entry.get("scraper", "statcrew"),
             live_base_url=entry.get("live_base_url", ""),
             live_scraper=entry.get("live_scraper", ""),
+            fixed_address=entry.get("fixed_address", False) is True,
         )
         if school.enabled and not school.base_url:
             raise ValueError(

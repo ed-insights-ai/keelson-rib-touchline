@@ -411,3 +411,21 @@ def test_the_label_names_the_pipeline_in_the_commit(work: Path) -> None:
         git(work, "log", "-1", "--format=%s").strip()
         == f"collect(actions): GAC men {SEASON}"
     )
+
+
+def test_a_fixed_address_stanza_routes_to_the_presto_runner(tmp_path: Path) -> None:
+    config = tmp_path / "schools.toml"
+    config.write_text(
+        "\n".join(
+            f'[[schools]]\nname = "{name}"\nabbreviation = "{abbr}"\nconference = "X"\n'
+            f'prefix = "{abbr.lower()}"\nbase_url = "https://{abbr.lower()}.example/sports/mens-soccer"\n'
+            f'gender = "men"\nscraper = "sidearm"\nenabled = true\n{extra}\n'
+            for name, abbr, extra in (
+                ("Open Site", "OS", ""),
+                ("Walled Site", "WS", "fixed_address = true"),
+            )
+        )
+    )
+    table = cd.platforms(config)
+    assert cd.route(["open-site"], "men", table) == cd.JOB_HOSTED
+    assert cd.route(["open-site", "walled-site"], "men", table) == cd.JOB_PRESTO

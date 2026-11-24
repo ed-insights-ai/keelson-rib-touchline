@@ -255,10 +255,12 @@ def resolve_programmes(
 
 
 def platforms(config: Path) -> dict[tuple[str, str], str]:
-    """(slug, gender) -> live platform, from the enabled stanzas."""
+    """(slug, gender) -> live platform, from the enabled stanzas. A stanza
+    whose site serves only our fixed address routes as PrestoSports does."""
     table: dict[tuple[str, str], str] = {}
     for school in load_schools(config):
-        table[(programme_slug(school.name), school.gender)] = school.live_collector()
+        platform = PRESTO.platform if school.fixed_address else school.live_collector()
+        table[(programme_slug(school.name), school.gender)] = platform
     return table
 
 
