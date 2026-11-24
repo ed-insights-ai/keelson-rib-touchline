@@ -9,6 +9,10 @@
     "AAC",
     "ACC",
     "AE",
+    "AEC",
+    "AMCC",
+    "ARC",
+    "ASC",
     "ASUN",
     "B1G",
     "BIG12",
@@ -20,44 +24,81 @@
     "CACC",
     "CC",
     "CCAA",
+    "CCIW",
+    "CCS",
+    "CENTENNIAL",
+    "CNE",
+    "CUNYAC",
     "CUSA",
+    "E8",
     "ECC",
     "G-MAC",
     "GAC",
     "GLIAC",
     "GLVC",
     "GNAC",
+    "GNEAC",
     "GSC",
+    "HCAC",
     "HORIZON",
     "IVY",
+    "LANDMARK",
+    "LEC",
+    "LIBERTY",
     "LSC",
     "MAAC",
     "MAC",
+    "MACC",
+    "MACF",
     "MEC",
     "MIAA",
+    "MIAA3",
+    "MIAC",
     "MVC",
     "MW",
+    "MWC",
+    "NAC",
+    "NACC",
+    "NCAC",
     "NE10",
     "NEC",
+    "NESCAC",
+    "NEWMAC",
+    "NJAC",
     "NSIC",
+    "NWC",
+    "OAC",
+    "ODAC",
     "OVC",
+    "PAC",
     "PAC12",
     "PACWEST",
     "PATRIOT",
     "PBC",
     "PSAC",
     "RMAC",
+    "SAA",
     "SAC",
+    "SCAC",
+    "SCIAC",
     "SEC",
+    "SKYLINE",
+    "SLIAC",
     "SOCON",
     "SOUTHLAND",
     "SSC",
     "SUMMIT",
     "SUNBELT",
+    "SUNYAC",
     "SWAC",
+    "UAA",
     "UAC",
+    "UMAC",
+    "UNITEDEAST",
+    "USASOUTH",
     "WAC",
     "WCC",
+    "WIAC",
     "independent",
     "non_member"
   ],
@@ -77,6 +118,22 @@
     "AE": {
       "level": "d1",
       "names": ["America East Conference", "America East"]
+    },
+    "AEC": {
+      "level": "d3",
+      "names": ["Atlantic East Conference", "AEC", "Atlantic East"]
+    },
+    "AMCC": {
+      "level": "d3",
+      "names": ["Allegheny Mountain Collegiate Conference", "AMCC"]
+    },
+    "ARC": {
+      "level": "d3",
+      "names": ["American Rivers Conference", "A-R-C", "American Rivers"]
+    },
+    "ASC": {
+      "level": "d3",
+      "names": ["American Southwest Conference", "ASC"]
     },
     "ASUN": {
       "level": "d1",
@@ -123,9 +180,34 @@
       "level": "d2",
       "names": ["California Collegiate Athletic Association", "California Collegiate"]
     },
+    "CCIW": {
+      "level": "d3",
+      "names": ["College Conference of Illinois and Wisconsin", "CCIW"]
+    },
+    "CCS": {
+      "level": "d3",
+      "names": ["Collegiate Conference of the South", "CCS"]
+    },
+    "CENTENNIAL": {
+      "level": "d3",
+      "names": ["Centennial Conference", "Centennial"],
+      "code_is_word": true
+    },
+    "CNE": {
+      "level": "d3",
+      "names": ["Conference of New England", "CCC", "CNE", "Commonwealth Coast Conference"]
+    },
+    "CUNYAC": {
+      "level": "d3",
+      "names": ["City University of New York Athletic Conference", "CUNYAC"]
+    },
     "CUSA": {
       "level": "d1",
       "names": ["Conference USA", "C-USA"]
+    },
+    "E8": {
+      "level": "d3",
+      "names": ["Empire 8", "E8"]
     },
     "ECC": {
       "level": "d2",
@@ -151,9 +233,17 @@
       "level": "d2",
       "names": ["Great Northwest Athletic Conference", "Great Northwest"]
     },
+    "GNEAC": {
+      "level": "d3",
+      "names": ["Great Northeast Athletic Conference"]
+    },
     "GSC": {
       "level": "d2",
       "names": ["Gulf South Conference", "Gulf South"]
+    },
+    "HCAC": {
+      "level": "d3",
+      "names": ["Heartland Collegiate Athletic Conference", "HCAC"]
     },
     "HORIZON": {
       "level": "d1",
@@ -163,6 +253,20 @@
     "IVY": {
       "level": "d1",
       "names": ["Ivy League"],
+      "code_is_word": true
+    },
+    "LANDMARK": {
+      "level": "d3",
+      "names": ["Landmark Conference", "LAND", "Landmark"],
+      "code_is_word": true
+    },
+    "LEC": {
+      "level": "d3",
+      "names": ["Little East Conference", "LEC"]
+    },
+    "LIBERTY": {
+      "level": "d3",
+      "names": ["Liberty League", "LL", "Liberty"],
       "code_is_word": true
     },
     "LSC": {
@@ -177,6 +281,21 @@
       "level": "d1",
       "names": ["Mid-American Conference", "Mid-American"]
     },
+    "MACC": {
+      "level": "d3",
+      "names": [
+        "MAC Commonwealth",
+        "Commonwealth",
+        "Commonwealth Conference",
+        "MAC CWEALTH",
+        "MACC",
+        "Middle Atlantic Conference Commonwealth"
+      ]
+    },
+    "MACF": {
+      "level": "d3",
+      "names": ["MAC Freedom", "MACF"]
+    },
     "MEC": {
       "level": "d2",
       "names": ["Mountain East Conference", "Mountain East"]
@@ -184,6 +303,14 @@
     "MIAA": {
       "level": "d2",
       "names": ["Mid-America Intercollegiate Athletics Association"]
+    },
+    "MIAA3": {
+      "level": "d3",
+      "names": ["Michigan Intercollegiate Athletic Association"]
+    },
+    "MIAC": {
+      "level": "d3",
+      "names": ["Minnesota Intercollegiate Athletic Conference", "MIAC"]
     },
     "MVC": {
       "level": "d1",
@@ -193,6 +320,22 @@
       "level": "d1",
       "names": ["Mountain West Conference", "Mountain West"]
     },
+    "MWC": {
+      "level": "d3",
+      "names": ["Midwest Conference", "MIDWEST", "MIDWEST CONF", "MWC"]
+    },
+    "NAC": {
+      "level": "d3",
+      "names": ["North Atlantic Conference", "NAC"]
+    },
+    "NACC": {
+      "level": "d3",
+      "names": ["Northern Athletics Collegiate Conference", "NACC"]
+    },
+    "NCAC": {
+      "level": "d3",
+      "names": ["North Coast Athletic Conference", "NCAC"]
+    },
     "NE10": {
       "level": "d2",
       "names": ["Northeast-10 Conference", "Northeast-10", "Northeast10"]
@@ -201,13 +344,46 @@
       "level": "d1",
       "names": ["Northeast Conference"]
     },
+    "NESCAC": {
+      "level": "d3",
+      "names": ["New England Small College Athletic Conference", "NESCAC"]
+    },
+    "NEWMAC": {
+      "level": "d3",
+      "names": ["New England Women's and Men's Athletic Conference", "NEWMAC"]
+    },
+    "NJAC": {
+      "level": "d3",
+      "names": ["New Jersey Athletic Conference", "NJAC"]
+    },
     "NSIC": {
       "level": "d2",
       "names": ["Northern Sun Intercollegiate Conference"]
     },
+    "NWC": {
+      "level": "d3",
+      "names": ["Northwest Conference", "NWC"]
+    },
+    "OAC": {
+      "level": "d3",
+      "names": ["Ohio Athletic Conference", "OAC"]
+    },
+    "ODAC": {
+      "level": "d3",
+      "names": ["Old Dominion Athletic Conference", "ODAC"]
+    },
     "OVC": {
       "level": "d1",
       "names": ["Ohio Valley Conference", "Ohio Valley"]
+    },
+    "PAC": {
+      "level": "d3",
+      "names": [
+        "Presidents' Athletic Conference",
+        "PAC",
+        "President's Athletic Conference",
+        "Presidents Athletic Conference"
+      ]
     },
     "PAC12": {
       "level": "d1",
@@ -234,13 +410,34 @@
       "level": "d2",
       "names": ["Rocky Mountain Athletic Conference", "Rocky Mountain"]
     },
+    "SAA": {
+      "level": "d3",
+      "names": ["Southern Athletic Association", "SAA"]
+    },
     "SAC": {
       "level": "d2",
       "names": ["South Atlantic Conference", "South Atlantic"]
     },
+    "SCAC": {
+      "level": "d3",
+      "names": ["Southern Collegiate Athletic Conference", "SCAC"]
+    },
+    "SCIAC": {
+      "level": "d3",
+      "names": ["Southern California Intercollegiate Athletic Conference", "SCIAC"]
+    },
     "SEC": {
       "level": "d1",
       "names": ["Southeastern Conference"]
+    },
+    "SKYLINE": {
+      "level": "d3",
+      "names": ["Skyline Conference", "Skyline"],
+      "code_is_word": true
+    },
+    "SLIAC": {
+      "level": "d3",
+      "names": ["St. Louis Intercollegiate Athletic Conference", "SLIAC"]
     },
     "SOCON": {
       "level": "d1",
@@ -264,13 +461,33 @@
       "level": "d1",
       "names": ["Sun Belt Conference", "Sun Belt"]
     },
+    "SUNYAC": {
+      "level": "d3",
+      "names": ["State University of New York Athletic Conference", "SUNYAC"]
+    },
     "SWAC": {
       "level": "d1",
       "names": ["Southwestern Athletic Conference"]
     },
+    "UAA": {
+      "level": "d3",
+      "names": ["University Athletic Association", "UAA"]
+    },
     "UAC": {
       "level": "d1",
       "names": ["United Athletic Conference"]
+    },
+    "UMAC": {
+      "level": "d3",
+      "names": ["Upper Midwest Athletic Conference", "UMAC"]
+    },
+    "UNITEDEAST": {
+      "level": "d3",
+      "names": ["United East Conference", "UEC", "UNITED EAST", "UnitedEast"]
+    },
+    "USASOUTH": {
+      "level": "d3",
+      "names": ["USA South Athletic Conference", "USA SOUTH", "usasouth"]
     },
     "WAC": {
       "level": "d1",
@@ -279,6 +496,10 @@
     "WCC": {
       "level": "d1",
       "names": ["West Coast Conference"]
+    },
+    "WIAC": {
+      "level": "d3",
+      "names": ["Wisconsin Intercollegiate Athletic Conference", "WIAC"]
     }
   },
   "description": "Contract fixture: season-aware conference-membership windows per programme (institution_slug x gender). Each window cites its source. Identity and membership are separate axes.",
