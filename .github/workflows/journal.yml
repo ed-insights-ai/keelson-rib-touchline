@@ -165,7 +165,8 @@ jobs:
           sh rib/site/journal/run.sh ui homes usage.jsonl || rc=$?
           echo "rc=${rc:-0}" >> "$GITHUB_OUTPUT"
       - name: Cost of this run
-        if: always()
+        # Only once the writer ran: a setup step that failed has no bun and no log.
+        if: always() && steps.write.outcome != 'skipped'
         run: |
           set -eu
           [ -f usage.jsonl ] || : > usage.jsonl
@@ -184,7 +185,7 @@ jobs:
           retention-days: 90
           if-no-files-found: ignore
       - name: Copy the written journals back
-        if: always()
+        if: always() && steps.write.outcome != 'skipped'
         run: |
           set -eu
           rm -rf journals/journal
