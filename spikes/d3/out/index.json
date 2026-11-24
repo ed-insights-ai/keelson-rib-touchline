@@ -1,62 +1,722 @@
 {
- "ncaa-men-d3.html": {
-  "url": "https://www.ncaa.com/standings/soccer-men/d3",
-  "status": 200,
-  "final": "https://www.ncaa.com/standings/soccer-men/d3",
-  "bytes": 97001
+ "ev-mascac-www-bsubears-com-m-2023.html": {
+  "url": "https://www.bsubears.com/sports/mens-soccer/schedule/2023",
+  "status": 405,
+  "final": "https://www.bsubears.com/sports/mens-soccer/schedule/2023",
+  "bytes": 2131
  },
- "ncaa-men-d3-2025.html": {
-  "url": "https://www.ncaa.com/standings/soccer-men/d3/2025",
-  "status": 200,
-  "final": "https://www.ncaa.com/standings/soccer-men/d3/2025",
-  "bytes": 97043
+ "ev-mascac-wsulancers-com-m-2023.html": {
+  "url": "https://wsulancers.com/sports/mens-soccer/schedule/2023",
+  "status": 405,
+  "final": "https://wsulancers.com/sports/mens-soccer/schedule/2023",
+  "bytes": 2131
  },
- "ncaa-men-d3-2024.html": {
-  "url": "https://www.ncaa.com/standings/soccer-men/d3/2024",
-  "status": 200,
-  "final": "https://www.ncaa.com/standings/soccer-men/d3/2024",
-  "bytes": 97043
+ "ev-gnac-www-albertusfalcons-com-m-2023.html": {
+  "url": "https://www.albertusfalcons.com/sports/mens-soccer/schedule/2023",
+  "status": 405,
+  "final": "https://www.albertusfalcons.com/sports/mens-soccer/schedule/2023",
+  "bytes": 2131
  },
- "ncaa-men-d3-2023.html": {
-  "url": "https://www.ncaa.com/standings/soccer-men/d3/2023",
-  "status": 200,
-  "final": "https://www.ncaa.com/standings/soccer-men/d3/2023",
-  "bytes": 97044
+ "ev-amcc-psblions-com-m-2023.html": {
+  "url": "https://psblions.com/sports/mens-soccer/schedule/2023",
+  "status": 405,
+  "final": "https://psblions.com/sports/mens-soccer/schedule/2023",
+  "bytes": 2131
  },
- "ncaa-men-d3-2022.html": {
-  "url": "https://www.ncaa.com/standings/soccer-men/d3/2022",
+ "ev-c2c-www-cnusports-com-m-2023.html": {
+  "url": "https://www.cnusports.com/sports/mens-soccer/schedule/2023",
   "status": 200,
-  "final": "https://www.ncaa.com/standings/soccer-men/d3/2022",
-  "bytes": 97044
+  "final": "https://www.cnusports.com/sports/mens-soccer/schedule/2023",
+  "bytes": 553414
  },
- "ncaa-women-d3.html": {
-  "url": "https://www.ncaa.com/standings/soccer-women/d3",
+ "ev-scac-southwesternpirates-com-m-2023.html": {
+  "url": "https://southwesternpirates.com/sports/mens-soccer/schedule/2023",
   "status": 200,
-  "final": "https://www.ncaa.com/standings/soccer-women/d3",
-  "bytes": 97219
+  "final": "https://southwesternpirates.com/sports/mens-soccer/schedule/2023",
+  "bytes": 531503
  },
- "ncaa-women-d3-2025.html": {
-  "url": "https://www.ncaa.com/standings/soccer-women/d3/2025",
+ "ev-sunyac-www-cortlandreddragons-com-m-2023.html": {
+  "url": "https://www.cortlandreddragons.com/sports/mens-soccer/schedule/2023",
   "status": 200,
-  "final": "https://www.ncaa.com/standings/soccer-women/d3/2025",
-  "bytes": 97262
+  "final": "https://www.cortlandreddragons.com/sports/mens-soccer/schedule/2023",
+  "bytes": 561715
  },
- "ncaa-women-d3-2024.html": {
-  "url": "https://www.ncaa.com/standings/soccer-women/d3/2024",
+ "ev-scac-www-trinitytigers-com-m-2023.html": {
+  "url": "https://www.trinitytigers.com/sports/mens-soccer/schedule/2023",
   "status": 200,
-  "final": "https://www.ncaa.com/standings/soccer-women/d3/2024",
-  "bytes": 97261
+  "final": "https://trinitytigers.com/sports/mens-soccer/schedule/2023",
+  "bytes": 915483
  },
- "ncaa-women-d3-2023.html": {
-  "url": "https://www.ncaa.com/standings/soccer-women/d3/2023",
+ "ev-gnac-www-rivierathletics-com-m-2023.html": {
+  "url": "https://www.rivierathletics.com/sports/mens-soccer/schedule/2023",
   "status": 200,
-  "final": "https://www.ncaa.com/standings/soccer-women/d3/2023",
-  "bytes": 97262
+  "final": "https://rivierathletics.com/sports/mens-soccer/schedule/2023",
+  "bytes": 587155
  },
- "ncaa-women-d3-2022.html": {
-  "url": "https://www.ncaa.com/standings/soccer-women/d3/2022",
+ "ev-c2c-umweagles-com-m-2023.html": {
+  "url": "https://umweagles.com/sports/mens-soccer/schedule/2023",
   "status": 200,
-  "final": "https://www.ncaa.com/standings/soccer-women/d3/2022",
-  "bytes": 97262
+  "final": "https://umweagles.com/sports/mens-soccer/schedule/2023",
+  "bytes": 919272
+ },
+ "ev-amcc-www-franciscanathletics-com-m-2023.html": {
+  "url": "https://www.franciscanathletics.com/sports/mens-soccer/schedule/2023",
+  "status": 200,
+  "final": "https://franciscanathletics.com/sports/mens-soccer/schedule/2023",
+  "bytes": 486644
+ },
+ "ev-sunyac-www-oneontaathletics-com-m-2023.html": {
+  "url": "https://www.oneontaathletics.com/sports/mens-soccer/schedule/2023",
+  "status": 200,
+  "final": "https://oneontaathletics.com/sports/mens-soccer/schedule/2023",
+  "bytes": 571549
+ },
+ "ev-mascac-www-bsubears-com-m-2024.html": {
+  "url": "https://www.bsubears.com/sports/mens-soccer/schedule/2024",
+  "status": 405,
+  "final": "https://www.bsubears.com/sports/mens-soccer/schedule/2024",
+  "bytes": 2131
+ },
+ "ev-mascac-wsulancers-com-m-2024.html": {
+  "url": "https://wsulancers.com/sports/mens-soccer/schedule/2024",
+  "status": 405,
+  "final": "https://wsulancers.com/sports/mens-soccer/schedule/2024",
+  "bytes": 2131
+ },
+ "ev-gnac-www-albertusfalcons-com-m-2024.html": {
+  "url": "https://www.albertusfalcons.com/sports/mens-soccer/schedule/2024",
+  "status": 405,
+  "final": "https://www.albertusfalcons.com/sports/mens-soccer/schedule/2024",
+  "bytes": 2131
+ },
+ "ev-amcc-psblions-com-m-2024.html": {
+  "url": "https://psblions.com/sports/mens-soccer/schedule/2024",
+  "status": 405,
+  "final": "https://psblions.com/sports/mens-soccer/schedule/2024",
+  "bytes": 2131
+ },
+ "ev-c2c-www-cnusports-com-m-2024.html": {
+  "url": "https://www.cnusports.com/sports/mens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://www.cnusports.com/sports/mens-soccer/schedule/2024",
+  "bytes": 546078
+ },
+ "ev-scac-southwesternpirates-com-m-2024.html": {
+  "url": "https://southwesternpirates.com/sports/mens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://southwesternpirates.com/sports/mens-soccer/schedule/2024",
+  "bytes": 538053
+ },
+ "ev-sunyac-www-cortlandreddragons-com-m-2024.html": {
+  "url": "https://www.cortlandreddragons.com/sports/mens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://www.cortlandreddragons.com/sports/mens-soccer/schedule/2024",
+  "bytes": 565662
+ },
+ "ev-gnac-www-rivierathletics-com-m-2024.html": {
+  "url": "https://www.rivierathletics.com/sports/mens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://rivierathletics.com/sports/mens-soccer/schedule/2024",
+  "bytes": 599230
+ },
+ "ev-scac-www-trinitytigers-com-m-2024.html": {
+  "url": "https://www.trinitytigers.com/sports/mens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://trinitytigers.com/sports/mens-soccer/schedule/2024",
+  "bytes": 926177
+ },
+ "ev-c2c-umweagles-com-m-2024.html": {
+  "url": "https://umweagles.com/sports/mens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://umweagles.com/sports/mens-soccer/schedule/2024",
+  "bytes": 943481
+ },
+ "ev-sunyac-www-oneontaathletics-com-m-2024.html": {
+  "url": "https://www.oneontaathletics.com/sports/mens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://oneontaathletics.com/sports/mens-soccer/schedule/2024",
+  "bytes": 542988
+ },
+ "ev-amcc-www-franciscanathletics-com-m-2024.html": {
+  "url": "https://www.franciscanathletics.com/sports/mens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://franciscanathletics.com/sports/mens-soccer/schedule/2024",
+  "bytes": 474915
+ },
+ "ev-mascac-www-bsubears-com-m-2025.html": {
+  "url": "https://www.bsubears.com/sports/mens-soccer/schedule/2025",
+  "status": 405,
+  "final": "https://www.bsubears.com/sports/mens-soccer/schedule/2025",
+  "bytes": 2131
+ },
+ "ev-mascac-wsulancers-com-m-2025.html": {
+  "url": "https://wsulancers.com/sports/mens-soccer/schedule/2025",
+  "status": 405,
+  "final": "https://wsulancers.com/sports/mens-soccer/schedule/2025",
+  "bytes": 2131
+ },
+ "ev-gnac-www-albertusfalcons-com-m-2025.html": {
+  "url": "https://www.albertusfalcons.com/sports/mens-soccer/schedule/2025",
+  "status": 405,
+  "final": "https://www.albertusfalcons.com/sports/mens-soccer/schedule/2025",
+  "bytes": 2131
+ },
+ "ev-amcc-psblions-com-m-2025.html": {
+  "url": "https://psblions.com/sports/mens-soccer/schedule/2025",
+  "status": 405,
+  "final": "https://psblions.com/sports/mens-soccer/schedule/2025",
+  "bytes": 2131
+ },
+ "ev-scac-www-trinitytigers-com-m-2025.html": {
+  "url": "https://www.trinitytigers.com/sports/mens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://trinitytigers.com/sports/mens-soccer/schedule/2025",
+  "bytes": 941849
+ },
+ "ev-gnac-www-rivierathletics-com-m-2025.html": {
+  "url": "https://www.rivierathletics.com/sports/mens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://rivierathletics.com/sports/mens-soccer/schedule/2025",
+  "bytes": 609917
+ },
+ "ev-scac-southwesternpirates-com-m-2025.html": {
+  "url": "https://southwesternpirates.com/sports/mens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://southwesternpirates.com/sports/mens-soccer/schedule/2025",
+  "bytes": 563071
+ },
+ "ev-sunyac-www-cortlandreddragons-com-m-2025.html": {
+  "url": "https://www.cortlandreddragons.com/sports/mens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://www.cortlandreddragons.com/sports/mens-soccer/schedule/2025",
+  "bytes": 547722
+ },
+ "ev-c2c-www-cnusports-com-m-2025.html": {
+  "url": "https://www.cnusports.com/sports/mens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://www.cnusports.com/sports/mens-soccer/schedule/2025",
+  "bytes": 581050
+ },
+ "ev-c2c-umweagles-com-m-2025.html": {
+  "url": "https://umweagles.com/sports/mens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://umweagles.com/sports/mens-soccer/schedule/2025",
+  "bytes": 891547
+ },
+ "ev-sunyac-www-oneontaathletics-com-m-2025.html": {
+  "url": "https://www.oneontaathletics.com/sports/mens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://oneontaathletics.com/sports/mens-soccer/schedule/2025",
+  "bytes": 566251
+ },
+ "ev-amcc-www-franciscanathletics-com-m-2025.html": {
+  "url": "https://www.franciscanathletics.com/sports/mens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://franciscanathletics.com/sports/mens-soccer/schedule/2025",
+  "bytes": 493428
+ },
+ "ev-mascac-www-bsubears-com-m-2026.html": {
+  "url": "https://www.bsubears.com/sports/mens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://www.bsubears.com/sports/mens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "ev-mascac-wsulancers-com-m-2026.html": {
+  "url": "https://wsulancers.com/sports/mens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://wsulancers.com/sports/mens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "ev-gnac-www-albertusfalcons-com-m-2026.html": {
+  "url": "https://www.albertusfalcons.com/sports/mens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://www.albertusfalcons.com/sports/mens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "ev-amcc-psblions-com-m-2026.html": {
+  "url": "https://psblions.com/sports/mens-soccer/schedule/2026",
+  "status": 405,
+  "final": "https://psblions.com/sports/mens-soccer/schedule/2026",
+  "bytes": 2131
+ },
+ "ev-scac-www-trinitytigers-com-m-2026.html": {
+  "url": "https://www.trinitytigers.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://trinitytigers.com/sports/mens-soccer/schedule/2026",
+  "bytes": 927261
+ },
+ "ev-scac-southwesternpirates-com-m-2026.html": {
+  "url": "https://southwesternpirates.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://southwesternpirates.com/sports/mens-soccer/schedule/2026",
+  "bytes": 564765
+ },
+ "ev-gnac-www-rivierathletics-com-m-2026.html": {
+  "url": "https://www.rivierathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://rivierathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 607965
+ },
+ "ev-sunyac-www-cortlandreddragons-com-m-2026.html": {
+  "url": "https://www.cortlandreddragons.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.cortlandreddragons.com/sports/mens-soccer/schedule/2026",
+  "bytes": 567234
+ },
+ "ev-c2c-www-cnusports-com-m-2026.html": {
+  "url": "https://www.cnusports.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.cnusports.com/sports/mens-soccer/schedule/2026",
+  "bytes": 527625
+ },
+ "ev-c2c-umweagles-com-m-2026.html": {
+  "url": "https://umweagles.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://umweagles.com/sports/mens-soccer/schedule/2026",
+  "bytes": 875252
+ },
+ "ev-amcc-www-franciscanathletics-com-m-2026.html": {
+  "url": "https://www.franciscanathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://franciscanathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 467725
+ },
+ "ev-sunyac-www-oneontaathletics-com-m-2026.html": {
+  "url": "https://www.oneontaathletics.com/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://oneontaathletics.com/sports/mens-soccer/schedule/2026",
+  "bytes": 547578
+ },
+ "ev-mascac-www-bsubears-com-w-2023.html": {
+  "url": "https://www.bsubears.com/sports/womens-soccer/schedule/2023",
+  "status": 405,
+  "final": "https://www.bsubears.com/sports/womens-soccer/schedule/2023",
+  "bytes": 2131
+ },
+ "ev-mascac-wsulancers-com-w-2023.html": {
+  "url": "https://wsulancers.com/sports/womens-soccer/schedule/2023",
+  "status": 405,
+  "final": "https://wsulancers.com/sports/womens-soccer/schedule/2023",
+  "bytes": 2131
+ },
+ "ev-gnac-www-albertusfalcons-com-w-2023.html": {
+  "url": "https://www.albertusfalcons.com/sports/womens-soccer/schedule/2023",
+  "status": 405,
+  "final": "https://www.albertusfalcons.com/sports/womens-soccer/schedule/2023",
+  "bytes": 2131
+ },
+ "ev-amcc-psblions-com-w-2023.html": {
+  "url": "https://psblions.com/sports/womens-soccer/schedule/2023",
+  "status": 405,
+  "final": "https://psblions.com/sports/womens-soccer/schedule/2023",
+  "bytes": 2131
+ },
+ "ev-scac-www-trinitytigers-com-w-2023.html": {
+  "url": "https://www.trinitytigers.com/sports/womens-soccer/schedule/2023",
+  "status": 200,
+  "final": "https://trinitytigers.com/sports/womens-soccer/schedule/2023",
+  "bytes": 890423
+ },
+ "ev-scac-southwesternpirates-com-w-2023.html": {
+  "url": "https://southwesternpirates.com/sports/womens-soccer/schedule/2023",
+  "status": 200,
+  "final": "https://southwesternpirates.com/sports/womens-soccer/schedule/2023",
+  "bytes": 557233
+ },
+ "ev-c2c-www-cnusports-com-w-2023.html": {
+  "url": "https://www.cnusports.com/sports/womens-soccer/schedule/2023",
+  "status": 200,
+  "final": "https://www.cnusports.com/sports/womens-soccer/schedule/2023",
+  "bytes": 572370
+ },
+ "ev-c2c-umweagles-com-w-2023.html": {
+  "url": "https://umweagles.com/sports/womens-soccer/schedule/2023",
+  "status": 200,
+  "final": "https://umweagles.com/sports/womens-soccer/schedule/2023",
+  "bytes": 886603
+ },
+ "ev-gnac-www-rivierathletics-com-w-2023.html": {
+  "url": "https://www.rivierathletics.com/sports/womens-soccer/schedule/2023",
+  "status": 200,
+  "final": "https://rivierathletics.com/sports/womens-soccer/schedule/2023",
+  "bytes": 608861
+ },
+ "ev-sunyac-www-cortlandreddragons-com-w-2023.html": {
+  "url": "https://www.cortlandreddragons.com/sports/womens-soccer/schedule/2023",
+  "status": 200,
+  "final": "https://www.cortlandreddragons.com/sports/womens-soccer/schedule/2023",
+  "bytes": 538273
+ },
+ "ev-amcc-www-franciscanathletics-com-w-2023.html": {
+  "url": "https://www.franciscanathletics.com/sports/womens-soccer/schedule/2023",
+  "status": 200,
+  "final": "https://franciscanathletics.com/sports/womens-soccer/schedule/2023",
+  "bytes": 453880
+ },
+ "ev-sunyac-www-oneontaathletics-com-w-2023.html": {
+  "url": "https://www.oneontaathletics.com/sports/womens-soccer/schedule/2023",
+  "status": 200,
+  "final": "https://oneontaathletics.com/sports/womens-soccer/schedule/2023",
+  "bytes": 510406
+ },
+ "ev-mascac-www-bsubears-com-w-2024.html": {
+  "url": "https://www.bsubears.com/sports/womens-soccer/schedule/2024",
+  "status": 202,
+  "final": "https://www.bsubears.com/sports/womens-soccer/schedule/2024",
+  "bytes": 0
+ },
+ "ev-mascac-wsulancers-com-w-2024.html": {
+  "url": "https://wsulancers.com/sports/womens-soccer/schedule/2024",
+  "status": 202,
+  "final": "https://wsulancers.com/sports/womens-soccer/schedule/2024",
+  "bytes": 0
+ },
+ "ev-gnac-www-albertusfalcons-com-w-2024.html": {
+  "url": "https://www.albertusfalcons.com/sports/womens-soccer/schedule/2024",
+  "status": 202,
+  "final": "https://www.albertusfalcons.com/sports/womens-soccer/schedule/2024",
+  "bytes": 0
+ },
+ "ev-amcc-psblions-com-w-2024.html": {
+  "url": "https://psblions.com/sports/womens-soccer/schedule/2024",
+  "status": 202,
+  "final": "https://psblions.com/sports/womens-soccer/schedule/2024",
+  "bytes": 0
+ },
+ "ev-scac-www-trinitytigers-com-w-2024.html": {
+  "url": "https://www.trinitytigers.com/sports/womens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://trinitytigers.com/sports/womens-soccer/schedule/2024",
+  "bytes": 924381
+ },
+ "ev-scac-southwesternpirates-com-w-2024.html": {
+  "url": "https://southwesternpirates.com/sports/womens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://southwesternpirates.com/sports/womens-soccer/schedule/2024",
+  "bytes": 542941
+ },
+ "ev-c2c-www-cnusports-com-w-2024.html": {
+  "url": "https://www.cnusports.com/sports/womens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://www.cnusports.com/sports/womens-soccer/schedule/2024",
+  "bytes": 592234
+ },
+ "ev-c2c-umweagles-com-w-2024.html": {
+  "url": "https://umweagles.com/sports/womens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://umweagles.com/sports/womens-soccer/schedule/2024",
+  "bytes": 886801
+ },
+ "ev-gnac-www-rivierathletics-com-w-2024.html": {
+  "url": "https://www.rivierathletics.com/sports/womens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://rivierathletics.com/sports/womens-soccer/schedule/2024",
+  "bytes": 622298
+ },
+ "ev-sunyac-www-cortlandreddragons-com-w-2024.html": {
+  "url": "https://www.cortlandreddragons.com/sports/womens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://www.cortlandreddragons.com/sports/womens-soccer/schedule/2024",
+  "bytes": 521390
+ },
+ "ev-amcc-www-franciscanathletics-com-w-2024.html": {
+  "url": "https://www.franciscanathletics.com/sports/womens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://franciscanathletics.com/sports/womens-soccer/schedule/2024",
+  "bytes": 444962
+ },
+ "ev-mascac-wsulancers-com-w-2025.html": {
+  "url": "https://wsulancers.com/sports/womens-soccer/schedule/2025",
+  "status": 202,
+  "final": "https://wsulancers.com/sports/womens-soccer/schedule/2025",
+  "bytes": 0
+ },
+ "ev-mascac-www-bsubears-com-w-2025.html": {
+  "url": "https://www.bsubears.com/sports/womens-soccer/schedule/2025",
+  "status": 202,
+  "final": "https://www.bsubears.com/sports/womens-soccer/schedule/2025",
+  "bytes": 0
+ },
+ "ev-gnac-www-albertusfalcons-com-w-2025.html": {
+  "url": "https://www.albertusfalcons.com/sports/womens-soccer/schedule/2025",
+  "status": 202,
+  "final": "https://www.albertusfalcons.com/sports/womens-soccer/schedule/2025",
+  "bytes": 0
+ },
+ "ev-amcc-psblions-com-w-2025.html": {
+  "url": "https://psblions.com/sports/womens-soccer/schedule/2025",
+  "status": 202,
+  "final": "https://psblions.com/sports/womens-soccer/schedule/2025",
+  "bytes": 0
+ },
+ "ev-sunyac-www-oneontaathletics-com-w-2024.html": {
+  "url": "https://www.oneontaathletics.com/sports/womens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://oneontaathletics.com/sports/womens-soccer/schedule/2024",
+  "bytes": 534628
+ },
+ "ev-scac-southwesternpirates-com-w-2025.html": {
+  "url": "https://southwesternpirates.com/sports/womens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://southwesternpirates.com/sports/womens-soccer/schedule/2025",
+  "bytes": 567016
+ },
+ "ev-scac-www-trinitytigers-com-w-2025.html": {
+  "url": "https://www.trinitytigers.com/sports/womens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://trinitytigers.com/sports/womens-soccer/schedule/2025",
+  "bytes": 900951
+ },
+ "ev-c2c-umweagles-com-w-2025.html": {
+  "url": "https://umweagles.com/sports/womens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://umweagles.com/sports/womens-soccer/schedule/2025",
+  "bytes": 909345
+ },
+ "ev-c2c-www-cnusports-com-w-2025.html": {
+  "url": "https://www.cnusports.com/sports/womens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://www.cnusports.com/sports/womens-soccer/schedule/2025",
+  "bytes": 560724
+ },
+ "ev-gnac-www-rivierathletics-com-w-2025.html": {
+  "url": "https://www.rivierathletics.com/sports/womens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://rivierathletics.com/sports/womens-soccer/schedule/2025",
+  "bytes": 616456
+ },
+ "ev-sunyac-www-cortlandreddragons-com-w-2025.html": {
+  "url": "https://www.cortlandreddragons.com/sports/womens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://www.cortlandreddragons.com/sports/womens-soccer/schedule/2025",
+  "bytes": 540351
+ },
+ "ev-mascac-www-bsubears-com-w-2026.html": {
+  "url": "https://www.bsubears.com/sports/womens-soccer/schedule/2026",
+  "status": 202,
+  "final": "https://www.bsubears.com/sports/womens-soccer/schedule/2026",
+  "bytes": 0
+ },
+ "ev-mascac-wsulancers-com-w-2026.html": {
+  "url": "https://wsulancers.com/sports/womens-soccer/schedule/2026",
+  "status": 202,
+  "final": "https://wsulancers.com/sports/womens-soccer/schedule/2026",
+  "bytes": 0
+ },
+ "ev-amcc-www-franciscanathletics-com-w-2025.html": {
+  "url": "https://www.franciscanathletics.com/sports/womens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://franciscanathletics.com/sports/womens-soccer/schedule/2025",
+  "bytes": 460627
+ },
+ "ev-gnac-www-albertusfalcons-com-w-2026.html": {
+  "url": "https://www.albertusfalcons.com/sports/womens-soccer/schedule/2026",
+  "status": 202,
+  "final": "https://www.albertusfalcons.com/sports/womens-soccer/schedule/2026",
+  "bytes": 0
+ },
+ "ev-amcc-psblions-com-w-2026.html": {
+  "url": "https://psblions.com/sports/womens-soccer/schedule/2026",
+  "status": 202,
+  "final": "https://psblions.com/sports/womens-soccer/schedule/2026",
+  "bytes": 0
+ },
+ "ev-sunyac-www-oneontaathletics-com-w-2025.html": {
+  "url": "https://www.oneontaathletics.com/sports/womens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://oneontaathletics.com/sports/womens-soccer/schedule/2025",
+  "bytes": 526219
+ },
+ "ev-scac-southwesternpirates-com-w-2026.html": {
+  "url": "https://southwesternpirates.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://southwesternpirates.com/sports/womens-soccer/schedule/2026",
+  "bytes": 558975
+ },
+ "ev-scac-www-trinitytigers-com-w-2026.html": {
+  "url": "https://www.trinitytigers.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://trinitytigers.com/sports/womens-soccer/schedule/2026",
+  "bytes": 909778
+ },
+ "ev-c2c-www-cnusports-com-w-2026.html": {
+  "url": "https://www.cnusports.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.cnusports.com/sports/womens-soccer/schedule/2026",
+  "bytes": 558666
+ },
+ "ev-c2c-umweagles-com-w-2026.html": {
+  "url": "https://umweagles.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://umweagles.com/sports/womens-soccer/schedule/2026",
+  "bytes": 874783
+ },
+ "ev-gnac-www-rivierathletics-com-w-2026.html": {
+  "url": "https://www.rivierathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://rivierathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 634007
+ },
+ "ev-sunyac-www-cortlandreddragons-com-w-2026.html": {
+  "url": "https://www.cortlandreddragons.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://www.cortlandreddragons.com/sports/womens-soccer/schedule/2026",
+  "bytes": 528164
+ },
+ "ev-amcc-www-franciscanathletics-com-w-2026.html": {
+  "url": "https://www.franciscanathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://franciscanathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 465176
+ },
+ "ev-sunyac-www-oneontaathletics-com-w-2026.html": {
+  "url": "https://www.oneontaathletics.com/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://oneontaathletics.com/sports/womens-soccer/schedule/2026",
+  "bytes": 527065
+ },
+ "ev-cne-athletics-gordon-edu-m-2023.html": {
+  "url": "https://athletics.gordon.edu/sports/mens-soccer/schedule/2023",
+  "status": 200,
+  "final": "https://athletics.gordon.edu/sports/mens-soccer/schedule/2023",
+  "bytes": 723756
+ },
+ "ev-cunyac-athletics-baruch-cuny-edu-m-2023.html": {
+  "url": "https://athletics.baruch.cuny.edu/sports/mens-soccer/schedule/2023",
+  "status": 200,
+  "final": "https://athletics.baruch.cuny.edu/sports/mens-soccer/schedule/2023",
+  "bytes": 586786
+ },
+ "ev-cne-athletics-une-edu-m-2023.html": {
+  "url": "https://athletics.une.edu/sports/mens-soccer/schedule/2023",
+  "status": 200,
+  "final": "https://athletics.une.edu/sports/mens-soccer/schedule/2023",
+  "bytes": 479535
+ },
+ "ev-cne-athletics-gordon-edu-m-2024.html": {
+  "url": "https://athletics.gordon.edu/sports/mens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://athletics.gordon.edu/sports/mens-soccer/schedule/2024",
+  "bytes": 744538
+ },
+ "ev-cne-athletics-une-edu-m-2024.html": {
+  "url": "https://athletics.une.edu/sports/mens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://athletics.une.edu/sports/mens-soccer/schedule/2024",
+  "bytes": 483814
+ },
+ "ev-cunyac-athletics-baruch-cuny-edu-m-2024.html": {
+  "url": "https://athletics.baruch.cuny.edu/sports/mens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://athletics.baruch.cuny.edu/sports/mens-soccer/schedule/2024",
+  "bytes": 561667
+ },
+ "ev-cne-athletics-gordon-edu-m-2025.html": {
+  "url": "https://athletics.gordon.edu/sports/mens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://athletics.gordon.edu/sports/mens-soccer/schedule/2025",
+  "bytes": 738273
+ },
+ "ev-cne-athletics-une-edu-m-2025.html": {
+  "url": "https://athletics.une.edu/sports/mens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://athletics.une.edu/sports/mens-soccer/schedule/2025",
+  "bytes": 476536
+ },
+ "ev-cunyac-athletics-baruch-cuny-edu-m-2025.html": {
+  "url": "https://athletics.baruch.cuny.edu/sports/mens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://athletics.baruch.cuny.edu/sports/mens-soccer/schedule/2025",
+  "bytes": 568129
+ },
+ "ev-cne-athletics-gordon-edu-m-2026.html": {
+  "url": "https://athletics.gordon.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.gordon.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 744184
+ },
+ "ev-cne-athletics-une-edu-m-2026.html": {
+  "url": "https://athletics.une.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.une.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 487664
+ },
+ "ev-cunyac-athletics-baruch-cuny-edu-m-2026.html": {
+  "url": "https://athletics.baruch.cuny.edu/sports/mens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.baruch.cuny.edu/sports/mens-soccer/schedule/2026",
+  "bytes": 572761
+ },
+ "ev-cne-athletics-gordon-edu-w-2023.html": {
+  "url": "https://athletics.gordon.edu/sports/womens-soccer/schedule/2023",
+  "status": 200,
+  "final": "https://athletics.gordon.edu/sports/womens-soccer/schedule/2023",
+  "bytes": 757287
+ },
+ "ev-cne-athletics-une-edu-w-2023.html": {
+  "url": "https://athletics.une.edu/sports/womens-soccer/schedule/2023",
+  "status": 200,
+  "final": "https://athletics.une.edu/sports/womens-soccer/schedule/2023",
+  "bytes": 473105
+ },
+ "ev-cunyac-athletics-baruch-cuny-edu-w-2023.html": {
+  "url": "https://athletics.baruch.cuny.edu/sports/womens-soccer/schedule/2023",
+  "status": 200,
+  "final": "https://athletics.baruch.cuny.edu/index.aspx",
+  "bytes": 787680
+ },
+ "ev-cne-athletics-gordon-edu-w-2024.html": {
+  "url": "https://athletics.gordon.edu/sports/womens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://athletics.gordon.edu/sports/womens-soccer/schedule/2024",
+  "bytes": 767587
+ },
+ "ev-cne-athletics-une-edu-w-2024.html": {
+  "url": "https://athletics.une.edu/sports/womens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://athletics.une.edu/sports/womens-soccer/schedule/2024",
+  "bytes": 494523
+ },
+ "ev-cunyac-athletics-baruch-cuny-edu-w-2024.html": {
+  "url": "https://athletics.baruch.cuny.edu/sports/womens-soccer/schedule/2024",
+  "status": 200,
+  "final": "https://athletics.baruch.cuny.edu/index.aspx",
+  "bytes": 787680
+ },
+ "ev-cne-athletics-gordon-edu-w-2025.html": {
+  "url": "https://athletics.gordon.edu/sports/womens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://athletics.gordon.edu/sports/womens-soccer/schedule/2025",
+  "bytes": 740367
+ },
+ "ev-cne-athletics-une-edu-w-2025.html": {
+  "url": "https://athletics.une.edu/sports/womens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://athletics.une.edu/sports/womens-soccer/schedule/2025",
+  "bytes": 500281
+ },
+ "ev-cunyac-athletics-baruch-cuny-edu-w-2025.html": {
+  "url": "https://athletics.baruch.cuny.edu/sports/womens-soccer/schedule/2025",
+  "status": 200,
+  "final": "https://athletics.baruch.cuny.edu/index.aspx",
+  "bytes": 787680
+ },
+ "ev-cne-athletics-gordon-edu-w-2026.html": {
+  "url": "https://athletics.gordon.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.gordon.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 744814
+ },
+ "ev-cne-athletics-une-edu-w-2026.html": {
+  "url": "https://athletics.une.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.une.edu/sports/womens-soccer/schedule/2026",
+  "bytes": 477596
+ },
+ "ev-cunyac-athletics-baruch-cuny-edu-w-2026.html": {
+  "url": "https://athletics.baruch.cuny.edu/sports/womens-soccer/schedule/2026",
+  "status": 200,
+  "final": "https://athletics.baruch.cuny.edu/index.aspx",
+  "bytes": 787680
  }
 }
