@@ -1,3 +1,3 @@
-programmes reference cannot be built:
-  keystone-college: La Plume Township, Pa.: pinned GEOID 4206941504 names 'La Plume township' (PA), not the town in the city string; if the printed town is an unincorporated community inside that place, say so in gazetteer_note
-  st-marys-md: St. Mary's City, Md.: no 2023 Gazetteer place in MD is named "St. Mary's City" in the places file or the county subdivisions file: check the spelling, or pin a consolidated place with gazetteer_geoid
+wrote /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/data/reference/programmes.json
+wrote /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/pipeline/data/gazetteer/2023_Gaz_place_trimmed.txt
+wrote /home/runner/work/keelson-rib-touchline/keelson-rib-touchline/pipeline/data/gazetteer/2023_Gaz_cousubs_trimmed.txt
