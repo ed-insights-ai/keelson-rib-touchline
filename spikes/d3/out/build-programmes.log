@@ -1,20 +1,3 @@
 programmes reference cannot be built:
-  gwynedd-mercy: Lower Gwynedd Township, Pa.: no 2023 Gazetteer place in PA is named 'Lower Gwynedd Township' in the places file or the county subdivisions file: check the spelling, or pin a consolidated place with gazetteer_geoid
-  immaculata: Immaculata, Pa.: no 2023 Gazetteer place in PA is named 'Immaculata' in the places file or the county subdivisions file: check the spelling, or pin a consolidated place with gazetteer_geoid
-  saint-elizabeth: Convent Station, N.J.: no 2023 Gazetteer place in NJ is named 'Convent Station' in the places file or the county subdivisions file: check the spelling, or pin a consolidated place with gazetteer_geoid
-  carroll: Waukesha, Wis.: 2 2023 Gazetteer places match, pin one with gazetteer_geoid: 5584250 Waukesha city, 5584275 Waukesha village
-  dean-college: Franklin, Mass.: no 2023 Gazetteer place in MA is named 'Franklin' in the places file or the county subdivisions file: check the spelling, or pin a consolidated place with gazetteer_geoid
-  transylvania: Lexington, Ky.: no 2023 Gazetteer place in KY is named 'Lexington' in the places file or the county subdivisions file: check the spelling, or pin a consolidated place with gazetteer_geoid
-  bard: Annandale-on-Hudson, N.Y.: no 2023 Gazetteer place in NY is named 'Annandale-on-Hudson' in the places file or the county subdivisions file: check the spelling, or pin a consolidated place with gazetteer_geoid
-  messiah: Grantham, Pa.: no 2023 Gazetteer place in PA is named 'Grantham' in the places file or the county subdivisions file: check the spelling, or pin a consolidated place with gazetteer_geoid
-  stevenson: Stevenson, Md.: no 2023 Gazetteer place in MD is named 'Stevenson' in the places file or the county subdivisions file: check the spelling, or pin a consolidated place with gazetteer_geoid
-  desales: Center Valley, Pa.: no 2023 Gazetteer place in PA is named 'Center Valley' in the places file or the county subdivisions file: check the spelling, or pin a consolidated place with gazetteer_geoid
-  amherst: Amherst, Mass.: no 2023 Gazetteer place in MA is named 'Amherst' in the places file or the county subdivisions file: check the spelling, or pin a consolidated place with gazetteer_geoid
-  kean: Union Township, N.J.: no 2023 Gazetteer place in NJ is named 'Union Township' in the places file or the county subdivisions file: check the spelling, or pin a consolidated place with gazetteer_geoid
-  sweet-briar: Sweet Briar, Va.: no 2023 Gazetteer place in VA is named 'Sweet Briar' in the places file or the county subdivisions file: check the spelling, or pin a consolidated place with gazetteer_geoid
-  berry: Mount Berry, Ga.: no 2023 Gazetteer place in GA is named 'Mount Berry' in the places file or the county subdivisions file: check the spelling, or pin a consolidated place with gazetteer_geoid
-  manhattanville: Purchase, N.Y.: no 2023 Gazetteer place in NY is named 'Purchase' in the places file or the county subdivisions file: check the spelling, or pin a consolidated place with gazetteer_geoid
-  purchase: Purchase, N.Y.: no 2023 Gazetteer place in NY is named 'Purchase' in the places file or the county subdivisions file: check the spelling, or pin a consolidated place with gazetteer_geoid
-  uw-superior: Superior, Wis.: 2 2023 Gazetteer places match, pin one with gazetteer_geoid: 5578650 Superior city, 5578660 Superior village
-  keystone-college: La Plume Township, Pa.: no 2023 Gazetteer place in PA is named 'La Plume Township' in the places file or the county subdivisions file: check the spelling, or pin a consolidated place with gazetteer_geoid
+  keystone-college: La Plume Township, Pa.: pinned GEOID 4206941504 names 'La Plume township' (PA), not the town in the city string; if the printed town is an unincorporated community inside that place, say so in gazetteer_note
   st-marys-md: St. Mary's City, Md.: no 2023 Gazetteer place in MD is named "St. Mary's City" in the places file or the county subdivisions file: check the spelling, or pin a consolidated place with gazetteer_geoid
