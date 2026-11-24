@@ -75,7 +75,9 @@ jobs:
   journal:
     name: Write the journals
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    # A first run after a gap rewrites all 98 journals, and Flex can take
+    # minutes per reply (the trial: 2 and 7).
+    timeout-minutes: 240
     environment: production
     # One writer at a time: two runs would race on touchline-ui main.
     concurrency:

@@ -18,6 +18,7 @@
 #   JOURNAL_ONLY        conference keys to write whatever their stamps (a trial);
 #                       empty writes the changed ones
 #   JOURNAL_NATIONAL    "false" skips the national journals (default true)
+#   JOURNAL_CONCURRENCY conferences asking at once (default 8)
 #   JOURNAL_MODEL, JOURNAL_SERVICE_TIER, JOURNAL_THINKING, GEMINI_API_KEY
 #                       passed to the model command, site/journal/gemini.ts
 #
@@ -60,7 +61,7 @@ for div in $divisions; do
     fi
     echo "→ $div $gender: $keys"
     if ! bun run journal run --conference "$keys" --write \
-      --command "$here/gemini.ts" --model "$model" --concurrency 4; then
+      --command "$here/gemini.ts" --model "$model" --concurrency "${JOURNAL_CONCURRENCY:-8}"; then
       failed=1
     fi
     wrote="$wrote $div-$gender"
