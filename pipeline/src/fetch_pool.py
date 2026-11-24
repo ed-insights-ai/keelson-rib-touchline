@@ -64,7 +64,7 @@ from contextlib import contextmanager
 from dataclasses import dataclass, field
 from urllib.parse import urljoin, urlparse
 import re
-from urllib.parse import unquote
+from urllib.parse import quote
 
 import requests
 
@@ -218,17 +218,37 @@ class RobotRules:
         delays = [group[2] for group in chosen if group[2] is not None]
         self.crawl_delay = max(delays) if delays else None
 
-    @staticmethod
-    def _matches(pattern: str, path: str) -> bool:
+    _UNRESERVED = frozenset(
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~"
+    )
+
+    @classmethod
+    def _normal(cls, text: str) -> str:
+        """One spelling for a rule and a URL alike: non-ASCII percent-encoded
+        as UTF-8, an escape of an unreserved character decoded, every other
+        escape kept (upper-cased), so ``%2F`` never becomes a path ``/``."""
+        text = quote(text, safe="".join(chr(c) for c in range(33, 127)))
+        return re.sub(
+            r"%([0-9A-Fa-f]{2})",
+            lambda m: (
+                chr(int(m.group(1), 16))
+                if chr(int(m.group(1), 16)) in cls._UNRESERVED
+                else f"%{m.group(1).upper()}"
+            ),
+            text,
+        )
+
+    @classmethod
+    def _matches(cls, pattern: str, path: str) -> bool:
         anchored = pattern.endswith("$")
         body = pattern[:-1] if anchored else pattern
-        regex = ".*".join(re.escape(unquote(part)) for part in body.split("*"))
+        regex = ".*".join(re.escape(cls._normal(part)) for part in body.split("*"))
         return re.match(regex + ("$" if anchored else ""), path) is not None
 
     def can_fetch(self, url: str) -> bool:
         parts = urlparse(url)
-        path = unquote(parts.path or "/") + (
-            f"?{unquote(parts.query)}" if parts.query else ""
+        path = self._normal(parts.path or "/") + (
+            f"?{self._normal(parts.query)}" if parts.query else ""
         )
         best: tuple[int, bool] | None = None
         for allow, pattern in self.rules:

@@ -274,3 +274,15 @@ def test_a_refusing_session_never_retries_a_429() -> None:
         .max_retries
     )
     assert daily.is_retry("GET", 429, has_retry_after=True)
+
+
+def test_robots_rules_keep_reserved_escapes() -> None:
+    from src.fetch_pool import RobotRules
+
+    rules = RobotRules(
+        "User-agent: *\nDisallow: /sports/\nAllow: /sports%2F\n", "Touchline"
+    )
+    assert not rules.can_fetch("https://a.example/sports/msoc/schedule/2025")
+    assert rules.can_fetch("https://a.example/sports%2fmsoc")
+    tilde = RobotRules("User-agent: *\nDisallow: /%7Ecoach/\n", "Touchline")
+    assert not tilde.can_fetch("https://a.example/~coach/page")
