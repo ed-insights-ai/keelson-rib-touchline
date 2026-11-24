@@ -27,7 +27,8 @@ name: Publish site
 #            always what pull requests build)
 #   data     the default on main: the private d1-soccer and d2-soccer homes at their main, read with
 #            the touchline-publisher App (infra/GITHUB_APP.md); journals come
-#            from touchline-ui main, where the Mac commits them
+#            from touchline-ui main, where the journal job (journal.yml, on
+#            when TOUCHLINE_JOURNALS is `on`) commits them
 # A run takes the `source` input unless it is `default`, else the repo
 # variable SITE_SOURCE, else data.
 #
@@ -125,12 +126,14 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       go: ${{ steps.due.outputs.go }}
+      journals: ${{ steps.due.outputs.journals }}
     steps:
       - name: Due
         id: due
         env:
           EVENT: ${{ github.event_name }}
           UNTIL: ${{ vars.TOUCHLINE_COLLECT_UNTIL }}
+          JOURNALS: ${{ vars.TOUCHLINE_JOURNALS }}
         run: |
           go=true
           if [ "$EVENT" = schedule ]; then
@@ -147,6 +150,15 @@ jobs:
           fi
           echo "go=$go" >> "$GITHUB_OUTPUT"
           echo "Publish: $go: $why" | tee -a "$GITHUB_STEP_SUMMARY"
+          # The journals are written from the real data on main, before the
+          # site builds, when TOUCHLINE_JOURNALS is `on` (journal.yml).
+          journals=false
+          if [ "$go" = true ] && [ "$EVENT" != pull_request ] && [ "$GITHUB_REF" = refs/heads/main ] \
+            && [ "$SOURCE" = data ] && [ "$JOURNALS" = on ]; then
+            journals=true
+          fi
+          echo "journals=$journals" >> "$GITHUB_OUTPUT"
+          echo "Journals: $journals (TOUCHLINE_JOURNALS=${JOURNALS:-unset})" | tee -a "$GITHUB_STEP_SUMMARY"
 
   bundle:
     name: Check contracts and cut the bundle
@@ -495,9 +507,22 @@ jobs:
             work/release/*.previous-base
           retention-days: 7
 
+  journal:
+    name: Journal
+    needs: when
+    if: needs.when.outputs.journals == 'true'
+    uses: ./.github/workflows/journal.yml
+    with:
+      commit: true
+    secrets: inherit
+
   site:
     name: Build, deploy and smoke-check the site
-    needs: [bundle, snapshot]
+    # After the journal job, so the build reads today's journals from
+    # touchline-ui main; a journal that failed or was skipped leaves
+    # yesterday's, and the site still deploys.
+    needs: [bundle, snapshot, journal]
+    if: ${{ !cancelled() && needs.bundle.result == 'success' && needs.snapshot.result == 'success' }}
     runs-on: ubuntu-latest
     environment: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && 'production' || '' }}
     permissions:
@@ -527,7 +552,7 @@ jobs:
           ref: ${{ steps.ui.outputs.sha }}
           path: ui
       - name: Today's journals
-        # Journals are data the Mac commits to touchline-ui main daily; the
+        # Journals are data the journal job commits to touchline-ui main; the
         # code stays pinned. The sample site uses the pinned commit's own.
         if: env.SOURCE == 'data'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -618,11 +643,14 @@ jobs:
     # Only once the live site shows this run's data. A main run that names a
     # source the live site does not serve deploys nothing (the site job), so
     # its snapshot is released on the site job's build gates alone.
+    # !cancelled(): the journal job above the site may fail or be skipped
+    # without holding the release back.
     if: >-
+      !cancelled() && needs.snapshot.result == 'success' && (
       needs.site.outputs.smoke_passed == 'true' ||
       (needs.site.result == 'success' && github.ref == 'refs/heads/main' &&
       github.event_name != 'pull_request' && inputs.source != '' &&
-      inputs.source != 'default' && inputs.source != (vars.SITE_SOURCE || 'data'))
+      inputs.source != 'default' && inputs.source != (vars.SITE_SOURCE || 'data')))
     runs-on: ubuntu-latest
     environment: production
     permissions:

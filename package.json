@@ -45,7 +45,7 @@
     "typecheck": "tsc --noEmit",
     "check": "biome check .",
     "check:fix": "biome check --write .",
-    "check:sh": "shellcheck -s sh bin/*.sh site/*.sh snapshot/*.sh",
+    "check:sh": "shellcheck -s sh bin/*.sh site/*.sh site/journal/*.sh snapshot/*.sh",
     "link:keelson": "bun dev/link.ts"
   },
   "dependencies": {
