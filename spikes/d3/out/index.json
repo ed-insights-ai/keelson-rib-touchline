@@ -1,22 +1,1110 @@
 {
- "dir-members-1.json": {
-  "url": "https://web3.ncaa.org/directory/api/directory/memberList?type=12&division=III",
-  "status": 403,
-  "bytes": 418
+ "nescac-msoc-sidearm.html": {
+  "url": "https://nescac.com/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://nescac.com/standings.aspx?path=msoc",
+  "bytes": 171222,
+  "type": "text/html; charset=utf-8"
  },
- "dir-members-2.json": {
-  "url": "https://web3.ncaa.org/directory/api/directory/memberList?division=III",
-  "status": 403,
-  "bytes": 418
+ "nescac-msoc-presto.html": {
+  "url": "https://nescac.com/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://nescac.com/sports/msoc/2026-27/standings",
+  "bytes": 171222,
+  "type": "text/html; charset=utf-8"
  },
- "stats-mso-2026.html": {
-  "url": "https://stats.ncaa.org/team/inst_team_list?academic_year=2027&conf_id=-1&division=3&sport_code=MSO",
-  "status": 403,
-  "bytes": 404
+ "nescac-wsoc-sidearm.html": {
+  "url": "https://nescac.com/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://nescac.com/standings.aspx?path=wsoc",
+  "bytes": 171489,
+  "type": "text/html; charset=utf-8"
  },
- "stats-wso-2026.html": {
-  "url": "https://stats.ncaa.org/team/inst_team_list?academic_year=2027&conf_id=-1&division=3&sport_code=WSO",
-  "status": 403,
-  "bytes": 404
+ "nescac-wsoc-presto.html": {
+  "url": "https://nescac.com/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://nescac.com/sports/wsoc/2026-27/standings",
+  "bytes": 171489,
+  "type": "text/html; charset=utf-8"
+ },
+ "uaa-msoc-sidearm.html": {
+  "url": "https://uaasports.info/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://uaasports.info/standings.aspx?path=msoc",
+  "bytes": 140156,
+  "type": "text/html; charset=utf-8"
+ },
+ "uaa-msoc-presto.html": {
+  "url": "https://uaasports.info/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://uaasports.info/sports/msoc/2026-27/standings",
+  "bytes": 140156,
+  "type": "text/html; charset=utf-8"
+ },
+ "uaa-wsoc-sidearm.html": {
+  "url": "https://uaasports.info/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://uaasports.info/standings.aspx?path=wsoc",
+  "bytes": 140280,
+  "type": "text/html; charset=utf-8"
+ },
+ "uaa-wsoc-presto.html": {
+  "url": "https://uaasports.info/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://uaasports.info/sports/wsoc/2026-27/standings",
+  "bytes": 140280,
+  "type": "text/html; charset=utf-8"
+ },
+ "liberty-msoc-sidearm.html": {
+  "url": "https://libertyleagueathletics.com/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://libertyleagueathletics.com/standings.aspx?path=msoc",
+  "bytes": 167332,
+  "type": "text/html; charset=utf-8"
+ },
+ "liberty-msoc-presto.html": {
+  "url": "https://libertyleagueathletics.com/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://libertyleagueathletics.com/sports/msoc/2026-27/standings",
+  "bytes": 167332,
+  "type": "text/html; charset=utf-8"
+ },
+ "liberty-wsoc-sidearm.html": {
+  "url": "https://libertyleagueathletics.com/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://libertyleagueathletics.com/standings.aspx?path=wsoc",
+  "bytes": 167341,
+  "type": "text/html; charset=utf-8"
+ },
+ "liberty-wsoc-presto.html": {
+  "url": "https://libertyleagueathletics.com/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://libertyleagueathletics.com/sports/wsoc/2026-27/standings",
+  "bytes": 167341,
+  "type": "text/html; charset=utf-8"
+ },
+ "e8-msoc-sidearm.html": {
+  "url": "https://empire8.com/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://empire8.com/standings.aspx?path=msoc",
+  "bytes": 195156,
+  "type": "text/html; charset=utf-8"
+ },
+ "e8-msoc-presto.html": {
+  "url": "https://empire8.com/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://empire8.com/sports/msoc/2026-27/standings",
+  "bytes": 195156,
+  "type": "text/html; charset=utf-8"
+ },
+ "e8-wsoc-sidearm.html": {
+  "url": "https://empire8.com/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://empire8.com/standings.aspx?path=wsoc",
+  "bytes": 197698,
+  "type": "text/html; charset=utf-8"
+ },
+ "e8-wsoc-presto.html": {
+  "url": "https://empire8.com/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://empire8.com/sports/wsoc/2026-27/standings",
+  "bytes": 197698,
+  "type": "text/html; charset=utf-8"
+ },
+ "sunyac-msoc-sidearm.html": {
+  "url": "https://sunyacsports.com/standings.aspx?path=msoc",
+  "status": 405,
+  "bytes": 2131
+ },
+ "sunyac-msoc-presto.html": {
+  "url": "https://sunyacsports.com/sports/msoc/2026-27/standings",
+  "status": 405,
+  "bytes": 2131
+ },
+ "sunyac-wsoc-sidearm.html": {
+  "url": "https://sunyacsports.com/standings.aspx?path=wsoc",
+  "status": 405,
+  "bytes": 2131
+ },
+ "sunyac-wsoc-presto.html": {
+  "url": "https://sunyacsports.com/sports/wsoc/2026-27/standings",
+  "status": 405,
+  "bytes": 2131
+ },
+ "njac-msoc-sidearm.html": {
+  "url": "https://njacsports.com/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://njacsports.com/standings.aspx?path=msoc",
+  "bytes": 174757,
+  "type": "text/html; charset=utf-8"
+ },
+ "njac-msoc-presto.html": {
+  "url": "https://njacsports.com/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://njacsports.com/sports/msoc/2026-27/standings",
+  "bytes": 174757,
+  "type": "text/html; charset=utf-8"
+ },
+ "njac-wsoc-sidearm.html": {
+  "url": "https://njacsports.com/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://njacsports.com/standings.aspx?path=wsoc",
+  "bytes": 174871,
+  "type": "text/html; charset=utf-8"
+ },
+ "njac-wsoc-presto.html": {
+  "url": "https://njacsports.com/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://njacsports.com/sports/wsoc/2026-27/standings",
+  "bytes": 174871,
+  "type": "text/html; charset=utf-8"
+ },
+ "landmark-msoc-sidearm.html": {
+  "url": "https://landmarkconference.org/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://landmarkconference.org/standings.aspx?path=msoc",
+  "bytes": 260815,
+  "type": "text/html; charset=utf-8"
+ },
+ "landmark-msoc-presto.html": {
+  "url": "https://landmarkconference.org/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://landmarkconference.org/sports/msoc/2026-27/standings",
+  "bytes": 260815,
+  "type": "text/html; charset=utf-8"
+ },
+ "landmark-wsoc-sidearm.html": {
+  "url": "https://landmarkconference.org/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://landmarkconference.org/standings.aspx?path=wsoc",
+  "bytes": 263452,
+  "type": "text/html; charset=utf-8"
+ },
+ "landmark-wsoc-presto.html": {
+  "url": "https://landmarkconference.org/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://landmarkconference.org/sports/wsoc/2026-27/standings",
+  "bytes": 263452,
+  "type": "text/html; charset=utf-8"
+ },
+ "centennial-msoc-sidearm.html": {
+  "url": "https://centennial.org/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://centennial.org/standings.aspx?path=msoc",
+  "bytes": 174913,
+  "type": "text/html; charset=utf-8"
+ },
+ "centennial-msoc-presto.html": {
+  "url": "https://centennial.org/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://centennial.org/sports/msoc/2026-27/standings",
+  "bytes": 174913,
+  "type": "text/html; charset=utf-8"
+ },
+ "centennial-wsoc-sidearm.html": {
+  "url": "https://centennial.org/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://centennial.org/standings.aspx?path=wsoc",
+  "bytes": 176728,
+  "type": "text/html; charset=utf-8"
+ },
+ "centennial-wsoc-presto.html": {
+  "url": "https://centennial.org/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://centennial.org/sports/wsoc/2026-27/standings",
+  "bytes": 176728,
+  "type": "text/html; charset=utf-8"
+ },
+ "mac-msoc-sidearm.html": {
+  "url": "https://gomacsports.com/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://gomacsports.com/standings.aspx?path=msoc",
+  "bytes": 171463,
+  "type": "text/html; charset=utf-8"
+ },
+ "mac-msoc-presto.html": {
+  "url": "https://gomacsports.com/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://gomacsports.com/sports/msoc/2026-27/standings",
+  "bytes": 171463,
+  "type": "text/html; charset=utf-8"
+ },
+ "mac-wsoc-sidearm.html": {
+  "url": "https://gomacsports.com/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://gomacsports.com/standings.aspx?path=wsoc",
+  "bytes": 171458,
+  "type": "text/html; charset=utf-8"
+ },
+ "mac-wsoc-presto.html": {
+  "url": "https://gomacsports.com/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://gomacsports.com/sports/wsoc/2026-27/standings",
+  "bytes": 171458,
+  "type": "text/html; charset=utf-8"
+ },
+ "lec-msoc-sidearm.html": {
+  "url": "https://littleeast.com/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://littleeast.com/standings.aspx?path=msoc",
+  "bytes": 192065,
+  "type": "text/html; charset=utf-8"
+ },
+ "lec-msoc-presto.html": {
+  "url": "https://littleeast.com/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://littleeast.com/sports/msoc/2026-27/standings",
+  "bytes": 192065,
+  "type": "text/html; charset=utf-8"
+ },
+ "lec-wsoc-sidearm.html": {
+  "url": "https://littleeast.com/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://littleeast.com/standings.aspx?path=wsoc",
+  "bytes": 192115,
+  "type": "text/html; charset=utf-8"
+ },
+ "lec-wsoc-presto.html": {
+  "url": "https://littleeast.com/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://littleeast.com/sports/wsoc/2026-27/standings",
+  "bytes": 192115,
+  "type": "text/html; charset=utf-8"
+ },
+ "mascac-msoc-sidearm.html": {
+  "url": "https://mascac.com/standings.aspx?path=msoc",
+  "status": 405,
+  "bytes": 2131
+ },
+ "mascac-msoc-presto.html": {
+  "url": "https://mascac.com/sports/msoc/2026-27/standings",
+  "status": 405,
+  "bytes": 2131
+ },
+ "mascac-wsoc-sidearm.html": {
+  "url": "https://mascac.com/standings.aspx?path=wsoc",
+  "status": 405,
+  "bytes": 2131
+ },
+ "mascac-wsoc-presto.html": {
+  "url": "https://mascac.com/sports/wsoc/2026-27/standings",
+  "status": 405,
+  "bytes": 2131
+ },
+ "cne-msoc-sidearm.html": {
+  "url": "https://cne-athletics.com/standings.aspx?path=msoc",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "cne-msoc-presto.html": {
+  "url": "https://cne-athletics.com/sports/msoc/2026-27/standings",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "cne-wsoc-sidearm.html": {
+  "url": "https://cne-athletics.com/standings.aspx?path=wsoc",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "cne-wsoc-presto.html": {
+  "url": "https://cne-athletics.com/sports/wsoc/2026-27/standings",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "gnac-ne-msoc-sidearm.html": {
+  "url": "https://gnacsports.com/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://gnacsports.com/standings.aspx?path=msoc",
+  "bytes": 276172,
+  "type": "text/html; charset=utf-8"
+ },
+ "gnac-ne-msoc-presto.html": {
+  "url": "https://gnacsports.com/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://gnacsports.com/sports/msoc/2026-27/standings",
+  "bytes": 276172,
+  "type": "text/html; charset=utf-8"
+ },
+ "gnac-ne-wsoc-sidearm.html": {
+  "url": "https://gnacsports.com/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://gnacsports.com/standings.aspx?path=wsoc",
+  "bytes": 283867,
+  "type": "text/html; charset=utf-8"
+ },
+ "gnac-ne-wsoc-presto.html": {
+  "url": "https://gnacsports.com/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://gnacsports.com/sports/wsoc/2026-27/standings",
+  "bytes": 283867,
+  "type": "text/html; charset=utf-8"
+ },
+ "nac-msoc-sidearm.html": {
+  "url": "https://nacathletics.com/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://nacathletics.com/standings.aspx?path=msoc",
+  "bytes": 221671,
+  "type": "text/html; charset=utf-8"
+ },
+ "nac-msoc-presto.html": {
+  "url": "https://nacathletics.com/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://nacathletics.com/sports/msoc/2026-27/standings",
+  "bytes": 221671,
+  "type": "text/html; charset=utf-8"
+ },
+ "nac-wsoc-sidearm.html": {
+  "url": "https://nacathletics.com/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://nacathletics.com/standings.aspx?path=wsoc",
+  "bytes": 221561,
+  "type": "text/html; charset=utf-8"
+ },
+ "nac-wsoc-presto.html": {
+  "url": "https://nacathletics.com/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://nacathletics.com/sports/wsoc/2026-27/standings",
+  "bytes": 221561,
+  "type": "text/html; charset=utf-8"
+ },
+ "necc-msoc-sidearm.html": {
+  "url": "https://neccathletics.com/standings.aspx?path=msoc",
+  "status": 405,
+  "bytes": 2131
+ },
+ "necc-msoc-presto.html": {
+  "url": "https://neccathletics.com/sports/msoc/2026-27/standings",
+  "status": 405,
+  "bytes": 2131
+ },
+ "necc-wsoc-sidearm.html": {
+  "url": "https://neccathletics.com/standings.aspx?path=wsoc",
+  "status": 405,
+  "bytes": 2131
+ },
+ "necc-wsoc-presto.html": {
+  "url": "https://neccathletics.com/sports/wsoc/2026-27/standings",
+  "status": 405,
+  "bytes": 2131
+ },
+ "skyline-msoc-sidearm.html": {
+  "url": "https://skylineconference.org/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://skylineconference.org/standings.aspx?path=msoc",
+  "bytes": 179570,
+  "type": "text/html; charset=utf-8"
+ },
+ "skyline-msoc-presto.html": {
+  "url": "https://skylineconference.org/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://skylineconference.org/sports/msoc/2026-27/standings",
+  "bytes": 179570,
+  "type": "text/html; charset=utf-8"
+ },
+ "skyline-wsoc-sidearm.html": {
+  "url": "https://skylineconference.org/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://skylineconference.org/standings.aspx?path=wsoc",
+  "bytes": 179689,
+  "type": "text/html; charset=utf-8"
+ },
+ "skyline-wsoc-presto.html": {
+  "url": "https://skylineconference.org/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://skylineconference.org/sports/wsoc/2026-27/standings",
+  "bytes": 179689,
+  "type": "text/html; charset=utf-8"
+ },
+ "cunyac-msoc-sidearm.html": {
+  "url": "https://cunyathletics.com/standings.aspx?path=msoc",
+  "status": 500,
+  "bytes": 511
+ },
+ "cunyac-msoc-presto.html": {
+  "url": "https://cunyathletics.com/sports/msoc/2026-27/standings",
+  "status": 500,
+  "bytes": 511
+ },
+ "cunyac-wsoc-sidearm.html": {
+  "url": "https://cunyathletics.com/standings.aspx?path=wsoc",
+  "status": 500,
+  "bytes": 511
+ },
+ "cunyac-wsoc-presto.html": {
+  "url": "https://cunyathletics.com/sports/wsoc/2026-27/standings",
+  "status": 500,
+  "bytes": 511
+ },
+ "atlantic-east-msoc-sidearm.html": {
+  "url": "https://atlanticeast.org/standings.aspx?path=msoc",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "atlantic-east-msoc-presto.html": {
+  "url": "https://atlanticeast.org/sports/msoc/2026-27/standings",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "atlantic-east-wsoc-sidearm.html": {
+  "url": "https://atlanticeast.org/standings.aspx?path=wsoc",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "atlantic-east-wsoc-presto.html": {
+  "url": "https://atlanticeast.org/sports/wsoc/2026-27/standings",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "united-east-msoc-sidearm.html": {
+  "url": "https://unitedeastconference.com/standings.aspx?path=msoc",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "united-east-msoc-presto.html": {
+  "url": "https://unitedeastconference.com/sports/msoc/2026-27/standings",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "united-east-wsoc-sidearm.html": {
+  "url": "https://unitedeastconference.com/standings.aspx?path=wsoc",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "united-east-wsoc-presto.html": {
+  "url": "https://unitedeastconference.com/sports/wsoc/2026-27/standings",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "c2c-msoc-sidearm.html": {
+  "url": "https://c2csports.com/standings.aspx?path=msoc",
+  "status": 405,
+  "bytes": 2131
+ },
+ "c2c-msoc-presto.html": {
+  "url": "https://c2csports.com/sports/msoc/2026-27/standings",
+  "status": 405,
+  "bytes": 2131
+ },
+ "c2c-wsoc-sidearm.html": {
+  "url": "https://c2csports.com/standings.aspx?path=wsoc",
+  "status": 405,
+  "bytes": 2131
+ },
+ "c2c-wsoc-presto.html": {
+  "url": "https://c2csports.com/sports/wsoc/2026-27/standings",
+  "status": 405,
+  "bytes": 2131
+ },
+ "odac-msoc-sidearm.html": {
+  "url": "https://odaconline.com/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://odaconline.com/standings.aspx?path=msoc",
+  "bytes": 220337,
+  "type": "text/html; charset=utf-8"
+ },
+ "odac-msoc-presto.html": {
+  "url": "https://odaconline.com/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://odaconline.com/sports/msoc/2026-27/standings",
+  "bytes": 220337,
+  "type": "text/html; charset=utf-8"
+ },
+ "odac-wsoc-sidearm.html": {
+  "url": "https://odaconline.com/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://odaconline.com/standings.aspx?path=wsoc",
+  "bytes": 222869,
+  "type": "text/html; charset=utf-8"
+ },
+ "odac-wsoc-presto.html": {
+  "url": "https://odaconline.com/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://odaconline.com/sports/wsoc/2026-27/standings",
+  "bytes": 222869,
+  "type": "text/html; charset=utf-8"
+ },
+ "usa-south-msoc-sidearm.html": {
+  "url": "https://usasouth.net/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://usasouth.net/standings.aspx?path=msoc",
+  "bytes": 159693,
+  "type": "text/html; charset=utf-8"
+ },
+ "usa-south-msoc-presto.html": {
+  "url": "https://usasouth.net/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://usasouth.net/sports/msoc/2026-27/standings",
+  "bytes": 159693,
+  "type": "text/html; charset=utf-8"
+ },
+ "usa-south-wsoc-sidearm.html": {
+  "url": "https://usasouth.net/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://usasouth.net/standings.aspx?path=wsoc",
+  "bytes": 164702,
+  "type": "text/html; charset=utf-8"
+ },
+ "usa-south-wsoc-presto.html": {
+  "url": "https://usasouth.net/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://usasouth.net/sports/wsoc/2026-27/standings",
+  "bytes": 164702,
+  "type": "text/html; charset=utf-8"
+ },
+ "ncac-msoc-sidearm.html": {
+  "url": "https://northcoast.org/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://northcoast.org/standings.aspx?path=msoc",
+  "bytes": 198024,
+  "type": "text/html; charset=utf-8"
+ },
+ "ncac-msoc-presto.html": {
+  "url": "https://northcoast.org/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://northcoast.org/sports/msoc/2026-27/standings",
+  "bytes": 198024,
+  "type": "text/html; charset=utf-8"
+ },
+ "ncac-wsoc-sidearm.html": {
+  "url": "https://northcoast.org/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://northcoast.org/standings.aspx?path=wsoc",
+  "bytes": 196298,
+  "type": "text/html; charset=utf-8"
+ },
+ "ncac-wsoc-presto.html": {
+  "url": "https://northcoast.org/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://northcoast.org/sports/wsoc/2026-27/standings",
+  "bytes": 196298,
+  "type": "text/html; charset=utf-8"
+ },
+ "oac-msoc-sidearm.html": {
+  "url": "https://oac.org/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://oac.org/standings.aspx?path=msoc",
+  "bytes": 119050,
+  "type": "text/html; charset=utf-8"
+ },
+ "oac-msoc-presto.html": {
+  "url": "https://oac.org/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://oac.org/sports/msoc/2026-27/standings",
+  "bytes": 119050,
+  "type": "text/html; charset=utf-8"
+ },
+ "oac-wsoc-sidearm.html": {
+  "url": "https://oac.org/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://oac.org/standings.aspx?path=wsoc",
+  "bytes": 119667,
+  "type": "text/html; charset=utf-8"
+ },
+ "oac-wsoc-presto.html": {
+  "url": "https://oac.org/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://oac.org/sports/wsoc/2026-27/standings",
+  "bytes": 119667,
+  "type": "text/html; charset=utf-8"
+ },
+ "pac-msoc-sidearm.html": {
+  "url": "https://pacathletics.org/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://pacathletics.org/standings.aspx?path=msoc",
+  "bytes": 187274,
+  "type": "text/html; charset=utf-8"
+ },
+ "pac-msoc-presto.html": {
+  "url": "https://pacathletics.org/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://pacathletics.org/sports/msoc/2026-27/standings",
+  "bytes": 187274,
+  "type": "text/html; charset=utf-8"
+ },
+ "pac-wsoc-sidearm.html": {
+  "url": "https://pacathletics.org/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://pacathletics.org/standings.aspx?path=wsoc",
+  "bytes": 187358,
+  "type": "text/html; charset=utf-8"
+ },
+ "pac-wsoc-presto.html": {
+  "url": "https://pacathletics.org/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://pacathletics.org/sports/wsoc/2026-27/standings",
+  "bytes": 187358,
+  "type": "text/html; charset=utf-8"
+ },
+ "amcc-msoc-sidearm.html": {
+  "url": "https://amccsports.org/standings.aspx?path=msoc",
+  "status": 405,
+  "bytes": 2131
+ },
+ "amcc-msoc-presto.html": {
+  "url": "https://amccsports.org/sports/msoc/2026-27/standings",
+  "status": 405,
+  "bytes": 2131
+ },
+ "amcc-wsoc-sidearm.html": {
+  "url": "https://amccsports.org/standings.aspx?path=wsoc",
+  "status": 405,
+  "bytes": 2131
+ },
+ "amcc-wsoc-presto.html": {
+  "url": "https://amccsports.org/sports/wsoc/2026-27/standings",
+  "status": 405,
+  "bytes": 2131
+ },
+ "hcac-msoc-sidearm.html": {
+  "url": "https://heartlandconf.org/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://heartlandconf.org/standings.aspx?path=msoc",
+  "bytes": 155740,
+  "type": "text/html; charset=utf-8"
+ },
+ "hcac-msoc-presto.html": {
+  "url": "https://heartlandconf.org/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://heartlandconf.org/sports/msoc/2026-27/standings",
+  "bytes": 155740,
+  "type": "text/html; charset=utf-8"
+ },
+ "hcac-wsoc-sidearm.html": {
+  "url": "https://heartlandconf.org/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://heartlandconf.org/standings.aspx?path=wsoc",
+  "bytes": 155886,
+  "type": "text/html; charset=utf-8"
+ },
+ "hcac-wsoc-presto.html": {
+  "url": "https://heartlandconf.org/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://heartlandconf.org/sports/wsoc/2026-27/standings",
+  "bytes": 155886,
+  "type": "text/html; charset=utf-8"
+ },
+ "miaa-mi-msoc-sidearm.html": {
+  "url": "https://miaa.org/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://miaa.org/standings.aspx?path=msoc",
+  "bytes": 216205,
+  "type": "text/html; charset=utf-8"
+ },
+ "miaa-mi-msoc-presto.html": {
+  "url": "https://miaa.org/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://miaa.org/sports/msoc/2026-27/standings",
+  "bytes": 216205,
+  "type": "text/html; charset=utf-8"
+ },
+ "miaa-mi-wsoc-sidearm.html": {
+  "url": "https://miaa.org/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://miaa.org/standings.aspx?path=wsoc",
+  "bytes": 219023,
+  "type": "text/html; charset=utf-8"
+ },
+ "miaa-mi-wsoc-presto.html": {
+  "url": "https://miaa.org/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://miaa.org/sports/wsoc/2026-27/standings",
+  "bytes": 219023,
+  "type": "text/html; charset=utf-8"
+ },
+ "nacc-msoc-sidearm.html": {
+  "url": "https://naccsports.org/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://naccsports.org/standings.aspx?path=msoc",
+  "bytes": 194218,
+  "type": "text/html; charset=utf-8"
+ },
+ "nacc-msoc-presto.html": {
+  "url": "https://naccsports.org/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://naccsports.org/sports/msoc/2026-27/standings",
+  "bytes": 194218,
+  "type": "text/html; charset=utf-8"
+ },
+ "nacc-wsoc-sidearm.html": {
+  "url": "https://naccsports.org/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://naccsports.org/standings.aspx?path=wsoc",
+  "bytes": 194323,
+  "type": "text/html; charset=utf-8"
+ },
+ "nacc-wsoc-presto.html": {
+  "url": "https://naccsports.org/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://naccsports.org/sports/wsoc/2026-27/standings",
+  "bytes": 194323,
+  "type": "text/html; charset=utf-8"
+ },
+ "cciw-msoc-sidearm.html": {
+  "url": "https://cciw.org/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://cciw.org/standings.aspx?path=msoc",
+  "bytes": 179407,
+  "type": "text/html; charset=utf-8"
+ },
+ "cciw-msoc-presto.html": {
+  "url": "https://cciw.org/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://cciw.org/sports/msoc/2026-27/standings",
+  "bytes": 179407,
+  "type": "text/html; charset=utf-8"
+ },
+ "cciw-wsoc-sidearm.html": {
+  "url": "https://cciw.org/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://cciw.org/standings.aspx?path=wsoc",
+  "bytes": 179512,
+  "type": "text/html; charset=utf-8"
+ },
+ "cciw-wsoc-presto.html": {
+  "url": "https://cciw.org/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://cciw.org/sports/wsoc/2026-27/standings",
+  "bytes": 179512,
+  "type": "text/html; charset=utf-8"
+ },
+ "mwc-msoc-sidearm.html": {
+  "url": "https://midwestconference.org/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://midwestconference.org/standings.aspx?path=msoc",
+  "bytes": 320270,
+  "type": "text/html; charset=utf-8"
+ },
+ "mwc-msoc-presto.html": {
+  "url": "https://midwestconference.org/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://midwestconference.org/sports/msoc/2026-27/standings",
+  "bytes": 320270,
+  "type": "text/html; charset=utf-8"
+ },
+ "mwc-wsoc-sidearm.html": {
+  "url": "https://midwestconference.org/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://midwestconference.org/standings.aspx?path=wsoc",
+  "bytes": 320699,
+  "type": "text/html; charset=utf-8"
+ },
+ "mwc-wsoc-presto.html": {
+  "url": "https://midwestconference.org/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://midwestconference.org/sports/wsoc/2026-27/standings",
+  "bytes": 320699,
+  "type": "text/html; charset=utf-8"
+ },
+ "wiac-msoc-sidearm.html": {
+  "url": "https://wiacsports.com/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://wiacsports.com/standings.aspx?path=msoc",
+  "bytes": 179013,
+  "type": "text/html; charset=utf-8"
+ },
+ "wiac-msoc-presto.html": {
+  "url": "https://wiacsports.com/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://wiacsports.com/sports/msoc/2026-27/standings",
+  "bytes": 179013,
+  "type": "text/html; charset=utf-8"
+ },
+ "wiac-wsoc-sidearm.html": {
+  "url": "https://wiacsports.com/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://wiacsports.com/standings.aspx?path=wsoc",
+  "bytes": 184823,
+  "type": "text/html; charset=utf-8"
+ },
+ "wiac-wsoc-presto.html": {
+  "url": "https://wiacsports.com/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://wiacsports.com/sports/wsoc/2026-27/standings",
+  "bytes": 184823,
+  "type": "text/html; charset=utf-8"
+ },
+ "miac-msoc-sidearm.html": {
+  "url": "https://miacathletics.com/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://miacathletics.com/standings.aspx?path=msoc",
+  "bytes": 197051,
+  "type": "text/html; charset=utf-8"
+ },
+ "miac-msoc-presto.html": {
+  "url": "https://miacathletics.com/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://miacathletics.com/sports/msoc/2026-27/standings",
+  "bytes": 197051,
+  "type": "text/html; charset=utf-8"
+ },
+ "miac-wsoc-sidearm.html": {
+  "url": "https://miacathletics.com/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://miacathletics.com/standings.aspx?path=wsoc",
+  "bytes": 199350,
+  "type": "text/html; charset=utf-8"
+ },
+ "miac-wsoc-presto.html": {
+  "url": "https://miacathletics.com/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://miacathletics.com/sports/wsoc/2026-27/standings",
+  "bytes": 199350,
+  "type": "text/html; charset=utf-8"
+ },
+ "umac-msoc-sidearm.html": {
+  "url": "https://umacathletics.com/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://umacathletics.com/standings.aspx?path=msoc",
+  "bytes": 334430,
+  "type": "text/html; charset=utf-8"
+ },
+ "umac-msoc-presto.html": {
+  "url": "https://umacathletics.com/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://umacathletics.com/sports/msoc/2026-27/standings",
+  "bytes": 334430,
+  "type": "text/html; charset=utf-8"
+ },
+ "umac-wsoc-sidearm.html": {
+  "url": "https://umacathletics.com/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://umacathletics.com/standings.aspx?path=wsoc",
+  "bytes": 334609,
+  "type": "text/html; charset=utf-8"
+ },
+ "umac-wsoc-presto.html": {
+  "url": "https://umacathletics.com/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://umacathletics.com/sports/wsoc/2026-27/standings",
+  "bytes": 334609,
+  "type": "text/html; charset=utf-8"
+ },
+ "arc-msoc-sidearm.html": {
+  "url": "https://americanriversconference.com/standings.aspx?path=msoc",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "arc-msoc-presto.html": {
+  "url": "https://americanriversconference.com/sports/msoc/2026-27/standings",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "arc-wsoc-sidearm.html": {
+  "url": "https://americanriversconference.com/standings.aspx?path=wsoc",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "arc-wsoc-presto.html": {
+  "url": "https://americanriversconference.com/sports/wsoc/2026-27/standings",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "sliac-msoc-sidearm.html": {
+  "url": "https://sliac.org/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://sliac.org/standings.aspx?path=msoc",
+  "bytes": 171292,
+  "type": "text/html; charset=utf-8"
+ },
+ "sliac-msoc-presto.html": {
+  "url": "https://sliac.org/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://sliac.org/sports/msoc/2026-27/standings",
+  "bytes": 171292,
+  "type": "text/html; charset=utf-8"
+ },
+ "sliac-wsoc-sidearm.html": {
+  "url": "https://sliac.org/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://sliac.org/standings.aspx?path=wsoc",
+  "bytes": 170617,
+  "type": "text/html; charset=utf-8"
+ },
+ "sliac-wsoc-presto.html": {
+  "url": "https://sliac.org/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://sliac.org/sports/wsoc/2026-27/standings",
+  "bytes": 170617,
+  "type": "text/html; charset=utf-8"
+ },
+ "asc-msoc-sidearm.html": {
+  "url": "https://ascsports.org/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://ascsports.org/standings.aspx?path=msoc",
+  "bytes": 141332,
+  "type": "text/html; charset=utf-8"
+ },
+ "asc-msoc-presto.html": {
+  "url": "https://ascsports.org/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://ascsports.org/sports/msoc/2026-27/standings",
+  "bytes": 141332,
+  "type": "text/html; charset=utf-8"
+ },
+ "asc-wsoc-sidearm.html": {
+  "url": "https://ascsports.org/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://ascsports.org/standings.aspx?path=wsoc",
+  "bytes": 141515,
+  "type": "text/html; charset=utf-8"
+ },
+ "asc-wsoc-presto.html": {
+  "url": "https://ascsports.org/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://ascsports.org/sports/wsoc/2026-27/standings",
+  "bytes": 141515,
+  "type": "text/html; charset=utf-8"
+ },
+ "scac-msoc-sidearm.html": {
+  "url": "https://scacsports.com/standings.aspx?path=msoc",
+  "status": 405,
+  "bytes": 2131
+ },
+ "scac-msoc-presto.html": {
+  "url": "https://scacsports.com/sports/msoc/2026-27/standings",
+  "status": 405,
+  "bytes": 2131
+ },
+ "scac-wsoc-sidearm.html": {
+  "url": "https://scacsports.com/standings.aspx?path=wsoc",
+  "status": 405,
+  "bytes": 2131
+ },
+ "scac-wsoc-presto.html": {
+  "url": "https://scacsports.com/sports/wsoc/2026-27/standings",
+  "status": 405,
+  "bytes": 2131
+ },
+ "saa-msoc-sidearm.html": {
+  "url": "https://saa-sports.com/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://saa-sports.com/standings.aspx?path=msoc",
+  "bytes": 179359,
+  "type": "text/html; charset=utf-8"
+ },
+ "saa-msoc-presto.html": {
+  "url": "https://saa-sports.com/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://saa-sports.com/sports/msoc/2026-27/standings",
+  "bytes": 179359,
+  "type": "text/html; charset=utf-8"
+ },
+ "saa-wsoc-sidearm.html": {
+  "url": "https://saa-sports.com/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://saa-sports.com/standings.aspx?path=wsoc",
+  "bytes": 179465,
+  "type": "text/html; charset=utf-8"
+ },
+ "saa-wsoc-presto.html": {
+  "url": "https://saa-sports.com/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://saa-sports.com/sports/wsoc/2026-27/standings",
+  "bytes": 179465,
+  "type": "text/html; charset=utf-8"
+ },
+ "sciac-msoc-sidearm.html": {
+  "url": "https://thesciac.org/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://thesciac.org/standings.aspx?path=msoc",
+  "bytes": 322277,
+  "type": "text/html; charset=utf-8"
+ },
+ "sciac-msoc-presto.html": {
+  "url": "https://thesciac.org/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://thesciac.org/sports/msoc/2026-27/standings",
+  "bytes": 322277,
+  "type": "text/html; charset=utf-8"
+ },
+ "sciac-wsoc-sidearm.html": {
+  "url": "https://thesciac.org/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://thesciac.org/standings.aspx?path=wsoc",
+  "bytes": 324133,
+  "type": "text/html; charset=utf-8"
+ },
+ "sciac-wsoc-presto.html": {
+  "url": "https://thesciac.org/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://thesciac.org/sports/wsoc/2026-27/standings",
+  "bytes": 324133,
+  "type": "text/html; charset=utf-8"
+ },
+ "nwc-msoc-sidearm.html": {
+  "url": "https://nwcsports.com/standings.aspx?path=msoc",
+  "status": 200,
+  "final": "https://nwcsports.com/standings.aspx?path=msoc",
+  "bytes": 146765,
+  "type": "text/html; charset=utf-8"
+ },
+ "nwc-msoc-presto.html": {
+  "url": "https://nwcsports.com/sports/msoc/2026-27/standings",
+  "status": 200,
+  "final": "https://nwcsports.com/sports/msoc/2026-27/standings",
+  "bytes": 146765,
+  "type": "text/html; charset=utf-8"
+ },
+ "nwc-wsoc-sidearm.html": {
+  "url": "https://nwcsports.com/standings.aspx?path=wsoc",
+  "status": 200,
+  "final": "https://nwcsports.com/standings.aspx?path=wsoc",
+  "bytes": 146812,
+  "type": "text/html; charset=utf-8"
+ },
+ "nwc-wsoc-presto.html": {
+  "url": "https://nwcsports.com/sports/wsoc/2026-27/standings",
+  "status": 200,
+  "final": "https://nwcsports.com/sports/wsoc/2026-27/standings",
+  "bytes": 146812,
+  "type": "text/html; charset=utf-8"
+ },
+ "ccs-msoc-sidearm.html": {
+  "url": "https://thecollegiateconference.com/standings.aspx?path=msoc",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "ccs-msoc-presto.html": {
+  "url": "https://thecollegiateconference.com/sports/msoc/2026-27/standings",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "ccs-wsoc-sidearm.html": {
+  "url": "https://thecollegiateconference.com/standings.aspx?path=wsoc",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "ccs-wsoc-presto.html": {
+  "url": "https://thecollegiateconference.com/sports/wsoc/2026-27/standings",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "gsac-msoc-sidearm.html": {
+  "url": "https://greatsouthathletic.com/standings.aspx?path=msoc",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "gsac-msoc-presto.html": {
+  "url": "https://greatsouthathletic.com/sports/msoc/2026-27/standings",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "gsac-wsoc-sidearm.html": {
+  "url": "https://greatsouthathletic.com/standings.aspx?path=wsoc",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "gsac-wsoc-presto.html": {
+  "url": "https://greatsouthathletic.com/sports/wsoc/2026-27/standings",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "acaa-msoc-sidearm.html": {
+  "url": "https://acaasports.com/standings.aspx?path=msoc",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "acaa-msoc-presto.html": {
+  "url": "https://acaasports.com/sports/msoc/2026-27/standings",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "acaa-wsoc-sidearm.html": {
+  "url": "https://acaasports.com/standings.aspx?path=wsoc",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "acaa-wsoc-presto.html": {
+  "url": "https://acaasports.com/sports/wsoc/2026-27/standings",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "psuac-msoc-sidearm.html": {
+  "url": "https://psuac.org/standings.aspx?path=msoc",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "psuac-msoc-presto.html": {
+  "url": "https://psuac.org/sports/msoc/2026-27/standings",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "psuac-wsoc-sidearm.html": {
+  "url": "https://psuac.org/standings.aspx?path=wsoc",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
+ },
+ "psuac-wsoc-presto.html": {
+  "url": "https://psuac.org/sports/wsoc/2026-27/standings",
+  "error": "URLError(gaierror(-2, 'Name or service not known'))"
  }
 }
