@@ -68,6 +68,15 @@ on:
         description: Ignore stored validators and box scores (collect-board --refetch)
         type: boolean
         default: false
+      season:
+        description: Season to collect (YYYY; default the current season). A past season is a backfill
+        type: string
+        default: ""
+      profile:
+        description: daily paces hosts 0.2 s apart; backfill paces them 5 s apart, obeys robots.txt and stops a host that refuses (TOUCHLINE_FETCH_PROFILE)
+        type: choice
+        options: [daily, backfill]
+        default: daily
   pull_request:
     paths:
       - .github/workflows/collect.yml
@@ -78,6 +87,13 @@ permissions:
 
 env:
   BUN_VERSION: 1.3.13
+  # Politeness knobs every collect step reads (pipeline/src/fetch_pool.py and
+  # sidearm_live.user_agent): the pacing profile, robots.txt handling (off,
+  # report or enforce; unset follows the profile) and the contact the
+  # User-Agent names.
+  TOUCHLINE_FETCH_PROFILE: ${{ inputs.profile || 'daily' }}
+  TOUCHLINE_ROBOTS: ${{ vars.TOUCHLINE_ROBOTS }}
+  TOUCHLINE_CONTACT: ${{ vars.TOUCHLINE_CONTACT }}
   # Where real runs land. `shadow` until cutover; the repository variable
   # TOUCHLINE_COLLECT_TARGET=main makes this workflow production, writing each
   # data home's main. Any other value means shadow.
@@ -145,6 +161,7 @@ jobs:
           IN_DIVISIONS: ${{ inputs.divisions }}
           IN_CONFERENCES: ${{ inputs.conferences }}
           IN_GENDERS: ${{ inputs.genders || 'men,women' }}
+          IN_SEASON: ${{ inputs.season }}
           PRESTO_RUNNER: ${{ vars.TOUCHLINE_PRESTO_RUNNER }}
         working-directory: pipeline
         run: |
@@ -157,7 +174,9 @@ jobs:
             uv run --frozen --no-dev collect-direct plan --out "$RUNNER_TEMP/plan.json" \
               --season "$season" --divisions "$divisions" --conferences "$conferences" --genders men,women
           else
+            case "$IN_SEASON" in ''|[12][0-9][0-9][0-9]) ;; *) echo "::error::season must be YYYY, not $IN_SEASON"; exit 1 ;; esac
             uv run --frozen --no-dev collect-direct plan --out "$RUNNER_TEMP/plan.json" \
+              ${IN_SEASON:+--season "$IN_SEASON"} \
               --divisions "$IN_DIVISIONS" --conferences "$IN_CONFERENCES" --genders "$IN_GENDERS"
           fi
           # Divisions with any unit get a job; presto only when a runner is set up.
@@ -343,7 +362,9 @@ jobs:
     needs: [plan, ready]
     if: needs.ready.outputs.ready == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    # A backfill paces every host 5 s apart, so a new division's first season
+    # can take most of the six hours a hosted job is allowed.
+    timeout-minutes: 345
     environment: production
     permissions:
       contents: read
@@ -584,7 +605,7 @@ jobs:
     # workflow wait for approval must be on (see the guide).
     if: always() && needs.ready.outputs.ready == 'true' && needs.plan.outputs.presto != '[]' && github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: [self-hosted, presto]
-    timeout-minutes: 120
+    timeout-minutes: 345
     strategy:
       fail-fast: false
       matrix:

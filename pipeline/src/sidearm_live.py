@@ -57,6 +57,7 @@ import hashlib
 import json
 import logging
 import math
+import os
 import re
 import threading
 from collections.abc import Callable, Mapping, Sequence
@@ -202,6 +203,22 @@ class ProgrammeCollection:
         return outcome.state if outcome else STATE_UNAVAILABLE
 
 
+def user_agent(contact: str | None = None) -> str:
+    """The collector's honest User-Agent, with a contact when one is set.
+
+    ``TOUCHLINE_CONTACT`` (a URL or an address) is appended the way crawlers
+    conventionally name theirs, ``+<contact>``, so a school that sees us in
+    its logs knows who to write to.  "Touchline" stays the first word of the
+    comment: it is the token robots.txt rules address.
+    """
+    contact = (
+        contact if contact is not None else os.environ.get("TOUCHLINE_CONTACT", "")
+    ).strip()
+    if contact:
+        return f"Mozilla/5.0 (Touchline educational/research collector; +{contact})"
+    return "Mozilla/5.0 (Touchline educational/research collector)"
+
+
 def build_session(session: requests.Session | None = None) -> requests.Session:
     """Configure the collector's session — headers, retries, OS-trust TLS.
 
@@ -210,9 +227,7 @@ def build_session(session: requests.Session | None = None) -> requests.Session:
     default a plain one is built.
     """
     session = session if session is not None else requests.Session()
-    session.headers.update(
-        {"User-Agent": "Mozilla/5.0 (Touchline educational/research collector)"}
-    )
+    session.headers.update({"User-Agent": user_agent()})
     retry = Retry(total=3, backoff_factor=1, status_forcelist=[500, 502, 503, 504])
     adapter = TruststoreHTTPAdapter(max_retries=retry)
     session.mount("https://", adapter)

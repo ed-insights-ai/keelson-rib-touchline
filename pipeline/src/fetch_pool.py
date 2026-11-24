@@ -63,6 +63,7 @@ from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass, field
 from urllib.parse import urlparse
+from urllib.robotparser import RobotFileParser
 
 import requests
 
@@ -85,6 +86,23 @@ DEFAULT_CHALLENGE_BACKOFF: tuple[float, ...] = (30.0, 90.0)
 #: land; ten minutes is the cool-down, and the collector re-tries what the
 #: host refused once after it.
 DEFAULT_HOST_COOLDOWN = 600.0
+#: The backfill profile's spacing: a past season is collected once, at night,
+#: so every host gets a long gap between requests (5 s, the presumed-paced
+#: interval) rather than the daily collect's 0.2 s.
+BACKFILL_HOST_SPACING = 5.0
+#: The token robots.txt rules are read for.  It is the first word of the
+#: collector's User-Agent product comment, so a school can address us by it.
+ROBOTS_AGENT = "Touchline"
+#: robots.txt handling: ``off`` never reads it, ``report`` reads it and logs a
+#: Disallow without obeying it, ``enforce`` obeys it (a disallowed URL is a
+#: named gap, never fetched).  ``report`` is the daily default until its
+#: reports have been read; the backfill profile enforces.
+ROBOTS_MODES = ("off", "report", "enforce")
+ROBOTS_MARKER = "disallowed by robots.txt"
+#: The statuses that stop a host for the rest of a run when the policy says
+#: so (the backfill profile): a refusal is the host's word, not a retry cue.
+REFUSAL_STATUSES = frozenset({403, 429})
+REFUSAL_MARKER = "stopped after HTTP"
 
 #: The phrases a challenge-shaped reason carries, so a coverage cell or a
 #: gap line can be recognised as "the host challenged" without parsing it:
@@ -150,6 +168,25 @@ class HostCoolingDown(requests.RequestException):
         )
 
 
+class RobotsDisallowed(requests.RequestException):
+    """Refused without a request: the host's robots.txt disallows the URL."""
+
+    def __init__(self, url: str, reason: str = "") -> None:
+        self.url = url
+        super().__init__(f"{url} is {ROBOTS_MARKER}{f' ({reason})' if reason else ''}")
+
+
+class HostStopped(requests.RequestException):
+    """Refused without a request: the host refused us earlier in this run."""
+
+    def __init__(self, host: str, status: int) -> None:
+        self.host = host
+        self.status = status
+        super().__init__(
+            f"host {host} {REFUSAL_MARKER} {status}; not asked again this run"
+        )
+
+
 @dataclass(frozen=True)
 class PacingPolicy:
     """The knobs: how far apart, how long to back off, how long to cool down.
@@ -166,6 +203,9 @@ class PacingPolicy:
     backoff: tuple[float, ...] = DEFAULT_CHALLENGE_BACKOFF
     cooldown: float = DEFAULT_HOST_COOLDOWN
     paced_hosts: frozenset[str] = field(default_factory=frozenset)
+    robots: str = "off"
+    stop_on_refusal: bool = False
+    robots_delay_cap: float = 60.0
 
     @classmethod
     def from_env(cls, environ: Callable[[str], str | None] = os.environ.get):
@@ -184,8 +224,26 @@ class PacingPolicy:
             else DEFAULT_CHALLENGE_BACKOFF
         )
         raw_hosts = environ("TOUCHLINE_PACED_HOSTS") or ""
+        profile = (environ("TOUCHLINE_FETCH_PROFILE") or "").strip().lower()
+        if profile not in ("", "daily", "backfill"):
+            raise ValueError(
+                f"TOUCHLINE_FETCH_PROFILE must be daily or backfill, not {profile!r}"
+            )
+        backfill = profile == "backfill"
+        robots = (environ("TOUCHLINE_ROBOTS") or "").strip().lower() or (
+            "enforce" if backfill else "off"
+        )
+        if robots not in ROBOTS_MODES:
+            raise ValueError(
+                f"TOUCHLINE_ROBOTS must be one of {', '.join(ROBOTS_MODES)}, not {robots!r}"
+            )
+        raw_stop = (environ("TOUCHLINE_STOP_ON_REFUSAL") or "").strip().lower()
+        stop = raw_stop in ("1", "true", "yes", "on") if raw_stop else backfill
         return cls(
-            spacing=seconds("TOUCHLINE_HOST_SPACING", DEFAULT_HOST_SPACING),
+            spacing=seconds(
+                "TOUCHLINE_HOST_SPACING",
+                BACKFILL_HOST_SPACING if backfill else DEFAULT_HOST_SPACING,
+            ),
             paced_spacing=seconds("TOUCHLINE_PACED_SPACING", DEFAULT_PACED_SPACING),
             challenged_spacing=seconds(
                 "TOUCHLINE_CHALLENGED_SPACING", DEFAULT_CHALLENGED_SPACING
@@ -195,6 +253,8 @@ class PacingPolicy:
             paced_hosts=frozenset(
                 part.strip().lower() for part in raw_hosts.split(",") if part.strip()
             ),
+            robots=robots,
+            stop_on_refusal=stop,
         )
 
 
@@ -232,6 +292,9 @@ class HostGate:
                 backoff=policy.backoff,
                 cooldown=policy.cooldown,
                 paced_hosts=policy.paced_hosts,
+                robots=policy.robots,
+                stop_on_refusal=policy.stop_on_refusal,
+                robots_delay_cap=policy.robots_delay_cap,
             )
         self.policy = policy
         self._clock = clock
@@ -244,6 +307,10 @@ class HostGate:
         self._challenged: set[str] = set()
         self._cooling: dict[str, float] = {}
         self._cooling_status: dict[str, int] = {}
+        self._stopped: dict[str, int] = {}
+        self._delay: dict[str, float] = {}
+        self._robots: dict[str, RobotFileParser | str | None] = {}
+        self._robots_locks: dict[str, threading.Lock] = {}
 
     # -- what the gate knows about the fleet -----------------------------
 
@@ -322,9 +389,10 @@ class HostGate:
         with self._registry:
             challenged = host in self._challenged
             paced = host in self._paced
+            delay = self._delay.get(host, 0.0)
         if challenged:
-            return self.policy.challenged_spacing
-        return self.policy.paced_spacing if paced else self.policy.spacing
+            return max(self.policy.challenged_spacing, delay)
+        return max(self.policy.paced_spacing if paced else self.policy.spacing, delay)
 
     # -- the slot ---------------------------------------------------------
 
@@ -336,6 +404,10 @@ class HostGate:
         """
         host = host.lower()
         with self._lock_for(host):
+            with self._registry:
+                stopped = self._stopped.get(host)
+            if stopped is not None:
+                raise HostStopped(host, stopped)
             remaining = self.cooldown_remaining(host)
             if remaining > 0:
                 with self._registry:
@@ -359,6 +431,95 @@ class HostGate:
             if lock is None:
                 lock = self._locks[host] = threading.Lock()
             return lock
+
+    # -- refusals and robots.txt ----------------------------------------
+
+    def observe_status(self, host: str, status: int) -> None:
+        """A 403 or 429 stops the host for the run when the policy says so."""
+        if not self.policy.stop_on_refusal or status not in REFUSAL_STATUSES:
+            return
+        host = host.lower()
+        with self._registry:
+            first = host not in self._stopped
+            self._stopped.setdefault(host, status)
+        if first:
+            self._log(
+                f"pacing: {host} answered HTTP {status}; not asking it again this run"
+            )
+
+    def stopped_hosts(self) -> dict[str, int]:
+        with self._registry:
+            return dict(self._stopped)
+
+    def robots_check(self, url: str, fetch: Callable[[str], requests.Response]) -> None:
+        """Read the host's robots.txt once per run, then judge ``url``.
+
+        ``enforce`` raises ``RobotsDisallowed`` for a disallowed URL and widens
+        the host's spacing to its Crawl-delay; ``report`` only logs both.  The
+        robots.txt request itself holds the host's slot and its spacing.  A
+        4xx answer means no rules; a 5xx or a failed fetch means the site
+        could not say, which ``enforce`` reads as "do not crawl" (RFC 9309).
+        """
+        mode = self.policy.robots
+        if mode == "off":
+            return
+        parts = urlparse(url)
+        host = parts.netloc.lower()
+        with self._registry:
+            lock = self._robots_locks.setdefault(host, threading.Lock())
+        with lock:
+            with self._registry:
+                known = host in self._robots
+                rules = self._robots.get(host)
+            if not known:
+                rules = self._read_robots(parts.scheme or "https", host, fetch)
+                with self._registry:
+                    self._robots[host] = rules
+        if rules is None:
+            return
+        if isinstance(rules, str):
+            if mode == "enforce":
+                raise RobotsDisallowed(url, rules)
+            return
+        if not rules.can_fetch(ROBOTS_AGENT, url):
+            if mode == "enforce":
+                raise RobotsDisallowed(url)
+            self._log(f"robots: {host} disallows {parts.path or '/'} (report only)")
+
+    def _read_robots(
+        self, scheme: str, host: str, fetch: Callable[[str], requests.Response]
+    ) -> RobotFileParser | str | None:
+        robots_url = f"{scheme}://{host}/robots.txt"
+        try:
+            with self.slot(host):
+                response = fetch(robots_url)
+        except requests.RequestException as exc:
+            self._log(f"robots: {host} robots.txt could not be read ({exc})")
+            return f"robots.txt unreachable: {exc}"
+        status = int(getattr(response, "status_code", 0) or 0)
+        if 400 <= status < 500:
+            return None
+        if status >= 500 or status == 0:
+            self._log(f"robots: {host} robots.txt answered HTTP {status}")
+            return f"robots.txt answered HTTP {status}"
+        parser = RobotFileParser()
+        parser.parse((getattr(response, "text", "") or "").splitlines())
+        delay = parser.crawl_delay(ROBOTS_AGENT)
+        if delay:
+            delay = float(delay)
+            if delay > self.policy.robots_delay_cap:
+                self._log(
+                    f"robots: {host} asks a {delay:g}s Crawl-delay; "
+                    f"capped at {self.policy.robots_delay_cap:g}s"
+                )
+                delay = self.policy.robots_delay_cap
+            if self.policy.robots == "enforce":
+                with self._registry:
+                    self._delay[host] = delay
+                self._log(f"robots: {host} Crawl-delay {delay:g}s honoured")
+            else:
+                self._log(f"robots: {host} asks a {delay:g}s Crawl-delay (report only)")
+        return parser
 
     def backoff_wait(self, host: str, attempt: int, status: int = 202) -> bool:
         """Wait before retry ``attempt`` (0-based) of a challenged request.
@@ -413,11 +574,20 @@ class GatedSession(requests.Session):
 
     def request(self, method, url, *args, **kwargs):  # type: ignore[override]
         host = host_of(url)
+        self._gate.robots_check(
+            str(url),
+            lambda robots_url: super(GatedSession, self).request(
+                "GET", robots_url, timeout=kwargs.get("timeout", 30)
+            ),
+        )
         with self._gate.slot(host):
             attempt = 0
             while True:
                 response = super().request(method, url, *args, **kwargs)
                 if not is_challenge(response):
+                    status = getattr(response, "status_code", None)
+                    if isinstance(status, int):
+                        self._gate.observe_status(host, status)
                     return response
                 status = int(response.status_code)
                 self._gate.observe_challenge(host, status)

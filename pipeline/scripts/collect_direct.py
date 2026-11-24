@@ -90,6 +90,8 @@ RESULT_SKIPPED = "skipped"
 #: own (five minutes each); this only stops a wedged process from eating the
 #: job's whole budget.
 DEFAULT_UNIT_TIMEOUT = 2400.0
+#: collect-board workers under the backfill profile (one host each).
+BACKFILL_WORKERS = 16
 
 GIT_AUTHOR = ("touchline-collect", "touchline-collect@users.noreply.github.com")
 
@@ -840,6 +842,10 @@ def cmd_collect(args: argparse.Namespace) -> int:
     skip = plan_units(plan, args.division, JOB_PRESTO) if args.skip_presto else []
     accept = {c.upper() for c in _csv(args.accept_loss)}
     extra = ["--refetch"] if args.refetch else []
+    if os.environ.get("TOUCHLINE_FETCH_PROFILE", "").strip().lower() == "backfill":
+        # Hosts are 5 s apart in a backfill, so more of them run side by side;
+        # each still sees one request at a time.
+        extra += ["--workers", str(BACKFILL_WORKERS)]
     started = _now()
     base = _git(home, "rev-parse", "HEAD").strip()
     results: list[UnitResult] = []

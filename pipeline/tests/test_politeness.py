@@ -1,0 +1,145 @@
+"""robots.txt, refusals and the backfill profile (src/fetch_pool.py)."""
+
+from __future__ import annotations
+
+from types import SimpleNamespace
+
+import pytest
+
+from src.fetch_pool import (
+    BACKFILL_HOST_SPACING,
+    HostGate,
+    HostStopped,
+    PacingPolicy,
+    RobotsDisallowed,
+)
+from src.sidearm_live import user_agent
+
+
+class _Time:
+    def __init__(self) -> None:
+        self.value = 1000.0
+        self.sleeps: list[float] = []
+
+    def clock(self) -> float:
+        return self.value
+
+    def sleep(self, seconds: float) -> None:
+        self.sleeps.append(round(seconds, 6))
+        self.value += seconds
+
+
+def _gate(**policy) -> tuple[HostGate, _Time, list[str]]:
+    t = _Time()
+    log: list[str] = []
+    gate = HostGate(
+        policy=PacingPolicy(**policy), clock=t.clock, sleep=t.sleep, log=log.append
+    )
+    return gate, t, log
+
+
+def _robots(text: str, status: int = 200):
+    calls: list[str] = []
+
+    def fetch(url: str):
+        calls.append(url)
+        return SimpleNamespace(status_code=status, text=text)
+
+    return fetch, calls
+
+
+RULES = "User-agent: *\nDisallow: /private/\n\nUser-agent: Touchline\nDisallow: /api/\nCrawl-delay: 9\n"
+
+
+def test_backfill_profile_spaces_hosts_enforces_robots_and_stops_on_refusal() -> None:
+    policy = PacingPolicy.from_env({"TOUCHLINE_FETCH_PROFILE": "backfill"}.get)
+    assert policy.spacing == BACKFILL_HOST_SPACING
+    assert policy.robots == "enforce"
+    assert policy.stop_on_refusal is True
+    daily = PacingPolicy.from_env(lambda _name: None)
+    assert (daily.spacing, daily.robots, daily.stop_on_refusal) == (0.2, "off", False)
+    overridden = PacingPolicy.from_env(
+        {
+            "TOUCHLINE_FETCH_PROFILE": "backfill",
+            "TOUCHLINE_ROBOTS": "report",
+            "TOUCHLINE_STOP_ON_REFUSAL": "false",
+            "TOUCHLINE_HOST_SPACING": "2",
+        }.get
+    )
+    assert (overridden.spacing, overridden.robots, overridden.stop_on_refusal) == (
+        2.0,
+        "report",
+        False,
+    )
+
+
+def test_an_unknown_profile_or_robots_mode_is_refused() -> None:
+    with pytest.raises(ValueError):
+        PacingPolicy.from_env({"TOUCHLINE_FETCH_PROFILE": "fast"}.get)
+    with pytest.raises(ValueError):
+        PacingPolicy.from_env({"TOUCHLINE_ROBOTS": "ignore"}.get)
+
+
+def test_enforce_refuses_a_disallowed_url_and_reads_robots_once_per_host() -> None:
+    gate, _t, _log = _gate(robots="enforce")
+    fetch, calls = _robots(RULES)
+    gate.robots_check("https://school.edu/sports/mens-soccer/schedule/2026", fetch)
+    with pytest.raises(RobotsDisallowed, match="disallowed by robots.txt"):
+        gate.robots_check("https://school.edu/api/v2/Schedule/1", fetch)
+    # The Touchline group replaces the * group, so /private/ is ours to read.
+    gate.robots_check("https://school.edu/private/x", fetch)
+    assert calls == ["https://school.edu/robots.txt"]
+
+
+def test_enforce_honours_crawl_delay_in_the_host_spacing() -> None:
+    gate, t, _log = _gate(robots="enforce", spacing=0.2)
+    fetch, _calls = _robots(RULES)
+    gate.robots_check("https://school.edu/sports/x", fetch)
+    with gate.slot("school.edu"):
+        pass
+    assert t.sleeps[-1] == pytest.approx(9.0)
+
+
+def test_report_logs_a_disallow_without_refusing() -> None:
+    gate, _t, log = _gate(robots="report")
+    fetch, _calls = _robots(RULES)
+    gate.robots_check("https://school.edu/api/v2/Schedule/1", fetch)
+    assert any("disallows /api/v2/Schedule/1 (report only)" in line for line in log)
+
+
+def test_missing_robots_means_no_rules_and_a_server_error_means_stay_out() -> None:
+    gate, _t, _log = _gate(robots="enforce")
+    missing, _ = _robots("", status=404)
+    gate.robots_check("https://a.edu/anything", missing)
+    broken, _ = _robots("", status=503)
+    with pytest.raises(RobotsDisallowed, match="HTTP 503"):
+        gate.robots_check("https://b.edu/anything", broken)
+
+
+def test_off_never_reads_robots() -> None:
+    gate, _t, _log = _gate(robots="off")
+    fetch, calls = _robots(RULES)
+    gate.robots_check("https://school.edu/api/x", fetch)
+    assert calls == []
+
+
+def test_a_refusal_stops_the_host_for_the_run_only_when_asked() -> None:
+    gate, _t, log = _gate(stop_on_refusal=True)
+    gate.observe_status("school.edu", 403)
+    with pytest.raises(HostStopped, match="stopped after HTTP 403"):
+        with gate.slot("school.edu"):
+            pass
+    with gate.slot("other.edu"):
+        pass
+    assert gate.stopped_hosts() == {"school.edu": 403}
+    lenient, _t2, _log2 = _gate()
+    lenient.observe_status("school.edu", 429)
+    with lenient.slot("school.edu"):
+        pass
+
+
+def test_user_agent_names_a_contact_when_one_is_set() -> None:
+    assert user_agent("") == "Mozilla/5.0 (Touchline educational/research collector)"
+    assert user_agent("https://example.org/touchline") == (
+        "Mozilla/5.0 (Touchline educational/research collector; +https://example.org/touchline)"
+    )
