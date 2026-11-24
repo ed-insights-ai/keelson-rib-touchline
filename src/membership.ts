@@ -467,9 +467,27 @@ export async function resolveTargets(
   const conferences = file.conferences.filter(
     (conf) => conf !== "independent" && conf !== "non_member",
   );
+  //    A code that is an ordinary word (`code_is_word`: the Liberty League's
+  //    LIBERTY) is no such token: "Liberty" and "Liberty University" ask for
+  //    the programme. Such a conference is named by a printed name longer than
+  //    the word ("Liberty League"), or by the bare code when no programme
+  //    answers to it.
+  const isWord = (conf: string) => file.conference_profiles?.[conf]?.code_is_word === true;
+  const programmeAsk = async () =>
+    (await knownProgrammes(gender)).some((slug) => normalize(slug) === wanted);
+  const longNames = (conf: string) =>
+    (file.conference_profiles?.[conf]?.names ?? [])
+      .map(normalize)
+      .filter((name) => name && name !== normalize(conf));
   const named =
-    conferences.find((conf) => normalize(conf) === wanted) ??
-    conferences.find((conf) => padded.includes(` ${normalize(conf)} `));
+    conferences.find((conf) => !isWord(conf) && normalize(conf) === wanted) ??
+    conferences.find((conf) => !isWord(conf) && padded.includes(` ${normalize(conf)} `)) ??
+    conferences.find(
+      (conf) => isWord(conf) && longNames(conf).some((name) => padded.includes(` ${name} `)),
+    ) ??
+    ((await programmeAsk())
+      ? undefined
+      : conferences.find((conf) => isWord(conf) && normalize(conf) === wanted));
   if (named) {
     const res = await resolveConference(named, gender, season);
     return {

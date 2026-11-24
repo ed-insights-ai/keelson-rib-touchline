@@ -1433,6 +1433,24 @@ describe("understanding the ask", () => {
     }
   });
 
+  test("a conference whose code is a word never takes a programme's name", async () => {
+    // The Liberty League's code is LIBERTY: "Liberty" and "Liberty University"
+    // are the Liberty programme, and only the league's printed name is the league.
+    for (const ask of ["Liberty", "Liberty University", "liberty"]) {
+      const t = await resolveTargets(ask, "men", 2026);
+      expect(t.kind).toBe("programme");
+    }
+    for (const ask of ["Liberty League", "the Liberty League men", "Landmark Conference"]) {
+      const t = await resolveTargets(ask, "men", 2026);
+      expect(t.kind).toBe("conference");
+    }
+    const league = await resolveTargets("Liberty League", "men", 2026);
+    if (league.kind === "conference") expect(league.conference).toBe("LIBERTY");
+    // A word code no programme answers to still names its conference.
+    const landmark = await resolveTargets("Landmark", "men", 2026);
+    expect(landmark.kind === "conference" && landmark.conference).toBe("LANDMARK");
+  });
+
   test("the hyphenated G-MAC resolves per season, Trevecca in its earlier window", async () => {
     // Against the packaged membership file: eleven members in 2026, twelve in
     // 2023 when Trevecca's first window still names the G-MAC.
