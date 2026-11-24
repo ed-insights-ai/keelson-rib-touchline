@@ -9,7 +9,7 @@ ASK = {
     "MA": ["Franklin", "Amherst"],
     "KY": ["Lexington"],
     "NY": ["Annandale", "Red Hook", "Purchase", "Harrison"],
-    "MD": ["Stevenson", "Pikesville", "Owings Mills", "St. Mary", "Mary's"],
+    "MD": ["Lexington Park", "California", "Great Mills"],
     "VA": ["Sweet Briar", "Amherst"],
     "GA": ["Berry", "Rome"],
 }

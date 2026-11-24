@@ -21662,6 +21662,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Lower Gwynedd Township, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "4209144920"
+gazetteer_note = "Lower Gwynedd township, the county subdivision the campus stands in"
 aliases      = ["Gwynedd Mercy Univ."]
 identity_accessed = "2026-11-24"
 
@@ -21679,6 +21681,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Immaculata, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "4202922056"
+gazetteer_note = "Immaculata is an unincorporated community in East Whiteland township"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -21732,6 +21736,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Convent Station, N.J."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "3402748090"
+gazetteer_note = "Convent Station is an unincorporated community in Morris township"
 aliases      = ["Saint Elizabeth University"]
 identity_accessed = "2026-11-24"
 
@@ -21788,6 +21794,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Lower Gwynedd Township, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "4209144920"
+gazetteer_note = "Lower Gwynedd township, the county subdivision the campus stands in"
 aliases      = ["Gwynedd Mercy Univ."]
 identity_accessed = "2026-11-24"
 
@@ -21805,6 +21813,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Immaculata, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "4202922056"
+gazetteer_note = "Immaculata is an unincorporated community in East Whiteland township"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -21858,6 +21868,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Convent Station, N.J."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "3402748090"
+gazetteer_note = "Convent Station is an unincorporated community in Morris township"
 aliases      = ["Saint Elizabeth University"]
 identity_accessed = "2026-11-24"
 
@@ -22728,6 +22740,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Waukesha, Wis."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "5584250"
+gazetteer_note = "Waukesha city, not the village of the same name"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -22883,6 +22897,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Waukesha, Wis."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "5584250"
+gazetteer_note = "Waukesha city, not the village of the same name"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -24737,6 +24753,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Franklin, Mass."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "2525172"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -24994,6 +25011,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Franklin, Mass."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "2525172"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -25375,6 +25393,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Lexington, Ky."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "2146027"
+gazetteer_note = "Lexington is consolidated with Fayette County as Lexington-Fayette urban county"
 identity_accessed = "2026-11-24"
 
 
@@ -25556,6 +25576,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Lexington, Ky."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "2146027"
+gazetteer_note = "Lexington is consolidated with Fayette County as Lexington-Fayette urban county"
 identity_accessed = "2026-11-24"
 
 
@@ -26284,6 +26306,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Annandale-on-Hudson, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "3602760905"
+gazetteer_note = "Annandale-on-Hudson is a hamlet in the town of Red Hook"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -26461,6 +26485,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Annandale-on-Hudson, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "3602760905"
+gazetteer_note = "Annandale-on-Hudson is a hamlet in the town of Red Hook"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -26708,6 +26734,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Grantham, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "4204178736"
+gazetteer_note = "Grantham is an unincorporated community in Upper Allen township"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -26742,6 +26770,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Stevenson, Md."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "2459425"
+gazetteer_note = "the university's athletics campus is in Owings Mills; Stevenson has no Gazetteer place"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -26870,6 +26900,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Grantham, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "4204178736"
+gazetteer_note = "Grantham is an unincorporated community in Upper Allen township"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -26904,6 +26936,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Stevenson, Md."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "2459425"
+gazetteer_note = "the university's athletics campus is in Owings Mills; Stevenson has no Gazetteer place"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -26979,6 +27013,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Center Valley, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "4207779288"
+gazetteer_note = "Center Valley is an unincorporated community in Upper Saucon township"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -27139,6 +27175,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Center Valley, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "4207779288"
+gazetteer_note = "Center Valley is an unincorporated community in Upper Saucon township"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -29364,6 +29402,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Amherst, Mass."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "2501370"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -29552,6 +29591,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Amherst, Mass."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "2501370"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -30113,6 +30153,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Union Township, N.J."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "3403974480"
+gazetteer_note = "Union township, Union County"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -30288,6 +30330,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Union Township, N.J."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "3403974480"
+gazetteer_note = "Union township, Union County"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -31484,6 +31528,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Sweet Briar, Va."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "5101672"
+gazetteer_note = "Sweet Briar's nearest Gazetteer place is the town of Amherst"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -31928,6 +31974,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Mount Berry, Ga."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "1307380"
+gazetteer_note = "Mount Berry is the Berry College CDP"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -32093,6 +32141,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Mount Berry, Ga."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "1307380"
+gazetteer_note = "Mount Berry is the Berry College CDP"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -32916,6 +32966,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Purchase, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "3611932413"
+gazetteer_note = "Purchase is a hamlet in the town of Harrison"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33014,6 +33066,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Purchase, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "3611932413"
+gazetteer_note = "Purchase is a hamlet in the town of Harrison"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33120,6 +33174,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Purchase, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "3611932413"
+gazetteer_note = "Purchase is a hamlet in the town of Harrison"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33218,6 +33274,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Purchase, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "3611932413"
+gazetteer_note = "Purchase is a hamlet in the town of Harrison"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -34426,6 +34484,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Superior, Wis."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "5578650"
+gazetteer_note = "Superior city, not the village or town of the same name"
 identity_accessed = "2026-11-24"
 
 
@@ -34547,6 +34607,8 @@ data_status  = "unverified"
 enabled      = true
 city         = "Superior, Wis."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "5578650"
+gazetteer_note = "Superior city, not the village or town of the same name"
 identity_accessed = "2026-11-24"
 
 
@@ -34623,6 +34685,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "La Plume Township, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "4206941504"
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -34888,6 +34951,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "La Plume Township, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+gazetteer_geoid = "4206941504"
 identity_accessed = "2026-11-24"
 
 [[schools]]
