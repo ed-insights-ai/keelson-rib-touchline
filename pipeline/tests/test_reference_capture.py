@@ -74,3 +74,29 @@ def test_read_one_records_a_refusal_without_a_body() -> None:
         _Session(_Response("no", 405)), "x", "https://a.example/standings"
     )
     assert record == {"label": "x", "url": "https://a.example/standings", "status": 405}
+
+
+def test_the_home_away_label_is_not_a_conference_mark() -> None:
+    page = """<ul>
+<li class="sidearm-schedule-game"><div class="sidearm-schedule-game-opponent-name">Epsilon</div>
+<div class="sidearm-schedule-game-conference-vs">vs.</div></li>
+</ul>"""
+    assert rc.schedule_games(page) == [
+        {"opponent": "Epsilon", "conference": None, "tournament": False}
+    ]
+
+
+def test_presto_events_carry_the_conference_star() -> None:
+    page = """<table>
+<tr class="event-row"><td>Sep 6</td><td>at Zeta *</td><td>W 2-1</td></tr>
+<tr class="event-row"><td>Sep 9</td><td>vs Eta</td><td>L 0-1</td></tr>
+</table>"""
+    assert rc.presto_games(page) == [
+        {"event": "Sep 6 at Zeta * W 2-1", "conference": True},
+        {"event": "Sep 9 vs Eta L 0-1", "conference": False},
+    ]
+    record = rc.read_one(
+        _Session(_Response(page)), "zeta", "https://z.example/schedule"
+    )
+    assert record["games"] == 2
+    assert record["marked"] == ["Sep 6 at Zeta * W 2-1"]

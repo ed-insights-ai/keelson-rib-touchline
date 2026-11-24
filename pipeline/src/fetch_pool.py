@@ -62,7 +62,7 @@ import time
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass, field
-from urllib.parse import urlparse
+from urllib.parse import urljoin, urlparse
 from urllib.robotparser import RobotFileParser
 
 import requests
@@ -103,6 +103,8 @@ ROBOTS_MARKER = "disallowed by robots.txt"
 #: so (the backfill profile): a refusal is the host's word, not a retry cue.
 REFUSAL_STATUSES = frozenset({403, 429})
 REFUSAL_MARKER = "stopped after HTTP"
+TRUE_WORDS = ("1", "true", "yes", "on")
+FALSE_WORDS = ("0", "false", "no", "off")
 
 #: The phrases a challenge-shaped reason carries, so a coverage cell or a
 #: gap line can be recognised as "the host challenged" without parsing it:
@@ -238,7 +240,12 @@ class PacingPolicy:
                 f"TOUCHLINE_ROBOTS must be one of {', '.join(ROBOTS_MODES)}, not {robots!r}"
             )
         raw_stop = (environ("TOUCHLINE_STOP_ON_REFUSAL") or "").strip().lower()
-        stop = raw_stop in ("1", "true", "yes", "on") if raw_stop else backfill
+        if raw_stop and raw_stop not in TRUE_WORDS + FALSE_WORDS:
+            raise ValueError(
+                "TOUCHLINE_STOP_ON_REFUSAL must be one of "
+                f"{', '.join(TRUE_WORDS + FALSE_WORDS)}, not {raw_stop!r}"
+            )
+        stop = raw_stop in TRUE_WORDS if raw_stop else backfill
         return cls(
             spacing=seconds(
                 "TOUCHLINE_HOST_SPACING",
@@ -497,6 +504,7 @@ class HostGate:
             self._log(f"robots: {host} robots.txt could not be read ({exc})")
             return f"robots.txt unreachable: {exc}"
         status = int(getattr(response, "status_code", 0) or 0)
+        self.observe_status(host, status)
         if 400 <= status < 500:
             return None
         if status >= 500 or status == 0:
@@ -572,7 +580,31 @@ class GatedSession(requests.Session):
         """
         self._gate.presume_paced(host_of(url))
 
+    #: Redirect hops followed one by one, each through the gate and robots.
+    MAX_REDIRECTS = 10
+
     def request(self, method, url, *args, **kwargs):  # type: ignore[override]
+        follow = kwargs.pop("allow_redirects", True)
+        response = self._gated(method, url, *args, allow_redirects=False, **kwargs)
+        hops = 0
+        while (
+            follow
+            and getattr(response, "is_redirect", False)
+            and hops < self.MAX_REDIRECTS
+        ):
+            base = getattr(response, "url", None) or str(url)
+            target = urljoin(base, response.headers.get("location", ""))
+            if response.status_code in (301, 302, 303) and method.upper() != "HEAD":
+                method = "GET"
+                kwargs.pop("data", None)
+                kwargs.pop("json", None)
+            # Each hop is its own request: its host's slot, robots rules and
+            # refusal record apply, as they would to a URL asked for directly.
+            response = self._gated(method, target, allow_redirects=False, **kwargs)
+            hops += 1
+        return response
+
+    def _gated(self, method, url, *args, **kwargs):
         host = host_of(url)
         self._gate.robots_check(
             str(url),

@@ -73,8 +73,12 @@ def schedule_games(page: str) -> list[dict[str, object]]:
     for block in blocks:
         opening = re.match(r"<li[^>]*>", block)
         name = re.search(r'opponent-name">(.*?)</div>', block, re.S)
+        # The class as a whole token: "sidearm-schedule-game-conference-vs"
+        # is the home/away label, not a conference mark.
         conference = re.search(
-            r'sidearm-schedule-game-conference[^"]*"[^>]*>(.*?)</div>', block, re.S
+            r'class="(?:[^"]*\s)?sidearm-schedule-game-conference(?:\s[^"]*)?"[^>]*>(.*?)</div>',
+            block,
+            re.S,
         )
         mark = None
         if conference:
@@ -87,6 +91,19 @@ def schedule_games(page: str) -> list[dict[str, object]]:
                 "tournament": bool(opening and "tourney" in opening.group(0)),
             }
         )
+    return games
+
+
+def presto_games(page: str) -> list[dict[str, object]]:
+    """A PrestoSports schedule's games, table rows or event cards alike: each
+    event's text, and whether the page marks it with the conference star."""
+    games = []
+    for row in re.findall(
+        r'<(tr|div)\b[^>]*class="[^"]*\bevent-row\b[^"]*"[^>]*>(.*?)</\1>', page, re.S
+    ):
+        text = _text(row[1])
+        if text:
+            games.append({"event": text[:120], "conference": "*" in text})
     return games
 
 
@@ -133,8 +150,10 @@ def read_one(session: requests.Session, label: str, url: str) -> dict[str, objec
             for game in games
             if game["conference"] and not game["tournament"]
         ]
-    else:
-        record["rows"] = sum(len(rows) - 1 for rows in standings_rows(page))
+        return record
+    events = presto_games(page)
+    record["games"] = len(events)
+    record["marked"] = [event["event"] for event in events if event["conference"]]
     return record
 
 

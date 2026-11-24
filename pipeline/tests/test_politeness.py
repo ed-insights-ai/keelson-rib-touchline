@@ -143,3 +143,56 @@ def test_user_agent_names_a_contact_when_one_is_set() -> None:
     assert user_agent("https://example.org/touchline") == (
         "Mozilla/5.0 (Touchline educational/research collector; +https://example.org/touchline)"
     )
+
+
+def test_an_unknown_refusal_flag_fails_loudly() -> None:
+    with pytest.raises(ValueError):
+        PacingPolicy.from_env({"TOUCHLINE_STOP_ON_REFUSAL": "treu"}.get)
+    off = PacingPolicy.from_env(
+        {"TOUCHLINE_FETCH_PROFILE": "backfill", "TOUCHLINE_STOP_ON_REFUSAL": "off"}.get
+    )
+    assert off.stop_on_refusal is False
+
+
+def test_a_refused_robots_txt_stops_the_host() -> None:
+    gate, _t, _log = _gate(robots="enforce", stop_on_refusal=True)
+    fetch, _calls = _robots("", status=403)
+    gate.robots_check("https://a.example/sports/x", fetch)
+    assert gate.stopped_hosts() == {"a.example": 403}
+    with pytest.raises(HostStopped):
+        with gate.slot("a.example"):
+            pass
+
+
+class _Hop:
+    def __init__(self, url: str, status: int = 200, location: str = "") -> None:
+        self.url = url
+        self.status_code = status
+        self.headers = {"location": location} if location else {}
+        self.is_redirect = bool(location)
+        self.text = ""
+        self.content = b""
+
+
+def test_each_redirect_hop_is_judged_by_robots(monkeypatch) -> None:
+    import requests
+
+    from src.fetch_pool import GatedSession
+
+    gate, _t, _log = _gate(robots="enforce")
+    gate._robots["a.example"] = None
+    gate._robots["b.example"] = "robots.txt answered HTTP 503"
+    asked: list[str] = []
+
+    def send(self, method, url, *args, **kwargs):
+        asked.append(url)
+        assert kwargs.get("allow_redirects") is False
+        if url.startswith("https://a.example"):
+            return _Hop(url, 302, "https://b.example/page")
+        return _Hop(url)
+
+    monkeypatch.setattr(requests.Session, "request", send)
+    session = GatedSession(gate)
+    with pytest.raises(RobotsDisallowed):
+        session.get("https://a.example/start")
+    assert asked == ["https://a.example/start"]
