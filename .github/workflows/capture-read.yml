@@ -1,0 +1,24 @@
+name: Read the D3 collect log (temporary)
+on:
+  push:
+    branches: [claude/project-thread-htvkce]
+    paths: [.github/workflows/capture-read.yml]
+permissions:
+  actions: read
+  contents: read
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --allow-escape-sequences "/repos/${GITHUB_REPOSITORY}/actions/jobs/138877004219/logs" > log.txt
+          wc -l log.txt
+          grep -E '##\[group\]|: (changed|no-change|no_change|failed|lost|skipped)( |$)' log.txt | grep -v 'Run \|uv run' | sed 's/\x1b\[[0-9;]*m//g' | cut -c1-220
+          echo ---tail
+          grep -vE '^\S+ *$' log.txt | grep -v '##\[' | tail -40 | cut -c1-250
+          echo ---fetch-counts
+          grep -c 'GET \|fetch' log.txt || true
+          grep -oE '(429|403|405|503|refus[a-z]*|robots[a-z ]*)' log.txt | sort | uniq -c | sort -rn | head
