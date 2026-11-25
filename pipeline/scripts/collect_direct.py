@@ -26,6 +26,12 @@ the pilot), overlaying only the coverage cells each commit changed, so two
 jobs collecting different units of one division land cleanly in either
 order, and ``land --push`` retries on a moved branch by replaying again.
 
+Parts.  ``collect --parallel N`` splits the units into up to N parts that
+share no programme and no host, collects each part in its own copy of the
+work home side by side, and replays every part's commits onto the work home,
+so a backfill's units do not wait on one another and each host still sees
+one request at a time.
+
 Platforms.  PrestoSports refuses GitHub-hosted runners, so a unit with any
 PrestoSports member is a ``presto`` unit, collected on the self-hosted runner
 with that label; every other unit is ``hosted``.  The split is by unit, never
@@ -53,16 +59,19 @@ import re
 import shutil
 import subprocess
 import sys
+import threading
 import time
 from collections.abc import Iterable, Sequence
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit
 
 from src import paths
 from src.config import DEFAULT_CONFIG, load_schools
 from src.recipes import PRESTO
+from src.wmt import PLATFORM as WMT_PLATFORM
 from src.sidearm_live import programme_slug
 
 PLAN_SCHEMA = "touchline.collect-plan/1"
@@ -90,12 +99,19 @@ RESULT_SKIPPED = "skipped"
 #: own (five minutes each); this only stops a wedged process from eating the
 #: job's whole budget.
 DEFAULT_UNIT_TIMEOUT = 2400.0
+#: A unit is not started with less than this left of --stop-after.
+MIN_UNIT_SECONDS = 120.0
 #: collect-board workers under the backfill profile (one host each).
 BACKFILL_WORKERS = 16
 #: A backfill task's budget counts its wait for the host's slot, so it is
 #: widened to cover every worker queued on one host at the longest honoured
 #: Crawl-delay (60 s), on top of the usual five minutes of network work.
 BACKFILL_TASK_BUDGET = 300 + BACKFILL_WORKERS * 60
+
+#: Set in a part's environment under ``collect --parallel``.
+PART_ENV = "TOUCHLINE_COLLECT_PART"
+#: How ``collect --parallel`` starts each part (the tests swap in a stand-in).
+PART_COMMAND = [sys.executable, "-m", "scripts.collect_direct"]
 
 GIT_AUTHOR = ("touchline-collect", "touchline-collect@users.noreply.github.com")
 
@@ -156,14 +172,15 @@ def _write_json(path: Path, payload: Any) -> None:
 
 
 def _group(title: str) -> None:
-    if os.environ.get("GITHUB_ACTIONS") == "true":
+    # A part's lines are interleaved with its siblings', so it opens no group.
+    if os.environ.get("GITHUB_ACTIONS") == "true" and not os.environ.get(PART_ENV):
         print(f"::group::{title}", flush=True)
     else:
         print(f"── {title}", flush=True)
 
 
 def _endgroup() -> None:
-    if os.environ.get("GITHUB_ACTIONS") == "true":
+    if os.environ.get("GITHUB_ACTIONS") == "true" and not os.environ.get(PART_ENV):
         print("::endgroup::", flush=True)
 
 
@@ -352,6 +369,112 @@ def plan_units(
         raise DirectError(f"the plan has no division {division}")
     units = [Unit(**u) for u in entry.get("units") or []]
     return [u for u in units if job in (None, "all") or u.job == job]
+
+
+#: Platforms whose programmes share a host beyond their own sites (every WMT
+#: programme sends statistics and box scores to one statistics host), so all
+#: of their units go in one part.
+SHARED_HOST_PLATFORMS = frozenset({WMT_PLATFORM})
+
+
+def programme_hosts(config: Path = DEFAULT_CONFIG) -> dict[str, set[str]]:
+    """slug -> the hosts its stanzas fetch from (either gender), plus a
+    platform key for a platform whose programmes share a host."""
+    hosts: dict[str, set[str]] = {}
+    for school in load_schools(config):
+        platform = school.live_collector()
+        if platform in SHARED_HOST_PLATFORMS:
+            hosts.setdefault(programme_slug(school.name), set()).add(
+                f"platform:{platform}"
+            )
+        try:
+            url = school.live_sport_url()
+        except Exception:  # noqa: BLE001 - a stanza with no live URL has its base_url
+            url = school.base_url
+        host = urlsplit(url).hostname
+        if host:
+            hosts.setdefault(programme_slug(school.name), set()).add(host.lower())
+    return hosts
+
+
+def unit_scope(home: Path, season: int, unit: Unit) -> list[str]:
+    """The programmes collect-board will fetch for ``unit`` in ``home``: the
+    planned ones plus any its season files already carry (the scope only
+    widens)."""
+    scope = set(unit.programmes)
+    for layer in ("fixtures", "rosters", "stats"):
+        payload = _read_json(
+            home / "data" / layer / f"{season}-{unit.gender}-{unit.key}.json"
+        )
+        if not isinstance(payload, dict):
+            continue
+        for entry in payload.get("programmes") or []:
+            if isinstance(entry, dict) and entry.get("slug"):
+                scope.add(str(entry["slug"]))
+        for name in ("rosters", "teams"):
+            if isinstance(payload.get(name), dict):
+                scope.update(str(slug) for slug in payload[name])
+        scope.update(str(slug) for slug in payload.get("missing") or [])
+    return sorted(scope)
+
+
+def shard_units(
+    units: Sequence[Unit],
+    parts: int,
+    hosts: dict[str, set[str]],
+    scopes: Sequence[Sequence[str]] | None = None,
+) -> list[list[Unit]]:
+    """Split ``units`` into ``parts`` lists that share no programme and no
+    host, so parts collected side by side never put two requests on one host
+    at once.  Units joined by a programme or a host stay together; the groups
+    go, largest first, to the lightest part.  Each part keeps plan order, and
+    the split depends only on its inputs, so every caller computes the same
+    one.  ``scopes`` gives each unit's full fetch scope when it is wider than
+    its planned programmes."""
+    parts = max(1, parts)
+    parent = list(range(len(units)))
+
+    def find(i: int) -> int:
+        while parent[i] != i:
+            parent[i] = parent[parent[i]]
+            i = parent[i]
+        return i
+
+    owner: dict[tuple[str, str], int] = {}
+    for index, unit in enumerate(units):
+        scope = scopes[index] if scopes is not None else unit.programmes
+        keys = {("programme", s) for s in scope}
+        keys |= {("host", h) for s in scope for h in hosts.get(s, ())}
+        for key in sorted(keys):
+            if key in owner:
+                parent[find(index)] = find(owner[key])
+            else:
+                owner[key] = index
+    groups: dict[int, list[int]] = {}
+    for index in range(len(units)):
+        groups.setdefault(find(index), []).append(index)
+    ordered = sorted(
+        groups.values(),
+        key=lambda g: (-sum(max(1, len(units[i].programmes)) for i in g), g[0]),
+    )
+    loads = [0] * parts
+    members: list[list[int]] = [[] for _ in range(parts)]
+    for group in ordered:
+        lightest = min(range(parts), key=lambda p: (loads[p], p))
+        members[lightest] += group
+        loads[lightest] += sum(max(1, len(units[i].programmes)) for i in group)
+    return [[units[i] for i in sorted(m)] for m in members]
+
+
+def parse_shard(text: str) -> tuple[int, int]:
+    index, _, total = text.partition("/")
+    try:
+        i, n = int(index), int(total)
+    except ValueError:
+        raise DirectError(f"--shard takes INDEX/COUNT, not {text}") from None
+    if not 0 <= i < n:
+        raise DirectError(f"--shard {text}: the index must be below the count")
+    return i, n
 
 
 # ── work home ────────────────────────────────────────────────────────────────
@@ -715,18 +838,19 @@ def overlay_coverage(target: Path, before: bytes | None, after: bytes | None) ->
     )
 
 
-def work_commits(work: Path) -> list[str]:
-    """The unit commits in a work home, oldest first (the baseline excluded)."""
-    root = _git(work, "rev-list", "--max-parents=0", "HEAD").split()[0]
+def work_commits(work: Path, since: str | None = None) -> list[str]:
+    """The unit commits in a work home after ``since`` (default: the
+    baseline), oldest first."""
+    root = since or _git(work, "rev-list", "--max-parents=0", "HEAD").split()[0]
     return _git(work, "rev-list", "--reverse", f"{root}..HEAD").split()
 
 
-def replay(work: Path, target: Path) -> list[str]:
-    """Replay each work commit onto the target checkout as one commit.
-    Returns the subjects of the commits made (a commit that changes nothing
-    on the target makes none)."""
+def replay(work: Path, target: Path, since: str | None = None) -> list[str]:
+    """Replay each work commit (after ``since``) onto the target checkout as
+    one commit.  Returns the subjects of the commits made (a commit that
+    changes nothing on the target makes none)."""
     made: list[str] = []
-    for commit in work_commits(work):
+    for commit in work_commits(work, since):
         subject = _git(work, "log", "-1", "--format=%s", commit).strip()
         changes = _git(
             work, "diff", "--name-status", "--no-renames", f"{commit}^", commit
@@ -846,6 +970,16 @@ def cmd_collect(args: argparse.Namespace) -> int:
     home = Path(args.home).resolve()
     units = plan_units(plan, args.division, args.job)
     skip = plan_units(plan, args.division, JOB_PRESTO) if args.skip_presto else []
+    shard = parse_shard(args.shard) if args.shard else None
+    if shard or args.parallel > 1:
+        split = shard_units(
+            units,
+            shard[1] if shard else args.parallel,
+            programme_hosts(),
+            [unit_scope(home, season, u) for u in units],
+        )
+        if shard:
+            units = split[shard[0]]
     accept = {c.upper() for c in _csv(args.accept_loss)}
     extra = ["--refetch"] if args.refetch else []
     if os.environ.get("TOUCHLINE_FETCH_PROFILE", "").strip().lower() == "backfill":
@@ -858,9 +992,28 @@ def cmd_collect(args: argparse.Namespace) -> int:
             str(BACKFILL_TASK_BUDGET),
         ]
     started = _now()
+    clock = time.monotonic()
     base = _git(home, "rev-parse", "HEAD").strip()
     results: list[UnitResult] = []
-    for unit in units:
+    if not shard and args.parallel > 1 and sum(1 for p in split if p) > 1:
+        order = {(u.conference, u.gender): i for i, u in enumerate(units)}
+        results = collect_in_parts(args, home, split, clock, order)
+        units = []
+    for index, unit in enumerate(units):
+        timeout = args.unit_timeout
+        if args.stop_after:
+            left = args.stop_after - (time.monotonic() - clock)
+            if left < MIN_UNIT_SECONDS:
+                reason = (
+                    f"the job's {args.stop_after:.0f}s collect budget ran out; "
+                    "the next run collects it"
+                )
+                results += skipped_results(units[index:], reason)
+                print(
+                    f"stopping: {reason} ({len(units) - index} units left)", flush=True
+                )
+                break
+            timeout = min(timeout, left)
         _group(
             f"{unit.conference} {unit.gender} {season} ({unit.job}, {len(unit.programmes)} programmes)"
         )
@@ -870,7 +1023,7 @@ def cmd_collect(args: argparse.Namespace) -> int:
                 unit,
                 season,
                 accept_loss=unit.conference.upper() in accept,
-                timeout=args.unit_timeout,
+                timeout=timeout,
                 extra=extra,
                 label=args.label,
             )
@@ -896,11 +1049,124 @@ def cmd_collect(args: argparse.Namespace) -> int:
         "units": [asdict(r) for r in results],
     }
     _write_json(Path(args.record), record)
-    write_summary(
-        os.environ.get("GITHUB_STEP_SUMMARY"), args.division, args.job, results
-    )
+    if not shard:
+        write_summary(
+            os.environ.get("GITHUB_STEP_SUMMARY"), args.division, args.job, results
+        )
     bad = [r for r in results if r.result in (RESULT_FAILED, RESULT_LOST)]
     return 1 if bad else 0
+
+
+def _relay(stream: Any, prefix: str, lock: threading.Lock) -> None:
+    for line in stream:
+        with lock:
+            print(f"{prefix}{line.rstrip()}", flush=True)
+
+
+def collect_in_parts(
+    args: argparse.Namespace,
+    home: Path,
+    split: list[list[Unit]],
+    clock: float,
+    plan_order: dict[tuple[str, str], int],
+) -> list[UnitResult]:
+    """Collect each non-empty part of ``split`` in its own copy of ``home``,
+    side by side, then replay every part's unit commits onto ``home`` so the
+    landing sees one work home.  The parts share the fetch cache: they hold
+    no programme in common, so no page is written twice."""
+    pipeline = Path(__file__).resolve().parents[1]
+    raw = home / "data" / "raw_html"
+    raw.mkdir(parents=True, exist_ok=True)
+    # Each part joins only the commits it made, never ones it inherited.
+    start = _git(home, "rev-parse", "HEAD").strip()
+    count = len(split)
+    lock = threading.Lock()
+    running: list[tuple[int, Path, Path, subprocess.Popen[str], threading.Thread]] = []
+    for index, part in enumerate(split):
+        if not part:
+            continue
+        dest = home.parent / f"{home.name}.part{index}"
+        if dest.exists():
+            shutil.rmtree(dest)
+        shutil.copytree(
+            home, dest, symlinks=True, ignore=shutil.ignore_patterns("raw_html")
+        )
+        (dest / "data" / "raw_html").symlink_to(raw.resolve(), target_is_directory=True)
+        with open(dest / ".git" / "info" / "exclude", "a", encoding="utf-8") as handle:
+            handle.write("data/raw_html\n")
+        record = home.parent / f"{home.name}.part{index}.record.json"
+        record.unlink(missing_ok=True)
+        # Measured per part, after its copy, so the parts end by the job's
+        # own --stop-after.
+        budget = "0"
+        if args.stop_after:
+            budget = f"{max(args.stop_after - (time.monotonic() - clock), 1.0):.0f}"
+        command = [
+            *PART_COMMAND, "collect",
+            "--plan", str(Path(args.plan).resolve()),
+            "--home", str(dest),
+            "--division", args.division,
+            "--job", args.job,
+            "--record", str(record),
+            "--shard", f"{index}/{count}",
+            "--unit-timeout", str(args.unit_timeout),
+            "--stop-after", budget,
+            "--label", args.label,
+            "--accept-loss", args.accept_loss,
+        ]  # fmt: skip
+        if args.refetch:
+            command.append("--refetch")
+        names = ", ".join(f"{u.conference} {u.gender}" for u in part)
+        print(f"part {index}: {len(part)} unit(s): {names}", flush=True)
+        child = subprocess.Popen(
+            command,
+            cwd=pipeline,
+            env=dict(os.environ, **{PART_ENV: str(index)}),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            bufsize=1,
+        )
+        relay = threading.Thread(
+            target=_relay, args=(child.stdout, f"[part {index}] ", lock), daemon=True
+        )
+        relay.start()
+        running.append((index, dest, record, child, relay))
+    by_unit: dict[tuple[str, str], UnitResult] = {}
+    for index, dest, record, child, relay in running:
+        code = child.wait()
+        relay.join()
+        payload = _read_json(record)
+        landed = payload.get("units") if isinstance(payload, dict) else None
+        if isinstance(landed, list):
+            for entry in landed:
+                result = UnitResult(**entry)
+                by_unit[(result.conference, result.gender)] = result
+        else:
+            for unit in split[index]:
+                by_unit[(unit.conference, unit.gender)] = UnitResult(
+                    unit.conference,
+                    unit.gender,
+                    unit.job,
+                    RESULT_FAILED,
+                    len(unit.programmes),
+                    reason=f"its part exited {code} without a record",
+                )
+        made = replay(dest, home, since=start)
+        print(
+            f"part {index}: exit {code}, {len(made)} unit commit(s) joined", flush=True
+        )
+        shutil.rmtree(dest)
+        record.unlink(missing_ok=True)
+    order = sorted(
+        (u for part in split for u in part),
+        key=lambda u: plan_order[(u.conference, u.gender)],
+    )
+    return [
+        by_unit[(u.conference, u.gender)]
+        for u in order
+        if (u.conference, u.gender) in by_unit
+    ]
 
 
 def cmd_land(args: argparse.Namespace) -> int:
@@ -979,6 +1245,34 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="record the plan's presto units as skipped, with this reason",
     )
     p.add_argument("--unit-timeout", type=float, default=DEFAULT_UNIT_TIMEOUT)
+    p.add_argument(
+        "--parallel",
+        type=int,
+        default=1,
+        metavar="N",
+        help=(
+            "collect the units in up to N parts side by side, each in its own copy "
+            "of the work home; parts share no programme and no host, so each host "
+            "still sees one request at a time"
+        ),
+    )
+    p.add_argument(
+        "--shard",
+        default="",
+        metavar="INDEX/COUNT",
+        help="collect only this part of the units (what --parallel runs in each part)",
+    )
+    p.add_argument(
+        "--stop-after",
+        type=float,
+        default=0.0,
+        metavar="SECONDS",
+        help=(
+            "start no unit past this many seconds and cut a running unit's budget to "
+            "what is left, so the job lands what it has before its own timeout "
+            "(0: no limit); the units not started are recorded as skipped"
+        ),
+    )
     p.add_argument(
         "--label",
         default="shadow",

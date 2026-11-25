@@ -429,3 +429,188 @@ def test_a_fixed_address_stanza_routes_to_the_presto_runner(tmp_path: Path) -> N
     table = cd.platforms(config)
     assert cd.route(["open-site"], "men", table) == cd.JOB_HOSTED
     assert cd.route(["open-site", "walled-site"], "men", table) == cd.JOB_PRESTO
+
+
+def test_stop_after_lands_what_ran_and_skips_the_rest(
+    work: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from dataclasses import asdict
+
+    units = [unit(c, ("a",)) for c in ("GAC", "SAC", "LSC")]
+    plan = tmp_path / "plan.json"
+    write(
+        plan,
+        {
+            "schema": cd.PLAN_SCHEMA,
+            "season": SEASON,
+            "divisions": {"d2": {"units": [asdict(u) for u in units]}},
+        },
+    )
+    now = [0.0]
+    monkeypatch.setattr(cd.time, "monotonic", lambda: now[0])
+    budgets: list[float] = []
+
+    def fake_collect(home, u, season, *, timeout, **kw):
+        budgets.append(timeout)
+        now[0] += 1000.0
+        return cd.UnitResult(u.conference, u.gender, u.job, cd.RESULT_NO_CHANGE, 1)
+
+    monkeypatch.setattr(cd, "collect_unit", fake_collect)
+    record = tmp_path / "record.json"
+    rc = cd.main(
+        [
+            "collect",
+            "--plan",
+            str(plan),
+            "--home",
+            str(work),
+            "--division",
+            "d2",
+            "--job",
+            "hosted",
+            "--record",
+            str(record),
+            "--stop-after",
+            "1500",
+        ]
+    )
+    assert rc == 0
+    # The second unit gets only what is left; the third is never started.
+    assert budgets == [1500.0, 500.0]
+    rows = json.loads(record.read_text())["units"]
+    assert [r["result"] for r in rows] == [
+        cd.RESULT_NO_CHANGE,
+        cd.RESULT_NO_CHANGE,
+        cd.RESULT_SKIPPED,
+    ]
+    assert "budget ran out" in rows[2]["reason"]
+
+
+def test_shards_keep_units_that_share_a_programme_or_host_together() -> None:
+    units = [
+        unit("GAC", ("a", "b")),
+        unit("SAC", ("b", "c")),
+        unit("LSC", ("d",)),
+        unit("MIAA", ("e",)),
+        unit("NSIC", ("f",)),
+    ]
+    hosts = {"e": {"shared.example"}, "f": {"shared.example"}}
+    parts = cd.shard_units(units, 3, hosts)
+    names = [[u.conference for u in p] for p in parts]
+    # GAC and SAC share b; MIAA and NSIC share a host; LSC stands alone.
+    assert sorted(names) == [["GAC", "SAC"], ["LSC"], ["MIAA", "NSIC"]]
+    assert cd.shard_units(units, 3, hosts) == parts  # the same split every time
+    assert [len(p) for p in cd.shard_units(units, 1, hosts)] == [5]
+
+
+PART_STAND_IN = """
+import json, sys
+from pathlib import Path
+sys.path.insert(0, {pipeline!r})
+from scripts import collect_direct as cd
+
+def run(home, u, season, timeout, extra):
+    page = home / "data" / "raw_html" / u.programmes[0] / "page.html"
+    page.parent.mkdir(parents=True, exist_ok=True)
+    page.write_text(u.conference)
+    if u.conference == "BAD":
+        return 1, "collect-board fell over"
+    for layer in cd.BOARD_DIRS:
+        path = home / "data" / layer / f"{{season}}-{{u.gender}}-{{u.key}}.json"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({{"collected_at": "t1", "programmes":
+            [{{"slug": s, "note": "new"}} for s in u.programmes]}}) + "\\n")
+    return 0, "collected " + u.conference
+
+cd.collect_unit.__kwdefaults__["runner"] = run
+raise SystemExit(cd.main(sys.argv[1:]))
+"""
+
+
+def test_parallel_parts_join_into_one_work_home(
+    work: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from dataclasses import asdict
+
+    units = [unit("GAC", ("a", "b")), unit("LSC", ("y",)), unit("BAD", ("z",))]
+    plan = tmp_path / "plan.json"
+    write(
+        plan,
+        {
+            "schema": cd.PLAN_SCHEMA,
+            "season": SEASON,
+            "divisions": {"d2": {"units": [asdict(u) for u in units]}},
+        },
+    )
+    # An earlier unit commit every part inherits: a part joins only its own.
+    write(
+        work / "data" / "stats" / f"{SEASON}-men-gac.json",
+        board("t0", ["a", "b"], extra="old"),
+    )
+    cd.commit_all(work, "collect(shadow): GAC men earlier")
+    stand_in = tmp_path / "part.py"
+    pipeline = Path(cd.__file__).resolve().parents[1]
+    stand_in.write_text(PART_STAND_IN.format(pipeline=str(pipeline)), encoding="utf-8")
+    monkeypatch.setattr(cd, "PART_COMMAND", [cd.sys.executable, str(stand_in)])
+    record = tmp_path / "record.json"
+    rc = cd.main(
+        [
+            "collect",
+            "--plan",
+            str(plan),
+            "--home",
+            str(work),
+            "--division",
+            "d2",
+            "--job",
+            "hosted",
+            "--record",
+            str(record),
+            "--parallel",
+            "3",
+        ]
+    )
+    assert rc == 1  # BAD failed
+    rows = json.loads(record.read_text())["units"]
+    assert [(r["conference"], r["result"]) for r in rows] == [
+        ("GAC", cd.RESULT_CHANGED),
+        ("LSC", cd.RESULT_CHANGED),
+        ("BAD", cd.RESULT_FAILED),
+    ]
+    subjects = git(work, "log", "--format=%s").splitlines()
+    assert f"collect(shadow): GAC men {SEASON}" in subjects
+    assert f"collect(shadow): LSC men {SEASON}" in subjects
+    assert len(subjects) == 4  # baseline, the earlier GAC commit, GAC and LSC
+    # Every part wrote into the one fetch cache, which stays untracked.
+    raw = work / "data" / "raw_html"
+    assert {p.parent.name for p in raw.glob("*/page.html")} == {"a", "y", "z"}
+    assert "raw_html" not in git(work, "ls-files")
+    assert not list(tmp_path.glob("work.part*"))
+    joined = git(work, "log", "--format=%s", "-3").splitlines()
+    assert "collect(shadow): GAC men earlier" not in joined[:2]
+    assert subjects.count("collect(shadow): GAC men earlier") == 1
+    # A later part replaying the inherited commit would put "old" back.
+    stats = json.loads((work / "data/stats" / f"{SEASON}-men-gac.json").read_text())
+    assert stats["programmes"][0]["note"] == "new"
+
+
+def test_shards_follow_what_a_unit_already_holds(work: Path) -> None:
+    # SAC plans only x, but its stats file already carries b, which GAC
+    # holds too: collect-board would fetch b in both, so they stay together.
+    write(work / "data" / "stats" / f"{SEASON}-men-sac.json", board("t0", ["x", "b"]))
+    units = [unit("GAC", ("a",)), unit("SAC", ("x",)), unit("LSC", ("y",))]
+    scopes = [cd.unit_scope(work, SEASON, u) for u in units]
+    assert scopes == [["a", "b"], ["b", "x"], ["y"]]
+    parts = cd.shard_units(units, 3, {}, scopes)
+    assert sorted([u.conference for u in p] for p in parts if p) == [
+        ["GAC", "SAC"],
+        ["LSC"],
+    ]
+
+
+def test_programmes_on_a_shared_host_platform_share_a_key() -> None:
+    hosts = cd.programme_hosts()
+    wmt = [
+        slug for slug, keys in hosts.items() if f"platform:{cd.WMT_PLATFORM}" in keys
+    ]
+    assert len(wmt) > 1
