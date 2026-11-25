@@ -27,7 +27,7 @@ on:
         default: ""
       divisions:
         type: string
-        default: "d2 d1"
+        default: "d2 d1 d3"
       genders:
         type: string
         default: "men women"
@@ -49,7 +49,7 @@ on:
       divisions:
         description: Divisions, space-separated
         type: string
-        default: "d2 d1"
+        default: "d2 d1 d3"
       genders:
         description: Genders, space-separated
         type: string
@@ -84,7 +84,7 @@ jobs:
       group: journal
       cancel-in-progress: false
     env:
-      JOURNAL_DIVISIONS: ${{ inputs.divisions || 'd2 d1' }}
+      JOURNAL_DIVISIONS: ${{ inputs.divisions || 'd2 d1 d3' }}
       JOURNAL_GENDERS: ${{ inputs.genders || 'men women' }}
       JOURNAL_ONLY: ${{ inputs.conferences || '' }}
       JOURNAL_NATIONAL: ${{ inputs.national == false && 'false' || 'true' }}
@@ -123,7 +123,7 @@ jobs:
           app-id: ${{ vars.TOUCHLINE_APP_ID }}
           private-key: ${{ secrets.TOUCHLINE_APP_PRIVATE_KEY }}
           owner: ed-insights-ai
-          repositories: d1-soccer,d2-soccer,touchline-ui
+          repositories: d1-soccer,d2-soccer,d3-soccer,touchline-ui
       - name: Check out d2-soccer
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -137,6 +137,13 @@ jobs:
           repository: ed-insights-ai/d1-soccer
           token: ${{ steps.app.outputs.token }}
           path: homes/d1-soccer
+          persist-credentials: false
+      - name: Check out d3-soccer
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ed-insights-ai/d3-soccer
+          token: ${{ steps.app.outputs.token }}
+          path: homes/d3-soccer
           persist-credentials: false
       - name: Check out touchline-ui main's journals
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
