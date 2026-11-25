@@ -22000,6 +22000,7 @@ enabled      = true
 fixed_address = true
 city         = "Bradford, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Pittsburgh Bradford"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -22017,6 +22018,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Greensburg, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Pittsburgh Greensburg"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -22163,6 +22165,7 @@ enabled      = true
 fixed_address = true
 city         = "Bradford, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Pittsburgh Bradford"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -22180,6 +22183,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Greensburg, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Pittsburgh Greensburg"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -24292,6 +24296,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Brockport, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Suny Brockport"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -24505,6 +24510,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Brockport, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Suny Brockport"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -24844,6 +24850,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Henniker, N.H."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["New England Col"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -24936,7 +24943,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Standish, Maine"
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
-member_aliases = ["Saint Joseph's"]
+member_aliases = ["Saint Joseph's", "Saint Josephs Of Maine"]
 identity_accessed = "2026-11-24"
 
 
@@ -25102,6 +25109,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Henniker, N.H."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["New England Col"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -25194,7 +25202,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Standish, Maine"
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
-member_aliases = ["Saint Joseph's"]
+member_aliases = ["Saint Joseph's", "Saint Josephs Of Maine"]
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -25601,6 +25609,7 @@ enabled      = true
 city         = "Washington, D.C."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 aliases      = ["Catholic 1", "Catholic 2", "Catholic 3", "Catholic 5"]
+member_aliases = ["Catholic Of America"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -25788,6 +25797,7 @@ enabled      = true
 city         = "Washington, D.C."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 aliases      = ["Catholic 1", "Catholic 2", "Catholic 3", "Catholic 5"]
+member_aliases = ["Catholic Of America"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -26100,6 +26110,7 @@ enabled      = true
 city         = "Castleton, Vt."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 aliases      = ["VTSU Castleton 5", "VTSU Castleton 6", "VTSU Castleton E"]
+member_aliases = ["Vermont State Castleton"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -26118,6 +26129,7 @@ enabled      = true
 city         = "Danbury, Conn."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 aliases      = ["Western Connecticut 1", "Western Connecticut 2", "Western Connecticut 3", "Western Connecticut 4"]
+member_aliases = ["Westconn"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 
@@ -26266,6 +26278,7 @@ enabled      = true
 city         = "Castleton, Vt."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 aliases      = ["VTSU Castleton 5", "VTSU Castleton 6", "VTSU Castleton E"]
+member_aliases = ["Vermont State Castleton"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -26284,6 +26297,7 @@ enabled      = true
 city         = "Danbury, Conn."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 aliases      = ["Western Connecticut 1", "Western Connecticut 2", "Western Connecticut 3", "Western Connecticut 4"]
+member_aliases = ["Westconn"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 
@@ -26375,6 +26389,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Troy, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Rensselaer", "Rensselaer Polytechnic Institute"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -26554,6 +26569,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Troy, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Rensselaer", "Rensselaer Polytechnic Institute"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -26807,7 +26823,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "York, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
-member_aliases = ["York"]
+member_aliases = ["York", "York Of Pennsylvania"]
 identity_accessed = "2026-11-24"
 
 
@@ -26973,7 +26989,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "York, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
-member_aliases = ["York"]
+member_aliases = ["York", "York Of Pennsylvania"]
 identity_accessed = "2026-11-24"
 
 
@@ -27136,6 +27152,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Hoboken, N.J."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Stevens Institute Of Technology"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 
@@ -27298,6 +27315,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Hoboken, N.J."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Stevens Institute Of Technology"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 
@@ -27688,6 +27706,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "St. Peter, Minn."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Gustavus Adolphus"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -27875,6 +27894,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "St. Peter, Minn."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Gustavus Adolphus"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -28435,6 +28455,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Farmington, Maine"
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Maine Farmington"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -28452,6 +28473,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Presque Isle, Maine"
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Maine Presque Isle"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -28487,6 +28509,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Lyndonville, Vt."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Vermont State Lyndon"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 
@@ -28595,6 +28618,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Farmington, Maine"
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Maine Farmington"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -28612,6 +28636,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Presque Isle, Maine"
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Maine Presque Isle"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -28647,6 +28672,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Lyndonville, Vt."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Vermont State Lyndon"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 
@@ -28767,6 +28793,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Chicago, Ill."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Illinois Institute Of Technology"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -28799,6 +28826,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Milwaukee, Wis."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Milwaukee School Of Engineering"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -29001,6 +29029,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Chicago, Ill."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Illinois Institute Of Technology"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -29033,6 +29062,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Milwaukee, Wis."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Milwaukee School Of Engineering"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -29849,6 +29879,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Cambridge, Mass."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Massachusetts Institute Of Technology"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -29900,6 +29931,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Worcester, Mass."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Worcester Polytechnic Institute"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -30009,6 +30041,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Cambridge, Mass."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Massachusetts Institute Of Technology"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -30095,6 +30128,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Worcester, Mass."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Worcester Polytechnic Institute"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -30291,6 +30325,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Ewing, N.J."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["New Jersey", "Nj"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -30468,6 +30503,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Ewing, N.J."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["New Jersey", "Nj"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -32652,6 +32688,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Thousand Oaks, Calif."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Cal Lutheran"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -32668,6 +32705,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Pasadena, Calif."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["California Institute Of Technology"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -32700,6 +32738,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Claremont, Calif."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Cms"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -32732,6 +32771,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Los Angeles, Calif."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Oxy"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -32801,6 +32841,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Thousand Oaks, Calif."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Cal Lutheran"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -32817,6 +32858,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Pasadena, Calif."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["California Institute Of Technology"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -32849,6 +32891,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Claremont, Calif."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Cms"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -32881,6 +32924,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Los Angeles, Calif."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Oxy"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -32950,6 +32994,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Farmingdale, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Farmingdale"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -32984,6 +33029,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Bronx, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Suny Maritime"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33001,6 +33047,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Kings Point, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Usmma"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33068,6 +33115,7 @@ city         = "Purchase, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 gazetteer_geoid = "3611932413"
 gazetteer_note = "Purchase is a hamlet in the town of Harrison"
+member_aliases = ["Suny Purchase"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33121,6 +33169,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Patchogue, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Saint Josephs Li"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33158,6 +33207,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Farmingdale, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Farmingdale"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33192,6 +33242,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Bronx, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Suny Maritime"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33209,6 +33260,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Kings Point, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Usmma"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33276,6 +33328,7 @@ city         = "Purchase, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 gazetteer_geoid = "3611932413"
 gazetteer_note = "Purchase is a hamlet in the town of Harrison"
+member_aliases = ["Suny Purchase"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33329,6 +33382,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Patchogue, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Saint Josephs Li"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33432,6 +33486,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Columbus, Miss."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Mississippi For Women"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33586,6 +33641,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Columbus, Miss."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Mississippi For Women"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33744,6 +33800,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Oswego, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Oswego State"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33761,6 +33818,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Plattsburgh, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Plattsburgh State"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33778,6 +33836,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Canton, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Canton"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33795,6 +33854,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Cobleskill, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Cobleskill"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33812,6 +33872,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Cortland, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Cortland"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33847,6 +33908,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Oneonta, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Oneonta"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33864,6 +33926,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Potsdam, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Potsdam"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 
@@ -33955,6 +34018,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Oswego, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Oswego State"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33972,6 +34036,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Plattsburgh, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Plattsburgh State"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -33989,6 +34054,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Canton, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Canton"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -34006,6 +34072,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Cobleskill, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Cobleskill"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -34023,6 +34090,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Cortland, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Cortland"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -34058,6 +34126,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Oneonta, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Oneonta"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -34075,6 +34144,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Potsdam, N.Y."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Potsdam"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 
@@ -34149,6 +34219,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Chicago, Ill."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Uchicago"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -34219,6 +34290,7 @@ enabled      = true
 city         = "St. Louis, Mo."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 aliases      = ["Washington St. Louis"]
+member_aliases = ["Washington U"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 
@@ -34293,6 +34365,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Chicago, Ill."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Uchicago"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -34363,6 +34436,7 @@ enabled      = true
 city         = "St. Louis, Mo."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 aliases      = ["Washington St. Louis"]
+member_aliases = ["Washington U"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 
@@ -34486,6 +34560,7 @@ city         = "Superior, Wis."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 gazetteer_geoid = "5578650"
 gazetteer_note = "Superior city, not the village or town of the same name"
+member_aliases = ["Wisconsin Superior"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 
@@ -34609,6 +34684,7 @@ city         = "Superior, Wis."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 gazetteer_geoid = "5578650"
 gazetteer_note = "Superior city, not the village or town of the same name"
+member_aliases = ["Wisconsin Superior"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 
@@ -34721,6 +34797,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Baltimore, Md."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Notre Dame Md"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -34755,6 +34832,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Abington, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Penn Saint Abington"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -34807,6 +34885,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Harrisburg, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Penn Saint Harrisburg"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -34844,7 +34923,7 @@ city         = "St. Mary's City, Md."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 gazetteer_geoid = "2446725"
 gazetteer_note = "St. Mary's City has no Gazetteer place; Lexington Park CDP, about 10 km north, is the nearest"
-member_aliases = ["St. Mary's"]
+member_aliases = ["St. Mary's", "Saint Marys Of Maryland"]
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -34990,6 +35069,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Baltimore, Md."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Notre Dame Md"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -35024,6 +35104,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Abington, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Penn Saint Abington"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -35076,6 +35157,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Harrisburg, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Penn Saint Harrisburg"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -35113,7 +35195,7 @@ city         = "St. Mary's City, Md."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 gazetteer_geoid = "2446725"
 gazetteer_note = "St. Mary's City has no Gazetteer place; Lexington Park CDP, about 10 km north, is the nearest"
-member_aliases = ["St. Mary's"]
+member_aliases = ["St. Mary's", "Saint Marys Of Maryland"]
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -35221,6 +35303,7 @@ enabled      = true
 city         = "Rocky Mount, N.C."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 aliases      = ["N.C. Wesleyan"]
+member_aliases = ["North Carolina Wesleyan"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -35380,6 +35463,7 @@ enabled      = true
 city         = "Rocky Mount, N.C."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 aliases      = ["N.C. Wesleyan"]
+member_aliases = ["North Carolina Wesleyan"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -35471,6 +35555,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Eau Claire, Wis."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Wisconsin Eau Claire"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -35503,6 +35588,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "River Falls, Wis."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Wisconsin River Falls"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -35519,6 +35605,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Stevens Point, Wis."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Wisconsin Stevens Point"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -35536,6 +35623,7 @@ enabled      = true
 city         = "Menomonie, Wis."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 aliases      = ["UW-Stout Polytechnic"]
+member_aliases = ["Wisconsin Stout Polytechnic"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -35552,6 +35640,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Whitewater, Wis."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Wisconsin Whitewater"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 
@@ -35573,6 +35662,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Eau Claire, Wis."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Wisconsin Eau Claire"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -35637,6 +35727,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "River Falls, Wis."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Wisconsin River Falls"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -35653,6 +35744,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Stevens Point, Wis."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Wisconsin Stevens Point"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -35670,6 +35762,7 @@ enabled      = true
 city         = "Menomonie, Wis."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
 aliases      = ["UW-Stout Polytechnic"]
+member_aliases = ["Wisconsin Stout Polytechnic"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -35686,6 +35779,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Whitewater, Wis."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Wisconsin Whitewater"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 
