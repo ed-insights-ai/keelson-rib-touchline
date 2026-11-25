@@ -32399,7 +32399,6 @@ data_status  = "unverified"
 enabled      = true
 city         = "Austin, Texas"
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
-member_aliases = ["Concordia"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -32564,7 +32563,6 @@ data_status  = "unverified"
 enabled      = true
 city         = "Austin, Texas"
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
-member_aliases = ["Concordia"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
