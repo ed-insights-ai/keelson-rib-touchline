@@ -71,6 +71,7 @@ from urllib.parse import urlsplit
 from src import paths
 from src.config import DEFAULT_CONFIG, load_schools
 from src.recipes import PRESTO
+from src.wmt import PLATFORM as WMT_PLATFORM
 from src.sidearm_live import programme_slug
 
 PLAN_SCHEMA = "touchline.collect-plan/1"
@@ -370,10 +371,22 @@ def plan_units(
     return [u for u in units if job in (None, "all") or u.job == job]
 
 
-def programme_hosts(config: Path) -> dict[str, set[str]]:
-    """slug -> the hosts its stanzas fetch from (either gender)."""
+#: Platforms whose programmes share a host beyond their own sites (every WMT
+#: programme sends statistics and box scores to one statistics host), so all
+#: of their units go in one part.
+SHARED_HOST_PLATFORMS = frozenset({WMT_PLATFORM})
+
+
+def programme_hosts(config: Path = DEFAULT_CONFIG) -> dict[str, set[str]]:
+    """slug -> the hosts its stanzas fetch from (either gender), plus a
+    platform key for a platform whose programmes share a host."""
     hosts: dict[str, set[str]] = {}
     for school in load_schools(config):
+        platform = school.live_collector()
+        if platform in SHARED_HOST_PLATFORMS:
+            hosts.setdefault(programme_slug(school.name), set()).add(
+                f"platform:{platform}"
+            )
         try:
             url = school.live_sport_url()
         except Exception:  # noqa: BLE001 - a stanza with no live URL has its base_url
@@ -384,15 +397,40 @@ def programme_hosts(config: Path) -> dict[str, set[str]]:
     return hosts
 
 
+def unit_scope(home: Path, season: int, unit: Unit) -> list[str]:
+    """The programmes collect-board will fetch for ``unit`` in ``home``: the
+    planned ones plus any its season files already carry (the scope only
+    widens)."""
+    scope = set(unit.programmes)
+    for layer in ("fixtures", "rosters", "stats"):
+        payload = _read_json(
+            home / "data" / layer / f"{season}-{unit.gender}-{unit.key}.json"
+        )
+        if not isinstance(payload, dict):
+            continue
+        for entry in payload.get("programmes") or []:
+            if isinstance(entry, dict) and entry.get("slug"):
+                scope.add(str(entry["slug"]))
+        for name in ("rosters", "teams"):
+            if isinstance(payload.get(name), dict):
+                scope.update(str(slug) for slug in payload[name])
+        scope.update(str(slug) for slug in payload.get("missing") or [])
+    return sorted(scope)
+
+
 def shard_units(
-    units: Sequence[Unit], parts: int, hosts: dict[str, set[str]]
+    units: Sequence[Unit],
+    parts: int,
+    hosts: dict[str, set[str]],
+    scopes: Sequence[Sequence[str]] | None = None,
 ) -> list[list[Unit]]:
     """Split ``units`` into ``parts`` lists that share no programme and no
     host, so parts collected side by side never put two requests on one host
     at once.  Units joined by a programme or a host stay together; the groups
     go, largest first, to the lightest part.  Each part keeps plan order, and
     the split depends only on its inputs, so every caller computes the same
-    one."""
+    one.  ``scopes`` gives each unit's full fetch scope when it is wider than
+    its planned programmes."""
     parts = max(1, parts)
     parent = list(range(len(units)))
 
@@ -404,8 +442,9 @@ def shard_units(
 
     owner: dict[tuple[str, str], int] = {}
     for index, unit in enumerate(units):
-        keys = {("programme", s) for s in unit.programmes}
-        keys |= {("host", h) for s in unit.programmes for h in hosts.get(s, ())}
+        scope = scopes[index] if scopes is not None else unit.programmes
+        keys = {("programme", s) for s in scope}
+        keys |= {("host", h) for s in scope for h in hosts.get(s, ())}
         for key in sorted(keys):
             if key in owner:
                 parent[find(index)] = find(owner[key])
@@ -935,7 +974,8 @@ def cmd_collect(args: argparse.Namespace) -> int:
         split = shard_units(
             units,
             shard[1] if shard else args.parallel,
-            programme_hosts(Path(args.config)),
+            programme_hosts(),
+            [unit_scope(home, season, u) for u in units],
         )
         if shard:
             units = split[shard[0]]
@@ -1037,7 +1077,6 @@ def collect_in_parts(
     raw = home / "data" / "raw_html"
     raw.mkdir(parents=True, exist_ok=True)
     count = len(split)
-    left = args.stop_after - (time.monotonic() - clock) if args.stop_after else 0.0
     lock = threading.Lock()
     running: list[tuple[int, Path, Path, subprocess.Popen[str], threading.Thread]] = []
     for index, part in enumerate(split):
@@ -1054,6 +1093,11 @@ def collect_in_parts(
             handle.write("data/raw_html\n")
         record = home.parent / f"{home.name}.part{index}.record.json"
         record.unlink(missing_ok=True)
+        # Measured per part, after its copy, so the parts end by the job's
+        # own --stop-after.
+        budget = "0"
+        if args.stop_after:
+            budget = f"{max(args.stop_after - (time.monotonic() - clock), 1.0):.0f}"
         command = [
             *PART_COMMAND, "collect",
             "--plan", str(Path(args.plan).resolve()),
@@ -1062,9 +1106,8 @@ def collect_in_parts(
             "--job", args.job,
             "--record", str(record),
             "--shard", f"{index}/{count}",
-            "--config", str(Path(args.config).resolve()),
             "--unit-timeout", str(args.unit_timeout),
-            "--stop-after", f"{max(left, 1.0) if args.stop_after else 0.0}",
+            "--stop-after", budget,
             "--label", args.label,
             "--accept-loss", args.accept_loss,
         ]  # fmt: skip
@@ -1216,7 +1259,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         metavar="INDEX/COUNT",
         help="collect only this part of the units (what --parallel runs in each part)",
     )
-    p.add_argument("--config", default=str(DEFAULT_CONFIG))
     p.add_argument(
         "--stop-after",
         type=float,

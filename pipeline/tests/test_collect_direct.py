@@ -580,3 +580,25 @@ def test_parallel_parts_join_into_one_work_home(
     assert {p.parent.name for p in raw.glob("*/page.html")} == {"a", "y", "z"}
     assert "raw_html" not in git(work, "ls-files")
     assert not list(tmp_path.glob("work.part*"))
+
+
+def test_shards_follow_what_a_unit_already_holds(work: Path) -> None:
+    # SAC plans only x, but its stats file already carries b, which GAC
+    # holds too: collect-board would fetch b in both, so they stay together.
+    write(work / "data" / "stats" / f"{SEASON}-men-sac.json", board("t0", ["x", "b"]))
+    units = [unit("GAC", ("a",)), unit("SAC", ("x",)), unit("LSC", ("y",))]
+    scopes = [cd.unit_scope(work, SEASON, u) for u in units]
+    assert scopes == [["a", "b"], ["b", "x"], ["y"]]
+    parts = cd.shard_units(units, 3, {}, scopes)
+    assert sorted([u.conference for u in p] for p in parts if p) == [
+        ["GAC", "SAC"],
+        ["LSC"],
+    ]
+
+
+def test_programmes_on_a_shared_host_platform_share_a_key() -> None:
+    hosts = cd.programme_hosts()
+    wmt = [
+        slug for slug, keys in hosts.items() if f"platform:{cd.WMT_PLATFORM}" in keys
+    ]
+    assert len(wmt) > 1
