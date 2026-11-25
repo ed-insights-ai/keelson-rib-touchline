@@ -838,18 +838,19 @@ def overlay_coverage(target: Path, before: bytes | None, after: bytes | None) ->
     )
 
 
-def work_commits(work: Path) -> list[str]:
-    """The unit commits in a work home, oldest first (the baseline excluded)."""
-    root = _git(work, "rev-list", "--max-parents=0", "HEAD").split()[0]
+def work_commits(work: Path, since: str | None = None) -> list[str]:
+    """The unit commits in a work home after ``since`` (default: the
+    baseline), oldest first."""
+    root = since or _git(work, "rev-list", "--max-parents=0", "HEAD").split()[0]
     return _git(work, "rev-list", "--reverse", f"{root}..HEAD").split()
 
 
-def replay(work: Path, target: Path) -> list[str]:
-    """Replay each work commit onto the target checkout as one commit.
-    Returns the subjects of the commits made (a commit that changes nothing
-    on the target makes none)."""
+def replay(work: Path, target: Path, since: str | None = None) -> list[str]:
+    """Replay each work commit (after ``since``) onto the target checkout as
+    one commit.  Returns the subjects of the commits made (a commit that
+    changes nothing on the target makes none)."""
     made: list[str] = []
-    for commit in work_commits(work):
+    for commit in work_commits(work, since):
         subject = _git(work, "log", "-1", "--format=%s", commit).strip()
         changes = _git(
             work, "diff", "--name-status", "--no-renames", f"{commit}^", commit
@@ -1076,6 +1077,8 @@ def collect_in_parts(
     pipeline = Path(__file__).resolve().parents[1]
     raw = home / "data" / "raw_html"
     raw.mkdir(parents=True, exist_ok=True)
+    # Each part joins only the commits it made, never ones it inherited.
+    start = _git(home, "rev-parse", "HEAD").strip()
     count = len(split)
     lock = threading.Lock()
     running: list[tuple[int, Path, Path, subprocess.Popen[str], threading.Thread]] = []
@@ -1149,7 +1152,7 @@ def collect_in_parts(
                     len(unit.programmes),
                     reason=f"its part exited {code} without a record",
                 )
-        made = replay(dest, home)
+        made = replay(dest, home, since=start)
         print(
             f"part {index}: exit {code}, {len(made)} unit commit(s) joined", flush=True
         )

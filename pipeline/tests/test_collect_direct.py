@@ -542,6 +542,12 @@ def test_parallel_parts_join_into_one_work_home(
             "divisions": {"d2": {"units": [asdict(u) for u in units]}},
         },
     )
+    # An earlier unit commit every part inherits: a part joins only its own.
+    write(
+        work / "data" / "stats" / f"{SEASON}-men-gac.json",
+        board("t0", ["a", "b"], extra="old"),
+    )
+    cd.commit_all(work, "collect(shadow): GAC men earlier")
     stand_in = tmp_path / "part.py"
     pipeline = Path(cd.__file__).resolve().parents[1]
     stand_in.write_text(PART_STAND_IN.format(pipeline=str(pipeline)), encoding="utf-8")
@@ -574,12 +580,18 @@ def test_parallel_parts_join_into_one_work_home(
     subjects = git(work, "log", "--format=%s").splitlines()
     assert f"collect(shadow): GAC men {SEASON}" in subjects
     assert f"collect(shadow): LSC men {SEASON}" in subjects
-    assert len(subjects) == 3  # the baseline and the two changed units
+    assert len(subjects) == 4  # baseline, the earlier GAC commit, GAC and LSC
     # Every part wrote into the one fetch cache, which stays untracked.
     raw = work / "data" / "raw_html"
     assert {p.parent.name for p in raw.glob("*/page.html")} == {"a", "y", "z"}
     assert "raw_html" not in git(work, "ls-files")
     assert not list(tmp_path.glob("work.part*"))
+    joined = git(work, "log", "--format=%s", "-3").splitlines()
+    assert "collect(shadow): GAC men earlier" not in joined[:2]
+    assert subjects.count("collect(shadow): GAC men earlier") == 1
+    # A later part replaying the inherited commit would put "old" back.
+    stats = json.loads((work / "data/stats" / f"{SEASON}-men-gac.json").read_text())
+    assert stats["programmes"][0]["note"] == "new"
 
 
 def test_shards_follow_what_a_unit_already_holds(work: Path) -> None:
