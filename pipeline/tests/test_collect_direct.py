@@ -429,3 +429,58 @@ def test_a_fixed_address_stanza_routes_to_the_presto_runner(tmp_path: Path) -> N
     table = cd.platforms(config)
     assert cd.route(["open-site"], "men", table) == cd.JOB_HOSTED
     assert cd.route(["open-site", "walled-site"], "men", table) == cd.JOB_PRESTO
+
+
+def test_stop_after_lands_what_ran_and_skips_the_rest(
+    work: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from dataclasses import asdict
+
+    units = [unit(c, ("a",)) for c in ("GAC", "SAC", "LSC")]
+    plan = tmp_path / "plan.json"
+    write(
+        plan,
+        {
+            "schema": cd.PLAN_SCHEMA,
+            "season": SEASON,
+            "divisions": {"d2": {"units": [asdict(u) for u in units]}},
+        },
+    )
+    now = [0.0]
+    monkeypatch.setattr(cd.time, "monotonic", lambda: now[0])
+    budgets: list[float] = []
+
+    def fake_collect(home, u, season, *, timeout, **kw):
+        budgets.append(timeout)
+        now[0] += 1000.0
+        return cd.UnitResult(u.conference, u.gender, u.job, cd.RESULT_NO_CHANGE, 1)
+
+    monkeypatch.setattr(cd, "collect_unit", fake_collect)
+    record = tmp_path / "record.json"
+    rc = cd.main(
+        [
+            "collect",
+            "--plan",
+            str(plan),
+            "--home",
+            str(work),
+            "--division",
+            "d2",
+            "--job",
+            "hosted",
+            "--record",
+            str(record),
+            "--stop-after",
+            "1500",
+        ]
+    )
+    assert rc == 0
+    # The second unit gets only what is left; the third is never started.
+    assert budgets == [1500.0, 500.0]
+    rows = json.loads(record.read_text())["units"]
+    assert [r["result"] for r in rows] == [
+        cd.RESULT_NO_CHANGE,
+        cd.RESULT_NO_CHANGE,
+        cd.RESULT_SKIPPED,
+    ]
+    assert "budget ran out" in rows[2]["reason"]

@@ -90,6 +90,8 @@ RESULT_SKIPPED = "skipped"
 #: own (five minutes each); this only stops a wedged process from eating the
 #: job's whole budget.
 DEFAULT_UNIT_TIMEOUT = 2400.0
+#: A unit is not started with less than this left of --stop-after.
+MIN_UNIT_SECONDS = 120.0
 #: collect-board workers under the backfill profile (one host each).
 BACKFILL_WORKERS = 16
 #: A backfill task's budget counts its wait for the host's slot, so it is
@@ -858,9 +860,24 @@ def cmd_collect(args: argparse.Namespace) -> int:
             str(BACKFILL_TASK_BUDGET),
         ]
     started = _now()
+    clock = time.monotonic()
     base = _git(home, "rev-parse", "HEAD").strip()
     results: list[UnitResult] = []
-    for unit in units:
+    for index, unit in enumerate(units):
+        timeout = args.unit_timeout
+        if args.stop_after:
+            left = args.stop_after - (time.monotonic() - clock)
+            if left < MIN_UNIT_SECONDS:
+                reason = (
+                    f"the job's {args.stop_after:.0f}s collect budget ran out; "
+                    "the next run collects it"
+                )
+                results += skipped_results(units[index:], reason)
+                print(
+                    f"stopping: {reason} ({len(units) - index} units left)", flush=True
+                )
+                break
+            timeout = min(timeout, left)
         _group(
             f"{unit.conference} {unit.gender} {season} ({unit.job}, {len(unit.programmes)} programmes)"
         )
@@ -870,7 +887,7 @@ def cmd_collect(args: argparse.Namespace) -> int:
                 unit,
                 season,
                 accept_loss=unit.conference.upper() in accept,
-                timeout=args.unit_timeout,
+                timeout=timeout,
                 extra=extra,
                 label=args.label,
             )
@@ -979,6 +996,17 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="record the plan's presto units as skipped, with this reason",
     )
     p.add_argument("--unit-timeout", type=float, default=DEFAULT_UNIT_TIMEOUT)
+    p.add_argument(
+        "--stop-after",
+        type=float,
+        default=0.0,
+        metavar="SECONDS",
+        help=(
+            "start no unit past this many seconds and cut a running unit's budget to "
+            "what is left, so the job lands what it has before its own timeout "
+            "(0: no limit); the units not started are recorded as skipped"
+        ),
+    )
     p.add_argument(
         "--label",
         default="shadow",
