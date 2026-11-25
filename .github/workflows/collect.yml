@@ -98,6 +98,12 @@ env:
   # 345), so a long backfill lands what it has; the next run collects the
   # rest, its pages already in the fetch cache.
   COLLECT_STOP_AFTER: "18000"
+  # A backfill collects its units in parts side by side (collect-direct
+  # collect --parallel): parts share no programme and no host, so each host
+  # still sees one request at a time. Two on the presto runner, whose 2 GB
+  # fits two collects; one in a daily run, which is quick already.
+  COLLECT_PARALLEL: ${{ inputs.profile == 'backfill' && '4' || '1' }}
+  COLLECT_PRESTO_PARALLEL: ${{ inputs.profile == 'backfill' && '2' || '1' }}
   # Where real runs land. `shadow` until cutover; the repository variable
   # TOUCHLINE_COLLECT_TARGET=main makes this workflow production, writing each
   # data home's main. Any other value means shadow.
@@ -466,7 +472,7 @@ jobs:
           # shellcheck disable=SC2086 # REFETCH is one flag or empty.
           uv run --frozen --no-dev collect-direct collect --plan "$RUNNER_TEMP/plan/plan.json" \
             --home "$RUNNER_TEMP/work" --division "$DIVISION" --job hosted \
-            --record "$RUNNER_TEMP/collect-record.json" --stop-after "$COLLECT_STOP_AFTER" \
+            --record "$RUNNER_TEMP/collect-record.json" --stop-after "$COLLECT_STOP_AFTER" --parallel "$COLLECT_PARALLEL" \
             --label "$COLLECT_LABEL" --accept-loss "$ACCEPT_LOSS" --skip-presto "$skip" $REFETCH || rc=$?
           echo "rc=${rc:-0}" >> "$GITHUB_OUTPUT"
       - name: Check the contracts
@@ -650,7 +656,7 @@ jobs:
           # shellcheck disable=SC2086 # REFETCH is one flag or empty.
           uv run --frozen --no-dev collect-direct collect --plan "$RUNNER_TEMP/presto-home.plan.json" \
             --home "$RUNNER_TEMP/presto-home" --division "$DIVISION" --job presto \
-            --record "$RUNNER_TEMP/presto-home.collect-record.json" --stop-after "$COLLECT_STOP_AFTER" \
+            --record "$RUNNER_TEMP/presto-home.collect-record.json" --stop-after "$COLLECT_STOP_AFTER" --parallel "$COLLECT_PRESTO_PARALLEL" \
             --label "$COLLECT_LABEL" --accept-loss "$ACCEPT_LOSS" $REFETCH || rc=$?
           echo "rc=${rc:-0}" >> "$GITHUB_OUTPUT"
           tar -C "$RUNNER_TEMP" -czf "$RUNNER_TEMP/presto-result.tgz" presto-home presto-home.collect-record.json || exit 1

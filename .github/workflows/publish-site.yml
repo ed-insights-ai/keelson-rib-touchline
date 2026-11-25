@@ -25,7 +25,7 @@ name: Publish site
 # Source of the data:
 #   samples  the sample homes under samples/ (the site then shows GAC and A10;
 #            always what pull requests build)
-#   data     the default on main: the private d1-soccer, d2-soccer and d3-soccer homes at their main, read with
+#   data     the default on main: the private d1-soccer and d2-soccer homes at their main, read with
 #            the touchline-publisher App (infra/GITHUB_APP.md); journals come
 #            from touchline-ui main, where the journal job (journal.yml, on
 #            when TOUCHLINE_JOURNALS is `on`) commits them
@@ -106,14 +106,10 @@ concurrency:
 env:
   # Pull requests always build the samples, whatever the default.
   SOURCE: ${{ github.event_name == 'pull_request' && 'samples' || (inputs.source != '' && inputs.source != 'default') && inputs.source || vars.SITE_SOURCE || 'data' }}
-  # The division list, root division first (infra/main site_root_division).
-  # The bundle job narrows it to the homes this run can build (a sample run
-  # builds the divisions with a sample home; a home in NEW_DIVISIONS with no
-  # season file yet is left out) and hands the result to the other jobs.
-  DIVISIONS: d2 d1 d3
-  NEW_DIVISIONS: d3
-  # The divisions the dataset snapshot covers: those the pinned desk reads.
-  SNAPSHOT_DIVISIONS: d2 d1
+  # The one division list: site builds and snapshot scopes both come from it.
+  # Root division first (infra/main site_root_division). Add d3 here once the
+  # d3-soccer home exists (infra/main already lists it).
+  DIVISIONS: d2 d1
   AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID || '822013580129' }}
   AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
   # Terraform outputs site_bucket, site_distribution_id, site_url (infra/main).
@@ -173,8 +169,6 @@ jobs:
     environment: ${{ github.event_name != 'pull_request' && ((inputs.source != '' && inputs.source != 'default') && inputs.source || vars.SITE_SOURCE || 'data') == 'data' && 'production' || '' }}
     outputs:
       sources: ${{ steps.cut.outputs.sources }}
-      divisions: ${{ steps.divisions.outputs.divisions }}
-      snapshot_divisions: ${{ steps.divisions.outputs.snapshot }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -200,51 +194,26 @@ jobs:
           app-id: ${{ vars.TOUCHLINE_APP_ID || secrets.TOUCHLINE_APP_ID }}
           private-key: ${{ secrets.TOUCHLINE_APP_PRIVATE_KEY }}
           owner: ed-insights-ai
-          repositories: d1-soccer,d2-soccer,d3-soccer
-      - name: Data homes at their main
+          repositories: d1-soccer,d2-soccer
+      - name: Check out d2-soccer
         if: env.SOURCE == 'data'
-        env:
-          TOKEN: ${{ steps.token.outputs.token }}
-        run: |
-          set -eu
-          mkdir homes
-          for d in $DIVISIONS; do
-            git init -q "homes/$d-soccer"
-            git -C "homes/$d-soccer" -c http.extraheader="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$TOKEN" | base64 -w0)" \
-              fetch -q --depth 1 "https://github.com/ed-insights-ai/$d-soccer" main
-            git -C "homes/$d-soccer" checkout -q FETCH_HEAD
-          done
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ed-insights-ai/d2-soccer
+          token: ${{ steps.token.outputs.token }}
+          path: homes/d2-soccer
+      - name: Check out d1-soccer
+        if: env.SOURCE == 'data'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ed-insights-ai/d1-soccer
+          token: ${{ steps.token.outputs.token }}
+          path: homes/d1-soccer
       - name: Sample homes
         if: env.SOURCE == 'samples'
         run: |
           mkdir homes
-          for d in $DIVISIONS; do
-            if [ -d "rib/samples/$d-soccer" ]; then ln -s "$PWD/rib/samples/$d-soccer" "homes/$d-soccer"; fi
-          done
-      - name: Divisions this run builds
-        id: divisions
-        run: |
-          set -eu
-          keep=""
-          for d in $DIVISIONS; do
-            home="homes/$d-soccer"
-            if [ ! -e "$home" ]; then
-              echo "::notice::$d has no sample home; the sample site leaves it out."; continue
-            fi
-            if ! ls "$home"/data/fixtures/*.json > /dev/null 2>&1; then
-              case " $NEW_DIVISIONS " in
-                *" $d "*) echo "::notice::$d-soccer holds no season file yet; the site leaves it out."; continue ;;
-              esac
-            fi
-            keep="$keep $d"
-          done
-          keep=${keep# }
-          snapshot=""
-          for d in $keep; do case " $SNAPSHOT_DIVISIONS " in *" $d "*) snapshot="$snapshot $d" ;; esac; done
-          echo "DIVISIONS=$keep" >> "$GITHUB_ENV"
-          echo "divisions=$keep" >> "$GITHUB_OUTPUT"
-          echo "snapshot=${snapshot# }" >> "$GITHUB_OUTPUT"
-          echo "Site divisions: $keep; snapshot divisions:$snapshot"
+          for d in $DIVISIONS; do ln -s "$PWD/rib/samples/$d-soccer" "homes/$d-soccer"; done
       - name: Homes within the contracts
         working-directory: rib/pipeline
         run: |
@@ -290,7 +259,6 @@ jobs:
     env:
       DEPLOY: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
       SOURCES: ${{ needs.bundle.outputs.sources }}
-      DIVISIONS: ${{ needs.bundle.outputs.snapshot_divisions }}
     outputs:
       # "true" only when the site's program figures and the desk's agree; the
       # release job refuses to move latest.json otherwise.
@@ -566,7 +534,6 @@ jobs:
       # never deploys it: it is run to fill that source's snapshot folder,
       # not to replace the live site. The release job has the same test.
       DEPLOY: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && !(inputs.source != '' && inputs.source != 'default' && inputs.source != (vars.SITE_SOURCE || 'data')) }}
-      DIVISIONS: ${{ needs.bundle.outputs.divisions }}
     outputs:
       # The release gate: "true" only when this run deployed and every build's
       # live smoke check passed. A later release job (move latest.json) needs

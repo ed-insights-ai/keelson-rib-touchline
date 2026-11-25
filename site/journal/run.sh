@@ -13,7 +13,7 @@
 # nothing changed calls no model.
 #
 # Environment:
-#   JOURNAL_DIVISIONS   default "d2 d1 d3"
+#   JOURNAL_DIVISIONS   default "d2 d1"
 #   JOURNAL_GENDERS     default "men women"
 #   JOURNAL_ONLY        conference keys to write whatever their stamps (a trial);
 #                       empty writes the changed ones
@@ -30,7 +30,7 @@ ui=$(cd "$1" && pwd)
 homes=$(cd "$2" && pwd)
 usage=$(cd "$(dirname "$3")" && pwd)/$(basename "$3")
 here=$(cd "$(dirname "$0")" && pwd)
-divisions=${JOURNAL_DIVISIONS:-d2 d1 d3}
+divisions=${JOURNAL_DIVISIONS:-d2 d1}
 genders=${JOURNAL_GENDERS:-men women}
 model=${JOURNAL_MODEL:-gemini-4-neon}
 season=${TOUCHLINE_SEASON:-$(date -u +%Y)}

@@ -484,3 +484,99 @@ def test_stop_after_lands_what_ran_and_skips_the_rest(
         cd.RESULT_SKIPPED,
     ]
     assert "budget ran out" in rows[2]["reason"]
+
+
+def test_shards_keep_units_that_share_a_programme_or_host_together() -> None:
+    units = [
+        unit("GAC", ("a", "b")),
+        unit("SAC", ("b", "c")),
+        unit("LSC", ("d",)),
+        unit("MIAA", ("e",)),
+        unit("NSIC", ("f",)),
+    ]
+    hosts = {"e": {"shared.example"}, "f": {"shared.example"}}
+    parts = cd.shard_units(units, 3, hosts)
+    names = [[u.conference for u in p] for p in parts]
+    # GAC and SAC share b; MIAA and NSIC share a host; LSC stands alone.
+    assert sorted(names) == [["GAC", "SAC"], ["LSC"], ["MIAA", "NSIC"]]
+    assert cd.shard_units(units, 3, hosts) == parts  # the same split every time
+    assert [len(p) for p in cd.shard_units(units, 1, hosts)] == [5]
+
+
+PART_STAND_IN = """
+import json, sys
+from pathlib import Path
+sys.path.insert(0, {pipeline!r})
+from scripts import collect_direct as cd
+
+def run(home, u, season, timeout, extra):
+    page = home / "data" / "raw_html" / u.programmes[0] / "page.html"
+    page.parent.mkdir(parents=True, exist_ok=True)
+    page.write_text(u.conference)
+    if u.conference == "BAD":
+        return 1, "collect-board fell over"
+    for layer in cd.BOARD_DIRS:
+        path = home / "data" / layer / f"{{season}}-{{u.gender}}-{{u.key}}.json"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({{"collected_at": "t1", "programmes":
+            [{{"slug": s, "note": "new"}} for s in u.programmes]}}) + "\\n")
+    return 0, "collected " + u.conference
+
+cd.collect_unit.__kwdefaults__["runner"] = run
+raise SystemExit(cd.main(sys.argv[1:]))
+"""
+
+
+def test_parallel_parts_join_into_one_work_home(
+    work: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from dataclasses import asdict
+
+    units = [unit("GAC", ("a", "b")), unit("LSC", ("y",)), unit("BAD", ("z",))]
+    plan = tmp_path / "plan.json"
+    write(
+        plan,
+        {
+            "schema": cd.PLAN_SCHEMA,
+            "season": SEASON,
+            "divisions": {"d2": {"units": [asdict(u) for u in units]}},
+        },
+    )
+    stand_in = tmp_path / "part.py"
+    pipeline = Path(cd.__file__).resolve().parents[1]
+    stand_in.write_text(PART_STAND_IN.format(pipeline=str(pipeline)), encoding="utf-8")
+    monkeypatch.setattr(cd, "PART_COMMAND", [cd.sys.executable, str(stand_in)])
+    record = tmp_path / "record.json"
+    rc = cd.main(
+        [
+            "collect",
+            "--plan",
+            str(plan),
+            "--home",
+            str(work),
+            "--division",
+            "d2",
+            "--job",
+            "hosted",
+            "--record",
+            str(record),
+            "--parallel",
+            "3",
+        ]
+    )
+    assert rc == 1  # BAD failed
+    rows = json.loads(record.read_text())["units"]
+    assert [(r["conference"], r["result"]) for r in rows] == [
+        ("GAC", cd.RESULT_CHANGED),
+        ("LSC", cd.RESULT_CHANGED),
+        ("BAD", cd.RESULT_FAILED),
+    ]
+    subjects = git(work, "log", "--format=%s").splitlines()
+    assert f"collect(shadow): GAC men {SEASON}" in subjects
+    assert f"collect(shadow): LSC men {SEASON}" in subjects
+    assert len(subjects) == 3  # the baseline and the two changed units
+    # Every part wrote into the one fetch cache, which stays untracked.
+    raw = work / "data" / "raw_html"
+    assert {p.parent.name for p in raw.glob("*/page.html")} == {"a", "y", "z"}
+    assert "raw_html" not in git(work, "ls-files")
+    assert not list(tmp_path.glob("work.part*"))
