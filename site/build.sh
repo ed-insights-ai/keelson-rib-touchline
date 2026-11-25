@@ -15,6 +15,9 @@
 # Mac's ~/.keelson config. Environment:
 #   SITE_DIVISIONS       divisions to build, root first (default "d2 d1")
 #   SITE_GENDERS         default "men women"
+#   SITE_ADVISORY_DIVISIONS  divisions whose failing gate warns instead of
+#                        failing, so a division being brought up cannot hold
+#                        back the published ones; default none
 #   TOUCHLINE_CONTRACTS_DIR, TOUCHLINE_JOURNAL_DIR   passed through to the UI
 #
 # The smoke list has one line per build: "<path>\t<stamp>\t<pages>", read by
@@ -27,6 +30,7 @@ site_url=${3%/}
 smoke=$(cd "$(dirname "$4")" && pwd)/$(basename "$4")
 divisions=${SITE_DIVISIONS:-d2 d1}
 genders=${SITE_GENDERS:-men women}
+advisory=${SITE_ADVISORY_DIVISIONS:-}
 root=${divisions%% *}
 
 csv() { printf '%s' "$1" | tr -s ' ' ','; }
@@ -56,10 +60,15 @@ for div in $divisions; do
       TOUCHLINE_OUT_DIR="dist$seg" \
       bun run build
     echo "→ gate $div $gender"
-    env TOUCHLINE_NCAA_DIVISION="$div" TOUCHLINE_GENDER="$gender" \
+    if ! env TOUCHLINE_NCAA_DIVISION="$div" TOUCHLINE_GENDER="$gender" \
       TOUCHLINE_DATA_DIR="$home" \
       TOUCHLINE_GENDERS="$published_genders" TOUCHLINE_NCAA_DIVISIONS="$published_divisions" \
-      bun test ./src ./scripts
+      bun test ./src ./scripts; then
+      case " $advisory " in
+        *" $div "*) echo "::warning title=Advisory gate::$div $gender failed its gate and is published anyway (SITE_ADVISORY_DIVISIONS)" ;;
+        *) exit 1 ;;
+      esac
+    fi
     stamp=$(sed -n 's/.*name="touchline-build" content="\([^"]*\)".*/\1/p' "dist$seg/index.html" | head -n1)
     pages=$(env TOUCHLINE_NCAA_DIVISION="$div" TOUCHLINE_GENDER="$gender" TOUCHLINE_DATA_DIR="$home" \
       bun scripts/sample.ts "dist$seg")

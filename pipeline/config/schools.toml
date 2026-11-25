@@ -22000,6 +22000,7 @@ enabled      = true
 fixed_address = true
 city         = "Bradford, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Pittsburgh Bradford"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -22164,6 +22165,7 @@ enabled      = true
 fixed_address = true
 city         = "Bradford, Pa."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Pittsburgh Bradford"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -30323,7 +30325,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Ewing, N.J."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
-member_aliases = ["New Jersey"]  # spellings conference peers print
+member_aliases = ["New Jersey", "Nj"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -30501,7 +30503,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Ewing, N.J."
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
-member_aliases = ["New Jersey"]  # spellings conference peers print
+member_aliases = ["New Jersey", "Nj"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -32397,6 +32399,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Austin, Texas"
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Concordia"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]
@@ -32561,6 +32564,7 @@ data_status  = "unverified"
 enabled      = true
 city         = "Austin, Texas"
 city_source  = "Wikipedia, https://en.wikipedia.org/wiki/List_of_NCAA_Division_III_institutions"
+member_aliases = ["Concordia"]  # spellings conference peers print
 identity_accessed = "2026-11-24"
 
 [[schools]]

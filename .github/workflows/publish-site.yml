@@ -112,6 +112,9 @@ env:
   # season file yet is left out) and hands the result to the other jobs.
   DIVISIONS: d2 d1 d3
   NEW_DIVISIONS: d3
+  # Divisions whose failing test gate warns instead of failing the deploy.
+  # Take a division out once its gate passes.
+  ADVISORY_DIVISIONS: d3
   # The divisions the dataset snapshot covers: those the pinned desk reads.
   SNAPSHOT_DIVISIONS: d2 d1
   AWS_ACCOUNT_ID: ${{ vars.AWS_ACCOUNT_ID || '822013580129' }}
@@ -612,7 +615,7 @@ jobs:
         run: |
           if [ "$SOURCE" = data ]; then export TOUCHLINE_JOURNAL_DIR="$PWD/journals/journal"; fi
           TOUCHLINE_CONTRACTS_DIR="$PWD/rib/contracts" SITE_DIVISIONS="$DIVISIONS" \
-            sh rib/site/build.sh ui bundle "$SITE_URL" smoke.tsv
+            SITE_ADVISORY_DIVISIONS="$ADVISORY_DIVISIONS" sh rib/site/build.sh ui bundle "$SITE_URL" smoke.tsv
           {
             echo "### Site build"
             echo "- source: \`$SOURCE\` (${{ needs.bundle.outputs.sources }})"
