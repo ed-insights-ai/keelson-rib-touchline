@@ -4,6 +4,12 @@ One line per change to a published contract, newest first. A fixture change
 without a line here is incomplete; a writer change without a fixture change
 fails `pipeline/tests/test_contracts.py`.
 
+## 2026-11-24
+
+- `membership.json`: `conference_profiles.*.level` can now be `"d3"`. The
+  fixture declares the 41 Division III conferences the record now authors
+  (2023-2026), so its conference list matches the packaged record again.
+
 ## 2026-11-23
 
 - No shape change: every person's name in the season samples (players,

@@ -13,6 +13,9 @@ on:
   push:
     branches: [main]
     paths: [pipeline/config/reference-capture.txt]
+  # A merge made through an API token starts no push run, so the read can
+  # also be started by hand: gh workflow run reference-capture.yml
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -60,7 +63,7 @@ jobs:
   capture:
     name: Capture (presto runner)
     needs: start
-    if: always() && github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: always() && github.ref == 'refs/heads/main'
     runs-on: [self-hosted, presto]
     timeout-minutes: 120
     env:

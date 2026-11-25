@@ -135,18 +135,19 @@ describe("membership resolution", () => {
   });
 
   test("the authoring horizon is per-conference, not the file's global maximum", async () => {
-    // non_member women are authored only through 2018, while GAC and MIAA women
-    // run to 2025. Taking the maximum across the whole file borrowed 2025, which
-    // stopped this from extrapolating, matched no window, and resolved to
-    // nothing. Adding a conference authored further ahead than the GAC would do
-    // exactly that to the GAC.
-    const res = await resolveConference("non_member", "women", 2020);
-    expect(res.authoredThrough).toBe(2018);
+    // non_member women are authored only through 2024, while other women's
+    // conferences run to 2026. Taking the maximum across the whole file
+    // borrowed 2026, which stopped this from extrapolating, matched no window,
+    // and resolved to nothing. Adding a conference authored further ahead than
+    // the GAC would do exactly that to the GAC.
+    const res = await resolveConference("non_member", "women", 2025);
+    expect(res.authoredThrough).toBe(2024);
     expect(res.extrapolated).toBe(true);
     // The carry-forward is the code's horizon, never a programme's: the
-    // programmes non_member held in 2018 are authored into the MIAA from
-    // 2019, so none of them is carried back into non_member (they once were,
-    // and sat in two places at once).
+    // programme non_member held in 2024 (VTSU Lyndon, a year between its
+    // North Atlantic seasons) is authored back into the NAC from 2025, so it
+    // is not carried forward into non_member (programmes once were, and sat
+    // in two places at once).
     expect(res.slugs).toEqual([]);
     const miaa = await resolveConference("MIAA", "women", 2020);
     expect(miaa.slugs).toEqual(expect.arrayContaining(["newman", "rogers-state"]));
@@ -1430,6 +1431,24 @@ describe("understanding the ask", () => {
       expect(t.kind).toBe("conference");
       if (t.kind === "conference") expect(t.conference).toBe(conference);
     }
+  });
+
+  test("a conference whose code is a word never takes a programme's name", async () => {
+    // The Liberty League's code is LIBERTY: "Liberty" and "Liberty University"
+    // are the Liberty programme, and only the league's printed name is the league.
+    for (const ask of ["Liberty", "Liberty University", "liberty"]) {
+      const t = await resolveTargets(ask, "men", 2026);
+      expect(t.kind).toBe("programme");
+    }
+    for (const ask of ["Liberty League", "the Liberty League men", "Landmark Conference"]) {
+      const t = await resolveTargets(ask, "men", 2026);
+      expect(t.kind).toBe("conference");
+    }
+    const league = await resolveTargets("Liberty League", "men", 2026);
+    if (league.kind === "conference") expect(league.conference).toBe("LIBERTY");
+    // A word code no programme answers to still names its conference.
+    const landmark = await resolveTargets("Landmark", "men", 2026);
+    expect(landmark.kind === "conference" && landmark.conference).toBe("LANDMARK");
   });
 
   test("the hyphenated G-MAC resolves per season, Trevecca in its earlier window", async () => {

@@ -49,7 +49,7 @@ on:
         options: [shadow, dry-run]
         default: shadow
       divisions:
-        description: Divisions to collect, comma-separated (default every level)
+        description: Divisions to collect, comma-separated (default TOUCHLINE_COLLECT_DIVISIONS, else d1,d2)
         type: string
         default: ""
       conferences:
@@ -158,7 +158,11 @@ jobs:
         if: steps.mode.outputs.mode != 'off'
         env:
           MODE: ${{ steps.mode.outputs.mode }}
-          IN_DIVISIONS: ${{ inputs.divisions }}
+          # Divisions a run collects when none is asked for: the repository
+          # variable TOUCHLINE_COLLECT_DIVISIONS, else d1,d2. Division III
+          # joins the daily run once its first season is backfilled; until
+          # then it is collected only when a dispatch names it.
+          IN_DIVISIONS: ${{ inputs.divisions || vars.TOUCHLINE_COLLECT_DIVISIONS || 'd1,d2' }}
           IN_CONFERENCES: ${{ inputs.conferences }}
           IN_GENDERS: ${{ inputs.genders || 'men,women' }}
           IN_SEASON: ${{ inputs.season }}

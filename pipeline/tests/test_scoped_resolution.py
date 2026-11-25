@@ -805,8 +805,13 @@ def _women_scope(conference: str, season: int):
     members = conference_members(
         SCHOOLS, "women", conference, season=season, document=MEMBERSHIP
     )
+    # The collect's level-scoped stanzas, as production builds the scope: a
+    # Division III Concordia never claims a Division II page's "Concordia".
+    stanzas = resolution_stanzas(
+        SCHOOLS, "women", conference, season, document=MEMBERSHIP
+    )
     return resolution_scope(
-        SCHOOLS, "women", members, conference=conference, season=season
+        stanzas, "women", members, conference=conference, season=season
     )
 
 
