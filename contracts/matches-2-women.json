@@ -177,6 +177,13 @@
           "clock": "00:00",
           "team": 0,
           "type": "goalie"
+        },
+        {
+          "period": "Target Score Time",
+          "text": "Start of Target Score Time",
+          "clock": "00:00",
+          "team": 0,
+          "type": "period"
         }
       ],
       "stadium": "Regis Turf Fields",
