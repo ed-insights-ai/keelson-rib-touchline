@@ -4,6 +4,13 @@ One line per change to a published contract, newest first. A fixture change
 without a line here is incomplete; a writer change without a fixture change
 fails `pipeline/tests/test_contracts.py`.
 
+## 2026-11-26
+
+- No shape change: `matches.*.plays[].period` is the page's own section
+  token, and a SideArm play-by-play can name a section in words. The women's
+  sample now carries one ("Target Score Time", from a 2026 Division III
+  box score), so the token is not read as a fixed list.
+
 ## 2026-11-24
 
 - `membership.json`: `conference_profiles.*.level` can now be `"d3"`. The
