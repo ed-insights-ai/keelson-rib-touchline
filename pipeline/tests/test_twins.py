@@ -166,3 +166,71 @@ def test_a_shootout_winner_follows_the_re_pointed_side() -> None:
     repoint_by_twins([row], {"green-bay"}, _index(twin))
     assert row["away"] == "loyola-chicago"
     assert row["shootout"] == {"winner": "loyola-chicago", "home": 3, "away": 4}
+
+
+def test_a_conference_opponent_misread_takes_the_member_whose_page_lists_it() -> None:
+    # Two Concordias in one conference: "Concordia" on Benedictine's page
+    # mints a stranger; Concordia Wisconsin's own row in the same collect
+    # proves which one played.
+    rows = [
+        _row("benedictine", 1, "2026-09-16", "benedictine", "concordia", 2, 1),
+        _row(
+            "concordia-wisconsin",
+            7,
+            "2026-09-16",
+            "benedictine",
+            "concordia-wisconsin",
+            2,
+            1,
+        ),
+        _row("concordia-chicago", 3, "2026-09-16", "concordia-chicago", "aurora", 1, 0),
+    ]
+    members = {"benedictine", "concordia-wisconsin", "concordia-chicago"}
+    changes = repoint_by_twins(rows, members, _index())
+    assert rows[0]["away"] == "concordia-wisconsin"
+    assert [(c.was, c.now, c.proof) for c in changes] == [
+        ("concordia", "concordia-wisconsin", "sidearm:concordia-wisconsin:7")
+    ]
+
+
+def test_a_conference_twin_needs_the_same_score_and_one_candidate() -> None:
+    rows = [
+        _row("benedictine", 1, "2026-09-16", "benedictine", "concordia", 2, 1),
+        _row(
+            "concordia-wisconsin",
+            7,
+            "2026-09-16",
+            "benedictine",
+            "concordia-wisconsin",
+            3,
+            1,
+        ),
+    ]
+    assert (
+        repoint_by_twins(rows, {"benedictine", "concordia-wisconsin"}, _index()) == []
+    )
+    assert rows[0]["away"] == "concordia"
+    rows = [
+        _row("benedictine", 1, "2026-09-16", "benedictine", "concordia", 2, 1),
+        _row(
+            "concordia-wisconsin",
+            7,
+            "2026-09-16",
+            "benedictine",
+            "concordia-wisconsin",
+            2,
+            1,
+        ),
+        _row(
+            "concordia-chicago",
+            3,
+            "2026-09-16",
+            "benedictine",
+            "concordia-chicago",
+            2,
+            1,
+        ),
+    ]
+    members = {"benedictine", "concordia-wisconsin", "concordia-chicago"}
+    assert repoint_by_twins(rows, members, _index()) == []
+    assert rows[0]["away"] == "concordia"

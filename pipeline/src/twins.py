@@ -21,6 +21,13 @@ home (the same level and gender):
   final against the owner on that date with the same score from the owner's
   side, the side is that programme.
 
+The same holds inside the collect itself: a conference opponent printed in
+a spelling the name rules cannot place ("Concordia" where two Concordias are
+members, "City College of New York" read by token subset as NYU) is the
+member whose own page, collected in this same run, lists that final against
+the owner on that date with the same score. A Division III conference filed
+such games twice, once under the member and once under the stranger.
+
 Anything short of that is left exactly as the name rules read it: no twin,
 two candidates, a score that differs, a match not yet played. The result is
 a pure function of the files, and every re-pointing is returned for the run
@@ -117,6 +124,9 @@ def repoint_by_twins(
 ) -> list[Repoint]:
     """Re-point, in place, each side the other programme's page proves."""
     changes: list[Repoint] = []
+    # The members' own rows from this very collect: a conference opponent's
+    # own page proves a side as well as a sibling file's does.
+    collected = SeasonIndex([{"programmes": sorted(members), "fixtures": fixtures}])
     for fixture in fixtures:
         owner = _owner(fixture)
         if owner not in members or not _played(fixture):
@@ -140,13 +150,16 @@ def repoint_by_twins(
         date = str(fixture["date"])
         score = _score_for(fixture, owner)
         candidates: list[tuple[str, Mapping[str, object]]] = []
-        for programme in index.own:
-            if programme in (owner, printed) or programme in members:
-                continue
-            for twin in index.lists(programme, owner, date):
-                if _played(twin) and _score_for(twin, owner) == score:
-                    candidates.append((programme, twin))
-                    break
+        for source in (index, collected):
+            for programme in source.own:
+                if programme in (owner, printed):
+                    continue
+                if (source is index) == (programme in members):
+                    continue
+                for twin in source.lists(programme, owner, date):
+                    if _played(twin) and _score_for(twin, owner) == score:
+                        candidates.append((programme, twin))
+                        break
         if len(candidates) != 1:
             continue
         chosen, twin = candidates[0]

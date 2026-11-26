@@ -1262,10 +1262,11 @@ def _assemble(
     fetches interleaved."""
 
     all_fixtures = [fixture for result in results for fixture in result.fixtures]
-    # A non-conference side the name rules misread ("Loyola", "Miami"): the
-    # other programme's own page, in a sibling season file, settles it when
-    # exactly one lists this match that day with the same score. Read-only
-    # over the siblings; one log line per re-pointing (src/twins.py).
+    # A side the name rules misread ("Loyola", "Miami", a conference's two
+    # Concordias): the other programme's own page, in a sibling season file
+    # or among this collect's own rows, settles it when exactly one lists
+    # this match that day with the same score. Read-only over the siblings;
+    # one log line per re-pointing (src/twins.py).
     # The source rows are re-pointed, before the dedupe copies them, so the
     # box-score links indexed from them below key on the settled pair.
     for change in repoint_by_twins(

@@ -24055,6 +24055,8 @@ conference   = "CUNYAC"
 mascot       = "Beavers"
 gender       = "men"
 base_url     = "https://www.ccnyathletics.com/sports/mens-soccer"
+# Peers print "City College of New York", which the token-subset rule read as NYU (york-ny 2026, sidearm:york-ny:7310).
+aliases      = ["City College of New York"]
 years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
@@ -24181,6 +24183,8 @@ conference   = "CUNYAC"
 mascot       = "Beavers"
 gender       = "women"
 base_url     = "https://www.ccnyathletics.com/sports/womens-soccer"
+# Peers print "City College of New York", which the token-subset rule read as NYU (york-ny 2026, sidearm:york-ny:7310).
+aliases      = ["City College of New York"]
 years        = [2023, 2024, 2025, 2026]
 scraper      = "sidearm"
 data_status  = "unverified"
